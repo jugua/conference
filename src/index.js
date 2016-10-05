@@ -21,7 +21,7 @@ const app = angular.module('app', ['ui.router']);
 appComponents(app);
 
 // Common Components Entrypoint
-commonComponents(app);
+//commonComponents(app);
 
 // App Services Entrypoint
 appServices(app);
