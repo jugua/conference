@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 var nodeEnvironment = process.env.NODE_ENV;
 
 module.exports = {
@@ -14,6 +15,12 @@ module.exports = {
         filename: "[name].js"
     },
     plugins:[
+        new HtmlWebpackPlugin({
+            entry: 'src/index.js',
+            template: 'src/index.html',
+            inject: 'body',
+            hash: false
+        }),
         new webpack.DefinePlugin({
             'INCLUDE_ALL_MODULES': function includeAllModulesGlobalFn(modulesArray, application) {
                 modulesArray.forEach(function executeModuleIncludesFn(moduleFn) {
@@ -30,4 +37,14 @@ module.exports = {
         ],
 
     }
+};
+
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpackConfig = {
+    entry: './src/index.js',
+    output: {
+        path: 'dist',
+        filename: 'index_bundle.js'
+    },
+    plugins: [new HtmlWebpackPlugin()]
 };
