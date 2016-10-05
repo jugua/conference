@@ -2,3 +2,7 @@
 
 <h2>Wiki</h2>
 Wiki is located <a href="">here</a>.
+
+<h2>Virtual Machine</h2>
+VM hostname: 
+SSH with your own domain account.
