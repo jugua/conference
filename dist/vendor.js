@@ -45,22 +45,38 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	__webpack_require__(12);
 	module.exports = __webpack_require__(14);
+=======
+	__webpack_require__(16);
+	module.exports = __webpack_require__(18);
+>>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 
 
 /***/ },
 
+<<<<<<< HEAD
 /***/ 12:
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(13);
+=======
+/***/ 16:
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(17);
+>>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 	module.exports = angular;
 
 
 /***/ },
 
+<<<<<<< HEAD
 /***/ 13:
+=======
+/***/ 17:
+>>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 /***/ function(module, exports) {
 
 	/**
@@ -31834,7 +31850,11 @@
 
 /***/ },
 
+<<<<<<< HEAD
 /***/ 14:
+=======
+/***/ 18:
+>>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 /***/ function(module, exports) {
 
 	/**

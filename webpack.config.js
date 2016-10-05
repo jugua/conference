@@ -33,18 +33,9 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-            {test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader'},
+            { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
+            { test: /\.sass$/, loaders: [ 'style', 'css', 'sass' ] },
         ],
 
     }
-};
-
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var webpackConfig = {
-    entry: './src/index.js',
-    output: {
-        path: 'dist',
-        filename: 'index_bundle.js'
-    },
-    plugins: [new HtmlWebpackPlugin()]
 };
