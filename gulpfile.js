@@ -67,9 +67,9 @@ gulp.task("webpack-dev-server", function(callback) {
     // modify some webpack config options
     var myConfig = Object.create(webpackConfig);
     myConfig.debug = true;
-
     // Start a webpack-dev-server
     new WebpackDevServer(webpack(myConfig), {
+        contentBase: __dirname+"/dist",
         stats: {
             colors: true
         }
