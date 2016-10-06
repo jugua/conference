@@ -7,7 +7,7 @@ import appServices from './services/services.js';
 import appConfiguration from './app.config';
 
 // Single Style Entry Point
-import '!css!resolve-url!sass?sourceMap!./main.sass';
+import './main.sass';
 /*
 if (ENVIRONMENT === 'test') {
   console.log('ENV:', ENVIRONMENT);

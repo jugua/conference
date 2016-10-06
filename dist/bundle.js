@@ -58,29 +58,15 @@
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-<<<<<<< HEAD
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// Single Style Entry Point
-	//import './main.sass';
-=======
 	__webpack_require__(12);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 	/*
 	if (ENVIRONMENT === 'test') {
 	  console.log('ENV:', ENVIRONMENT);
 	  require('angular-mocks/angular-mocks');
 	}*/
-<<<<<<< HEAD
-	
-	//import commonComponents from './common/components.js';
-	var d2 = 3; // Angular & Router ES6 Imports
-	//import angular from 'angular';
-	//import angularUIRouter from 'angular-ui-router';
-=======
 	// Angular & Router ES6 Imports
 	//import angular from 'angular';
 	//import angularUIRouter from 'angular-ui-router';
@@ -89,7 +75,6 @@
 	// Single Style Entry Point
 	
 	//import commonComponents from './common/components.js';
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 	
 	
 	var app = angular.module('app', ['ui.router']);
@@ -157,8 +142,9 @@
 	      template: '<home></home>' //Essentially Treats the Home Directive as the Route View.
 	    });
 	  }).directive('home', _home2.default);
-	
+	  console.log((undefined) + '!1');
 	  if ((undefined) === 'test') {
+	    console.log(222);
 	    __webpack_require__(6);
 	  }
 	};
@@ -202,11 +188,7 @@
 /* 4 */
 /***/ function(module, exports) {
 
-<<<<<<< HEAD
 	module.exports = "<navbar></navbar>\n<header>\n  <hero></hero>\n</header>\n<div class=\"Container home\">\n  <div>\n    <h1>Found in {{ homeCtrl.name }}.html</h1>\n  </div>\n</div>\n";
-=======
-	module.exports = "<navbar></navbar>\r\n<header>\r\n  <hero></hero>\r\n</header>\r\n<div class=\"Container home\">\r\n  <div>\r\n    <h1>Found in {{ homeCtrl.name }}.html</h1>\r\n  </div>\r\n</div>\r\n";
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 
 /***/ },
 /* 5 */
@@ -420,8 +402,6 @@
 	  function configFn() {}
 	};
 
-<<<<<<< HEAD
-=======
 /***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
@@ -438,8 +418,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js!./main.sass", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/sass-loader/index.js!./main.sass");
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/resolve-url-loader/index.js!./../node_modules/sass-loader/index.js!./main.sass", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/resolve-url-loader/index.js!./../node_modules/sass-loader/index.js!./main.sass");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -457,7 +437,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".block {\n  padding: 0;\n  margin: 0; }\n", ""]);
+	exports.push([module.id, "body {\n  color: red;\n  background: url(\"/img/bg.jpg\");\n  background-size: cover;\n  padding: 0;\n  margin: 0;\n}", ""]);
 	
 	// exports
 
@@ -770,7 +750,6 @@
 	}
 
 
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 /***/ }
 /******/ ]);
 //# sourceMappingURL=bundle.js.map

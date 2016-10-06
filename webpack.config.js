@@ -1,6 +1,8 @@
+
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var nodeEnvironment = process.env.NODE_ENV;
+
+var  nodeEnvironment = process.env.NODE_ENV;
 
 module.exports = {
 
@@ -27,16 +29,15 @@ module.exports = {
                     moduleFn(application);
                 });
             },
-            ENVIRONMENT: JSON.stringify(nodeEnvironment)
+            'ENVIRONMENT': JSON.stringify(nodeEnvironment)
         })
     ],
     module: {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
             { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-            { test: /\.css$/, loaders: ['style', 'css', 'resolve-url'] },
-            { test: /\.sass$/, loaders: [ 'style', 'css', 'sass', 'resolve-url' ] },
-            { test: /\.(jpg|png|svg)$/, loader: 'file?name=[path][name].[ext]'}
+            { test: /\.sass$/, loaders: [ 'style', 'css', 'resolve-url', 'sass' ] }
+
         ],
 
     }

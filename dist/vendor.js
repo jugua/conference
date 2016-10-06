@@ -45,54 +45,22 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	__webpack_require__(326);
-	module.exports = __webpack_require__(328);
-=======
-	__webpack_require__(12);
-	module.exports = __webpack_require__(14);
->>>>>>> e3198c51410954cbb9a14bf6e2a6aaddd82f98aa
-=======
 	__webpack_require__(16);
 	module.exports = __webpack_require__(18);
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 
 
 /***/ },
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-/***/ 326:
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(327);
-=======
-/***/ 12:
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(13);
->>>>>>> e3198c51410954cbb9a14bf6e2a6aaddd82f98aa
-=======
 /***/ 16:
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(17);
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 	module.exports = angular;
 
 
 /***/ },
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-/***/ 327:
-=======
-/***/ 13:
->>>>>>> e3198c51410954cbb9a14bf6e2a6aaddd82f98aa
-=======
 /***/ 17:
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 /***/ function(module, exports) {
 
 	/**
@@ -31866,15 +31834,7 @@
 
 /***/ },
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-/***/ 328:
-=======
-/***/ 14:
->>>>>>> e3198c51410954cbb9a14bf6e2a6aaddd82f98aa
-=======
 /***/ 18:
->>>>>>> 238ab5c6018378d17671e96db1d00367d5e4ab51
 /***/ function(module, exports) {
 
 	/**
