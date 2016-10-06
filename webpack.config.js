@@ -1,14 +1,11 @@
-
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
-var  nodeEnvironment = process.env.NODE_ENV;
+var nodeEnvironment = process.env.NODE_ENV;
 
 module.exports = {
-
     entry: {
-        bundle:"./src/index",
-        vendor : ['angular', 'angular-ui-router']
+        bundle: "./src/index",
+        vendor: ['angular', 'angular-ui-router']
     },
     devtool: "source-map",
     output: {
@@ -16,7 +13,7 @@ module.exports = {
         path: __dirname + '/dist',
         filename: "[name].js"
     },
-    plugins:[
+    plugins: [
         new HtmlWebpackPlugin({
             entry: 'src/index.js',
             template: 'src/index.html',
@@ -34,11 +31,9 @@ module.exports = {
     ],
     module: {
         loaders: [
-            { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-            { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-            { test: /\.sass$/, loaders: [ 'style', 'css', 'resolve-url', 'sass' ] }
-
-        ],
-
+            {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
+            {test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader'},
+            {test: /\.sass$/, loaders: ['style', 'css', 'resolve-url', 'sass']}
+        ]
     }
 };
