@@ -64,6 +64,8 @@ gulp.task("webpack:build-dev", function(callback) {
 });
 
 gulp.task("webpack-dev-server", function(callback) {
+    // process.env.NODE_ENV = 'test';
+
     // modify some webpack config options
     var myConfig = Object.create(webpackConfig);
     myConfig.debug = true;
