@@ -1,13 +1,15 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPLugin = require('extract-text-webpack-plugin');
+var path = require('path');
 
 var  nodeEnvironment = process.env.NODE_ENV;
 
 module.exports = {
-
+    context: path.resolve(__dirname + '/src'),
     entry: {
-        bundle:"./src/index",
-        vendor : ['angular', 'angular-ui-router']
+        bundle: "./index",
+        vendor: ['angular', 'angular-ui-router']
     },
     devtool: "source-map",
     output: {
@@ -17,8 +19,8 @@ module.exports = {
     },
     plugins:[
         new HtmlWebpackPlugin({
-            entry: 'src/index.js',
-            template: 'src/index.html',
+            entry: './index.js',
+            template: './index.html',
             inject: 'body',
             hash: false
         }),
@@ -29,14 +31,15 @@ module.exports = {
                 });
             },
             'ENVIRONMENT': JSON.stringify(nodeEnvironment)
-        })
+        }),
+        new ExtractTextPLugin("[name].css")
     ],
     module: {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-            { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-            { test: /\.sass$/, loaders: [ 'style', 'css', 'resolve-url', 'sass' ] }
-
+            { test: /\.html/, exclude: /node_modules/, loader: 'html-loader' },
+            { test: /\.sass$/, loader: ExtractTextPLugin.extract('style', '!css!resolve-url!sass') },
+            { test: /\.jpg$/, loader: 'file?name=[path][name].[ext]' },
         ],
 
     }
