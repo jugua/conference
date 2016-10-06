@@ -1,18 +1,19 @@
 // Angular & Router ES6 Imports
-import angular from 'angular';
-import angularUIRouter from 'angular-ui-router';
+//import angular from 'angular';
+//import angularUIRouter from 'angular-ui-router';
 import appComponents from './components/components.js';
-import commonComponents from './common/components.js';
+//import commonComponents from './common/components.js';
 import appServices from './services/services.js';
 import appConfiguration from './app.config';
 
 // Single Style Entry Point
 import './main.sass';
-
+/*
 if (ENVIRONMENT === 'test') {
   console.log('ENV:', ENVIRONMENT);
   require('angular-mocks/angular-mocks');
-}
+}*/
+let d2 =3;
 
 const app = angular.module('app', ['ui.router']);
 
@@ -20,10 +21,11 @@ const app = angular.module('app', ['ui.router']);
 appComponents(app);
 
 // Common Components Entrypoint
-commonComponents(app);
+//commonComponents(app);
 
 // App Services Entrypoint
 appServices(app);
+
 
 // Router Configuration
 // Components must be declared first since
