@@ -69,12 +69,29 @@ gulp.task("webpack-dev-server", function(callback) {
     myConfig.debug = true;
     // Start a webpack-dev-server
     new WebpackDevServer(webpack(myConfig), {
-        contentBase: __dirname+"/dist",
+        contentBase: __dirname+"/src",
         stats: {
             colors: true
         }
     }).listen(3000, "localhost", function(err) {
         if(err) throw new gutil.PluginError("webpack-dev-server", err);
         gutil.log("[webpack-dev-server]", "http://localhost:3000/");
+    });
+});
+
+gulp.task("webpack-prod-server", function(callback) {
+
+    // modify some webpack config options
+    var myConfig = Object.create(webpackConfig);
+    myConfig.debug = true;
+    // Start a webpack-prod-server
+    new WebpackDevServer(webpack(myConfig), {
+        contentBase: __dirname+"/dist",
+        stats: {
+            colors: true
+        }
+    }).listen(8080, "localhost", function(err) {
+        if(err) throw new gutil.PluginError("webpack-prod-server", err);
+        gutil.log("[webpack-prod-server]", "http://localhost:8080/");
     });
 });
