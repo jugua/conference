@@ -7,7 +7,7 @@ describe('Home', () => {
 
 it('has  name property == home', () => {
     let controller = new HomeController();
-    expect(controller.name).toBe('homes');
+    expect(controller.name).toBe('home');
 
  });
 
