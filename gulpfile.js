@@ -1,14 +1,14 @@
 /*
 Usage:
 
-gulp                > run dev server - serving from src
+gulp                > run dev server - serving from src, listening on prot 3000
 gulp serve-src      > the same
 
 gulp build-dev      > build to dist-dev, do not uglify
-gulp serve-dev      > run dev server - serving from dist-dev
+gulp serve-dev      > run dev server - serving from dist-dev, listening on prot 3001
 
 gulp build-prod     > build to dist, uglify
-gulp serve-prod     > run prod server, serve from dist
+gulp serve-prod     > run prod server, serve from dist, listening on prot 3002
 
  */
 
@@ -112,9 +112,9 @@ gulp.task("webpack-dev-server", function(callback) {
         stats: {
             colors: true
         }
-    }).listen(3080, "localhost", function(err) {
+    }).listen(3001, "localhost", function(err) {
         if(err) throw new gutil.PluginError("webpack-dev-server", err);
-        gutil.log("[webpack-dev-server]", "http://localhost:3080/");
+        gutil.log("[webpack-dev-server]", "http://localhost:3001/");
     });
 });
 
@@ -129,8 +129,8 @@ gulp.task("webpack-prod-server", function(callback) {
         stats: {
             colors: true
         }
-    }).listen(8080, "localhost", function(err) {
+    }).listen(3002, "localhost", function(err) {
         if(err) throw new gutil.PluginError("webpack-prod-server", err);
-        gutil.log("[webpack-prod-server]", "http://localhost:8080/");
+        gutil.log("[webpack-prod-server]", "http://localhost:3002/");
     });
 });
