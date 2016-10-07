@@ -11,7 +11,6 @@ export default app => {
       });
   }).directive('home', homeComponent);
 
-  if (ENVIRONMENT === 'test') {
-    require('./home.test.js');
-  }
+   
+
 }
