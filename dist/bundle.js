@@ -50,15 +50,15 @@
 	
 	var _components2 = _interopRequireDefault(_components);
 	
-	var _services = __webpack_require__(7);
+	var _services = __webpack_require__(6);
 	
 	var _services2 = _interopRequireDefault(_services);
 	
-	var _app = __webpack_require__(11);
+	var _app = __webpack_require__(9);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
-	__webpack_require__(12);
+	__webpack_require__(10);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -142,11 +142,6 @@
 	      template: '<home></home>' //Essentially Treats the Home Directive as the Route View.
 	    });
 	  }).directive('home', _home2.default);
-	  console.log((undefined) + '!1');
-	  if ((undefined) === 'test') {
-	    console.log(222);
-	    __webpack_require__(6);
-	  }
 	};
 
 /***/ },
@@ -216,74 +211,23 @@
 
 	'use strict';
 	
-	var _home = __webpack_require__(2);
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
-	var _home2 = _interopRequireDefault(_home);
+	var _users = __webpack_require__(7);
 	
-	var _home3 = __webpack_require__(5);
-	
-	var _home4 = _interopRequireDefault(_home3);
-	
-	var _home5 = __webpack_require__(3);
-	
-	var _home6 = _interopRequireDefault(_home5);
-	
-	var _home7 = __webpack_require__(4);
-	
-	var _home8 = _interopRequireDefault(_home7);
+	var _users2 = _interopRequireDefault(_users);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	describe('Home', function () {
-	  var $rootScope = void 0,
-	      makeController = void 0;
-	
-	  beforeEach(window.module('app'));
-	  beforeEach(inject(function (_$rootScope_) {
-	    $rootScope = _$rootScope_;
-	    makeController = function makeController() {
-	      return new _home4.default();
-	    };
-	  }));
-	
-	  describe('Module', function () {
-	    // top-level specs: i.e., routes, injection, naming
-	  });
-	
-	  describe('Controller', function () {
-	    // controller specs
-	    it('has a name property [REMOVE]', function () {
-	      // erase if removing this.name from the controller
-	      var controller = makeController();
-	      expect(controller).to.have.property('name');
-	    });
-	  });
-	
-	  describe('Template', function () {
-	    // template specs
-	    // tip: use regex to ensure correct bindings are used e.g., {{  }}
-	    it('has name in template [REMOVE]', function () {
-	      expect(_home8.default).to.match(/{{\s?vm\.name\s?}}/g);
-	    });
-	  });
-	
-	  describe('Component', function () {
-	    // component/directive specs
-	    var component = (0, _home6.default)();
-	
-	    it('includes the intended template', function () {
-	      expect(component.template).to.equal(_home8.default);
-	    });
-	
-	    it('uses `controllerAs` syntax', function () {
-	      expect(component).to.have.property('controllerAs');
-	    });
-	
-	    it('invokes the right controller', function () {
-	      expect(component.controller).to.equal(_home4.default);
-	    });
-	  });
-	});
+	exports.default = function (app) {
+	  (function includeAllModulesGlobalFn(modulesArray, application) {
+	                modulesArray.forEach(function executeModuleIncludesFn(moduleFn) {
+	                    moduleFn(application);
+	                });
+	            })([_users2.default], app);
+	};
 
 /***/ },
 /* 7 */
@@ -302,39 +246,11 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = function (app) {
-	  (function includeAllModulesGlobalFn(modulesArray, application) {
-	                modulesArray.forEach(function executeModuleIncludesFn(moduleFn) {
-	                    moduleFn(application);
-	                });
-	            })([_users2.default], app);
+	  app.factory('users', _users2.default);
 	};
 
 /***/ },
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _users = __webpack_require__(9);
-	
-	var _users2 = _interopRequireDefault(_users);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (app) {
-	  app.factory('users', _users2.default);
-	
-	  if ((undefined) === 'test') {
-	    __webpack_require__(10);
-	  }
-	};
-
-/***/ },
-/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -351,43 +267,7 @@
 	exports.default = usersService;
 
 /***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _users = __webpack_require__(8);
-	
-	var _users2 = _interopRequireDefault(_users);
-	
-	var _users3 = __webpack_require__(9);
-	
-	var _users4 = _interopRequireDefault(_users3);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	describe('Users', function () {
-	  var $rootScope = void 0,
-	      makeController = void 0;
-	
-	  beforeEach(window.module('app'));
-	
-	  describe('Service', function () {
-	    // component/directive specs
-	    var service = (0, _users4.default)();
-	
-	    it('has property: name', function () {
-	      expect(service).to.have.property('name');
-	    });
-	
-	    it('the name property has the correct value', function () {
-	      expect(service.name).to.equal('users');
-	    });
-	  });
-	});
-
-/***/ },
-/* 11 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -403,16 +283,16 @@
 	};
 
 /***/ },
-/* 12 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(13);
+	var content = __webpack_require__(11);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(15)(content, {});
+	var update = __webpack_require__(13)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -429,10 +309,10 @@
 	}
 
 /***/ },
-/* 13 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(14)();
+	exports = module.exports = __webpack_require__(12)();
 	// imports
 	
 	
@@ -443,7 +323,7 @@
 
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports) {
 
 	/*
@@ -499,7 +379,7 @@
 
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

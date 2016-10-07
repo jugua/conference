@@ -1,6 +1,8 @@
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var nodeEnvironment = process.env.NODE_ENV;
+'use strict';
+
+let webpack = require('webpack');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+let nodeEnvironment = process.env.NODE_ENV;
 
 module.exports = {
     entry: {

@@ -1,12 +1,10 @@
-// var jasmineWebpackPlugin = require('jasmine-webpack-plugin');
-var webpack = require('webpack');
-// var HtmlWebpackPlugin = require('html-webpack-plugin');
-var  nodeEnvironment = process.env.NODE_ENV;
+'use strict';
+
 module.exports = function (config) {
     config.set({
         frameworks: ['jasmine'],
-        files: [{ pattern: 'spec.bundle.js', watched: false }],
-        preprocessors: { 'spec.bundle.js': ['webpack'] },
+        files: [{pattern: 'spec.bundle.js', watched: false}],
+        preprocessors: {'spec.bundle.js': ['webpack']},
         browsers: ['PhantomJS'],
         plugins: [
             require("karma-jasmine"),
@@ -16,7 +14,7 @@ module.exports = function (config) {
         ],
         webpack: {
             devtool: 'inline-source-map',
-            path:'./',
+            path: './',
             // entry: 'spec.bundle.js',
             // plugins:[
             //     new webpack.DefinePlugin({
@@ -31,9 +29,9 @@ module.exports = function (config) {
             // ],
             module: {
                 loaders: [
-                    { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
-                    { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-                    { test: /\.sass$/, loaders: [ 'style', 'css', 'resolve-url', 'sass' ] }
+                    {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
+                    {test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader'},
+                    {test: /\.sass$/, loaders: ['style', 'css', 'resolve-url', 'sass']}
 
                 ]
             }
@@ -60,6 +58,6 @@ module.exports = function (config) {
         browsers: ['PhantomJS'],
 
         singleRun: true
-    })
+    });
 
 };
