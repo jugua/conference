@@ -7,13 +7,13 @@ export default app => {
     $stateProvider
       .state('home', {
         url: '/',
-        template: '<home></home>' //Essentially Treats the Home Directive as the Route View.
+        template: '<home></home>' // Essentially Treats the Home Directive as the Route View.
       });
   }).directive('home', homeComponent);
-console.log(ENVIRONMENT+'!1');
-    var test = null
+  console.log(ENVIRONMENT + '!1');
+  let test = null;
   if (ENVIRONMENT === 'test') {
-      console.log(222);
-     test=require('./home.test.js');
+    console.log(222);
+    test = require('./home.test.js');
   }
-}
+};

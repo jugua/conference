@@ -1,4 +1,4 @@
-let usersService = function usersServiceFn () {
+let usersService = function usersServiceFn() {
   return {
     name: 'users'
   };

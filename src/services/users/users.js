@@ -6,4 +6,4 @@ export default app => {
   if (ENVIRONMENT === 'test') {
     require('./users.test.js');
   }
-}
+};

@@ -1,4 +1,4 @@
-import listComponent from './list.component';
+  import listComponent from './list.component';
 
 export default app => {
   app.config(($stateProvider, $urlRouterProvider) => {
@@ -7,7 +7,7 @@ export default app => {
     $stateProvider
       .state('list', {
         url: '/list',
-        template: '<list></list>' //Essentially Treats the Home Directive as the Route View.
+        template: '<list></list>' // Essentially Treats the Home Directive as the Route View.
       });
   }).directive('list', listComponent);
-}
+};
