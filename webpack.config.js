@@ -38,7 +38,7 @@ module.exports = {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
             { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-            { test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap' )},
+            { test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url!sass?sourceMap' )},
             { test: /\.(jpg|png|svg|eot|otf|svg|ttf|woff|woff2)$/, loader:'file?name=[path][name].[ext]'}
         ]
     }
