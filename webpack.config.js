@@ -35,9 +35,8 @@ module.exports = {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
             { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-            { test: /\.sass$/, loaders: [ 'style', 'css', 'resolve-url', 'sass' ] }
-
+            { test: /\.sass$/, loaders: [ 'style', 'css', 'resolve-url', 'sass' ] },
+            { test: /\.js$/,  loader: "eslint-loader", exclude: /node_modules/}
         ],
-
     }
 };
