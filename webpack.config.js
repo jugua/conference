@@ -5,6 +5,8 @@ let HtmlWebpackPlugin = require('html-webpack-plugin');
 let nodeEnvironment = process.env.NODE_ENV;
 let path = require('path');
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
+let precss       = require('precss');
+let autoprefixer = require('autoprefixer');
 
 module.exports = {
     context: path.resolve(__dirname + '/src'),
@@ -26,7 +28,7 @@ module.exports = {
             hash: false
         }),
         new webpack.DefinePlugin({
-            'INCLUDE_ALL_MODULES': function includeAllModulesGlobalFn(modulesArray, application) {
+            'include_all_modules': function includeAllModulesGlobalFn(modulesArray, application) {
                 modulesArray.forEach(function executeModuleIncludesFn(moduleFn) {
                     moduleFn(application);
                 });
@@ -43,5 +45,6 @@ module.exports = {
             { test: /\.(jpg|png|svg|eot|otf|svg|ttf|woff|woff2)$/, loader:'file?name=[path][name].[ext]' },
             { test: /\.js$/,  loader: "eslint-loader", exclude: /node_modules/ }
         ]
-    }
+    },
+    postcss: [ autoprefixer({ browsers: ['last 2 versions'] }) ]
 };

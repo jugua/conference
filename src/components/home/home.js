@@ -1,6 +1,6 @@
 import homeComponent from './home.component';
 
-export default app => {
+export default (app) => {
   app.config(($stateProvider, $urlRouterProvider) => {
     $urlRouterProvider.otherwise('/');
 
@@ -10,4 +10,4 @@ export default app => {
         template: '<home></home>' // Essentially Treats the Home Directive as the Route View.
       });
   }).directive('home', homeComponent);
-}
+};

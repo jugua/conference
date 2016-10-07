@@ -1,6 +1,6 @@
-  import listComponent from './list.component';
+import listComponent from './list.component';
 
-export default app => {
+export default (app) => {
   app.config(($stateProvider, $urlRouterProvider) => {
     $urlRouterProvider.otherwise('/');
 

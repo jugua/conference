@@ -1,6 +1,6 @@
 import loginComponent from './login.component';
 
-export default app => {
+export default (app) => {
   app.config(($stateProvider, $urlRouterProvider) => {
     $urlRouterProvider.otherwise('/');
 
