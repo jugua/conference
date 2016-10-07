@@ -46,5 +46,4 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin("main.css", {allChunks: true})
     ]
->>>>>>> test_build
 };
