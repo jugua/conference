@@ -95,7 +95,7 @@ gulp.task("webpack-src-server", function (callback) {
     stats: {
       colors: true
     }
-  }).listen(3000, "localhost", function (err) {
+  }).listen(3000, "0.0.0.0", function (err) {
     if (err) throw new gutil.PluginError("webpack-src-server", err);
     gutil.log("[webpack-src-server]", "http://localhost:3000/");
   });
@@ -112,7 +112,7 @@ gulp.task("webpack-dev-server", function (callback) {
     stats: {
       colors: true
     }
-  }).listen(3001, "localhost", function (err) {
+  }).listen(3001, "0.0.0.0", function (err) {
     if (err) throw new gutil.PluginError("webpack-dev-server", err);
     gutil.log("[webpack-dev-server]", "http://localhost:3001/");
   });
@@ -129,8 +129,8 @@ gulp.task("webpack-prod-server", function (callback) {
     stats: {
       colors: true
     }
-  }).listen(3002, "localhost", function (err) {
+  }).listen(3002, "0.0.0.0", function (err) {
     if (err) throw new gutil.PluginError("webpack-prod-server", err);
-    gutil.log("[webpack-prod-server]", "http://localhost:3002/");
+    gutil.log("[webpack-prod-server]", "http://127.0.0.1:3002/");
   });
 });
