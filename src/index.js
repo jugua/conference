@@ -8,6 +8,7 @@ import appConfiguration from './app.config';
 
 // Single Style Entry Point
 import './main.sass';
+
 /*
 if (ENVIRONMENT === 'test') {
   console.log('ENV:', ENVIRONMENT);

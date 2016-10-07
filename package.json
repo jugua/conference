@@ -4,7 +4,7 @@
   "description": "Conference Magagement System",
   "main": "index.js",
   "scripts": {
-    "test": "export NODE_ENV=test && karma start"
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -14,6 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "angular-mocks": "^1.5.8",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.7",
     "html-webpack-plugin": "^2.22.0",
