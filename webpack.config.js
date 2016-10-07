@@ -1,15 +1,15 @@
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+'use strict';
 
-var  nodeEnvironment = process.env.NODE_ENV;
+let webpack = require('webpack');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
+let nodeEnvironment = process.env.NODE_ENV;
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-
     entry: {
-        bundle:"./src/index",
-        vendor : ['angular', 'angular-ui-router']
+        bundle: "./src/index",
+        vendor: ['angular', 'angular-ui-router']
     },
     devtool: "source-map",
     output: {
@@ -17,7 +17,7 @@ module.exports = {
         path: __dirname + '/dist',
         filename: "[name].js"
     },
-    plugins:[
+    plugins: [
         new HtmlWebpackPlugin({
             entry: 'src/index.js',
             template: 'src/index.html',
@@ -31,19 +31,16 @@ module.exports = {
                 });
             },
             'ENVIRONMENT': JSON.stringify(nodeEnvironment)
-        })
+        }),
+        new ExtractTextPlugin("main.css", {allChunks: true})
     ],
     module: {
         loaders: [
             { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
             { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-            { test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap' )},
-            { test: /\.(jpg|png|svg|eot|otf|svg|ttf|woff|woff2)$/, loader:'file?name=[path][name].[ext]'},
-            { test: /\.js$/,  loader: "eslint-loader", exclude: /node_modules/}
+            { test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap' ) },
+            { test: /\.(jpg|png|svg|eot|otf|svg|ttf|woff|woff2)$/, loader:'file?name=[path][name].[ext]' },
+            { test: /\.js$/,  loader: "eslint-loader", exclude: /node_modules/ }
         ]
-    },
-
-    plugins: [
-        new ExtractTextPlugin("main.css", {allChunks: true})
-    ]
+    }
 };
