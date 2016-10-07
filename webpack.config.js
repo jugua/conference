@@ -3,12 +3,13 @@
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let nodeEnvironment = process.env.NODE_ENV;
-
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+let path = require('path');
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
+    context: path.resolve(__dirname + '/src'),
     entry: {
-        bundle: "./src/index",
+        bundle: "./index",
         vendor: ['angular', 'angular-ui-router']
     },
     devtool: "source-map",
@@ -19,8 +20,8 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            entry: 'src/index.js',
-            template: 'src/index.html',
+            entry: './index.js',
+            template: './index.html',
             inject: 'body',
             hash: false
         }),

@@ -1,0 +1,19 @@
+body {
+  color: #f2f2f2;
+  background: url(/assets/img/bg.jpg);
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+  font-family: Gotham Light;
+}
+
+@font-face {
+  font-family: 'Gotham Light ';
+  src: url(/assets/fonts/gotham-light/gotham-light-webfont.eot);
+  src: url(/assets/fonts/gotham-light/gotham-light-webfont.eot) format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+/*# sourceMappingURL=main.css.map*/
