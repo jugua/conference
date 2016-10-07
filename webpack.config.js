@@ -3,8 +3,7 @@
 let webpack = require('webpack');
 let HtmlWebpackPlugin = require('html-webpack-plugin');
 let nodeEnvironment = process.env.NODE_ENV;
-
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
