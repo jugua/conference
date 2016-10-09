@@ -9,5 +9,5 @@ export default (app) => {
         url: '/list',
         template: '<list></list>' // Essentially Treats the Home Directive as the Route View.
       });
-  }).directive('list', listComponent);
+  }).component('list', listComponent);
 };

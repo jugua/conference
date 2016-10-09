@@ -9,5 +9,5 @@ export default (app) => {
         url: '/login',
         template: '<login></login>' // Essentially Treats the Home Directive as the Route View.
       });
-  }).directive('login', loginComponent);
+  }).component('login', loginComponent);
 };

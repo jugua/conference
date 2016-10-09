@@ -9,5 +9,5 @@ export default (app) => {
         url: '/<%= kebabName %>',
         template: '<<%= kebabName %>></<%= kebabName %>>' // Essentially Treats the Home Directive as the Route View.
       });
-  }).directive('<%= camelName %>', <%= camelName %>Component);
+  }).component('<%= camelName %>', <%= camelName %>Component);
 };
