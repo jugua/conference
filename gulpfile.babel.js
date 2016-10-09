@@ -16,15 +16,15 @@
 
 import gulp from 'gulp';
 import './tasks/component';
-/*
 import './tasks/serve-src';
+/*
 import './tasks/serve-dev';
 import './tasks/serve-prod';
 import './tasks/build-dev';
 import './tasks/build-prod';
 */
 
-//gulp.task('default', ['serve-src']);
+gulp.task('default', ['serve-src']);
 
 //var gutil = require("gulp-util");
 //var webpack = require("webpack");
