@@ -13,30 +13,42 @@
  */
 
 'use strict';
-var gulp = require('gulp');
-var gutil = require("gulp-util");
-var webpack = require("webpack");
-var WebpackDevServer = require("webpack-dev-server");
 
-var webpackConfig = require("./webpack.config.js");
+import gulp from 'gulp';
+import './tasks/component';
+/*
+import './tasks/serve-src';
+import './tasks/serve-dev';
+import './tasks/serve-prod';
+import './tasks/build-dev';
+import './tasks/build-prod';
+*/
+
+//gulp.task('default', ['serve-src']);
+
+//var gutil = require("gulp-util");
+//var webpack = require("webpack");
+//var WebpackDevServer = require("webpack-dev-server");
+//var webpackConfig = require("./webpack.config.js");
 
 // run dev server - serving from src
-gulp.task("default", ["webpack-src-server"]);
-gulp.task("serve-src", ["webpack-src-server"]);
+
+//gulp.task("default", ["webpack-src-server"]);
+//gulp.task("serve-src", ["webpack-src-server"]);
 
 // build dev dist - build to dist-dev
-gulp.task("build-dev", ["webpack-build-dev"]);
+//gulp.task("build-dev", ["webpack-build-dev"]);
 
 // run dev server, serving from dist-dev
-gulp.task("serve-dev", ["webpack-dev-server"]);
+//gulp.task("serve-dev", ["webpack-dev-server"]);
 
 // prod dist build - build to dist, uglify
-gulp.task("build-prod", ["webpack-build-prod"]);
+//gulp.task("build-prod", ["webpack-build-prod"]);s
 
 // run prod server, serving from dist
-gulp.task("serve-prod", ["webpack-prod-server"]);
+//gulp.task("serve-prod", ["webpack-prod-server"]);
 
-
+/*
 gulp.task("webpack-build-prod", function (callback) {
   // modify some webpack config options
   var myConfig = Object.create(webpackConfig);
@@ -60,7 +72,9 @@ gulp.task("webpack-build-prod", function (callback) {
     callback();
   });
 });
+*/
 
+/*
 // modify some webpack config options
 var myDevConfig = Object.create(webpackConfig);
 myDevConfig.devtool = "sourcemap";
@@ -73,8 +87,11 @@ myDevConfig.output = {
 
 // create a single instance of the compiler to allow caching
 var devCompiler = webpack(myDevConfig);
+*/
 
+/*
 gulp.task("webpack-build-dev", function (callback) {
+
   // run webpack
   devCompiler.run(function (err, stats) {
     if (err) throw new gutil.PluginError("webpack-build-dev", err);
@@ -84,7 +101,9 @@ gulp.task("webpack-build-dev", function (callback) {
     callback();
   });
 });
+*/
 
+/*
 gulp.task("webpack-src-server", function (callback) {
   // modify some webpack config options
   var myConfig = Object.create(webpackConfig);
@@ -100,7 +119,9 @@ gulp.task("webpack-src-server", function (callback) {
     gutil.log("[webpack-src-server]", "http://localhost:3000/");
   });
 });
+*/
 
+/*
 gulp.task("webpack-dev-server", function (callback) {
 
   // modify some webpack config options
@@ -117,7 +138,8 @@ gulp.task("webpack-dev-server", function (callback) {
     gutil.log("[webpack-dev-server]", "http://localhost:3001/");
   });
 });
-
+*/
+/*
 gulp.task("webpack-prod-server", function (callback) {
 
   // modify some webpack config options
@@ -134,3 +156,4 @@ gulp.task("webpack-prod-server", function (callback) {
     gutil.log("[webpack-prod-server]", "http://127.0.0.1:3002/");
   });
 });
+*/
