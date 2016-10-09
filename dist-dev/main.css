@@ -1,11 +1,13 @@
+.test-me {
+  color: orange;
+}
+
 body {
   color: #f2f2f2;
   background: url(/assets/img/bg.jpg);
   background-size: cover;
   padding: 0;
   margin: 0;
-  display: flex;
-  background: linear-gradient(to bottom, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
 }
 
 h1 {
