@@ -1,12 +1,4 @@
+import <%= pascalName %>Module from './<%= kebabName %>'
 import <%= pascalName %>Controller from './<%= kebabName %>.controller';
-
-describe('<%= pascalName %>', () => {
-
-it('has  name property == <%= camelName %>', () => {
-    let controller = new TestController();
-    expect(controller.name).toBe('<%= camelName %>');
-
- });
-
-
-});
+import <%= pascalName %>Component from './<%= kebabName %>.component';
+import <%= pascalName %>Template from './<%= kebabName %>.html';

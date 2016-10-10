@@ -1,9 +1,17 @@
-.test-me {
-  color: orange;
+body {
+  margin: 0;
+}
+
+@font-face {
+  font-family: 'Gotham Light ';
+  src: url(/assets/fonts/gotham-light/gotham-light-webfont.eot);
+  src: url(/assets/fonts/gotham-light/gotham-light-webfont.eot) format("embedded-opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 body {
-  color: #f2f2f2;
+  color: yellow;
   background: url(/assets/img/bg.jpg);
   background-size: cover;
   padding: 0;
@@ -68,13 +76,5 @@ ul li {
   margin-bottom: 10px;
 }
 
-@font-face {
-  font-family: 'Gotham Light ';
-  src: url(/assets/fonts/gotham-light/gotham-light-webfont.eot);
-  src: url(/assets/fonts/gotham-light/gotham-light-webfont.eot) format("embedded-opentype");
-  font-weight: normal;
-  font-style: normal;
-}
 
-
-/*# sourceMappingURL=main.css.map*/
+/*# sourceMappingURL=.css.map*/

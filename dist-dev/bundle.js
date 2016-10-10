@@ -50,11 +50,11 @@
 	
 	var _components2 = _interopRequireDefault(_components);
 	
-	var _services = __webpack_require__(19);
+	var _services = __webpack_require__(14);
 	
 	var _services2 = _interopRequireDefault(_services);
 	
-	__webpack_require__(22);
+	__webpack_require__(17);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -105,20 +105,15 @@
 	
 	var _list2 = _interopRequireDefault(_list);
 	
-	var _testMe = __webpack_require__(14);
-	
-	var _testMe2 = _interopRequireDefault(_testMe);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/* global include_all_modules */
 	exports.default = function (app) {
 	  (function includeAllModulesGlobalFn(modulesArray, application) {
 	            modulesArray.forEach(function executeModuleIncludesFn(moduleFn) {
 	                moduleFn(application);
 	            });
-	        })([_home2.default, _login2.default, _list2.default, _testMe2.default], app);
-	};
+	        })([_home2.default, _login2.default, _list2.default], app);
+	}; /* global include_all_modules */
 
 /***/ },
 /* 2 */
@@ -167,8 +162,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// This is the Directive Definition Object function seen in a traditional Angular setup.
-	// In this example it is abstracted as a shell and used in the home.js.
 	var homeComponent = function home() {
 	  return {
 	    restrict: 'EA',
@@ -255,8 +248,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// This is the Directive Definition Object function seen in a traditional Angular setup.
-	// In this example it is abstracted as a shell and used in the home.js.
 	var loginComponent = function login() {
 	  return {
 	    restrict: 'EA',
@@ -343,8 +334,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// This is the Directive Definition Object function seen in a traditional Angular setup.
-	// In this example it is abstracted as a shell and used in the home.js.
 	var listComponent = function list() {
 	  return {
 	    restrict: 'EA',
@@ -394,103 +383,7 @@
 	  value: true
 	});
 	
-	var _testMe = __webpack_require__(15);
-	
-	var _testMe2 = _interopRequireDefault(_testMe);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (app) {
-	  app.config(function ($stateProvider, $urlRouterProvider) {
-	    $urlRouterProvider.otherwise('/');
-	
-	    $stateProvider.state('testMe', {
-	      url: '/test-me',
-	      template: '<test-me></test-me>' // Essentially Treats the Home Directive as the Route View.
-	    });
-	  }).directive('testMe', _testMe2.default);
-	};
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _testMe = __webpack_require__(16);
-	
-	var _testMe2 = _interopRequireDefault(_testMe);
-	
-	var _testMe3 = __webpack_require__(17);
-	
-	var _testMe4 = _interopRequireDefault(_testMe3);
-	
-	__webpack_require__(18);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// This is the Directive Definition Object function seen in a traditional Angular setup.
-	// In this example it is abstracted as a shell and used in the home.js.
-	var testMeComponent = function testMe() {
-	  return {
-	    restrict: 'EA',
-	    scope: {},
-	    template: _testMe2.default,
-	    controller: _testMe4.default,
-	    controllerAs: 'testMeCtrl',
-	    bindToController: true
-	  };
-	};
-	
-	exports.default = testMeComponent;
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-	module.exports = "<h1 class=\"test-me\">Found in {{ testMeCtrl.name }}.html</h1>";
-
-/***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var TestMeController = function TestMeController() {
-	  _classCallCheck(this, TestMeController);
-	
-	  this.name = 'testMe';
-	};
-	
-	exports.default = TestMeController;
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _users = __webpack_require__(20);
+	var _users = __webpack_require__(15);
 	
 	var _users2 = _interopRequireDefault(_users);
 	
@@ -505,7 +398,7 @@
 	}; /* global include_all_modules */
 
 /***/ },
-/* 20 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -514,7 +407,7 @@
 	  value: true
 	});
 	
-	var _users = __webpack_require__(21);
+	var _users = __webpack_require__(16);
 	
 	var _users2 = _interopRequireDefault(_users);
 	
@@ -525,7 +418,7 @@
 	};
 
 /***/ },
-/* 21 */
+/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -542,7 +435,7 @@
 	exports.default = usersService;
 
 /***/ },
-/* 22 */
+/* 17 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
