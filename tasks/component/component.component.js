@@ -1,6 +1,5 @@
 import template from './<%= kebabName %>.html';
 import controller from './<%= kebabName %>.controller';
-import './<%= kebabName %>.sass';
 
 const <%= camelName %>Component = function <%= camelName %>() {
   return {

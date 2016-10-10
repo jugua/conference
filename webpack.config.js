@@ -35,7 +35,7 @@ module.exports = {
             },
             'ENVIRONMENT': JSON.stringify(nodeEnvironment)
         }),
-        new ExtractTextPlugin("main.css", {allChunks: true})
+        new ExtractTextPlugin(".css", {allChunks: true})
     ],
     module: {
         loaders: [

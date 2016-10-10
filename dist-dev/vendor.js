@@ -45,22 +45,22 @@
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(23);
-	module.exports = __webpack_require__(25);
+	__webpack_require__(18);
+	module.exports = __webpack_require__(20);
 
 
 /***/ },
 
-/***/ 23:
+/***/ 18:
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(24);
+	__webpack_require__(19);
 	module.exports = angular;
 
 
 /***/ },
 
-/***/ 24:
+/***/ 19:
 /***/ function(module, exports) {
 
 	/**
@@ -31834,7 +31834,7 @@
 
 /***/ },
 
-/***/ 25:
+/***/ 20:
 /***/ function(module, exports) {
 
 	/**
