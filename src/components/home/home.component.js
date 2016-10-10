@@ -2,8 +2,8 @@ import template from './home.html';
 import controller from './home.controller';
 
 const homeComponent = {
-  template: template,
-  controller: controller,
+  template,
+  controller,
   controllerAs: 'homeCtrl'
 };
 
