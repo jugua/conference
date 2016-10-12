@@ -16,7 +16,10 @@
 
 'use strict';
 
+const PORT = process.env.PORT || 8089;
+
 import gulp from 'gulp';
+import  server from './server';
 import './tasks/serve-src';
 import './tasks/serve-dev';
 import './tasks/serve-prod';
@@ -24,4 +27,6 @@ import './tasks/build-dev';
 import './tasks/build-prod';
 import './tasks/component';
 
-gulp.task('default', ['serve-src']);
+gulp.task('default',['build-dev','serve-src'], ()=> {
+  server(8089);
+});
