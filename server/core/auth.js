@@ -1,5 +1,3 @@
-var User      = require('../model/user');
-
 var  auth = function auth(req, res) {
   if (req.body.password && req.body.mail) {
     User.findOne ({

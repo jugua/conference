@@ -3,18 +3,20 @@ var app        = express();
 var path       = require('path');
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
-var User      = require('./model/user');
+var User      = require('./model/User');
 var auth      = require('./core/auth');
 
 module.exports = (PORT) => {
 
-
+   if (!PORT) {
+     PORT = process.env.PORT || 9000;
+   }
   var router = express.Router();
 
   mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
 
-  app.use(express.static(path.join(__dirname, './dist-dev')));
-  app.use("/", express.static(path.join(__dirname, './dist-dev')));
+  app.use(express.static(path.join(__dirname, './../dist')));
+  app.use("/", express.static(path.join(__dirname, './../dist')));
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
 
@@ -30,7 +32,7 @@ module.exports = (PORT) => {
   router.route('/login')
     .post(auth);
 
-  router.route('/users')
+  router.route('/users') //exapmle rest
     .post(function (req, res) {
 
       var user = new User();      // create a new instance of the User

@@ -41,7 +41,7 @@ module.exports = {
         }),
         new ExtractTextPlugin("main.css", {allChunks: true}),
         new LiveReloadPlugin({
-            port:3010,
+            port:3011,
             appendScriptTag:true
         })
     ],
