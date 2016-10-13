@@ -25,7 +25,7 @@ let auth = function auth(req, res) {
               return;
             }
 
-            let token = user._id + 1234;
+            let token = user._id + 1234; //fake token
             user.hash.push(token);
             user.save();
             res.json({"token": token});
