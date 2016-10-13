@@ -12,7 +12,7 @@
 'use strict';
 
 if (!process.env.PORT){
-  process.env.PORT = 6089
+  process.env.PORT = 6089;
 }
 
 import gulp from 'gulp';
