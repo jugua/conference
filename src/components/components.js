@@ -1,9 +1,7 @@
 /* global include_all_modules */
 import homeComponent from './home/home';
-import loginComponent from './login/login';
-import listComponent from './list/list';
-import singInComponent from './sing-in/sing-in';
+import signInComponent from './sign-in/sign-in';
 
 export default (app) => {
-  include_all_modules([homeComponent, loginComponent, listComponent, singInComponent], app);
+  include_all_modules([homeComponent, signInComponent], app);
 };
