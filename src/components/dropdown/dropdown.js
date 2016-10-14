@@ -1,13 +1,12 @@
 import dropdownComponent from './dropdown.component';
 
 export default (app) => {
-  app.config(($stateProvider, $urlRouterProvider) => {
-    $urlRouterProvider.otherwise('/');
-
+  app.config(($stateProvider) => {
+ // don't forget remove this !!!
     $stateProvider
       .state('dropdown', {
         url: '/dropdown',
-        template: '<dropdown></dropdown>' // Essentially Treats the Home Directive as the Route View.
+        template: '<dropdown></dropdown>'
       });
   }).component('dropdown', dropdownComponent);
 };

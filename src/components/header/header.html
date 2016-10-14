@@ -3,7 +3,8 @@
         <div class="menu-container">
             <button class="menu-container__button" ng-click="ctrl.menuHidden=!ctrl.menuHidden">Your Account</button>
             <div class="menu-container__content" ng-show="ctrl.menuHidden">
-              <sign-in ng-if="!ctrl.userRole.roule"></sign-in>
+              <sign-in ng-if="ctrl.userRole.roule"></sign-in>
+              <dropdown ng-if="!ctrl.userRole.roule"></dropdown>
             </div>
         </div>
 </header>
