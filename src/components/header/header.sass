@@ -1,5 +1,3 @@
-body
-  margin: 0
 .header
   width: 100%
   height: 70px
@@ -11,7 +9,7 @@ body
      height: 100px
   &__title
     height: 100%
-    line-height: 70px
+    line-height: 70px;
     color: #fff
     text-transform: uppercase
     font-family: Oswald Regular
@@ -20,8 +18,8 @@ body
     @media ($mnw: $xsdmn) and ($mxw: $sdmx)
       width: 100%
       height: 50%
-      line-height: 50px
       font-size: 25px
+      line-height: 50px;
       padding: 0
       text-align: center
     @media ($mnw: $mdmn) and ($mxw: $mdmx)
@@ -30,11 +28,9 @@ body
 .menu-container
   height: 100%
   position: relative
-  line-height: 70px
   @media ($mnw: $xsdmn) and ($mxw: $sdmx)
     width: 100%
     height: 50%
-    line-height: 50px
     text-align: center
   &__button
     border: 0
@@ -42,24 +38,22 @@ body
     color: #fff
     font-family: Oswald Regular
     font-size: 18px
+    margin-top: 20px
     padding: 3px 15px
     &:hover
       cursor: pointer
     &:focus
       outline: 0
-    &:focus + div
-      display: block
     &:active
       background: darken($sharp-blue, 15%)
     @media ($mnw: $xsdmn) and ($mxw: $sdmx)
       padding: 0 10px
+      margin-top: 5px
   &__content
     width: 300px
-    height: 300px
     display: block
     position: absolute
     top: 70px
-    background: $sharp-blue
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
       width: 100%
       top: 50px
