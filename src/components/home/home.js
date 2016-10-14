@@ -2,7 +2,7 @@ import homeComponent from './home.component';
 
 export default (app) => {
   app.config(($stateProvider, $urlRouterProvider) => {
-    $urlRouterProvider.otherwise('/');
+   //$urlRouterProvider.otherwise('/');
 
     $stateProvider
       .state('home', {
