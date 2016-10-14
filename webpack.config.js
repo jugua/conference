@@ -7,6 +7,7 @@ let path = require('path');
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let precss       = require('precss');
 let autoprefixer = require('autoprefixer');
+let LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
     context: path.resolve(__dirname + '/src'),
@@ -19,6 +20,9 @@ module.exports = {
         publicPath: "/",
         path: __dirname + '/dist',
         filename: "[name].js"
+    },
+    devServer: {
+        inline:true
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -35,7 +39,11 @@ module.exports = {
             },
             'ENVIRONMENT': JSON.stringify(nodeEnvironment)
         }),
-        new ExtractTextPlugin("main.css", {allChunks: true})
+        new ExtractTextPlugin("main.css", {allChunks: true}),
+        new LiveReloadPlugin({
+            port:3011,
+            appendScriptTag:true
+        })
     ],
     module: {
         loaders: [
