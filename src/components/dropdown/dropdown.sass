@@ -7,7 +7,12 @@
   position: absolute
   top: -12px
   left: 25px
-
+  @media ($mnw: $mdmn) and ($mxw: $mdmx)
+    left: 195px
+  @media ($mnw: $sdmn) and ($mxw: $sdmx)
+    left: 150px
+  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+    left: 170px
 .menu-list
   &__item
     width: 100%
@@ -21,8 +26,11 @@
     display: block
     height: 50px
     line-height: 50px
-    padding: 0 10px
     text-decoration: none
     color: #fff
     font-family: Oswald Regular
     font-size: 20px
+    @media ($mnw: $mdmn)
+      padding: 0 10px
+
+
