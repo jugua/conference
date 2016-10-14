@@ -12,7 +12,6 @@ export default (app) => {
           user: function (Users) {
             var user = new Users();
             user.$getCurrentUser();
-
             return user;
           }
         },

@@ -1,8 +1,12 @@
-<div style="height:300px;width:100%;border:1px solid red">test <a href="" ui-sref="header.signIn">signin</a>
-  {{ctrl.userRole}}
-<sign-in ng-if="ctrl.userRole.roule" ></sign-in>
+<header class="header">
+        <div class="header__title">conference management</div>
+        <div class="menu-container">
+            <button class="menu-container__button" ng-click="ctrl.menuHidden=!ctrl.menuHidden">Your Account</button>
+            <div class="menu-container__content" ng-show="ctrl.menuHidden">
+              <sign-in ng-if="!ctrl.userRole.roule"></sign-in>
+            </div>
+        </div>
+</header>
 
-</div>
 
 <div ui-view></div>
-
