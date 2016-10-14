@@ -1,5 +1,5 @@
-import usersService from './users.service';
+import Users from './users.service.js';
 
 export default (app) => {
-  app.factory('users', usersService);
+  app.factory('Users', Users);
 };

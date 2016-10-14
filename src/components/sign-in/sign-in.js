@@ -1,13 +1,12 @@
 import signInComponent from './sign-in.component';
 
 export default (app) => {
-  app.config(($stateProvider, $urlRouterProvider) => {
-    $urlRouterProvider.otherwise('/');
+  app.config(($stateProvider) => {
 
     $stateProvider
-      .state('signIn', {
-        url: '/sign-in',
-        template: '<sign-in></sign-in>' // Essentially Treats the Home Directive as the Route View.
+      .state('header.signIn', {
+        url: '/sss',
+        template: '<sign-in></sign-in>'
       });
   }).component('signIn', signInComponent);
 };

@@ -61,6 +61,15 @@ module.exports = (PORT) => {
     });
 
 
+// current  get user
+  router.route('/users/current')
+    .get((req,res)=>{
+        res.status(401).json({"roule":"ok"});
+      console.log(req.headers);
+    });
+
+  // get user by id
+
   router.route('/users/:user_id')
 
     // get the user  with that id )
