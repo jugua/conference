@@ -2,10 +2,7 @@ export default class HeaderController {
   constructor (user, Menus, $state ) {
     this.role = user.role;
     this.name = user.name || 'Your Account';
-    this.menu = Menus.getMenu();
+    this.menu = Menus.getMenu(this.role);
     this.menuHidden = false;
     }
   }
-
-
-// this.role

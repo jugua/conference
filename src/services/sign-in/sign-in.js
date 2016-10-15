@@ -1,4 +1,4 @@
-import SignIn from './sign-in.service.js';
+import SignIn from './sign-in.service';
 
 export default (app) => {
   app.factory('SignIn', SignIn);

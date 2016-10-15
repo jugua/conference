@@ -1,17 +1,16 @@
-const SignIn = function($http, $q, $window, $rootScope) {
-
-  var userInfo;
+const SignIn = function ($http, $q, $window, $rootScope) {
+  let userInfo;
 
   function login(user) {
-    var deferred = $q.defer();
+    const deferred = $q.defer();
 
-    $http.post("/api/login/", user).then(function(result) {
+    $http.post('/api/login/', user).then((result) => {
       userInfo = {
         token: result.data.token
       };
-      $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
+      $window.sessionStorage.userInfo = JSON.stringify(userInfo);
       deferred.resolve(userInfo);
-    }, function(error) {
+    }, (error) => {
       deferred.reject(error);
     });
 
@@ -23,8 +22,8 @@ const SignIn = function($http, $q, $window, $rootScope) {
   }
 
   return {
-    login: login,
-    callTheEvent: callTheEvent
+    login,
+    callTheEvent
   };
 };
 
