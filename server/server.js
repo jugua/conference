@@ -85,7 +85,7 @@ module.exports = (PORT) => {
 
   app.use('/api', router);
 
-  app.get("/*", (req, res, next) => {
+  app.get("/*", (req, res) => {
     res.redirect("/");
   });
 
