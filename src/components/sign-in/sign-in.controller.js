@@ -1,9 +1,8 @@
 export default class SignInController {
-  constructor(SignIn, $rootScope) {
+  constructor(SignIn) {
     this.user = {};
     this.userForm = {};
     this.service = SignIn;
-    this.$rootScope = $rootScope;
   }
 
   login() {
@@ -17,7 +16,6 @@ export default class SignInController {
         this.showError(error.data.error);
       });
     }
-    console.log(this.$rootScope)
   }
 
   showError(error) {
@@ -30,20 +28,10 @@ export default class SignInController {
     };
   }
 
-  callTheEvent() {
-    this.$rootScope.$emit('signInEvent');
-    this.$rootScope.$broadcast('signInEvent');
-  }
-
-
   successSignIn() {
     this.user = {};
     this.userForm.$setPristine();
-    this.callTheEvent();
-
-    this.$rootScope.$on('signInEvent', function () {
-      console.log('blalalalal')
-    });
+    this.service.callTheEvent();
   }
 }
 

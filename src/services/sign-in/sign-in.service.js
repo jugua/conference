@@ -19,7 +19,6 @@ const SignIn = function($http, $q, $window, $rootScope) {
   }
 
   function callTheEvent() {
-    $rootScope.$emit('signInEvent');
     $rootScope.$broadcast('signInEvent');
   }
 
