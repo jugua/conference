@@ -10,9 +10,9 @@ export default (app) => {
         resolve: {
           Users: 'Users',
           user: function (Users) {
-            var user = new Users();
-            user.$getCurrentUser();
-            return user;
+           var Current = new Users();
+           var user =  Current.$getCurrentUser();
+           return user;
           }
         },
         abstract: true,
