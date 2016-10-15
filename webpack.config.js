@@ -7,13 +7,13 @@ let path = require('path');
 let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let precss       = require('precss');
 let autoprefixer = require('autoprefixer');
-let LiveReloadPlugin = require('webpack-livereload-plugin');
+
 
 module.exports = {
     context: path.resolve(__dirname + '/src'),
     entry: {
         bundle: "./index",
-        vendor: ['angular', 'angular-ui-router']
+        vendor: ['angular', 'angular-ui-router','angular-resource']
     },
     devtool: "source-map",
     output: {
@@ -39,11 +39,7 @@ module.exports = {
             },
             'ENVIRONMENT': JSON.stringify(nodeEnvironment)
         }),
-        new ExtractTextPlugin("main.css", {allChunks: true}),
-        new LiveReloadPlugin({
-            port:3011,
-            appendScriptTag:true
-        })
+        new ExtractTextPlugin("main.css", {allChunks: true})
     ],
     module: {
         loaders: [

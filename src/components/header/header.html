@@ -1,0 +1,22 @@
+<header class="header">
+        <div class="header__title">conference management</div>
+        <div class="menu-container">
+            <button class="menu-container__button" ng-click="ctrl.menuHidden=!ctrl.menuHidden">{{ctrl.name}}</button>
+            <div class="menu-container__content" ng-show="ctrl.menuHidden">
+              <sign-in ng-if="!ctrl.menu"></sign-in>
+              <div  ng-if="ctrl.menu" class="dropdown">
+                <div class="menu-arrow"></div>
+                <ul class="menu-list" ng-repeat="items in ctrl.menu">
+                  <li class="menu-list__item">
+                    <a href="#" class="menu-list__title"
+                       ui-sref="header.{{items.link}}"
+                       ng-class="{'active': $state.current.name == 'header.'+ items.link}">
+                      {{items.name}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+</header>
+
+<div ui-view></div>

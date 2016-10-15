@@ -11,6 +11,9 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
+  roles:{
+    type: Array
+  },
   hash: {
     type: Array
   }

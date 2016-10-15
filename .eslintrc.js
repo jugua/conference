@@ -3,6 +3,7 @@ module.exports = {
 
   rules: {
     'linebreak-style': 'off',
-    'comma-dangle': ['error', 'never']
+    'comma-dangle': ['error', 'never'],
+    'eol-last': ["error", "never"]
   }
 }

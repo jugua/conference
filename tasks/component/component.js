@@ -1,13 +1,11 @@
 import <%= camelName %>Component from './<%= kebabName %>.component';
 
 export default (app) => {
-  app.config(($stateProvider, $urlRouterProvider) => {
-    $urlRouterProvider.otherwise('/');
-
+  app.config(($stateProvider) => {
     $stateProvider
       .state('<%= camelName %>', {
         url: '/<%= kebabName %>',
-        template: '<<%= kebabName %>></<%= kebabName %>>' // Essentially Treats the Home Directive as the Route View.
+        template: '<<%= kebabName %>></<%= kebabName %>>'
       });
   }).component('<%= camelName %>', <%= camelName %>Component);
 };

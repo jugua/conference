@@ -10,7 +10,7 @@ import appServices from './services/services';
 // Single Style Entry Point
 import './main.sass';
 
-const app = angular.module('app', ['ui.router']);
+const app = angular.module('app', ['ui.router', 'ngResource']);
 
 // Components Entrypoint
 appComponents(app);

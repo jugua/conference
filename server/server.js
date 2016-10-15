@@ -42,7 +42,7 @@ module.exports = (PORT) => {
       var user = new User();      // create a new instance of the User
       user.mail = req.body.mail;
       user.password = req.body.password;
-
+      user.roles.push(req.body.role);
       user.save(function (err) {
         if (err)
           res.send(err);
@@ -61,6 +61,15 @@ module.exports = (PORT) => {
     });
 
 
+// current  get user
+  router.route('/users/current')
+    .get((req,res)=>{
+        res.json({"role":["s"],"name":"Ivan"});
+        console.log(req.headers.token);
+    });
+
+  // get user by id
+
   router.route('/users/:user_id')
 
     // get the user  with that id )
@@ -76,7 +85,7 @@ module.exports = (PORT) => {
 
   app.use('/api', router);
 
-  app.get("/*", (req, res, next) => {
+  app.get("/*", (req, res) => {
     res.redirect("/");
   });
 
