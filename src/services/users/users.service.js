@@ -1,12 +1,11 @@
 const Users = function Users($resource) {
+  const token = 12345;
 
-  let token = 12345;
-
-  return  $resource('/api/users/current',{} , {
+  return $resource('/api/users/current', {}, {
 
     getCurrentUser: {
       method: 'GET',
-      headers:{token}
+      headers: { token }
     }
   });
 };
