@@ -1,6 +1,50 @@
 export default class SignInController {
-  constructor() {
+  constructor(SignIn, $rootScope) {
+    this.user = {};
+    this.userForm = {};
+    this.service = SignIn;
+    this.$rootScope = $rootScope;
+  }
 
+  login() {
+    this.userForm.password.$setValidity('password_auth_err', true);
+    this.userForm.mail.$setValidity('login_auth_err', true);
+
+    if(this.userForm.$valid) {
+      this.service.login(this.user).then((result) => {
+        this.successSignIn();
+      }, (error) => {
+        this.showError(error.data.error);
+      });
+    }
+    console.log(this.$rootScope)
+  }
+
+  showError(error) {
+    if(error === 'password_auth_err') {
+      this.userForm.password.$setValidity(error, false)
+    };
+
+    if(error === 'login_auth_err') {
+      this.userForm.mail.$setValidity(error, false)
+    };
+  }
+
+  callTheEvent() {
+    this.$rootScope.$emit('signInEvent');
+    this.$rootScope.$broadcast('signInEvent');
+  }
+
+
+  successSignIn() {
+    this.user = {};
+    this.userForm.$setPristine();
+    this.callTheEvent();
+
+    this.$rootScope.$on('signInEvent', function () {
+      console.log('blalalalal')
+    });
   }
 }
 
+// no_info_auth_err
