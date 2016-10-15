@@ -4,7 +4,7 @@ export default (app) => {
   app.config(($stateProvider) => {
     $stateProvider
       .state('header.home', {
-        url: "",
+        url: '',
         template: '<home></home>'
       });
   }).component('home', homeComponent);
