@@ -8,7 +8,7 @@ const SignIn = function ($http, $q, $window, $rootScope) {
       userInfo = {
         token: result.data.token
       };
-      $window.sessionStorage.userInfo = JSON.stringify(userInfo);
+      $window.localStorage.userInfo = JSON.stringify(userInfo);
       deferred.resolve(userInfo);
     }, (error) => {
       deferred.reject(error);

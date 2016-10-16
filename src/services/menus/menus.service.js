@@ -30,6 +30,7 @@ const Menus = function Menus() {
     getMenu: function getMenu(role) {
       let menuRole;
 
+
       if (!role || role.length === 0) {
         return false;
       }

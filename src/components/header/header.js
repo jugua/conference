@@ -8,11 +8,16 @@ export default (app) => {
       .state('header', {
         url: '/',
         resolve: {
-          Users: 'Users',
-          user: function (Users) {
-            const Current = new Users();
-            const user = Current.$getCurrentUser();
-            return user;
+          user: function getCurrent(Users, $q) {
+            const current = $q.defer();
+
+            Users.getCurrentUser({}, (data) => {
+              current.resolve(data);
+            },
+              () => {
+                current.resolve(null);
+              });
+            return current.promise;
           }
         },
         abstract: true,
