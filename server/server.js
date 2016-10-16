@@ -63,9 +63,24 @@ module.exports = (PORT) => {
 
 // current  get user
   router.route('/users/current')
-    .get((req,res)=>{
-        res.json({"role":["s"],"name":"Ivan"});
-        console.log(req.headers.token);
+    .get((req, res)=> {
+
+      if (!req.headers.token) {
+        res.status(401).send({});
+        return;
+      }
+      User.findOne({hash: req.headers.token}, (err, current) => {
+        if (err)
+          res.status(403).send(err);
+
+        if (!current) {
+          res.status(401).send({});
+          return;
+        }
+
+        res.json(current);
+      });
+
     });
 
   // get user by id
@@ -80,7 +95,6 @@ module.exports = (PORT) => {
         res.json(current);
       });
     });
-
 
 
   app.use('/api', router);
