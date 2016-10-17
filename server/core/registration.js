@@ -33,7 +33,7 @@ function registration(req, res) {
         user.hash.push(token);
         user.save((err) => {
           if (err) {
-            res.send(err);
+            res.send({error:"database"});
           } else {
             res.send({token});
           }
