@@ -6,7 +6,7 @@ export default (app) => {
     $urlRouterProvider.otherwise('/');
     $stateProvider
       .state('header', {
-        url: '/',
+        url: '',
         resolve: {
           user: function getCurrent(Users, $q) {
             const current = $q.defer();
