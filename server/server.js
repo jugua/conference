@@ -38,7 +38,15 @@ module.exports = (PORT) => {
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
-    .post(registration);
+    .post(registration)
+    .get((req, res) => {
+      User.find((err, current) => {
+        if (err)
+          res.send(err);
+
+        res.json(current);
+      });
+    });
 
 // current  get user
   router.route('/users/current')
