@@ -1,4 +1,4 @@
-const SignIn = function ($http, $q, $window, $rootScope) {
+function SignIn($http, $q, $window, $rootScope) {
   let userInfo;
 
   function login(user) {
@@ -8,7 +8,8 @@ const SignIn = function ($http, $q, $window, $rootScope) {
       userInfo = {
         token: result.data.token
       };
-      $window.localStorage.userInfo = JSON.stringify(userInfo);
+
+      $window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
       deferred.resolve(userInfo);
     }, (error) => {
       deferred.reject(error);
@@ -25,6 +26,6 @@ const SignIn = function ($http, $q, $window, $rootScope) {
     login,
     callTheEvent
   };
-};
+}
 
 export default SignIn;

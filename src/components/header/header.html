@@ -10,7 +10,7 @@
                   <li class="menu-list__item">
                     <a href="#" class="menu-list__title"
                        ui-sref="header.{{items.link}}"
-                       ng-class="{'active': $state.current.name == 'header.'+ items.link}">
+                       ui-sref-active="is-active">
                       {{items.name}}</a>
                   </li>
                 </ul>
