@@ -1,0 +1,35 @@
+<div class="sign-up-wrapper">
+    <form class="sign-up" novalidate ng-submit="signUpCtrl.signUp()">
+        <h2 class="sign-up__title">create new account</h2>
+
+        <label for="name" class="sign-up__label">first name:</label>
+        <input type="text" id="name" name="fname" class="sign-up__field" required maxlength="56"
+               ng-model="signUpCtrl.user.fname">
+        <span class="sign-up__error">Your First Name should not be longer than 56 characters. Please try another</span>
+
+        <label for="surname" class="sign-up__label">last name:</label>
+        <input type="text" id="surname" name="lname" class="sign-up__field" required maxlength="56"
+               ng-model="signUpCtrl.user.lname">
+        <span class="sign-up__error">Your Last Name should not be longer than 56 characters. Please try another</span>
+
+        <label for="email" class="sign-up__label">Email:</label>
+        <input type="email" id="email" name="mail" class="sign-up__field" required
+               ng-model="signUpCtrl.user.mail"
+               ng-pattern="/^[\w\.\+]{1,40}\@[\w\.\+]{1,20}\.[a-z]{1,10}$/">
+        <span class="sign-up__error">Please enter a valid email address</span>
+        <span class="sign-up__error"
+              ng-if="signUpCtrl.userForm.password.$error.email_already_exists_err">Email is already registered</span>
+
+        <label for="password" class="sign-up__label">password:</label>
+        <input type="password" id="password" name="password" class="sign-up__field" required minlength="6" maxlength="30"
+               ng-model="signUpCtrl.user.password">
+        <span class="sign-up__error">Your password must be at least 6 characters long. Please try another</span>
+
+        <label for="confirm"  class="sign-up__label">confirm password:</label>
+        <input type="password"  id="confirm" name="confirm" class="sign-up__field" required minlength="6" maxlength="30"
+               ng-model="signUpCtrl.user.confirm">
+        <span class="sign-up__error">Password that your entered does not match</span>
+
+        <input type="submit" class="sign-up__button btn" value="submit">
+    </form>
+</div>

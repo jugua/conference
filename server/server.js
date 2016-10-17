@@ -38,28 +38,37 @@ module.exports = (PORT) => {
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
     .post((req, res) => {
-
-      var user = new User();      // create a new instance of the User
-      user.mail = req.body.mail;
-      user.password = req.body.password;
-      user.roles.push(req.body.role);
-      user.save(function (err) {
-        if (err)
-          res.send(err);
-
-        res.send({message: 'user created'});
-      });
-
+      console.log('got post request');
+      console.log('req body:');
+      console.log(req.body);
+      if (req.body.mail && req.body.password && req.body.fname && req.body.lname) {
+        console.log('checking if email is already registered');
+        User.findOne({
+            mail: req.body.mail
+          },
+          (err, user) => {
+            if (user) {   // email already registered
+              console.log('email found');
+              res.status(409).json({error: 'email_already_exists'});
+              return;
+            } else {
+              console.log('email not found, registering');
+              var user = new User();      // create a new instance of the User
+              user.mail = req.body.mail;
+              user.password = req.body.password;
+              user.save((err) => {
+                if (err) {
+                  res.send(err);
+                } else {
+                  res.send({message: 'user_created'});
+                }
+              });
+            }
+          });
+      } else {
+        console.log('required data not passed');
+      }
     })
-    .get((req, res) => {
-      User.find((err, current) => {
-        if (err)
-          res.send(err);
-
-        res.json(current);
-      });
-    });
-
 
 // current  get user
   router.route('/users/current')
@@ -87,7 +96,7 @@ module.exports = (PORT) => {
 
   router.route('/users/:user_id')
 
-    // get the user  with that id )
+  // get the user  with that id )
     .get(function (req, res) {
       User.findById(req.params.user_id, (err, current) => {
         if (err)
