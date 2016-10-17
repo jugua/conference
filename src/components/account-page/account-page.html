@@ -1,0 +1,1 @@
+<div>Account page</div>

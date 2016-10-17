@@ -1,0 +1,32 @@
+<div class="sign-in-wrapper">
+  <form class="sign-in" name="signInCtrl.userForm" novalidate ng-submit="signInCtrl.login()">
+    <h2 class="sign-in__title">sing in</h2>
+    <p class="sign-in__field-title">email:</p>
+    <input type="email"
+           name="mail"
+           class="sign-in__field"
+           ng-model="signInCtrl.user.mail"
+           ng-pattern="/^[\w\.\+]{1,40}\@[\w\.\+]{1,20}\.[a-z]{1,10}$/"
+           required>
+    <p class="error-title" ng-if="signInCtrl.userForm.mail.$error.login_auth_err">We can not find an account with that email address</p>
+    <div class="sign-in__password-cont">
+      <p class="sign-in__field-title">password:</p>
+      <a href="" class="sign-in__forgot">forgot password?</a>
+    </div>
+    <input type="password"
+           name="password"
+           class="sign-in__field"
+           ng-model="signInCtrl.user.password"
+           minlength="6" maxlength="30"
+           required>
+    <p class="error-title" ng-if="signInCtrl.userForm.password.$error.password_auth_err">Your password is incorrect</p>
+
+    <input type="submit"
+           value="Sing In"
+           class="btn sign-in__submit">
+  </form>
+  
+  <div class="sign-in__separator"></div>
+
+  <a href="#" class="btn sign-in__create">create new account</a>
+</div>

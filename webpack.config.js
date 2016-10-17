@@ -8,17 +8,21 @@ let ExtractTextPlugin = require("extract-text-webpack-plugin");
 let precss       = require('precss');
 let autoprefixer = require('autoprefixer');
 
+
 module.exports = {
     context: path.resolve(__dirname + '/src'),
     entry: {
         bundle: "./index",
-        vendor: ['angular', 'angular-ui-router']
+        vendor: ['angular', 'angular-ui-router','angular-resource']
     },
     devtool: "source-map",
     output: {
         publicPath: "/",
         path: __dirname + '/dist',
         filename: "[name].js"
+    },
+    devServer: {
+        inline:true
     },
     plugins: [
         new HtmlWebpackPlugin({

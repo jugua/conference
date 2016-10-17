@@ -3,4 +3,3 @@ export default class HomeController {
     this.name = 'home';
   }
 }
-
