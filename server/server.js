@@ -1,12 +1,13 @@
 'use strict';
 
-var express = require('express');
-var app = express();
-var path = require('path');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var User = require('./model/User');
-var auth = require('./core/auth');
+const express = require('express');
+const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const User = require('./model/User');
+const auth = require('./core/auth');
+const registration = require('./core/registration');
 
 module.exports = (PORT) => {
 
@@ -37,38 +38,7 @@ module.exports = (PORT) => {
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
-    .post((req, res) => {
-      console.log('got post request');
-      console.log('req body:');
-      console.log(req.body);
-      if (req.body.mail && req.body.password && req.body.fname && req.body.lname) {
-        console.log('checking if email is already registered');
-        User.findOne({
-            mail: req.body.mail
-          },
-          (err, user) => {
-            if (user) {   // email already registered
-              console.log('email found');
-              res.status(409).json({error: 'email_already_exists'});
-              return;
-            } else {
-              console.log('email not found, registering');
-              var user = new User();      // create a new instance of the User
-              user.mail = req.body.mail;
-              user.password = req.body.password;
-              user.save((err) => {
-                if (err) {
-                  res.send(err);
-                } else {
-                  res.send({message: 'user_created'});
-                }
-              });
-            }
-          });
-      } else {
-        console.log('required data not passed');
-      }
-    })
+    .post(registration);
 
 // current  get user
   router.route('/users/current')
@@ -96,7 +66,7 @@ module.exports = (PORT) => {
 
   router.route('/users/:user_id')
 
-  // get the user  with that id )
+    // get the user  with that id )
     .get(function (req, res) {
       User.findById(req.params.user_id, (err, current) => {
         if (err)
