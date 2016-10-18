@@ -1,0 +1,33 @@
+.tabs
+  &-wrapper
+    width: 80%
+    margin: 10px auto
+    padding: 10px
+
+  &-list
+    display: flex
+
+    &__item
+      width: 50%
+      text-align: center
+
+    &__anchor
+      display: block
+      padding: 10px 20px
+      text-transform: capitalize
+      text-decoration: none
+      color: white
+      background: $sharp-blue
+
+
+      &:hover
+        background: $dark-blue
+        color: white
+
+      &_active
+        background: $light-grey
+        color: black
+
+  &-container
+    height: 1000px
+    background: $light-grey
