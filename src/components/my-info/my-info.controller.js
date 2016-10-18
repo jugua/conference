@@ -1,4 +1,4 @@
-export default class My-infoController {
+export default class MyInfoController {
   constructor() {
 
   }
