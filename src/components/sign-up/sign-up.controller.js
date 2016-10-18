@@ -3,32 +3,43 @@ export default class SignUpController {
     this.user = {};
     this.userForm = {};
     this.service = SignUp;
-    //console.log(this.service.signUp);
+    this.showPopup = false;
   }
 
   signUp() {
-    console.log(this.service);
-    console.log(this.user);
-    this.userForm.mail.$setValidity('email_already_exists_err', true);
+    // this.resetEmailAlreadyExists();     // reset
+    // this.setPasswordsMatch(true);
 
     if (this.userForm.$valid) {
-      this.service.signUp(this.user)
-        .then((result) => {
-          console.log('success');
+
+      // check if passwords match
+      if (this.user.password !== this.user.confirm) {
+        this.setPasswordsMatch(false);
+        return;
+      }
+
+      this.service.signUp(this.user,
+        (result) => {  // success callback
+          this.userForm.$setPristine();
+          console.log('result:');
           console.log(result);
-          alert('user successfully created');
-        }, (error) => {
-          console.log(error.data.error);
+          this.showPopup = true;
+          console.log(this.showPopup);
+        },
+        (error) => {  // error callback
           if (error.data.error === 'email_already_exists') {
-            console.log('setting already exits');
-            this.userForm.mail.$setValidity('email_already_exists_err', false);
+            this.userForm.mail.$setValidity('email_already_exists', false);
           }
         });
-
-      //this.service.signUp(this.user);
-
     }
   }
 
-}
+  setPasswordsMatch(bool) {
+    this.userForm.password.$setValidity('passwords_match', bool);
+    this.userForm.confirm.$setValidity('passwords_match', bool);
+  }
 
+  resetEmailAlreadyExists() {
+    this.userForm.mail.$setValidity('email_already_exists', true);
+  }
+}

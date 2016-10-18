@@ -6,19 +6,12 @@ function SignUp($resource) {
   });
 
   function signUp(user, successCallback, errorCallback) {
-    console.log('going to post');
-    console.log(resource);
-
-    console.log(user.mail);
-
     // POST
     resource.save(user,
       (result) => {
-        console.log('saved, caling callback');
         successCallback(result);
       },
       (error) => {
-        console.log('error, calling callback');
         errorCallback(error);
       }
     );
@@ -27,6 +20,6 @@ function SignUp($resource) {
   return {
     signUp
   };
-};
+}
 
 export default SignUp;
