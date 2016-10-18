@@ -11,7 +11,7 @@
     <p class="error-title" ng-if="signInCtrl.userForm.mail.$error.login_auth_err">We can not find an account with that email address</p>
     <div class="sign-in__password-cont">
       <p class="sign-in__field-title">password:</p>
-      <a href="" class="sign-in__forgot">forgot password?</a>
+      <a href="#" ng-click="signInCtrl.emitCloseDropdown()" class="sign-in__forgot">forgot password?</a>
     </div>
     <input type="password"
            name="password"
@@ -28,5 +28,5 @@
   
   <div class="sign-in__separator"></div>
 
-  <a ui-sref="header.sign-up" class="btn sign-in__create">create new account</a>
+  <a ui-sref="header.sign-up" ng-click="signInCtrl.emitCloseDropdown()" class="btn sign-in__create">create new account</a>
 </div>

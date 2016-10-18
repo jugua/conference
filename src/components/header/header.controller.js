@@ -8,5 +8,8 @@ export default class HeaderController {
     $scope.$on('signInEvent', () => {
       $state.reload();
     });
+    $scope.$on('closeDropdown', () => {
+      this.menuHidden = false;
+    });
   }
 }
