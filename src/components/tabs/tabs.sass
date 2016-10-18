@@ -8,26 +8,26 @@
     display: flex
 
     &__item
-      width: 50%
-      text-align: center
+      margin-right: 5px
 
     &__anchor
       display: block
       padding: 10px 20px
       text-transform: capitalize
       text-decoration: none
-      color: white
-      background: $sharp-blue
+      color: $dark-blue
+      background: $light-grey
 
 
       &:hover
-        background: $dark-blue
+        background: $sharp-blue
         color: white
 
       &_active
-        background: $light-grey
-        color: black
+        background: $dark-blue
+        color: white
 
   &-container
     height: 1000px
     background: $light-grey
+    border-top: 4px solid $dark-blue
