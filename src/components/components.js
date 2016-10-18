@@ -4,6 +4,7 @@ import homeComponent from './home/home';
 import signInComponent from './sign-in/sign-in';
 import accountPageComponent from './account-page/account-page';
 import myInfoComponent from './my-info/my-info';
+import tabsComponent from './tabs/tabs';
 
 export default (app) => {
   include_all_modules([
@@ -11,6 +12,7 @@ export default (app) => {
     homeComponent,
     signInComponent,
     accountPageComponent,
-    myInfoComponent
+    myInfoComponent,
+    tabsComponent
   ], app);
-};
+}
