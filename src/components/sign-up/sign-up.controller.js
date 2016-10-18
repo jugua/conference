@@ -7,24 +7,16 @@ export default class SignUpController {
   }
 
   signUp() {
-    // this.resetEmailAlreadyExists();     // reset
-    // this.setPasswordsMatch(true);
-
     if (this.userForm.$valid) {
-
-      // check if passwords match
       if (this.user.password !== this.user.confirm) {
         this.setPasswordsMatch(false);
         return;
       }
 
       this.service.signUp(this.user,
-        (result) => {  // success callback
+        () => {  // success callback
           this.userForm.$setPristine();
-          console.log('result:');
-          console.log(result);
           this.showPopup = true;
-          console.log(this.showPopup);
         },
         (error) => {  // error callback
           if (error.data.error === 'email_already_exists') {
