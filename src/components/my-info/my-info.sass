@@ -1,8 +1,6 @@
 .my-info
   font-family: Oswald Light
   position: relative
-  &-layout
-    position: relative
   &__ava
     width: 150px
     height: 150px
@@ -28,4 +26,23 @@
 .load-ava
   width: 100vw
   height: 100vh
-  background: $light-grey
+  background: rgba(0, 0 , 0, 0.5)
+  position: absolute
+  top: 0
+  left: 0
+  &-content
+    width: 25%
+    height: 30%
+    background: #fff
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    margin: auto
+    &__title
+      padding: 0
+      font-family: Oswald Light
+      float: left
+    &__button
+      float: right
