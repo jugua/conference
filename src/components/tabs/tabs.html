@@ -1,17 +1,36 @@
-<div class="tabs-wrapper">
-  <ul class="tabs-list">
-    <li class="tabs-list__item">
-      <a href="" class="tabs-list__anchor">
-        my info
-      </a>
-    </li>
-    <li class="tabs-list__item">
-      <a href="" class="tabs-list__anchor tabs-list__anchor_active">
-        my talks
-      </a>
-    </li>
-  </ul>
-  <section class="tabs-container">
-    <ui-view></ui-view>
-  </section>
+<div class="tabs-layout">
+  <div class="tabs-wrapper">
+    <ul class="tabs-list">
+      <li class="tabs-list__item">
+        <a href="" class="tabs-list__anchor tabs-list__anchor_active">
+          my info
+        </a>
+      </li>
+      <li class="tabs-list__item">
+        <a href="" class="tabs-list__anchor">
+          my talks
+        </a>
+      </li>
+      <li class="tabs-list__item">
+        <a href="" class="tabs-list__anchor">
+          my account
+        </a>
+      </li>
+    </ul>
+    <div class="tabs-container">
+      <!--<ui-view></ui-view>-->
+      <form class="my-info">
+        <div class="my-info__ava"></div>
+        <textarea name="bio" id="bio" class="my-info__bio"></textarea>
+        <input type="text" name="job" id="job" placeholder="Job" class="my-info__field">
+        <input type="text" name="past" id="past" class="my-info__field">
+        <input type="text" name="linkedin" id="linkedin" class="my-info__field">
+        <input type="text" name="twitter" id="twitter" class="my-info__field">
+        <input type="text" name="facebook" id="facebook" class="my-info__field">
+        <input type="text" name="blog" id="blog" class="my-info__field">
+        <textarea name="info" id="info" rows="5" class="my-info__info"></textarea>
+        <input type="button" value="submit" class="my-info__button btn">
+      </form>
+    </div>
+  </div>
 </div>

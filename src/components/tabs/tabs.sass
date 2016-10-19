@@ -1,33 +1,81 @@
 .tabs
+  &-layout
+    width: 100%
+    height: calc(100vh - 70px)
+    box-sizing: border-box
+    padding: 20px 0 0
+    @media ($mnw: $mdmn) and ($mxw: $mdmx)
+      box-sizing: border-box
+      padding: 20px 10px 0
   &-wrapper
-    width: 80%
-    margin: 10px auto
-    padding: 10px
+    width: 55%
+    height: 100%
+    margin: 0 auto
+    @media ($mnw: $xsdmn) and ($mxw: $mdmx)
+      width: 100%
 
   &-list
     display: flex
-
-    &__item
-      margin-right: 5px
+    +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+      flex-direction: column
 
     &__anchor
       display: block
       padding: 10px 20px
       text-transform: capitalize
       text-decoration: none
-      color: $dark-blue
-      background: $light-grey
-
-
+      color: #000
+      font-size: 22px
+      font-family: Oswald Light
+      position: relative
       &:hover
-        background: $sharp-blue
-        color: white
-
+        color: $dark-blue
       &_active
-        background: $dark-blue
-        color: white
+        border-bottom: 4px solid $dark-blue
+        @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+          border: none
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        border-bottom: 1px solid $light-grey
+        &:after
+          content: ' '
+          display: block
+          width: 25px
+          height: 25px
+          position: absolute
+          top: 13px
+          right: 15px
+          background: url("assets/img/marker.svg") center no-repeat
+          float: right
 
   &-container
-    height: 1000px
-    background: $light-grey
-    border-top: 4px solid $dark-blue
+    width: 100%
+    height: 90%
+    margin: 10px 0
+    +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+    @media ($mnw: $mdmn) and ($mxw: $mdmx)
+      box-sizing: border-box
+      padding: 20px
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+      display: none
+
+
+.my-info
+  &__ava
+    width: 150px
+    height: 150px
+    border: 1px solid green
+    float: left
+  &__bio
+    width: 80%
+    height: 140px
+    float: right
+  &__field
+    width: 100%
+    height: 30px
+    margin: 10px 0
+  &__info
+    width: 100%
+    margin: 10px auto
+  &__button
+    margin: 30px auto
