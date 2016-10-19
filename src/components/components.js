@@ -5,6 +5,7 @@ import signInComponent from './sign-in/sign-in';
 import accountPageComponent from './account-page/account-page';
 import myInfoComponent from './my-info/my-info';
 import tabsComponent from './tabs/tabs';
+import signUpComponent from './sign-up/sign-up';
 
 export default (app) => {
   include_all_modules([
@@ -13,6 +14,7 @@ export default (app) => {
     signInComponent,
     accountPageComponent,
     myInfoComponent,
-    tabsComponent
+    tabsComponent,
+    signUpComponent
   ], app);
-}
+};

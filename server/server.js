@@ -1,12 +1,13 @@
 'use strict';
 
-var express = require('express');
-var app = express();
-var path = require('path');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var User = require('./model/User');
-var auth = require('./core/auth');
+const express = require('express');
+const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const User = require('./model/User');
+const auth = require('./core/auth');
+const registration = require('./core/registration');
 
 module.exports = (PORT) => {
 
@@ -37,20 +38,7 @@ module.exports = (PORT) => {
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
-    .post((req, res) => {
-
-      var user = new User();      // create a new instance of the User
-      user.mail = req.body.mail;
-      user.password = req.body.password;
-      user.roles.push(req.body.role);
-      user.save(function (err) {
-        if (err)
-          res.send(err);
-
-        res.send({message: 'user created'});
-      });
-
-    })
+    .post(registration)
     .get((req, res) => {
       User.find((err, current) => {
         if (err)
@@ -59,7 +47,6 @@ module.exports = (PORT) => {
         res.json(current);
       });
     });
-
 
 // current  get user
   router.route('/users/current')
