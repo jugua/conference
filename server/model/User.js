@@ -19,7 +19,34 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
-  roles:{
+  bio: {
+    type: String
+  },
+  job: {
+    type: String
+  },
+  past_conf: {
+    type: String
+  },
+  photo: {
+    type: String
+  },
+  linkedIn: {
+    type: String
+  },
+  twitter: {
+    type: String
+  },
+  facebook: {
+    type: String
+  },
+  blog: {
+    type: String
+  },
+  additional: {
+    type: String
+  },
+  roles: {
     type: Array
   },
   hash: {

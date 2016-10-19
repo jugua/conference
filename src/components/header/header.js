@@ -8,17 +8,12 @@ export default (app) => {
       .state('header', {
         url: '',
         resolve: {
-          user: function getCurrent(Users, $q) {
-            const current = $q.defer();
+          user: function getCurrent(Users) {
 
-            Users.getCurrentUser({}, (data) => {
-              current.resolve(data);
-            },
-              () => {
-                current.resolve(null);
-              });
-            return current.promise;
-          }
+            console.log(Users.getInfo)
+            return Users.getInfo();
+
+        }
         },
         abstract: true,
         template,

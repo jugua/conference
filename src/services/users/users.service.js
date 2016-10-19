@@ -1,4 +1,4 @@
-const Users = function Users($resource, $window) {
+function Users($resource, $window, $q) {
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;
@@ -13,7 +13,7 @@ const Users = function Users($resource, $window) {
     return token;
   }
 
-  return $resource('/api/users/current', {}, {
+  const users = $resource('/api/users/current', {}, {
     getCurrentUser: {
       method: 'GET',
       headers: {
@@ -23,5 +23,23 @@ const Users = function Users($resource, $window) {
       }
     }
   });
+
+  function getInfo() {
+    const current = $q.defer();
+    users.getCurrentUser({}, (data) => {
+        current.resolve(data);
+      },
+      () => {
+        current.resolve(null);
+      });
+
+    return current.promise;
+  }
+
+  return {
+     getInfo
+  }
 };
+
+
 export default Users;
