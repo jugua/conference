@@ -11,6 +11,14 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
+  fname: {
+    type: String,
+    required: true
+  },
+  lname: {
+    type: String,
+    required: true
+  },
   roles:{
     type: Array
   },
