@@ -2,9 +2,9 @@ let User = require('./../model/User');
 
 function registration(req, res) {
   let token;
-  let userfileds = ['mail', 'password', 'fname', 'lname'];
+  let userfields = ['mail', 'password', 'fname', 'lname'];
 
-  const isEmptyFields = userfileds.some(function(field) {
+  const isEmptyFields = userfields.some(function(field) {
     if (!req.body[field]) {
       return true;
     }
@@ -24,7 +24,7 @@ function registration(req, res) {
       } else {
         let user = new User();// create a new instance of the User
         token = user._id + 123;
-        userfileds.forEach((field) => {
+        userfields.forEach((field) => {
           user[field] = req.body[field];
         })
 

@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const User = require('./model/User');
 const auth = require('./core/auth');
 const registration = require('./core/registration');
+const getCurrent = require('./core/current');
 
 module.exports = (PORT) => {
 
@@ -50,25 +51,7 @@ module.exports = (PORT) => {
 
 // current  get user
   router.route('/users/current')
-    .get((req, res)=> {
-
-      if (!req.headers.token) {
-        res.status(401).send({});
-        return;
-      }
-      User.findOne({hash: req.headers.token}, (err, current) => {
-        if (err)
-          res.status(403).send(err);
-
-        if (!current) {
-          res.status(401).send({});
-          return;
-        }
-
-        res.json(current);
-      });
-
-    });
+    .get(getCurrent);
 
   // get user by id
 

@@ -6,7 +6,7 @@ const Menus = function Menus() {
         name: 'My Account'
       },
       {
-        link: 'info',
+        link: 'tabs.myinfo',
         name: 'My Info'
       },
       {
