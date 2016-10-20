@@ -1,13 +1,19 @@
 .my-info
   font-family: Oswald Light
   position: relative
-  &-layout
-    position: relative
   &__ava
     width: 150px
     height: 150px
     border: 1px solid green
+    position: relative
     float: left
+    overflow: hidden
+    background: url("assets/img/ava.jpg")
+    background-size: cover
+    &:hover > div
+      height: 40px
+    &:hover > button
+      display: block
   &__bio
     width: 80%
     height: 140px
@@ -24,8 +30,132 @@
     padding: 5px 0 0 10px
   &__button
     margin: 30px auto
+    font-family: Oswald Regular
+  &__remove
+    width: 15px
+    height: 15px
+    background: transparent
+    display: none
+    border: 0
+    float: right
+    background-image: url("assets/img/close-icon.svg")
+    margin: 5px 5px 0 0
+    &:focus
+      outline: none
+    &:active
+      margin: 10px 5px 0 0
+
+.slide
+  width: 100%
+  height: 0
+  position: absolute
+  bottom: 0
+  background: $sharp-blue
+  -webkit-transition:  height 0.5s
+  transition:  height 0.5s
+  &__button
+    color: #fff
+    width: 100%
+    height: 100%
+    text-transform: uppercase
+    font-size: 12px
+    line-height: 40px
+    margin: 0 auto
+    background: transparent
+    border: 0
+    &:hover
+      cursor: pointer
+    &:focus
+      outline: none
+    &:active
+      background: $dark-blue
 
 .load-ava
   width: 100vw
   height: 100vh
-  background: $light-grey
+  background: rgba(0, 0 , 0, 0.5)
+  position: absolute
+  top: 0
+  left: 0
+  &-content
+    width: 25%
+    height: 30%
+    background: #fff
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    margin: auto
+    &__header
+      width: 100%
+      height: 50px
+      line-height: 50px
+      background: $light-grey
+    &__title
+      padding: 0 0 0 15px
+      font-size: 18px
+      margin: 0
+      float: left
+    &__button
+      width: 20px
+      height: 20px
+      margin: 15px 15px 0 0
+      border: 0
+      background-color: transparent
+      background-image: url("assets/img/close-icon.svg")
+      background-position: center
+      background-repeat: no-repeat
+      float: right
+      &:focus
+        outline: none
+      &:active
+        margin: 17px 15px 0 0
+  &__details
+    text-align: center
+    font-size: 16px
+    font-family: Oswald Light
+  &__tip
+    width: 100%
+    position: absolute
+    bottom: 0
+    box-sizing: border-box
+    background: $light-grey
+    text-align: center
+    font-family: Oswald Light
+    font-size: 14px
+    padding: 5px 0
+
+.file-upload
+  display: block
+  position: relative
+  overflow: hidden
+  height: 90px
+  font-size: 16px
+  line-height: 16px
+  &__button
+    display: block
+    width: 100px
+    cursor: pointer
+    padding: 10px 15px
+    background: $sharp-blue
+    color: #fff
+    font-size: 18px
+    margin: 20px auto 10px
+    text-align: center
+    &:hover
+      cursor: pointer
+    &:active
+      background: $dark-blue
+  &__mark
+    display: block
+    cursor: pointer
+    background: transparent
+    text-align: center
+    font-family: Oswald Light
+    font-size: 14px
+  &__uploading
+    position: absolute
+    top: 0
+    opacity: 0
+

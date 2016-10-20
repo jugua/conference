@@ -3,7 +3,7 @@ import myInfoComponent from './my-info.component';
 export default (app) => {
   app.config(($stateProvider) => {
     $stateProvider
-      .state('header.tabs.myinfo', {
+      .state('header.tabs.myInfo', {
         url: '/my-info',
         template: '<my-info user="ctrl.user"></my-info>',
         resolve: {
