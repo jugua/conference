@@ -1,5 +1,5 @@
 <form class="my-info">
-    <div class="my-info__ava"></div>
+    <div class="my-info__ava"><button class="testing" value="test"></button></div>
     <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio"></textarea>
     <input type="text" name="job" id="job" placeholder="Job" class="my-info__field">
     <input type="text" name="past" id="past" placeholder="My conferences" class="my-info__field">
@@ -14,9 +14,19 @@
 <div class="load-ava">
     <div class="load-ava-content">
         <div class="load-ava-content__header">
-            <p class="load-ava-content__title">Загрузка новой фотографии</p>
+            <p class="load-ava-content__title">Upload new photo</p>
             <button class="load-ava-content__button"></button>
         </div>
+        <div class="load-ava__upload">
+            <p class="load-ava__details">It is much easier to identify you if you have a photo.<br>
+                You can upload image in format JPG, PNG</p>
+            <label class="file-upload">
+                <span class="file-upload__button">Choose</span>
+                <mark class="file-upload__mark">File is not selected</mark>
+                <input type="file" class="file-upload__uploading">
+            </label>
+        </div>
+        <div class="load-ava__tip">Please try to use small file size If you have an issue during the upload </div>
     </div>
 </div>
 
