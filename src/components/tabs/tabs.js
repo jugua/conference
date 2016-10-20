@@ -4,8 +4,9 @@ export default (app) => {
   app.config(($stateProvider) => {
     $stateProvider
       .state('header.tabs', {
-        url: '/tabs',
-        template: '<tabs></tabs>'
+        url: '',
+        template: '<tabs></tabs>',
+        abstract: true
       });
   }).component('tabs', tabsComponent);
 };

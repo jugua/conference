@@ -6,11 +6,11 @@ const Menus = function Menus() {
         name: 'My Account'
       },
       {
-        link: 'info',
+        link: 'tabs.myInfo',
         name: 'My Info'
       },
       {
-        link: 'talks',
+        link: 'tabs.myTalks',
         name: 'My Talks'
       }
     ],
