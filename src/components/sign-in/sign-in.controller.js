@@ -1,8 +1,9 @@
 export default class SignInController {
-  constructor(SignIn) {
+  constructor(SignIn, $scope) {
     this.user = {};
     this.userForm = {};
     this.service = SignIn;
+    this.scope = $scope;
   }
 
   login() {
@@ -40,6 +41,10 @@ export default class SignInController {
     this.user = {};
     this.userForm.$setPristine();
     this.service.callTheEvent();
+  }
+
+  emitCloseDropdown() {
+    this.scope.$emit('closeDropdown');
   }
 }
 // no_info_auth_err

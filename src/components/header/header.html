@@ -6,8 +6,9 @@
               <sign-in ng-if="!ctrl.menu"></sign-in>
               <div  ng-if="ctrl.menu" class="dropdown">
                 <div class="menu-arrow"></div>
-                <ul class="menu-list" ng-repeat="items in ctrl.menu">
-                  <li class="menu-list__item">
+                <ul class="menu-list">
+                  <li class="menu-list__item"
+                      ng-repeat="items in ctrl.menu">
                     <a href="#" class="menu-list__title"
                        ui-sref="header.{{items.link}}"
                        ui-sref-active="is-active">
