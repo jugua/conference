@@ -1,37 +1,62 @@
-<form class="my-info">
-    <div class="my-info__ava">
-        <button class="my-info__remove"></button>
-        <div class="slide">
-            <button class="slide__button" ng-click="$ctrl.toggleSlide()">Upload photo</button>
-        </div>
+<form class="my-info"  name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
+  <div class="my-info__ava">
+    <button class="my-info__remove"></button>
+    <div class="slide">
+      <button class="slide__button" ng-click="$ctrl.toggleSlide()">Upload photo</button>
     </div>
-    <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio"></textarea>
-    <input type="text" name="job" id="job" placeholder="Job" class="my-info__field">
-    <input type="text" name="past" id="past" placeholder="My conferences" class="my-info__field">
-    <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin" class="my-info__field">
-    <input type="text" name="twitter" id="twitter" placeholder="Twitter" class="my-info__field">
-    <input type="text" name="facebook" id="facebook" placeholder="Facebook" class="my-info__field">
-    <input type="text" name="blog" id="blog" placeholder="Blog" class="my-info__field">
-    <textarea name="info" id="info" rows="5" placeholder="Additional Info" class="my-info__info"></textarea>
-    <input type="button" value="submit" class="my-info__button btn">
+  </div>
+    <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio" maxlength="2000"
+              ng-model="$ctrl.user.bio",
+              ng-maxlength="2000"
+              ng-required="true">{{$ctrl.user.bio}}</textarea>
+  <input type="text" name="job" id="job" placeholder="Job" class="my-info__field" maxlength="256" value="$ctrl.user.job"
+         ng-model="$ctrl.user.job",
+         ng-required="true">
+  <input type="text" name="past" id="past" placeholder="Past Conferences" class="my-info__field" maxlength="1000"
+         ng-model="$ctrl.user.past",
+         ng-required="true">
+  <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin" class="my-info__field"
+         ng-model="$ctrl.user.linkedin">
+  <input type="text" name="twitter" id="twitter" placeholder="Twitter" class="my-info__field"
+         ng-model="$ctrl.user.twitter">
+  <input type="text" name="facebook" id="facebook" placeholder="Facebook" class="my-info__field"
+         ng-model="$ctrl.user.facebook">
+  <input type="url" name="blog" id="blog" placeholder="Blog" class="my-info__field" ng-model="$ctrl.user.blog">
+  <textarea name="info" id="info" rows="5" placeholder="Additional Info" class="my-info__info"
+            ng-model="$ctrl.user.info"
+            maxlength="1000">{{$ctrl.user.info}}</textarea>
+  <input type="submit" value="submit" class="my-info__button btn">
+  <pre>{{ $ctrl.userInfo|json}}</pre>
 </form>
 
 <div class="load-ava" ng-if="$ctrl.showLoad">
-    <div class="load-ava-content">
-        <div class="load-ava-content__header">
-            <p class="load-ava-content__title">Upload new photo</p>
-            <button class="load-ava-content__button" ng-click="$ctrl.toggleSlideBack()"></button>
-        </div>
-        <div class="load-ava__upload">
-            <p class="load-ava__details">It is much easier to identify you if you have a photo.<br>
-                You can upload image in format JPG, PNG</p>
-            <label class="file-upload">
-                <span class="file-upload__button">Choose</span>
-                <mark class="file-upload__mark">File is not selected</mark>
-                <input type="file" class="file-upload__uploading">
-            </label>
-        </div>
-        <div class="load-ava__tip">Please try to use small file size If you have an issue during the upload </div>
+  <div class="load-ava-content">
+    <div class="load-ava-content__header">
+      <p class="load-ava-content__title">Upload new photo</p>
+      <button class="load-ava-content__button" ng-click="$ctrl.toggleSlideBack()"></button>
     </div>
+    <div class="load-ava__upload">
+      <p class="load-ava__details">It is much easier to identify you if you have a photo.<br>
+        You can upload image in format JPG, PNG</p>
+      <label class="file-upload">
+        <span class="file-upload__button">Choose</span>
+        <mark class="file-upload__mark">File is not selected</mark>
+        <input type="file" class="file-upload__uploading">
+      </label>
+    </div>
+    <div class="load-ava__tip">Please try to use small file size If you have an issue during the upload</div>
+  </div>
+</div>
+
+<div class="load-ava" ng-show="$ctrl.showMessage">
+  <div class="load-ava-content">
+    <div class="load-ava-content__header">
+      <p class="load-ava-content__title">{{$ctrl.message.title}}</p>
+      <button class="load-ava-content__button" ng-click="$ctrl.toggleMessage()"></button>
+    </div>
+    <div class="load-ava__upload">
+      <p class="load-ava__details">{{$ctrl.message.title}}</p>
+    </div>
+  </div>
 </div>
 

@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const User = require('./model/User');
 const auth = require('./core/auth');
 const registration = require('./core/registration');
-const getCurrent = require('./core/current');
+const current = require('./core/current');
 
 module.exports = (PORT) => {
 
@@ -51,7 +51,8 @@ module.exports = (PORT) => {
 
 // current  get user
   router.route('/users/current')
-    .get(getCurrent);
+    .get(current.get)
+    .post(current.update);
 
   // get user by id
 

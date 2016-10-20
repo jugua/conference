@@ -21,6 +21,14 @@ function Users($resource, $window, $q) {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
+    },
+    updateCurrentUser: {
+      method: 'POST',
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache'
+      }
     }
   });
 
@@ -33,11 +41,23 @@ function Users($resource, $window, $q) {
       current.resolve(null);
     });
 
-    return current.promise;
+    this.current = current.promise;
+  }
+
+  function updateInfo(userInfo) {
+    console.log(333)
+      users.updateCurrentUser(userInfo,  (data) => {
+           this.getInfo();
+        },
+        () => {
+         console.log('error');
+        });
+
   }
 
   return {
-    getInfo
+    getInfo,
+    updateInfo
   };
 }
 

@@ -25,13 +25,13 @@ var UserSchema = new Schema({
   job: {
     type: String
   },
-  past_conf: {
+  past: {
     type: String
   },
   photo: {
     type: String
   },
-  linkedIn: {
+  linkedin: {
     type: String
   },
   twitter: {
@@ -43,7 +43,7 @@ var UserSchema = new Schema({
   blog: {
     type: String
   },
-  additional: {
+  info: {
     type: String
   },
   roles: {

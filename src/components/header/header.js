@@ -9,8 +9,7 @@ export default (app) => {
         url: '',
         resolve: {
           user: function getCurrent(Users) {
-            const current = Users.getInfo();
-            Users.current = current;
+            Users.getInfo();
             return Users.current;
           }
         },

@@ -1,7 +1,23 @@
 export default class MyInfoController {
-  constructor() {
+  constructor (Users) {
+    this.users = Users;
+    this.message = {};
+    console.log(this.user)
+    this.userInfoForm = {};
 
-    this.showLoad = false;
+
+  }
+
+  submit() {
+    if (this.userInfoForm.$invalid) {
+      this.toggleMessage();
+    } else {
+        this.users.updateInfo(this.user);
+    }
+  }
+
+  toggleMessage(){
+    this.showMessage = !this.showMessage;
   }
 
   toggleSlide (){
