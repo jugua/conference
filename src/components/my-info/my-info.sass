@@ -8,8 +8,12 @@
     position: relative
     float: left
     overflow: hidden
+    background: url("assets/img/ava.jpg")
+    background-size: cover
     &:hover > div
       height: 40px
+    &:hover > button
+      display: block
   &__bio
     width: 80%
     height: 140px
@@ -27,6 +31,19 @@
   &__button
     margin: 30px auto
     font-family: Oswald Regular
+  &__remove
+    width: 15px
+    height: 15px
+    background: transparent
+    display: none
+    border: 0
+    float: right
+    background-image: url("assets/img/close-icon.svg")
+    margin: 5px 5px 0 0
+    &:focus
+      outline: none
+    &:active
+      margin: 10px 5px 0 0
 
 .slide
   width: 100%
@@ -52,14 +69,6 @@
       outline: none
     &:active
       background: $dark-blue
-    /*&:before
-      content: ''
-      display: block
-      width: 25px
-      height: 25px
-      background: url("assets/img/camera.png") no-repeat
-      background-size: cover
-      float: left*/
 
 .load-ava
   width: 100vw
