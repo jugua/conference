@@ -1,6 +1,14 @@
 export default class MyInfoController {
-  constructor(MyInfo) {
-    this.service = MyInfo;
+  constructor() {
+   // this.service = MyInfo;
+    this.showLoad = false;
+  }
+
+  toggleSlide (){
+    this.showLoad = true;
+  }
+
+  toggleSlideBack (){
     this.showLoad = false;
   }
 }

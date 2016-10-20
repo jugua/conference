@@ -33,21 +33,25 @@
   height: 0
   position: absolute
   bottom: 0
-  background: rgba(70, 70, 70, 0.3)
+  background: $sharp-blue
   -webkit-transition:  height 0.5s
   transition:  height 0.5s
-  &__title
-    color: #000
-    display: block
-    text-decoration: none
+  &__button
+    color: #fff
+    width: 100%
+    height: 100%
     text-transform: uppercase
     font-size: 12px
     line-height: 40px
-    text-align: center
-
-
+    margin: 0 auto
+    background: transparent
+    border: 0
     &:hover
       cursor: pointer
+    &:focus
+      outline: none
+    &:active
+      background: $dark-blue
     /*&:before
       content: ''
       display: block
@@ -60,7 +64,6 @@
 .load-ava
   width: 100vw
   height: 100vh
-  display: none
   background: rgba(0, 0 , 0, 0.5)
   position: absolute
   top: 0
@@ -147,6 +150,3 @@
     top: 0
     opacity: 0
 
-.testing
-  &:focus ~ div.load-ava
-    display: block

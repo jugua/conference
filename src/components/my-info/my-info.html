@@ -1,7 +1,7 @@
 <form class="my-info">
     <div class="my-info__ava">
         <div class="slide">
-            <a href="void" class="slide__title">Upload photo</a>
+            <button class="slide__button" ng-click="myInfoCtrl.toggleSlide()">Upload photo</button>
         </div>
     </div>
     <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio"></textarea>
@@ -15,11 +15,11 @@
     <input type="button" value="submit" class="my-info__button btn">
 </form>
 
-<div class="load-ava">
+<div class="load-ava" ng-if="myInfoCtrl.showLoad">
     <div class="load-ava-content">
         <div class="load-ava-content__header">
             <p class="load-ava-content__title">Upload new photo</p>
-            <button class="load-ava-content__button"></button>
+            <button class="load-ava-content__button" ng-click="myInfoCtrl.toggleSlideBack()"></button>
         </div>
         <div class="load-ava__upload">
             <p class="load-ava__details">It is much easier to identify you if you have a photo.<br>
