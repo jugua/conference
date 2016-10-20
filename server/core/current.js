@@ -1,4 +1,5 @@
 'use strict';
+
 let User = require('./../model/User');
 const userfields = ['mail', 'fname', 'lname','roles','bio','job','past','photo','linkedin','twitter','facebook','blog','info'];
 

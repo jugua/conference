@@ -26,7 +26,6 @@
             ng-model="$ctrl.user.info"
             maxlength="1000">{{$ctrl.user.info}}</textarea>
   <input type="submit" value="submit" class="my-info__button btn">
-  <pre>{{ $ctrl.userInfo|json}}</pre>
 </form>
 
 <div class="load-ava" ng-if="$ctrl.showLoad">
@@ -48,14 +47,17 @@
   </div>
 </div>
 
-<div class="load-ava" ng-show="$ctrl.showMessage">
+<div class="load-ava" ng-show="$ctrl.isShowMessage">
   <div class="load-ava-content">
     <div class="load-ava-content__header">
       <p class="load-ava-content__title">{{$ctrl.message.title}}</p>
-      <button class="load-ava-content__button" ng-click="$ctrl.toggleMessage()"></button>
+      <button class="load-ava-content__button" ng-click="$ctrl.hideMessage()"></button>
     </div>
     <div class="load-ava__upload">
-      <p class="load-ava__details">{{$ctrl.message.title}}</p>
+      <p class="load-ava__details">{{$ctrl.message.p}}</p>
+      <input type="button" value="yes" class="my-info__button btn" ng-if="$ctrl.message.showBtns" ng-click="$ctrl.saveChangesBeforeOut()">
+      <input type="button" value="No" class="my-info__button btn" ng-if="$ctrl.message.showBtns"
+             ng-click="$ctrl.cancelChanges()">
     </div>
   </div>
 </div>

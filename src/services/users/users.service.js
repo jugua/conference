@@ -1,4 +1,4 @@
-function Users($resource, $window, $q) {
+function Users($resource, $window, $q, $rootScope) {
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;
@@ -45,14 +45,12 @@ function Users($resource, $window, $q) {
   }
 
   function updateInfo(userInfo) {
-    console.log(333)
-      users.updateCurrentUser(userInfo,  (data) => {
-           this.getInfo();
-        },
-        () => {
-         console.log('error');
-        });
-
+    users.updateCurrentUser(userInfo, () => {
+      this.getInfo();
+    },
+    () => {
+      $rootScope.$broadcast('signInEvent');
+    });
   }
 
   return {

@@ -5,18 +5,17 @@ export default (app) => {
     $stateProvider
       .state('header.tabs.myInfo', {
         url: '/my-info',
-        template: '<my-info user="ctrl.user"></my-info>',
+        template: '<my-info user="ctrl.currentUser"></my-info>',
         resolve: {
-          user: (Users) => {
+          currentUser: (Users) => {
             return Users.current;
           }
         },
-        controller: function (user, $scope) {
-          if (!user || user.roles.indexOf('s') === -1) {
+        controller: function (currentUser, $scope) {
+          if (!currentUser || currentUser.roles.indexOf('s') === -1) {
             $scope.$emit('signInEvent');
-            return;
           }
-          this.user = user;
+          this.currentUser = currentUser;
         },
         controllerAs: 'ctrl'
       });
