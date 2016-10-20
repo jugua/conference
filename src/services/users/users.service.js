@@ -16,7 +16,11 @@ const Users = function Users($resource, $window) {
   return $resource('/api/users/current', {}, {
     getCurrentUser: {
       method: 'GET',
-      headers: { token: getToken }
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache'
+      }
     }
   });
 };
