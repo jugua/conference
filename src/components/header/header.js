@@ -9,11 +9,10 @@ export default (app) => {
         url: '',
         resolve: {
           user: function getCurrent(Users) {
-
-            console.log(Users.getInfo)
-            return Users.getInfo();
-
-        }
+            const current = Users.getInfo();
+            Users.current = current;
+            return Users.current;
+          }
         },
         abstract: true,
         template,

@@ -5,7 +5,20 @@ export default (app) => {
     $stateProvider
       .state('header.tabs.myinfo', {
         url: '/my-info',
-        template: '<my-info></my-info>'
+        template: '<my-info user="ctrl.user"></my-info>',
+        resolve: {
+          user: (Users) => {
+            return Users.current;
+          }
+        },
+        controller: function (user, $scope) {
+          if (!user || user.roles.indexOf('s') === -1) {
+            $scope.$emit('signInEvent');
+            return;
+          }
+          this.user = user;
+        },
+        controllerAs: 'ctrl'
       });
   }).component('myInfo', myInfoComponent);
 };

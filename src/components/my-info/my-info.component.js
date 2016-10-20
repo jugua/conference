@@ -3,11 +3,10 @@ import controller from './my-info.controller';
 
 const myInfoComponent = {
   bindings: {
-
+    user: '='
   },
   template,
-  controller,
-  controllerAs: 'myInfoCtrl'
+  controller
 };
 
 export default myInfoComponent;

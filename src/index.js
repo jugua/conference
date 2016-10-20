@@ -25,4 +25,4 @@ appServices(app);
 // Router Configuration
 // Components must be declared first since
 // Routes reference controllers that will be bound to route templates.
- appConfiguration(app);
+appConfiguration(app);

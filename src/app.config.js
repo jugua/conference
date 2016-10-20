@@ -1,12 +1,7 @@
-export default app => {
-  app.config([configFn]).
-  run(($rootScope) => {
+export default (app) => {
+  app.run(($rootScope) => {
     $rootScope.$on('$stateChangeSuccess', () => {
       $rootScope.$broadcast('closeDropdown');
     });
   });
-
-  function configFn() {
-
-  }
 };

@@ -27,19 +27,18 @@ function Users($resource, $window, $q) {
   function getInfo() {
     const current = $q.defer();
     users.getCurrentUser({}, (data) => {
-        current.resolve(data);
-      },
-      () => {
-        current.resolve(null);
-      });
+      current.resolve(data);
+    },
+    () => {
+      current.resolve(null);
+    });
 
     return current.promise;
   }
 
   return {
-     getInfo
-  }
-};
-
+    getInfo
+  };
+}
 
 export default Users;
