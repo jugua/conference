@@ -1,6 +1,7 @@
 export default class MyInfoController {
-  constructor() {
-
+  constructor(MyInfo) {
+    this.service = MyInfo;
+    this.showLoad = false;
   }
 }
 
