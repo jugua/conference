@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const User = require('./model/User');
 const auth = require('./core/auth');
 const registration = require('./core/registration');
+const forgotPassword = require('./core/forgot-password');
 
 module.exports = (PORT) => {
 
@@ -35,6 +36,9 @@ module.exports = (PORT) => {
 
   router.route('/login')
     .post(auth);
+
+  router.route('/forgot-password')
+    .post(forgotPassword);
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
