@@ -18,7 +18,7 @@ function registration(req, res) {
   }
 
   User.findOne({
-      mail: req.body.mail
+      mail: req.body.mail.toLowerCase()
     },
     (err, user) => {
       if (user) {
