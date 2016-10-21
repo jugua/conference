@@ -1,4 +1,4 @@
-<form class="my-info"  name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
+<form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
   <div class="my-info__ava">
     <button class="my-info__remove"></button>
     <div class="slide">
@@ -6,14 +6,14 @@
     </div>
   </div>
     <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio" maxlength="2000"
-              ng-model="$ctrl.user.bio",
+              ng-model="$ctrl.user.bio" ,
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
-  <input type="text" name="job" id="job" placeholder="Job" class="my-info__field" maxlength="256" value="$ctrl.user.job"
-         ng-model="$ctrl.user.job",
+  <input type="text" name="job" id="job" placeholder="Job" class="my-info__field" maxlength="256"
+         ng-model="$ctrl.user.job" ,
          ng-required="true">
   <input type="text" name="past" id="past" placeholder="Past Conferences" class="my-info__field" maxlength="1000"
-         ng-model="$ctrl.user.past",
+         ng-model="$ctrl.user.past" ,
          ng-required="true">
   <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin" class="my-info__field"
          ng-model="$ctrl.user.linkedin">
@@ -55,8 +55,11 @@
     </div>
     <div class="load-ava__upload">
       <p class="load-ava__details">{{$ctrl.message.p}}</p>
-      <input type="button" value="yes" class="my-info__button btn" ng-if="$ctrl.message.showBtns" ng-click="$ctrl.saveChangesBeforeOut()">
-      <input type="button" value="No" class="my-info__button btn" ng-if="$ctrl.message.showBtns"
+      <input type="button" value="yes" class="my-info__button btn"
+             ng-if="$ctrl.message.showBtns"
+             ng-click="$ctrl.saveChangesBeforeOut()">
+      <input type="button" value="No" class="my-info__button btn"
+             ng-if="$ctrl.message.showBtns"
              ng-click="$ctrl.cancelChanges()">
     </div>
   </div>
