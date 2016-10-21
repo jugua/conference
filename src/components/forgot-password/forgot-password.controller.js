@@ -23,14 +23,5 @@ export default class ForgotPasswordController {
   resetEmailNotFound() {
     this.userForm.mail.$setValidity('email_not_found', true);
   }
-
-
-  //forgot() {
-  // this.successfulForgot();
-  //}
-
-  //successfulForgot() {
-  //  this.forgotten = true;
-  //}
 }
 
