@@ -1,8 +1,8 @@
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
   <div class="my-info__ava">
-    <button class="my-info__remove"></button>
+    <input type="button" class="my-info__remove">
     <div class="slide">
-      <button class="slide__button" ng-click="$ctrl.toggleSlide()">Upload photo</button>
+      <input type="button" class="slide__button" value="Upload photo" ng-click="$ctrl.toggleSlide()">
     </div>
   </div>
     <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio" maxlength="2000"
@@ -46,6 +46,7 @@
     <div class="load-ava__tip">Please try to use small file size If you have an issue during the upload</div>
   </div>
 </div>
+
 
 <div class="load-ava" ng-show="$ctrl.isShowMessage">
   <div class="load-ava-content">
