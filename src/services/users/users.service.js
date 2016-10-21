@@ -46,7 +46,7 @@ function Users($resource, $window, $q, $rootScope) {
 
   function updateInfo(userInfo) {
     users.updateCurrentUser(userInfo, () => {
-      this.getInfo();
+      //this.getInfo();
     },
     () => {
       $rootScope.$broadcast('signInEvent');

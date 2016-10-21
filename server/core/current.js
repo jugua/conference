@@ -1,7 +1,7 @@
 'use strict';
 
 let User = require('./../model/User');
-const userfields = ['mail', 'fname', 'lname','roles','bio','job','past','photo','linkedin','twitter','facebook','blog','info'];
+const userfields = ['mail', 'fname', 'lname', 'roles', 'bio', 'job', 'past', 'photo', 'linkedin', 'twitter', 'facebook', 'blog', 'info'];
 
 function get(req, res) {
   if (!req.headers.token) {
@@ -19,7 +19,7 @@ function get(req, res) {
 
     let answer = {};
     userfields.forEach((field) => {
-      if (current[field]){
+      if (current[field]) {
         answer[field] = current[field];
       }
     })
@@ -29,7 +29,6 @@ function get(req, res) {
 
 function update(req, res) {
 
-  console.log(req.headers.token);
   User.findOneAndUpdate({hash: req.headers.token}, req.body, (err, current) => {
     if (err) {
       res.status(403).send(err);
@@ -40,13 +39,13 @@ function update(req, res) {
       res.status(401).send({error: 'no-current-user'});
       return;
     }
-   res.send();
+    res.send();
 
   });
 
 }
 
 module.exports = {
-  get : get ,
-  update : update
+  get: get,
+  update: update
 };
