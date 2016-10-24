@@ -53,8 +53,8 @@ function Users($resource, $window, $q, $rootScope, $http) {
     });
   }
 
-  function uploadImage(file) {
-    return $http.post('/api/users/upload-image', file, {
+  function uploadPhoto(file) {
+    $http.post('api/users/current', file, {
       withCredentials: true,
       headers: {
         token: getToken,
@@ -63,13 +63,13 @@ function Users($resource, $window, $q, $rootScope, $http) {
         'Content-Type': undefined
       },
       transformRequest: angular.identity
-    });
+    })
   }
 
   return {
     getInfo,
     updateInfo,
-    uploadImage
+    uploadPhoto
   };
 }
 

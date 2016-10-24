@@ -1,6 +1,6 @@
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
   <span class="my-info__mandatory">*</span>
-  <div class="my-info__ava" ng-style="$ctrl.ava">
+  <div class="my-info__ava" ngf-background="$ctrl.file || $ctrl.defaultImage">
     <input type="button" class="my-info__remove">
     <div class="slide">
       <input type="button" class="slide__button" value="Upload photo" ng-click="$ctrl.toggleSlide()">
@@ -45,21 +45,22 @@
 
     <form novalidate
           name="$ctrl.uploadForm">
-      <div class="load-ava__upload" ngf-drop="$ctrl.uploadAva()">
+      <div class="load-ava__upload">
         <p class="load-ava__details">It is much easier to identify you if you have a photo.<br>
           You can upload image in format JPG, PNG</p>
-        <label class="file-upload">
+        <label class="file-upload" ngf-drop="$ctrl.uploadAva()" ng-model="$ctrl.file">
           <span class="file-upload__button">Choose</span>
           <mark class="file-upload__mark">File is not selected</mark>
           <input type="file"
-                 ng-model="$ctrl.file"
                  class="file-upload__uploading"
+                 ng-model="$ctrl.file"
+                 required
                  ngf-select="$ctrl.uploadAva()"
                  ngf-max-size="2MB"
                  ngf-pattern="image/jpeg,image/png,image/gif">
         </label>
-        <p ng-if="$ctrl.uploadForm.$error.maxSize">Please try file with smaller size</p>
-        <p ng-if="$ctrl.uploadForm.$error.pattern">Please try another file format</p>
+        <p ng-if="$ctrl.uploadForm.$error.maxSize" class="error-title error-title_center">Please try file with smaller size</p>
+        <p ng-if="$ctrl.uploadForm.$error.pattern" class="error-title error-title_center">Please try another file format</p>
       </div>
     </form>
 

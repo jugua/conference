@@ -19,7 +19,6 @@ export default (app) => {
     tabsComponent,
     myTalksComponent,
     signUpComponent,
-    myTalksComponent,
     forgotPasswordComponent
   ], app);
 };

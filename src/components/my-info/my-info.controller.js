@@ -1,9 +1,9 @@
 export default class MyInfoController {
-  constructor(Users, $scope, $state) {
+  constructor(Users, $scope, $state, $http) {
     this.state = $state;
     this.users = Users;
+    this.defaultImage = "assets/img/ava.jpg";
     this.file;
-    this.ava = '{"background": "url(' + this.users.photo + ')"}'
     this.uploadForm = {};
     this.errorMessage = {
       title: 'Error',
@@ -73,8 +73,9 @@ export default class MyInfoController {
 
   uploadAva() {
     if (this.uploadForm.$valid) {
+      this.defaultImage = this.file;
       this.toggleSlideBack();
-      this.users.uploadImage(this.file);
+      this.users.uploadPhoto(this.file);
     }
   }
 }
