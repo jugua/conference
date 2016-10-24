@@ -54,9 +54,14 @@ function Users($resource, $window, $q, $rootScope, $http) {
   }
 
   function uploadImage(file) {
-    return $http.post('/api/users/current', file, {
+    return $http.post('/api/users/upload-image', file, {
       withCredentials: true,
-      headers: {'Content-Type': undefined },
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+        'Content-Type': undefined
+      },
       transformRequest: angular.identity
     });
   }
