@@ -2,6 +2,9 @@ export default class MyInfoController {
   constructor(Users, $scope, $state) {
     this.state = $state;
     this.users = Users;
+    this.file;
+    this.ava = '{"background": "url(' + this.users.photo + ')"}'
+    this.uploadForm = {};
     this.errorMessage = {
       title: 'Error',
       p: 'Please, fill in all mandatory fields'
@@ -66,6 +69,13 @@ export default class MyInfoController {
     this.event();
     this.state.reload();
     this.state.go(this.nextState.name);
+  }
+
+  uploadAva() {
+    if (this.uploadForm.$valid) {
+      this.toggleSlideBack();
+      this.users.uploadImage(this.file);
+    }
   }
 }
 

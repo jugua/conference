@@ -1,4 +1,4 @@
-function Users($resource, $window, $q, $rootScope) {
+function Users($resource, $window, $q, $rootScope, $http) {
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;
@@ -53,9 +53,18 @@ function Users($resource, $window, $q, $rootScope) {
     });
   }
 
+  function uploadImage(file) {
+    return $http.post('/api/users/current', file, {
+      withCredentials: true,
+      headers: {'Content-Type': undefined },
+      transformRequest: angular.identity
+    });
+  }
+
   return {
     getInfo,
-    updateInfo
+    updateInfo,
+    uploadImage
   };
 }
 
