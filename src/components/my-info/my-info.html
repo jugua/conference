@@ -5,27 +5,35 @@
       <input type="button" class="slide__button" value="Upload photo" ng-click="$ctrl.toggleSlide()">
     </div>
   </div>
-    <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio" maxlength="2000"
+  <label for="bio" class="my-info__label my-info__label_bio">Bio</label>
+  <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio" maxlength="2000"
               ng-model="$ctrl.user.bio" ,
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
+  <label for="job" class="my-info__label">Job</label>
   <input type="text" name="job" id="job" placeholder="Job" class="my-info__field" maxlength="256"
          ng-model="$ctrl.user.job" ,
          ng-required="true">
+  <label for="past" class="my-info__label">Past conferences</label>
   <input type="text" name="past" id="past" placeholder="Past Conferences" class="my-info__field" maxlength="1000"
          ng-model="$ctrl.user.past" ,
          ng-required="true">
+  <label for="linkedin" class="my-info__label">Linkedin</label>
   <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin" class="my-info__field"
          ng-model="$ctrl.user.linkedin">
+  <label for="twitter" class="my-info__label">Twitter</label>
   <input type="text" name="twitter" id="twitter" placeholder="Twitter" class="my-info__field"
          ng-model="$ctrl.user.twitter">
+  <label for="facebook" class="my-info__label">Facebook</label>
   <input type="text" name="facebook" id="facebook" placeholder="Facebook" class="my-info__field"
          ng-model="$ctrl.user.facebook">
+  <label for="blog" class="my-info__label">Blog</label>
   <input type="text" name="blog" id="blog" placeholder="Blog" class="my-info__field" ng-model="$ctrl.user.blog">
+  <label for="info" class="my-info__label">Additional info</label>
   <textarea name="info" id="info" rows="5" placeholder="Additional Info" class="my-info__info"
             ng-model="$ctrl.user.info"
             maxlength="1000">{{$ctrl.user.info}}</textarea>
-  <input type="submit" value="submit" class="my-info__button btn">
+  <input type="submit" value="submit" class="btn my-info__button ">
 </form>
 
 <div class="load-ava" ng-if="$ctrl.showLoad">
