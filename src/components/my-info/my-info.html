@@ -56,18 +56,18 @@
 </div>
 
 
-<div class="load-ava" ng-show="$ctrl.isShowMessage">
+<div class="load-ava load-ava_success" ng-show="$ctrl.isShowMessage">
   <div class="load-ava-content">
     <div class="load-ava-content__header">
       <p class="load-ava-content__title">{{$ctrl.message.title}}</p>
       <button class="load-ava-content__button" ng-click="$ctrl.hideMessage()"></button>
     </div>
-    <div class="load-ava__upload">
+    <div class="load-ava__upload cust">
       <p class="load-ava__details">{{$ctrl.message.p}}</p>
-      <input type="button" value="yes" class="my-info__button btn"
+      <input type="button" value="yes" class="my-info__button btn cust_l"
              ng-if="$ctrl.message.showBtns"
              ng-click="$ctrl.saveChangesBeforeOut()">
-      <input type="button" value="No" class="my-info__button btn"
+      <input type="button" value="No" class="my-info__button cust_r"
              ng-if="$ctrl.message.showBtns"
              ng-click="$ctrl.cancelChanges()">
     </div>
