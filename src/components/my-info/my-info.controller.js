@@ -4,7 +4,7 @@ export default class MyInfoController {
     this.users = Users;
     this.errorMessage = {
       title: 'Error',
-      p: 'Please, fill in all mandatory fields'
+      p: 'Please fill in all mandatory fields'
     };
     this.sucessMessage = {
       title: 'Saved',
