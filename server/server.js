@@ -9,6 +9,7 @@ const User = require('./model/User');
 const auth = require('./core/auth');
 const registration = require('./core/registration');
 const current = require('./core/current');
+const forgotPassword = require('./core/forgot-password');
 
 module.exports = (PORT) => {
 
@@ -18,11 +19,12 @@ module.exports = (PORT) => {
 
   let router = express.Router();
 
-  mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
+  // mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
+  mongoose.connect('mongodb://conference:management@ds031257.mlab.com:31257/cm');
 
   app.use(express.static(path.join(__dirname, './../dist')));
   app.use("/", express.static(path.join(__dirname, './../dist')));
-  app.use(bodyParser.urlencoded({extended: true}));
+  app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
   app.use(bodyParser.json());
 
   router.use((req, res, next) => {
@@ -36,6 +38,9 @@ module.exports = (PORT) => {
 
   router.route('/login')
     .post(auth);
+
+  router.route('/forgot-password')
+    .post(forgotPassword);
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
