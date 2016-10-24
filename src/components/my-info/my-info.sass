@@ -42,7 +42,7 @@
       margin: 0 0 0 10px
 
   &__bio
-    width: 70%
+    width: calc(100% - 190px)
     height: 180px
     box-sizing: border-box
     float: right
@@ -53,9 +53,6 @@
       border: 2px solid $sharp-blue
     @media ($mnw: $xsdmn) and ($mxw: $sdmx)
       width: 100%
-    @media ($mnw: $mdmn) and ($mxw: $mdmx)
-      width: 73%
-
   &__field
     width: 100%
     height: 30px
