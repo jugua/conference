@@ -232,8 +232,13 @@
 .cust
   box-sizing: border-box
   padding: 20px
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+    padding: 5px
 .cust_l
   float: left
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+    width: 150px !important
+    margin-left: 20px !important
 .cust_r
   width: 200px
   display: block
@@ -249,4 +254,5 @@
   transition: all 0.5s ease
   &:hover
     background: #8E244D
-
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+   width: 150px
