@@ -1,0 +1,19 @@
+<div class="tabs-layout">
+  <div class="tabs-wrapper">
+    <ul class="tabs-list">
+      <li class="tabs-list__item">
+        <a ui-sref="header.tabs.myInfo" ui-sref-active="tabs-list__anchor_active" class="tabs-list__anchor">
+          my info
+        </a>
+      </li>
+      <li class="tabs-list__item">
+        <a ui-sref="header.tabs.myTalks" ui-sref-active="tabs-list__anchor_active" class="tabs-list__anchor">
+          my talks
+        </a>
+      </li>
+    </ul>
+    <div class="tabs-container">
+      <ui-view></ui-view>
+    </div>
+  </div>
+</div>

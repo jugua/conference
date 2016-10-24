@@ -1,5 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+'use strict';
+
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
   mail: {
@@ -11,7 +13,42 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
-  roles:{
+  fname: {
+    type: String,
+    required: true
+  },
+  lname: {
+    type: String,
+    required: true
+  },
+  bio: {
+    type: String
+  },
+  job: {
+    type: String
+  },
+  past: {
+    type: String
+  },
+  photo: {
+    type: String
+  },
+  linkedin: {
+    type: String
+  },
+  twitter: {
+    type: String
+  },
+  facebook: {
+    type: String
+  },
+  blog: {
+    type: String
+  },
+  info: {
+    type: String
+  },
+  roles: {
     type: Array
   },
   hash: {

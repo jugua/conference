@@ -8,16 +8,9 @@ export default (app) => {
       .state('header', {
         url: '',
         resolve: {
-          user: function getCurrent(Users, $q) {
-            const current = $q.defer();
-
-            Users.getCurrentUser({}, (data) => {
-              current.resolve(data);
-            },
-              () => {
-                current.resolve(null);
-              });
-            return current.promise;
+          user: function getCurrent(Users) {
+            Users.getInfo();
+            return Users.current;
           }
         },
         abstract: true,
