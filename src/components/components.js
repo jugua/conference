@@ -17,6 +17,7 @@ export default (app) => {
     accountPageComponent,
     myInfoComponent,
     tabsComponent,
+    myTalksComponent,
     signUpComponent,
     myTalksComponent,
     forgotPasswordComponent
