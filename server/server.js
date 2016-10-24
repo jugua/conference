@@ -18,7 +18,8 @@ module.exports = (PORT) => {
 
   let router = express.Router();
 
-  mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
+  // mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
+  mongoose.connect('mongodb://conference:management@ds031257.mlab.com:31257/cm');
 
   app.use(express.static(path.join(__dirname, './../dist')));
   app.use("/", express.static(path.join(__dirname, './../dist')));
