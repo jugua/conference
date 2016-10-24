@@ -10,6 +10,9 @@
     overflow: hidden
     background: url("assets/img/ava.jpg")
     background-size: cover
+    /* have to be changed */
+    &_succes
+      height: 200px
     &:after
       content: ''
       display: table
@@ -222,3 +225,34 @@
 
 .info
   height : 30px
+/* have to be change*/
+.msg-success
+  color: green
+
+.cust
+  box-sizing: border-box
+  padding: 20px
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+    padding: 5px
+.cust_l
+  float: left
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+    width: 150px !important
+    margin-left: 20px !important
+.cust_r
+  width: 200px
+  display: block
+  margin: auto
+  padding: 5px
+  font-size: 18px
+  text-align: center
+  text-decoration: none
+  text-transform: capitalize
+  color: white
+  background: #B22746
+  border: none
+  transition: all 0.5s ease
+  &:hover
+    background: #8E244D
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+   width: 150px

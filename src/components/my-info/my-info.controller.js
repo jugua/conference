@@ -7,11 +7,11 @@ export default class MyInfoController {
       p: 'Please, fill in all mandatory fields'
     };
     this.sucessMessage = {
-      title: 'Ok',
+      title: 'Saved',
       p: 'Changes saved successfully'
     };
     this.goAwayMessage = {
-      title: 'Info',
+      title: 'Attention',
       p: 'Would you like to save changes?',
       showBtns: true
     };
