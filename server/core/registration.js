@@ -18,7 +18,7 @@ function registration(req, res) {
   }
 
   User.findOne({
-      mail: req.body.mail
+      mail: req.body.mail.toLowerCase()
     },
     (err, user) => {
       if (user) {
@@ -26,8 +26,7 @@ function registration(req, res) {
       } else {
         let user = new User();// create a new instance of the User
         token = user._id + 123;
-        userfields.forEach((field) => {
-          user[field] = req.body[field];
+        user[field] = req.body[field];
         })
 
         user.roles.push('s');

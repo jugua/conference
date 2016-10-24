@@ -7,6 +7,7 @@ import myInfoComponent from './my-info/my-info';
 import tabsComponent from './tabs/tabs';
 import signUpComponent from './sign-up/sign-up';
 import myTalksComponent from './my-talks/my-talks';
+import forgotPasswordComponent from './forgot-password/forgot-password';
 
 export default (app) => {
   include_all_modules([
@@ -16,7 +17,8 @@ export default (app) => {
     accountPageComponent,
     myInfoComponent,
     tabsComponent,
+    myTalksComponent,
     signUpComponent,
-    myTalksComponent
+    forgotPasswordComponent
   ], app);
 };
