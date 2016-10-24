@@ -4,9 +4,9 @@ let User = require('./../model/User');
 
 function registration(req, res) {
   let token;
-  let userfileds = ['mail', 'password', 'fname', 'lname'];
+  let userfields = ['mail', 'password', 'fname', 'lname'];
 
-  const isEmptyFields = userfileds.some(function(field) {
+  const isEmptyFields = userfields.some(function(field) {
     if (!req.body[field]) {
       return true;
     }
