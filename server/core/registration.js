@@ -26,7 +26,11 @@ function registration(req, res) {
       } else {
         let user = new User();// create a new instance of the User
         token = user._id + 123;
-        user[field] = req.body[field];
+        userfileds.forEach((field) => {
+          if (field==='mail') {
+            req.body[field] = req.body[field].toLowerCase();
+          }
+          user[field] = req.body[field];
         })
 
         user.roles.push('s');

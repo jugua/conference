@@ -1,4 +1,5 @@
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
+  <span class="my-info__mandatory">*</span>
   <div class="my-info__ava">
     <input type="button" class="my-info__remove">
     <div class="slide">
@@ -9,19 +10,26 @@
               ng-model="$ctrl.user.bio" ,
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
-  <input type="text" name="job" id="job" placeholder="Job" class="my-info__field" maxlength="256"
+  <span class="my-info__mandatory">*</span>
+  <input type="text" name="job" id="job" placeholder="Job" class="my-info__field my-info__field_job" maxlength="256"
          ng-model="$ctrl.user.job" ,
          ng-required="true">
-  <input type="text" name="past" id="past" placeholder="Past Conferences" class="my-info__field" maxlength="1000"
+  <span class="my-info__mandatory">*</span>
+  <input type="text" name="past" id="past" placeholder="Past Conferences" class="my-info__field my-info__field_past" maxlength="1000"
          ng-model="$ctrl.user.past" ,
          ng-required="true">
+  <span class="my-info__mandatory"></span>
   <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin" class="my-info__field"
          ng-model="$ctrl.user.linkedin">
+  <span class="my-info__mandatory"></span>
   <input type="text" name="twitter" id="twitter" placeholder="Twitter" class="my-info__field"
          ng-model="$ctrl.user.twitter">
+  <span class="my-info__mandatory"></span>
   <input type="text" name="facebook" id="facebook" placeholder="Facebook" class="my-info__field"
          ng-model="$ctrl.user.facebook">
+  <span class="my-info__mandatory"></span>
   <input type="text" name="blog" id="blog" placeholder="Blog" class="my-info__field" ng-model="$ctrl.user.blog">
+  <span class="my-info__mandatory"></span>
   <textarea name="info" id="info" rows="5" placeholder="Additional Info" class="my-info__info"
             ng-model="$ctrl.user.info"
             maxlength="1000">{{$ctrl.user.info}}</textarea>
