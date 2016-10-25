@@ -21,7 +21,7 @@ const Menus = function Menus() {
       },
       {
         link: 'otalks',
-        name: 'My Talks'
+        name: 'Talks'
       }
     ]
   };
