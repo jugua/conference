@@ -17,8 +17,6 @@ function get(req, res) {
       return;
     }
 
-    console.log(req.data);
-
     let answer = {};
     userfields.forEach((field) => {
       if (current[field]) {
