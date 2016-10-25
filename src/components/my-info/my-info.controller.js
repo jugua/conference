@@ -4,7 +4,7 @@ export default class MyInfoController {
     this.users = Users;
     this.errorMessage = {
       title: 'Error',
-      p: 'Please, fill in all mandatory fields'
+      p: 'Please fill in all mandatory fields'
     };
     this.sucessMessage = {
       title: 'Saved',
@@ -19,7 +19,9 @@ export default class MyInfoController {
 
     this.event = $scope.$on('$stateChangeStart', (e, toState) => {
       if (this.userInfoForm.$pristine ||
-         (this.userInfoForm.$submitted && this.userInfoForm.$valid)) {
+         (this.userInfoForm.$submitted
+         && this.userInfoForm.$valid
+         && this.userInfoForm.$pristine)) {
         return;
       }
       e.preventDefault();
@@ -34,6 +36,7 @@ export default class MyInfoController {
     } else {
       this.users.updateInfo(this.user);
       this.showMessage('sucessMessage');
+      this.userInfoForm.$setPristine()
     }
   }
 
