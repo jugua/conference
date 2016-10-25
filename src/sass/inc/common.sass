@@ -43,8 +43,6 @@
     outline: none
     border: 1px solid $sharp-blue
 
-
-
 //Forms
 
 .form-title
@@ -59,7 +57,7 @@
   font-size: 16px
 
   &_required:after
-    content: '*'
+    content: ' *'
     display: inline
     color: red
 
@@ -95,6 +93,8 @@
   width: 450px
   background: white
 
+  @media ($mxw:$sdmx)
+    width: 300px
   &__title
     width: 100%
     box-sizing: border-box
@@ -119,6 +119,11 @@
   &__button
     margin: 10px auto 15px
 
+  &-button-wrapper
+    display: flex
+    justify-content: space-around
+    margin: 15px
+
   &__tip
     width: 100%
     box-sizing: border-box
@@ -139,3 +144,6 @@
     background-image: url("assets/img/close-icon.svg")
     background-position: center
     background-repeat: no-repeat
+
+    &:active
+      outline: none
