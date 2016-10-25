@@ -11,8 +11,10 @@ const registration = require('./core/registration');
 const current = require('./core/current');
 const forgotPassword = require('./core/forgot-password');
 const uploadImage = require('./core/upload-image');
+
 const multer = require('multer');
-const upload = multer({ dest: './images/'});
+const upload = multer();
+
 
 
 module.exports = (PORT) => {

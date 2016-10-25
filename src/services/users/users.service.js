@@ -54,7 +54,6 @@ function Users($resource, $window, $q, $rootScope, $http) {
   }
 
   function uploadPhoto(file) {
-    console.log(file);
     let formData = new FormData();
     formData.append('file', file);
     $http.post('api/upload-image', formData, {
