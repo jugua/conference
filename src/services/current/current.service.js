@@ -1,4 +1,4 @@
-function Users($resource, $window, $q, $rootScope, $http) {
+function Current($resource, $window, $q, $rootScope, $http) {
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;
@@ -74,4 +74,4 @@ function Users($resource, $window, $q, $rootScope, $http) {
   };
 }
 
-export default Users;
+export default Current;
