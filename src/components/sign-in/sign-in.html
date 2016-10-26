@@ -1,25 +1,27 @@
 <div class="sign-in-wrapper">
   <form class="sign-in" name="signInCtrl.userForm" novalidate ng-submit="signInCtrl.login()">
-    <h2 class="sign-in__title">sign in</h2>
-    <p class="sign-in__field-title">email:</p>
+    <h2 class="form-title sign-in__title">sign in</h2>
+    <label for="sign-in-email" class="sign-in__label form-label">email:</label>
     <input type="email"
            name="mail"
-           class="sign-in__field"
+           id="sign-in-email"
+           class="field sing-in__field"
            ng-model="signInCtrl.user.mail"
            ng-pattern="/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/i"
            required>
-    <p class="error-title" ng-if="signInCtrl.userForm.mail.$error.login_auth_err">We can not find an account with that email address</p>
+    <span class="field-error" ng-if="signInCtrl.userForm.mail.$error.login_auth_err">We can not find an account with that email address</span>
     <div class="sign-in__password-cont">
-      <p class="sign-in__field-title">password:</p>
+      <label for="sign-in-password" class="form-label">password:</label>
       <a href="#" ui-sref="header.home.forgotPassword" class="sign-in__forgot">forgot password?</a>
     </div>
     <input type="password"
            name="password"
-           class="sign-in__field"
+           class="field"
+           id="sign-in-password"
            ng-model="signInCtrl.user.password"
            minlength="6" maxlength="30"
            required>
-    <p class="error-title" ng-if="signInCtrl.userForm.password.$error.password_auth_err">Your password is incorrect</p>
+    <span class="field-error" ng-if="signInCtrl.userForm.password.$error.password_auth_err">Your password is incorrect</span>
 
     <input type="submit"
            value="Sign In"
