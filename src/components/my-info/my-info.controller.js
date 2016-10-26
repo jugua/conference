@@ -1,7 +1,7 @@
 export default class MyInfoController {
-  constructor(Users, $scope, $state, $http) {
+  constructor(Current, $scope, $state, $http) {
     this.state = $state;
-    this.users = Users;
+    this.currentUserService = Current;
     this.defaultImage = "assets/img/ava.jpg";
     this.file;
     this.uploadForm = {};
@@ -37,7 +37,7 @@ export default class MyInfoController {
     if (this.userInfoForm.$invalid) {
       this.showMessage('errorMessage');
     } else {
-      this.users.updateInfo(this.user);
+      this.currentUserService.updateInfo(this.user);
       this.showMessage('sucessMessage');
       this.userInfoForm.$setPristine()
     }
@@ -62,6 +62,7 @@ export default class MyInfoController {
 
   saveChangesBeforeOut() {
     this.submit();
+    this.userInfoForm.$setSubmitted();
     if (this.userInfoForm.$valid) {
       this.event();
       this.state.go(this.nextState.name);
@@ -78,7 +79,7 @@ export default class MyInfoController {
     if (this.uploadForm.$valid) {
       this.defaultImage = this.file;
       this.toggleSlideBack();
-      this.users.uploadPhoto(this.file);
+      this.currentUserService.uploadPhoto(this.file);
     }
   }
 }

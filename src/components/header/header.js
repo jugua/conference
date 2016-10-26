@@ -8,9 +8,9 @@ export default (app) => {
       .state('header', {
         url: '',
         resolve: {
-          user: function getCurrent(Users) {
-            Users.getInfo();
-            return Users.current;
+          user: function getCurrent(Current) {
+            Current.getInfo();
+            return Current.current;
           }
         },
         abstract: true,

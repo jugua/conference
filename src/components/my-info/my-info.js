@@ -7,7 +7,7 @@ export default (app) => {
         url: '/my-info',
         template: '<my-info user="ctrl.currentUser"></my-info>',
         resolve: {
-          currentUser: Users => Users.current
+          currentUser: Current => Current.current
         },
         controller: function (currentUser, $scope) {
           if (!currentUser || currentUser.roles.indexOf('s') === -1) {
