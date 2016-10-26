@@ -24,10 +24,21 @@ function uploadImage(req, res) {
 
     let file = req.files[0],
       path = './images/';
+    console.log(file);
 
     // Logic for handling missing file, wrong mimetype, no buffer, etc.
 
-    let buffer = file.buffer, //Note: buffer only populates if you set inMemory: true.
+    if (file.size > 2097152){
+      res.status(413).send({error: 'maxSize'})
+      return
+    }
+
+    if (!/(jp(e)?g)?(gif)?(png)?/.test(file.mimetype)){
+      res.status(415).send({error: 'pattern'})
+      return
+    }
+
+    let buffer = file.buffer,
       fileName = file.originalname;
     let stream = fs.createWriteStream(path + fileName);
     stream.write(buffer);
