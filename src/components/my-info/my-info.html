@@ -1,6 +1,6 @@
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
   <span class="my-info__mandatory">*</span>
-  <div class="my-info__ava" ngf-background="$ctrl.file || $ctrl.defaultImage">
+  <div class="my-info__ava" ngf-background="$ctrl.user.photo || $ctrl.defaultImage">
     <input type="button" class="my-info__remove">
     <div class="slide">
       <input type="button" class="slide__button" value="Upload photo" ng-click="$ctrl.toggleSlide()">

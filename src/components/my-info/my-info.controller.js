@@ -78,8 +78,24 @@ export default class MyInfoController {
   uploadAva() {
     if (this.uploadForm.$valid) {
       this.defaultImage = this.file;
-      this.toggleSlideBack();
-      this.currentUserService.uploadPhoto(this.file);
+
+      this.currentUserService.uploadPhoto(this.file)
+        .then(
+          () => {
+            this.toggleSlideBack();
+            if (this.user.photo) {
+              console.log('df')
+              this.currentUserService.getInfo();
+              this.state.go('header.tabs.myInfo');
+            }
+
+            this.currentUserService.updateInfo(this.user);
+          }
+        )
+        .catch(
+          (error) => {
+
+        });
     }
   }
 }

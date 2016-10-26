@@ -56,7 +56,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
   function uploadPhoto(file) {
     let formData = new FormData();
     formData.append('file', file);
-    $http.post('api/upload-image', formData, {
+    return $http.post('api/upload-image', formData, {
       transformRequest: angular.identity,
       headers: {
         token: getToken,
