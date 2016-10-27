@@ -1,41 +1,30 @@
-'use strict';
-let User = require('./../model/User');
+const User = require('./../model/User');
 
 function logout(req, res) {
 
-  if ( && req.headers.token) {
-    User.findOne ({
-        mail: req.body.mail.toLowerCase()
-      },
+  if (req.headers.token) {
+    User.findOne({
+      hash: req.headers.token
+    },
       (err, user) => {
 
         if (!user) {
-          res.status(401).json ({"error": "login_auth_err"});
+          res.status(404).json({ error: 'session_not_found' });
           return;
         }
 
-        User.findOne ({
-            mail: req.body.mail.toLowerCase(),
-            password: req.body.password
-          },
-          (err, user) => {
-
-            if (!user) {
-              res.status(401).json ({"error": "password_auth_err"});
-              return;
-            }
-
-            let token = user._id + 1234; //fake token
-            user.hash.push(token);
-            user.save();
-            res.json({"token": token});
-          });
+        for (let i = user.hash.length - 1; i >= 0; i -= 1) {
+          if (user.hash[i] === req.headers.token) {
+            user.hash.splice(i, 1);
+          }
+        }
+        user.save();
+        res.status(200).json({ result: 'logged_out_successfully' });
       });
 
   } else {
-    res.status(404).json ({"error": "session_not_found"});
+    res.status(404).json({ error: 'session_not_found' });
   }
 }
 
-
-module.exports = auth;
+module.exports = logout;
