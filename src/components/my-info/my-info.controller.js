@@ -2,9 +2,14 @@ export default class MyInfoController {
   constructor(Current, $scope, $state, $http) {
     this.state = $state;
     this.currentUserService = Current;
+
+
+    this.uploadPreview = false;
     this.defaultImage = "assets/img/ava.jpg";
     this.file;
     this.uploadForm = {};
+    // this.currentPhotoStatus = this.currentUserService.getPhotoStatus();
+
     this.errorMessage = {
       title: 'Error',
       p: 'Please fill in all mandatory fields'
@@ -53,11 +58,13 @@ export default class MyInfoController {
   }
 
   toggleSlide() {
-    this.showLoad = true;
+    this.showLoad = !this.showLoad;
   }
 
-  toggleSlideBack() {
-    this.showLoad = false;
+  togglePreview() {
+    if(this.uploadForm.$valid) {
+      this.uploadPreview = !this.uploadPreview;
+    }
   }
 
   saveChangesBeforeOut() {
@@ -76,27 +83,21 @@ export default class MyInfoController {
   }
 
   uploadAva() {
-    if (this.uploadForm.$valid) {
-      this.defaultImage = this.file;
-
-      this.currentUserService.uploadPhoto(this.file)
-        .then(
-          () => {
-            this.toggleSlideBack();
-            if (this.user.photo) {
-              console.log('df')
-              this.currentUserService.getInfo();
-              this.state.go('header.tabs.myInfo');
-            }
-
-            this.currentUserService.updateInfo(this.user);
+    this.currentUserService.uploadPhoto(this.file)
+      .then(
+        () => {
+          this.toggleSlide();
+          this.togglePreview();
+          if (this.user.photo) {
+            this.currentUserService.getInfo();
+            this.state.go('header.tabs.myInfo');
           }
-        )
-        .catch(
-          (error) => {
-
-        });
-    }
+          this.currentUserService.getInfo();
+        }
+      )
+      .catch(
+        (error) => {
+      });
   }
 }
 
