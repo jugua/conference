@@ -11,6 +11,7 @@ const registration = require('./core/registration');
 const current = require('./core/current');
 const forgotPassword = require('./core/forgot-password');
 const uploadImage = require('./core/upload-image');
+const logout = require('./core/logout');
 
 const multer = require('multer');
 const upload = multer();
