@@ -1,6 +1,6 @@
 export default class HeaderController {
 
-  constructor(user, Menus, $state, $scope) {
+  constructor(user, Menus, Current, $state, $scope) {
     this.role = user ? user.roles : '';
     this.name = (user) ? `${user.fname}'s` : 'Your';
     this.menu = Menus.getMenu(this.role);
@@ -11,5 +11,16 @@ export default class HeaderController {
     $scope.$on('closeDropdown', () => {
       this.menuHidden = false;
     });
+    this.Current = Current;
+    this.$state = $state;
+  }
+
+  logout() {
+    this.Current.logout()
+      .then(
+        () => {  // success callback
+          this.$state.go('header.home', {}, { reload: true });
+        }
+      );
   }
 }
