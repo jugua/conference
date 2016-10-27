@@ -45,6 +45,9 @@ module.exports = (PORT) => {
   router.route('/login')
     .post(auth);
 
+  router.route('/logout')
+    .get(logout);
+
   router.route('/forgot-password')
     .post(forgotPassword);
 

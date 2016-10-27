@@ -12,6 +12,10 @@ const Menus = function Menus() {
       {
         link: 'tabs.myTalks',
         name: 'My Talks'
+      },
+      {
+        link: 'sign-out',
+        name: 'Sign Out'
       }
     ],
     o: [
@@ -22,6 +26,10 @@ const Menus = function Menus() {
       {
         link: 'otalks',
         name: 'Talks'
+      },
+      {
+        link: 'sign-out',
+        name: 'Sign Out'
       }
     ]
   };
