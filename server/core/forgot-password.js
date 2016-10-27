@@ -1,3 +1,5 @@
+'use strict'
+
 let User = require('./../model/User');
 
 function forgotPassword(req, res) {

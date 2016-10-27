@@ -1,36 +1,45 @@
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
-  <span class="my-info__mandatory">*</span>
-  <div class="my-info__ava">
+  <div class="my-info__ava" ngf-background="$ctrl.user.photo || $ctrl.defaultImage">
     <input type="button" class="my-info__remove">
     <div class="slide">
       <input type="button" class="slide__button" value="Upload photo" ng-click="$ctrl.toggleSlide()">
     </div>
   </div>
-  <textarea name="bio" id="bio" placeholder="My Bio" class="my-info__bio" maxlength="2000"
+  <label for="my-info-bio" class="form-label form-label_required my-info__label my-info__label_bio">Short Bio</label>
+  <textarea name="bio" id="my-info-bio" class="my-info__bio" maxlength="2000"
               ng-model="$ctrl.user.bio" ,
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
-  <span class="my-info__mandatory">*</span>
-  <input type="text" name="job" id="job" placeholder="Job" class="my-info__field my-info__field_job" maxlength="256"
-         ng-model="$ctrl.user.job" ,
+  <label for="my-info-job" class="form-label form-label_required my-info__label">Job</label>
+  <input type="text" name="job" id="my-info-job"
+         class="field my-info__field my-info__field_job"
+         maxlength="256"
+         ng-model="$ctrl.user.job"
          ng-required="true">
-  <span class="my-info__mandatory">*</span>
-  <input type="text" name="past" id="past" placeholder="Past Conferences" class="my-info__field my-info__field_past" maxlength="1000"
-         ng-model="$ctrl.user.past" ,
+  <label for="my-info-linkedin-past-conferences" class="form-label form-label_required my-info__label">Past Conferences</label>
+  <input type="text" name="past" id="my-info-linkedin-past-conferences"
+         class="field my-info__field my-info__field_past"
+         maxlength="1000"
+         ng-model="$ctrl.user.past"
          ng-required="true">
-  <span class="my-info__mandatory"></span>
-  <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin" class="my-info__field"
+  <label for="my-info-linkedin" class="form-label my-info__label">LinkedIn</label>
+  <input type="text" name="linkedin" id="my-info-linkedin"
+         class="field my-info__field"
          ng-model="$ctrl.user.linkedin">
-  <span class="my-info__mandatory"></span>
-  <input type="text" name="twitter" id="twitter" placeholder="Twitter" class="my-info__field"
+  <label for="my-info-twitter" class="form-label my-info__label">twitter</label>
+  <input type="text" name="twitter" id="my-info-twitter"
+         class="field my-info__field"
          ng-model="$ctrl.user.twitter">
-  <span class="my-info__mandatory"></span>
-  <input type="text" name="facebook" id="facebook" placeholder="Facebook" class="my-info__field"
+  <label for="my-info-facebook" class="form-label my-info__label">facebook</label>
+  <input type="text" name="facebook" id="my-info-facebook"
+          class="field my-info__field"
          ng-model="$ctrl.user.facebook">
-  <span class="my-info__mandatory"></span>
-  <input type="text" name="blog" id="blog" placeholder="Blog" class="my-info__field" ng-model="$ctrl.user.blog">
-  <span class="my-info__mandatory"></span>
-  <textarea name="info" id="info" rows="5" placeholder="Additional Info" class="my-info__info"
+  <label for="my-info-blog" class="form-label my-info__label">blog</label>
+  <input type="text" name="blog" id="my-info-blog"
+         class="field my-info__field"
+         ng-model="$ctrl.user.blog">
+  <label for="my-info-additional-info" class="form-label my-info__label">Additional Info</label>
+  <textarea name="info" id="my-info-additional-info" rows="5" class="my-info__info"
             ng-model="$ctrl.user.info"
             maxlength="1000">{{$ctrl.user.info}}</textarea>
 
@@ -38,41 +47,47 @@
 
 </form>
 
-<div class="load-ava" ng-if="$ctrl.showLoad">
-  <div class="load-ava-content">
-    <div class="load-ava-content__header">
-      <p class="load-ava-content__title">Upload new photo</p>
-      <button class="load-ava-content__button" ng-click="$ctrl.toggleSlideBack()"></button>
-    </div>
-    <div class="load-ava__upload">
-      <p class="load-ava__details">It is much easier to identify you if you have a photo.<br>
-        You can upload image in format JPG, PNG</p>
-      <label class="file-upload">
-        <span class="file-upload__button">Choose</span>
-        <mark class="file-upload__mark">File is not selected</mark>
-        <input type="file" class="file-upload__uploading">
-      </label>
-    </div>
-    <div class="load-ava__tip">Please try to use small file size If you have an issue during the upload</div>
+<div class="pop-up-wrapper" ng-if="$ctrl.showLoad">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Upload new photo</h3>
+    <button class="pop-up__close" ng-click="$ctrl.toggleSlideBack()"></button>
+    <form novalidate
+          name="$ctrl.uploadForm">
+        <p class="pop-up__notification pop-up__notification_light">It is much easier to identify you if you have a photo.<br>
+          You can upload image in format JPG, PNG</p>
+        <label class="file-upload" ngf-drop="$ctrl.uploadAva()" ng-model="$ctrl.file">
+          <span class="btn file-upload__button">Choose</span>
+          <mark class="file-upload__mark">File is not selected</mark>
+          <input type="file"
+                 class="file-upload__uploading"
+                 ng-model="$ctrl.file"
+                 required
+                 ngf-select="$ctrl.uploadAva()"
+                 ngf-max-size="2MB"
+                 ngf-pattern="image/jpeg,image/png,image/gif">
+        </label>
+        <p ng-if="$ctrl.uploadForm.$error.maxSize" class="error-title error-title_center">Please try file with smaller size</p>
+        <p ng-if="$ctrl.uploadForm.$error.pattern" class="error-title error-title_center">Please try another file format</p>
+    </form>
+    <p class="pop-up__tip">Please try to use small file size If you have an issue during the upload</p>
   </div>
 </div>
 
+<div class="pop-up-wrapper" ng-show="$ctrl.isShowMessage">
+  <div class="pop-up">
+    <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
+    <p class="pop-up__notification">
+      {{$ctrl.message.p}}
+    </p>
 
-<div class="load-ava load-ava_success" ng-show="$ctrl.isShowMessage">
-  <div class="load-ava-content">
-    <div class="load-ava-content__header">
-      <p class="load-ava-content__title">{{$ctrl.message.title}}</p>
-      <button class="load-ava-content__button" ng-click="$ctrl.hideMessage()"></button>
-    </div>
-    <div class="load-ava__upload cust">
-      <p class="load-ava__details">{{$ctrl.message.p}}</p>
-      <input type="button" value="yes" class="my-info__button btn cust_l"
+    <div class="pop-up-button-wrapper">
+      <input type="button" value="yes" class="btn"
              ng-if="$ctrl.message.showBtns"
              ng-click="$ctrl.saveChangesBeforeOut()">
-      <input type="button" value="No" class="my-info__button cust_r"
+      <input type="button" value="No" class="btn btn_cancel"
              ng-if="$ctrl.message.showBtns"
              ng-click="$ctrl.cancelChanges()">
     </div>
+    <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
   </div>
 </div>
-

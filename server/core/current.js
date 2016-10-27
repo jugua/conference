@@ -28,7 +28,6 @@ function get(req, res) {
 }
 
 function update(req, res) {
-
   User.findOneAndUpdate({hash: req.headers.token}, req.body, (err, current) => {
     if (err) {
       res.status(403).send(err);

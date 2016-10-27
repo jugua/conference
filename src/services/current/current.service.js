@@ -1,4 +1,4 @@
-function Users($resource, $window, $q, $rootScope) {
+function Current($resource, $window, $q, $rootScope, $http) {
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;
@@ -53,10 +53,25 @@ function Users($resource, $window, $q, $rootScope) {
     });
   }
 
+  function uploadPhoto(file) {
+    let formData = new FormData();
+    formData.append('file', file);
+    return $http.post('api/upload-image', formData, {
+      transformRequest: angular.identity,
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+        'Content-Type': undefined
+      }
+    })
+  }
+
   return {
     getInfo,
-    updateInfo
+    updateInfo,
+    uploadPhoto
   };
 }
 
-export default Users;
+export default Current;

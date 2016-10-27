@@ -10,7 +10,7 @@ import appConfiguration from './app.config';
 // Single Style Entry Point
 import './main.sass';
 
-const app = angular.module('app', ['ui.router', 'ngResource']);
+const app = angular.module('app', ['ui.router', 'ngResource', 'ngFileUpload']);
 
 // Components Entrypoint
 appComponents(app);

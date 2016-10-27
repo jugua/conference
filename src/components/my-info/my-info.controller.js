@@ -1,7 +1,10 @@
 export default class MyInfoController {
-  constructor(Users, $scope, $state) {
+  constructor(Current, $scope, $state, $http) {
     this.state = $state;
-    this.users = Users;
+    this.currentUserService = Current;
+    this.defaultImage = "assets/img/ava.jpg";
+    this.file;
+    this.uploadForm = {};
     this.errorMessage = {
       title: 'Error',
       p: 'Please fill in all mandatory fields'
@@ -34,7 +37,7 @@ export default class MyInfoController {
     if (this.userInfoForm.$invalid) {
       this.showMessage('errorMessage');
     } else {
-      this.users.updateInfo(this.user);
+      this.currentUserService.updateInfo(this.user);
       this.showMessage('sucessMessage');
       this.userInfoForm.$setPristine()
     }
@@ -59,6 +62,7 @@ export default class MyInfoController {
 
   saveChangesBeforeOut() {
     this.submit();
+    this.userInfoForm.$setSubmitted();
     if (this.userInfoForm.$valid) {
       this.event();
       this.state.go(this.nextState.name);
@@ -69,6 +73,30 @@ export default class MyInfoController {
     this.event();
     this.state.reload();
     this.state.go(this.nextState.name);
+  }
+
+  uploadAva() {
+    if (this.uploadForm.$valid) {
+      this.defaultImage = this.file;
+
+      this.currentUserService.uploadPhoto(this.file)
+        .then(
+          () => {
+            this.toggleSlideBack();
+            if (this.user.photo) {
+              console.log('df')
+              this.currentUserService.getInfo();
+              this.state.go('header.tabs.myInfo');
+            }
+
+            this.currentUserService.updateInfo(this.user);
+          }
+        )
+        .catch(
+          (error) => {
+
+        });
+    }
   }
 }
 

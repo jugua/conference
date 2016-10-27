@@ -10,6 +10,11 @@ const auth = require('./core/auth');
 const registration = require('./core/registration');
 const current = require('./core/current');
 const forgotPassword = require('./core/forgot-password');
+const uploadImage = require('./core/upload-image');
+
+const multer = require('multer');
+const upload = multer();
+
 
 
 module.exports = (PORT) => {
@@ -25,8 +30,8 @@ module.exports = (PORT) => {
 
   app.use(express.static(path.join(__dirname, './../dist')));
   app.use("/", express.static(path.join(__dirname, './../dist')));
-  app.use(bodyParser.urlencoded({extended: true}));
-  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
+  app.use(bodyParser.json({limit: '5mb'}));
 
   router.use((req, res, next) => {
     console.log('Something is happening.');
@@ -42,6 +47,9 @@ module.exports = (PORT) => {
 
   router.route('/forgot-password')
     .post(forgotPassword);
+
+  router.route('/upload-image')
+    .post(upload.any(), uploadImage);
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
