@@ -1,6 +1,6 @@
 export default class HeaderController {
 
-  constructor(user, Menus, $state, $scope, $document) {
+  constructor(user, Menus, Current, $state, $scope, $document) {
     this.role = user ? user.roles : '';
     this.name = (user) ? `${user.fname}'s` : 'Your';
     this.menu = Menus.getMenu(this.role);
@@ -40,5 +40,17 @@ export default class HeaderController {
 
       off();
     });
+
+    this.Current = Current;
+    this.$state = $state;
+  }
+
+  logout() {
+    this.Current.logout()
+      .then(
+        () => {  // success callback
+          this.$state.go('header.home', {}, { reload: true });
+        }
+      );
   }
 }
