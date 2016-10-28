@@ -74,14 +74,23 @@ function Current($resource, $window, $q, $rootScope, $http) {
         Pragma: 'no-cache',
         'Content-Type': undefined
       }
-    })
+    });
+  }
+
+  function logout() {
+    return $http.get('/api/logout', {
+      headers: {
+        token: getToken
+      }
+    });
   }
 
   return {
     getInfo,
     updateInfo,
     uploadPhoto,
-    getPhotoStatus
+    getPhotoStatus,
+    logout
   };
 }
 

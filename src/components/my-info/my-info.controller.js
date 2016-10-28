@@ -45,7 +45,7 @@ export default class MyInfoController {
     } else {
       this.currentUserService.updateInfo(this.user);
       this.showMessage('sucessMessage');
-      this.userInfoForm.$setPristine()
+      this.userInfoForm.$setPristine();
     }
   }
 

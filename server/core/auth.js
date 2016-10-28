@@ -25,7 +25,8 @@ let auth = function auth(req, res) {
               return;
             }
 
-            let token = user._id + 1234; //fake token
+            let rand = Math.floor(Math.random() * 90000) + 10000;
+            let token = user._id + rand; // fake token
             user.hash.push(token);
             user.save();
             res.json({"token": token});

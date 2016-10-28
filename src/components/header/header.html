@@ -1,7 +1,7 @@
 <header class="header">
         <div class="header__title">conference management</div>
         <div class="menu-container">
-            <button class="menu-container__button" ng-click="ctrl.menuHidden=!ctrl.menuHidden">{{ctrl.name}} Account</button>
+            <button class="menu-container__button js-dropdown" ng-click="ctrl.menuHidden=!ctrl.menuHidden">{{ctrl.name}} Account</button>
             <div class="menu-container__content" ng-show="ctrl.menuHidden">
               <sign-in ng-if="!ctrl.menu"></sign-in>
               <div  ng-if="ctrl.menu" class="dropdown">
@@ -13,6 +13,10 @@
                        ui-sref="header.{{items.link}}"
                        ui-sref-active="is-active">
                       {{items.name}}</a>
+                  </li>
+                  <li class="menu-list__item menu-list__item_sign-out">
+                      <a href="#" class="menu-list__title"
+                         ng-click="ctrl.logout()">Sign Out</a>
                   </li>
                 </ul>
               </div>
