@@ -132,7 +132,6 @@
 
 .dragover
   position: relative
-  opacity: 0
 
   &::after
     content: ''
@@ -143,6 +142,11 @@
     height: 100%
     display: block
     box-sizing: border-box
+    background-image: url("assets/img/upload.svg")
+    background-position: center
+    background-color: white
+    background-repeat: no-repeat
+    background-size: 20%
     border: 4px dashed $sharp-blue
 
 .preview
