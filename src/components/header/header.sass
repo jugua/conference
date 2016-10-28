@@ -110,11 +110,10 @@
 
     &:first-child
       border-top: none
-      
-    &:last-child
+
+    &_sign-out
       position: relative
 
-    &:last-child > a
       &:after
         content: ''
         display: block
@@ -136,6 +135,7 @@
     text-decoration: none
     color: #fff
     font-size: 20px
+    box-sizing: border-box
 
     @media ($mnw: $mdmn)
       padding: 0 10px
