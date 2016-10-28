@@ -53,14 +53,15 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
-  // function getPhotoStatus() {
-  //   return this.current;
-  //   // if () {
-  //   //   return this.defaultPhotoInfo;
-  //   // }
-  //   //
-  //   // return this.updatedPhotoInfo;
-  // }
+  function getPhotoStatus() {
+    return this.current.then((result)=>{
+      if (result.photo) {
+        return { button: 'Update Photo', title: 'Update Your Photo' };
+      }
+
+      return { button: 'Upload Photo', title: 'Upload new photo' };
+    });
+  }
 
   function uploadPhoto(file) {
     let formData = new FormData();
@@ -76,20 +77,11 @@ function Current($resource, $window, $q, $rootScope, $http) {
     })
   }
 
-  // this.defaultPhotoInfo = {
-  //   button: 'Upload New Photo',
-  //   title: 'Upload new photo'
-  // };
-  //
-  // this.updatedPhotoInfo = {
-  //   button: 'Update Photo',
-  //   title: 'Update Your Photo'
-  // };
-
   return {
     getInfo,
     updateInfo,
-    uploadPhoto
+    uploadPhoto,
+    getPhotoStatus
   };
 }
 

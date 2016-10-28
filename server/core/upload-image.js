@@ -53,8 +53,8 @@ function uploadImage(req, res) {
     stream.on('finish', function() {
       console.log('File saved successfully.');
 
-      current['photo'] = '';
-      // 'assets/img/' + fileName
+      current['photo'] = 'assets/img/' + fileName;
+
       current.save((err) => {
         if (err) {
           res.send({error:"database"});

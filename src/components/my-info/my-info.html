@@ -2,7 +2,7 @@
   <div class="my-info__ava" ngf-background="$ctrl.user.photo || $ctrl.defaultImage">
     <input type="button" class="my-info__remove">
     <div class="slide">
-      <input type="button" class="slide__button" value="Upload Photo" ng-click="$ctrl.toggleSlide()">
+      <input type="button" class="slide__button" value="{{:: $ctrl.currentPhotoStatus.button }}" ng-click="$ctrl.toggleSlide()">
     </div>
   </div>
   <label for="my-info-bio" class="form-label form-label_required my-info__label my-info__label_bio">Short Bio</label>
@@ -47,12 +47,15 @@
 
 <div class="pop-up-wrapper" ng-if="$ctrl.showLoad">
   <div class="pop-up" ng-show="!$ctrl.uploadPreview">
-    <h3 class="pop-up__title">Upload new photo</h3>
+    <h3 class="pop-up__title">{{:: $ctrl.currentPhotoStatus.title}}</h3>
     <button class="pop-up__close" ng-click="$ctrl.toggleSlide()"></button>
     <form novalidate
           name="$ctrl.uploadForm"
           ngf-drop="$ctrl.togglePreview()"
           ng-model="$ctrl.file"
+          ngf-max-size="2MB"
+          ngf-pattern="image/jpeg,image/png,image/gif"
+          required
           class="upload-form">
         <p class="pop-up__notification pop-up__notification_light">
           It is much easier to identify you if you have a photo.

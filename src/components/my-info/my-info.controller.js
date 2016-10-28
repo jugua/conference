@@ -8,7 +8,8 @@ export default class MyInfoController {
     this.defaultImage = "assets/img/ava.jpg";
     this.file;
     this.uploadForm = {};
-    // this.currentPhotoStatus = this.currentUserService.getPhotoStatus();
+
+    this.currentPhotoStatus = this.getCurrentPhotoStatus();
 
     this.errorMessage = {
       title: 'Error',
@@ -86,18 +87,22 @@ export default class MyInfoController {
     this.currentUserService.uploadPhoto(this.file)
       .then(
         () => {
+          this.user.photo = this.file;
           this.toggleSlide();
           this.togglePreview();
-          if (this.user.photo) {
-            this.currentUserService.getInfo();
-            this.state.go('header.tabs.myInfo');
-          }
           this.currentUserService.getInfo();
+          this.getCurrentPhotoStatus();
         }
       )
       .catch(
         (error) => {
       });
+  }
+
+  getCurrentPhotoStatus() {
+    this.currentUserService.getPhotoStatus().then((result)=>{
+      this.currentPhotoStatus = result;
+    })
   }
 }
 
