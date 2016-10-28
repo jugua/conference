@@ -1,5 +1,5 @@
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
-  <div class="my-info__ava" ngf-background="$ctrl.user.photo || $ctrl.defaultImage">
+  <div class="my-info__ava" ngf-background="$ctrl.ava">
     <input type="button" class="my-info__remove">
     <div class="slide">
       <input type="button" class="slide__button" value="{{:: $ctrl.currentPhotoStatus.button }}" ng-click="$ctrl.toggleSlide()">

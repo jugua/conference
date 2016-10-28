@@ -6,6 +6,7 @@ export default class MyInfoController {
 
     this.uploadPreview = false;
     this.defaultImage = "assets/img/ava.jpg";
+    this.ava = this.user.photo || this.defaultImage;
     this.file;
     this.uploadForm = {};
 
@@ -87,7 +88,7 @@ export default class MyInfoController {
     this.currentUserService.uploadPhoto(this.file)
       .then(
         () => {
-          this.user.photo = this.file;
+          this.ava = this.file;
           this.toggleSlide();
           this.togglePreview();
           this.currentUserService.getInfo();
