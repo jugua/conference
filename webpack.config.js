@@ -13,7 +13,7 @@ module.exports = {
     context: path.resolve(__dirname + '/src'),
     entry: {
         bundle: "./index",
-        vendor: ['angular', 'angular-ui-router','angular-resource']
+        vendor: ['angular', 'angular-ui-router','angular-resource', 'ng-file-upload']
     },
     devtool: "source-map",
     output: {

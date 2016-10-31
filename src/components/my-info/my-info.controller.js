@@ -1,7 +1,17 @@
 export default class MyInfoController {
-  constructor(Users, $scope, $state) {
+  constructor(Current, $scope, $state, $http) {
     this.state = $state;
-    this.users = Users;
+    this.currentUserService = Current;
+
+
+    this.uploadPreview = false;
+    this.defaultImage = "assets/img/ava.jpg";
+    this.ava = this.user.photo || this.defaultImage;
+    this.file;
+    this.uploadForm = {};
+
+    this.currentPhotoStatus = this.getCurrentPhotoStatus();
+
     this.errorMessage = {
       title: 'Error',
       p: 'Please fill in all mandatory fields'
@@ -34,9 +44,9 @@ export default class MyInfoController {
     if (this.userInfoForm.$invalid) {
       this.showMessage('errorMessage');
     } else {
-      this.users.updateInfo(this.user);
+      this.currentUserService.updateInfo(this.user);
       this.showMessage('sucessMessage');
-      this.userInfoForm.$setPristine()
+      this.userInfoForm.$setPristine();
     }
   }
 
@@ -50,15 +60,18 @@ export default class MyInfoController {
   }
 
   toggleSlide() {
-    this.showLoad = true;
+    this.showLoad = !this.showLoad;
   }
 
-  toggleSlideBack() {
-    this.showLoad = false;
+  togglePreview() {
+    if(this.uploadForm.$valid) {
+      this.uploadPreview = !this.uploadPreview;
+    }
   }
 
   saveChangesBeforeOut() {
     this.submit();
+    this.userInfoForm.$setSubmitted();
     if (this.userInfoForm.$valid) {
       this.event();
       this.state.go(this.nextState.name);
@@ -69,6 +82,28 @@ export default class MyInfoController {
     this.event();
     this.state.reload();
     this.state.go(this.nextState.name);
+  }
+
+  uploadAva() {
+    this.currentUserService.uploadPhoto(this.file)
+      .then(
+        () => {
+          this.ava = this.file;
+          this.toggleSlide();
+          this.togglePreview();
+          this.currentUserService.getInfo();
+          this.getCurrentPhotoStatus();
+        }
+      )
+      .catch(
+        (error) => {
+      });
+  }
+
+  getCurrentPhotoStatus() {
+    this.currentUserService.getPhotoStatus().then((result)=>{
+      this.currentPhotoStatus = result;
+    })
   }
 }
 

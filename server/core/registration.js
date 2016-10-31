@@ -25,22 +25,21 @@ function registration(req, res) {
         res.status(409).json({error: 'email_already_exists'});
       } else {
         let user = new User();// create a new instance of the User
-        token = user._id + 123;
+
         userfields.forEach((field) => {
           if (field==='mail') {
             req.body[field] = req.body[field].toLowerCase();
           }
           user[field] = req.body[field];
-        })
+        });
 
         user.roles.push('s');
 
-        user.hash.push(token);
         user.save((err) => {
           if (err) {
-            res.send({error:"database"});
+            res.send({ error: 'database' });
           } else {
-            res.send({token});
+            res.send({ status: 'success' });
           }
         });
       }

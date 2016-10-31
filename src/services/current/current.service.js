@@ -1,4 +1,4 @@
-function Users($resource, $window, $q, $rootScope) {
+function Current($resource, $window, $q, $rootScope, $http) {
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;
@@ -53,10 +53,45 @@ function Users($resource, $window, $q, $rootScope) {
     });
   }
 
+  function getPhotoStatus() {
+    return this.current.then((result)=>{
+      if (result.photo) {
+        return { button: 'Update Photo', title: 'Update Your Photo' };
+      }
+
+      return { button: 'Upload Photo', title: 'Upload new photo' };
+    });
+  }
+
+  function uploadPhoto(file) {
+    let formData = new FormData();
+    formData.append('file', file);
+    return $http.post('api/upload-image', formData, {
+      transformRequest: angular.identity,
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+        'Content-Type': undefined
+      }
+    });
+  }
+
+  function logout() {
+    return $http.get('/api/logout', {
+      headers: {
+        token: getToken
+      }
+    });
+  }
+
   return {
     getInfo,
-    updateInfo
+    updateInfo,
+    uploadPhoto,
+    getPhotoStatus,
+    logout
   };
 }
 
-export default Users;
+export default Current;
