@@ -147,8 +147,57 @@
     background-size: 20%
     border: 4px dashed $sharp-blue
 
+.preview-wrapper
+  position: relative
+  display: flex
+  justify-content: center
+  align-items: center
+
 .preview
   width: 180px
   height: 180px
   background-size: cover
   margin: 10px auto
+
+.load-animation
+  position: absolute
+  width: 149px
+  height: 28px
+  margin: auto
+
+.squaresWaveG
+  position: absolute
+  top: 0
+  background-color: white
+  width: 28px
+  height: 28px
+  animation-name: bounce_squaresWaveG
+  animation-duration: 1.5s
+  animation-iteration-count: infinite
+  animation-direction: normal
+
+.squaresWaveG_1
+  left: 0
+  animation-delay: 0.6s
+
+.squaresWaveG_2
+  left: 30px
+  animation-delay: 0.75s
+
+.squaresWaveG_3
+  left: 60px
+  animation-delay: 0.9s
+
+.squaresWaveG_4
+  left: 90px
+  animation-delay: 1.05s
+
+.squaresWaveG_5
+  left: 120px
+  animation-delay: 1.2s
+
+@keyframes bounce_squaresWaveG
+  0%
+    background-color: $sharp-blue
+  100%
+    background-color: white
