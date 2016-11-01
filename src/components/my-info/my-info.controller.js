@@ -5,7 +5,7 @@ export default class MyInfoController {
 
 
     this.uploadPreview = false;
-    this.defaultImage = 'assets/img/ava.jpg';
+    this.defaultImage = 'assets/img/default_ava.jpg';
     this.ava;
     this.file = {};
     this.uploadForm = {};

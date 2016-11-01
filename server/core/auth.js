@@ -3,7 +3,7 @@ let User = require('./../model/User');
 
 let auth = function auth(req, res) {
 
-  if (req.body.password && req.body.mail) {
+  if (req.body.mail) {
     User.findOne ({
         mail: req.body.mail.toLowerCase()
       },

@@ -8,19 +8,19 @@
            class="field sing-in__field"
            ng-model="signInCtrl.user.mail"
            ng-pattern="/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/i"
-           required>
+           required
+           tabindex="1">
     <span class="field-error" ng-if="signInCtrl.userForm.mail.$error.login_auth_err">We can not find an account with that email address</span>
     <div class="sign-in__password-cont">
       <label for="sign-in-password" class="form-label">password:</label>
-      <a href="#" ui-sref="header.home.forgotPassword" class="sign-in__forgot">forgot password?</a>
+      <a href="#" ui-sref="header.home.forgotPassword" class="sign-in__forgot" tabindex="3">forgot password?</a>
     </div>
     <input type="password"
            name="password"
            class="field"
            id="sign-in-password"
            ng-model="signInCtrl.user.password"
-           minlength="6" maxlength="30"
-           required>
+           tabindex="2">
     <span class="field-error" ng-if="signInCtrl.userForm.password.$error.password_auth_err">Your password is incorrect</span>
 
     <input type="submit"
