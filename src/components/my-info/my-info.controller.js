@@ -1,16 +1,17 @@
 export default class MyInfoController {
-  constructor(Current, $scope, $state, $http) {
+  constructor(Current, $scope, $state) {
     this.state = $state;
     this.currentUserService = Current;
 
 
     this.uploadPreview = false;
-    this.defaultImage = "assets/img/ava.jpg";
-    this.ava = this.user.photo || this.defaultImage;
-    this.file;
+    this.defaultImage = 'assets/img/ava.jpg';
+    this.ava;
+    this.file = {};
     this.uploadForm = {};
 
     this.currentPhotoStatus = this.getCurrentPhotoStatus();
+    this.animation = false;
 
     this.errorMessage = {
       title: 'Error',
@@ -64,9 +65,13 @@ export default class MyInfoController {
   }
 
   togglePreview() {
-    if(this.uploadForm.$valid) {
+    if (this.uploadForm.$valid) {
       this.uploadPreview = !this.uploadPreview;
     }
+  }
+
+  toggleAnimation() {
+    this.animation = !this.animation;
   }
 
   saveChangesBeforeOut() {
@@ -84,26 +89,40 @@ export default class MyInfoController {
     this.state.go(this.nextState.name);
   }
 
+  successUpload() {
+    this.ava = this.file;
+    this.toggleSlide();
+    this.togglePreview();
+    this.toggleAnimation();
+    this.currentUserService.getInfo();
+    this.currentPhotoStatus = this.getCurrentPhotoStatus();
+  }
+
+  errorUpload(error) {
+    this.togglePreview();
+    this.toggleAnimation();
+    this.file = {};
+    this.uploadForm.$setValidity(error.data.error, false);
+  }
+
   uploadAva() {
+    this.toggleAnimation();
     this.currentUserService.uploadPhoto(this.file)
       .then(
         () => {
-          this.ava = this.file;
-          this.toggleSlide();
-          this.togglePreview();
-          this.currentUserService.getInfo();
-          this.getCurrentPhotoStatus();
+          this.successUpload();
         }
       )
       .catch(
         (error) => {
-      });
+          this.errorUpload(error);
+        });
   }
 
   getCurrentPhotoStatus() {
-    this.currentUserService.getPhotoStatus().then((result)=>{
+    this.currentUserService.getPhotoStatus().then((result) => {
       this.currentPhotoStatus = result;
-    })
+    });
   }
 }
 

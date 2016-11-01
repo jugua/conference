@@ -52,9 +52,6 @@ module.exports = (PORT) => {
   router.route('/forgot-password')
     .post(forgotPassword);
 
-  router.route('/upload-image')
-    .post(upload.any(), uploadImage);
-
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
     .post(registration)
@@ -71,6 +68,9 @@ module.exports = (PORT) => {
   router.route('/users/current')
     .get(current.get)
     .post(current.update);
+
+  router.route('/users/current/photo')
+    .post(upload.any(), uploadImage);
 
   // get user by id
 

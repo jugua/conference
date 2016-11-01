@@ -1,3 +1,6 @@
+/* global angular */
+/* global FormData */
+
 function Current($resource, $window, $q, $rootScope, $http) {
   function getToken() {
     let info = $window.localStorage.userInfo;
@@ -46,7 +49,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
 
   function updateInfo(userInfo) {
     users.updateCurrentUser(userInfo, () => {
-      //this.getInfo();
+      // this.getInfo();
     },
     () => {
       $rootScope.$broadcast('signInEvent');
@@ -54,7 +57,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
   }
 
   function getPhotoStatus() {
-    return this.current.then((result)=>{
+    return this.current.then((result) => {
       if (result.photo) {
         return { button: 'Update Photo', title: 'Update Your Photo' };
       }
@@ -64,9 +67,9 @@ function Current($resource, $window, $q, $rootScope, $http) {
   }
 
   function uploadPhoto(file) {
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append('file', file);
-    return $http.post('api/upload-image', formData, {
+    return $http.post('api/users/current/photo', formData, {
       transformRequest: angular.identity,
       headers: {
         token: getToken,
