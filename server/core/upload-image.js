@@ -76,7 +76,7 @@ function uploadImage(req, res) {
         }
 
         let data = {
-          message: 'File saved successfully.'
+          answer: current['photo']
         };
         res.send(data);
 

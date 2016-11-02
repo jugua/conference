@@ -90,12 +90,12 @@ export default class MyInfoController {
     this.state.go(this.nextState.name);
   }
 
-  successUpload() {
+  successUpload(res) {
     this.ava = this.file;
     this.toggleSlide();
     this.togglePreview();
     this.toggleAnimation();
-    this.currentUserService.getInfo();
+    this.user.photo = res.data.answer;
     this.getCurrentPhotoStatus();
   }
 
@@ -110,8 +110,8 @@ export default class MyInfoController {
     this.toggleAnimation();
     this.currentUserService.uploadPhoto(this.file)
       .then(
-        () => {
-          this.successUpload();
+        (result) => {
+          this.successUpload(result);
         }
       )
       .catch(
