@@ -53,7 +53,7 @@ function uploadImage(req, res) {
         stream = fs.createWriteStream(path + fileName + random);
     stream.write(buffer);
     stream.on('error', function(err) {
-
+      console.log(err);
       console.log('Could not write file to memory.');
 
       res.status(400).send({
