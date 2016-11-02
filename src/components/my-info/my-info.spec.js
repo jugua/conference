@@ -41,6 +41,7 @@ describe('MyInfo', () => {
       let controller = makeController(currentServiceMock, scope);
       let preview = controller.uploadPreview;
       controller.uploadForm.$valid = true;
+      controller.uploadForm.$setValidity = () => {};
 
       controller.togglePreview();
       expect(controller.uploadPreview).toEqual(!preview);
@@ -50,6 +51,7 @@ describe('MyInfo', () => {
       let controller = makeController(currentServiceMock, scope);
       let preview = controller.uploadPreview;
       controller.uploadForm.$valid = false;
+      controller.uploadForm.$setValidity = () => {};
 
       controller.togglePreview();
       expect(controller.uploadPreview).toEqual(preview);
