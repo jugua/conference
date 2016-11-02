@@ -36,9 +36,10 @@ function uploadImage(req, res) {
     }
 
     if(current.photo) {
+      console.log(current.photo);
       fs.unlink('dist/' + current.photo, (err)=>{
         console.log(err);
-        if(err) {
+        if (err) {
           res.status(403).send({error: 'delete'});
           return
         }
