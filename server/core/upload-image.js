@@ -1,6 +1,8 @@
 'use strict'
 
 const fs = require('fs');
+const path = require('path');
+
 
 let User = require('./../model/User');
 
@@ -47,7 +49,7 @@ function uploadImage(req, res) {
     //   });
     // }
 
-    let path = __dirname + './../../dist/assets/img/',
+    let path = path.join(__dirname, './../../dist/assets/img/'),
         buffer = file.buffer,
         random = Math.random().toString(36).substr(2, 5),
         fileName = current._id,
