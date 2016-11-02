@@ -49,11 +49,11 @@ function uploadImage(req, res) {
     //   });
     // }
 
-    let path = path.join(__dirname, './../../dist/assets/img/'),
+    let pathFile = path.join(__dirname, '/../../dist/assets/img/'),
         buffer = file.buffer,
         random = Math.random().toString(36).substr(2, 5),
         fileName = current._id,
-        stream = fs.createWriteStream(path + fileName + random);
+        stream = fs.createWriteStream(pathFile + fileName + random);
     stream.write(buffer);
     stream.on('error', function(err) {
       console.log(err);
