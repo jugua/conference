@@ -37,17 +37,17 @@ function uploadImage(req, res) {
       return
     }
 
-    // if(current.photo) {
-    //   console.log(current.photo);
-    //   fs.unlink('dist/' + current.photo, (err)=>{
-    //     console.log(err);
-    //     if (err) {
-    //       res.status(403).send({error: 'delete'});
-    //       return
-    //     }
-    //     console.log('successfully deleted')
-    //   });
-    // }
+    if(current.photo) {
+      console.log(current.photo);
+      fs.unlink(path.join(__dirname, '/../../dist/' + current.photo), (err)=>{
+        console.log(err);
+        if (err) {
+          res.status(403).send({error: 'delete'});
+          return
+        }
+        console.log('successfully deleted')
+      });
+    }
 
     let pathFile = path.join(__dirname, '/../../dist/assets/img/'),
         buffer = file.buffer,
@@ -67,9 +67,7 @@ function uploadImage(req, res) {
     stream.on('finish', function() {
       console.log('File saved successfully.');
 
-      current['photo'] = '';
-      // 'assets/img/' + fileName + random
-
+      current['photo'] = 'assets/img/' + fileName + random;
 
       current.save((err) => {
         if (err) {
