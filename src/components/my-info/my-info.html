@@ -75,6 +75,7 @@
                  ngf-select="$ctrl.togglePreview()"
                  ngf-max-size="2MB"
                  ngf-pattern="image/jpeg,image/png,image/gif"
+                 accept="image/jpeg,image/png,image/gif"
           >
         </label>
         <p ng-if="$ctrl.uploadForm.$error.maxSize" class="field-error field-error_center">
@@ -93,7 +94,7 @@
     <h3 class="pop-up__title">Photo preview</h3>
 
     <p class="pop-up__notification">
-      It is how selected photo will looks on "My Info" page.
+      It is how a selected photo will look on the My Info page.
     </p>
 
     <div class="preview-wrapper">

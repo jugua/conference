@@ -65,6 +65,7 @@ export default class MyInfoController {
   }
 
   togglePreview() {
+    this.uploadForm.$setValidity('save', true);
     if (this.uploadForm.$valid) {
       this.uploadPreview = !this.uploadPreview;
     }
