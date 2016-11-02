@@ -35,17 +35,17 @@ function uploadImage(req, res) {
       return
     }
 
-    if(current.photo) {
-      console.log(current.photo);
-      fs.unlink('dist/' + current.photo, (err)=>{
-        console.log(err);
-        if (err) {
-          res.status(403).send({error: 'delete'});
-          return
-        }
-        console.log('successfully deleted')
-      });
-    }
+    // if(current.photo) {
+    //   console.log(current.photo);
+    //   fs.unlink('dist/' + current.photo, (err)=>{
+    //     console.log(err);
+    //     if (err) {
+    //       res.status(403).send({error: 'delete'});
+    //       return
+    //     }
+    //     console.log('successfully deleted')
+    //   });
+    // }
 
     let path = 'dist/assets/img/',
         buffer = file.buffer,
