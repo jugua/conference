@@ -46,7 +46,7 @@ function uploadImage(req, res) {
       });
     }
 
-    let path = './dist/assets/img/',
+    let path = '/dist/assets/img/',
         buffer = file.buffer,
         random = Math.random().toString(36).substr(2, 5),
         fileName = current._id,
@@ -64,7 +64,9 @@ function uploadImage(req, res) {
     stream.on('finish', function() {
       console.log('File saved successfully.');
 
-      current['photo'] = 'assets/img/' + fileName + random;
+      current['photo'] = '';
+      // 'assets/img/' + fileName + random
+
 
       current.save((err) => {
         if (err) {
