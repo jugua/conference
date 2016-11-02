@@ -46,7 +46,7 @@ function uploadImage(req, res) {
       });
     }
 
-    let path = '/dist/assets/img/',
+    let path = '/var/www/site_for_testers_5000/dist/assets/img/',
         buffer = file.buffer,
         random = Math.random().toString(36).substr(2, 5),
         fileName = current._id,
