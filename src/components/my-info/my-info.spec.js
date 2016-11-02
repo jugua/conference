@@ -17,7 +17,6 @@ describe('MyInfo', () => {
       updateInfo:()=> {},
       uploadPhoto: ()=> {},
       getPhotoStatus: ()=> {
-        deferred.resolve({button: 'Update Photo', title: 'Update Your Photo'});
         return deferred.promise
       },
       logout:()=> {}

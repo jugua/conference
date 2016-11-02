@@ -10,7 +10,7 @@ export default class MyInfoController {
     this.file = {};
     this.uploadForm = {};
 
-    this.currentPhotoStatus = this.getCurrentPhotoStatus();
+    this.getCurrentPhotoStatus();
     this.animation = false;
 
     this.errorMessage = {
@@ -96,7 +96,7 @@ export default class MyInfoController {
     this.togglePreview();
     this.toggleAnimation();
     this.currentUserService.getInfo();
-    this.currentPhotoStatus = this.getCurrentPhotoStatus();
+    this.getCurrentPhotoStatus();
   }
 
   errorUpload(error) {
@@ -121,9 +121,10 @@ export default class MyInfoController {
   }
 
   getCurrentPhotoStatus() {
-    this.currentUserService.getPhotoStatus().then((result) => {
-      this.currentPhotoStatus = result;
-    });
+    this.currentUserService.getPhotoStatus()
+      .then((result) => {
+        this.currentPhotoStatus = result;
+      });
   }
 }
 
