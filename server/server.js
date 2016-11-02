@@ -46,9 +46,6 @@ module.exports = (PORT) => {
   router.route('/login')
     .post(auth);
 
-  router.route('/logout')
-    .get(logout);
-
   router.route('/forgot-password')
     .post(forgotPassword);
 
@@ -68,6 +65,9 @@ module.exports = (PORT) => {
   router.route('/users/current')
     .get(current.get)
     .post(current.update);
+
+  router.route('/users/current/logout')
+    .get(logout);
 
   router.route('/users/current/photo')
     .post(upload.any(), uploadImage);

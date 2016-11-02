@@ -38,31 +38,30 @@ function Current($resource, $window, $q, $rootScope, $http) {
   function getInfo() {
     const current = $q.defer();
     users.getCurrentUser({}, (data) => {
-      current.resolve(data);
-    },
-    () => {
-      current.resolve(null);
-    });
+        current.resolve(data);
+      },
+      () => {
+        current.resolve(null);
+      });
 
     this.current = current.promise;
   }
 
   function updateInfo(userInfo) {
     users.updateCurrentUser(userInfo, () => {
-      // this.getInfo();
-    },
-    () => {
-      $rootScope.$broadcast('signInEvent');
-    });
+      },
+      () => {
+        $rootScope.$broadcast('signInEvent');
+      });
   }
 
   function getPhotoStatus() {
     return this.current.then((result) => {
       if (result.photo) {
-        return { button: 'Update Photo', title: 'Update Your Photo' };
+        return {button: 'Update Photo', title: 'Update Your Photo'};
       }
 
-      return { button: 'Upload Photo', title: 'Upload new photo' };
+      return {button: 'Upload Photo', title: 'Upload new photo'};
     });
   }
 
@@ -81,9 +80,11 @@ function Current($resource, $window, $q, $rootScope, $http) {
   }
 
   function logout() {
-    return $http.get('/api/logout', {
+    return $http.get('/api/users/current/logout', {
       headers: {
-        token: getToken
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache'
       }
     });
   }
