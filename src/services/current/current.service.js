@@ -55,16 +55,6 @@ function Current($resource, $window, $q, $rootScope, $http) {
       });
   }
 
-  function getPhotoStatus() {
-    return this.current.then((result) => {
-      if (result.photo) {
-        return {button: 'Update Photo', title: 'Update Your Photo'};
-      }
-
-      return {button: 'Upload Photo', title: 'Upload new photo'};
-    });
-  }
-
   function uploadPhoto(file) {
     const formData = new FormData();
     formData.append('file', file);
@@ -93,7 +83,6 @@ function Current($resource, $window, $q, $rootScope, $http) {
     getInfo,
     updateInfo,
     uploadPhoto,
-    getPhotoStatus,
     logout
   };
 }
