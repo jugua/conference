@@ -1,6 +1,8 @@
 'use strict'
 
 const fs = require('fs');
+const path = require('path');
+
 
 let User = require('./../model/User');
 
@@ -35,33 +37,46 @@ function uploadImage(req, res) {
       return
     }
 
-    let path = './dist/assets/img/',
+    if(current.photo) {
+      console.log(current.photo);
+      fs.unlink(path.join(__dirname, '/../../dist/' + current.photo), (err)=>{
+        console.log(err);
+        if (err) {
+          res.status(403).send({error: 'delete'});
+          return
+        }
+        console.log('successfully deleted')
+      });
+    }
+
+    let pathFile = path.join(__dirname, '/../../dist/assets/img/'),
         buffer = file.buffer,
+        random = Math.random().toString(36).substr(2, 5),
         fileName = current._id,
-        stream = fs.createWriteStream(path + fileName);
+        stream = fs.createWriteStream(pathFile + fileName + random);
     stream.write(buffer);
-
     stream.on('error', function(err) {
-
+      console.log(err);
       console.log('Could not write file to memory.');
 
       res.status(400).send({
-        message: 'Problem saving the file. Please try again.'
+        error: 'save'
       });
     });
 
     stream.on('finish', function() {
       console.log('File saved successfully.');
 
-      current['photo'] = 'assets/img/' + fileName;
+      current['photo'] = 'assets/img/' + fileName + random;
+
       current.save((err) => {
         if (err) {
-          res.send({error:"database"});
+          res.send({error:"save"});
           return;
         }
 
         let data = {
-          message: 'File saved successfully.'
+          answer: current['photo']
         };
         res.send(data);
 

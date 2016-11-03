@@ -46,14 +46,8 @@ module.exports = (PORT) => {
   router.route('/login')
     .post(auth);
 
-  router.route('/logout')
-    .get(logout);
-
   router.route('/forgot-password')
     .post(forgotPassword);
-
-  router.route('/upload-image')
-    .post(upload.any(), uploadImage);
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/users')
@@ -71,6 +65,12 @@ module.exports = (PORT) => {
   router.route('/users/current')
     .get(current.get)
     .post(current.update);
+
+  router.route('/users/current/logout')
+    .get(logout);
+
+  router.route('/users/current/photo')
+    .post(upload.any(), uploadImage);
 
   // get user by id
 

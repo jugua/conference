@@ -1,10 +1,18 @@
 export default class MyInfoController {
-  constructor(Current, $scope, $state, $http) {
+  constructor(Current, $scope, $state) {
     this.state = $state;
     this.currentUserService = Current;
-    this.defaultImage = "assets/img/ava.jpg";
-    this.file;
+
+
+    this.uploadPreview = false;
+    this.defaultImage = 'assets/img/default_ava.jpg';
+    this.ava;
+    this.file = {};
     this.uploadForm = {};
+
+    this.getCurrentPhotoStatus();
+    this.animation = false;
+
     this.errorMessage = {
       title: 'Error',
       p: 'Please fill in all mandatory fields'
@@ -53,11 +61,18 @@ export default class MyInfoController {
   }
 
   toggleSlide() {
-    this.showLoad = true;
+    this.showLoad = !this.showLoad;
   }
 
-  toggleSlideBack() {
-    this.showLoad = false;
+  togglePreview() {
+    this.uploadForm.$setValidity('save', true);
+    if (this.uploadForm.$valid) {
+      this.uploadPreview = !this.uploadPreview;
+    }
+  }
+
+  toggleAnimation() {
+    this.animation = !this.animation;
   }
 
   saveChangesBeforeOut() {
@@ -75,28 +90,41 @@ export default class MyInfoController {
     this.state.go(this.nextState.name);
   }
 
+  successUpload(res) {
+    this.ava = this.file;
+    this.toggleSlide();
+    this.togglePreview();
+    this.toggleAnimation();
+    this.user.photo = res.data.answer;
+    this.getCurrentPhotoStatus();
+  }
+
+  errorUpload(error) {
+    this.togglePreview();
+    this.toggleAnimation();
+    this.file = {};
+    this.uploadForm.$setValidity(error.data.error, false);
+  }
+
   uploadAva() {
-    if (this.uploadForm.$valid) {
-      this.defaultImage = this.file;
-
-      this.currentUserService.uploadPhoto(this.file)
-        .then(
-          () => {
-            this.toggleSlideBack();
-            if (this.user.photo) {
-              console.log('df')
-              this.currentUserService.getInfo();
-              this.state.go('header.tabs.myInfo');
-            }
-
-            this.currentUserService.updateInfo(this.user);
-          }
-        )
-        .catch(
-          (error) => {
-
+    this.toggleAnimation();
+    this.currentUserService.uploadPhoto(this.file)
+      .then(
+        (result) => {
+          this.successUpload(result);
+        }
+      )
+      .catch(
+        (error) => {
+          this.errorUpload(error);
         });
-    }
+  }
+
+  getCurrentPhotoStatus() {
+    this.currentUserService.getPhotoStatus()
+      .then((result) => {
+        this.currentPhotoStatus = result;
+      });
   }
 }
 

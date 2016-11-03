@@ -1,3 +1,5 @@
+/* global angular */
+
 export default class HeaderController {
 
   constructor(user, Menus, Current, $state, $scope, $document) {
