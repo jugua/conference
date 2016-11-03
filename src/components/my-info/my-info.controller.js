@@ -10,7 +10,7 @@ export default class MyInfoController {
     this.file = {};
     this.uploadForm = {};
 
-    this.getCurrentPhotoStatus();
+    this.currentPhotoStatus = this.getCurrentPhotoStatus();
     this.animation = false;
 
     this.errorMessage = {
@@ -96,7 +96,7 @@ export default class MyInfoController {
     this.togglePreview();
     this.toggleAnimation();
     this.user.photo = res.data.answer;
-    this.getCurrentPhotoStatus();
+    this.currentPhotoStatus = this.getCurrentPhotoStatus();
   }
 
   errorUpload(error) {
@@ -121,10 +121,10 @@ export default class MyInfoController {
   }
 
   getCurrentPhotoStatus() {
-    this.currentUserService.getPhotoStatus()
-      .then((result) => {
-        this.currentPhotoStatus = result;
-      });
+    if (this.user.photo) {
+      return { button: 'Update Photo', title: 'Update Your Photo' };
+    }
+    return { button: 'Upload Photo', title: 'Upload new photo' };
   }
 }
 
