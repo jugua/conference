@@ -10,6 +10,8 @@ export default (app) => {
           currentUser: Current => Current.current
         },
         controller: function (currentUser, $scope) {
+          console.log(currentUser);
+          console.log(11111111);
           if (!currentUser || currentUser.roles.indexOf('s') === -1) {
             $scope.$emit('signInEvent');
           }
