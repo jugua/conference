@@ -1,3 +1,4 @@
 const server = require('./server/server');
 
-server(5000);
+server(process.env.PORT);
+
