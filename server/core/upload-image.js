@@ -29,16 +29,19 @@ function uploadImage(req, res) {
 
     if (file.size > 2097152){
       res.status(413).send({error: 'maxSize'});
-      return
+      return;
     }
-
+    if (file.size === 0){
+      res.status(413).send({error: 'minSize'});
+      return;
+    }
     if (!/jp(e)?g|gif|png$/.test(file.mimetype)){
       res.status(415).send({error: 'pattern'});
       return
     }
 
     if(current.photo) {
-      console.log(current.photo);
+
       fs.unlink(path.join(__dirname, '/../../dist/' + current.photo), (err)=>{
         console.log(err);
         if (err) {
@@ -54,6 +57,7 @@ function uploadImage(req, res) {
         random = Math.random().toString(36).substr(2, 5),
         fileName = current._id,
         stream = fs.createWriteStream(pathFile + fileName + random);
+
     stream.write(buffer);
     stream.on('error', function(err) {
       console.log(err);
