@@ -56,6 +56,7 @@
           ngf-drop="$ctrl.togglePreview()"
           ng-model="$ctrl.file"
           ngf-max-size="2MB"
+          ngf-min-size="1"
           ngf-pattern="image/jpeg,image/png,image/gif"
           required
           class="upload-form">
@@ -74,6 +75,7 @@
                  required
                  ngf-select="$ctrl.togglePreview()"
                  ngf-max-size="2MB"
+                 ngf-min-size="1"
                  ngf-pattern="image/jpeg,image/png,image/gif"
                  accept="image/jpeg,image/png,image/gif"
           >
@@ -81,6 +83,9 @@
         <p ng-if="$ctrl.uploadForm.$error.maxSize" class="field-error field-error_center">
           You exceeded maximum allowed size for uploaded photo (2Mb)
         </p>
+      <p ng-if="$ctrl.uploadForm.$error.minSize" class="field-error field-error_center">
+        You try to upload an empty file
+      </p>
         <p ng-if="$ctrl.uploadForm.$error.pattern" class="field-error field-error_center">
           We could not understand the contents of your file. Make sure it is a jpg, gif or png formatted image.
         </p>
