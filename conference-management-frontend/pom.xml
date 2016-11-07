@@ -32,17 +32,17 @@
                         /usr/bin/
                     </installDirectory>
                 </configuration>
-                <execution>
-                    <id>install node and npm</id>
-                    <goals>
-                        <goal>install-node-and-npm</goal>
-                    </goals>
-                    <configuration>
-                        <nodeVersion>v6.7.0</nodeVersion>
-                        <npmVersion>3.10.3</npmVersion>
-                    </configuration>
-                </execution>
                 <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v6.7.0</nodeVersion>
+                            <npmVersion>3.10.3</npmVersion>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>npm install</id>
                         <goals>
