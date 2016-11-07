@@ -18,7 +18,7 @@ module.exports = {
     devtool: "source-map",
     output: {
         publicPath: "/",
-        path: __dirname + '/dist',
+        path: __dirname + '../conference-management-backend/src/main/webapp',
         filename: "[name].js"
     },
     devServer: {

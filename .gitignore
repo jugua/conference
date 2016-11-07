@@ -2,6 +2,7 @@ node_modules
 dist
 dist-dev
 conference-management-frontend/runApiServer.js
+target
 
 ### Node template
 # Logs
