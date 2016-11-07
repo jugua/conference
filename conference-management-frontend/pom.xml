@@ -29,16 +29,6 @@
                 <version>1.0</version>
                 <executions>
                     <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>v5.3.0</nodeVersion>
-                            <npmVersion>3.2.5</npmVersion>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>npm install</id>
                         <goals>
                             <goal>npm</goal>
@@ -52,7 +42,7 @@
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
-                            <arguments>dev</arguments>
+                            <arguments>build-dev</arguments>
                         </configuration>
                     </execution>
                 </executions>
