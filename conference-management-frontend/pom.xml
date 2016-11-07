@@ -29,8 +29,8 @@
 
                 <executions>
                     <execution>
-                        <id>exec-npm-install</id>
-                        <phase>generate-sources</phase>
+                        <id>run-npm-install</id>
+                        <phase>compile</phase>
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
@@ -43,7 +43,7 @@
                     </execution>
 
                     <execution>
-                        <id>exec-gulp</id>
+                        <id>run-gulp</id>
                         <phase>compile</phase>
                         <goals>
                             <goal>exec</goal>
