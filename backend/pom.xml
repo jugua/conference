@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ua.rd.cm</groupId>
-    <artifactId>conference_management</artifactId>
+    <artifactId>conference-management-backend</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    
+
 </project>
