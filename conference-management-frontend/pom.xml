@@ -4,37 +4,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>ua.rd.cm</groupId>
-        <artifactId>conference-management</artifactId>
-        <version>1.0</version>
-    </parent>
-
     <groupId>ua.rd.cm</groupId>
     <artifactId>conference-management-frontend</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.5.0</version>
-        </dependency>
-    </dependencies>
     <build>
+
         <plugins>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
 
                 <executions>
+
                     <execution>
-                        <id>run-npm-install</id>
-                        <phase>compile</phase>
+                        <id>exec-npm-install</id>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
-                                <argument>install</argument>
+                                <argument>i</argument>
                             </arguments>
                         </configuration>
                         <goals>
@@ -43,21 +34,25 @@
                     </execution>
 
                     <execution>
-                        <id>run-gulp</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
+                        <id>exec-gulp</id>
+                        <phase>process-resources</phase>
                         <configuration>
                             <executable>gulp</executable>
                             <arguments>
                                 <argument>build-dev</argument>
                             </arguments>
                         </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
                     </execution>
+
                 </executions>
+
             </plugin>
+
         </plugins>
+
     </build>
 
 </project>

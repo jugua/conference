@@ -14,7 +14,7 @@ gulp.task('build-dev', () => {
   myConfig.debug = true;
   myConfig.output = {
     publicPath: "/",
-    path: __dirname + '/../dist',
+    path: __dirname + '/../target/webapp',
     filename: "[name].js"
   };
 
