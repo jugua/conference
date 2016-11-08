@@ -15,13 +15,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @DefaultUrl("http://localhost:9000/#")
 public class ConferenceManagementHomePage extends PageObject {
 
-    public ConferenceManagementHomePage(WebDriver driver) {
-        super(driver);
-    }
-
     @FindBy(className = "menu-container")
     WebElementFacade accMenu;
-    @FindBy(className = "menu-list__title")
+    @FindBy(xpath = "//li[@class = 'menu-list__item menu-list__item_sign-out']/a")
     WebElementFacade signOutButton;
     @FindBy(id="sign-in-email")
     WebElementFacade loginField;
@@ -29,43 +25,36 @@ public class ConferenceManagementHomePage extends PageObject {
     WebElementFacade passwordField;
     @FindBy(xpath = "//form/input[@type = 'submit']")
     WebElementFacade signInButton;
-    @FindBy(xpath = "//div[@class='menu-container__content ng-hide']")
-    WebElementFacade showMenuFlag;
 
+    WebDriver  driver;
 
-
-
-
+    public ConferenceManagementHomePage(WebDriver driver) {
+        super(driver);
+        this.driver = driver;
+    }
 
     public String getAccountName(){
         setImplicitTimeout(2, SECONDS);
         return accMenu.find(By.xpath("button")).getText();
-
     }
 
-    private void showMenu(){
-        if(showMenuFlag.isVisible()){
-            accMenu.click();
-        }
+    public void refresh(){
+        driver.navigate().refresh();
     }
-
 
     public boolean hasSignOutMenu() {
-
-        //showMenu();
         accMenu.click();
         if(signOutButton.isCurrentlyVisible()){
             return true;
         }
         return false;
-
     }
 
     public void clickSignOut() {
         signOutButton.click();
     }
 
-    public void setLogin(String login) {
+    public void setEmail(String login) {
         loginField.clear();
         loginField.type(login);
     }

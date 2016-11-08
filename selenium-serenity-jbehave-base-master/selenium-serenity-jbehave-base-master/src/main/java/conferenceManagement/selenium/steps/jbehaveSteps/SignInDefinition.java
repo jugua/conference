@@ -7,8 +7,7 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.junit.Assert;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+
 
 /**
  * Created by Lev_Serba on 11/7/2016.
@@ -24,25 +23,20 @@ public class SignInDefinition {
     }
 
     @When("when he login as $user")
-    public void login_as_user(String nickname){
-
+    public void loginAsUser(String nickname){
        user.loginAsUser(nickname);
-
     }
 
     @Then("user signed in successfully")
     public void signedIn(){
         Assert.assertTrue(user.isSignedIn());
+        user.logout();
     }
 
-    /*@When("when he login as $user")
-    public void whenWhenHeLoginAsInvalideUser() {
-        // PENDING
-    }
-*/
     @Then("user is unsigned")
     public void thenUserIsUnsigned() {
         Assert.assertFalse(user.isSignedIn());
+        user.logout();
     }
 
 }

@@ -1,12 +1,8 @@
 package conferenceManagement.selenium.steps.serenitySteps;
 
 import conferenceManagement.selenium.page.conferenceManagement.ConferenceManagementHomePage;
-import net.serenitybdd.core.annotations.findby.FindBy;
-import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
-import org.codehaus.groovy.runtime.powerassert.SourceText;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Lev_Serba on 11/7/2016.
@@ -14,10 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SignInSteps {
 
     ConferenceManagementHomePage cmHomePage;
-    String username, password;
-
-    @FindBy(className = "menu-container")
-    WebElementFacade accMenu;
+    String email, password, username;
 
     @Step
     public void openHomePage() {
@@ -26,6 +19,7 @@ public class SignInSteps {
 
     @Step
     public void logout() {
+        cmHomePage.refresh();
         if(cmHomePage.hasSignOutMenu()){
             cmHomePage.clickSignOut();
         }
@@ -35,36 +29,27 @@ public class SignInSteps {
      public void loginAsUser(String nickname) {
         switch (nickname){
             case "valid user":
-                username = System.getProperty("cm-valid.username");
+                email = System.getProperty("cm-valid.email");
                 password = System.getProperty("cm-valid.password");
+                username = System.getProperty("cm-valid.username");
                 break;
             case "invalid user":
-                username = System.getProperty("cm-invalid.username");
+                email = System.getProperty("cm-invalid.email");
                 password = System.getProperty("cm-invalid.password");
+                username = System.getProperty("cm-invalid.username");
                 break;
             default:
         }
-
-//        username = "speaker@speaker.com";
-//        password = "speaker";
-
-
-        cmHomePage.setLogin(username);
+        cmHomePage.setEmail(email);
         cmHomePage.setPassword(password);
         cmHomePage.clickSignInButton();
-
-
-
     }
 
     @Step
     public boolean isSignedIn() {
-       // System.out.println(cmHomePage.getAccountName().split("@")[0].toLowerCase());
-        if(cmHomePage.hasSignOutMenu() && username.contains(cmHomePage.getAccountName().split("'")[0].toLowerCase())) {
+        if(cmHomePage.hasSignOutMenu() && (cmHomePage.getAccountName().toLowerCase()).contains(username.toLowerCase())) {
             return true;
         }
         return false;
     }
-
-
 }

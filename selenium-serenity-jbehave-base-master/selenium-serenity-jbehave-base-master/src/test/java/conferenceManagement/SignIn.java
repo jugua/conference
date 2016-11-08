@@ -6,6 +6,4 @@ import net.serenitybdd.jbehave.SerenityStory;
 /**
  * Created by Lev_Serba on 11/7/2016.
  */
-public class SignIn extends SerenityStory {
-
-}
+public class SignIn extends SerenityStory {     }

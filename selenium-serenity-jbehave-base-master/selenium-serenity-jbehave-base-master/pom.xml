@@ -14,8 +14,9 @@
 		<!--- For fun ~~-->
         <twitter-username>??</twitter-username>
         <twitter-password>??</twitter-password>
-        <cm-username>speaker@speaker.com</cm-username>
+        <cm-email>speaker@speaker.com</cm-email>
         <cm-password>speaker</cm-password>
+		<cm-username>speaker</cm-username>
 		<!--        <VERSIONS>               -->
 		<serenity.core.version>1.1.26</serenity.core.version>
 		<selenium.core.version>2.51.0</selenium.core.version>
@@ -156,10 +157,12 @@
 						<skipTests>false</skipTests>
 						<testFailureIgnore>true</testFailureIgnore>
 						<systemPropertyVariables>
-							<cm-valid.username>speaker@speaker.com</cm-valid.username>
+							<cm-valid.email>speaker@speaker.com</cm-valid.email>
 							<cm-valid.password>speaker</cm-valid.password>
-							<cm-invalid.username>errttespeaker@speaker.com</cm-invalid.username>
+							<cm-valid.username>speaker</cm-valid.username>
+							<cm-invalid.email>errttespeaker@speaker.com</cm-invalid.email>
 							<cm-invalid.password>gwgegespeaker</cm-invalid.password>
+							<cm-invalid.username>gwgegespeaker</cm-invalid.username>
 							<github-username>${github-username}</github-username>
 							<github-password>${github-password}</github-password>
 							<systemProperties>
