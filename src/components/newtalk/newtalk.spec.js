@@ -6,9 +6,9 @@ describe('NewTalk state', () => {
 
   beforeEach(() => {
     userServiceMock = {
-      bio: 's',
-      job: 'd',
-      past: 'd'
+      bio: 'aa',
+      job: 'aaaa',
+      past: 'a'
     };
     sut = new NewtalkController(userServiceMock);
   });
