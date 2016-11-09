@@ -45,35 +45,27 @@ const Menus = function Menus() {
 
       return menu[menuRole];
     },
-    getTopics: ()=> {
-      return ['JVM Languages and new programming paradigms',
-        'Web development and Java Enterprise technologies',
-        'Software engineering practices',
-        'Architecture & Cloud',
-        'BigData & NoSQL'
-      ]
-    },
-    getTypes: ()=> {
-      return ['Regular Talk',
-        'Lighting Talk',
-        'Online Talk',
-        'Hands-On-Lab',
-        'BigData & NoSQL'
-      ]
-    },
-    getLang: ()=> {
-      return ['English',
-        'Ukrainian',
-        'Russian'
-      ]
-    },
-    getTalksLevels: ()=> {
-      return ['Beginner',
-        'Intermediate',
-        'Advanced',
-        'Expert'
-      ]
-    }
+    getTopics: () => ['JVM Languages and new programming paradigms',
+      'Web development and Java Enterprise technologies',
+      'Software engineering practices',
+      'Architecture & Cloud',
+      'BigData & NoSQL'
+    ]
+    ,
+    getTypes: () => ['Regular Talk',
+      'Lighting Talk',
+      'Online Talk',
+      'Hands-On-Lab'
+    ],
+    getLang: () => ['English',
+      'Ukrainian',
+      'Russian'
+    ],
+    getTalksLevels: () => ['Beginner',
+      'Intermediate',
+      'Advanced',
+      'Expert'
+    ]
   };
 };
 

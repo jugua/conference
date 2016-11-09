@@ -52,6 +52,7 @@ export default class MyInfoController {
 
   saveChangesBeforeOut() {
     this.submit();
+
     this.userInfoForm.$setSubmitted();
     if (this.userInfoForm.$valid) {
       this.event();

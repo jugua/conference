@@ -1,4 +1,13 @@
-// import NewtalkModule from './newtalk'
-// import NewtalkController from './new-talk-popup/newtalk.controller';
-// import NewtalkComponent from './new-talk-popup/newtalk.component';
-// import NewtalkTemplate from './new-talk-popup/newtalk.html';
+import NewtalkPopupController from './newtalk.controller';
+
+describe ('Submit New Talk popup controller test', () => {
+  let sut;
+  beforeEach(() => {
+    sut = new NewtalkPopupController();
+  });
+
+  it ('has Close method', () => {
+    expect(typeof sut.close).toBe('function');
+  });
+
+})
