@@ -5,11 +5,7 @@
   &__bio
     width: calc(100% - 190px)
     height: 147px
-    box-sizing: border-box
     float: right
-    margin: 10px auto
-    padding: 5px
-    resize: none
 
     &:focus
       outline: none
@@ -25,25 +21,6 @@
       @media ($mnw:$sdmx)
        width: calc(100% - 190px)
        float: right
-
-  &__field
-    border: $border
-
-    &:focus
-      outline: none
-      border: none
-      border-bottom: 2px solid $sharp-blue
-
-  &__info
-    width: 100%
-    box-sizing: border-box
-    padding: 5px
-    margin: 10px 0
-    resize: none
-
-    &:focus
-      outline: none
-      border: 2px solid $sharp-blue
 
   &__button
     margin: 20px auto

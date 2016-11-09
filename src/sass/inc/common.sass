@@ -47,23 +47,49 @@
     outline: none
     border-bottom: 2px solid $sharp-blue
 
+  &_border
+    border: $border
+
+    &:focus
+      border: none
+      border-bottom: 2px solid $sharp-blue
+
+
+.textarea
+  width: 100%
+  box-sizing: border-box
+  padding: 5px
+  margin: 10px 0
+  resize: none
+
+  &:focus
+    outline: none
+    border: 2px solid $sharp-blue
+
 //Forms
 
-.form-title
-  margin: 0 0 20px 0
-  padding: 0
-  font-size: 25px
-  text-transform: uppercase
+.form
+  &-title
+    margin: 0 0 20px 0
+    padding: 0
+    font-size: 25px
+    text-transform: uppercase
 
-.form-label
-  display: block
-  text-transform: capitalize
-  font-size: 16px
+  &-label
+    display: block
+    text-transform: capitalize
+    font-size: 16px
 
-  &_required:after
-    content: ' *'
-    display: inline
-    color: red
+    &_required:after
+      content: ' *'
+      display: inline
+      color: red
+
+  &-select
+    width: 100%
+
+    &:focus
+      outline: none
 
 .ng-submitted .ng-invalid
   border: 1px solid red
