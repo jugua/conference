@@ -1,8 +1,7 @@
 import template from './control-popup.html';
 
 const controlPopupComponent = {
-  template,
-  controller
+  template
 };
 
 export default controlPopupComponent;
