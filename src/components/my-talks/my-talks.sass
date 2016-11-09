@@ -1,6 +1,55 @@
 .my-talks
+  height: 100%
   &__header
     border-bottom: 1px solid $sharp-blue
   &__button
     width: 140px
     margin: 0 10px 10px 0
+  &__pop-up
+    width: 600px
+
+.data-table
+  margin-top: 20px
+  border-bottom: 1px solid $sharp-blue
+  &__inner-wrapper
+    height: 500px
+    overflow: auto
+  &__row
+    display: flex
+    text-transform: capitalize
+    font-family: Oswald Light, sans-serif
+    font-size: 14px
+    box-sizing: border-box
+    padding: 5px 0
+    border-bottom: 1px solid #f2f2f2
+    &:nth-child(odd)
+      background: #f2f2f2
+
+  &__column
+    &_title
+      width: 30%
+    &_topic
+      width: 15%
+    &_status, &_date
+      width: 10%
+    &_comments
+      width: 35%
+
+.table-header
+  width: calc(100% - 16px)
+  display: flex
+  &__item
+    text-transform: capitalize
+    box-sizing: border-box
+    padding: 5px 0
+    &_title
+      width: 30%
+    &_topic
+      width: 15%
+    &_status, &_date
+      width: 10%
+    &_comments
+      width: 35%
+
+
+
