@@ -1,4 +1,30 @@
-import NewtalkModule from './newtalk'
-import NewtalkController from './new-talk-popup/newtalk.controller';
-import NewtalkComponent from './new-talk-popup/newtalk.component';
-import NewtalkTemplate from './new-talk-popup/newtalk.html';
+import NewtalkController from './newtalk.controller';
+
+
+describe('NewTalk state', () => {
+  let sut, userServiceMock;
+
+  beforeEach(() => {
+    userServiceMock = {
+      bio: 's',
+      job: 'd',
+      past: 'd'
+    };
+    sut = new NewtalkController(userServiceMock);
+  });
+  it('check if currentUser object exists', () => {
+    expect(sut.current).toBeDefined();
+  });
+
+  it('check if currentUser mandatory fields non empty', () => {
+    if (sut.current.bio && sut.current.job && sut.current.past) {
+      expect(sut.isEmptyBio).toEqual(false);
+    } else {
+      expect(sut.isEmptyBio).toEqual(true);
+    }
+  });
+
+});
+
+
+

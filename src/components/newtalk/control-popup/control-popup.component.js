@@ -6,8 +6,7 @@ const controlPopupComponent = {
 
   },
   template,
-  controller,
-  controllerAs: 'newtalkCtrl'
+  controller
 };
 
 export default controlPopupComponent;

@@ -6,8 +6,7 @@ const newtalkComponent = {
 
   },
   template,
-  controller,
-  controllerAs: 'newtalkCtrl'
+  controller
 };
 
 export default newtalkComponent;
