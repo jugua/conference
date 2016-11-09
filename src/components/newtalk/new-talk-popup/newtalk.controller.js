@@ -1,6 +1,6 @@
 export default class NewtalkController {
-  constructor() {
-
+  constructor(Menus) {
+    this.selectService = Menus;
   }
 }
 

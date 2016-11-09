@@ -25,28 +25,37 @@
         topic
       </label>
       <select class="form-select">
-        <option class="form-select__option">Topics</option>
+        <option
+            ng-repeat="topic in $ctrl.selectService.getTopics()">
+          {{topic}}
+        </option>
       </select>
 
       <label class="form-label form-label_required">
         type
       </label>
       <select class="form-select">
-        <option class="form-select__option">Topics</option>
+        <option
+            ng-repeat="type in $ctrl.selectService.getTypes()">{{type}}
+        </option>
       </select>
 
       <label class="form-label form-label_required">
         language
       </label>
       <select class="form-select">
-        <option class="form-select__option">Topics</option>
+        <option
+            ng-repeat="lang in $ctrl.selectService.getLang()">{{lang}}
+        </option>
       </select>
 
       <label class="form-label form-label_required">
         level
       </label>
       <select class="form-select">
-        <option class="form-select__option">Topics</option>
+        <option
+            ng-repeat="level in $ctrl.selectService.getTalksLevels()">{{level}}
+        </option>
       </select>
 
       <label for="new-talk-add-inf" class="form-label">

@@ -30,7 +30,7 @@ describe('menuService', () => {
     expect(cut.getTopics() instanceof Array).toBe(true);
   });
 
-  it('has property getTypes', () => {
+  it('getTypes reurns array', () => {
     expect(cut.getTypes() instanceof Array).toBe(true);
   });
 
