@@ -10,6 +10,9 @@
         <version>1.0</version>
     </parent>
     <packaging>war</packaging>
+    <properties>
+        <spring-version>4.3.3.RELEASE</spring-version>
+    </properties>
 
     <groupId>ua.rd.cm</groupId>
     <artifactId>conference-management-backend</artifactId>
@@ -62,7 +65,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${spring-version}</version>
         </dependency>
 
         <dependency>
@@ -92,19 +95,19 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${spring-version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${spring-version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${org.springframework.version}</version>
+            <version>${spring-version}</version>
         </dependency>
 
         <dependency>
