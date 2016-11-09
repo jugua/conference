@@ -9,6 +9,7 @@
         <artifactId>conference-management</artifactId>
         <version>1.0</version>
     </parent>
+    <packaging>war</packaging>
 
     <groupId>ua.rd.cm</groupId>
     <artifactId>conference-management-backend</artifactId>
