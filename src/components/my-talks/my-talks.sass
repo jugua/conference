@@ -1,6 +1,100 @@
 .my-talks
+  height: 100%
   &__header
     border-bottom: 1px solid $sharp-blue
   &__button
     width: 140px
     margin: 0 10px 10px 0
+  &__pop-up
+    width: 600px
+
+.data-table
+  margin-top: 20px
+
+  &__inner-wrapper
+    height: 500px
+    overflow: auto
+
+  &__row
+    display: flex
+    flex-wrap: wrap
+    text-transform: capitalize
+    font-family: Oswald Light, sans-serif
+    font-size: 14px
+    box-sizing: border-box
+    padding: 5px 0
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      border: 1px solid #f2f2f2
+      margin-bottom: 5px
+      +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
+
+    &:nth-child(odd)
+      background: #f2f2f2
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        background: #fff
+
+
+  &__column
+    &_title
+      width: 30%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        &:before
+          content: 'Title'
+          +my-talk-before-title
+
+
+    &_topic
+      width: 15%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        &:before
+          content: 'Topic'
+          +my-talk-before-title
+
+    &_status
+      width: 10%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        &:before
+          content: 'Status'
+          +my-talk-before-title
+
+    &_date
+      width: 10%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        &:before
+          content: 'Date'
+          +my-talk-before-title
+
+
+    &_comments
+      width: 35%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        &:before
+          content: 'Comments'
+          +my-talk-before-title
+
+
+.table-header
+  width: calc(100% - 16px)
+  display: flex
+  &__item
+    text-transform: capitalize
+    box-sizing: border-box
+    padding: 5px 0
+    &_title
+      width: 30%
+    &_topic
+      width: 15%
+    &_status, &_date
+      width: 10%
+    &_comments
+      width: 35%
+  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+    display: none
+
+
+
