@@ -5,18 +5,25 @@
               ng-model="$ctrl.user.bio"
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
-  <label for="my-info-job" class="form-label form-label_required my-info__label">Job</label>
+  <label for="my-info-job" class="form-label form-label_required my-info__label">Job Title</label>
   <input type="text" name="job" id="my-info-job"
          class="field my-info__field my-info__field_job"
          maxlength="256"
          ng-model="$ctrl.user.job"
          ng-required="true">
-  <label for="my-info-linkedin-past-conferences" class="form-label form-label_required my-info__label">Past Conferences</label>
-  <input type="text" name="past" id="my-info-linkedin-past-conferences"
-         class="field my-info__field my-info__field_past"
-         maxlength="1000"
-         ng-model="$ctrl.user.past"
+  <label for="my-info-company" class="form-label form-label_required my-info__label">Company
+    <md-tooltip md-direction="left">[i]</md-tooltip>
+  </label>
+  <input type="text" name="company" id="my-info-company"
+         class="field my-info__field my-info__field_company"
+         maxlength="256"
+         ng-model="$ctrl.user.company"
          ng-required="true">
+  <label for="my-info-linkedin-past-conferences" rows="5" class="form-label my-info__label">Past Conferences</label>
+  <textarea type="text" name="past" id="my-info-linkedin-past-conferences" rows="5"
+         class="my-info__textarea"
+         maxlength="1000"
+         ng-model="$ctrl.user.past">{{$ctrl.user.past}}</textarea>
   <label for="my-info-linkedin" class="form-label my-info__label">LinkedIn</label>
   <input type="text" name="linkedin" id="my-info-linkedin"
          class="field my-info__field"
@@ -34,7 +41,7 @@
          class="field my-info__field"
          ng-model="$ctrl.user.blog">
   <label for="my-info-additional-info" class="form-label my-info__label">Additional Info</label>
-  <textarea name="info" id="my-info-additional-info" rows="5" class="my-info__info"
+  <textarea name="info" id="my-info-additional-info" rows="5" class="my-info__textarea"
             ng-model="$ctrl.user.info"
             maxlength="1000">{{$ctrl.user.info}}</textarea>
 
