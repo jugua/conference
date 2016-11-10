@@ -3,6 +3,7 @@ export default class UserPhotoController {
     this.currentUserService = Current;
 
     this.uploadPreview = false;
+    this.deletePreview = false;
     this.defaultImage = 'assets/img/default_ava.jpg';
     this.ava;
     this.file;
@@ -63,5 +64,42 @@ export default class UserPhotoController {
     }
     return { button: 'Upload Photo', title: 'Upload new photo' };
   }
-}
 
+  // deleting photo
+  toggleDeletePreview() {
+    this.deletePreview = !this.deletePreview;
+  }
+
+  askToDeletePhoto() {
+    if (this.ava || this.user.photo) {
+      this.toggleDeletePreview();
+    }
+  }
+
+  deletePhoto() {
+    this.toggleAnimation();
+    this.currentUserService.deleteUserPhoto()
+        .then(
+            (result) => {
+              this.successDelete(result);
+            }
+        )
+        .catch(
+            (error) => {
+              this.errorDelete(error);
+            });
+  }
+
+  successDelete(res) {
+    this.ava = {};
+    this.toggleDeletePreview();
+    this.toggleAnimation();
+    this.user.photo = {};
+  }
+
+  errorDelete(error) {
+    this.toggleDeletePreview();
+    this.toggleAnimation();
+    this.uploadForm.$setValidity(error.data.error, false);
+  }
+}

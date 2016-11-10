@@ -69,6 +69,19 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
+  // deleting photo
+  function deleteUserPhoto() {
+    return $http.delete('api/users/current/photo', {
+      transformRequest: angular.identity,
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+        'Content-Type': undefined
+      }
+    });
+  }
+
   function logout() {
     return $http.get('/api/users/current/logout', {
       headers: {
@@ -83,7 +96,8 @@ function Current($resource, $window, $q, $rootScope, $http) {
     getInfo,
     updateInfo,
     uploadPhoto,
-    logout
+    logout,
+    deleteUserPhoto
   };
 }
 
