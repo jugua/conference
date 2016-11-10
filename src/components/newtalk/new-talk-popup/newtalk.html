@@ -29,45 +29,37 @@
       <label class="form-label form-label_required">
         topic
       </label>
-      <select class="form-select"
+      <select class="new-talk__select"
               ng-required="true"
-              ng-model="$ctrl.talk.topic">
-        <option ng-repeat="topic in $ctrl.selectService.getTopics()" value="{{topic}}">
-          {{topic}}
-        </option>
+              ng-model="$ctrl.talk.topic"
+              ng-options="topic for topic in $ctrl.selectService.getTopics()">
       </select>
 
       <label class="form-label form-label_required">
         type
       </label>
-      <select class="form-select"
+      <select class="new-talk__select"
               ng-required="true"
-              ng-model="$ctrl.talk.type">
-        <option value="{{type}}"
-                ng-repeat="type in $ctrl.selectService.getTypes()">{{type}}
-        </option>
+              ng-model="$ctrl.talk.type"
+              ng-options="type for type in $ctrl.selectService.getTypes()">
       </select>
 
       <label class="form-label form-label_required">
         language
       </label>
-      <select class="form-select"
+      <select class="new-talk__select"
               ng-required="true"
-              ng-model="$ctrl.talk.lang">
-        <option value="{{lang}}"
-                ng-repeat="lang in $ctrl.selectService.getLang()">{{lang}}
-        </option>
+              ng-model="$ctrl.talk.lang"
+              ng-options="lang for lang in $ctrl.selectService.getLang()">
       </select>
 
       <label class="form-label form-label_required">
         level
       </label>
-      <select class="form-select"
+      <select class="new-talk__select"
               ng-required="true"
-              ng-model="$ctrl.talk.level">
-        <option value="{{level}}"
-                ng-repeat="level in $ctrl.selectService.getTalksLevels()">{{level}}
-        </option>
+              ng-model="$ctrl.talk.level"
+              ng-options="level for level in $ctrl.selectService.getTalksLevels()">
       </select>
 
       <label for="new-talk-add-inf" class="form-label">
