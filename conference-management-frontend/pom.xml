@@ -8,6 +8,12 @@
     <artifactId>conference-management-frontend</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <packaging>pom</packaging>
+
+    <properties>
+        <build-task>build-dev</build-task>
+    </properties>
+
     <build>
 
         <plugins>
@@ -18,7 +24,6 @@
                 <version>1.4.0</version>
 
                 <executions>
-
                     <execution>
                         <id>exec-npm-install</id>
                         <phase>generate-sources</phase>
@@ -39,16 +44,14 @@
                         <configuration>
                             <executable>gulp</executable>
                             <arguments>
-                                <argument>build-dev</argument>
+                                <argument>${build-task}</argument>
                             </arguments>
                         </configuration>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                     </execution>
-
                 </executions>
-
             </plugin>
 
         </plugins>
