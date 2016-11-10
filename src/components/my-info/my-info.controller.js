@@ -5,16 +5,21 @@ export default class MyInfoController {
 
     this.errorMessage = {
       title: 'Error',
-      p: 'Please fill in all mandatory fields'
+      p: 'Please fill in all mandatory fields',
+      showOkBtn: true,
+      showYesNoBtns: false,
     };
-    this.sucessMessage = {
+    this.successMessage = {
       title: 'Saved',
-      p: 'Changes saved successfully'
+      p: 'Changes saved successfully',
+      showOkBtn: true,
+      showYesNoBtns: false,
     };
     this.goAwayMessage = {
       title: 'Attention',
       p: 'Would you like to save changes?',
-      showBtns: true
+      showOkBtn: false,
+      showYesNoBtns: true,
     };
     this.userInfoForm = {};
 
@@ -36,7 +41,7 @@ export default class MyInfoController {
       this.showMessage('errorMessage');
     } else {
       this.currentUserService.updateInfo(this.user);
-      this.showMessage('sucessMessage');
+      this.showMessage('successMessage');
       this.userInfoForm.$setPristine();
     }
   }
@@ -48,10 +53,12 @@ export default class MyInfoController {
 
   hideMessage() {
     this.isShowMessage = false;
+    this.message = {};
   }
 
   saveChangesBeforeOut() {
     this.submit();
+
     this.userInfoForm.$setSubmitted();
     if (this.userInfoForm.$valid) {
       this.event();

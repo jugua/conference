@@ -5,7 +5,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const nodeEnvironment = process.env.NODE_ENV;
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const precss = require('precss');
 const autoprefixer = require('autoprefixer');
 
 
