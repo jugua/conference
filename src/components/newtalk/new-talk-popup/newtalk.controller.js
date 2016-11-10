@@ -1,5 +1,6 @@
 export default class NewtalkController {
-  constructor(Menus, $state) {
+  constructor(Menus, Current, $state) {
+    this.currentUserService = Current;
     this.selectService = Menus;
     this.talk = {};
     this.state = $state;
@@ -24,8 +25,12 @@ export default class NewtalkController {
       this.talkForm.$submitted = false;
       return;
     }
-
-    console.log(this.talk);
+    let answer = this.currentUserService.addTalk(this.talk);
+    console.log(answer);
+    if (!this.currentUserService.current.talks instanceof Array) {
+      this.currentUserService.current.talks = [];
+    }
+    this.currentUserService.current.talks.push(this.talk);
     this.state.go('header.tabs.myTalks');
 
 

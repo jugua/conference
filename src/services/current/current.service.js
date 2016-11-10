@@ -32,8 +32,27 @@ function Current($resource, $window, $q, $rootScope, $http) {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
+    },
+    addTalk: {
+      method: 'POST',
+      url: '/api/users/current/talk',
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache'
+      }
     }
   });
+
+  function addTalk(talk) {
+    users.addTalk(talk, (answer) => {
+      console.log(answer);
+      },
+      (a) => {
+        console.log(a);
+        $rootScope.$broadcast('signInEvent');
+      });
+  }
 
   function getInfo() {
     const current = $q.defer();
@@ -80,6 +99,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
   }
 
   return {
+    addTalk,
     getInfo,
     updateInfo,
     uploadPhoto,
