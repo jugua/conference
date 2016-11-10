@@ -9,5 +9,4 @@ describe ('Submit New Talk popup controller test', () => {
   it ('has Close method', () => {
     expect(typeof sut.close).toBe('function');
   });
-
 })
