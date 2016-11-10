@@ -1,7 +1,19 @@
 package ua.rd.cm.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 /**
- * Created by Artem_Pryzhkov on 10-Nov-16.
+ * @author Artem_Pryzhkov
  */
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 public class Level {
+    private Long id;
+    private String name;
 }
