@@ -3,15 +3,36 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- project coordinates -->
     <groupId>ua.rd.cm</groupId>
     <artifactId>conference-management</artifactId>
     <version>1.0</version>
+
     <packaging>pom</packaging>
 
-    <modules>
-        <module>conference-management-backend</module>
-        <module>conference-management-frontend</module>
-    </modules>
+    <profiles>
+
+        <profile>
+            <id>frontend-build</id>
+            <modules>
+                <module>conference-management-frontend</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>backend-build</id>
+            <modules>
+                <module>conference-management-backend</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>full-build</id>
+            <modules>
+                <module>conference-management-frontend</module>
+                <module>conference-management-backend</module>
+            </modules>
+        </profile>
+
+    </profiles>
 
 </project>
