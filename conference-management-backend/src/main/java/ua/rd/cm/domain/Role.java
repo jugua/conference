@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
-@Table(name = "user")
+@Table(name = "role")
 public class Role {
 
     @TableGenerator(
