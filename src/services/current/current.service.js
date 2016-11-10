@@ -50,7 +50,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
       },
       (a) => {
         console.log(a);
-        $rootScope.$broadcast('signInEvent');
+       // $rootScope.$broadcast('signInEvent');
       });
   }
 

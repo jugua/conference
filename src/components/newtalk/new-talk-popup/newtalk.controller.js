@@ -25,9 +25,14 @@ export default class NewtalkController {
       this.talkForm.$submitted = false;
       return;
     }
+
+    this.talk.status = 'New';
+    this.talk.date = Date.now();
+
     let answer = this.currentUserService.addTalk(this.talk);
     console.log(answer);
-    if (!this.currentUserService.current.talks instanceof Array) {
+
+    if (!(this.currentUserService.current.talks instanceof Array) ) {
       this.currentUserService.current.talks = [];
     }
     this.currentUserService.current.talks.push(this.talk);
