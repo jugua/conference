@@ -1,5 +1,6 @@
 export default class MyTalksController {
-  constructor() {
+  constructor(Current) {
+    this.current = Current.current;
 
   }
 }

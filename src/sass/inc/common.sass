@@ -19,6 +19,12 @@
   &:hover
     background: darken($dark-blue, 20%)
 
+  &_right
+    float: right
+
+  &_small
+    width: 60px
+
   &_cancel
     background: $raspberry
 
@@ -47,23 +53,43 @@
     outline: none
     border-bottom: 2px solid $sharp-blue
 
+  &_border
+    border: $border
+
+    &:focus
+      border: none
+      border-bottom: 2px solid $sharp-blue
+
+
+.textarea
+  width: 100%
+  box-sizing: border-box
+  padding: 5px
+  margin: 10px 0
+  resize: none
+
+  &:focus
+    outline: none
+    border: 2px solid $sharp-blue
+
 //Forms
 
-.form-title
-  margin: 0 0 20px 0
-  padding: 0
-  font-size: 25px
-  text-transform: uppercase
+.form
+  &-title
+    margin: 0 0 20px 0
+    padding: 0
+    font-size: 25px
+    text-transform: uppercase
 
-.form-label
-  display: block
-  text-transform: capitalize
-  font-size: 16px
+  &-label
+    display: block
+    text-transform: capitalize
+    font-size: 16px
 
-  &_required:after
-    content: ' *'
-    display: inline
-    color: red
+    &_required:after
+      content: ' *'
+      display: inline
+      color: red
 
 .ng-submitted .ng-invalid
   border: 1px solid red
@@ -104,6 +130,7 @@
   &__title
     width: 100%
     box-sizing: border-box
+    font-family: "Oswald Regular", sans-serif
     font-size: 18px
     font-weight: normal
     background: $light-grey
@@ -117,6 +144,9 @@
     text-align: center
     &_light
       font-family: "Oswald Light", sans-serif
+
+    &_not-margin
+      margin: 0
 
     &-user
       overflow-wrap: break-word
