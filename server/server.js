@@ -12,6 +12,7 @@ const current = require('./core/current');
 const forgotPassword = require('./core/forgot-password');
 const uploadImage = require('./core/upload-image');
 const logout = require('./core/logout');
+const talk = require('./core/talk');
 
 const multer = require('multer');
 const upload = multer();
@@ -68,6 +69,9 @@ module.exports = (PORT) => {
 
   router.route('/users/current/logout')
     .get(logout);
+
+  router.route('/users/current/talk')
+    .post(talk.addTalk);
 
   router.route('/users/current/photo')
     .post(upload.any(), uploadImage);

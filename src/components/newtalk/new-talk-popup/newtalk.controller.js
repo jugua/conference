@@ -2,14 +2,13 @@ export default class NewtalkController {
   constructor(Menus, Current, $state) {
     this.currentUserService = Current;
     this.selectService = Menus;
-    this.talk = {};
     this.state = $state;
     this.talkForm = {};
+    this.talk = {};
     this.isShownPopup = false;
   }
 
   close() {
-    console.log(isEmptyForm(this.talks));
     if (this.talkForm.$pristine || this.talkForm.$submitted || isEmptyForm(this.talk)) {
       this.state.go('header.tabs.myTalks');
       return;
@@ -27,9 +26,9 @@ export default class NewtalkController {
           break;
         }
       }
+
       return isEmpty;
     }
-
   }
 
   submit() {
@@ -45,13 +44,12 @@ export default class NewtalkController {
     let answer = this.currentUserService.addTalk(this.talk);
     console.log(answer);
 
-    if (!(this.currentUserService.current.talks instanceof Array)) {
+    if ( !(this.currentUserService.current.talks instanceof Array) ) {
       this.currentUserService.current.talks = [];
     }
+
     this.currentUserService.current.talks.push(this.talk);
     this.state.go('header.tabs.myTalks');
-
-
   }
 }
 
