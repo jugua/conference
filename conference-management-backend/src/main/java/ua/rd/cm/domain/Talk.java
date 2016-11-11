@@ -64,7 +64,7 @@ public class Talk {
     private String description;
 
     @NotNull
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "language_id")
     private Language language;
 
