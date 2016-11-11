@@ -2,7 +2,14 @@ node_modules
 dist
 dist-dev
 conference-management-frontend/runApiServer.js
-target
+/conference-management-backend/target
+
+# Generated frontend files
+conference-management-backend/src/main/webapp/assets
+conference-management-backend/src/main/webapp/*.js
+conference-management-backend/src/main/webapp/*.map
+conference-management-backend/src/main/webapp/*.html
+conference-management-backend/src/main/webapp/*.css
 
 ### Node template
 # Logs
