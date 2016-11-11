@@ -1,2 +1,8 @@
-.idea
-node_modules
+.idea/
+*.iws
+*.ipr
+*.iml
+target
+reports
+.sonar/
+gensrc
