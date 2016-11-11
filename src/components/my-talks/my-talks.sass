@@ -43,9 +43,20 @@
   &__column
     &_check
       width: 3%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        text-align: right
+        &:before
+          content: ''
+          +my-talk-before-title
 
     &_speaker
       width: 12%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        &:before
+          content: 'Speaker'
+          +my-talk-before-title
 
     &_title
       width: 15%
@@ -94,6 +105,11 @@
 
     &_assign
       width: 15%
+      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+        width: 100%
+        &:before
+          content: 'Assign To'
+          +my-talk-before-title
 
 .table-header
   display: flex
