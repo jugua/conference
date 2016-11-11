@@ -54,6 +54,9 @@ public class User {
     @Column(name = "password", nullable = false)
     private char[] password;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", optional = false)
+    private Info info;
+
     @NotNull
     @Column(name = "photo", nullable = false)
     private String photo;
