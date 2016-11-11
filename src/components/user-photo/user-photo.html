@@ -99,6 +99,10 @@
       Are you sure you want to delete a photo?
     </p>
 
+    <p ng-if="$ctrl.deleteMessage" class="field-error field-error_center">
+      Sorry we can`t delete your photo. Try later.
+    </p>
+
     <div class="pop-up-button-wrapper">
       <input type="button" value="Cancel" class="btn"
              ng-click="$ctrl.toggleDeletePreview()">

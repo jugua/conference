@@ -72,12 +72,10 @@ function Current($resource, $window, $q, $rootScope, $http) {
   // deleting photo
   function deleteUserPhoto() {
     return $http.delete('api/users/current/photo', {
-      transformRequest: angular.identity,
       headers: {
         token: getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
-        'Content-Type': undefined
       }
     });
   }
