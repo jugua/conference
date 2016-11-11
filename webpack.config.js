@@ -7,12 +7,17 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
-
 module.exports = {
   context: path.resolve(`${__dirname}/src`),
   entry: {
     bundle: './index',
-    vendor: ['angular', 'angular-ui-router', 'angular-resource', 'ng-file-upload', 'angular-material']
+    vendor: [
+      'angular',
+      'angular-ui-router',
+      'angular-resource',
+      'ng-file-upload',
+      'angular-material'
+    ]
   },
   devtool: 'source-map',
   output: {
