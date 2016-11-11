@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite errors="0" failures="1" name="Login" skipped="0" tests="2" time="43.56" timestamp="2016-11-316 05:11:31"><testcase name="User successfully logs in to the site"><failure type="java.lang.AssertionError"/><system-err>null&#13;
+com.epam.cm.steps.jbehave.LoginDefinitionsSteps.thenThereIsSignOutButtonInAccountMenu(LoginDefinitionsSteps.java:64)&#13;
+</system-err></testcase><testcase name="User unsuccessfully logs in to the site with invalid credentials"/></testsuite>

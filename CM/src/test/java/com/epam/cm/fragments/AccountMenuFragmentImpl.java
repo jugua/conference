@@ -46,20 +46,72 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//*[@class='menu-list']//li[contains(@class,'sign-out')]")
     private WebElementFacade signOutBtn;
 
+    // forgotPw
 
-    public boolean isAccountMenuUnfolded(){
+    @FindBy(xpath = "//*[@class='sign-in__password-cont']/a")
+    private WebElementFacade forgotPasswordLink;
 
-        if(flag.isCurrentlyVisible()) return true;
+    @FindBy(xpath = "//*[@class='pop-up-wrapper']/div")
+    private WebElementFacade popUp;
+
+    @FindBy(xpath = "//*[@class='pop-up__notification']")
+    private WebElementFacade forgotLbl;
+
+    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[2]")
+    private WebElementFacade cancelBtn;
+
+    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[1]")
+    private WebElementFacade continueBtn;
+
+    public void clickForgotPwLink() {
+
+        forgotPasswordLink.click();
+    }
+
+    public boolean popUpISPresent() {
+        if (popUp.isCurrentlyVisible()) {
+            return true;
+        }
         return false;
     }
 
-    public boolean isSignOutBtnExist(){
+    public boolean forgotLblIsPresent() {
+        if (forgotLbl.isCurrentlyVisible()) {
+            return true;
+        }
+        return false;
+    }
+
+    public String forgotLblText() {
+        return forgotLbl.getText();
+    }
+
+    public boolean cancelBtnIsPresent() {
+        if (cancelBtn.isCurrentlyVisible()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean continiuBtnIsPresent() {
+        if (continueBtn.isCurrentlyVisible()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isAccountMenuUnfolded() {
+
+        if (flag.isCurrentlyVisible()) return true;
+        return false;
+    }
+
+    public boolean isSignOutBtnExist() {
         boolean b = findElements(By.xpath("//*[@class='menu-list']//li[contains(@class,'sign-out')]")).size() > 0;
         return b;
     }
 
-    public void clickSignInButton()
-    {
+    public void clickSignInButton() {
         signInBtn.click();
     }
 
@@ -73,11 +125,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
         emailField.type(login);
     }
 
-    public void  setPasswordField(String password) {
+    public void setPasswordField(String password) {
         passwordField.clear();
         passwordField.type(password);
     }
-
 
 
     public String getAccountMenuTitle() {
@@ -85,23 +136,25 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public void clickAccountMenuButton() {
-         accountBtn.click();
+        accountBtn.click();
     }
 
 
-    public boolean isLoginFieldHighlited(){
+    public boolean isLoginFieldHighlited() {
 
         return emailField.getAttribute("class").contains("invalid");
 
     }
-    public boolean isPasswordFieldHighlited(){
 
-         return passwordField.getAttribute("class").contains("invalid");
+    public boolean isPasswordFieldHighlited() {
+
+        return passwordField.getAttribute("class").contains("invalid");
 
 //        if(highlitedPasswordField == null) return false;
 //        return true;
     }
-    public String  getPasswordErrorMsgTxt(){
+
+    public String getPasswordErrorMsgTxt() {
 
         //return passwordField.findBy(By.xpath("/following-sibling::span))").getText());
 

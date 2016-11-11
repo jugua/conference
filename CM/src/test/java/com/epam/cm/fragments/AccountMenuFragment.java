@@ -11,6 +11,7 @@ public interface AccountMenuFragment extends WidgetObject {
     void clickAccountMenuButton();
     void clickSignInButton();
     void clickSignOutButton();
+    void clickForgotPwLink();
     void setLoginField(String login);
     void setPasswordField(String password);
 
@@ -18,9 +19,14 @@ public interface AccountMenuFragment extends WidgetObject {
     boolean isSignOutBtnExist();
     boolean isPasswordFieldHighlited();
     boolean isLoginFieldHighlited();
+    boolean popUpISPresent();
+    boolean forgotLblIsPresent();
+    boolean cancelBtnIsPresent();
+    boolean continiuBtnIsPresent();
 
     String getAccountMenuTitle();
     String  getPasswordErrorMsgTxt();
+    String forgotLblText();
 
 
 }

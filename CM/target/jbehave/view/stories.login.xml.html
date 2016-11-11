@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>stories.login</title>
+<style type="text/css" media="all">
+@import url( "./style/jbehave-core.css" );
+</style>
+</head>
+<body>
+ 
+<script type="syntaxhighlighter" class="brush: xml"><![CDATA[
+<story path="stories/login.story" title="">
+<meta>
+<property keyword="@" name="regression" value=""/>
+<property keyword="@" name="smoke" value=""/>
+</meta>
+<narrative keyword="Narrative:">
+  <inOrderTo keyword="In order to">gain access to all features of the site</inOrderTo>
+  <asA keyword="As a">n anonymous customer</asA>
+  <iWantTo keyword="I want to">be able to login to my account
+Meta:
+
+@regression @smoke</iWantTo>
+</narrative>
+<scenario keyword="Scenario:" title="User successfully logs in to the site">
+<step outcome="successful">Given user is on Home page</step>
+<step outcome="successful">When user clicks &apos;Your Account&apos; button in page header</step>
+<step outcome="successful">Then account menu is unfolding</step>
+<step outcome="successful">Given user filled in login form:
+<parameter><parameters>
+<names><name>email</name><name>password</name></names>
+<values><value>speaker@speaker.com</value><value>speaker</value></values>
+</parameters>
+</parameter></step>
+<step outcome="successful">When user clicks SignIn button on login form</step>
+<step outcome="successful">Then &apos;Your Account&apos; replaced by &apos;Speaker&apos;s Account&apos;</step>
+<step outcome="failed" keyword="FAILED">And there is &apos;Sign Out&apos; button in account menu<failure>java.lang.AssertionError</failure></step>
+<step outcome="notPerformed" keyword="NOT PERFORMED">When user logs out</step>
+<step outcome="notPerformed" keyword="NOT PERFORMED">Then user is redirected to Home page</step>
+<step outcome="pending" keyword="PENDING">And there is &apos;Your Account&apos; button in page header
+
+
+Meta:
+
+@regression @smoke</step>
+<pendingMethod>@Then(&quot;there is &apos;Your Account&apos; button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke&quot;)
+@Pending
+public void thenThereIsYourAccountButtonInPageHeaderMetaregressionsmoke() {
+  // PENDING
+}
+</pendingMethod>
+<failure>java.lang.AssertionError
+	at org.junit.Assert.fail(Assert.java:86)
+	at org.junit.Assert.assertTrue(Assert.java:41)
+	at org.junit.Assert.assertTrue(Assert.java:52)
+	at com.epam.cm.steps.jbehave.LoginDefinitionsSteps.thenThereIsSignOutButtonInAccountMenu(LoginDefinitionsSteps.java:64)
+	(reflection-invoke)
+	at org.jbehave.core.steps.StepCreator$ParametrisedStep.perform(StepCreator.java:599)
+	at org.jbehave.core.embedder.PerformableTree$FineSoFar.run(PerformableTree.java:340)
+...</failure>
+</scenario>
+<scenario keyword="Scenario:" title="User unsuccessfully logs in to the site with invalid credentials">
+<step outcome="successful">Given user is on Home page</step>
+<step outcome="successful">When user clicks &apos;Your Account&apos; button in page header</step>
+<step outcome="successful">Then account menu is unfolding</step>
+<step outcome="successful">Given user filled in login form:
+<parameter><parameters>
+<names><name>email</name><name>password</name></names>
+<values><value>speaker@speaker.com</value><value>wrong</value></values>
+</parameters>
+</parameter></step>
+<step outcome="successful">When user clicks SignIn button on login form</step>
+<step outcome="successful">Then user still in login form</step>
+<step outcome="successful">And password field is highlighted</step>
+<step outcome="successful">And wrong password message is <parameter>Your password is incorrect</parameter></step>
+</scenario>
+</story>
+
+]]></script>
+</body>
+<!--  SyntaxHighlighter resources:  should be included at end of body -->
+<link rel="stylesheet" type="text/css" href="./style/sh-3.0.83/shCore.css"/>
+<link rel="stylesheet" type="text/css" href="./style/sh-3.0.83/shThemeRDark.css"/>
+<script language="javascript" src="./js/sh-3.0.83/shCore.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushBash.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushCss.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushDiff.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushGroovy.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushJava.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushJScript.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushPlain.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushPython.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushRuby.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushScala.js"></script>
+<script language="javascript" src="./js/sh-3.0.83/shBrushXml.js"></script>
+<script language="javascript" src="./js/shBrushBdd.js"></script>
+<script type="text/javascript">
+    SyntaxHighlighter.defaults['gutter'] = false;
+    SyntaxHighlighter.defaults['toolbar'] = false;    
+    SyntaxHighlighter.all();
+</script>
+</html>

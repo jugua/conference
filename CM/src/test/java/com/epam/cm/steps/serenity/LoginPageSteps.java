@@ -1,5 +1,6 @@
 package com.epam.cm.steps.serenity;
 
+import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.fragments.AccountMenuFragment;
 import com.epam.cm.pages.HomePage;
@@ -21,7 +22,10 @@ public class LoginPageSteps extends ScenarioSteps {
 
     @Step
     public void gotoTheHomePage() {
+
         getPages().get(HomePage.class).open();
+        WebDriverSupport.clearLocalStorage();
+        WebDriverSupport.reloadPage();
     }
 
     @Step

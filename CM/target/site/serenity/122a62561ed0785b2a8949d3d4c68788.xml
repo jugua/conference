@@ -1,0 +1,84 @@
+<acceptance-test-run title="forgtot pasword pop up" name="forgtot pasword pop up" steps="8" successful="8" failures="0" skipped="0" ignored="0" pending="0" result="SUCCESS" duration="17907" timestamp="2016-11-11T17:11:13.373+02:00" session-id="37260C9A-4C50-4845-8816-799EF0ADD01E">
+  <user-story id="forgotPw" name="Forgot pw" path="stories/forgotPw.story"/>
+  <tags>
+    <tag name="Forgot pw" type="story"/>
+  </tags>
+  <test-group name="Given the unsigned user accesses the conference management home page" result="SUCCESS">
+    <screenshots>
+      <screenshot image="465711e12410d820e5cbef06745e3889.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1918">
+      <screenshots>
+        <screenshot image="c0b64fd4208869212badd7914aca47c6.png"/>
+      </screenshots>
+      <description>Goto the home page</description>
+    </test-step>
+  </test-group>
+  <test-group name="When user clicks the login button" result="SUCCESS">
+    <screenshots>
+      <screenshot image="583a361b0db3c909517db1a4ca39f70d.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1469">
+      <screenshots>
+        <screenshot image="583a361b0db3c909517db1a4ca39f70d.png"/>
+      </screenshots>
+      <description>Click on account menu</description>
+    </test-step>
+  </test-group>
+  <test-group name="And clicks the forgot password link" result="SUCCESS">
+    <screenshots>
+      <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1221">
+      <screenshots>
+        <screenshot image="a16fbccf4f65a5e75d771a5246ef96a6.png"/>
+      </screenshots>
+      <description>Click forgot pw link</description>
+    </test-step>
+  </test-group>
+  <test-group name="Then new pop up will appears saying {Send me a new password to my email address:}" result="SUCCESS">
+    <screenshots>
+      <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1249">
+      <screenshots>
+        <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+      </screenshots>
+      <description>Check pop up is present</description>
+    </test-step>
+    <test-step result="SUCCESS" duration="1202">
+      <screenshots>
+        <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+      </screenshots>
+      <description>Check forgot pw link is present</description>
+    </test-step>
+    <test-step result="SUCCESS" duration="1240">
+      <screenshots>
+        <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+      </screenshots>
+      <description>Get forgot pw lbl text</description>
+    </test-step>
+  </test-group>
+  <test-group name="And Cancel button appears" result="SUCCESS">
+    <screenshots>
+      <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1212">
+      <screenshots>
+        <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+      </screenshots>
+      <description>Check cancel btn</description>
+    </test-step>
+  </test-group>
+  <test-group name="And Continue button appears" result="SUCCESS">
+    <screenshots>
+      <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1139">
+      <screenshots>
+        <screenshot image="69eb83d25b1e52ff7067f98ad010d491.png"/>
+      </screenshots>
+      <description>Check continue btn</description>
+    </test-step>
+  </test-group>
+</acceptance-test-run>

@@ -1,0 +1,10 @@
+<story path="stories/forgotPw.story" title="">
+<scenario keyword="Scenario:" title="forgtot pasword pop up">
+<step outcome="successful">Given the unsigned user accesses the conference management home page</step>
+<step outcome="successful">When user clicks the login button</step>
+<step outcome="successful">And clicks the forgot password link</step>
+<step outcome="successful">Then new pop up will appears saying <parameter>Send me a new password to my email address:</parameter></step>
+<step outcome="successful">And Cancel button appears</step>
+<step outcome="successful">And Continue button appears</step>
+</scenario>
+</story>

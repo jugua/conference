@@ -47,7 +47,7 @@ public final class WebDriverSupport {
     }
 
     public static void clearLocalStorage(){
-        JavascriptExecutorFacade js = (JavascriptExecutorFacade) getDriver();
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript(String.format("window.localStorage.clear();"));
     }
     private static WebDriver getDriver() {
