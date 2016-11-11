@@ -1,0 +1,8 @@
+com\epam\cm\dto\CredentialsDTO.class
+com\epam\cm\pages\AnyPage.class
+com\epam\cm\steps\serenity\LoginPageSteps.class
+com\epam\cm\steps\jbehave\LoginDefinitionsSteps.class
+com\epam\cm\fragments\AccountMenuFragment.class
+com\epam\cm\pages\HomePage.class
+com\epam\cm\fragments\AccountMenuFragmentImpl.class
+com\epam\cm\AcceptanceTestSuite.class

@@ -1,0 +1,89 @@
+<acceptance-test-run title="User unsuccessfully logs in to the site with invalid credentials" name="User unsuccessfully logs in to the site with invalid credentials" steps="8" successful="8" failures="0" skipped="0" ignored="0" pending="0" result="SUCCESS" duration="18595" timestamp="2016-11-11T16:20:20.470+02:00" session-id="9febdf2e-657c-4e9d-aa91-d3587fe39c89">
+  <user-story id="login" name="Login" path="stories/login.story"/>
+  <tags>
+    <tag name="Login" type="story"/>
+  </tags>
+  <test-group name="Given user is on Home page" result="SUCCESS">
+    <screenshots>
+      <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1257">
+      <screenshots>
+        <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+      </screenshots>
+      <description>Goto the home page</description>
+    </test-step>
+  </test-group>
+  <test-group name="When user clicks &apos;Your Account&apos; button in page header" result="SUCCESS">
+    <screenshots>
+      <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1219">
+      <screenshots>
+        <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+      </screenshots>
+      <description>Click on account menu</description>
+    </test-step>
+  </test-group>
+  <test-group name="Then account menu is unfolding" result="SUCCESS">
+    <screenshots>
+      <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1051">
+      <screenshots>
+        <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+      </screenshots>
+      <description>Is account menu unfolded</description>
+    </test-step>
+  </test-group>
+  <test-group name="Given user filled in login form:&#xd;&#xa;［| email              | password|&#xd;&#xa;| speaker@speaker.com| wrong   |］" result="SUCCESS">
+    <screenshots>
+      <screenshot image="50c98d8d8ef5e3a90b975a7c504711af.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1296">
+      <screenshots>
+        <screenshot image="50c98d8d8ef5e3a90b975a7c504711af.png"/>
+      </screenshots>
+      <description>Type login and password: com.epam.cm.dto.CredentialsDTO@3285afbf</description>
+    </test-step>
+  </test-group>
+  <test-group name="When user clicks SignIn button on login form" result="SUCCESS">
+    <screenshots>
+      <screenshot image="ab527eafa587082707e0287eef6208f9.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1194">
+      <screenshots>
+        <screenshot image="0565a2770daa7457ad395d5801acbafd.png"/>
+      </screenshots>
+      <description>Click sign in button</description>
+    </test-step>
+  </test-group>
+  <test-group name="Then user still in login form" result="SUCCESS">
+    <screenshots>
+      <screenshot image="c9f141af77ebc78396a62de94e75d9d7.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="3120">
+      <screenshots>
+        <screenshot image="c9f141af77ebc78396a62de94e75d9d7.png"/>
+      </screenshots>
+      <description>Is sign in form opened</description>
+    </test-step>
+  </test-group>
+  <test-group name="And password field is highlighted" result="SUCCESS">
+    <screenshots>
+      <screenshot image="c9f141af77ebc78396a62de94e75d9d7.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="972">
+      <screenshots>
+        <screenshot image="c9f141af77ebc78396a62de94e75d9d7.png"/>
+      </screenshots>
+      <description>Is password field is highlited</description>
+    </test-step>
+  </test-group>
+  <test-step result="SUCCESS" duration="977">
+    <screenshots>
+      <screenshot image="c9f141af77ebc78396a62de94e75d9d7.png"/>
+    </screenshots>
+    <description>And wrong password message is {Your password is incorrect}</description>
+  </test-step>
+</acceptance-test-run>

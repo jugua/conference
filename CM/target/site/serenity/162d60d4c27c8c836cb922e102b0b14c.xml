@@ -1,0 +1,9 @@
+<acceptance-test-run title="User successfully logs in to the site" name="User successfully logs in to the site" steps="1" successful="0" failures="0" skipped="0" ignored="0" pending="1" annotated-result="PENDING" result="PENDING" duration="0" timestamp="2016-11-11T16:20:39.455+02:00">
+  <user-story id="new_login" name="New login" path="stories/new_login.story"/>
+  <tags>
+    <tag name="New login" type="story"/>
+  </tags>
+  <test-step result="PENDING" duration="0">
+    <description>Given test rest</description>
+  </test-step>
+</acceptance-test-run>

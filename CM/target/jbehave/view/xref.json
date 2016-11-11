@@ -1,0 +1,2237 @@
+{"xref": {
+  "stories": [
+    {
+      "story": {
+        "path": "stories/login.story",
+        "description": {
+          "descriptionAsString": ""
+        },
+        "narrative": {
+          "inOrderTo": "gain access to all features of the site",
+          "asA": "n anonymous customer",
+          "iWantTo": "be able to login to my account\r\nMeta:\r\n\r\n@regression @smoke",
+          "soThat": ""
+        },
+        "meta": {
+          "properties": [
+            {
+              "@name": "regression",
+              "@value": ""
+            },
+            {
+              "@name": "smoke",
+              "@value": ""
+            }
+          ]
+        },
+        "givenStories": {
+          "givenStories": [],
+          "givenStoriesAsString": "",
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          }
+        },
+        "lifecycle": {
+          "before": {
+            "steps": [
+              []
+            ]
+          },
+          "after": []
+        },
+        "scenarios": [
+          {
+            "title": "User successfully logs in to the site",
+            "meta": {
+              "properties": []
+            },
+            "givenStories": {
+              "givenStories": [],
+              "givenStoriesAsString": "",
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              }
+            },
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            },
+            "steps": [
+              "Given user is on Home page",
+              "When user clicks 'Your Account' button in page header",
+              "Then account menu is unfolding",
+              "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| speaker |",
+              "When user clicks SignIn button on login form",
+              "Then 'Your Account' replaced by 'Speaker's Account'",
+              "And there is 'Sign Out' button in account menu",
+              "When user logs out",
+              "Then user is redirected to Home page",
+              "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke"
+            ]
+          },
+          {
+            "title": "User unsuccessfully logs in to the site with invalid credentials",
+            "meta": {
+              "properties": []
+            },
+            "givenStories": {
+              "givenStories": [],
+              "givenStoriesAsString": "",
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              }
+            },
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            },
+            "steps": [
+              "Given user is on Home page",
+              "When user clicks 'Your Account' button in page header",
+              "Then account menu is unfolding",
+              "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| wrong   |",
+              "When user clicks SignIn button on login form",
+              "Then user still in login form",
+              "And password field is highlighted",
+              "And wrong password message is Your password is incorrect"
+            ]
+          }
+        ],
+        "name": "login.story"
+      },
+      "localizedNarrative": "In order to gain access to all features of the site\nAs a n anonymous customer\nI want to be able to login to my account\r\nMeta:\r\n\r\n@regression @smoke",
+      "allowed": true,
+      "status": "PENDING",
+      "givenStories": [],
+      "scenarios": [
+        {
+          "scenario": {
+            "title": "User successfully logs in to the site",
+            "meta": {
+              "properties": []
+            },
+            "givenStories": {
+              "givenStories": [],
+              "givenStoriesAsString": "",
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              }
+            },
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            },
+            "steps": [
+              "Given user is on Home page",
+              "When user clicks 'Your Account' button in page header",
+              "Then account menu is unfolding",
+              "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| speaker |",
+              "When user clicks SignIn button on login form",
+              "Then 'Your Account' replaced by 'Speaker's Account'",
+              "And there is 'Sign Out' button in account menu",
+              "When user logs out",
+              "Then user is redirected to Home page",
+              "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke"
+            ]
+          },
+          "storyPath": "stories/login.story",
+          "allowed": true,
+          "normalPerformableScenario": {
+            "parameters": [],
+            "givenStories": [],
+            "beforeSteps": {
+              "matches": []
+            },
+            "steps": {
+              "matches": [],
+              "results": [
+                {
+                  "step": "Given user is on Home page",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Given user is on Home page",
+                  "durationInMillis": 6004
+                },
+                {
+                  "step": "When user clicks 'Your Account' button in page header",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "When user clicks 'Your Account' button in page header",
+                  "durationInMillis": 1317
+                },
+                {
+                  "step": "Then account menu is unfolding",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Then account menu is unfolding",
+                  "durationInMillis": 1121
+                },
+                {
+                  "step": "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| speaker |",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Given user filled in login form:\r\n?| email              | password|\r\n| speaker@speaker.com| speaker |?",
+                  "durationInMillis": 1386
+                },
+                {
+                  "step": "When user clicks SignIn button on login form",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "When user clicks SignIn button on login form",
+                  "durationInMillis": 1605
+                },
+                {
+                  "step": "Then 'Your Account' replaced by 'Speaker's Account'",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Then 'Your Account' replaced by 'Speaker's Account'",
+                  "durationInMillis": 1266
+                },
+                {
+                  "step": "And there is 'Sign Out' button in account menu",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "And there is 'Sign Out' button in account menu",
+                  "durationInMillis": 1425
+                },
+                {
+                  "step": "When user logs out",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "When user logs out",
+                  "durationInMillis": 1346
+                },
+                {
+                  "step": "Then user is redirected to Home page",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Then user is redirected to Home page",
+                  "durationInMillis": 1232
+                },
+                {
+                  "step": "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke",
+                  "type": "PENDING",
+                  "throwable": {
+                    "@class": "org.jbehave.core.failures.PendingStepFound",
+                    "detailMessage": "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke",
+                    "stackTrace": [
+                      "org.jbehave.core.steps.AbstractStepResult$Pending.<init>(AbstractStepResult.java:58)",
+                      "org.jbehave.core.steps.AbstractStepResult.pending(AbstractStepResult.java:174)",
+                      "org.jbehave.core.steps.StepCreator$PendingStep.perform(StepCreator.java:739)",
+                      "org.jbehave.core.embedder.PerformableTree$FineSoFar.run(PerformableTree.java:340)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableSteps.perform(PerformableTree.java:1072)",
+                      "org.jbehave.core.embedder.PerformableTree$AbstractPerformableScenario.performRestartableSteps(PerformableTree.java:938)",
+                      "org.jbehave.core.embedder.PerformableTree$NormalPerformableScenario.perform(PerformableTree.java:977)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableScenario.perform(PerformableTree.java:887)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableStory.performScenarios(PerformableTree.java:811)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableStory.perform(PerformableTree.java:784)",
+                      "org.jbehave.core.embedder.PerformableTree.performCancellable(PerformableTree.java:416)",
+                      "org.jbehave.core.embedder.PerformableTree.perform(PerformableTree.java:387)",
+                      "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:291)",
+                      "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:265)",
+                      "java.util.concurrent.FutureTask.run(FutureTask.java:266)",
+                      "java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)",
+                      "java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)",
+                      "java.lang.Thread.run(Thread.java:745)"
+                    ],
+                    "suppressedExceptions": [
+                      [],
+                      []
+                    ],
+                    "uuid": "413fbe91-ede2-4f73-8fb7-6e84e000adea"
+                  },
+                  "durationInMillis": 0
+                }
+              ]
+            },
+            "afterSteps": {
+              "matches": []
+            },
+            "storyAndScenarioMeta": {
+              "properties": [
+                {
+                  "@name": "regression",
+                  "@value": ""
+                },
+                {
+                  "@name": "smoke",
+                  "@value": ""
+                }
+              ]
+            },
+            "scenario": {
+              "title": "User successfully logs in to the site",
+              "meta": {
+                "properties": []
+              },
+              "givenStories": {
+                "givenStories": [],
+                "givenStoriesAsString": "",
+                "examplesTable": {
+                  "tableAsString": "",
+                  "headerSeparator": "|",
+                  "valueSeparator": "|",
+                  "ignorableSeparator": "|--",
+                  "tableTransformers": {
+                    "transformers": [
+                      [
+                        "FORMATTING",
+                        {}
+                      ],
+                      [
+                        "REPLACING",
+                        {}
+                      ],
+                      [
+                        "FROM_LANDSCAPE",
+                        {}
+                      ]
+                    ]
+                  },
+                  "headers": [],
+                  "data": [],
+                  "properties": [
+                    {
+                      "@name": "headerSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "valueSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "ignorableSeparator",
+                      "@value": "|--"
+                    }
+                  ],
+                  "propertiesAsString": "",
+                  "namedParameters": [],
+                  "trim": true
+                }
+              },
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              },
+              "steps": [
+                "Given user is on Home page",
+                "When user clicks 'Your Account' button in page header",
+                "Then account menu is unfolding",
+                "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| speaker |",
+                "When user clicks SignIn button on login form",
+                "Then 'Your Account' replaced by 'Speaker's Account'",
+                "And there is 'Sign Out' button in account menu",
+                "When user logs out",
+                "Then user is redirected to Home page",
+                "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke"
+              ]
+            }
+          },
+          "examplePerformableScenarios": [],
+          "status": "PENDING"
+        },
+        {
+          "scenario": {
+            "title": "User unsuccessfully logs in to the site with invalid credentials",
+            "meta": {
+              "properties": []
+            },
+            "givenStories": {
+              "givenStories": [],
+              "givenStoriesAsString": "",
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              }
+            },
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            },
+            "steps": [
+              "Given user is on Home page",
+              "When user clicks 'Your Account' button in page header",
+              "Then account menu is unfolding",
+              "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| wrong   |",
+              "When user clicks SignIn button on login form",
+              "Then user still in login form",
+              "And password field is highlighted",
+              "And wrong password message is Your password is incorrect"
+            ]
+          },
+          "storyPath": "stories/login.story",
+          "allowed": true,
+          "normalPerformableScenario": {
+            "parameters": [],
+            "givenStories": [],
+            "beforeSteps": {
+              "matches": []
+            },
+            "steps": {
+              "matches": [],
+              "results": [
+                {
+                  "step": "Given user is on Home page",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Given user is on Home page",
+                  "durationInMillis": 1259
+                },
+                {
+                  "step": "When user clicks 'Your Account' button in page header",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "When user clicks 'Your Account' button in page header",
+                  "durationInMillis": 1220
+                },
+                {
+                  "step": "Then account menu is unfolding",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Then account menu is unfolding",
+                  "durationInMillis": 1053
+                },
+                {
+                  "step": "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| wrong   |",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Given user filled in login form:\r\n?| email              | password|\r\n| speaker@speaker.com| wrong   |?",
+                  "durationInMillis": 1297
+                },
+                {
+                  "step": "When user clicks SignIn button on login form",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "When user clicks SignIn button on login form",
+                  "durationInMillis": 1195
+                },
+                {
+                  "step": "Then user still in login form",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "Then user still in login form",
+                  "durationInMillis": 3121
+                },
+                {
+                  "step": "And password field is highlighted",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "And password field is highlighted",
+                  "durationInMillis": 973
+                },
+                {
+                  "step": "And wrong password message is Your password is incorrect",
+                  "type": "SUCCESSFUL",
+                  "parametrisedStep": "And wrong password message is ?Your password is incorrect?",
+                  "durationInMillis": 37
+                }
+              ]
+            },
+            "afterSteps": {
+              "matches": []
+            },
+            "storyAndScenarioMeta": {
+              "properties": [
+                {
+                  "@name": "regression",
+                  "@value": ""
+                },
+                {
+                  "@name": "smoke",
+                  "@value": ""
+                }
+              ]
+            },
+            "scenario": {
+              "title": "User unsuccessfully logs in to the site with invalid credentials",
+              "meta": {
+                "properties": []
+              },
+              "givenStories": {
+                "givenStories": [],
+                "givenStoriesAsString": "",
+                "examplesTable": {
+                  "tableAsString": "",
+                  "headerSeparator": "|",
+                  "valueSeparator": "|",
+                  "ignorableSeparator": "|--",
+                  "tableTransformers": {
+                    "transformers": [
+                      [
+                        "FORMATTING",
+                        {}
+                      ],
+                      [
+                        "REPLACING",
+                        {}
+                      ],
+                      [
+                        "FROM_LANDSCAPE",
+                        {}
+                      ]
+                    ]
+                  },
+                  "headers": [],
+                  "data": [],
+                  "properties": [
+                    {
+                      "@name": "headerSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "valueSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "ignorableSeparator",
+                      "@value": "|--"
+                    }
+                  ],
+                  "propertiesAsString": "",
+                  "namedParameters": [],
+                  "trim": true
+                }
+              },
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              },
+              "steps": [
+                "Given user is on Home page",
+                "When user clicks 'Your Account' button in page header",
+                "Then account menu is unfolding",
+                "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| wrong   |",
+                "When user clicks SignIn button on login form",
+                "Then user still in login form",
+                "And password field is highlighted",
+                "And wrong password message is Your password is incorrect"
+              ]
+            }
+          },
+          "examplePerformableScenarios": [],
+          "status": "PENDING"
+        }
+      ],
+      "beforeSteps": {},
+      "afterSteps": {},
+      "timing": {
+        "durationInMillis": 45992
+      },
+      "givenStory": false
+    },
+    {
+      "story": {
+        "path": "stories/new_login.story",
+        "description": {
+          "descriptionAsString": ""
+        },
+        "narrative": {
+          "inOrderTo": "gain access to all features of the site",
+          "asA": "n anonymous customer",
+          "iWantTo": "be able to login to my account\r\n\r\nMeta:\r\n@smoke @regression",
+          "soThat": ""
+        },
+        "meta": {
+          "properties": [
+            {
+              "@name": "regression",
+              "@value": ""
+            },
+            {
+              "@name": "smoke",
+              "@value": ""
+            }
+          ]
+        },
+        "givenStories": {
+          "givenStories": [],
+          "givenStoriesAsString": "",
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          }
+        },
+        "lifecycle": {
+          "before": {
+            "steps": [
+              []
+            ]
+          },
+          "after": []
+        },
+        "scenarios": [
+          {
+            "title": "User successfully logs in to the site",
+            "meta": {
+              "properties": []
+            },
+            "givenStories": {
+              "givenStories": [],
+              "givenStoriesAsString": "",
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              }
+            },
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            },
+            "steps": [
+              "Given test rest"
+            ]
+          }
+        ],
+        "name": "new_login.story"
+      },
+      "localizedNarrative": "In order to gain access to all features of the site\nAs a n anonymous customer\nI want to be able to login to my account\r\n\r\nMeta:\r\n@smoke @regression",
+      "allowed": true,
+      "status": "PENDING",
+      "givenStories": [],
+      "scenarios": [
+        {
+          "scenario": {
+            "title": "User successfully logs in to the site",
+            "meta": {
+              "properties": []
+            },
+            "givenStories": {
+              "givenStories": [],
+              "givenStoriesAsString": "",
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              }
+            },
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            },
+            "steps": [
+              "Given test rest"
+            ]
+          },
+          "storyPath": "stories/new_login.story",
+          "allowed": true,
+          "normalPerformableScenario": {
+            "parameters": [],
+            "givenStories": [],
+            "beforeSteps": {
+              "matches": []
+            },
+            "steps": {
+              "matches": [],
+              "results": [
+                {
+                  "step": "Given test rest",
+                  "type": "PENDING",
+                  "throwable": {
+                    "@class": "org.jbehave.core.failures.PendingStepFound",
+                    "detailMessage": "Given test rest",
+                    "stackTrace": [
+                      "org.jbehave.core.steps.AbstractStepResult$Pending.<init>(AbstractStepResult.java:58)",
+                      "org.jbehave.core.steps.AbstractStepResult.pending(AbstractStepResult.java:174)",
+                      "org.jbehave.core.steps.StepCreator$PendingStep.perform(StepCreator.java:739)",
+                      "org.jbehave.core.embedder.PerformableTree$FineSoFar.run(PerformableTree.java:340)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableSteps.perform(PerformableTree.java:1072)",
+                      "org.jbehave.core.embedder.PerformableTree$AbstractPerformableScenario.performRestartableSteps(PerformableTree.java:938)",
+                      "org.jbehave.core.embedder.PerformableTree$NormalPerformableScenario.perform(PerformableTree.java:977)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableScenario.perform(PerformableTree.java:887)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableStory.performScenarios(PerformableTree.java:811)",
+                      "org.jbehave.core.embedder.PerformableTree$PerformableStory.perform(PerformableTree.java:784)",
+                      "org.jbehave.core.embedder.PerformableTree.performCancellable(PerformableTree.java:416)",
+                      "org.jbehave.core.embedder.PerformableTree.perform(PerformableTree.java:387)",
+                      "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:291)",
+                      "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:265)",
+                      "java.util.concurrent.FutureTask.run(FutureTask.java:266)",
+                      "java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)",
+                      "java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)",
+                      "java.lang.Thread.run(Thread.java:745)"
+                    ],
+                    "suppressedExceptions": [
+                      [],
+                      []
+                    ],
+                    "uuid": "9676e08c-fa13-4f21-a45e-3bc135c429e5"
+                  },
+                  "durationInMillis": 0
+                }
+              ]
+            },
+            "afterSteps": {
+              "matches": []
+            },
+            "storyAndScenarioMeta": {
+              "properties": [
+                {
+                  "@name": "regression",
+                  "@value": ""
+                },
+                {
+                  "@name": "smoke",
+                  "@value": ""
+                }
+              ]
+            },
+            "scenario": {
+              "title": "User successfully logs in to the site",
+              "meta": {
+                "properties": []
+              },
+              "givenStories": {
+                "givenStories": [],
+                "givenStoriesAsString": "",
+                "examplesTable": {
+                  "tableAsString": "",
+                  "headerSeparator": "|",
+                  "valueSeparator": "|",
+                  "ignorableSeparator": "|--",
+                  "tableTransformers": {
+                    "transformers": [
+                      [
+                        "FORMATTING",
+                        {}
+                      ],
+                      [
+                        "REPLACING",
+                        {}
+                      ],
+                      [
+                        "FROM_LANDSCAPE",
+                        {}
+                      ]
+                    ]
+                  },
+                  "headers": [],
+                  "data": [],
+                  "properties": [
+                    {
+                      "@name": "headerSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "valueSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "ignorableSeparator",
+                      "@value": "|--"
+                    }
+                  ],
+                  "propertiesAsString": "",
+                  "namedParameters": [],
+                  "trim": true
+                }
+              },
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              },
+              "steps": [
+                "Given test rest"
+              ]
+            }
+          },
+          "examplePerformableScenarios": [],
+          "status": "PENDING"
+        }
+      ],
+      "beforeSteps": {},
+      "afterSteps": {},
+      "timing": {
+        "durationInMillis": 0
+      },
+      "givenStory": false
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": {
+        "title": "User successfully logs in to the site",
+        "meta": {
+          "properties": []
+        },
+        "givenStories": {
+          "givenStories": [],
+          "givenStoriesAsString": "",
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          }
+        },
+        "examplesTable": {
+          "tableAsString": "",
+          "headerSeparator": "|",
+          "valueSeparator": "|",
+          "ignorableSeparator": "|--",
+          "tableTransformers": {
+            "transformers": [
+              [
+                "FORMATTING",
+                {}
+              ],
+              [
+                "REPLACING",
+                {}
+              ],
+              [
+                "FROM_LANDSCAPE",
+                {}
+              ]
+            ]
+          },
+          "headers": [],
+          "data": [],
+          "properties": [
+            {
+              "@name": "headerSeparator",
+              "@value": "|"
+            },
+            {
+              "@name": "valueSeparator",
+              "@value": "|"
+            },
+            {
+              "@name": "ignorableSeparator",
+              "@value": "|--"
+            }
+          ],
+          "propertiesAsString": "",
+          "namedParameters": [],
+          "trim": true
+        },
+        "steps": [
+          "Given user is on Home page",
+          "When user clicks 'Your Account' button in page header",
+          "Then account menu is unfolding",
+          "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| speaker |",
+          "When user clicks SignIn button on login form",
+          "Then 'Your Account' replaced by 'Speaker's Account'",
+          "And there is 'Sign Out' button in account menu",
+          "When user logs out",
+          "Then user is redirected to Home page",
+          "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke"
+        ]
+      },
+      "storyPath": "stories/login.story",
+      "allowed": true,
+      "normalPerformableScenario": {
+        "parameters": [],
+        "givenStories": [],
+        "beforeSteps": {
+          "matches": []
+        },
+        "steps": {
+          "matches": [],
+          "results": [
+            {
+              "step": "Given user is on Home page",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Given user is on Home page",
+              "durationInMillis": 6004
+            },
+            {
+              "step": "When user clicks 'Your Account' button in page header",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "When user clicks 'Your Account' button in page header",
+              "durationInMillis": 1317
+            },
+            {
+              "step": "Then account menu is unfolding",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Then account menu is unfolding",
+              "durationInMillis": 1121
+            },
+            {
+              "step": "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| speaker |",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Given user filled in login form:\r\n?| email              | password|\r\n| speaker@speaker.com| speaker |?",
+              "durationInMillis": 1386
+            },
+            {
+              "step": "When user clicks SignIn button on login form",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "When user clicks SignIn button on login form",
+              "durationInMillis": 1605
+            },
+            {
+              "step": "Then 'Your Account' replaced by 'Speaker's Account'",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Then 'Your Account' replaced by 'Speaker's Account'",
+              "durationInMillis": 1266
+            },
+            {
+              "step": "And there is 'Sign Out' button in account menu",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "And there is 'Sign Out' button in account menu",
+              "durationInMillis": 1425
+            },
+            {
+              "step": "When user logs out",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "When user logs out",
+              "durationInMillis": 1346
+            },
+            {
+              "step": "Then user is redirected to Home page",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Then user is redirected to Home page",
+              "durationInMillis": 1232
+            },
+            {
+              "step": "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke",
+              "type": "PENDING",
+              "throwable": {
+                "@class": "org.jbehave.core.failures.PendingStepFound",
+                "detailMessage": "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke",
+                "stackTrace": [
+                  "org.jbehave.core.steps.AbstractStepResult$Pending.<init>(AbstractStepResult.java:58)",
+                  "org.jbehave.core.steps.AbstractStepResult.pending(AbstractStepResult.java:174)",
+                  "org.jbehave.core.steps.StepCreator$PendingStep.perform(StepCreator.java:739)",
+                  "org.jbehave.core.embedder.PerformableTree$FineSoFar.run(PerformableTree.java:340)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableSteps.perform(PerformableTree.java:1072)",
+                  "org.jbehave.core.embedder.PerformableTree$AbstractPerformableScenario.performRestartableSteps(PerformableTree.java:938)",
+                  "org.jbehave.core.embedder.PerformableTree$NormalPerformableScenario.perform(PerformableTree.java:977)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableScenario.perform(PerformableTree.java:887)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableStory.performScenarios(PerformableTree.java:811)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableStory.perform(PerformableTree.java:784)",
+                  "org.jbehave.core.embedder.PerformableTree.performCancellable(PerformableTree.java:416)",
+                  "org.jbehave.core.embedder.PerformableTree.perform(PerformableTree.java:387)",
+                  "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:291)",
+                  "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:265)",
+                  "java.util.concurrent.FutureTask.run(FutureTask.java:266)",
+                  "java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)",
+                  "java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)",
+                  "java.lang.Thread.run(Thread.java:745)"
+                ],
+                "suppressedExceptions": [
+                  [],
+                  []
+                ],
+                "uuid": "413fbe91-ede2-4f73-8fb7-6e84e000adea"
+              },
+              "durationInMillis": 0
+            }
+          ]
+        },
+        "afterSteps": {
+          "matches": []
+        },
+        "storyAndScenarioMeta": {
+          "properties": [
+            {
+              "@name": "regression",
+              "@value": ""
+            },
+            {
+              "@name": "smoke",
+              "@value": ""
+            }
+          ]
+        },
+        "scenario": {
+          "title": "User successfully logs in to the site",
+          "meta": {
+            "properties": []
+          },
+          "givenStories": {
+            "givenStories": [],
+            "givenStoriesAsString": "",
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            }
+          },
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          },
+          "steps": [
+            "Given user is on Home page",
+            "When user clicks 'Your Account' button in page header",
+            "Then account menu is unfolding",
+            "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| speaker |",
+            "When user clicks SignIn button on login form",
+            "Then 'Your Account' replaced by 'Speaker's Account'",
+            "And there is 'Sign Out' button in account menu",
+            "When user logs out",
+            "Then user is redirected to Home page",
+            "And there is 'Your Account' button in page header\r\n\r\n\r\nMeta:\r\n\r\n@regression @smoke"
+          ]
+        }
+      },
+      "examplePerformableScenarios": [],
+      "status": "PENDING"
+    },
+    {
+      "scenario": {
+        "title": "User unsuccessfully logs in to the site with invalid credentials",
+        "meta": {
+          "properties": []
+        },
+        "givenStories": {
+          "givenStories": [],
+          "givenStoriesAsString": "",
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          }
+        },
+        "examplesTable": {
+          "tableAsString": "",
+          "headerSeparator": "|",
+          "valueSeparator": "|",
+          "ignorableSeparator": "|--",
+          "tableTransformers": {
+            "transformers": [
+              [
+                "FORMATTING",
+                {}
+              ],
+              [
+                "REPLACING",
+                {}
+              ],
+              [
+                "FROM_LANDSCAPE",
+                {}
+              ]
+            ]
+          },
+          "headers": [],
+          "data": [],
+          "properties": [
+            {
+              "@name": "headerSeparator",
+              "@value": "|"
+            },
+            {
+              "@name": "valueSeparator",
+              "@value": "|"
+            },
+            {
+              "@name": "ignorableSeparator",
+              "@value": "|--"
+            }
+          ],
+          "propertiesAsString": "",
+          "namedParameters": [],
+          "trim": true
+        },
+        "steps": [
+          "Given user is on Home page",
+          "When user clicks 'Your Account' button in page header",
+          "Then account menu is unfolding",
+          "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| wrong   |",
+          "When user clicks SignIn button on login form",
+          "Then user still in login form",
+          "And password field is highlighted",
+          "And wrong password message is Your password is incorrect"
+        ]
+      },
+      "storyPath": "stories/login.story",
+      "allowed": true,
+      "normalPerformableScenario": {
+        "parameters": [],
+        "givenStories": [],
+        "beforeSteps": {
+          "matches": []
+        },
+        "steps": {
+          "matches": [],
+          "results": [
+            {
+              "step": "Given user is on Home page",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Given user is on Home page",
+              "durationInMillis": 1259
+            },
+            {
+              "step": "When user clicks 'Your Account' button in page header",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "When user clicks 'Your Account' button in page header",
+              "durationInMillis": 1220
+            },
+            {
+              "step": "Then account menu is unfolding",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Then account menu is unfolding",
+              "durationInMillis": 1053
+            },
+            {
+              "step": "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| wrong   |",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Given user filled in login form:\r\n?| email              | password|\r\n| speaker@speaker.com| wrong   |?",
+              "durationInMillis": 1297
+            },
+            {
+              "step": "When user clicks SignIn button on login form",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "When user clicks SignIn button on login form",
+              "durationInMillis": 1195
+            },
+            {
+              "step": "Then user still in login form",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "Then user still in login form",
+              "durationInMillis": 3121
+            },
+            {
+              "step": "And password field is highlighted",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "And password field is highlighted",
+              "durationInMillis": 973
+            },
+            {
+              "step": "And wrong password message is Your password is incorrect",
+              "type": "SUCCESSFUL",
+              "parametrisedStep": "And wrong password message is ?Your password is incorrect?",
+              "durationInMillis": 37
+            }
+          ]
+        },
+        "afterSteps": {
+          "matches": []
+        },
+        "storyAndScenarioMeta": {
+          "properties": [
+            {
+              "@name": "regression",
+              "@value": ""
+            },
+            {
+              "@name": "smoke",
+              "@value": ""
+            }
+          ]
+        },
+        "scenario": {
+          "title": "User unsuccessfully logs in to the site with invalid credentials",
+          "meta": {
+            "properties": []
+          },
+          "givenStories": {
+            "givenStories": [],
+            "givenStoriesAsString": "",
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            }
+          },
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          },
+          "steps": [
+            "Given user is on Home page",
+            "When user clicks 'Your Account' button in page header",
+            "Then account menu is unfolding",
+            "Given user filled in login form:\r\n| email              | password|\r\n| speaker@speaker.com| wrong   |",
+            "When user clicks SignIn button on login form",
+            "Then user still in login form",
+            "And password field is highlighted",
+            "And wrong password message is Your password is incorrect"
+          ]
+        }
+      },
+      "examplePerformableScenarios": [],
+      "status": "PENDING"
+    },
+    {
+      "scenario": {
+        "title": "User successfully logs in to the site",
+        "meta": {
+          "properties": []
+        },
+        "givenStories": {
+          "givenStories": [],
+          "givenStoriesAsString": "",
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          }
+        },
+        "examplesTable": {
+          "tableAsString": "",
+          "headerSeparator": "|",
+          "valueSeparator": "|",
+          "ignorableSeparator": "|--",
+          "tableTransformers": {
+            "transformers": [
+              [
+                "FORMATTING",
+                {}
+              ],
+              [
+                "REPLACING",
+                {}
+              ],
+              [
+                "FROM_LANDSCAPE",
+                {}
+              ]
+            ]
+          },
+          "headers": [],
+          "data": [],
+          "properties": [
+            {
+              "@name": "headerSeparator",
+              "@value": "|"
+            },
+            {
+              "@name": "valueSeparator",
+              "@value": "|"
+            },
+            {
+              "@name": "ignorableSeparator",
+              "@value": "|--"
+            }
+          ],
+          "propertiesAsString": "",
+          "namedParameters": [],
+          "trim": true
+        },
+        "steps": [
+          "Given test rest"
+        ]
+      },
+      "storyPath": "stories/new_login.story",
+      "allowed": true,
+      "normalPerformableScenario": {
+        "parameters": [],
+        "givenStories": [],
+        "beforeSteps": {
+          "matches": []
+        },
+        "steps": {
+          "matches": [],
+          "results": [
+            {
+              "step": "Given test rest",
+              "type": "PENDING",
+              "throwable": {
+                "@class": "org.jbehave.core.failures.PendingStepFound",
+                "detailMessage": "Given test rest",
+                "stackTrace": [
+                  "org.jbehave.core.steps.AbstractStepResult$Pending.<init>(AbstractStepResult.java:58)",
+                  "org.jbehave.core.steps.AbstractStepResult.pending(AbstractStepResult.java:174)",
+                  "org.jbehave.core.steps.StepCreator$PendingStep.perform(StepCreator.java:739)",
+                  "org.jbehave.core.embedder.PerformableTree$FineSoFar.run(PerformableTree.java:340)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableSteps.perform(PerformableTree.java:1072)",
+                  "org.jbehave.core.embedder.PerformableTree$AbstractPerformableScenario.performRestartableSteps(PerformableTree.java:938)",
+                  "org.jbehave.core.embedder.PerformableTree$NormalPerformableScenario.perform(PerformableTree.java:977)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableScenario.perform(PerformableTree.java:887)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableStory.performScenarios(PerformableTree.java:811)",
+                  "org.jbehave.core.embedder.PerformableTree$PerformableStory.perform(PerformableTree.java:784)",
+                  "org.jbehave.core.embedder.PerformableTree.performCancellable(PerformableTree.java:416)",
+                  "org.jbehave.core.embedder.PerformableTree.perform(PerformableTree.java:387)",
+                  "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:291)",
+                  "org.jbehave.core.embedder.StoryManager$EnqueuedStory.call(StoryManager.java:265)",
+                  "java.util.concurrent.FutureTask.run(FutureTask.java:266)",
+                  "java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)",
+                  "java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)",
+                  "java.lang.Thread.run(Thread.java:745)"
+                ],
+                "suppressedExceptions": [
+                  [],
+                  []
+                ],
+                "uuid": "9676e08c-fa13-4f21-a45e-3bc135c429e5"
+              },
+              "durationInMillis": 0
+            }
+          ]
+        },
+        "afterSteps": {
+          "matches": []
+        },
+        "storyAndScenarioMeta": {
+          "properties": [
+            {
+              "@name": "regression",
+              "@value": ""
+            },
+            {
+              "@name": "smoke",
+              "@value": ""
+            }
+          ]
+        },
+        "scenario": {
+          "title": "User successfully logs in to the site",
+          "meta": {
+            "properties": []
+          },
+          "givenStories": {
+            "givenStories": [],
+            "givenStoriesAsString": "",
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            }
+          },
+          "examplesTable": {
+            "tableAsString": "",
+            "headerSeparator": "|",
+            "valueSeparator": "|",
+            "ignorableSeparator": "|--",
+            "tableTransformers": {
+              "transformers": [
+                [
+                  "FORMATTING",
+                  {}
+                ],
+                [
+                  "REPLACING",
+                  {}
+                ],
+                [
+                  "FROM_LANDSCAPE",
+                  {}
+                ]
+              ]
+            },
+            "headers": [],
+            "data": [],
+            "properties": [
+              {
+                "@name": "headerSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "valueSeparator",
+                "@value": "|"
+              },
+              {
+                "@name": "ignorableSeparator",
+                "@value": "|--"
+              }
+            ],
+            "propertiesAsString": "",
+            "namedParameters": [],
+            "trim": true
+          },
+          "steps": [
+            "Given test rest"
+          ]
+        }
+      },
+      "examplePerformableScenarios": [],
+      "status": "PENDING"
+    }
+  ]
+}}

@@ -1,0 +1,23 @@
+<story path="stories/new_login.story" title="">
+<meta>
+<property keyword="@" name="regression" value=""/>
+<property keyword="@" name="smoke" value=""/>
+</meta>
+<narrative keyword="Narrative:">
+  <inOrderTo keyword="In order to">gain access to all features of the site</inOrderTo>
+  <asA keyword="As a">n anonymous customer</asA>
+  <iWantTo keyword="I want to">be able to login to my account
+
+Meta:
+@smoke @regression</iWantTo>
+</narrative>
+<scenario keyword="Scenario:" title="User successfully logs in to the site">
+<step outcome="pending" keyword="PENDING">Given test rest</step>
+<pendingMethod>@Given(&quot;test rest&quot;)
+@Pending
+public void givenTestRest() {
+  // PENDING
+}
+</pendingMethod>
+</scenario>
+</story>

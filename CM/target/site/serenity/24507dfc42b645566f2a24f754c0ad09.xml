@@ -1,0 +1,116 @@
+<acceptance-test-run title="User successfully logs in to the site" name="User successfully logs in to the site" steps="10" successful="9" failures="0" skipped="0" ignored="0" pending="1" annotated-result="PENDING" result="PENDING" duration="27294" timestamp="2016-11-11T16:19:53.089+02:00" session-id="9febdf2e-657c-4e9d-aa91-d3587fe39c89">
+  <user-story id="login" name="Login" path="stories/login.story"/>
+  <tags>
+    <tag name="Login" type="story"/>
+  </tags>
+  <test-group name="Given user is on Home page" result="SUCCESS">
+    <screenshots>
+      <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="5903">
+      <screenshots>
+        <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+      </screenshots>
+      <description>Goto the home page</description>
+    </test-step>
+  </test-group>
+  <test-group name="When user clicks &apos;Your Account&apos; button in page header" result="SUCCESS">
+    <screenshots>
+      <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1316">
+      <screenshots>
+        <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+      </screenshots>
+      <description>Click on account menu</description>
+    </test-step>
+  </test-group>
+  <test-group name="Then account menu is unfolding" result="SUCCESS">
+    <screenshots>
+      <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1119">
+      <screenshots>
+        <screenshot image="3c956d874a50de604125e6df969222ce.png"/>
+      </screenshots>
+      <description>Is account menu unfolded</description>
+    </test-step>
+  </test-group>
+  <test-group name="Given user filled in login form:&#xd;&#xa;［| email              | password|&#xd;&#xa;| speaker@speaker.com| speaker |］" result="SUCCESS">
+    <screenshots>
+      <screenshot image="127be66c1d101b64971ce60beee9ed41.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1378">
+      <screenshots>
+        <screenshot image="127be66c1d101b64971ce60beee9ed41.png"/>
+      </screenshots>
+      <description>Type login and password: com.epam.cm.dto.CredentialsDTO@7488cd0e</description>
+    </test-step>
+  </test-group>
+  <test-group name="When user clicks SignIn button on login form" result="SUCCESS">
+    <screenshots>
+      <screenshot image="ec680fd4fe33c630eaca8dcc7009b066.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1603">
+      <screenshots>
+        <screenshot image="0cb35aa52533298b1e0a469c8dc72c9f.png"/>
+      </screenshots>
+      <description>Click sign in button</description>
+    </test-step>
+  </test-group>
+  <test-group name="Then &apos;Your Account&apos; replaced by &apos;Speaker&apos;s Account&apos;" result="SUCCESS">
+    <screenshots>
+      <screenshot image="ec680fd4fe33c630eaca8dcc7009b066.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1263">
+      <screenshots>
+        <screenshot image="ec680fd4fe33c630eaca8dcc7009b066.png"/>
+      </screenshots>
+      <description>Get account menu title</description>
+    </test-step>
+  </test-group>
+  <test-group name="And there is &apos;Sign Out&apos; button in account menu" result="SUCCESS">
+    <screenshots>
+      <screenshot image="7addcb0e7ca065a2693d9a0b6af9b594.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1424">
+      <screenshots>
+        <screenshot image="7addcb0e7ca065a2693d9a0b6af9b594.png"/>
+      </screenshots>
+      <description>Is logged in</description>
+    </test-step>
+  </test-group>
+  <test-group name="When user logs out" result="SUCCESS">
+    <screenshots>
+      <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1345">
+      <screenshots>
+        <screenshot image="ec680fd4fe33c630eaca8dcc7009b066.png"/>
+      </screenshots>
+      <description>Logout</description>
+    </test-step>
+  </test-group>
+  <test-group name="Then user is redirected to Home page" result="SUCCESS">
+    <screenshots>
+      <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+    </screenshots>
+    <test-step result="SUCCESS" duration="1231">
+      <screenshots>
+        <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+      </screenshots>
+      <description>Is home page opened</description>
+    </test-step>
+  </test-group>
+  <test-step result="PENDING" duration="594">
+    <screenshots>
+      <screenshot image="090b721daddfe56c27d7e88a6aa22e9b.png"/>
+    </screenshots>
+    <description>And there is &apos;Your Account&apos; button in page header&#xd;
+&#xd;
+&#xd;
+Meta:&#xd;
+&#xd;
+@regression @smoke</description>
+  </test-step>
+</acceptance-test-run>

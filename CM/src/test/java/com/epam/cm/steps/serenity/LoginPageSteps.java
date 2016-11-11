@@ -26,44 +26,46 @@ public class LoginPageSteps extends ScenarioSteps {
 
     @Step
     public void clickOnAccountMenu() {
-        homePage.getAccountMenuButton().click();
+
+        homePage.getMenu().clickAccountMenuButton();
     }
 
     @Step
     public boolean isAccountMenuUnfolded() {
-        return  homePage.isAccountMenuUnfolded();
+        return  homePage.getMenu().isAccountMenuUnfolded();
     }
 
     @Step
     public void typeLoginAndPassword(CredentialsDTO user) {
-        homePage.getLoginField().type(user.getEmail());
-        homePage.getPasswordField().type(user.getPassword());
+        homePage.getMenu().setLoginField(user.getEmail());
+        homePage.getMenu().setPasswordField(user.getPassword());
+
     }
 
     @Step
     public void clickSignInButton() {
-        homePage.getSignInButton().click();
+        homePage.getMenu().clickSignInButton();
     }
 
     @Step
     public String getAccountMenuTitle() {
-        return  homePage.getAccountMenuTitle();
+        return  homePage.getMenu().getAccountMenuTitle();
     }
 
     @Step
     public void logout() {
-        if(!homePage.isAccountMenuUnfolded()){
-            homePage.getAccountMenuButton().click();
+        if(!homePage.getMenu().isAccountMenuUnfolded()){
+            homePage.getMenu().clickAccountMenuButton();
         }
-        homePage.getSignOutButton().click();
+        homePage.getMenu().clickSignOutButton(); ;
     }
 
     @Step
     public boolean isLoggedIn() {
-        if(!homePage.isAccountMenuUnfolded()){
-            homePage.getAccountMenuButton().click();
+        if(!homePage.getMenu().isAccountMenuUnfolded()){
+            homePage.getMenu().clickAccountMenuButton();
         }
-        if(homePage.isSignOutBtnExist()) return true;
+        if(homePage.getMenu().isSignOutBtnExist()) return true;
         return false;
     }
 
@@ -77,16 +79,16 @@ public class LoginPageSteps extends ScenarioSteps {
     @Step
     public boolean isSignInFormOpened() {
 
-        if(homePage.isAccountMenuUnfolded() && !homePage.isSignOutBtnExist()) return true;
+        if(homePage.getMenu().isAccountMenuUnfolded() && !homePage.getMenu().isSignOutBtnExist()) return true;
         return false;
     }
 
     @Step
     public boolean isPasswordFieldIsHighlited() {
-         return homePage.isPasswordFieldHighlited();
+         return homePage.getMenu().isPasswordFieldHighlited();
     }
 
     public String getPasswordValidationMsg() {
-        return homePage.getPasswordErrorMsgTxt();
+        return homePage.getMenu().getPasswordErrorMsgTxt();
     }
 }

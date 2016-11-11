@@ -1,0 +1,4 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Login","User successfully logs in to the site","PENDING","2016-11-11T16:19:53.089+02:00","0.0","27.29"
+"New login","User successfully logs in to the site","PENDING","2016-11-11T16:20:39.455+02:00","0.0","0.0"
+"Login","User unsuccessfully logs in to the site with invalid credentials","SUCCESS","2016-11-11T16:20:20.470+02:00","0.0","18.6"
