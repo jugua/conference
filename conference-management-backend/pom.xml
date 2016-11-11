@@ -157,5 +157,11 @@
             <artifactId>spring-hateoas</artifactId>
             <version>0.20.0.RELEASE</version>
         </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
     </dependencies>
 </project>
