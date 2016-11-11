@@ -51,7 +51,6 @@ public class Talk {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
-    //TODO adapter to date
     private LocalDate date;
 
     @NotNull
@@ -64,7 +63,6 @@ public class Talk {
     @Column(name = "description", nullable = false)
     private String description;
 
-    //TODO ask Irina about
     @NotNull
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "language_id")
