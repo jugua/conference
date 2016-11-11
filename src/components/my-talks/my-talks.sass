@@ -40,10 +40,15 @@
       @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
         background: #fff
 
-
   &__column
+    &_check
+      width: 3%
+
+    &_speaker
+      width: 12%
+
     &_title
-      width: 30%
+      width: 15%
       @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
         width: 100%
         &:before
@@ -60,7 +65,7 @@
           +my-talk-before-title
 
     &_status
-      width: 10%
+      width: 7%
       @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
         width: 100%
         &:before
@@ -68,7 +73,7 @@
           +my-talk-before-title
 
     &_date
-      width: 10%
+      width: 15%
       @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
         width: 100%
         &:before
@@ -77,29 +82,49 @@
 
 
     &_comments
-      width: 35%
+      width: 18%
+      text-overflow: ellipsis
+      white-space: nowrap
+      overflow: hidden
       @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
         width: 100%
         &:before
           content: 'Comments'
           +my-talk-before-title
 
+    &_assign
+      width: 15%
 
 .table-header
-  width: calc(100% - 16px)
   display: flex
   &__item
     text-transform: capitalize
     box-sizing: border-box
     padding: 5px 0
+    &_check
+      width: 3%
+
+    &_speaker
+      width: 12%
+
     &_title
-      width: 30%
+      width: 15%
+
     &_topic
       width: 15%
-    &_status, &_date
-      width: 10%
+
+    &_status
+      width: 7%
+
+    &_date
+      width: 15%
+
     &_comments
-      width: 35%
+      width: 18%
+
+    &_assign
+      width: 15%
+
   @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
     display: none
 
