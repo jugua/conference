@@ -18,9 +18,30 @@
 .data-table
   margin-top: 20px
 
+  &__text
+    margin: 0
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
+    text-transform: none
+
+  &__tooltip
+    display: block
+    visibility: hidden
+    position: absolute
+    top: 0
+    left: 0
+    text-transform: none
+    background: #f2f2f2
+    z-index: 2
+
   &__inner-wrapper
     height: 500px
     overflow: auto
+    @media ($mnw: $sdmn) and ($mxw: $sdmx)
+      display: flex
+      flex-wrap: wrap
+      justify-content: space-around
 
   &__row
     display: flex
@@ -30,74 +51,66 @@
     font-size: 14px
     box-sizing: border-box
     padding: 5px 0
+
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      width: 100%
       border: 1px solid #f2f2f2
       margin-bottom: 5px
       +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
 
+    @media ($mnw: $sdmn) and ($mxw: $sdmx)
+      width: 47%
+      margin: 5px
+      +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
+
     &:nth-child(odd)
       background: #f2f2f2
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         background: #fff
 
   &__column
-    &_check
-      width: 3%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        text-align: right
-        &:before
-          content: ''
-          +my-talk-before-title
-
-    &_speaker
-      width: 12%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Speaker'
-          +my-talk-before-title
-
     &_title
-      width: 15%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      width: 30%
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
           content: 'Title'
           +my-talk-before-title
 
-
     &_topic
       width: 15%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
           content: 'Topic'
           +my-talk-before-title
 
     &_status
-      width: 7%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      width: 10%
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
           content: 'Status'
           +my-talk-before-title
 
     &_date
-      width: 15%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      width: 10%
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
           content: 'Date'
           +my-talk-before-title
 
-
     &_comments
-      width: 18%
-      text-overflow: ellipsis
-      white-space: nowrap
-      overflow: hidden
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      width: 35%
+      position: relative
+      &:hover > span
+        visibility: visible
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
           content: 'Comments'
@@ -111,21 +124,17 @@
     padding: 5px 0
 
     &_title
-      width: 35%
+      width: 30%
 
     &_topic
-      width: 10%
+      width: 15%
 
-    &_status
-      width: 10%
-
-    &_date
+    &_status, &_date
       width: 10%
 
     &_comments
       width: 35%
-
-  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
     display: none
 
 
