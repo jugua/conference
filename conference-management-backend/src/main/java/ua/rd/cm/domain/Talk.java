@@ -64,9 +64,8 @@ public class Talk {
     @Column(name = "description", nullable = false)
     private String description;
 
-    //TODO ask Irina about
     @NotNull
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "language_id")
     private Language language;
 
