@@ -18,8 +18,7 @@ export default class MyInfoController {
     };
     this.userInfoForm = {};
 
-    this.event = $scope.$on('$stateChangeStart', (e, toState, toParams) => {
-      console.log(e, toState,toParams);
+    this.event = $scope.$on('$stateChangeStart', (e, toState) => {
       if (this.userInfoForm.$pristine ||
          (this.userInfoForm.$submitted
          && this.userInfoForm.$valid

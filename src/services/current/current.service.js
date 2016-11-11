@@ -69,21 +69,10 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
-  function logout() {
-    return $http.get('/api/users/current/logout', {
-      headers: {
-        token: getToken,
-        'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache'
-      }
-    });
-  }
-
   return {
     getInfo,
     updateInfo,
     uploadPhoto,
-    logout
   };
 }
 
