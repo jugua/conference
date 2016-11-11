@@ -12,13 +12,13 @@ public class AndSpecification<T> extends CompositeSpecification<T>{
 	}
 
 	@Override
-	public boolean isSatisfiedBy(T t) {
-		return left.isSatisfiedBy(t) && right.isSatisfiedBy(t);
+	public String toSqlClauses() {
+		return left.toSqlClauses() + " AND " +  right.toSqlClauses();
 	}
 
 	@Override
-	public String toSqlClauses() {
-		return left.toSqlClauses() + " AND " +  right.toSqlClauses();
+	public boolean test(T t) {
+		return true;
 	}
 
 	

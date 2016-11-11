@@ -20,6 +20,8 @@ public interface UserRepository {
 	
 	void updateUser(User user);
 	
+	List<User> findAll();
+	
 	List<User> findBySpecification(Specification<User> spec);
 	
 }

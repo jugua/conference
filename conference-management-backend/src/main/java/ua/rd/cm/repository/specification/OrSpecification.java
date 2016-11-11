@@ -12,14 +12,18 @@ public class OrSpecification<T> extends CompositeSpecification<T>{
 	}
 
 	@Override
-	public boolean isSatisfiedBy(T t) {
-		return left.isSatisfiedBy(t) || right.isSatisfiedBy(t);
-	}
-
-	@Override
 	public String toSqlClauses() {
 		return left.toSqlClauses() + " OR " + right.toSqlClauses();
 	}
+
+	@Override
+	public boolean test(T t) {
+		return true;
+	}
+
+
+
+
 
 	
 }

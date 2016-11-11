@@ -1,8 +1,8 @@
 package ua.rd.cm.repository.specification;
 
-public interface Specification<T> {
+import java.util.function.Predicate;
 
-	boolean isSatisfiedBy(T t);
+public interface Specification<T> extends Predicate<T>{
 	
 	String toSqlClauses();
 	
