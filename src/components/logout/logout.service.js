@@ -1,9 +1,15 @@
 /* global angular */
 /* global FormData */
 
-function Logout($window, $q, $http) {
-  function getToken() {
-    let info = $window.localStorage.userInfo;
+class Logout {
+  constructor($window, $q, $http) {
+    this.window = $window;
+    this.q = $q;
+    this.http = $http;
+  }
+
+  getToken() {
+    let info = this.window.localStorage.userInfo;
     let token;
 
     if (info) {
@@ -16,10 +22,10 @@ function Logout($window, $q, $http) {
     return token;
   }
 
-  function logout() {
-    const deferred = $q.defer();
+  logout() {
+    const deferred = this.q.defer();
 
-    $http.get('/api/users/current/logout', {
+    this.http.get('/api/users/current/logout', {
       headers: {
         token: getToken,
         'Cache-Control': 'no-cache, no-store',
@@ -27,18 +33,16 @@ function Logout($window, $q, $http) {
       }
     })
       .then(() => {
-          $window.localStorage.removeItem('userInfo');
-          return deferred.$resolve();
+          this.window.localStorage.removeItem('userInfo');
+          deferred.resolve();
         },
         (error) => {
-          return deferred.$reject(error);
+          deferred.reject(error);
         }
-      )
-  }
+      );
 
-  return {
-    logout
-  };
+    return deferred.promise
+  }
 }
 
 export default Logout;

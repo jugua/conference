@@ -4,7 +4,7 @@ import logoutService from './logout.service';
 export default (app) => {
   app.config(($stateProvider) => {
     $stateProvider
-      .state('logout', {
+      .state('header.home.logout', {
         controller: logoutController
       });
   }).service('Logout', logoutService);

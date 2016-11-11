@@ -1,13 +1,13 @@
 export default class LogoutController {
   constructor(Logout, $state) {
-    this.servis = Logout;
-    this.state = $state
+    this.service = Logout;
+    this.state = $state;
     this.logout()
   }
 
   logout() {
-    this.servis.logout().then(() => {
-      this.state
+    this.service.logout().then(() => {
+      this.state.go('header.home', {}, {reload: true});
     })
   }
 }
