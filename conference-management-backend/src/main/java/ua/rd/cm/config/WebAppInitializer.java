@@ -23,7 +23,7 @@ public class WebAppInitializer implements WebApplicationInitializer{
 
     private AnnotationConfigWebApplicationContext setUpContext(ServletContext servletContext) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(WebMvcConfig.class);
+        context.register(AppConfig.class);
         context.setServletContext(servletContext);
         context.refresh();
         return context;
