@@ -4,9 +4,9 @@ function SignIn($http, $q, $window, $rootScope) {
   function login(user) {
     const deferred = $q.defer();
 
-    $http.post('/api/login/', user).then((result) => {
+    $http.post('/api/login/', user).then(({data}) => {
       userInfo = {
-        token: result.data.token
+        token: data.token
       };
 
       $window.localStorage.setItem('userInfo', JSON.stringify(userInfo));

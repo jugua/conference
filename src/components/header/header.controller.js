@@ -2,7 +2,7 @@
 
 export default class HeaderController {
 
-  constructor(user, Menus, Current, $state, $scope, $document) {
+  constructor(user, Menus, Current, SignIn, $state, $scope, $document) {
     this.role = user ? user.roles : '';
     this.name = (user) ? `${user.fname}'s` : 'Your';
     this.menu = Menus.getMenu(this.role);
@@ -45,14 +45,22 @@ export default class HeaderController {
 
     this.Current = Current;
     this.$state = $state;
+
+    this.signIn = SignIn;
   }
 
   logout() {
-    this.Current.logout()
-      .then(
-        () => {  // success callback
-          this.$state.go('header.home', {}, { reload: true });
-        }
-      );
+    this.$state.go('header.home', {logout:true}).then(() => {
+      this.Current.logout()
+        .then(
+          () => {  // success callback
+            console.log('dfddf');
+            window.localStorage.removeItem('userInfo');
+            this.signIn.callTheEvent();
+          }
+        );
+    }, (err)=>{
+    });
+
   }
 }

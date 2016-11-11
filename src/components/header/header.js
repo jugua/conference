@@ -13,6 +13,9 @@ export default (app) => {
             return Current.current;
           }
         },
+        params:{
+          'logout': 'false'
+        },
         abstract: true,
         template,
         controller,
