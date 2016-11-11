@@ -1,40 +1,49 @@
 <user-photo user="$ctrl.user"></user-photo>
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
   <label for="my-info-bio" class="form-label form-label_required my-info__label my-info__label_bio">Short Bio</label>
-  <textarea name="bio" id="my-info-bio" class="my-info__bio" maxlength="2000"
+  <textarea name="bio" id="my-info-bio" class="textarea my-info__bio" maxlength="2000"
               ng-model="$ctrl.user.bio"
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
-  <label for="my-info-job" class="form-label form-label_required my-info__label">Job</label>
+  <label for="my-info-job" class="form-label form-label_required my-info__label">Job Title</label>
   <input type="text" name="job" id="my-info-job"
-         class="field my-info__field my-info__field_job"
+         class="field field_border my-info__field_job"
          maxlength="256"
          ng-model="$ctrl.user.job"
          ng-required="true">
-  <label for="my-info-linkedin-past-conferences" class="form-label form-label_required my-info__label">Past Conferences</label>
-  <input type="text" name="past" id="my-info-linkedin-past-conferences"
-         class="field my-info__field my-info__field_past"
-         maxlength="1000"
-         ng-model="$ctrl.user.past"
+  <label for="my-info-company" class="form-label form-label_required my-info__label">Company
+    <md-icon class="icon icon_info">
+      <md-tooltip md-direction="right" class="tooltip tooltip_required">e.g. Company name or self-employed</md-tooltip>
+    </md-icon>
+  </label>
+  <input type="text" name="company" id="my-info-company"
+         class="field field_border my-info__field_company"
+         maxlength="256"
+         ng-model="$ctrl.user.company"
          ng-required="true">
+  <label for="my-info-linkedin-past-conferences" class="form-label my-info__label">Past Conferences</label>
+  <textarea type="text" name="past" id="my-info-linkedin-past-conferences" rows="5"
+         class="textarea"
+         maxlength="1000"
+         ng-model="$ctrl.user.past">{{$ctrl.user.past}}</textarea>
   <label for="my-info-linkedin" class="form-label my-info__label">LinkedIn</label>
   <input type="text" name="linkedin" id="my-info-linkedin"
-         class="field my-info__field"
+         class="field field_border"
          ng-model="$ctrl.user.linkedin">
   <label for="my-info-twitter" class="form-label my-info__label">twitter</label>
   <input type="text" name="twitter" id="my-info-twitter"
-         class="field my-info__field"
+         class="field field_border"
          ng-model="$ctrl.user.twitter">
   <label for="my-info-facebook" class="form-label my-info__label">facebook</label>
   <input type="text" name="facebook" id="my-info-facebook"
-          class="field my-info__field"
+          class="field field_border"
          ng-model="$ctrl.user.facebook">
   <label for="my-info-blog" class="form-label my-info__label">blog</label>
   <input type="text" name="blog" id="my-info-blog"
-         class="field my-info__field"
+         class="field field_border"
          ng-model="$ctrl.user.blog">
   <label for="my-info-additional-info" class="form-label my-info__label">Additional Info</label>
-  <textarea name="info" id="my-info-additional-info" rows="5" class="my-info__info"
+  <textarea name="info" id="my-info-additional-info" rows="5" class="textarea"
             ng-model="$ctrl.user.info"
             maxlength="1000">{{$ctrl.user.info}}</textarea>
 
@@ -50,11 +59,15 @@
     </p>
 
     <div class="pop-up-button-wrapper">
+      <input type="button" value="ok" class="btn"
+             ng-if="$ctrl.message.showOkBtn"
+             ng-click="$ctrl.hideMessage()">
+
       <input type="button" value="yes" class="btn"
-             ng-if="$ctrl.message.showBtns"
+             ng-if="$ctrl.message.showYesNoBtns"
              ng-click="$ctrl.saveChangesBeforeOut()">
-      <input type="button" value="No" class="btn btn_cancel"
-             ng-if="$ctrl.message.showBtns"
+      <input type="button" value="no" class="btn btn_cancel"
+             ng-if="$ctrl.message.showYesNoBtns"
              ng-click="$ctrl.cancelChanges()">
     </div>
     <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
