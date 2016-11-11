@@ -27,8 +27,9 @@ module.exports = (PORT) => {
 
   let router = express.Router();
 
-  // mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
-  mongoose.connect('mongodb://conference:management@ds031257.mlab.com:31257/cm');
+ //mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
+ mongoose.connect('mongodb://conference:management@ds151127.mlab.com:51127/managment');
+
 
   app.use(express.static(path.join(__dirname, './../dist')));
   app.use("/", express.static(path.join(__dirname, './../dist')));
@@ -43,6 +44,9 @@ module.exports = (PORT) => {
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
+  router.route('/talk')
+    .post(talk.addTalk)
+    .get(talk.getTalks);
 
   router.route('/login')
     .post(auth);
@@ -69,9 +73,6 @@ module.exports = (PORT) => {
 
   router.route('/users/current/logout')
     .get(logout);
-
-  router.route('/users/current/talk')
-    .post(talk.addTalk);
 
   router.route('/users/current/photo')
     .post(upload.any(), uploadImage);

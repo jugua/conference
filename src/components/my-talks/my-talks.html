@@ -4,7 +4,6 @@
         <div ui-view></div>
     </div>
     <div class="my-talk-settings">
-
     </div>
     <div class="data-table">
         <div class="table-header">
@@ -15,7 +14,7 @@
             <div class="table-header__item table-header__item_comments">organizer comments</div>
         </div>
         <div class="data-table__inner-wrapper">
-            <div class="data-table__row" ng-repeat="talk in $ctrl.current.talks">
+            <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
                 <div class="data-table__column data-table__column_title">{{talk.title}}</div>
                 <div class="data-table__column data-table__column_topic">{{talk.topic}}</div>
                 <div class="data-table__column data-table__column_date">{{talk.date |date:"MM/dd/yyyy"}}</div>
