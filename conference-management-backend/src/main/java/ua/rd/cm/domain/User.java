@@ -2,6 +2,7 @@ package ua.rd.cm.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 
@@ -48,7 +49,7 @@ public class User {
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$/i")
+    @Email
     @Column(name = "email", nullable = false)
     @JsonProperty("mail")
     private String email;
