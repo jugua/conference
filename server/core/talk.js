@@ -3,7 +3,7 @@
 let User = require('./../model/User');
 
 function addTalk(req, res) {
-  console.log(req.body);
+
   User.findOneAndUpdate({hash: req.headers.token}, {$push: {"talks": req.body}}, (err, current) => {
     if (err) {
       res.status(403).send(err);
@@ -27,16 +27,30 @@ function getTalks(req, res) {
   }
 
   User.findOne({hash: req.headers.token}, (err, current) => {
-    if (err)
+    if (err) {
       res.status(403).send(err);
+      return;
+    }
 
     if (!current) {
       res.status(401).send({});
       return;
     }
+    if (current.roles.indexOf('s') != -1) {
+      res.send(current.talks);
+    } else {
+      User.find({},'talks', (err, res) => {
+        if (err) {
 
-    let answer = current.talks;
-    res.send(answer);
+          res.status(500).send(err);
+          return;
+        }
+        console.log(res);
+        res.send(res);
+      })
+    }
+
+
   });
 }
 module.exports = {
