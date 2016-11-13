@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const fs = require('fs');
 const path = require('path');
@@ -91,7 +91,52 @@ function uploadImage(req, res) {
     console.log('Stream ended.');
   });
 
-
 }
 
-module.exports = uploadImage;
+// deleting user photo
+
+function deleteImage(req, res) {
+  if (!req.headers.token) {
+    res.status(401).send({});
+    return;
+  }
+
+  User.findOne({ hash: req.headers.token }, (err, current) => {
+    if (err) {
+      res.status(403).send(err);
+      return;
+    }
+
+    if (!current) {
+      res.status(401).send({ error: 'no-current-user' });
+      return;
+    }
+
+    if (current.photo) {
+      fs.unlink(path.join(__dirname, '/../../dist/' + current.photo), (err) => {
+        console.log(err);
+        if (err) {
+          res.status(403).send({ error: 'delete' });
+          return;
+        }
+        console.log('successfully deleted');
+      });
+
+      current['photo'] = '';
+
+      current.save((err) => {
+        if (err) {
+          res.send({ error: "delete" });
+          return;
+        }
+
+        res.send();
+      });
+    }
+  });
+}
+
+module.exports = {
+  uploadImage,
+  deleteImage
+}

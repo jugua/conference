@@ -10,7 +10,7 @@ const auth = require('./core/auth');
 const registration = require('./core/registration');
 const current = require('./core/current');
 const forgotPassword = require('./core/forgot-password');
-const uploadImage = require('./core/upload-image');
+const photo = require('./core/upload-image');
 const logout = require('./core/logout');
 
 const multer = require('multer');
@@ -70,7 +70,8 @@ module.exports = (PORT) => {
     .get(logout);
 
   router.route('/users/current/photo')
-    .post(upload.any(), uploadImage);
+    .post(upload.any(), photo.uploadImage)
+    .delete(photo.deleteImage); // deleting photo
 
   // get user by id
 

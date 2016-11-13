@@ -83,3 +83,14 @@ import UserPhotoTemplate from './user-photo.html';
 //    });
 //  })
 //});
+
+
+// tests for deleting photo
+
+describe('userPhoto', () => {
+
+    describe('deletePhoto', () => {
+        it('...')
+    });
+
+});
