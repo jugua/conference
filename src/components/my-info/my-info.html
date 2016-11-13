@@ -51,25 +51,35 @@
 
 </form>
 
-<div class="pop-up-wrapper" ng-show="$ctrl.isShowMessage">
+<div class="pop-up-wrapper" ng-show="$ctrl.alertVisible">
   <div class="pop-up">
     <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
     <p class="pop-up__notification">
-      {{$ctrl.message.p}}
+      {{$ctrl.message.content}}
     </p>
 
     <div class="pop-up-button-wrapper">
       <input type="button" value="ok" class="btn"
-             ng-if="$ctrl.message.showOkBtn"
              ng-click="$ctrl.hideMessage()">
+    </div>
 
+  </div>
+  <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
+</div>
+
+
+<div class="pop-up-wrapper" ng-show="$ctrl.confirmVisible">
+  <div class="pop-up">
+    <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
+    <p class="pop-up__notification">
+      {{$ctrl.message.content}}
+    </p>
+    <div class="pop-up-button-wrapper">
       <input type="button" value="yes" class="btn"
-             ng-if="$ctrl.message.showYesNoBtns"
              ng-click="$ctrl.saveChangesBeforeOut()">
       <input type="button" value="no" class="btn btn_cancel"
-             ng-if="$ctrl.message.showYesNoBtns"
              ng-click="$ctrl.cancelChanges()">
     </div>
-    <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
   </div>
+  <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
 </div>
