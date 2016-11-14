@@ -20,7 +20,7 @@ const Menus = function Menus() {
         name: 'My Account'
       },
       {
-        link: 'otalks',
+        link: 'talks',
         name: 'Talks'
       }
     ]

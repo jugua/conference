@@ -38,24 +38,25 @@ export default class TalkService {
   }
 
   getAll() {
-    if (this.talks) {
-      return this.talks;
+    if (this._talks) {
+      return this._talks;
     }
-    this.talks = this.talks.getAll((res) => {
-        this.talks = res;
+
+    this._talks = this.talks.getAll((res) => {
+       // this._talks = res;
 
       },
       (err)=> {
-        this.talks = [];
+        this._talks = [];
       });
 
-    return this.talks;
+    return this._talks;
   }
 
   add(talk) {
     this.talks.add(talk, (res) => {
-        if (this.talks instanceof Array) {
-          this.talks.push(res);
+        if (this._talks instanceof Array) {
+          this._talks.push(res);
         }
       },
       (err)=> {

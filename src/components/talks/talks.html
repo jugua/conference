@@ -1,0 +1,25 @@
+<div class="data-table">
+    <div class="table-header">
+        <div class="table-header__item table-header__item_check"><input type="checkbox"></div>
+        <div class="table-header__item table-header__item_speaker">speaker</div>
+        <div class="table-header__item table-header__item_title">title</div>
+        <div class="table-header__item table-header__item_topic">topic</div>
+        <div class="table-header__item table-header__item_date">submitted date</div>
+        <div class="table-header__item table-header__item_status">status</div>
+        <div class="table-header__item table-header__item_comments">organizer comments</div>
+        <div class="table-header__item table-header__item_assign">assign to</div>
+    </div>
+    <div class="data-table__inner-wrapper">
+        <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
+            <div class="data-table__column data-table__column_check"><input type="checkbox"></div>
+            <div class="data-table__column data-table__column_speaker">{{talk.name}}</div>
+            <div class="data-table__column data-table__column_title">{{talk.title}}</div>
+            <div class="data-table__column data-table__column_topic">{{talk.topic}}</div>
+            <div class="data-table__column data-table__column_date">{{talk.date | date:"MM/dd/yyyy"}}</div>
+            <div class="data-table__column data-table__column_status">{{talk.status}}</div>
+            <div class="data-table__column data-table__column_comments">{{talk.comments}}</div>
+            <div class="data-table__column data-table__column_assign">{{talk.assigner}}</div>
+        </div>
+    </div>
+
+</div>

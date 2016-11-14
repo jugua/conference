@@ -35,7 +35,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
     },
     addTalk: {
       method: 'POST',
-      url: '/api/users/current/talk',
+      url: '/api/users/current/talks',
       headers: {
         token: getToken,
         'Cache-Control': 'no-cache, no-store',
