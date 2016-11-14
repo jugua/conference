@@ -14,4 +14,7 @@ public interface UserService {
 	
 	User getByEmail(String email);
 	
+	User getByLastName(String lastName);
+	
+	boolean isEmailExit(String email);
 }
