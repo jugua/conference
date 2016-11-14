@@ -4,17 +4,48 @@
         <div ui-view></div>
     </div>
     <div class="my-talk-settings">
-        <select name="" id=""></select>
+        <form class="my-talk-settings__filters">
+        <p class="my-talk-settings__title">filter by:</p>
+        <div>
+        <label for="my-talk-status" class="form-label my-talk-settings__label">Status</label>
+        <select name="" id="my-talk-status" class="my-talk-settings__select">
+            <option value="new">New</option>
+            <option value="new">In Progress</option>
+            <option value="new">Approved</option>
+            <option value="new">Rejected</option>
+        </select>
+        </div>
+        <div>
+        <label for="my-talk-topic" class="form-label my-talk-settings__label">Topic</label>
+        <select name="" id="my-talk-topic" class="my-talk-settings__select">
+            <option value="new">JVM Languages and new programming paradigms</option>
+            <option value="new">Web development and Java Enterprise technologies</option>
+            <option value="new">Software engineering practices</option>
+            <option value="new">Architecture & Cloud</option>
+            <option value="new"> BigData & NoSQL</option>
+        </select>
+        </div>
         <input type="button" class="btn my-talk-settings__button" value="apply">
         <input type="reset" class="btn btn_cancel my-talk-settings__button" value="reset">
+        </form>
     </div>
     <div class="data-table">
         <div class="table-header">
-            <div class="table-header__item table-header__item_title">title</div>
-            <div class="table-header__item table-header__item_topic">topic</div>
-            <div class="table-header__item table-header__item_date">date</div>
-            <div class="table-header__item table-header__item_status">status</div>
-            <div class="table-header__item table-header__item_comments">organizer comments</div>
+            <div class="table-header__item table-header__item_title">title
+                <div class="table-header__button"></div>
+            </div>
+            <div class="table-header__item table-header__item_topic">topic
+                <div class="table-header__button"></div>
+            </div>
+            <div class="table-header__item table-header__item_date">submited date
+                <div class="table-header__button"></div>
+            </div>
+            <div class="table-header__item table-header__item_status">status
+                <div class="table-header__button"></div>
+            </div>
+            <div class="table-header__item table-header__item_comments">organizer comments
+                <div class="table-header__button"></div>
+            </div>
         </div>
         <div class="data-table__inner-wrapper">
             <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
