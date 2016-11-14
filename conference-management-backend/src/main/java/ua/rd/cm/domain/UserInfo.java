@@ -15,16 +15,23 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "info")
-public class Info {
+@Table(name = "user_info")
+public class UserInfo {
+
+    @TableGenerator(
+            name = "userInfoGen",
+            table = "user_info_id_gen",
+            pkColumnName = "gen_key",
+            valueColumnName = "gen_value",
+            pkColumnValue = "user_info_id",
+            allocationSize = 1
+    )
 
     @Id
+    @Column(name = "user_info_id")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator =
+            "userInfoGen")
     private Long id;
-
-    @JoinColumn(name = "ID")
-    @OneToOne
-    @MapsId
-    private User user;
 
     @NotNull
     @Size(max = 2000)

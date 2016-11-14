@@ -37,20 +37,36 @@ public class Talk {
     private Long id;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "type_id")
+    private Type type;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "language_id")
+    private Language language;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "level_id")
+    private Level level;
+
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
     @NotNull
@@ -64,22 +80,7 @@ public class Talk {
     private String description;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "language_id")
-    private Language language;
-
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "level_id")
-    private Level level;
-
-    @NotNull
     @Size(max = 1500)
     @Column(name = "additional_info", nullable = false)
     private String additionalInfo;
-
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "type_id")
-    private Type type;
 }
