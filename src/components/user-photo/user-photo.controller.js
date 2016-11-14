@@ -96,6 +96,7 @@ export default class UserPhotoController {
     this.toggleDeletePreview();
     this.toggleAnimation();
     this.user.photo = '';
+    this.currentPhotoStatus = this.getCurrentPhotoStatus();
   }
 
   errorDelete() {
