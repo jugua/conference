@@ -18,7 +18,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.user.IsEmailExist;
 import ua.rd.cm.repository.specification.user.UserByEmail;
@@ -54,13 +56,13 @@ public class SimpleUserServiceTest {
 	
 	@Test
 	public void testFind() {
-		List<User> retList = new ArrayList<>();
-		retList.add(new User(1L, "test", "testLas", "email", new char[]{'p','a','s'}, "url//test", "admin"));
-		when(repository.findBySpecification(new UserById(anyLong()))).thenReturn(retList);
+		List<User> list = new ArrayList<>();
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
+		when(repository.findBySpecification(new UserById(anyLong()))).thenReturn(list);
 
-		User retUser = service.find(1L);
-		assertEquals(new Long(1), retUser.getId());
-		assertEquals("test", retUser.getFirstName());
+		User user = service.find(1L);
+		assertEquals(new Long(1), user.getId());
+		assertEquals("test", user.getFirstName());
 	}
 
 	@Test
@@ -75,9 +77,9 @@ public class SimpleUserServiceTest {
 
 	@Test
 	public void testGetByFirstName() {
-		List<User> retList = new ArrayList<>();
-		retList.add(new User(1L, "test", "testLas", "email", new char[]{'p','a','s'}, "url//test", "admin"));
-		when(repository.findBySpecification(new UserByFirstName(anyString()))).thenReturn(retList);
+		List<User> list = new ArrayList<>();
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
+		when(repository.findBySpecification(new UserByFirstName(anyString()))).thenReturn(list);
 		
 		List<User> user = service.getByFirstName("test");
 		assertEquals("test", user.get(0).getFirstName());
@@ -86,23 +88,23 @@ public class SimpleUserServiceTest {
 
 	@Test
 	public void testGetByEmail() {
-		User retUser = null;
-		List<User> retList = new ArrayList<>();
-		retList.add(new User(1L, "test", "testLas", "email", new char[]{'p','a','s'}, "url//test", "admin"));
-		when(repository.findBySpecification(new UserByEmail(anyString()))).thenReturn(retList);
+		User user = null;
+		List<User> list = new ArrayList<>();
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
+		when(repository.findBySpecification(new UserByEmail(anyString()))).thenReturn(list);
 		
-		retUser = service.getByEmail("email");
-		assertEquals("email", retUser.getEmail());
-		assertEquals(new Long(1), retUser.getId());
+		user = service.getByEmail("email");
+		assertEquals("email", user.getEmail());
+		assertEquals(new Long(1), user.getId());
 		verify(repository, times(1)).findBySpecification(new UserByEmail(anyString()));
 	}
 
 	@Test
 	public void testGetByLastName() {
-		List<User> retList = new ArrayList<>();
-		retList.add(new User(1L, "test", "testLas", "email", new char[]{'p','a','s'}, "url//test", "admin"));
-		retList.add(new User(2L, "test2", "testLas2", "email2", new char[]{'p','a','2'}, "url//test2", "admin"));
-		when(repository.findBySpecification(new UserByLastName(anyString()))).thenReturn(retList);
+		List<User> list = new ArrayList<>();
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
+		list.add(new User(1L, "test2", "testLas2t", "email2", "pass2", "url2", new UserInfo(), new Role()));
+		when(repository.findBySpecification(new UserByLastName(anyString()))).thenReturn(list);
 		
 		List<User> serviceList = service.getByLastName("testLas");
 		assertEquals(2, serviceList.size());
