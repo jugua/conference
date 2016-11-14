@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 /**
  * @author Artem_Pryzhkov
  */
@@ -16,20 +15,23 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "info")
-public class Info {
+@Table(name = "user_info")
+public class UserInfo {
 
     @TableGenerator(
-            name = "infoGen",
-            table = "info_id_gen",
+            name = "userInfoGen",
+            table = "user_info_id_gen",
             pkColumnName = "gen_key",
             valueColumnName = "gen_value",
-            pkColumnValue = "info_id",
+            pkColumnValue = "user_info_id",
             allocationSize = 1
     )
 
-    //TODO add annotation
-    private User user;
+    @Id
+    @Column(name = "user_info_id")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator =
+            "userInfoGen")
+    private Long id;
 
     @NotNull
     @Size(max = 2000)
@@ -50,14 +52,23 @@ public class Info {
     @Column(name = "company", nullable = false)
     private String company;
 
+    @Size(max = 1000)
     @Column(name = "linkedIn")
     private String linkedIn;
+
+    @Size(max = 1000)
     @Column(name = "twitter")
     private String twitter;
+
+    @Size(max = 1000)
     @Column(name = "facebook")
     private String facebook;
+
+    @Size(max = 1000)
     @Column(name = "blog")
     private String blog;
+
+    @Size(max = 1000)
     @Column(name = "additional_info")
     private String additionalInfo;
 }

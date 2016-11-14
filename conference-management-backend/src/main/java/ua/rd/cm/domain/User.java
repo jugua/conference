@@ -14,13 +14,13 @@ import javax.validation.constraints.Size;
  * @author Mariia Lapovska
  */
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "user")
-public class User {
+public @Data class User {
 
     @TableGenerator(
             name = "userGen",
@@ -55,16 +55,19 @@ public class User {
     private String email;
 
     @NotNull
-    @Size(min = 6, max = 30)
     @Column(name = "password", nullable = false)
-    private char[] password;
+    private String password;
 
     @NotNull
     @Column(name = "photo", nullable = false)
     private String photo;
 
-    @NotNull
-    @Column(name = "role", nullable = false)
+    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "user_info_id", unique = true)
+    private UserInfo userInfo;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "role_id")
     @JsonProperty("roles")
-    private String role;
+    private Role role;
 }
