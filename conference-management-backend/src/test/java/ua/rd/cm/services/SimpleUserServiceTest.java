@@ -114,8 +114,8 @@ public class SimpleUserServiceTest {
 		when(list.isEmpty()).thenReturn(false).thenReturn(true);
 		when(repository.findBySpecification(new IsEmailExist(anyString()))).thenReturn(list);
 		
-		assertTrue(service.isEmailExit("email"));
-		assertFalse(service.isEmailExit("email"));
+		assertTrue(service.isEmailExist("email"));
+		assertFalse(service.isEmailExist("email"));
 		verify(repository,times(2)).findBySpecification(new IsEmailExist(anyString()));
 	}
 

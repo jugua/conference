@@ -20,5 +20,5 @@ public interface UserService {
 	
 	List<User> getByLastName(String lastName);
 	
-	boolean isEmailExit(String email);
+	boolean isEmailExist(String email);
 }
