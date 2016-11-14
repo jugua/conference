@@ -20,7 +20,7 @@ const Menus = function Menus() {
         name: 'My Account'
       },
       {
-        link: 'otalks',
+        link: 'talks',
         name: 'Talks'
       }
     ]
@@ -50,8 +50,7 @@ const Menus = function Menus() {
       'Software engineering practices',
       'Architecture & Cloud',
       'BigData & NoSQL'
-    ]
-    ,
+    ],
     getTypes: () => ['Regular Talk',
       'Lighting Talk',
       'Online Talk',

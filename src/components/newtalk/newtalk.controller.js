@@ -1,15 +1,15 @@
 export default class NewtalkController {
   constructor(currentUser) {
-    let mandatory = ['bio', 'job', 'past']
+    const mandatory = ['bio', 'job', 'company'];
     this.current = currentUser;
 
     this.isEmptyBio = mandatory.every((el) => {
       if (this.current[el]) {
         return false;
-      } else {
-        return true;
       }
-    })
+
+      return true;
+    });
   }
 }
 

@@ -44,34 +44,24 @@ function Current($resource, $window, $q, $rootScope, $http) {
     }
   });
 
-  function addTalk(talk) {
-    users.addTalk(talk, (answer) => {
-      console.log(answer);
-      },
-      (a) => {
-        console.log(a);
-       // $rootScope.$broadcast('signInEvent');
-      });
-  }
-
   function getInfo() {
     const current = $q.defer();
     users.getCurrentUser({}, (data) => {
-        current.resolve(data);
-      },
-      () => {
-        current.resolve(null);
-      });
+      current.resolve(data);
+    },
+    () => {
+      current.resolve(null);
+    });
 
     this.current = current.promise;
   }
 
   function updateInfo(userInfo) {
     users.updateCurrentUser(userInfo, () => {
-      },
-      () => {
-        $rootScope.$broadcast('signInEvent');
-      });
+    },
+    () => {
+      $rootScope.$broadcast('signInEvent');
+    });
   }
 
   function uploadPhoto(file) {
@@ -88,22 +78,22 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
-  function logout() {
-    return $http.get('/api/users/current/logout', {
+  // deleting photo
+  function deleteUserPhoto() {
+    return $http.delete('api/users/current/photo', {
       headers: {
         token: getToken,
         'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache'
+        Pragma: 'no-cache',
       }
     });
   }
 
   return {
-    addTalk,
     getInfo,
     updateInfo,
     uploadPhoto,
-    logout
+    deleteUserPhoto
   };
 }
 

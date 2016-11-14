@@ -27,7 +27,7 @@ function registration(req, res) {
         let user = new User();// create a new instance of the User
 
         userfields.forEach((field) => {
-          if (field==='mail') {
+          if (field === 'mail') {
             req.body[field] = req.body[field].toLowerCase();
           }
           user[field] = req.body[field];
