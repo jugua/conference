@@ -24,6 +24,11 @@ public class SimpleUserService implements UserService{
 	}
 
 	@Override
+	public void save(User user) {
+		userRepository.saveUser(user);
+	}
+	
+	@Override
 	public List<User> findAll() {
 		return userRepository.findAll();
 	}
@@ -39,13 +44,19 @@ public class SimpleUserService implements UserService{
 	}
 
 	@Override
-	public User getByLastName(String lastName) {
-		return userRepository.findBySpecification(new UserByLastName(lastName)).get(0);
+	public List<User> getByLastName(String lastName) {
+		return userRepository.findBySpecification(new UserByLastName(lastName));
 	}
 
 	@Override
 	public boolean isEmailExit(String email) {
 		return !userRepository.findBySpecification(new IsEmailExist(email)).isEmpty();
 	}
+
+	@Override
+	public void updateUserProfile(User user) {
+		userRepository.updateUser(user);
+	}
+
 
 }
