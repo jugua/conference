@@ -1,26 +1,7 @@
-export default  class TalkService {
+export default class TalkService {
 
   constructor($resource, $window) {
-    this.talks = $resource('api/talk', {}, {
-      add: {
-        method: 'POST',
-        headers: {
-          token: _getToken,
-          'Cache-Control': 'no-cache, no-store',
-          Pragma: 'no-cache'
-        }
-      },
-      getAll: {
-        method: 'GET',
-        isArray: true,
-        headers: {
-          token: _getToken,
-          'Cache-Control': 'no-cache, no-store',
-          Pragma: 'no-cache'
-        }
-      }
-    });
-    function _getToken() {
+    function getToken() {
       let info = $window.localStorage.userInfo;
       let token;
 
@@ -33,27 +14,48 @@ export default  class TalkService {
 
       return token;
     }
+
+    this.talks = $resource('api/talk', {}, {
+      add: {
+        method: 'POST',
+        headers: {
+          token: getToken,
+          'Cache-Control': 'no-cache, no-store',
+          Pragma: 'no-cache'
+        }
+      },
+      getAll: {
+        method: 'GET',
+        isArray: true,
+        headers: {
+          token: getToken,
+          'Cache-Control': 'no-cache, no-store',
+          Pragma: 'no-cache'
+        }
+      }
+    });
+
   }
 
   getAll() {
-    if (this._talks) {
-      return this._talks;
+    if (this.talks) {
+      return this.talks;
     }
-    this._talks = this.talks.getAll((res) => {
-        this._talks = res;
+    this.talks = this.talks.getAll((res) => {
+        this.talks = res;
 
       },
       (err)=> {
-        this._talks = [];
+        this.talks = [];
       });
 
-    return this._talks;
+    return this.talks;
   }
 
   add(talk) {
     this.talks.add(talk, (res) => {
-        if (this._talks instanceof Array) {
-          this._talks.push(res);
+        if (this.talks instanceof Array) {
+          this.talks.push(res);
         }
       },
       (err)=> {

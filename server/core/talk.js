@@ -39,14 +39,13 @@ function getTalks(req, res) {
     if (current.roles.indexOf('s') != -1) {
       res.send(current.talks);
     } else {
-      User.find({},'talks', (err, res) => {
+      User.find({},'talks', (err, talks) => {
         if (err) {
 
           res.status(500).send(err);
           return;
         }
-        console.log(res);
-        res.send(res);
+        res.send(talks);
       })
     }
 

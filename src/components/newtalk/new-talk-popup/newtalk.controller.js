@@ -2,7 +2,6 @@ export default class NewtalkController {
   constructor(Menus, Talks, $state, $scope) {
     this.talksService = Talks;
     this.scope = $scope;
-    console.log( this.talksService);
     this.selectService = Menus;
     this.state = $state;
     this.talkForm = {};
@@ -11,15 +10,6 @@ export default class NewtalkController {
   }
 
   close() {
-    if (this.talkForm.$pristine || this.talkForm.$submitted || isEmptyForm(this.talk)) {
-      this.state.go('header.tabs.myTalks');
-      return;
-    }
-
-    if (this.talkForm.$dirty && !this.talkForm.$submitted) {
-      this.isShownPopup = true;
-    }
-
     function isEmptyForm(form) {
       let isEmpty = true;
       for (let field in form) {
@@ -30,6 +20,15 @@ export default class NewtalkController {
       }
 
       return isEmpty;
+    }
+
+    if (this.talkForm.$pristine || this.talkForm.$submitted || isEmptyForm(this.talk)) {
+      this.state.go('header.tabs.myTalks');
+      return;
+    }
+
+    if (this.talkForm.$dirty && !this.talkForm.$submitted) {
+      this.isShownPopup = true;
     }
   }
 
@@ -45,12 +44,6 @@ export default class NewtalkController {
 
     this.talksService.add(this.talk);
     this.state.go('header.tabs.myTalks');
-
-  }
-
-
-
-  processError () {
 
   }
 
