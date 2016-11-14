@@ -4,7 +4,6 @@ import java.util.List;
 
 import ua.rd.cm.domain.User;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.user.IsEmailExist;
 import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
 import ua.rd.cm.repository.specification.user.UserById;
@@ -49,8 +48,8 @@ public class SimpleUserService implements UserService{
 	}
 
 	@Override
-	public boolean isEmailExit(String email) {
-		return !userRepository.findBySpecification(new IsEmailExist(email)).isEmpty();
+	public boolean isEmailExist(String email) {
+		return !userRepository.findBySpecification(new UserByEmail(email)).isEmpty();
 	}
 
 	@Override
