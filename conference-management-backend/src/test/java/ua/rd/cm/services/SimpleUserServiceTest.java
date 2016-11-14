@@ -22,7 +22,6 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.user.IsEmailExist;
 import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
 import ua.rd.cm.repository.specification.user.UserById;
@@ -114,11 +113,11 @@ public class SimpleUserServiceTest {
 	public void testIsEmailExit() {
 		List<User> list = spy(new ArrayList<>());
 		when(list.isEmpty()).thenReturn(false).thenReturn(true);
-		when(repository.findBySpecification(new IsEmailExist(anyString()))).thenReturn(list);
+		when(repository.findBySpecification(new UserByEmail(anyString()))).thenReturn(list);
 		
 		assertTrue(service.isEmailExist("email"));
 		assertFalse(service.isEmailExist("email"));
-		verify(repository,times(2)).findBySpecification(new IsEmailExist(anyString()));
+		verify(repository,times(2)).findBySpecification(new UserByEmail(anyString()));
 	}
 
 }
