@@ -6,8 +6,8 @@ export default class UserPhotoController {
     this.deletePreview = false;
     this.deleteMessage = false;
     this.defaultImage = 'assets/img/default_ava.jpg';
-    this.ava;
-    this.file;
+    this.ava = null;
+    this.file = null;
     this.uploadForm = {};
 
     this.currentPhotoStatus = this.getCurrentPhotoStatus();
@@ -41,7 +41,7 @@ export default class UserPhotoController {
   errorUpload(error) {
     this.togglePreview();
     this.toggleAnimation();
-    this.file = {};
+    this.file = null;
     this.uploadForm.$setValidity(error.data.error, false);
   }
 
@@ -86,19 +86,19 @@ export default class UserPhotoController {
             }
         )
         .catch(
-            (error) => {
-              this.errorDelete(error);
+            () => {
+              this.errorDelete();
             });
   }
 
   successDelete() {
-    this.ava = '';
+    this.ava = null;
     this.toggleDeletePreview();
     this.toggleAnimation();
     this.user.photo = '';
   }
 
-  errorDelete(error) {
+  errorDelete() {
     this.toggleAnimation();
     this.deleteMessage = !this.deleteMessage;
   }

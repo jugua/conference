@@ -9,6 +9,7 @@ import signUpComponent from './sign-up/sign-up';
 import myTalksComponent from './my-talks/my-talks';
 import forgotPasswordComponent from './forgot-password/forgot-password';
 import userPhotoComponent from './user-photo/user-photo';
+import logoutComponent from './logout/logout';
 import newTalkComponent from './newtalk/newtalk';
 
 export default (app) => {
@@ -23,6 +24,7 @@ export default (app) => {
     signUpComponent,
     forgotPasswordComponent,
     userPhotoComponent,
+    logoutComponent,
     newTalkComponent
   ], app);
 };
