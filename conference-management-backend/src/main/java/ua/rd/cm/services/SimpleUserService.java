@@ -49,7 +49,7 @@ public class SimpleUserService implements UserService{
 	}
 
 	@Override
-	public boolean isEmailExit(String email) {
+	public boolean isEmailExist(String email) {
 		return !userRepository.findBySpecification(new IsEmailExist(email)).isEmpty();
 	}
 
