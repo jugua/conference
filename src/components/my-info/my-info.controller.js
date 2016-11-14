@@ -2,25 +2,25 @@ export default class MyInfoController {
   constructor(Current, $scope, $state) {
     this.state = $state;
     this.currentUserService = Current;
+    this.alertVisible = false;
+    this.confirmVisible = false;
+    this.message = {};
 
-    this.errorMessage = {
-      title: 'Error',
-      p: 'Please fill in all mandatory fields',
-      showOkBtn: true,
-      showYesNoBtns: false,
+    this.messages = {
+      error: {
+        title: 'Error',
+        content: 'Please fill in all mandatory fields',
+      },
+      success: {
+        title: 'Saved',
+        content: 'Changes saved successfully',
+      },
+      leave: {
+        title: 'Attention',
+        content: 'Would you like to save changes?',
+      }
     };
-    this.successMessage = {
-      title: 'Saved',
-      p: 'Changes saved successfully',
-      showOkBtn: true,
-      showYesNoBtns: false,
-    };
-    this.goAwayMessage = {
-      title: 'Attention',
-      p: 'Would you like to save changes?',
-      showOkBtn: false,
-      showYesNoBtns: true,
-    };
+
     this.userInfoForm = {};
 
     this.event = $scope.$on('$stateChangeStart', (e, toState) => {
@@ -32,31 +32,37 @@ export default class MyInfoController {
       }
       e.preventDefault();
       this.nextState = toState;
-      this.showMessage('goAwayMessage');
+      this.showConfirm('leave');
     });
   }
 
   submit() {
     if (this.userInfoForm.$invalid) {
-      this.showMessage('errorMessage');
+      this.showAlert('error');
     } else {
       this.currentUserService.updateInfo(this.user);
-      this.showMessage('successMessage');
+      this.showAlert('success');
       this.userInfoForm.$setPristine();
     }
   }
 
-  showMessage(messageType) {
-    this.message = this[messageType];
-    this.isShowMessage = true;
+  showAlert(message) {
+    this.message = this.messages[message];
+    this.alertVisible = true;
+  }
+  showConfirm(message) {
+    this.message = this.messages[message];
+    this.confirmVisible = true;
   }
 
   hideMessage() {
-    this.isShowMessage = false;
+    this.alertVisible = false;
+    this.confirmVisible = false;
     this.message = {};
   }
 
   saveChangesBeforeOut() {
+    this.hideMessage();
     this.submit();
 
     this.userInfoForm.$setSubmitted();
@@ -67,6 +73,7 @@ export default class MyInfoController {
   }
 
   cancelChanges() {
+    this.hideMessage();
     this.event();
     this.state.reload();
     this.state.go(this.nextState.name);
