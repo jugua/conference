@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Mariia Lapovska
@@ -61,7 +63,9 @@ public @Data class User {
     @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "user_info_contact")
+//    @MapKeyJoinColumn(name = "contact_type_id")
+//    @Column(name = "link")
+    private Set<Role> userRoles = new HashSet<>();
 }
