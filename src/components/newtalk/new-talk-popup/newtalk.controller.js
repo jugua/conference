@@ -12,7 +12,7 @@ export default class NewtalkController {
   close() {
     function isEmptyForm(form) {
       let isEmpty = true;
-      for (let field in form) {
+      for (const field in form) {
         if (form[field] && form[field].length) {
           isEmpty = false;
           break;
@@ -44,8 +44,5 @@ export default class NewtalkController {
 
     this.talksService.add(this.talk);
     this.state.go('header.tabs.myTalks');
-
   }
-
 }
-

@@ -9,7 +9,7 @@ export default (app) => {
       .state('header.tabs.myTalks.newtalk', {
         template,
         controller,
-        controllerAs:'vm',
+        controllerAs: 'vm',
         resolve: {
           currentUser: Current => Current.current
         },

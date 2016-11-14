@@ -34,7 +34,6 @@ export default class TalkService {
         }
       }
     });
-
   }
 
   getAll() {
@@ -42,11 +41,9 @@ export default class TalkService {
       return this._talks;
     }
 
-    this._talks = this.talks.getAll((res) => {
-       // this._talks = res;
-
-      },
-      (err)=> {
+    this._talks = this.talks.getAll(() => {
+    },
+      () => {
         this._talks = [];
       });
 
@@ -55,11 +52,11 @@ export default class TalkService {
 
   add(talk) {
     this.talks.add(talk, (res) => {
-        if (this._talks instanceof Array) {
-          this._talks.push(res);
-        }
-      },
-      (err)=> {
+      if (this._talks instanceof Array) {
+        this._talks.push(res);
+      }
+    },
+      (err) => {
         console.log(err);
       });
   }

@@ -1,8 +1,7 @@
 export default class MyTalksController {
-  constructor(Current, Talks, $scope) {
+  constructor(Current, Talks) {
     this.current = Current.current;
     this.talks = Talks.getAll();
-    console.log(this.talks)
   }
 }
 

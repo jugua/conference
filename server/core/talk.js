@@ -40,7 +40,7 @@ function getTalks(req, res) {
     if (current.roles.indexOf('s') != -1) {
       res.send(current.talks);
     } else {
-      User.find({},'talks fname lname').lean().exec((err, dbtalks) => {
+      User.find({}, 'talks fname lname').lean().exec((err, dbtalks) => {
         let talks = [];
         if (err) {
           res.status(500).send(err);
@@ -52,9 +52,9 @@ function getTalks(req, res) {
           if (!user.talks) {
             return;
           }
-          user.talks.forEach( (dbtalk)=> {
+          user.talks.forEach((dbtalk)=> {
             let talk = {};
-            talk = Object.assign(dbtalk,{name});
+            talk = Object.assign(dbtalk, {name});
             talks.push(talk);
           })
         });
