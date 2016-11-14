@@ -10,6 +10,7 @@ import myTalksComponent from './my-talks/my-talks';
 import forgotPasswordComponent from './forgot-password/forgot-password';
 import userPhotoComponent from './user-photo/user-photo';
 import newTalkComponent from './newtalk/newtalk';
+import talksComponent from './talks/talks';
 
 export default (app) => {
   include_all_modules([
@@ -23,6 +24,7 @@ export default (app) => {
     signUpComponent,
     forgotPasswordComponent,
     userPhotoComponent,
-    newTalkComponent
+    newTalkComponent,
+    talksComponent
   ], app);
 };
