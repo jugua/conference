@@ -1,22 +1,49 @@
 .my-talks
   height: 100%
+
   &__header
     border-bottom: 1px solid $sharp-blue
+
   &__button
     width: 140px
     margin: 0 10px 10px 0
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      margin: 10px auto
+
   &__pop-up
     width: 600px
 
 .my-talk-settings
   box-sizing: border-box
   padding: 10px 0
-  display: flex
+
+  &__filters
+    display: flex
+
+  &__title
+    text-transform: capitalize
+    line-height: 36px
+    margin: 26px 10px 0 0
+
   &__button
     width: 100px
-    margin: 0 5px
+    height: 36px
+    margin: 26px 5px 0
+
+  &__label
+    margin-bottom: 5px
+    font-size: 14px
+
+  &__select
+    width: 150px
+    height: 36px
+    margin: 0 5px 0 0
+    border: 1px solid $dark-blue
+
 .data-table
   margin-top: 20px
+  height: 70%
+  border-bottom: 1px solid $sharp-blue
 
   &__text
     margin: 0
@@ -36,7 +63,7 @@
     z-index: 2
 
   &__inner-wrapper
-    height: 500px
+    max-height: 90%
     overflow: auto
     @media ($mnw: $sdmn) and ($mxw: $sdmx)
       display: flex
@@ -71,7 +98,9 @@
 
   &__column
     &_title
-      width: 30%
+      width: 28%
+      box-sizing: border-box
+      padding: 0 0 0 5px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -83,6 +112,8 @@
       overflow: hidden
       text-overflow: ellipsis
       white-space: nowrap
+      box-sizing: border-box
+      padding: 0 5px 0 0
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -98,7 +129,7 @@
           +my-talk-before-title
 
     &_date
-      width: 10%
+      width: 12%
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -118,22 +149,50 @@
 
 .table-header
   display: flex
+  border-bottom: 2px solid $dark-blue
+
   &__item
     text-transform: capitalize
     box-sizing: border-box
     padding: 5px 0
 
     &_title
-      width: 30%
+      width: 28%
+      box-sizing: border-box
+      padding: 5px 0 5px 5px
+      position: relative
 
     &_topic
       width: 15%
+      position: relative
 
-    &_status, &_date
+    &_status
       width: 10%
+      position: relative
+
+    &_date
+      width: 12%
+      position: relative
 
     &_comments
       width: 35%
+      position: relative
+
+  &__button
+    display: block
+    position: absolute
+    right: 5px
+    bottom: 5px
+    width: 0
+    height: 0
+    border-left: 5px solid transparent
+    border-right: 5px solid transparent
+    border-bottom: 5px solid #1A9CB0
+    margin-right: 5px
+    margin-bottom: 5px
+    &:hover
+      cursor: pointer
+
   @media ($mnw: $xsdmn) and ($mxw: $sdmx)
     display: none
 
