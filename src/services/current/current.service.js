@@ -78,12 +78,13 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
-  function logout() {
-    return $http.get('/api/users/current/logout', {
+  // deleting photo
+  function deleteUserPhoto() {
+    return $http.delete('api/users/current/photo', {
       headers: {
         token: getToken,
         'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache'
+        Pragma: 'no-cache',
       }
     });
   }
@@ -92,7 +93,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
     getInfo,
     updateInfo,
     uploadPhoto,
-    logout
+    deleteUserPhoto
   };
 }
 

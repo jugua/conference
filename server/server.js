@@ -10,7 +10,7 @@ const auth = require('./core/auth');
 const registration = require('./core/registration');
 const current = require('./core/current');
 const forgotPassword = require('./core/forgot-password');
-const uploadImage = require('./core/upload-image');
+const photo = require('./core/upload-image');
 const logout = require('./core/logout');
 const talk = require('./core/talk');
 
@@ -29,7 +29,6 @@ module.exports = (PORT) => {
 
  //mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
  mongoose.connect('mongodb://conference:management@ds151127.mlab.com:51127/managment');
-
 
   app.use(express.static(path.join(__dirname, './../dist')));
   app.use("/", express.static(path.join(__dirname, './../dist')));
@@ -75,7 +74,8 @@ module.exports = (PORT) => {
     .get(logout);
 
   router.route('/users/current/photo')
-    .post(upload.any(), uploadImage);
+    .post(upload.any(), photo.uploadImage)
+    .delete(photo.deleteImage); // deleting photo
 
   // get user by id
 

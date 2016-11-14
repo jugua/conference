@@ -1,5 +1,5 @@
 <div class="my-info__ava" ngf-background="$ctrl.ava || $ctrl.user.photo || $ctrl.defaultImage">
-  <input type="button" class="my-info__remove">
+  <input type="button" class="my-info__remove" ng-click="$ctrl.askToDeletePhoto()">
   <div class="slide">
     <input type="button" class="slide__button" value="{{ $ctrl.currentPhotoStatus.button }}" ng-click="$ctrl.toggleSlide()">
   </div>
@@ -87,5 +87,28 @@
              ng-click="$ctrl.togglePreview()">
     </div>
     <button class="pop-up__close" ng-click="$ctrl.togglePreview()"></button>
+  </div>
+</div>
+
+<!-- deleting photo pop-up -->
+<div class="pop-up-wrapper" ng-if="$ctrl.deletePreview">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Delete Photo</h3>
+
+    <p class="pop-up__notification">
+      Are you sure you want to delete a photo?
+    </p>
+
+    <p ng-if="$ctrl.deleteMessage" class="field-error field-error_center">
+      Sorry we can`t delete your photo. Try later.
+    </p>
+
+    <div class="pop-up-button-wrapper">
+      <input type="button" value="Cancel" class="btn"
+             ng-click="$ctrl.toggleDeletePreview()">
+      <input type="button" value="Delete" class="btn btn_cancel"
+             ng-click="$ctrl.deletePhoto()">
+    </div>
+    <button class="pop-up__close" ng-click="$ctrl.toggleDeletePreview()"></button>
   </div>
 </div>

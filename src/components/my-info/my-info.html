@@ -5,18 +5,27 @@
               ng-model="$ctrl.user.bio"
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
-  <label for="my-info-job" class="form-label form-label_required my-info__label">Job</label>
+  <label for="my-info-job" class="form-label form-label_required my-info__label">Job Title</label>
   <input type="text" name="job" id="my-info-job"
          class="field field_border my-info__field_job"
          maxlength="256"
          ng-model="$ctrl.user.job"
          ng-required="true">
-  <label for="my-info-linkedin-past-conferences" class="form-label form-label_required my-info__label">Past Conferences</label>
-  <input type="text" name="past" id="my-info-linkedin-past-conferences"
-         class="field field_border my-info__field_past"
-         maxlength="1000"
-         ng-model="$ctrl.user.past"
+  <label for="my-info-company" class="form-label form-label_required my-info__label">Company
+    <md-icon class="icon icon_info">
+      <md-tooltip md-direction="right" class="tooltip tooltip_required">e.g. Company name or self-employed</md-tooltip>
+    </md-icon>
+  </label>
+  <input type="text" name="company" id="my-info-company"
+         class="field field_border my-info__field_company"
+         maxlength="256"
+         ng-model="$ctrl.user.company"
          ng-required="true">
+  <label for="my-info-linkedin-past-conferences" class="form-label my-info__label">Past Conferences</label>
+  <textarea type="text" name="past" id="my-info-linkedin-past-conferences" rows="5"
+         class="textarea"
+         maxlength="1000"
+         ng-model="$ctrl.user.past">{{$ctrl.user.past}}</textarea>
   <label for="my-info-linkedin" class="form-label my-info__label">LinkedIn</label>
   <input type="text" name="linkedin" id="my-info-linkedin"
          class="field field_border"
@@ -42,21 +51,35 @@
 
 </form>
 
-<div class="pop-up-wrapper" ng-show="$ctrl.isShowMessage">
+<div class="pop-up-wrapper" ng-show="$ctrl.alertVisible">
   <div class="pop-up">
     <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
     <p class="pop-up__notification">
-      {{$ctrl.message.p}}
+      {{$ctrl.message.content}}
     </p>
 
     <div class="pop-up-button-wrapper">
+      <input type="button" value="ok" class="btn"
+             ng-click="$ctrl.hideMessage()">
+    </div>
+
+  </div>
+  <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
+</div>
+
+
+<div class="pop-up-wrapper" ng-show="$ctrl.confirmVisible">
+  <div class="pop-up">
+    <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
+    <p class="pop-up__notification">
+      {{$ctrl.message.content}}
+    </p>
+    <div class="pop-up-button-wrapper">
       <input type="button" value="yes" class="btn"
-             ng-if="$ctrl.message.showBtns"
              ng-click="$ctrl.saveChangesBeforeOut()">
-      <input type="button" value="No" class="btn btn_cancel"
-             ng-if="$ctrl.message.showBtns"
+      <input type="button" value="no" class="btn btn_cancel"
              ng-click="$ctrl.cancelChanges()">
     </div>
-    <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
   </div>
+  <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
 </div>
