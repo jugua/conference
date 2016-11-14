@@ -50,18 +50,18 @@ public @Data class User {
     private String email;
 
     @NotNull
-    @Size(min = 6, max = 30)
     @Column(name = "password", nullable = false)
-    private char[] password;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user", optional = false)
-    private Info info;
+    private String password;
 
     @NotNull
     @Column(name = "photo", nullable = false)
     private String photo;
 
-    @NotNull
-    @Column(name = "role", nullable = false)
-    private String role;
+    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
+    @JoinColumn(name = "user_info_id", unique = true)
+    private UserInfo userInfo;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "role_id")
+    private Role role;
 }
