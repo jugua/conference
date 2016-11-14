@@ -12,13 +12,13 @@ import javax.validation.constraints.Size;
  * @author Mariia Lapovska
  */
 
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "user")
-public class User {
+public @Data class User {
 
     @TableGenerator(
             name = "userGen",
