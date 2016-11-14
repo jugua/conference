@@ -27,21 +27,21 @@ class Logout {
 
     this.http.get('/api/users/current/logout', {
       headers: {
-        token: getToken,
+        token: this.getToken.bind(this),
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
     })
       .then(() => {
-          this.window.localStorage.removeItem('userInfo');
-          deferred.resolve();
-        },
+        this.window.localStorage.removeItem('userInfo');
+        deferred.resolve();
+      },
         (error) => {
           deferred.reject(error);
         }
       );
 
-    return deferred.promise
+    return deferred.promise;
   }
 }
 

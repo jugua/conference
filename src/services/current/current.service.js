@@ -69,10 +69,22 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
+  // deleting photo
+  function deleteUserPhoto() {
+    return $http.delete('api/users/current/photo', {
+      headers: {
+        token: getToken,
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+      }
+    });
+  }
+
   return {
     getInfo,
     updateInfo,
     uploadPhoto,
+    deleteUserPhoto
   };
 }
 

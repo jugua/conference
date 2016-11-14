@@ -4,7 +4,7 @@ function SignIn($http, $q, $window, $rootScope) {
   function login(user) {
     const deferred = $q.defer();
 
-    $http.post('/api/login/', user).then(({data}) => {
+    $http.post('/api/login/', user).then(({ data }) => {
       userInfo = {
         token: data.token
       };

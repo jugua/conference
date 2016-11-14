@@ -27,6 +27,9 @@ var UserSchema = new Schema({
   job: {
     type: String
   },
+  company: {
+    type: String
+  },
   past: {
     type: String
   },
