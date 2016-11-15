@@ -4,7 +4,7 @@ export default (app) => {
       $rootScope.$broadcast('closeDropdown');
     });
   })
-  .config(($mdThemingProvider) => {
-    $mdThemingProvider.disableTheming();
-  });
+    .config(($mdThemingProvider) => {
+      $mdThemingProvider.disableTheming();
+    });
 };

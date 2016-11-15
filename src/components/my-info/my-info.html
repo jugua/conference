@@ -54,15 +54,12 @@
 <div class="pop-up-wrapper" ng-show="$ctrl.alertVisible">
   <div class="pop-up">
     <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
+    <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
     <p class="pop-up__notification">
       {{$ctrl.message.content}}
     </p>
-
-    <div class="pop-up-button-wrapper">
-      <input type="button" value="ok" class="btn"
-             ng-click="$ctrl.hideMessage()">
-    </div>
-
+    <input type="button" value="ok" class="btn btn_right btn_small"
+           ng-click="$ctrl.hideMessage()">
   </div>
   <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
 </div>
