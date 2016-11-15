@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @TableGenerator(
             name = "roleGen",
@@ -38,4 +39,9 @@ public class Role {
     @NotNull
     @Column(name = "role_name", nullable = false)
     private String name;
+
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }
