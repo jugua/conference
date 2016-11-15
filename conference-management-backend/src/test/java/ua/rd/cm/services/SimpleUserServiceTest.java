@@ -35,7 +35,7 @@ public class SimpleUserServiceTest {
 	
 	@Before
 	public void initialize() {
-		service = new SimpleUserService(repository);
+		service = new SimpleUserService(repository,null);
 	}
 
 	@Test
