@@ -1,9 +1,10 @@
 export default class SignInController {
-  constructor(SignIn, $scope) {
+  constructor(signInService, $scope) {
     this.user = {};
     this.userForm = {};
-    this.service = SignIn;
+    this.service = signInService;
     this.scope = $scope;
+    this.emailPattern = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,6}$', 'i');
   }
 
   login() {

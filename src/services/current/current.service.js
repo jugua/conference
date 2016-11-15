@@ -1,7 +1,4 @@
-/* global angular */
-/* global FormData */
-
-function Current($resource, $window, $q, $rootScope, $http) {
+function Current($resource, $window, $q, $rootScope) {
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;
@@ -64,36 +61,9 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
-  function uploadPhoto(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    return $http.post('api/users/current/photo', formData, {
-      transformRequest: angular.identity,
-      headers: {
-        token: getToken,
-        'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache',
-        'Content-Type': undefined
-      }
-    });
-  }
-
-  // deleting photo
-  function deleteUserPhoto() {
-    return $http.delete('api/users/current/photo', {
-      headers: {
-        token: getToken,
-        'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache',
-      }
-    });
-  }
-
   return {
     getInfo,
     updateInfo,
-    uploadPhoto,
-    deleteUserPhoto
   };
 }
 
