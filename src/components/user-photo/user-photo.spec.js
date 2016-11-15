@@ -1,6 +1,9 @@
 /* global beforeEach */
 /* global inject */
 /* global describe */
+/* global expect */
+/* global it */
+/* global spyOn */
 
 import UserPhotoModule from './user-photo';
 import UserPhotoController from './user-photo.controller';
@@ -8,12 +11,11 @@ import UserPhotoComponent from './user-photo.component';
 import UserPhotoService from './user-photo.service';
 
 
-xdescribe('UserPhoto', () => {
-  let makeController;
+describe('UserPhoto', () => {
   let q;
   let deferred;
   let serviceMock;
-  let controller;
+  let sut;
 
   beforeEach(inject(($q) => {
     q = $q;
@@ -28,66 +30,53 @@ xdescribe('UserPhoto', () => {
   });
 
   beforeEach(() => {
-    makeController = (serviceMock, scope) => new UserPhotoController(serviceMock, scope);
-  });
-
-  beforeEach(() => {
-    makeController = (serviceMock, scope) => {
-      return new MyInfoController(serviceMock, scope);
-    };
+    sut = new UserPhotoController(serviceMock);
+    sut.user = {};
+    sut.user.photo = '';
   });
 
   describe('Controller', () => {
-    it('should instantiate', () => {
-     let controller = makeController(currentServiceMock, scope);
-    });
-
     it('should toggle preview', () => {
-     let controller = makeController(currentServiceMock, scope);
-     let preview = controller.uploadPreview;
-     controller.uploadForm.$valid = true;
-     controller.uploadForm.$setValidity = () => {};
-
-     controller.togglePreview();
-     expect(controller.uploadPreview).toEqual(!preview);
+      let preview = sut.uploadPreview;
+      sut.uploadForm.$valid = true;
+      sut.uploadForm.$setValidity = () => {};
+      sut.togglePreview();
+      expect(sut.uploadPreview).toEqual(!preview);
     });
 
     it('shouldn`t toggle preview', () => {
-     let controller = makeController(currentServiceMock, scope);
-     let preview = controller.uploadPreview;
-     controller.uploadForm.$valid = false;
-     controller.uploadForm.$setValidity = () => {};
+     let preview = sut.uploadPreview;
+     sut.uploadForm.$valid = false;
+     sut.uploadForm.$setValidity = () => {};
 
-     controller.togglePreview();
-     expect(controller.uploadPreview).toEqual(preview);
+     sut.togglePreview();
+     expect(sut.uploadPreview).toEqual(preview);
     });
 
     it('should call functions in successUpload', () => {
-     let controller = makeController(currentServiceMock, scope);
-     spyOn(controller, 'togglePreview');
-     spyOn(controller, 'toggleSlide');
-     spyOn(controller, 'toggleAnimation');
+      spyOn(sut, 'togglePreview');
+      spyOn(sut, 'toggleSlide');
+      spyOn(sut, 'toggleAnimation');
 
-     controller.successUpload({data:{answer:'link'}});
-     expect(controller.togglePreview).toHaveBeenCalled();
-     expect(controller.toggleSlide).toHaveBeenCalled();
-     expect(controller.toggleAnimation).toHaveBeenCalled();
+      sut.successUpload({data:{answer:'link'}});
+      expect(sut.togglePreview).toHaveBeenCalled();
+      expect(sut.toggleSlide).toHaveBeenCalled();
+      expect(sut.toggleAnimation).toHaveBeenCalled();
     });
 
     it('should call functions in errorUpload', () => {
-     let controller = makeController(currentServiceMock, scope);
      let file = {};
-     controller.uploadForm.$setValidity = () => {};
+     sut.uploadForm.$setValidity = () => {};
 
-     spyOn(controller, 'togglePreview');
-     spyOn(controller, 'toggleAnimation');
-     spyOn(controller.uploadForm, '$setValidity');
-     controller.errorUpload({data:{error: 'maxSize'}});
+     spyOn(sut, 'togglePreview');
+     spyOn(sut, 'toggleAnimation');
+     spyOn(sut.uploadForm, '$setValidity');
+     sut.errorUpload({data:{error: 'maxSize'}});
 
-     expect(controller.togglePreview).toHaveBeenCalled();
-     expect(controller.toggleAnimation).toHaveBeenCalled();
-     expect(controller.uploadForm.$setValidity).toHaveBeenCalled();
-     expect(controller.file).toEqual(file);
+     expect(sut.togglePreview).toHaveBeenCalled();
+     expect(sut.toggleAnimation).toHaveBeenCalled();
+     expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
+     expect(sut.file).toEqual(file);
     });
   })
 });
