@@ -1,8 +1,6 @@
 package ua.rd.cm.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 
@@ -21,7 +19,9 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
-@Table(name = "user")
+@Table(name = "user", indexes = {
+        @Index(name = "email_index",  columnList="email", unique = true)
+})
 public @Data class User {
 
     @TableGenerator(
@@ -41,19 +41,16 @@ public @Data class User {
     @NotNull
     @Size(min = 1, max = 56)
     @Column(name = "first_name", nullable = false)
-    @JsonProperty("fname")
     private String firstName;
 
     @NotNull
     @Size(min = 1, max = 56)
     @Column(name = "last_name", nullable = false)
-    @JsonProperty("lname")
     private String lastName;
 
     @NotNull
-    @Email
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$/i")
     @Column(name = "email", nullable = false)
-    @JsonProperty("mail")
     private String email;
 
     @NotNull
@@ -68,8 +65,10 @@ public @Data class User {
     @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @JsonProperty("roles")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = { @JoinColumn(name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
     private Set<Role> userRoles = new HashSet<>();
-
 }
