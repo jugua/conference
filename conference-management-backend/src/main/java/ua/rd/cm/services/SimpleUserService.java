@@ -18,10 +18,13 @@ import ua.rd.cm.repository.specification.user.UserByLastName;
 public class SimpleUserService implements UserService{
 
 	private UserRepository userRepository;
+	private RoleService roleService;
 	
 	@Inject
-	public SimpleUserService(UserRepository userRepository) {
+	public SimpleUserService(UserRepository userRepository,
+							 RoleService roleService) {
 		this.userRepository = userRepository;
+		this.roleService = roleService;
 	}
 
 	@Override
@@ -32,6 +35,10 @@ public class SimpleUserService implements UserService{
 	@Transactional
 	@Override
 	public void save(User user) {
+		if (user.getUserRoles() == null) {
+			user.addRole(roleService.getByName("SPEAKER").get(0));
+		}
+
 		userRepository.saveUser(user);
 	}
 	

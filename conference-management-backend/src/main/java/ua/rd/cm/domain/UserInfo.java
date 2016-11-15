@@ -56,10 +56,12 @@ public class UserInfo {
     private String company;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_info_contact")
-    @MapKeyJoinColumn(name = "contact_type_id")
-    @MapKeyColumn(name = "user_info_id")
+    @CollectionTable(name = "user_info_contact",
+            joinColumns = @JoinColumn(name = "user_info_id")
+    )
     @Column(name = "link")
+    @MapKeyJoinColumn(name = "contact_type_id",
+            referencedColumnName = "contact_type_id")
     private Map<ContactType, String> contacts = new HashMap<>();
 
     @Size(max = 1000)
