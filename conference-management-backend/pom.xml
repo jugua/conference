@@ -195,11 +195,16 @@
             <version>1.10.19</version>
         </dependency>
 
-        <!-- For convenient sql logging -->
         <dependency>
             <groupId>com.googlecode.log4jdbc</groupId>
             <artifactId>log4jdbc</artifactId>
             <version>1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>0.7.5</version>
         </dependency>
     </dependencies>
 
