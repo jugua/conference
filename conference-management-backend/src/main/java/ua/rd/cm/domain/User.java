@@ -68,4 +68,19 @@ public @Data class User {
 //    @MapKeyJoinColumn(name = "contact_type_id")
 //    @Column(name = "link")
     private Set<Role> userRoles = new HashSet<>();
+
+	public User(String firstName, String lastName, String email, String password, String photo, UserInfo userInfo,
+			Set<Role> userRoles) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.photo = photo;
+		this.userInfo = userInfo;
+		this.userRoles = userRoles;
+	}
+    
+    
+    
 }
