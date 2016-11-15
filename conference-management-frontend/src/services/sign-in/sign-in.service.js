@@ -4,9 +4,13 @@ function SignIn($http, $q, $window, $rootScope) {
   function login(user) {
     const deferred = $q.defer();
 
-    $http.post('/api/login/', user).then((result) => {
+    const headers = user ? {authorization : "Basic "
+    + btoa(user.mail + ":" + user.password)
+    } : {};
+
+    $http.post('/api/login/', {headers}).then((result) => {
       userInfo = {
-        token: result.data.token
+        token: ''//result.data.token
       };
 
       $window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
