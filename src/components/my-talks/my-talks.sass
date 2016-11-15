@@ -64,7 +64,7 @@
 
   &__inner-wrapper
     max-height: 90%
-    overflow: auto
+    overflow-y: scroll
     @media ($mnw: $sdmn) and ($mxw: $sdmx)
       display: flex
       flex-wrap: wrap
@@ -97,7 +97,7 @@
 
   &__column
     &_title
-      width: 28%
+      width: 21%
       box-sizing: border-box
       padding: 0 0 0 5px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
@@ -107,10 +107,7 @@
           +my-talk-before-title
 
     &_topic
-      width: 15%
-      overflow: hidden
-      text-overflow: ellipsis
-      white-space: nowrap
+      width: 22%
       box-sizing: border-box
       padding: 0 5px 0 0
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
@@ -156,13 +153,13 @@
     padding: 5px 0
 
     &_title
-      width: 28%
+      width: 21%
       box-sizing: border-box
       padding: 5px 0 5px 5px
       position: relative
 
     &_topic
-      width: 15%
+      width: 22%
       position: relative
 
     &_status
@@ -189,8 +186,12 @@
     border-bottom: 5px solid #1A9CB0
     margin-right: 5px
     margin-bottom: 5px
+
     &:hover
       cursor: pointer
+
+  &__scroll-fix
+     width: 16px
 
   @media ($mnw: $xsdmn) and ($mxw: $sdmx)
     display: none
