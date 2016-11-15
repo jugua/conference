@@ -19,7 +19,7 @@ public class UserByEmail implements Specification<User>{
 
 	@Override
 	public String toSqlClauses() {
-		return String.format(" u.email = '%s' ", email);
+		return String.format(" u.email = ' %s '", email);
 	}
 
 }

@@ -7,7 +7,7 @@ import ua.rd.cm.domain.User;
 public interface UserService {
 
 	User find(Long id);
-	
+
 	void save(User user);
 	
 	void updateUserProfile(User user);

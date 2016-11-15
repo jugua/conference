@@ -16,7 +16,7 @@ import javax.persistence.EntityManagerFactory;
 @Configuration
 @ComponentScan(basePackages = {
         "ua.rd.cm.domain",
-        "ua.rd.cm.service"
+        "ua.rd.cm.services"
 })
 @Import(RepositoryConfig.class)
 public class ServiceConfig {

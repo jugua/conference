@@ -1,6 +1,8 @@
 package ua.rd.cm.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 
@@ -39,16 +41,19 @@ public @Data class User {
     @NotNull
     @Size(min = 1, max = 56)
     @Column(name = "first_name", nullable = false)
+    @JsonProperty("fname")
     private String firstName;
 
     @NotNull
     @Size(min = 1, max = 56)
     @Column(name = "last_name", nullable = false)
+    @JsonProperty("lname")
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$/i")
+    @Email
     @Column(name = "email", nullable = false)
+    @JsonProperty("mail")
     private String email;
 
     @NotNull
@@ -64,8 +69,7 @@ public @Data class User {
     private UserInfo userInfo;
 
     @ElementCollection(fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_info_contact")
-//    @MapKeyJoinColumn(name = "contact_type_id")
-//    @Column(name = "link")
+    @JsonProperty("roles")
     private Set<Role> userRoles = new HashSet<>();
+
 }
