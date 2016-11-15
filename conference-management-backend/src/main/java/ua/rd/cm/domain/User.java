@@ -71,4 +71,8 @@ public @Data class User {
             inverseJoinColumns = { @JoinColumn(name = "role_id") }
     )
     private Set<Role> userRoles = new HashSet<>();
+
+    public boolean addRole(Role role) {
+        return userRoles.add(role);
+    }
 }
