@@ -14,7 +14,7 @@ public class UserById implements Specification<User>{
 
 	@Override
 	public String toSqlClauses() {
-		return String.format(" u.id = %s ", id);
+		return String.format(" u.id = '%s' ", id);
 	}
 
 	@Override

@@ -2,6 +2,11 @@ package ua.rd.cm.services;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.user.UserByEmail;
@@ -9,10 +14,12 @@ import ua.rd.cm.repository.specification.user.UserByFirstName;
 import ua.rd.cm.repository.specification.user.UserById;
 import ua.rd.cm.repository.specification.user.UserByLastName;
 
+@Service
 public class SimpleUserService implements UserService{
 
 	private UserRepository userRepository;
 	
+	@Inject
 	public SimpleUserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
@@ -22,6 +29,7 @@ public class SimpleUserService implements UserService{
 		return userRepository.findBySpecification(new UserById(id)).get(0);
 	}
 
+	@Transactional
 	@Override
 	public void save(User user) {
 		userRepository.saveUser(user);
@@ -52,6 +60,7 @@ public class SimpleUserService implements UserService{
 		return !userRepository.findBySpecification(new UserByEmail(email)).isEmpty();
 	}
 
+	@Transactional
 	@Override
 	public void updateUserProfile(User user) {
 		userRepository.updateUser(user);
