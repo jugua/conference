@@ -1,5 +1,6 @@
 export default class SignInController {
   constructor(SignIn, $scope) {
+    "ngInject";
     this.user = {};
     this.userForm = {};
     this.service = SignIn;

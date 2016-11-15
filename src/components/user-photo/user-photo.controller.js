@@ -1,5 +1,6 @@
 export default class UserPhotoController {
   constructor(Current) {
+    "ngInject";
     this.currentUserService = Current;
 
     this.uploadPreview = false;
