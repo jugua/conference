@@ -2,9 +2,10 @@ package ua.rd.cm.services;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import javax.inject.Inject;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.user.UserByEmail;
@@ -15,10 +16,13 @@ import ua.rd.cm.repository.specification.user.UserByLastName;
 @Service
 public class SimpleUserService implements UserService{
 	private UserRepository userRepository;
-
-	@Autowired
-	public SimpleUserService(UserRepository userRepository) {
+	private RoleService roleService;
+	
+	@Inject
+	public SimpleUserService(UserRepository userRepository,
+							 RoleService roleService) {
 		this.userRepository = userRepository;
+		this.roleService = roleService;
 	}
 
 	@Override
@@ -29,6 +33,10 @@ public class SimpleUserService implements UserService{
 	@Override
 	@Transactional
 	public void save(User user) {
+		if (user.getUserRoles() == null) {
+			user.addRole(roleService.getByName("SPEAKER").get(0));
+		}
+
 		userRepository.saveUser(user);
 	}
 	

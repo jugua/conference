@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Artem_Pryzhkov
  */
@@ -52,21 +55,14 @@ public class UserInfo {
     @Column(name = "company", nullable = false)
     private String company;
 
-    @Size(max = 1000)
-    @Column(name = "linkedIn")
-    private String linkedIn;
-
-    @Size(max = 1000)
-    @Column(name = "twitter")
-    private String twitter;
-
-    @Size(max = 1000)
-    @Column(name = "facebook")
-    private String facebook;
-
-    @Size(max = 1000)
-    @Column(name = "blog")
-    private String blog;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_info_contact",
+            joinColumns = @JoinColumn(name = "user_info_id")
+    )
+    @Column(name = "link")
+    @MapKeyJoinColumn(name = "contact_type_id",
+            referencedColumnName = "contact_type_id")
+    private Map<ContactType, String> contacts = new HashMap<>();
 
     @Size(max = 1000)
     @Column(name = "additional_info")

@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserRepository;
@@ -36,7 +35,7 @@ public class SimpleUserServiceTest {
 	
 	@Before
 	public void initialize() {
-		service = new SimpleUserService(repository);
+		service = new SimpleUserService(repository,null);
 	}
 
 	@Test
@@ -56,7 +55,7 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testFind() {
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), null));
 		when(repository.findBySpecification(new UserById(anyLong()))).thenReturn(list);
 
 		User user = service.find(1L);
@@ -77,7 +76,7 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testGetByFirstName() {
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), null));
 		when(repository.findBySpecification(new UserByFirstName(anyString()))).thenReturn(list);
 		
 		List<User> user = service.getByFirstName("test");
@@ -89,7 +88,7 @@ public class SimpleUserServiceTest {
 	public void testGetByEmail() {
 		User user = null;
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), null));
 		when(repository.findBySpecification(new UserByEmail(anyString()))).thenReturn(list);
 		
 		user = service.getByEmail("email");
@@ -101,8 +100,8 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testGetByLastName() {
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(), new Role()));
-		list.add(new User(1L, "test2", "testLas2t", "email2", "pass2", "url2", new UserInfo(), new Role()));
+		list.add(new User(1L, "test", "testLast", "email", "pass", "url", new UserInfo(),null));
+		list.add(new User(1L, "test2", "testLas2t", "email2", "pass2", "url2", new UserInfo(), null));
 		when(repository.findBySpecification(new UserByLastName(anyString()))).thenReturn(list);
 		
 		List<User> serviceList = service.getByLastName("testLas");
