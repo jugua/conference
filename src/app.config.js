@@ -4,5 +4,8 @@ export default (app) => {
     $rootScope.$on('$stateChangeSuccess', () => {
       $rootScope.$broadcast('closeDropdown');
     });
-  });
+  })
+    .config(($mdThemingProvider) => {
+      $mdThemingProvider.disableTheming();
+    });
 };
