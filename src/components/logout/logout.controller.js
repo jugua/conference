@@ -1,5 +1,6 @@
 export default class LogoutController {
   constructor(Logout, $state) {
+    "ngInject";
     this.service = Logout;
     this.state = $state;
     this.logout();

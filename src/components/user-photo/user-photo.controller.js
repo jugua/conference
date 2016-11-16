@@ -1,6 +1,9 @@
 export default class UserPhotoController {
   constructor(userPhotoService) {
+    'ngInject';
+
     this.userPhotoService = userPhotoService;
+
 
     this.uploadPreview = false;
     this.deletePreview = false;
