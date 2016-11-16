@@ -2,25 +2,13 @@
 /* global FormData */
 
 class Logout {
-  constructor($window, $q, $http) {
-    "ngInject";
-    this.window = $window;
+  constructor($window, $q, $http, LocalStorage) {
+    'ngInject';
+
+    this.localStorage = LocalStorage;
     this.q = $q;
+    this.window = $window;
     this.http = $http;
-  }
-
-  getToken() {
-    let info = this.window.localStorage.userInfo;
-    let token;
-
-    if (info) {
-      info = JSON.parse(info);
-      token = info.token;
-    } else {
-      token = '';
-    }
-
-    return token;
   }
 
   logout() {
@@ -28,7 +16,7 @@ class Logout {
 
     this.http.get('/api/users/current/logout', {
       headers: {
-        token: this.getToken.bind(this),
+        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }

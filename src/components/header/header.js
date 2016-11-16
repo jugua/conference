@@ -3,14 +3,15 @@ import template from './header.html';
 
 export default (app) => {
   app.config(($stateProvider, $urlRouterProvider) => {
-    "ngInject";
+    'ngInject';
     $urlRouterProvider.otherwise('/');
     $stateProvider
       .state('header', {
         url: '',
         resolve: {
           user: function getCurrent(Current) {
-            "ngInject";
+            'ngInject';
+
             Current.getInfo();
             return Current.current;
           }

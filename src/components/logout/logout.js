@@ -3,7 +3,7 @@ import logoutService from './logout.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
-    "ngInject";
+    'ngInject';
     $stateProvider
       .state('header.home.logout', {
         controller: logoutController

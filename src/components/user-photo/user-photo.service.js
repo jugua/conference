@@ -2,25 +2,10 @@
 /* global angular */
 
 class UserPhoto {
-  constructor($window, $http) {
+  constructor( $http, LocalStorage) {
     'ngInject';
-
-    this.window = $window;
+    this.localStorage = LocalStorage;
     this.http = $http;
-  }
-
-  getToken() {
-    let info = this.window.localStorage.userInfo;
-    let token;
-
-    if (info) {
-      info = JSON.parse(info);
-      token = info.token;
-    } else {
-      token = '';
-    }
-
-    return token;
   }
 
   uploadPhoto(file) {
@@ -29,7 +14,7 @@ class UserPhoto {
     return this.http.post('api/users/current/photo', formData, {
       transformRequest: angular.identity,
       headers: {
-        token: this.getToken.bind(this),
+        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
         'Content-Type': undefined
@@ -41,7 +26,7 @@ class UserPhoto {
   deleteUserPhoto() {
     return this.http.delete('api/users/current/photo', {
       headers: {
-        token: this.getToken.bind(this),
+        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
       }

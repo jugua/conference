@@ -2,7 +2,7 @@ import tabsComponent from './tabs.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
-    "ngInject";
+    'ngInject';
     $stateProvider
       .state('header.tabs', {
         template: '<tabs></tabs>'

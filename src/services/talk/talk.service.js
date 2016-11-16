@@ -1,26 +1,13 @@
 export default class TalkService {
 
-  constructor($resource, $window) {
-    "ngInject";
-    function getToken() {
-      let info = $window.localStorage.userInfo;
-      let token;
-
-      if (info) {
-        info = JSON.parse(info);
-        token = info.token;
-      } else {
-        token = '';
-      }
-
-      return token;
-    }
+  constructor($resource, LocalStorage) {
+    'ngInject';
 
     this.talks = $resource('api/talk', {}, {
       add: {
         method: 'POST',
         headers: {
-          token: getToken,
+          token: LocalStorage.getToken,
           'Cache-Control': 'no-cache, no-store',
           Pragma: 'no-cache'
         }
@@ -29,12 +16,16 @@ export default class TalkService {
         method: 'GET',
         isArray: true,
         headers: {
-          token: getToken,
+          token: LocalStorage.getToken,
           'Cache-Control': 'no-cache, no-store',
           Pragma: 'no-cache'
         }
       }
     });
+  }
+
+  clear() {
+    this._talks = null;
   }
 
   getAll() {

@@ -1,6 +1,6 @@
 export default class TalksController {
   constructor(Talks) {
-    "ngInject";
+    'ngInject';
     this.talks = Talks.getAll();
   }
 }
