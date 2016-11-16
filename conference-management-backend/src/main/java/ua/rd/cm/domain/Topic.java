@@ -35,6 +35,6 @@ public class Topic {
     private Long id;
 
     @NotNull
-    @Column(name = "topic_name", nullable = false)
+    @Column(name = "topic_name", nullable = false, unique = true)
     private String name;
 }

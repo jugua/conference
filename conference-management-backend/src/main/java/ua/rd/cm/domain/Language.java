@@ -34,6 +34,6 @@ public class Language {
     private Long id;
 
     @NotNull
-    @Column(name = "language_name", nullable = false)
+    @Column(name = "language_name", nullable = false, unique = true)
     private String name;
 }

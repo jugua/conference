@@ -34,6 +34,6 @@ public class Type {
     private Long id;
 
     @NotNull
-    @Column(name = "type_name", nullable = false)
+    @Column(name = "type_name", nullable = false, unique = true)
     private String name;
 }

@@ -33,7 +33,7 @@ public class SimpleUserService implements UserService{
 	@Override
 	@Transactional
 	public void save(User user) {
-		if (user.getUserRoles() == null) {
+		if (user.getUserRoles().size() == 0) {
 			user.addRole(roleService.getByName("SPEAKER").get(0));
 		}
 		if (user.getPhoto() == null) {

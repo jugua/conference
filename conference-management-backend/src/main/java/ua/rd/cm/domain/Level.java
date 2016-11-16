@@ -34,6 +34,6 @@ public class Level {
     private Long id;
 
     @NotNull
-    @Column(name = "level_name", nullable = false)
+    @Column(name = "level_name", nullable = false, unique = true)
     private String name;
 }
