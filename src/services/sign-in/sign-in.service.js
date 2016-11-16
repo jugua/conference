@@ -1,4 +1,5 @@
 function SignIn($http, $q, $window, $rootScope) {
+  "ngInject";
   let userInfo;
 
   function login(user) {

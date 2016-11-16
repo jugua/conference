@@ -3,6 +3,7 @@
 
 class Logout {
   constructor($window, $q, $http) {
+    "ngInject";
     this.window = $window;
     this.q = $q;
     this.http = $http;

@@ -1,4 +1,5 @@
 function ForgotPassword($resource) {
+  "ngInject";
   const resource = $resource('/api/forgot-password');
 
   function restore(user, successCallback, errorCallback) {
