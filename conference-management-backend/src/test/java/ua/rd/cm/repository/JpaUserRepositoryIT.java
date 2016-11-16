@@ -7,10 +7,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,14 +59,6 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 		assertEquals("testName3", queryUserName);
 	}
 
-	@Test
-	@Ignore
-	public void testRemoveUser() {
-		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD", 
-				"testUrl", null, null);
-
-		repository.removeUser(em.find(User.class, user.getId()));
-	}
 
 	@Test
 	public void testUpdateUser() {

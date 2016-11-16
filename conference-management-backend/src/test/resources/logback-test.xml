@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xml>
 
 <!-- An example log4j configuration xml file for logback  -->
 <!-- Logging levels are:                                  -->
@@ -44,7 +45,7 @@
     </logger>
 
     <logger name="jdbc.connection" additivity="false">
-        <level value="OFF" />
+        <level value="INFO" />
     </logger>
 
     <root level="debug">
