@@ -20,20 +20,12 @@ import java.time.LocalDate;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "talk")
+@SequenceGenerator(name = "seqTalkGen", allocationSize = 1)
 public class Talk {
-
-    @TableGenerator(
-            name = "talkGen",
-            table = "talk_id_gen",
-            pkColumnName = "gen_key",
-            valueColumnName = "gen_value",
-            pkColumnValue = "talk_id",
-            allocationSize = 1
-    )
 
     @Id
     @Column(name = "talk_id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "talkGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTalkGen")
     private Long id;
 
     @NotNull

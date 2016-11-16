@@ -18,19 +18,12 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "status")
+@SequenceGenerator(name = "seqStatusGen", allocationSize = 1)
 public class Status {
-    @TableGenerator(
-            name = "statusGen",
-            table = "status_id_gen",
-            pkColumnName = "gen_key",
-            valueColumnName = "gen_value",
-            pkColumnValue = "status_id",
-            allocationSize = 1
-    )
 
     @Id
     @Column(name = "status_id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "statusGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqStatusGen")
     private Long id;
 
     @NotNull

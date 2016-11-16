@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Mariia Lapovska
  */
 
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
@@ -22,20 +22,12 @@ import java.util.Set;
 @Table(name = "user", indexes = {
         @Index(name = "email_index",  columnList="email", unique = true)
 })
-public @Data class User {
-
-    @TableGenerator(
-            name = "userGen",
-            table = "user_id_gen",
-            pkColumnName = "gen_key",
-            valueColumnName = "gen_value",
-            pkColumnValue = "user_id",
-            allocationSize = 1
-    )
+@SequenceGenerator(name = "seqUserGen", allocationSize = 1)
+public class User {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "userGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUserGen")
     private Long id;
 
     @NotNull
