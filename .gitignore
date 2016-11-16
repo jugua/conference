@@ -3,6 +3,7 @@ dist
 dist-dev
 conference-management-frontend/runApiServer.js
 /conference-management-backend/target
+/conference-management-frontend/target
 
 # Generated frontend files
 conference-management-backend/src/main/webapp/assets
