@@ -18,6 +18,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import net.sf.log4jdbc.Log4jdbcProxyDataSource;
+import net.sf.log4jdbc.Slf4jSpyLogDelegator;
+import net.sf.log4jdbc.tools.Log4JdbcCustomFormatter;
+import net.sf.log4jdbc.tools.LoggingType;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -36,13 +41,17 @@ public class InMemoRepositoryConfig {
 
     @Bean
     public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+    	Log4JdbcCustomFormatter formatter = new Log4JdbcCustomFormatter();
+        formatter.setLoggingType(LoggingType.SINGLE_LINE);
 
-        EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.H2).build();
-
-        return db;
+        EmbeddedDatabase embeddedDatabase = new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2).build();
+        Log4jdbcProxyDataSource dataSource = new Log4jdbcProxyDataSource
+                (embeddedDatabase);
+        dataSource.setLogFormatter(formatter);
+        dataSource.setLogFormatter(new Slf4jSpyLogDelegator());
+        return dataSource;
     }
-
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
         return new HibernateJpaVendorAdapter();

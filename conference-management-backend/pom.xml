@@ -187,10 +187,10 @@
         </dependency>
 
         <!-- For convenient sql logging -->
-        <dependency>
-            <groupId>com.googlecode.log4jdbc</groupId>
-            <artifactId>log4jdbc</artifactId>
-            <version>1.2</version>
+      <dependency>
+            <groupId>org.lazyluke</groupId>
+            <artifactId>log4jdbc-remix</artifactId>
+            <version>0.2.7</version>
         </dependency>
     </dependencies>
 

@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
+import ua.rd.cm.repository.specification.user.UserById;
+import ua.rd.cm.repository.specification.user.UserByLastName;
 
 public class JpaUserRepositoryIT extends RepositoryTestConfig{
 
@@ -23,7 +25,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	private UserRepository repository;
 	
 	@PersistenceContext
-	EntityManager em; //added for explicit flushing form Hibernate cache.
+	EntityManager em; //added for explicit flushing from Hibernate cache.
 	
 	
 	@Before
@@ -59,22 +61,27 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	}
 
 	@Test
-	@Ignore
+	//@Ignore
 	public void testRemoveUser() {
 		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD", 
 				"testUrl", null, null);
-		repository.removeUser(user);
+		
+		repository.removeUser(em.find(User.class, user.getId()));
 	}
 
 	@Test
-	@Ignore
 	public void testUpdateUser() {
 		User user = new User("testName3", "testSurname3", "test3@gmail.com", "tribel1234PASSWORD3", 
 				"testUrl3", null, null);
 		
 		repository.saveUser(user);
+		user.setId(2L);
 		user.setEmail("newemail@emai.com");
 		repository.updateUser(user);
+		em.flush();
+		String email = jdbcTemplate.queryForObject("SELECT u.email FROM user u WHERE u.user_id = 2", String.class);
+		assertEquals("newemail@emai.com", email);
+		
 	}
 
 	@Test
@@ -95,17 +102,21 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	public void testByFirstName() {
 		List<User> users = repository.findBySpecification(new UserByFirstName("testName"));
 		assertEquals(1, users.size());
-		assertEquals(new Integer(30), users.get(0).getId());
+		assertEquals(new Long(30), users.get(0).getId());
 	}
 	
 	@Test
 	public void findById() {
-		
+		List<User> users = repository.findBySpecification(new UserById(30L));
+		assertEquals(1, users.size());
+		assertEquals(new Long(30), users.get(0).getId());
 	}
 	
 	@Test
 	public void findByLastName() {
-		
+		List<User> users = repository.findBySpecification(new UserByLastName("testSurname2"));
+		assertEquals(1, users.size());
+		assertEquals(new Long(31), users.get(0).getId());
 	}
 	
 	protected void saveUser(User usr) {
