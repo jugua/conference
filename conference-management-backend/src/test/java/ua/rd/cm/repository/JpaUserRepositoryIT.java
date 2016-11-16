@@ -61,7 +61,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	}
 
 	@Test
-	//@Ignore
+	@Ignore
 	public void testRemoveUser() {
 		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD", 
 				"testUrl", null, null);
