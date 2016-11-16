@@ -11,32 +11,35 @@ import UserPhotoComponent from './user-photo.component';
 import UserPhotoService from './user-photo.service';
 
 
-describe('UserPhoto', () => {
-  let q;
-  let deferred;
-  let serviceMock;
-  let sut;
-
-  beforeEach(inject(($q) => {
-    q = $q;
-    deferred = $q.defer();
-  }));
-
-  beforeEach(() => {
-    serviceMock = {
-      uploadPhoto: () => {},
-      deletePhoto: () => {}
-    };
-  });
-
-  beforeEach(() => {
-    sut = new UserPhotoController(serviceMock);
-    sut.user = {};
-    sut.user.photo = '';
-  });
+xdescribe('UserPhoto', () => {
 
   describe('Controller', () => {
+    let q;
+    let deferred;
+    let serviceMock;
+    let sut;
+    let elm;
+    let scope;
+
+    beforeEach(inject(($rootScope, $compile) => {
+      scope = $rootScope.$new();
+      scope.userMock = { photo: '' };
+      elm = $compile('<userMock user="userMock"></userMock>')(scope);
+      scope.$digest();
+    }));
+
+    beforeEach(() => {
+      serviceMock = {
+        uploadPhoto: () => {},
+        deletePhoto: () => {}
+      };
+
+      sut = new UserPhotoController(serviceMock);
+    });
+
     it('should toggle preview', () => {
+      console.log(sut);
+      console.log(UserPhotoController);
       let preview = sut.uploadPreview;
       sut.uploadForm.$valid = true;
       sut.uploadForm.$setValidity = () => {};
@@ -78,5 +81,5 @@ describe('UserPhoto', () => {
      expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
      expect(sut.file).toEqual(file);
     });
-  })
+  });
 });
