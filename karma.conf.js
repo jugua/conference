@@ -4,20 +4,20 @@ module.exports = function (config) {
   config.set({
     frameworks: ['jasmine'],
     browsers: ['PhantomJS'],
-    files: [{pattern: 'spec.bundle.js', watched: false}],
-    preprocessors: {'spec.bundle.js': ['webpack']},
+    files: [{ pattern: 'spec.bundle.js', watched: false }],
+    preprocessors: { 'spec.bundle.js': ['webpack'] },
     plugins: [
-      require("karma-jasmine"),
-      require("karma-phantomjs-launcher"),
-      require("karma-spec-reporter"),
-      require("karma-webpack")
+      require('karma-jasmine'),
+      require('karma-phantomjs-launcher'),
+      require('karma-spec-reporter'),
+      require('karma-webpack')
     ],
     webpack: {
       devtool: 'inline-source-map',
       module: {
         loaders: [
-          {test: /\.js$/, exclude: /node_modules/, loader: "babel-loader"},
-          {test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader'},
+          { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+          { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
         ]
       }
     },
@@ -39,7 +39,7 @@ module.exports = function (config) {
 
     autoWatch: false,
 
-    singleRun: true
+    singleRun: true,
   });
 
 };

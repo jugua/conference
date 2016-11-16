@@ -7,7 +7,7 @@
            id="sign-in-email"
            class="field sing-in__field"
            ng-model="signInCtrl.user.mail"
-           ng-pattern="/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/i"
+           ng-pattern="signInCtrl.emailPattern"
            required
            tabindex="1">
     <span class="field-error" ng-if="signInCtrl.userForm.mail.$error.login_auth_err">We can not find an account with that email address</span>
