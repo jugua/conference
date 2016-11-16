@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth.inMemoryAuthentication().withUser("user@user.com").password("user").roles("USER");
@@ -30,30 +31,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers("/api/**").authenticated()
-                    .antMatchers("/api/users/current").permitAll()
+                    .antMatchers("/api/users/current").hasRole("USER")
+                    .and()
+                .exceptionHandling()
+                    .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                     .and()
                 .formLogin()
-                    .loginPage("/")
-                    .usernameParameter("mail")
+                    .loginProcessingUrl("/api/login")
+                    .successForwardUrl("/")
                     .passwordParameter("password")
-                    .and()
-                .rememberMe()
-                    .key("token")
-                    .and()
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
-                .logout()
-                    .logoutUrl("/logout")
+                    .usernameParameter("mail")
                     .permitAll()
                     .and()
-                .csrf()
-                    .disable();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+                .httpBasic()
+                    .disable()
+                .logout()
+                    .logoutUrl("/api/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll();
     }
 }
