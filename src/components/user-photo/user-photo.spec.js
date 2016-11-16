@@ -11,40 +11,35 @@ import UserPhotoComponent from './user-photo.component';
 import UserPhotoService from './user-photo.service';
 
 
-xdescribe('UserPhoto', () => {
+describe('UserPhoto', () => {
 
   describe('Controller', () => {
     let q;
     let deferred;
-    let serviceMock;
-    let userInfoMock;
+    let userPhotoService;
+    let user = {photo: 'df'};
     let sut;
     let elm;
     let rootScope;
 
     beforeEach(angular.mock.module(($provide, $controllerProvider) => {
-      $controllerProvider.register('UserPhotoController', UserPhotoController)
+      $controllerProvider.register('UserPhotoController', UserPhotoController);
     }));
 
     beforeEach(angular.mock.inject(($injector, $controller) => {
+      q = $injector.get('$q');
+      userPhotoService = jasmine.createSpyObj('userPhotoService', ['uploadPhoto','deleteUserPhoto']);
+      userPhotoService.uploadPhoto.and.returnValue(q.when([]));
+      userPhotoService.deleteUserPhoto.and.returnValue(q.when([]));
 
+      sut = $controller('UserPhotoController', {userPhotoService}, {user});
     }));
 
-    beforeEach(() => {
-      serviceMock = {
-        uploadPhoto: () => {},
-        deletePhoto: () => {}
-      };
-
-      sut = new UserPhotoController(serviceMock);
-    });
-
     it('should toggle preview', () => {
-      console.log(sut);
-      console.log(UserPhotoController);
       let preview = sut.uploadPreview;
       sut.uploadForm.$valid = true;
       sut.uploadForm.$setValidity = () => {};
+
       sut.togglePreview();
       expect(sut.uploadPreview).toEqual(!preview);
     });
@@ -70,7 +65,6 @@ xdescribe('UserPhoto', () => {
     });
 
     it('should call functions in errorUpload', () => {
-     let file = {};
      sut.uploadForm.$setValidity = () => {};
 
      spyOn(sut, 'togglePreview');
@@ -81,7 +75,6 @@ xdescribe('UserPhoto', () => {
      expect(sut.togglePreview).toHaveBeenCalled();
      expect(sut.toggleAnimation).toHaveBeenCalled();
      expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
-     expect(sut.file).toEqual(file);
     });
   });
 });
