@@ -17,15 +17,17 @@ xdescribe('UserPhoto', () => {
     let q;
     let deferred;
     let serviceMock;
+    let userInfoMock;
     let sut;
     let elm;
-    let scope;
+    let rootScope;
 
-    beforeEach(inject(($rootScope, $compile) => {
-      scope = $rootScope.$new();
-      scope.userMock = { photo: '' };
-      elm = $compile('<userMock user="userMock"></userMock>')(scope);
-      scope.$digest();
+    beforeEach(angular.mock.module(($provide, $controllerProvider) => {
+      $controllerProvider.register('UserPhotoController', UserPhotoController)
+    }));
+
+    beforeEach(angular.mock.inject(($injector, $controller) => {
+
     }));
 
     beforeEach(() => {
