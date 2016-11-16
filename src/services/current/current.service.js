@@ -1,27 +1,13 @@
 /* global angular */
 /* global FormData */
 
-function Current($resource, $window, $q, $rootScope, $http) {
+function Current($resource, $window, $q, $rootScope, $http, LocalStorage) {
   "ngInject";
-  function getToken() {
-    let info = $window.localStorage.userInfo;
-    let token;
-
-    if (info) {
-      info = JSON.parse(info);
-      token = info.token;
-    } else {
-      token = '';
-    }
-
-    return token;
-  }
-
   const users = $resource('/api/users/current', {}, {
     getCurrentUser: {
       method: 'GET',
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -29,7 +15,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
     updateCurrentUser: {
       method: 'POST',
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -38,7 +24,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
       method: 'POST',
       url: '/api/users/current/talks',
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -71,7 +57,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
     return $http.post('api/users/current/photo', formData, {
       transformRequest: angular.identity,
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
         'Content-Type': undefined
@@ -83,7 +69,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
   function deleteUserPhoto() {
     return $http.delete('api/users/current/photo', {
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
       }
