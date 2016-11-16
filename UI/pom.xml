@@ -11,9 +11,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>conference-management-frontend</artifactId>
+    <artifactId>UI</artifactId>
 
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <properties>
         <build-task>build-dev</build-task>

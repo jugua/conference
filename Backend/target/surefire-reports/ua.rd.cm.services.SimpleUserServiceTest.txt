@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ua.rd.cm.services.SimpleUserServiceTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.32 sec - in ua.rd.cm.services.SimpleUserServiceTest

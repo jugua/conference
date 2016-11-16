@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>conference-management-frontend</module>
-        <module>conference-management-backend</module>
+        <module>UI</module>
+        <module>Backend</module>
     </modules>
 
     <properties>
@@ -24,14 +24,14 @@
         <profile>
             <id>ui</id>
             <modules>
-                <module>conference-management-frontend</module>
+                <module>UI</module>
             </modules>
         </profile>
 
         <profile>
             <id>backend</id>
             <modules>
-                <module>conference-management-backend</module>
+                <module>Backend</module>
             </modules>
         </profile>
     </profiles>
