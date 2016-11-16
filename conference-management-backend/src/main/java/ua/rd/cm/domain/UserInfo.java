@@ -19,21 +19,12 @@ import java.util.Map;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_info")
+@SequenceGenerator(name = "seqUserInfoGen", allocationSize = 1)
 public class UserInfo {
-
-    @TableGenerator(
-            name = "userInfoGen",
-            table = "user_info_id_gen",
-            pkColumnName = "gen_key",
-            valueColumnName = "gen_value",
-            pkColumnValue = "user_info_id",
-            allocationSize = 1
-    )
 
     @Id
     @Column(name = "user_info_id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator =
-            "userInfoGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUserInfoGen")
     private Long id;
 
     @NotNull

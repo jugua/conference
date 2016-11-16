@@ -14,7 +14,7 @@ import java.util.Set;
  * @author Mariia Lapovska
  */
 
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
@@ -22,20 +22,12 @@ import java.util.Set;
 @Table(name = "user", indexes = {
         @Index(name = "email_index",  columnList="email", unique = true)
 })
-public @Data class User {
-
-    @TableGenerator(
-            name = "userGen",
-            table = "user_id_gen",
-            pkColumnName = "gen_key",
-            valueColumnName = "gen_value",
-            pkColumnValue = "user_id",
-            allocationSize = 1
-    )
+@SequenceGenerator(name = "seqUserGen", allocationSize = 1)
+public class User {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "userGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUserGen")
     private Long id;
 
     @NotNull
@@ -50,7 +42,8 @@ public @Data class User {
 
     @NotNull
     @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique =  true)
+
     private String email;
 
     @NotNull
@@ -65,11 +58,8 @@ public @Data class User {
     @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id")},
-            inverseJoinColumns = { @JoinColumn(name = "role_id") }
-    )
+    @ManyToMany
+    @JoinTable(name = "user_role")
     private Set<Role> userRoles = new HashSet<>();
 
     public boolean addRole(Role role) {

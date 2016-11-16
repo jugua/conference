@@ -18,22 +18,15 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "language")
+@SequenceGenerator(name = "seqLanguageGen", allocationSize = 1)
 public class Language {
-    @TableGenerator(
-            name = "languageGen",
-            table = "language_id_gen",
-            pkColumnName = "gen_key",
-            valueColumnName = "gen_value",
-            pkColumnValue = "language_id",
-            allocationSize = 1
-    )
 
     @Id
     @Column(name = "language_id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "languageGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqLanguageGen")
     private Long id;
 
     @NotNull
-    @Column(name = "language_name", nullable = false)
+    @Column(name = "language_name", nullable = false, unique = true)
     private String name;
 }
