@@ -64,6 +64,11 @@ const Menus = function Menus() {
       'Intermediate',
       'Advanced',
       'Expert'
+    ],
+    getStatus: () => ['New',
+      'In Progress',
+      'Approved',
+      'Rejected'
     ]
   };
 };

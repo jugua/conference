@@ -1,149 +1,25 @@
 .talks-container
   width: 55%
-  margin: 0 auto
+  height: calc(100vh - 110px)
+  margin: 20px auto 0
+  box-sizing: border-box
+  padding: 20px
+  +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+    width: 100%
+    padding: 5px
+    margin: 0
 
-.my-talks
+.talks
   height: 100%
+
   &__header
     border-bottom: 1px solid $sharp-blue
+
   &__button
     width: 140px
     margin: 0 10px 10px 0
-  &__pop-up
-    width: 600px
-
-.my-talk-settings
-  box-sizing: border-box
-  padding: 10px 0
-  display: flex
-  &__button
-    width: 100px
-    margin: 0 5px
-.data-table
-  margin-top: 20px
-
-  &__inner-wrapper
-    height: 500px
-    overflow: auto
-
-  &__row
-    display: flex
-    flex-wrap: wrap
-    text-transform: capitalize
-    font-family: Oswald Light, sans-serif
-    font-size: 14px
-    box-sizing: border-box
-    padding: 5px 0
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-      border: 1px solid #f2f2f2
-      margin-bottom: 5px
-      +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
+      margin: 10px auto
 
-    &:nth-child(odd)
-      background: #f2f2f2
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        background: #fff
-
-  &__column
-    &_check
-      width: 3%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        text-align: right
-        &:before
-          content: ''
-          +my-talk-before-title
-
-    &_speaker
-      width: 12%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Speaker'
-          +my-talk-before-title
-
-    &_title
-      width: 15%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Title'
-          +my-talk-before-title
-
-
-    &_topic
-      width: 15%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Topic'
-          +my-talk-before-title
-
-    &_status
-      width: 7%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Status'
-          +my-talk-before-title
-
-    &_date
-      width: 15%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Date'
-          +my-talk-before-title
-
-
-    &_comments
-      width: 18%
-      text-overflow: ellipsis
-      white-space: nowrap
-      overflow: hidden
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Comments'
-          +my-talk-before-title
-
-    &_assign
-      width: 15%
-      @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-        width: 100%
-        &:before
-          content: 'Assign To'
-          +my-talk-before-title
-
-.table-header
-  display: flex
-  &__item
-    text-transform: capitalize
-    box-sizing: border-box
-    padding: 5px 0
-    &_check
-      width: 3%
-
-    &_speaker
-      width: 12%
-
-    &_title
-      width: 15%
-
-    &_topic
-      width: 15%
-
-    &_status
-      width: 7%
-
-    &_date
-      width: 15%
-
-    &_comments
-      width: 18%
-
-    &_assign
-      width: 15%
-
-  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-    display: none
+.data-table-talks

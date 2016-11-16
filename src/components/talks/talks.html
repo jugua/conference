@@ -1,26 +1,54 @@
 <div class="talks-container">
+    <div class="talks">
+        <div class="talks__header">
+            <a  class="btn talks__button">export to excel </a>
+         </div>
+
+    <div class="my-talk-settings">
+        <form class="my-talk-settings__filters">
+            <p class="my-talk-settings__title">filter by:</p>
+            <div>
+                <label for="my-talk-status" class="form-label my-talk-settings__label">Status</label>
+                <select name="" id="my-talk-status" class="my-talk-settings__select"
+                        ng-model="$ctrl.filter.status"
+                        ng-options="status for status in $ctrl.menuStatus.getStatus()">
+                </select>
+            </div>
+            <div>
+                <label for="my-talk-topic" class="form-label my-talk-settings__label">Topic</label>
+                <select name="" id="my-talk-topic" class="my-talk-settings__select"
+                        ng-model="$ctrl.filter.topic"
+                        ng-options="topic for topic in $ctrl.menuService.getTopics()">
+                </select>
+            </div>
+            <input type="button" class="my-talk-settings__button" value="apply">
+            <input type="reset" class="my-talk-settings__button" value="reset">
+        </form>
+    </div>
     <div class="data-table">
         <div class="table-header">
-            <div class="table-header__item table-header__item_check"><input type="checkbox"></div>
-            <div class="table-header__item table-header__item_speaker">speaker</div>
-            <div class="table-header__item table-header__item_title">title</div>
-            <div class="table-header__item table-header__item_topic">topic</div>
-            <div class="table-header__item table-header__item_date">submitted date</div>
-            <div class="table-header__item table-header__item_status">status</div>
-            <div class="table-header__item table-header__item_comments">organizer comments</div>
-            <div class="table-header__item table-header__item_assign">assign to</div>
+            <div class="table-header__item table-header__item_check-talk"><input type="checkbox"></div>
+            <div class="table-header__item table-header__item_speaker-talk">speaker</div>
+            <div class="table-header__item table-header__item_title-talk">title</div>
+            <div class="table-header__item table-header__item_topic-talk">topic</div>
+            <div class="table-header__item table-header__item_date-talk">submitted date</div>
+            <div class="table-header__item table-header__item_status-talk">status</div>
+            <div class="table-header__item table-header__item_comments-talk">organizer comments</div>
+            <div class="table-header__item table-header__item_assign-talk">assign to</div>
+            <div class="table-header__scroll-fix"></div>
         </div>
         <div class="data-table__inner-wrapper">
             <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
-                <div class="data-table__column data-table__column_check"><input type="checkbox"></div>
-                <div class="data-table__column data-table__column_speaker">{{talk.name}}</div>
-                <div class="data-table__column data-table__column_title">{{talk.title}}</div>
-                <div class="data-table__column data-table__column_topic">{{talk.topic}}</div>
-                <div class="data-table__column data-table__column_date">{{talk.date | date:"MM/dd/yyyy"}}</div>
-                <div class="data-table__column data-table__column_status">{{talk.status}}</div>
-                <div class="data-table__column data-table__column_comments">{{talk.comments}}</div>
-                <div class="data-table__column data-table__column_assign">{{talk.assigner}}</div>
+                <div class="data-table__column data-table__column_check-talk"><input type="checkbox"></div>
+                <div class="data-table__column data-table__column_speaker-talk">{{talk.name}}</div>
+                <div class="data-table__column data-table__column_title-talk">{{talk.title}}</div>
+                <div class="data-table__column data-table__column_topic-talk">{{talk.topic}}</div>
+                <div class="data-table__column data-table__column_date-talk">{{talk.date | date:"MM/dd/yyyy"}}</div>
+                <div class="data-table__column data-table__column_status-talk">{{talk.status}}</div>
+                <div class="data-table__column data-table__column_comments-talk">{{talk.comment}}</div>
+                <div class="data-table__column data-table__column_assign-talk">{{talk.assigner}}</div>
             </div>
         </div>
     </div>
 </div>
+    </div>
