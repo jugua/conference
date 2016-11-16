@@ -1,5 +1,6 @@
 package ua.rd.cm.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Role;
@@ -7,18 +8,17 @@ import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.specification.role.RoleById;
 import ua.rd.cm.repository.specification.role.RoleByName;
 
-import javax.inject.Inject;
 import java.util.List;
 
 /**
- * @author Mariia Lapovska
+ * @author Mariia Lapovska ٩(̾●̮̮̃̾•̃̾)
  */
 @Service
 public class SimpleRoleService implements RoleService {
 
     private RoleRepository roleRepository;
 
-    @Inject
+    @Autowired
     public SimpleRoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
@@ -40,7 +40,7 @@ public class SimpleRoleService implements RoleService {
     }
 
     @Override
-    public List<Role> getByName(String name) {
-        return roleRepository.findBySpecification(new RoleByName(name));
+    public Role getByName(String name) {
+        return roleRepository.findBySpecification(new RoleByName(name)).get(0);
     }
 }

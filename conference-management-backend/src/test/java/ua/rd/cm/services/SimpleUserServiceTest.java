@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserRepository;
@@ -31,16 +32,19 @@ public class SimpleUserServiceTest {
 
 	@Mock
 	private UserRepository repository;
+	@Mock
+	private RoleService roleService;
 	private UserService service;
 	
 	@Before
 	public void initialize() {
-		service = new SimpleUserService(repository,null);
+		service = new SimpleUserService(repository,roleService);
 	}
 
 	@Test
 	public void testSave() {
 		User user = mock(User.class);
+		when(roleService.getByName("SPEAKER")).thenReturn(new Role(1L, "SPEAKER"));
 		service.save(user);
 		verify(repository, times(1)).saveUser(user);
 	}
