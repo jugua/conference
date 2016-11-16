@@ -27,6 +27,6 @@ public class Status {
     private Long id;
 
     @NotNull
-    @Column(name = "status_name", nullable = false)
+    @Column(name = "status_name", nullable = false, unique = true)
     private String name;
 }

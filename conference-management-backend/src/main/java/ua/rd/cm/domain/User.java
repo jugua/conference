@@ -41,8 +41,8 @@ public class User {
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$/i")
-    @Column(name = "email", nullable = false)
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
+    @Column(name = "email", nullable = false, unique =  true)
     private String email;
 
     @NotNull
@@ -57,11 +57,8 @@ public class User {
     @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = { @JoinColumn(name = "user_id")},
-            inverseJoinColumns = { @JoinColumn(name = "role_id") }
-    )
+    @ManyToMany
+    @JoinTable(name = "user_role")
     private Set<Role> userRoles = new HashSet<>();
 
     public boolean addRole(Role role) {

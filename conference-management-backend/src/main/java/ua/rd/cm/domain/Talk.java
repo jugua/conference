@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author Artem_Pryzhkov
@@ -19,8 +20,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
-@Table(name = "talk")
 @SequenceGenerator(name = "seqTalkGen", allocationSize = 1)
+@Table(name = "talk", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "time"})
+})
 public class Talk {
 
     @Id
@@ -58,8 +61,8 @@ public class Talk {
     @JoinColumn(name = "level_id")
     private Level level;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "time", nullable = false)
+    private LocalDateTime time;
 
     @NotNull
     @Size(max = 250)

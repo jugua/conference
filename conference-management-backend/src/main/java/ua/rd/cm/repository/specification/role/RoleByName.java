@@ -22,6 +22,6 @@ public class RoleByName implements Specification<Role> {
 
     @Override
     public String toSqlClauses() {
-        return String.format(" r.name = ' %s '", name);
+        return String.format(" r.name = '%s' ", name);
     }
 }
