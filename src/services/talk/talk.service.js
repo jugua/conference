@@ -1,6 +1,7 @@
 export default class TalkService {
 
   constructor($resource, $window) {
+    "ngInject";
     function getToken() {
       let info = $window.localStorage.userInfo;
       let token;

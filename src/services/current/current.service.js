@@ -1,4 +1,5 @@
-function Current($resource, $window, $q, $rootScope) {
+function Current($resource, $window, $q, $rootScope, $http) {
+  "ngInject";
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;

@@ -2,6 +2,7 @@ import myTalksComponent from './my-talks.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
+    "ngInject";
     $stateProvider
       .state('header.tabs.myTalks', {
         url: '/my-talks',
@@ -10,6 +11,7 @@ export default (app) => {
           currentUser: Current => Current.current
         },
         controller: function (currentUser, $scope) {
+          "ngInject";
           if (!currentUser || currentUser.roles.indexOf('s') === -1) {
             $scope.$emit('signInEvent');
           }
