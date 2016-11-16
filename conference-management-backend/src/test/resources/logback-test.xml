@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- An example log4j configuration xml file for logback  -->
+<!-- Logging levels are:                                  -->
+<!-- TRACE, DEBUG, INFO, WARN, ERROR, ALL or OFF          -->
+
+<!-- See http://logback.qos.ch/manual/ for logback manual -->
+
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm} %-5p %c{1}:%L - %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- log4jdbc sql & jdbc logging -->
+
+    <logger name="log4jdbc.debug" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="jdbc.sqlonly" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="jdbc.resultsettable" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <logger name="jdbc.sqltiming" additivity="false">
+        <level value="OFF" />
+    </logger>
+
+    <logger name="jdbc.audit" additivity="false">
+        <level value="OFF" />
+    </logger>
+
+    <logger name="jdbc.resultset" additivity="false">
+        <level value="OFF" />
+    </logger>
+
+    <logger name="jdbc.connection" additivity="false">
+        <level value="OFF" />
+    </logger>
+
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
