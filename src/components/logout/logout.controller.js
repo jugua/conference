@@ -1,12 +1,17 @@
 export default class LogoutController {
-  constructor(Logout, $state) {
+  constructor(Logout, $state, Current, Talks) {
+    'ngInject';
     this.service = Logout;
     this.state = $state;
+    this.userService = Current;
+    this.talksService = Talks;
     this.logout();
   }
 
   logout() {
     this.service.logout().then(() => {
+      this.talksService.clear();
+      this.userService.clear();
       this.state.go('header.home', {}, { reload: true });
     });
   }

@@ -43,16 +43,17 @@ module.exports = {
       },
       ENVIRONMENT: JSON.stringify(nodeEnvironment)
     }),
-    new ExtractTextPlugin('main.css', { allChunks: true })
+    new ExtractTextPlugin('main.css', {allChunks: true})
   ],
   module: {
     loaders: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
-      { test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url!sass?sourceMap') },
-      { test: /\.(jpg|png|svg|eot|otf|svg|ttf|woff|woff2)$/, loader: 'file?name=[path][name].[ext]' },
-      { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ }
+      //{ test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+      {test: /\.js$/, exclude: /node_modules/, loaders: ['ng-annotate', 'babel-loader']},
+      {test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader'},
+      {test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url!sass?sourceMap')},
+      {test: /\.(jpg|png|svg|eot|otf|svg|ttf|woff|woff2)$/, loader: 'file?name=[path][name].[ext]'},
+      {test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/}
     ]
   },
-  postcss: [autoprefixer({ browsers: ['last 2 versions'] })]
+  postcss: [autoprefixer({browsers: ['last 2 versions']})]
 };

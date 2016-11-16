@@ -2,6 +2,7 @@ import homeComponent from './home.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
+    'ngInject';
     $stateProvider
       .state('header.home', {
         url: '/',

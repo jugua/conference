@@ -1,5 +1,6 @@
 export default class SignUpController {
   constructor(SignUp) {
+    'ngInject';
     this.user = {};
     this.userForm = {};
     this.service = SignUp;

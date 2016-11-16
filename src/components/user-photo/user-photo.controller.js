@@ -1,6 +1,9 @@
 export default class UserPhotoController {
-  constructor(Current) {
-    this.currentUserService = Current;
+  constructor(userPhotoService) {
+    'ngInject';
+
+    this.userPhotoService = userPhotoService;
+
 
     this.uploadPreview = false;
     this.deletePreview = false;
@@ -29,25 +32,25 @@ export default class UserPhotoController {
     this.animation = !this.animation;
   }
 
-  successUpload(res) {
+  successUpload({ data }) {
     this.ava = this.file;
     this.toggleSlide();
     this.togglePreview();
     this.toggleAnimation();
-    this.user.photo = res.data.answer;
+    this.user.photo = data.answer;
     this.currentPhotoStatus = this.getCurrentPhotoStatus();
   }
 
-  errorUpload(error) {
+  errorUpload({ data }) {
     this.togglePreview();
     this.toggleAnimation();
     this.file = null;
-    this.uploadForm.$setValidity(error.data.error, false);
+    this.uploadForm.$setValidity(data.error, false);
   }
 
   uploadAva() {
     this.toggleAnimation();
-    this.currentUserService.uploadPhoto(this.file)
+    this.userPhotoService.uploadPhoto(this.file)
       .then(
         (result) => {
           this.successUpload(result);
@@ -79,10 +82,10 @@ export default class UserPhotoController {
 
   deletePhoto() {
     this.toggleAnimation();
-    this.currentUserService.deleteUserPhoto()
+    this.userPhotoService.deleteUserPhoto()
         .then(
-            (result) => {
-              this.successDelete(result);
+            () => {
+              this.successDelete();
             }
         )
         .catch(
