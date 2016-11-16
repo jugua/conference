@@ -49,7 +49,7 @@ public @Data class User {
     private String lastName;
 
     @NotNull
-    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$/i")
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -75,4 +75,17 @@ public @Data class User {
     public boolean addRole(Role role) {
         return userRoles.add(role);
     }
+
+	public User(String firstName, String lastName, String email, String password, String photo, UserInfo userInfo,
+			Set<Role> userRoles) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.photo = photo;
+		this.userInfo = userInfo;
+		this.userRoles = userRoles;
+	}
+
 }

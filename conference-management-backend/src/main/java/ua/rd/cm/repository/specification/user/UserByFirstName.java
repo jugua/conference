@@ -14,7 +14,7 @@ public class UserByFirstName implements Specification<User>{
 
 	@Override
 	public String toSqlClauses() {
-		return String.format(" u.first_name = '%s' ", firstName);
+		return String.format(" u.firstName = '%s' ", firstName);
 	}
 
 	@Override
