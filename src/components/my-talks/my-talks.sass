@@ -46,6 +46,9 @@
       background: $light-grey
       cursor: pointer
 
+    &:focus
+      outline: none
+
   &__label
     margin-bottom: 5px
     font-size: 12px
@@ -61,14 +64,15 @@
      outline: none
     &:hover
       cursor: pointer
+    &_topic
+      width: 200px
 
   &__date
-    height: 30px
-    margin: 22px 5px 0
+    margin: 15px 5px 0
 
 .data-table
   margin-top: 20px
-  height: 70%
+  height: 75%
   +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
 
   &__text
@@ -162,6 +166,7 @@
       text-align: center
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
+        text-align: left
         &:before
           content: 'Date'
           +my-talk-before-title
