@@ -4,29 +4,41 @@
             <a ui-sref="header.tabs.myTalks.newtalk" type="button" class="btn my-talks__button">submit new talk </a>
             <div ui-view></div>
         </div>
-        <div class="my-talk-settings">
+        <div class="show-settings">
+        <button class="show-settings__button" ng-click="$ctrl.showSettings()"></button>
+        </div>
+        <div class="my-talk-settings" ng-show="$ctrl.showFilters">
             <form class="my-talk-settings__filters">
             <p class="my-talk-settings__title">filter by:</p>
-            <div>
-            <label for="my-talk-status" class="form-label my-talk-settings__label">Status</label>
+            <div class="my-talk-settings__select-wrapper">
+            <label for="my-talk-status" class="form-label my-talk-settings__label my-talk-settings__label_status">Status</label>
             <select id="my-talk-status" class="my-talk-settings__select"
                     ng-model="$ctrl.filter.status"
                     ng-options="status for status in $ctrl.menuStatus.getStatus()">
             </select>
             </div>
-            <div>
+            <div class="my-talk-settings__select-wrapper my-talk-settings__select-wrapper_topic">
             <label for="my-talk-topic" class="form-label my-talk-settings__label ">Topic</label>
             <select id="my-talk-topic" class="my-talk-settings__select my-talk-settings__select_topic"
                     ng-model="$ctrl.filter.topic"
                     ng-options="topic for topic in $ctrl.menuService.getTopics()">
             </select>
             </div>
-            <md-datepicker ng-model="myDate"
-                           md-placeholder="Select date"
-                           class="my-talk-settings__date"
-            ></md-datepicker>
-            <input type="button" class="my-talk-settings__button" value="apply">
-            <input type="reset" class="my-talk-settings__button" value="reset">
+            <div class="my-talk-settings__date-wrapper">
+                <md-datepicker ng-model="myDate"
+                               md-placeholder="Select date"
+                               class="my-talk-settings__date"
+                               id="my-talk-date"
+                ></md-datepicker>
+                <md-datepicker ng-model="myDate"
+                               md-placeholder="Select date"
+                               class="my-talk-settings__date"
+                ></md-datepicker>
+            </div>
+                <div class="my-talk-settings__button-wrapper">
+                    <input type="button" class="my-talk-settings__button" value="apply">
+                    <input type="reset" class="my-talk-settings__button" value="reset">
+                </div>
             </form>
         </div>
         <div class="data-table">

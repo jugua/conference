@@ -21,11 +21,12 @@
 .my-talk-settings
   box-sizing: border-box
   padding: 10px 0
-  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-    display: none
+  display: block
 
   &__filters
     display: flex
+    flex-wrap: wrap
+    justify-content: center
 
   &__title
     text-transform: capitalize
@@ -56,7 +57,7 @@
   &__select
     width: 130px
     height: 30px
-    margin: 0 5px 0 0
+    margin: 0 15px 0 0
     border: 0
     +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
     font-family: Oswald Light, sans-serif
@@ -65,10 +66,24 @@
     &:hover
       cursor: pointer
     &_topic
-      width: 200px
+      width: 180px
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      width: 100%
 
+
+  &__date-wrapper
+    box-sizing: border-box
+    padding-top: 15px
   &__date
-    margin: 15px 5px 0
+    margin: 15px 0
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      display: none
+
+  &__select-wrapper
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      width: 100%
+      &_topic
+        margin-top: 5px
 
 .data-table
   margin-top: 20px
@@ -132,7 +147,7 @@
     &_title
       width: 18%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -142,7 +157,7 @@
     &_topic
       width: 22%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -152,7 +167,7 @@
     &_status
       width: 10%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -162,8 +177,7 @@
     &_date
       width: calc(15% + 1px)
       box-sizing: border-box
-      padding: 5px
-      text-align: center
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         text-align: left
@@ -176,7 +190,7 @@
       position: relative
       border-right: none
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       overflow: hidden
       text-overflow: ellipsis
       white-space: nowrap
@@ -203,7 +217,7 @@
     &_speaker-talk
       width: 12%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         padding: 2px
@@ -214,7 +228,7 @@
     &_title-talk
       width: 15%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         padding: 2px
@@ -225,7 +239,7 @@
     &_topic-talk
       width: 15%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         padding: 2px
@@ -234,9 +248,9 @@
           +my-talk-before-title
 
     &_date-talk
-      width: calc(15% + 1px)
+      width: calc(15% - 1px)
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         padding: 2px
@@ -247,7 +261,7 @@
     &_status-talk
       width: 7%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         padding: 2px
@@ -258,7 +272,7 @@
     &_comments-talk
       width: 18%
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       overflow: hidden
       text-overflow: ellipsis
       white-space: nowrap
@@ -274,7 +288,7 @@
       width: calc(15% - 17px)
       border-right: none
       box-sizing: border-box
-      padding: 5px
+      padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         padding: 2px 2px 5px 2px
@@ -321,6 +335,7 @@
       width: 35%
       position: relative
       border-right: none
+      padding-left: 15px
 
     &_check-talk
       width: 3%
@@ -386,3 +401,23 @@
 .md-calendar-scroll-mask
   background: rgb(255, 255, 255)
 
+.show-settings
+  display: flex
+  justify-content: flex-end
+
+  &__button
+    width: 30px
+    height: 30px
+    display: none
+    margin: 10px 5px 0 0
+    border: none
+    background-color: transparent
+    background-image: url("assets/img/funnel.svg")
+    background-size: 70%
+    background-position: center
+    background-repeat: no-repeat
+    +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+    &:focus
+      outline: none
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+      display: block

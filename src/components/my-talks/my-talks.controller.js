@@ -6,6 +6,11 @@ export default class MyTalksController {
     this.filter = {};
     this.menuService = Menus;
     this.menuStatus = Menus;
+    this.showFilters = true;
+  }
+
+  showSettings(){
+    this.showFilters = !this.showFilters;
   }
 }
 
