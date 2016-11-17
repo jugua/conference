@@ -4,6 +4,7 @@ import template from './header.html';
 export default (app) => {
   app.config(($stateProvider, $urlRouterProvider) => {
     'ngInject';
+
     $urlRouterProvider.otherwise('/');
     $stateProvider
       .state('header', {
