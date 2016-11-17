@@ -1,10 +1,13 @@
 export default class SignUpController {
-  constructor(SignUp) {
+  constructor(SignUp, Constants) {
     'ngInject';
+
     this.user = {};
     this.userForm = {};
     this.service = SignUp;
     this.showPopup = false;
+    this.emailPattern = Constants.email;
+    this.passwordPattern = Constants.password;
   }
 
   signUp() {

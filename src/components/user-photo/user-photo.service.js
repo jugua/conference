@@ -2,8 +2,9 @@
 /* global angular */
 
 class UserPhoto {
-  constructor( $http, LocalStorage) {
+  constructor($http, LocalStorage) {
     'ngInject';
+
     this.localStorage = LocalStorage;
     this.http = $http;
   }

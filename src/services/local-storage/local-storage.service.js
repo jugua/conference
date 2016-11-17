@@ -1,6 +1,6 @@
 /* global window */
 
-function  LocalStorage() {
+function LocalStorage() {
   function getToken() {
     let info = window.localStorage.userInfo;
     let token;

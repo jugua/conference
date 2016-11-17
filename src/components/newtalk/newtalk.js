@@ -6,6 +6,7 @@ import template from './newtalk.html';
 export default (app) => {
   app.config(($stateProvider) => {
     'ngInject';
+
     $stateProvider
       .state('header.tabs.myTalks.newtalk', {
         template,

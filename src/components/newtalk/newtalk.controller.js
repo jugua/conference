@@ -1,6 +1,7 @@
 export default class NewtalkController {
   constructor(currentUser) {
     'ngInject';
+
     const mandatory = ['bio', 'job', 'company'];
     this.current = currentUser;
 

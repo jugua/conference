@@ -1,6 +1,7 @@
 export default class NewtalkController {
   constructor(Menus, Talks, $state, $scope) {
     'ngInject';
+
     this.talksService = Talks;
     this.scope = $scope;
     this.selectService = Menus;
