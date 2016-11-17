@@ -6,11 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.rd.cm.domain.ContactType;
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.RegistrationDto;
+
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
