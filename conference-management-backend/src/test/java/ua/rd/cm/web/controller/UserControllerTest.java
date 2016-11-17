@@ -14,8 +14,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
+import ua.rd.cm.domain.ContactType;
+import ua.rd.cm.domain.Role;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.RegistrationDto;
+
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -164,6 +174,20 @@ public class UserControllerTest {
         checkForBadRequest();
     }
 
+    @Test
+    public  void correctPrincipalGetCurrentUserTest() throws Exception{
+        Role speaker = createSpeakerRole();
+        UserInfo info = createUserInfo();
+        User user = createUser(speaker, info);
+        Principal correctPrincipal = () -> user.getEmail();
+
+        when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
+
+        mockMvc.perform(get("/api/users/current")
+                .principal(correctPrincipal)
+        ).andExpect(status().isAccepted());
+    }
+
     private void checkForBadRequest(){
         try {
             mockMvc.perform(post("/api/users")
@@ -199,5 +223,23 @@ public class UserControllerTest {
         }
 
         return builder.toString();
+    }
+
+    private User createUser(Role role , UserInfo info){
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "pass", "url", info, roles);
+        return user;
+    }
+
+    private Role createSpeakerRole(){
+        return new Role(1L, "SPEAKER");
+    }
+
+    private UserInfo createUserInfo(){
+        Map<ContactType, String> contacts = new HashMap<>();
+        contacts.put(new ContactType(1L, "phone"), "333333");
+        UserInfo info = new UserInfo(1L, "bio", "job", "pastConference", "test", contacts, "addInfo");
+        return info;
     }
 }
