@@ -54,7 +54,7 @@ module.exports = (PORT) => {
     .post(forgotPassword);
 
 //EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
-  router.route('/users')
+  router.route('/user')
     .post(registration)
     .get((req, res) => {
       User.find((err, current) => {
@@ -66,7 +66,7 @@ module.exports = (PORT) => {
     });
 
 // current  get user
-  router.route('/users/current')
+  router.route('/user/current')
     .get(current.get)
     .post(current.update);
 
@@ -79,7 +79,7 @@ module.exports = (PORT) => {
 
   // get user by id
 
-  router.route('/users/:user_id')
+  router.route('/user/:user_id')
 
     // get the user  with that id )
     .get(function (req, res) {
