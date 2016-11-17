@@ -22,6 +22,8 @@
   box-sizing: border-box
   padding: 10px 0
   display: block
+  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+    padding: 0
 
   &__filters
     display: flex
@@ -33,7 +35,8 @@
     line-height: 36px
     margin: 20px 10px 0 0
     font-size: 14px
-
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      margin: 0
   &__button
     width: 80px
     height: 30px
