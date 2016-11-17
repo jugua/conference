@@ -2,7 +2,7 @@ import myInfoComponent from './my-info.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
-    "ngInject";
+    'ngInject';
     $stateProvider
       .state('header.tabs.myInfo', {
         url: '/my-info',
@@ -11,7 +11,7 @@ export default (app) => {
           currentUser: Current => Current.current
         },
         controller: function (currentUser, $scope) {
-          "ngInject";
+          'ngInject';
           if (!currentUser || currentUser.roles.indexOf('s') === -1) {
             $scope.$emit('signInEvent');
           }

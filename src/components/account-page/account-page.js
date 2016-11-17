@@ -2,7 +2,7 @@ import accountPageComponent from './account-page.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
-    "ngInject";
+    'ngInject';
     $stateProvider
       .state('header.account', {
         url: '/account',

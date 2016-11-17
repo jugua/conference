@@ -1,24 +1,12 @@
-function Current($resource, $window, $q, $rootScope, $http) {
-  "ngInject";
-  function getToken() {
-    let info = $window.localStorage.userInfo;
-    let token;
 
-    if (info) {
-      info = JSON.parse(info);
-      token = info.token;
-    } else {
-      token = '';
-    }
-
-    return token;
-  }
+function Current($resource, $q, $rootScope, LocalStorage) {
+  'ngInject';
 
   const users = $resource('/api/users/current', {}, {
     getCurrentUser: {
       method: 'GET',
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -26,16 +14,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
     updateCurrentUser: {
       method: 'POST',
       headers: {
-        token: getToken,
-        'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache'
-      }
-    },
-    addTalk: {
-      method: 'POST',
-      url: '/api/users/current/talks',
-      headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -62,7 +41,12 @@ function Current($resource, $window, $q, $rootScope, $http) {
     });
   }
 
+  function clear() {
+    this.current = null;
+  }
+
   return {
+    clear,
     getInfo,
     updateInfo,
   };

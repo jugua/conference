@@ -1,3 +1,7 @@
+.my-talks-container
+  width: 100%
+  height: calc(100vh - 215px)
+
 .my-talks
   height: 100%
 
@@ -7,6 +11,7 @@
   &__button
     width: 140px
     margin: 0 10px 10px 0
+    transition: all 0.3s ease
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
       margin: 10px auto
 
@@ -16,6 +21,8 @@
 .my-talk-settings
   box-sizing: border-box
   padding: 10px 0
+  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+    display: none
 
   &__filters
     display: flex
@@ -23,48 +30,66 @@
   &__title
     text-transform: capitalize
     line-height: 36px
-    margin: 26px 10px 0 0
+    margin: 20px 10px 0 0
+    font-size: 14px
 
   &__button
-    width: 100px
-    height: 36px
-    margin: 26px 5px 0
+    width: 80px
+    height: 30px
+    margin: 22px 5px 0
+    border: 0
+    background: transparent
+    text-transform: capitalize
+    +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+
+    &:hover
+      background: $light-grey
+      cursor: pointer
 
   &__label
     margin-bottom: 5px
-    font-size: 14px
+    font-size: 12px
 
   &__select
-    width: 150px
-    height: 36px
+    width: 130px
+    height: 30px
     margin: 0 5px 0 0
-    border: 1px solid $dark-blue
+    border: 0
+    +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+    font-family: Oswald Light, sans-serif
+    &:focus
+     outline: none
+    &:hover
+      cursor: pointer
+
+  &__date
+    height: 30px
+    margin: 22px 5px 0
 
 .data-table
   margin-top: 20px
   height: 70%
-  border-bottom: 1px solid $sharp-blue
+  +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
 
   &__text
-    margin: 0
     text-overflow: ellipsis
     overflow: hidden
     white-space: nowrap
     text-transform: none
 
   &__tooltip
+    width: 300px
     display: block
-    visibility: hidden
     position: absolute
     top: 0
-    left: 0
-    text-transform: none
-    background: #f2f2f2
-    z-index: 2
+    background-color: #555
+    color: #fff
+    text-align: center
+    font-size: 14px
 
   &__inner-wrapper
-    max-height: 90%
-    overflow: auto
+    height: 93%
+    overflow-y: scroll
     @media ($mnw: $sdmn) and ($mxw: $sdmx)
       display: flex
       flex-wrap: wrap
@@ -77,11 +102,9 @@
     font-family: Oswald Light, sans-serif
     font-size: 14px
     box-sizing: border-box
-    padding: 5px 0
 
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
       width: 100%
-      border: 1px solid #f2f2f2
       margin-bottom: 5px
       +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
 
@@ -90,17 +113,22 @@
       margin: 5px
       +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
 
-    &:nth-child(odd)
+    &:nth-child(even)
       background: #f2f2f2
 
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         background: #fff
 
   &__column
+    border-right: 1px solid #bbbbbb
+    box-sizing: border-box
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+      border: none
+
     &_title
-      width: 28%
+      width: 18%
       box-sizing: border-box
-      padding: 0 0 0 5px
+      padding: 5px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -108,12 +136,9 @@
           +my-talk-before-title
 
     &_topic
-      width: 15%
-      overflow: hidden
-      text-overflow: ellipsis
-      white-space: nowrap
+      width: 22%
       box-sizing: border-box
-      padding: 0 5px 0 0
+      padding: 5px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -122,6 +147,8 @@
 
     &_status
       width: 10%
+      box-sizing: border-box
+      padding: 5px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -129,7 +156,10 @@
           +my-talk-before-title
 
     &_date
-      width: 12%
+      width: calc(15% + 1px)
+      box-sizing: border-box
+      padding: 5px
+      text-align: center
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before
@@ -137,8 +167,17 @@
           +my-talk-before-title
 
     &_comments
-      width: 35%
+      width: 34%
       position: relative
+      border-right: none
+      box-sizing: border-box
+      padding: 5px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+      &:hover
+        cursor: pointer
+
       &:hover > span
         visibility: visible
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
@@ -147,54 +186,198 @@
           content: 'Comments'
           +my-talk-before-title
 
+    &_check-talk
+      width: 3%
+      box-sizing: border-box
+      padding: 5px
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px
+        text-align: right
+
+    &_speaker-talk
+      width: 12%
+      box-sizing: border-box
+      padding: 5px
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px
+        &:before
+          content: 'Speaker'
+          +my-talk-before-title
+
+    &_title-talk
+      width: 15%
+      box-sizing: border-box
+      padding: 5px
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px
+        &:before
+          content: 'Title'
+          +my-talk-before-title
+
+    &_topic-talk
+      width: 15%
+      box-sizing: border-box
+      padding: 5px
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px
+        &:before
+          content: 'Topic'
+          +my-talk-before-title
+
+    &_date-talk
+      width: calc(15% + 1px)
+      box-sizing: border-box
+      padding: 5px
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px
+        &:before
+           content: 'Date'
+           +my-talk-before-title
+
+    &_status-talk
+      width: 7%
+      box-sizing: border-box
+      padding: 5px
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px
+        &:before
+          content: 'Status'
+          +my-talk-before-title
+
+    &_comments-talk
+      width: 18%
+      box-sizing: border-box
+      padding: 5px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+      text-transform: none
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px
+        &:before
+          content: 'Comment'
+          +my-talk-before-title
+
+    &_assign-talk
+      width: calc(15% - 17px)
+      border-right: none
+      box-sizing: border-box
+      padding: 5px
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+        width: 100%
+        padding: 2px 2px 5px 2px
+        &:before
+          content: 'Assign To'
+          +my-talk-before-title
+
 .table-header
   display: flex
-  border-bottom: 2px solid $dark-blue
+  border-bottom: 2px solid #bbbbbb
 
   &__item
     text-transform: capitalize
     box-sizing: border-box
-    padding: 5px 0
+    border-right: 1px solid #bbbbbb
+    padding: 5px
 
     &_title
-      width: 28%
+      width: 18%
       box-sizing: border-box
-      padding: 5px 0 5px 5px
       position: relative
+      &:before
+        +filter-icon
 
     &_topic
-      width: 15%
+      width: 22%
       position: relative
+      &:before
+        +filter-icon
 
     &_status
       width: 10%
       position: relative
+      &:before
+        +filter-icon
 
     &_date
-      width: 12%
+      width: 15%
       position: relative
+      &:before
+        +filter-icon
 
     &_comments
       width: 35%
       position: relative
+      border-right: none
 
-  &__button
-    display: block
-    position: absolute
-    right: 5px
-    bottom: 5px
-    width: 0
-    height: 0
-    border-left: 5px solid transparent
-    border-right: 5px solid transparent
-    border-bottom: 5px solid #1A9CB0
-    margin-right: 5px
-    margin-bottom: 5px
-    &:hover
-      cursor: pointer
+    &_check-talk
+      width: 3%
+
+    &_speaker-talk
+      width: 12%
+      &:before
+        +filter-icon
+
+    &_title-talk
+      width: 15%
+      &:before
+        +filter-icon
+
+    &_topic-talk
+      width: 15%
+      &:before
+        +filter-icon
+
+    &_date-talk
+      width: 15%
+      &:before
+        +filter-icon
+
+    &_status-talk
+      width: 7%
+      &:before
+        +filter-icon
+
+    &_comments-talk
+      width: 18%
+      &:before
+        +filter-icon
+
+    &_assign-talk
+      width: 15%
+      border-right: none
+      &:before
+        +filter-icon
+
+  &__scroll-fix
+    width: 17px
 
   @media ($mnw: $xsdmn) and ($mxw: $sdmx)
     display: none
 
+.md-datepicker-input-mask
+  background: #fff
 
+.md-datepicker-input-mask-opaque
+  color: rgba(0,0,0,0.87)
+
+.md-whiteframe-1dp, .md-whiteframe-z1
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)
+
+.md-calendar-day-header
+  background: rgb(224,224,224)
+  color: rgba(0,0,0,0.87)
+
+.md-default-theme .md-datepicker-calendar-pane, .md-datepicker-calendar-pane
+  border-color: rgb(255, 255, 255)
+
+.md-calendar-scroll-mask
+  background: rgb(255, 255, 255)
 

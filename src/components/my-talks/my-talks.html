@@ -1,59 +1,56 @@
-<div class="my-talks">
-    <div class="my-talks__header">
-        <a ui-sref="header.tabs.myTalks.newtalk" type="button" class="btn my-talks__button">submit new talk </a>
-        <div ui-view></div>
-    </div>
-    <div class="my-talk-settings">
-        <form class="my-talk-settings__filters">
-        <p class="my-talk-settings__title">filter by:</p>
-        <div>
-        <label for="my-talk-status" class="form-label my-talk-settings__label">Status</label>
-        <select name="" id="my-talk-status" class="my-talk-settings__select">
-            <option value="new">New</option>
-            <option value="new">In Progress</option>
-            <option value="new">Approved</option>
-            <option value="new">Rejected</option>
-        </select>
+<div class="my-talks-container">
+    <div class="my-talks">
+        <div class="my-talks__header">
+            <a ui-sref="header.tabs.myTalks.newtalk" type="button" class="btn my-talks__button">submit new talk </a>
+            <div ui-view></div>
         </div>
-        <div>
-        <label for="my-talk-topic" class="form-label my-talk-settings__label">Topic</label>
-        <select name="" id="my-talk-topic" class="my-talk-settings__select">
-            <option value="new">JVM Languages and new programming paradigms</option>
-            <option value="new">Web development and Java Enterprise technologies</option>
-            <option value="new">Software engineering practices</option>
-            <option value="new">Architecture & Cloud</option>
-            <option value="new"> BigData & NoSQL</option>
-        </select>
+        <div class="my-talk-settings">
+            <form class="my-talk-settings__filters">
+            <p class="my-talk-settings__title">filter by:</p>
+            <div>
+            <label for="my-talk-status" class="form-label my-talk-settings__label">Status</label>
+            <select name="" id="my-talk-status" class="my-talk-settings__select"
+                    ng-model="$ctrl.filter.status"
+                    ng-options="status for status in $ctrl.menuStatus.getStatus()">
+            </select>
+            </div>
+            <div>
+            <label for="my-talk-topic" class="form-label my-talk-settings__label">Topic</label>
+            <select name="" id="my-talk-topic" class="my-talk-settings__select"
+                    ng-model="$ctrl.filter.topic"
+                    ng-options="topic for topic in $ctrl.menuService.getTopics()">
+            </select>
+            </div>
+            <md-datepicker ng-model="myDate"
+                           md-placeholder="Select date"
+                           class="my-talk-settings__date"
+            ></md-datepicker>
+            <input type="button" class="my-talk-settings__button" value="apply">
+            <input type="reset" class="my-talk-settings__button" value="reset">
+            </form>
         </div>
-        <input type="button" class="btn my-talk-settings__button" value="apply">
-        <input type="reset" class="btn btn_cancel my-talk-settings__button" value="reset">
-        </form>
-    </div>
-    <div class="data-table">
-        <div class="table-header">
-            <div class="table-header__item table-header__item_title">title
-                <div class="table-header__button"></div>
+        <div class="data-table">
+            <div class="table-header">
+                <div class="table-header__item table-header__item_title">title
+                </div>
+                <div class="table-header__item table-header__item_topic">topic
+                </div>
+                <div class="table-header__item table-header__item_date">submitted date
+                </div>
+                <div class="table-header__item table-header__item_status">status
+                </div>
+                <div class="table-header__item table-header__item_comments">organizer comments
+                </div>
+                <div class="table-header__scroll-fix"></div>
             </div>
-            <div class="table-header__item table-header__item_topic">topic
-                <div class="table-header__button"></div>
-            </div>
-            <div class="table-header__item table-header__item_date">submited date
-                <div class="table-header__button"></div>
-            </div>
-            <div class="table-header__item table-header__item_status">status
-                <div class="table-header__button"></div>
-            </div>
-            <div class="table-header__item table-header__item_comments">organizer comments
-                <div class="table-header__button"></div>
-            </div>
-        </div>
-        <div class="data-table__inner-wrapper">
-            <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
-                <div class="data-table__column data-table__column_title">{{talk.title}}</div>
-                <div class="data-table__column data-table__column_topic">{{talk.topic}}</div>
-                <div class="data-table__column data-table__column_date">{{talk.date |date:"MM/dd/yyyy"}}</div>
-                <div class="data-table__column data-table__column_status">{{talk.status}}</div>
-                <div class="data-table__column data-table__column_comments">{{talk.comment}}</div>
+            <div class="data-table__inner-wrapper">
+                <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
+                    <div class="data-table__column data-table__column_title">{{talk.title}}</div>
+                    <div class="data-table__column data-table__column_topic">{{talk.topic}}</div>
+                    <div class="data-table__column data-table__column_date">{{talk.date |date:"MM/dd/yyyy"}}</div>
+                    <div class="data-table__column data-table__column_status">{{talk.status}}</div>
+                    <div class="data-table__column data-table__column_comments">{{talk.comment}}</div>
+                </div>
             </div>
         </div>
     </div>

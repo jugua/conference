@@ -2,7 +2,7 @@ import signUpComponent from './sign-up.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
-    "ngInject";
+    'ngInject';
     $stateProvider
       .state('header.sign-up', {
         url: '/sign-up',

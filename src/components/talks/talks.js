@@ -2,7 +2,7 @@ import talksComponent from './talks.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
-    "ngInject";
+    'ngInject';
     $stateProvider
       .state('header.talks', {
         url: '/talks',
