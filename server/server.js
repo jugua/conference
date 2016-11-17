@@ -70,7 +70,7 @@ module.exports = (PORT) => {
     .get(current.get)
     .post(current.update);
 
-  router.route('/users/current/logout')
+  router.route('/logout')
     .get(logout);
 
   router.route('/users/current/photo')

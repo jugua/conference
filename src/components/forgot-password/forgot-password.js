@@ -1,4 +1,5 @@
 import forgotPasswordComponent from './forgot-password.component';
+import ForgotPasswordService from './forgot-password.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -8,5 +9,6 @@ export default (app) => {
       .state('header.home.forgotPassword', {
         template: '<forgot-password></forgot-password>'
       });
-  }).component('forgotPassword', forgotPasswordComponent);
+  }).component('forgotPassword', forgotPasswordComponent)
+    .service('ForgotPasswordService', ForgotPasswordService);
 };
