@@ -22,13 +22,12 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.RegistrationDto;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -185,7 +184,20 @@ public class UserControllerTest {
 
         mockMvc.perform(get("/api/users/current")
                 .principal(correctPrincipal)
-        ).andExpect(status().isAccepted());
+        ).andExpect(status().isAccepted())
+                .andExpect(jsonPath("fname", is(user.getFirstName())))
+                .andExpect(jsonPath("lname", is(user.getLastName())))
+                .andExpect(jsonPath("mail", is(user.getEmail())))
+                .andExpect(jsonPath("bio", is(user.getUserInfo().getShortBio())))
+                .andExpect(jsonPath("job", is(user.getUserInfo().getJobTitle())))
+                .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
+                .andExpect(jsonPath("photo", is(user.getPhoto())))
+                .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
+                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "linkedin")))))
+                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(1L, "twitter")))))
+                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(1L, "facebook")))))
+                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(1L, "blog")))))
+                .andExpect(jsonPath("roles[0]", is("S")));
     }
 
     private void checkForBadRequest(){
@@ -238,8 +250,19 @@ public class UserControllerTest {
 
     private UserInfo createUserInfo(){
         Map<ContactType, String> contacts = new HashMap<>();
-        contacts.put(new ContactType(1L, "phone"), "333333");
+        for (ContactType contactType : createContactTypes()){
+            contacts.put(contactType, contactType.getName());
+        }
         UserInfo info = new UserInfo(1L, "bio", "job", "pastConference", "test", contacts, "addInfo");
         return info;
+    }
+
+    private Set<ContactType> createContactTypes(){
+        Set<ContactType> contactTypes = new HashSet<>();
+        contactTypes.add(new ContactType(1L, "linkedin"));
+        contactTypes.add(new ContactType(2L, "twitter"));
+        contactTypes.add(new ContactType(3L, "facebook"));
+        contactTypes.add(new ContactType(4L, "blog"));
+        return contactTypes;
     }
 }
