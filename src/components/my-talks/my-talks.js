@@ -11,13 +11,9 @@ export default (app) => {
         resolve: {
           currentUser: Current => Current.current
         },
-        controller: function myTalkPreController(currentUser, $scope) {
-          'ngInject';
-
+        controller: function myTalkPreController(currentUser, Permissions) {
+          Permissions.permitted('s', currentUser);
           this.resolved = true;
-          if (!currentUser || currentUser.roles.indexOf('s') === -1) {
-            $scope.$emit('signInEvent');
-          }
           this.currentUser = currentUser;
         },
         controllerAs: 'ctrl'
