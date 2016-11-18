@@ -18,6 +18,43 @@
   &__pop-up
     width: 600px
 
+.pagination
+  margin-top: 10px
+
+  &__item-wrapper
+    display: flex
+
+  &__item
+    width: 30px
+    height: 30px
+    margin-right: 5px
+    +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+
+    &:hover
+      background: $light-grey
+      cursor: pointer
+
+    &_current
+      display: flex
+      justify-content: center
+      align-items: center
+
+    &_fast-forward
+      background: url(assets/img/fast_forward.svg) no-repeat center
+      background-size: 50%
+
+    &_forward
+      background: url(assets/img/forward.svg) no-repeat center
+      background-size: 50%
+
+    &_fast-back
+      background: url(assets/img/fast_back.svg) no-repeat center
+      background-size: 50%
+
+    &_back
+      background: url(assets/img/back.svg) no-repeat center
+      background-size: 50%
+
 .my-talk-settings
   box-sizing: border-box
   padding: 10px 0
@@ -37,6 +74,7 @@
     font-size: 14px
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
       margin: 0
+
   &__button
     width: 80px
     height: 30px
@@ -73,7 +111,6 @@
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
       width: 100%
 
-
   &__date-wrapper
     box-sizing: border-box
     padding-top: 15px
@@ -90,7 +127,7 @@
 
 .data-table
   margin-top: 20px
-  height: 75%
+  height: 76%
   +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
 
   &__text
@@ -110,7 +147,7 @@
     font-size: 14px
 
   &__inner-wrapper
-    height: 93%
+    height: 94
     overflow-y: scroll
     @media ($mnw: $sdmn) and ($mxw: $sdmx)
       display: flex
@@ -151,6 +188,9 @@
       width: 18%
       box-sizing: border-box
       padding: 5px 5px 5px 15px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         &:before

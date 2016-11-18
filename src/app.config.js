@@ -7,9 +7,14 @@ export default (app) => {
     });
   })
     .config(($mdThemingProvider, $mdDateLocaleProvider) => {
+      'ngInject';
+
       $mdThemingProvider.disableTheming();
-      $mdDateLocaleProvider.formatDate = function(date) {
-      return date.toLocaleString('es', {day: 'numeric', month: 'numeric', year: 'numeric'});
-    };
-  });
+      $mdDateLocaleProvider.formatDate = function (date) {
+        if (!date) {
+          return '';
+        }
+        return date.toLocaleString('es', { day: 'numeric', month: 'numeric', year: 'numeric' });
+      };
+    });
 };

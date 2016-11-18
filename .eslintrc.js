@@ -5,6 +5,7 @@ module.exports = {
     'linebreak-style': 'off',
     'comma-dangle': 'off',
     'eol-last': 'off',
-    'no-underscore-dangle': 'off'
+    'no-underscore-dangle': 'off',
+    'no-param-reassign': ['error', { props: false }]
   }
 }
