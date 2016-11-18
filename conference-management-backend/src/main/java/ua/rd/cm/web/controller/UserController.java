@@ -12,10 +12,8 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.RegistrationDto;
 import ua.rd.cm.web.controller.dto.UserDto;
-
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.Set;
 
 @RestController
