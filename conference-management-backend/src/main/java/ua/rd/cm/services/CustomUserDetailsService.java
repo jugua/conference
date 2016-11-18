@@ -20,6 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ua.rd.cm.domain.User user = userService.getByEmail(username);
+        if (user == null){
+            return null;
+        }
         UserDetails userDetails = new User(user.getEmail(), user.getPassword(), user.getUserRoles());
         return userDetails;
     }

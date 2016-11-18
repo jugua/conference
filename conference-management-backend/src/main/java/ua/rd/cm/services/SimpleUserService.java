@@ -56,7 +56,11 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public User getByEmail(String email) {
-		return userRepository.findBySpecification(new UserByEmail(email)).get(0);
+		List<User> users = userRepository.findBySpecification(new UserByEmail(email));
+		if (users.isEmpty()){
+			return null;
+		}
+		return users.get(0);
 	}
 
 	@Override

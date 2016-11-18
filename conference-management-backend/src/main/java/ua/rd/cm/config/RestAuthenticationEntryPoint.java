@@ -12,13 +12,12 @@ import java.io.IOException;
 /**
  * @author Yaroslav_Revin
  */
-@Component("restAuthenticationEntryPoint")
+//@Component("restAuthenticationEntryPoint")
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authenticationException) throws IOException, ServletException {
-        //response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authenticationException.getMessage());
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
