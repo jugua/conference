@@ -45,6 +45,7 @@ public class UserController {
     @GetMapping("/current")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal){
         if (principal == null) {
+            System.out.println("UNANTHORIZED in user controller");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
