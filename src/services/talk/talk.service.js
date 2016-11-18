@@ -36,7 +36,7 @@ export default class TalkService {
     this._talks = this.talks.getAll(() => {
     },
       () => {
-        this._talks = [];
+        this._talks = null;
       });
 
     return this._talks;
