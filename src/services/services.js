@@ -4,6 +4,7 @@ import menusService from './menus/menus';
 import talksService from './talk/talk';
 import localStorage from './local-storage/local-storage';
 import constants from './constants/constants';
+import permissionsService from './permissions/permissions';
 
 
 export default (app) => {
@@ -12,6 +13,7 @@ export default (app) => {
     constants,
     currentUserService,
     menusService,
-    talksService
+    talksService,
+    permissionsService
   ], app);
 };
