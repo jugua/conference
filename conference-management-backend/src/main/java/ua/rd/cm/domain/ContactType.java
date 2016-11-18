@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Artem_Pryzhkov
+ * @author Mariia_Lapovska
  */
 
 @Data
@@ -17,16 +17,16 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
-@Table(name = "type")
-@SequenceGenerator(name = "seqTypeGen", allocationSize = 1)
-public class Type {
+@Table(name = "contact_type")
+@SequenceGenerator(name = "seqContactTypeGen", allocationSize = 1)
+public class ContactType {
 
     @Id
-    @Column(name = "type_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTypeGen")
+    @Column(name = "contact_type_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqContactTypeGen")
     private Long id;
 
     @NotNull
-    @Column(name = "type_name", nullable = false, unique = true)
+    @Column(name = "contact_type_name", nullable = false, unique = true)
     private String name;
 }

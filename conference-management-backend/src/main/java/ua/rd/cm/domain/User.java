@@ -1,56 +1,49 @@
 package ua.rd.cm.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Mariia Lapovska
  */
 
-
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
-@Table(name = "user")
-public @Data class User {
-
-    @TableGenerator(
-            name = "userGen",
-            table = "user_id_gen",
-            pkColumnName = "gen_key",
-            valueColumnName = "gen_value",
-            pkColumnValue = "user_id",
-            allocationSize = 1
-    )
+@Table(name = "user", indexes = {
+        @Index(name = "email_index",  columnList="email", unique = true)
+})
+@SequenceGenerator(name = "seqUserGen", allocationSize = 1)
+public class User {
 
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "userGen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUserGen")
     private Long id;
 
     @NotNull
     @Size(min = 1, max = 56)
     @Column(name = "first_name", nullable = false)
-    @JsonProperty("fname")
     private String firstName;
 
     @NotNull
     @Size(min = 1, max = 56)
     @Column(name = "last_name", nullable = false)
-    @JsonProperty("lname")
     private String lastName;
 
     @NotNull
-    @Email
-    @Column(name = "email", nullable = false)
-    @JsonProperty("mail")
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
+    @Column(name = "email", nullable = false, unique =  true)
+
     private String email;
 
     @NotNull
@@ -65,8 +58,24 @@ public @Data class User {
     @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "role_id")
-    @JsonProperty("roles")
-    private Role role;
+    @ManyToMany
+    @JoinTable(name = "user_role")
+    private Set<Role> userRoles = new HashSet<>();
+
+    public boolean addRole(Role role) {
+        return userRoles.add(role);
+    }
+
+	public User(String firstName, String lastName, String email, String password, String photo, UserInfo userInfo,
+			Set<Role> userRoles) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.photo = photo;
+		this.userInfo = userInfo;
+		this.userRoles = userRoles;
+	}
+
 }

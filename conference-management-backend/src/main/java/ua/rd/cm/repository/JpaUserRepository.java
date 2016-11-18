@@ -24,6 +24,7 @@ public class JpaUserRepository implements UserRepository{
 	@Override
 	public void removeUser(User user) {
 		em.remove(user);
+		
 	}
 
 	@Override

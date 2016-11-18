@@ -19,7 +19,7 @@ public class UserByLastName implements Specification<User>{
 
 	@Override
 	public String toSqlClauses() {
-		return String.format(" u.last_name = %s ", lastName);
+		return String.format(" u.lastName = '%s' ", lastName);
 	}
 
 }
