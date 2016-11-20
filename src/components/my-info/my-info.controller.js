@@ -1,6 +1,7 @@
 export default class MyInfoController {
   constructor(Current, $scope, $state) {
     'ngInject';
+
     this.state = $state;
     this.currentUserService = Current;
     this.alertVisible = false;

@@ -51,10 +51,13 @@ module.exports = (PORT) => {
     .post(auth);
 
   router.route('/forgot-password')
-    .post(forgotPassword);
+    .post(forgotPassword)
 
-//EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
-  router.route('/users')
+  router.route('/logout')
+    .get(logout);
+
+// EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
+  router.route('/user')
     .post(registration)
     .get((req, res) => {
       User.find((err, current) => {
@@ -66,20 +69,20 @@ module.exports = (PORT) => {
     });
 
 // current  get user
-  router.route('/users/current')
+  router.route('/user/current')
     .get(current.get)
     .post(current.update);
 
-  router.route('/users/current/logout')
+  router.route('/logout')
     .get(logout);
 
-  router.route('/users/current/photo')
+  router.route('/user/current/photo')
     .post(upload.any(), photo.uploadImage)
     .delete(photo.deleteImage); // deleting photo
 
   // get user by id
 
-  router.route('/users/:user_id')
+  router.route('/user/:user_id')
 
     // get the user  with that id )
     .get(function (req, res) {

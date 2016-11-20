@@ -1,6 +1,11 @@
 /* global beforeEach */
 /* global inject */
 /* global describe */
+/* global expect */
+/* global it */
+/* global spyOn */
+/* global jasmine */
+/* global angular */
 
 import UserPhotoModule from './user-photo';
 import UserPhotoController from './user-photo.controller';
@@ -8,86 +13,66 @@ import UserPhotoComponent from './user-photo.component';
 import UserPhotoService from './user-photo.service';
 
 
-xdescribe('UserPhoto', () => {
-  let makeController;
-  let q;
-  let deferred;
-  let serviceMock;
-  let controller;
-
-  beforeEach(inject(($q) => {
-    q = $q;
-    deferred = $q.defer();
-  }));
-
-  beforeEach(() => {
-    serviceMock = {
-      uploadPhoto: () => {},
-      deletePhoto: () => {}
-    };
-  });
-
-  beforeEach(() => {
-    makeController = (serviceMock, scope) => new UserPhotoController(serviceMock, scope);
-  });
-
-  beforeEach(() => {
-    makeController = (serviceMock, scope) => {
-      return new MyInfoController(serviceMock, scope);
-    };
-  });
-
+describe('UserPhoto', () => {
   describe('Controller', () => {
-    it('should instantiate', () => {
-     let controller = makeController(currentServiceMock, scope);
-    });
+    let q;
+    let userPhotoService;
+    const user = { photo: 'df' };
+    let sut;
+
+    beforeEach(angular.mock.module(($controllerProvider) => {
+      $controllerProvider.register('UserPhotoController', UserPhotoController);
+    }));
+
+    beforeEach(angular.mock.inject(($injector, $controller) => {
+      q = $injector.get('$q');
+      userPhotoService = jasmine.createSpyObj('userPhotoService', ['uploadPhoto', 'deleteUserPhoto']);
+      userPhotoService.uploadPhoto.and.returnValue(q.when([]));
+      userPhotoService.deleteUserPhoto.and.returnValue(q.when([]));
+
+      sut = $controller('UserPhotoController', { userPhotoService }, { user });
+    }));
 
     it('should toggle preview', () => {
-     let controller = makeController(currentServiceMock, scope);
-     let preview = controller.uploadPreview;
-     controller.uploadForm.$valid = true;
-     controller.uploadForm.$setValidity = () => {};
+      const preview = sut.uploadPreview;
+      sut.uploadForm.$valid = true;
+      sut.uploadForm.$setValidity = () => {};
 
-     controller.togglePreview();
-     expect(controller.uploadPreview).toEqual(!preview);
+      sut.togglePreview();
+      expect(sut.uploadPreview).toEqual(!preview);
     });
 
     it('shouldn`t toggle preview', () => {
-     let controller = makeController(currentServiceMock, scope);
-     let preview = controller.uploadPreview;
-     controller.uploadForm.$valid = false;
-     controller.uploadForm.$setValidity = () => {};
+      const preview = sut.uploadPreview;
+      sut.uploadForm.$valid = false;
+      sut.uploadForm.$setValidity = () => {};
 
-     controller.togglePreview();
-     expect(controller.uploadPreview).toEqual(preview);
+      sut.togglePreview();
+      expect(sut.uploadPreview).toEqual(preview);
     });
 
     it('should call functions in successUpload', () => {
-     let controller = makeController(currentServiceMock, scope);
-     spyOn(controller, 'togglePreview');
-     spyOn(controller, 'toggleSlide');
-     spyOn(controller, 'toggleAnimation');
+      spyOn(sut, 'togglePreview');
+      spyOn(sut, 'toggleSlide');
+      spyOn(sut, 'toggleAnimation');
 
-     controller.successUpload({data:{answer:'link'}});
-     expect(controller.togglePreview).toHaveBeenCalled();
-     expect(controller.toggleSlide).toHaveBeenCalled();
-     expect(controller.toggleAnimation).toHaveBeenCalled();
+      sut.successUpload({ data: { answer: 'link' } });
+      expect(sut.togglePreview).toHaveBeenCalled();
+      expect(sut.toggleSlide).toHaveBeenCalled();
+      expect(sut.toggleAnimation).toHaveBeenCalled();
     });
 
     it('should call functions in errorUpload', () => {
-     let controller = makeController(currentServiceMock, scope);
-     let file = {};
-     controller.uploadForm.$setValidity = () => {};
+      sut.uploadForm.$setValidity = () => {};
 
-     spyOn(controller, 'togglePreview');
-     spyOn(controller, 'toggleAnimation');
-     spyOn(controller.uploadForm, '$setValidity');
-     controller.errorUpload({data:{error: 'maxSize'}});
+      spyOn(sut, 'togglePreview');
+      spyOn(sut, 'toggleAnimation');
+      spyOn(sut.uploadForm, '$setValidity');
+      sut.errorUpload({ data: { error: 'maxSize' } });
 
-     expect(controller.togglePreview).toHaveBeenCalled();
-     expect(controller.toggleAnimation).toHaveBeenCalled();
-     expect(controller.uploadForm.$setValidity).toHaveBeenCalled();
-     expect(controller.file).toEqual(file);
+      expect(sut.togglePreview).toHaveBeenCalled();
+      expect(sut.toggleAnimation).toHaveBeenCalled();
+      expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
     });
-  })
+  });
 });

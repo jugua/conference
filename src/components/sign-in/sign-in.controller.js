@@ -1,12 +1,12 @@
 export default class SignInController {
-  constructor(signInService, $scope) {
+  constructor(signInService, $scope, Constants) {
     'ngInject';
 
     this.user = {};
     this.userForm = {};
     this.service = signInService;
     this.scope = $scope;
-    this.emailPattern = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,6}$', 'i');
+    this.emailPattern = Constants.email;
   }
 
   login() {
