@@ -7,7 +7,15 @@ export default (app) => {
     $stateProvider
       .state('header.talks', {
         url: '/talks',
-        template: '<talks></talks>'
+        template: '<talks ng-if="ctrl.resolved"></talks>',
+        resolve: {
+          currentUser: Current => Current.current
+        },
+        controller: function(Permissions, currentUser) {
+          Permissions.permitted('o', currentUser);
+          this.resolved = true;
+        },
+        controllerAs: 'ctrl'
       });
   }).component('talks', talksComponent);
 };
