@@ -1,12 +1,14 @@
 package com.epam.cm.fragments;
 
+import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.pages.WidgetObjectImpl;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -43,10 +45,9 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//sign-in//input[@class='btn sign-in__submit']")
     private WebElementFacade signInBtn;
 
-    @FindBy(xpath = "//*[@class='menu-list']//li[contains(@class,'sign-out')]")
+    @FindBy(xpath = "//*[@class='menu-list']//li[contains(@class,'sign-out')]/a | //a[@class='menu-list__title']")
     private WebElementFacade signOutBtn;
 
-    // forgotPw
 
     @FindBy(xpath = "//*[@class='sign-in__password-cont']/a")
     private WebElementFacade forgotPasswordLink;
@@ -60,8 +61,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[2]")
     private WebElementFacade cancelBtn;
 
-    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[1]")
+    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[1]|")
     private WebElementFacade continueBtn;
+
+
 
     public void clickForgotPwLink() {
 
@@ -71,6 +74,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     public boolean popUpISPresent() {
         if (popUp.isCurrentlyVisible()) {
             return true;
+
         }
         return false;
     }
@@ -85,6 +89,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     public String forgotLblText() {
         return forgotLbl.getText();
     }
+
 
     public boolean cancelBtnIsPresent() {
         if (cancelBtn.isCurrentlyVisible()) {
@@ -106,9 +111,9 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
         return false;
     }
 
+
     public boolean isSignOutBtnExist() {
-        boolean b = findElements(By.xpath("//*[@class='menu-list']//li[contains(@class,'sign-out')]")).size() > 0;
-        return b;
+        return signOutBtn.isPresent();
     }
 
     public void clickSignInButton() {
@@ -117,6 +122,8 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
 
     public void clickSignOutButton() {
+
+        signOutBtn.withTimeoutOf(5, TimeUnit.SECONDS);
         signOutBtn.click();
     }
 
@@ -132,6 +139,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
 
     public String getAccountMenuTitle() {
+
         return accountBtn.getText();
     }
 
@@ -149,15 +157,17 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     public boolean isPasswordFieldHighlited() {
 
         return passwordField.getAttribute("class").contains("invalid");
-
-//        if(highlitedPasswordField == null) return false;
-//        return true;
     }
 
     public String getPasswordErrorMsgTxt() {
 
-        //return passwordField.findBy(By.xpath("/following-sibling::span))").getText());
+//        return passwordField.findBy(By.xpath("/following-sibling::span")).getText();
 
-        return find(By.xpath("//*[@id='sign-in-password']/following-sibling::span")).getText();
+        return find(By.xpath("//*[@id='sign-in-password']/following-sibling::span[1]")).getText();
+    }
+
+
+    public String getLoginErrorMsgTxt() {
+        return find(By.xpath("//*[@id='sign-in-email']/following-sibling::span[1]")).getText();
     }
 }

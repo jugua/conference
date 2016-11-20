@@ -2,7 +2,6 @@ package com.epam.cm.steps.serenity;
 
 import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.CredentialsDTO;
-import com.epam.cm.fragments.AccountMenuFragment;
 import com.epam.cm.pages.HomePage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
@@ -21,10 +20,12 @@ public class LoginPageSteps extends ScenarioSteps {
 
 
     @Step
-    public void gotoTheHomePage() {
-
-        getPages().get(HomePage.class).open();
-        WebDriverSupport.clearLocalStorage();
+    public void unsignedUserInHomePage() {
+        homePage.open();
+        homePage.waitForPageToLoad();
+        if(!homePage.getMenu().getAccountMenuTitle().matches("Your Account")){
+            logout();
+        }
         WebDriverSupport.reloadPage();
     }
 
@@ -36,7 +37,7 @@ public class LoginPageSteps extends ScenarioSteps {
 
     @Step
     public boolean isAccountMenuUnfolded() {
-        return  homePage.getMenu().isAccountMenuUnfolded();
+        return homePage.getMenu().isAccountMenuUnfolded();
     }
 
     @Step
@@ -49,50 +50,65 @@ public class LoginPageSteps extends ScenarioSteps {
     @Step
     public void clickSignInButton() {
         homePage.getMenu().clickSignInButton();
+
     }
 
     @Step
     public String getAccountMenuTitle() {
-        return  homePage.getMenu().getAccountMenuTitle();
+        waitABit(1000);
+        return homePage.getMenu().getAccountMenuTitle();
     }
 
     @Step
     public void logout() {
-        if(!homePage.getMenu().isAccountMenuUnfolded()){
+
+        homePage.waitForPageToLoad();
+
+        if (!homePage.getMenu().isAccountMenuUnfolded()) {
             homePage.getMenu().clickAccountMenuButton();
         }
-        homePage.getMenu().clickSignOutButton(); ;
+        homePage.getMenu().clickSignOutButton();
+
     }
 
     @Step
     public boolean isLoggedIn() {
-        if(!homePage.getMenu().isAccountMenuUnfolded()){
+        if (!homePage.getMenu().isAccountMenuUnfolded()) {
             homePage.getMenu().clickAccountMenuButton();
         }
-        if(homePage.getMenu().isSignOutBtnExist()) return true;
+        if (homePage.getMenu().isSignOutBtnExist()) return true;
         return false;
     }
 
 
     @Step
     public boolean isHomePageOpened() {
-
+        homePage.waitForPageToLoad();
         return pages().isCurrentPageAt(HomePage.class);
     }
 
     @Step
     public boolean isSignInFormOpened() {
 
-        if(homePage.getMenu().isAccountMenuUnfolded() && !homePage.getMenu().isSignOutBtnExist()) return true;
+        if (homePage.getMenu().isAccountMenuUnfolded() && !homePage.getMenu().isSignOutBtnExist()) return true;
         return false;
     }
 
     @Step
-    public boolean isPasswordFieldIsHighlited() {
-         return homePage.getMenu().isPasswordFieldHighlited();
+    public boolean isPasswordFieldIsHighlighted() {
+        return homePage.getMenu().isPasswordFieldHighlited();
     }
 
     public String getPasswordValidationMsg() {
         return homePage.getMenu().getPasswordErrorMsgTxt();
+    }
+
+    public boolean isLoginFieldIsHighlighted() {
+
+        return homePage.getMenu().isLoginFieldHighlited();
+    }
+
+    public String getLoginValidationMsg() {
+        return homePage.getMenu().getLoginErrorMsgTxt();
     }
 }

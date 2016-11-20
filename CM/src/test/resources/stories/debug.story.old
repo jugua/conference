@@ -1,0 +1,15 @@
+
+Scenario: user successfully create new account
+Given user is on the sign up page
+When user  fill in the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
+|firstName  |lastName  |email  |password  |confirmPassword  |
+|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
+And click submit button
+Then new user is registered
+
+Examples:
+|<firstName>|<lastName>|<email>                |<password>|<confirmPassword>|
+|firstName1 |lastName1 |Rand1@Rand1.tt         |password6 |password6        |
+|firstName56|lastName56|testRand36@Rand20.tttt |password30|password30       |
+|firstName27|lastName34|testRand4@Rand13.tttttt|password16|password16       |
+

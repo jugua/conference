@@ -9,6 +9,7 @@ public final class LoggerFactory {
 
     /**
      * Creates an instance of slf4j logger for specified class.
+     *
      * @param targetClass target class for the logger.
      * @return logger instance.
      */

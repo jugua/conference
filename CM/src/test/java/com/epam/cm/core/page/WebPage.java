@@ -40,7 +40,8 @@ public class WebPage extends PageObject {
 
     public void waitForPageToLoad() {
         waitForDocumentReady();
-        waitForAjaxRequestsComplete();
+       // waitForAjaxRequestsComplete();
+       // waitForAngularRequestComplete();
     }
 
     public void moveToElementAction(final WebElementFacade element) {
@@ -92,6 +93,7 @@ public class WebPage extends PageObject {
         getDriver().switchTo().defaultContent();
     }
 
+
     private void waitForAjaxRequestsComplete() {
         WaitUtils.doWait().atMost(AJAX_TIMEOUT, MILLISECONDS).with().pollInterval(1, SECONDS)
                 .until(() -> (Boolean) getJavascriptExecutorFacade()
@@ -104,7 +106,14 @@ public class WebPage extends PageObject {
                         .executeScript("return document.readyState == 'complete'"));
     }
 
-//    protected String getFieldsPlaceholder(final WebElementFacade element){
-//        return element.getAttribute("placeholder");
+//    private void waitForAngularRequestComplete() {
+//        WaitUtils.doWait().atMost(AJAX_TIMEOUT, MILLISECONDS).with().pollInterval(1, SECONDS)
+//                .until(() -> (Boolean) getJavascriptExecutorFacade()
+//                        .executeScript("return (window.angular != null) && (angular.element(document).injector()!= null) "+
+//                          "&& (angular.element(document).injector().get('$http').pendingRequests.length === 0)"));
 //    }
+
+
+
 }
+

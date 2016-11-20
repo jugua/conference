@@ -17,7 +17,7 @@ public final class PropertiesController {
 
     private PropertiesController() {
         try {
-            loadProperties(PropertiesNames.ENV_CONFIG);
+            loadProperties(System.getProperty(PropertiesNames.ENV_CONFIG));
         } catch (final IOException e) {
             throw new IllegalStateException("Failed to load environment configuration file", e);
         }

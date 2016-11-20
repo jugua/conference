@@ -1,6 +1,6 @@
 package com.epam.cm.dto;
 
-public class CredentialsDTO{
+public class CredentialsDTO {
 
     private String email;
     private String password;
@@ -19,5 +19,13 @@ public class CredentialsDTO{
 
     public void setPassword(final String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Credentials{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

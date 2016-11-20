@@ -16,34 +16,32 @@ public class ForgotPasswordDefinitionsSteps {
     ForgotPaswordPageSteps forgotPwdPgSteps;
 
     @Given("the unsigned user accesses the conference management home page")
-    public void givenUserIsOnHomePage(){
+    public void givenUserIsOnHomePage() {
         forgotPwdPgSteps.gotoTheHomePage();
     }
 
     @When("user clicks the login button")
-    public void whenUserClicksLoginBtn(){
-        forgotPwdPgSteps.clickOnAccountMenu();
+    public void whenUserClicksLoginBtn() { forgotPwdPgSteps.clickOnAccountMenu();
     }
 
     @When("clicks the forgot password link")
-    public void whenUserClicksForgotPWLink(){
-        forgotPwdPgSteps.clickForgotPwLink();
+    public void whenUserClicksForgotPWLink() { forgotPwdPgSteps.clickForgotPwLink();
     }
 
     @Then("new pop up will appears saying $forgotLblMsg")
-    public void thenPopUpAppearsMsg(String forgotLblMsg){
+    public void thenPopUpAppearsMsg(String forgotLblMsg) {
         forgotPwdPgSteps.checkPopUpIsPresent();
         forgotPwdPgSteps.checkForgotPwLinkIsPresent();
-        Assert.assertEquals(forgotPwdPgSteps.getForgotPwLblText(),forgotLblMsg);
+        Assert.assertEquals(forgotPwdPgSteps.getForgotPwLblText(), forgotLblMsg);
     }
 
     @Then("Cancel button appears")
-    public void thenCancelBtnAppears(){
+    public void thenCancelBtnAppears() {
         forgotPwdPgSteps.checkCancelBtn();
     }
 
     @Then("Continue button appears")
-    public void thenContinieBtnAppears(){
+    public void thenContinieBtnAppears() {
         forgotPwdPgSteps.checkContinueBtn();
     }
 }

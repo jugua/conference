@@ -2,7 +2,6 @@ package com.epam.cm.core.utils;
 
 import net.serenitybdd.core.annotations.findby.By;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
-import net.thucydides.core.webdriver.javascript.JavascriptExecutorFacade;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -46,14 +45,14 @@ public final class WebDriverSupport {
         getDriver().switchTo().defaultContent();
     }
 
-    public static void clearLocalStorage(){
+    public static void clearLocalStorage() {
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript(String.format("window.localStorage.clear();"));
     }
+
     private static WebDriver getDriver() {
         return ThucydidesWebDriverSupport.getDriver();
     }
-
 
 
 }
