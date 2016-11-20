@@ -1,6 +1,6 @@
 .my-talks-container
-  width: 100%
-  height: calc(100vh - 215px)
+  @media ($mnw: $mdmn)
+    height: calc(100vh - 215px)
 
 .my-talks
   height: 100%
@@ -21,12 +21,15 @@
 .pagination
   margin-top: 10px
 
+  @media ($mnw: $xsdmn) and ($mxw: $mdmx)
+    display: none
+
   &__item-wrapper
     display: flex
 
   &__item
-    width: 30px
-    height: 30px
+    width: 25px
+    height: 25px
     margin-right: 5px
     +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
 
@@ -127,8 +130,10 @@
 
 .data-table
   margin-top: 20px
-  height: 76%
-  +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+
+  @media ($mnw: $mdmn)
+    height: 76%
+    +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
 
   &__text
     text-overflow: ellipsis
@@ -147,12 +152,15 @@
     font-size: 14px
 
   &__inner-wrapper
-    height: 94
-    overflow-y: scroll
+
     @media ($mnw: $sdmn) and ($mxw: $sdmx)
       display: flex
       flex-wrap: wrap
       justify-content: space-around
+
+    @media ($mnw: $mdmn)
+      height: 94%
+      overflow-y: scroll
 
   &__row
     display: flex
@@ -168,8 +176,8 @@
       +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
 
     @media ($mnw: $sdmn) and ($mxw: $sdmx)
-      width: 47%
-      margin: 5px
+      width: 49%
+      margin-bottom: 10px
       +box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15))
 
     &:nth-child(even)
@@ -193,6 +201,7 @@
       white-space: nowrap
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
+        padding: 5px
         &:before
           content: 'Title'
           +my-talk-before-title
@@ -203,6 +212,10 @@
       padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        padding: 5px
         &:before
           content: 'Topic'
           +my-talk-before-title
@@ -213,6 +226,7 @@
       padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
+        padding: 5px
         &:before
           content: 'Status'
           +my-talk-before-title
@@ -223,7 +237,7 @@
       padding: 5px 5px 5px 15px
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
-        text-align: left
+        padding: 5px
         &:before
           content: 'Date'
           +my-talk-before-title
@@ -240,10 +254,9 @@
       &:hover
         cursor: pointer
 
-      &:hover > span
-        visibility: visible
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
+        padding: 5px
         &:before
           content: 'Comments'
           +my-talk-before-title
@@ -272,6 +285,9 @@
       width: 15%
       box-sizing: border-box
       padding: 5px 5px 5px 15px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
       @media ($mnw: $xsdmn) and ($mxw: $sdmx)
         width: 100%
         padding: 2px
