@@ -7,12 +7,21 @@
     @media ($mnw: $mdmn) and ($mxw: $mdmx)
       box-sizing: border-box
       padding: 20px 10px 0
+
   &-wrapper
-    width: 55%
+    width: 86%
     height: 100%
     margin: 0 auto
+
     @media ($mnw: $xsdmn) and ($mxw: $mdmx)
       width: 100%
+
+    @media ($mnw: $ldmx)
+      width: 65%
+
+    @media ($mnw: $xldmn)
+      width: 70%
+
 
   &-list
     display: flex

@@ -25,6 +25,7 @@
             </select>
             </div>
             <div class="my-talk-settings__date-wrapper">
+                <div class="form-label my-talk-settings__date-label">Application date</div>
                 <md-datepicker ng-model="myDate_start"
                                md-placeholder="Select date"
                                class="my-talk-settings__date"
@@ -53,7 +54,7 @@
                 </div>
                 <div class="table-header__item table-header__item_comments">organizer comments
                 </div>
-                <div class="table-header__scroll-fix"></div>
+                <div class="table-header__item table-header__scroll-fix"></div>
             </div>
             <div class="data-table__inner-wrapper">
                 <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
@@ -66,12 +67,21 @@
             </div>
         </div>
         <div class="pagination">
-            <div class="pagination__item-wrapper">
-                <div class="pagination__item pagination__item_fast-back"></div>
-                <div class="pagination__item pagination__item_back"></div>
-                <div class="pagination__item pagination__item_current">1</div>
-                <div class="pagination__item pagination__item_forward"></div>
-                <div class="pagination__item pagination__item_fast-forward"></div>
+            <div class="pagination__left-side">
+                <div class="pagination__item-wrapper">
+                    <div class="pagination__item pagination__item_fast-back"></div>
+                    <div class="pagination__item pagination__item_back"></div>
+                    <div class="pagination__item pagination__item_current">1</div>
+                    <div class="pagination__item pagination__item_forward"></div>
+                    <div class="pagination__item pagination__item_fast-forward"></div>
+                </div>
+                <select class="pagination__select">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+            <div class="pagination__right-side">
+                <p class="pagination__navi">1 - 4 of 4 items</p>
             </div>
         </div>
     </div>

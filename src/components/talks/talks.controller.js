@@ -7,6 +7,10 @@ export default class TalksController {
     this.filter = {};
     this.menuService = Menus;
     this.menuStatus = Menus;
+    this.showFilters = true;
+  }
+  showSettings() {
+    this.showFilters = !this.showFilters;
   }
 }
 
