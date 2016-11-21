@@ -16,33 +16,33 @@ export default class HeaderController {
       this.menuHidden = false;
     });
 
-    // const off = $scope.$on('$viewContentLoaded', () => {
-    //   $document.on('click', (e) => {
-    //     const target = angular.element(e.target);
-    //
-    //     let parents = target;
-    //     let dropDownArea = false;
-    //
-    //     if (!this.menuHidden) {
-    //       return;
-    //     }
-    //     // to not use jQuery for one method parents() not supported in JQLight
-    //     // so this loop finds all parents
-    //     while (parents.parent().length) {
-    //       if (parents.hasClass('js-dropdown')) {
-    //         dropDownArea = true;
-    //         break;
-    //       }
-    //       parents = parents.parent();
-    //     }
-    //
-    //     if (!dropDownArea) {
-    //       this.menuHidden = false;
-    //       $scope.$apply();
-    //     }
-    //   });
-    //
-    //   off();
-    // });
+    const off = $scope.$on('$viewContentLoaded', () => {
+      $document.on('click', (e) => {
+        const target = angular.element(e.target);
+
+        let parents = target;
+        let dropDownArea = false;
+
+        if (!this.menuHidden) {
+          return;
+        }
+        // to not use jQuery for one method parents() not supported in JQLight
+        // so this loop finds all parents
+        while (parents.parent().length) {
+          if (parents.hasClass('js-dropdown')) {
+            dropDownArea = true;
+            break;
+          }
+          parents = parents.parent();
+        }
+
+        if (!dropDownArea) {
+          this.menuHidden = false;
+          $scope.$apply();
+        }
+      });
+
+      off();
+    });
   }
 }
