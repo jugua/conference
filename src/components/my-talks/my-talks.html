@@ -19,10 +19,12 @@
             </div>
             <div class="my-talk-settings__select-wrapper my-talk-settings__select-wrapper_topic">
             <label for="my-talk-topic" class="form-label my-talk-settings__label ">Topic</label>
-            <select id="my-talk-topic" class="my-talk-settings__select my-talk-settings__select_topic"
-                    ng-model="$ctrl.filter.topic"
-                    ng-options="topic for topic in $ctrl.menuService.getTopics()">
-            </select>
+                <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                    <md-option value="axe">Axe</md-option>
+                    <md-option value="sword">Sword</md-option>
+                    <md-option value="wand">Wand</md-option>
+                    <md-option value="pen">Pen?</md-option>
+                </md-select>
             </div>
             <div class="my-talk-settings__date-wrapper">
                 <div class="form-label my-talk-settings__date-label">Application date</div>
