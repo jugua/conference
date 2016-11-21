@@ -33,16 +33,16 @@ import java.util.Properties;
 public class RepositoryConfig {
     
     @Value("#{driver}")
-    private String driver;
+    public String driver;
     
     @Value("#{url}")
-    private String url;
+    public String url;
     
     @Value("#{user}")
-    private String user;
+    public String user;
     
     @Value("#{password}")
-    private String password;
+    public String password;
     
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {
