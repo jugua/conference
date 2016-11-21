@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,7 +16,6 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import ua.rd.cm.services.CustomUserDetailsService;
 import ua.rd.cm.services.CustomAuthenticationProvider;
 import ua.rd.cm.web.security.CustomBasicAuthFilter;
-
 /**
  * @author Yaroslav_Revin
  */
@@ -35,9 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     private AuthenticationManager authManager;
-
-
-    //private CustomBasicAuthFilter basicAuthFilter ;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
