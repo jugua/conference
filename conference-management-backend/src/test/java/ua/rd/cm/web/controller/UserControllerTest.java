@@ -197,7 +197,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(1L, "twitter")))))
                 .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(1L, "facebook")))))
                 .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(1L, "blog")))))
-                .andExpect(jsonPath("roles[0]", is("S")));
+                .andExpect(jsonPath("roles[0]", is("s")));
     }
 
     private void checkForBadRequest(){
