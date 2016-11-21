@@ -4,6 +4,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -12,7 +13,9 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.bind.annotation.InitBinder;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -27,19 +30,26 @@ import java.util.Properties;
 })
 @EnableTransactionManagement
 public class RepositoryConfig {
+	
+	private Logger logger = Logger.getLogger(RepositoryConfig.class);
 
     @Autowired
     private Environment env;
+    
+    @PostConstruct
+    public void init() {
+    	System.out.println(env.getProperty("url") + " : " + env.getProperty("user"));
+    }
 
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         BasicDataSource ds = new BasicDataSource();
-
+        	
         ds.setDriverClassName(env.getProperty("driver"));
         ds.setUrl(env.getProperty("url"));
         ds.setUsername(env.getProperty("user"));
         ds.setPassword(env.getProperty("password"));
-
+        logger.info(env.getProperty("url") + " : " + env.getProperty("user"));
         return ds;
     }
 
