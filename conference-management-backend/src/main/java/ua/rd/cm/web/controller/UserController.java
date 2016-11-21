@@ -45,6 +45,7 @@ public class UserController {
     @GetMapping("/current")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal){
         if (principal == null) {
+            System.out.println("UNANTHORIZED in user controller");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -81,7 +82,7 @@ public class UserController {
         String[] rolesFirstLetters = new String[roles.size()];
         Role[] rolesFullNames = roles.toArray(new Role[roles.size()]);
         for(int i = 0; i < roles.size(); i++){
-            rolesFirstLetters[i] = rolesFullNames[i].getName().substring(0, 1);
+            rolesFirstLetters[i] = rolesFullNames[i].getName().substring(0, 1).toLowerCase();
         }
         return rolesFirstLetters;
     }

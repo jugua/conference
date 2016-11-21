@@ -187,6 +187,7 @@
                     <artifactId>javassist</artifactId>
                 </exclusion>
             </exclusions>-->
+
         </dependency>
 
         <dependency>

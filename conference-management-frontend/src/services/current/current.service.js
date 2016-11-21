@@ -70,7 +70,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
   }
 
   function logout() {
-    return $http.get('/api/users/current/logout', {
+    return $http.post('/api/logout', {
       headers: {
         token: getToken,
         'Cache-Control': 'no-cache, no-store',
