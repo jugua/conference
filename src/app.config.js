@@ -10,7 +10,7 @@ export default (app) => {
       'ngInject';
 
       $mdThemingProvider.disableTheming();
-      $mdDateLocaleProvider.formatDate = function (date) {
+      $mdDateLocaleProvider.formatDate = (date) => {
         if (!date) {
           return '';
         }

@@ -11,7 +11,7 @@ export default (app) => {
         resolve: {
           currentUser: Current => Current.current
         },
-        controller: function(Permissions, currentUser) {
+        controller: function Controller(Permissions, currentUser) {
           Permissions.permitted('o', currentUser);
           this.resolved = true;
         },
