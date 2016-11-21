@@ -32,16 +32,16 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class RepositoryConfig {
     
-    @Value("#{driver}")
+    @Value("${driver}")
     public String driver;
     
-    @Value("#{url}")
+    @Value("${url}")
     public String url;
     
-    @Value("#{user}")
+    @Value("${user}")
     public String user;
     
-    @Value("#{password}")
+    @Value("${password}")
     public String password;
     
     @Bean(destroyMethod = "close")
