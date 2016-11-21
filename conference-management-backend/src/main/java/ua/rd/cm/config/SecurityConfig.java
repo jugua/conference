@@ -11,10 +11,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import ua.rd.cm.services.CustomUserDetailsService;
 import ua.rd.cm.services.CustomAuthenticationProvider;
+import ua.rd.cm.web.security.CsrfHeaderFilter;
 import ua.rd.cm.web.security.CustomBasicAuthFilter;
 /**
  * @author Yaroslav_Revin
@@ -51,10 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .exceptionHandling()
                     .authenticationEntryPoint(new RestAuthenticationEntryPoint())
                     .and()
-                .csrf().disable()
-                //.csrf()
-                    //.csrfTokenRepository(csrfTokenRepository())
-                    //.and()
+                .csrf()
+                    .csrfTokenRepository(csrfTokenRepository())
+                    .and()
 //                .formLogin()
 //                    .loginPage("/index.html")
 //                    .loginProcessingUrl("/api/login")
@@ -75,8 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .permitAll()
                     .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterAfter(new CustomBasicAuthFilter(authManager), BasicAuthenticationFilter.class);
-                //.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+                .addFilterAfter(new CustomBasicAuthFilter(authManager), BasicAuthenticationFilter.class)
+                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
     }
 
     @Bean(name = "authManager")

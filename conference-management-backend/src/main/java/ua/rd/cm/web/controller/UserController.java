@@ -82,7 +82,7 @@ public class UserController {
         String[] rolesFirstLetters = new String[roles.size()];
         Role[] rolesFullNames = roles.toArray(new Role[roles.size()]);
         for(int i = 0; i < roles.size(); i++){
-            rolesFirstLetters[i] = rolesFullNames[i].getName().substring(0, 1);
+            rolesFirstLetters[i] = rolesFullNames[i].getName().substring(0, 1).toLowerCase();
         }
         return rolesFirstLetters;
     }
