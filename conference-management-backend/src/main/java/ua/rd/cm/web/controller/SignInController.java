@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -57,7 +60,7 @@ public class SignInController {
 
     @PostMapping
     public ResponseEntity signIn(@Valid @RequestBody SignInDto dto,
-                                         BindingResult bindingResult, HttpServletRequest httpServletRequest) throws URISyntaxException {
+                                         BindingResult bindingResult, ModelMap model) throws URISyntaxException {
         System.out.println("Alah");
         System.out.println(dto);
         if (bindingResult.hasFieldErrors()){
@@ -73,14 +76,11 @@ public class SignInController {
 
         }
         System.out.println("USER="+user);
-        Principal principal=new Principal() {
-            @Override
-            public String getName() {
-                return user.getEmail();
-            }
-        };
+        Principal newPrincipal = () -> user.getEmail();
+        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(true);
+        model.addAttribute(newPrincipal);
 
-        httpServletRequest.setAttribute("JSESSIONID",principal);
+//        principal=newPrincipal;
 
 //        URI url=new URI("https://www.google.com.ua/");
 //        HttpHeaders headers=new HttpHeaders();
