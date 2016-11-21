@@ -56,7 +56,7 @@ public class User {
 
     @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_info_id", unique = true)
-    private UserInfo userInfo = new UserInfo();
+    private UserInfo userInfo;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
