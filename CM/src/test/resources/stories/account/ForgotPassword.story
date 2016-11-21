@@ -29,8 +29,6 @@ And message is shown sayin Email is required
 And email field is highlighted
 
 Scenario: User input valid data into 'Forgot password?' form
-Meta:
-@regression @smoke
 
 Given the unsigned user accesses the conference management home page
 When user clicks the login button
