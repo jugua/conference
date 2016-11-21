@@ -14,7 +14,7 @@ export default (app) => {
         if (!date) {
           return '';
         }
-        return date.toLocaleString('es', { day: 'numeric', month: 'numeric', year: 'numeric' });
+        return date.toLocaleString('es', { day: '2-digit', month: '2-digit', year: 'numeric' });
       };
     });
 };
