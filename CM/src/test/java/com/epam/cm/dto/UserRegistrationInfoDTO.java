@@ -129,6 +129,7 @@ public class UserRegistrationInfoDTO {
         }
     }
 
+
     private String generateRandomString(int strLength){
         StringBuffer randomString = new StringBuffer();
         for(int i=0; i<strLength; i++){

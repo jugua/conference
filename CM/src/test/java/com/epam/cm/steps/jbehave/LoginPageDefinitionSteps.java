@@ -76,6 +76,7 @@ public class LoginPageDefinitionSteps {
 
     @Then("\"Your Account\" replaced by \"$text\"")
     public void thenYourAccountReplacedBySpeakerssAccount(String namedAccount) {
+
         assertThat(loginPageSteps.getAccountMenuTitle(), is(namedAccount));
     }
 

@@ -7,6 +7,8 @@ import net.serenitybdd.core.pages.WidgetObject;
 @ImplementedBy(AccountMenuFragmentImpl.class)
 public interface AccountMenuFragment extends WidgetObject {
 
+
+
     void clickAccountMenuButton();
 
     void clickSignInButton();
@@ -15,9 +17,15 @@ public interface AccountMenuFragment extends WidgetObject {
 
     void clickForgotPwLink();
 
+    void clickContinueButton();
+
+    void clickCancelBtn();
+
     void setLoginField(String login);
 
     void setPasswordField(String password);
+
+    void setEmailForgotPwFieldField(String email);
 
     boolean isAccountMenuUnfolded();
 
@@ -35,6 +43,10 @@ public interface AccountMenuFragment extends WidgetObject {
 
     boolean continiuBtnIsPresent();
 
+    boolean isEmailForgotPwHighlighted();
+
+    boolean cancelNotifiPopUpBtnisPresent();
+
     String getAccountMenuTitle();
 
     String getPasswordErrorMsgTxt();
@@ -42,4 +54,11 @@ public interface AccountMenuFragment extends WidgetObject {
     String forgotLblText();
 
     String getLoginErrorMsgTxt();
+
+    String getPopUpNotification();
+
+    String getEmtyEmailMsgTxt();
+
+    String getInvalidEmailMsg();
+
 }

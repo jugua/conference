@@ -8,17 +8,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static net.serenitybdd.rest.SerenityRest.given;
-import static net.serenitybdd.rest.SerenityRest.then;
 
-/**
- * Created by Denys_Shmyhin on 11/13/2016.
- */
+
 public class Rest  {
 
-    public static void main(String[] args) {
-        restTest();
-    }
-    public static void  restTest(){
+
+
+    @Step
+    public  void  login(){
         Map<String, Object> jsonAsMap = new LinkedHashMap<>();
         jsonAsMap.put("mail", "tester@tester.com");
         jsonAsMap.put("password", "tester");
@@ -28,8 +25,23 @@ public class Rest  {
                 .body(jsonAsMap)
         .when()
                 .post("http://localhost:5000/api/login")
-        .then()
-                .statusCode(200);
+        .then().statusCode(200);
+
+    }
+
+    @Step
+    public  void logout(){
+
+        Map<String, Object> jsonAsMap = new LinkedHashMap<>();
+        jsonAsMap.put("token", "582ef531aac019ba7671148233973");
+
+        given()
+                .contentType(ContentType.JSON)
+                .headers(jsonAsMap)
+                .when()
+                .get("http://localhost:5000/api/logout")
+                .then().statusCode(200);
+
 
     }
 }

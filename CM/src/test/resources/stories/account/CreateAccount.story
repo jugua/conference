@@ -1,11 +1,13 @@
-Meta:
 
-Narrative:
-As a user
-I want to perform an action
-So that I can achieve a business goal
+Narrative: User create account
+  In order to gain access to all features of the site
+  As an anonymous user
+  I want to be able to create account
 
 Scenario: User successfully create new account
+Meta:
+@regression @smoke
+
 Given user is on the sign up page
 When user  fill in the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
 |firstName  |lastName  |email  |password  |confirmPassword  |

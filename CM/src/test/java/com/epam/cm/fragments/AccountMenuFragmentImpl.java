@@ -34,7 +34,6 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//input[@id='sign-in-email']")
     private WebElementFacade emailField;
 
-
     @FindBy(xpath = "//input[@id='sign-in-password']")
     private WebElementFacade passwordField;
 
@@ -45,9 +44,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//sign-in//input[@class='btn sign-in__submit']")
     private WebElementFacade signInBtn;
 
-    @FindBy(xpath = "//*[@class='menu-list']//li[contains(@class,'sign-out')]/a | //a[@class='menu-list__title']")
+    @FindBy(xpath = "//*[@class='menu-list']//li[@class='menu-list__item menu-list__item_sign-out']/a")
     private WebElementFacade signOutBtn;
 
+    // forgotPw
 
     @FindBy(xpath = "//*[@class='sign-in__password-cont']/a")
     private WebElementFacade forgotPasswordLink;
@@ -61,14 +61,41 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[2]")
     private WebElementFacade cancelBtn;
 
-    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[1]|")
+    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[1]")
     private WebElementFacade continueBtn;
 
+    @FindBy(xpath = "//*[@class='field-error error-title_pop-up']")
+    private WebElementFacade emptyEmailMsg;
 
+    @FindBy(xpath = "//forgot-password//form/input")
+    private WebElementFacade emailForgotPwField;
+
+    @FindBy(xpath = "//forgot-password/div/div/p")
+    private WebElementFacade notificationPopUp;
+
+    @FindBy(xpath = "//forgot-password/div/div/button")
+    private WebElementFacade cancelNotifiPopUpBtn;
+
+    @FindBy(xpath = "//forgot-password//form/span[2]")
+    private WebElementFacade invalidEmailMsg;
+
+    public void clickCancelBtn(){
+        cancelNotifiPopUpBtn.click();
+    }
+
+    public void clickContinueButton(){
+        continueBtn.click();
+    }
 
     public void clickForgotPwLink() {
 
         forgotPasswordLink.click();
+    }
+
+    public boolean cancelNotifiPopUpBtnisPresent(){
+        if(cancelNotifiPopUpBtn.isCurrentlyVisible())
+            return true;
+        return false;
     }
 
     public boolean popUpISPresent() {
@@ -90,6 +117,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
         return forgotLbl.getText();
     }
 
+    @Override
+    public String getEmtyEmailMsgTxt() {
+        return emptyEmailMsg.getText();
+    }
 
     public boolean cancelBtnIsPresent() {
         if (cancelBtn.isCurrentlyVisible()) {
@@ -113,7 +144,8 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
 
     public boolean isSignOutBtnExist() {
-        return signOutBtn.isPresent();
+        boolean b = findElements(By.xpath("//*[@class='menu-list']//li[contains(@class,'sign-out')]/a")).size() > 0;
+        return b;
     }
 
     public void clickSignInButton() {
@@ -122,8 +154,6 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
 
     public void clickSignOutButton() {
-
-        signOutBtn.withTimeoutOf(5, TimeUnit.SECONDS);
         signOutBtn.click();
     }
 
@@ -137,6 +167,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
         passwordField.type(password);
     }
 
+    public void setEmailForgotPwFieldField(String email){
+        emailForgotPwField.clear();
+        emailForgotPwField.type(email);
+    }
 
     public String getAccountMenuTitle() {
 
@@ -147,6 +181,9 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
         accountBtn.click();
     }
 
+    public boolean isEmailForgotPwHighlighted(){
+        return emailForgotPwField.getAttribute("class").contains("invalid");
+    }
 
     public boolean isLoginFieldHighlited() {
 
@@ -161,13 +198,19 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
     public String getPasswordErrorMsgTxt() {
 
-//        return passwordField.findBy(By.xpath("/following-sibling::span")).getText();
-
         return find(By.xpath("//*[@id='sign-in-password']/following-sibling::span[1]")).getText();
     }
 
+    public String getPopUpNotification(){
+        return notificationPopUp.getText();
+    }
+
+    public String getInvalidEmailMsg(){
+        return invalidEmailMsg.getText();
+    }
 
     public String getLoginErrorMsgTxt() {
         return find(By.xpath("//*[@id='sign-in-email']/following-sibling::span[1]")).getText();
     }
+
 }

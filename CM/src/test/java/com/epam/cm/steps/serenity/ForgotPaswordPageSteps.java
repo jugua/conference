@@ -59,4 +59,39 @@ public class ForgotPaswordPageSteps extends ScenarioSteps {
     public void checkCancelBtn() {
         homePage.getMenu().cancelBtnIsPresent();
     }
+    @Step
+    public void clickContinueBtn(){
+        homePage.getMenu().clickContinueButton();
+    }
+
+    @Step
+    public String getEmptyEmailMsgText(){
+        return homePage.getMenu().getEmtyEmailMsgTxt();
+    }
+
+    @Step
+    public String getInvalidEmailMsg(){
+        return homePage.getMenu().getInvalidEmailMsg();
+    }
+
+    @Step
+    public boolean isEmailForgotPwFieldHighlighted(){
+        return homePage.getMenu().isEmailForgotPwHighlighted();
+    }
+
+    @Step
+    public void typeEmailForgotPwField(String email){
+        homePage.getMenu().setEmailForgotPwFieldField(email);
+    }
+
+    @Step
+    public String getNotficationText(){
+        return homePage.getMenu().getPopUpNotification();
+    }
+
+    @Step
+    public boolean isCancelBtnPresent(){
+        return homePage.getMenu().cancelNotifiPopUpBtnisPresent();
+    }
+
 }

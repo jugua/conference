@@ -7,6 +7,9 @@ import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.junit.Assert;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsString;
+
 /**
  * Created by Serhii_Kobzar on 11/10/2016.
  */
@@ -28,7 +31,7 @@ public class ForgotPasswordDefinitionsSteps {
     public void whenUserClicksForgotPWLink() { forgotPwdPgSteps.clickForgotPwLink();
     }
 
-    @Then("new pop up will appears saying $forgotLblMsg")
+    @Then("new pop up will appears saying '$forgotLblMsg'")
     public void thenPopUpAppearsMsg(String forgotLblMsg) {
         forgotPwdPgSteps.checkPopUpIsPresent();
         forgotPwdPgSteps.checkForgotPwLinkIsPresent();
@@ -44,4 +47,46 @@ public class ForgotPasswordDefinitionsSteps {
     public void thenContinieBtnAppears() {
         forgotPwdPgSteps.checkContinueBtn();
     }
+
+    @Then("clicks on Continue button")
+    public void thenClickComtomueBtn() {
+        forgotPwdPgSteps.clickContinueBtn();
+    }
+
+    @Then("message is shown sayin $emailErrorMsg")
+    public void thenMsgEmptyEmail(String emailErrorMsg) {
+        Assert.assertEquals(forgotPwdPgSteps.getEmptyEmailMsgText(), emailErrorMsg);
+    }
+
+    @Then("user fiels email textbox with valid: <email>")
+    public void thenValidEmailFieldFilled(String email) {
+        forgotPwdPgSteps.typeEmailForgotPwField(email);
+    }
+
+    @Then("user fiels email textbox with invalid: <email>")
+    public void thenInvalidEmailFieldFilled(String email) {
+        forgotPwdPgSteps.typeEmailForgotPwField(email);
+    }
+
+    @Then("email field is highlighted")
+    public void thenEmailFieldIsHighlighted() {
+        Assert.assertTrue(forgotPwdPgSteps.isEmailForgotPwFieldHighlighted());
+    }
+
+    @Then("message apears saying:'$msg <email>'")
+    public void thenPopUpApears(String msg,String email){
+        Assert.assertThat(forgotPwdPgSteps.getNotficationText(),containsString(msg));
+        Assert.assertThat(forgotPwdPgSteps.getNotficationText(),containsString(email));
+    }
+
+    @Then("'Close' button is shown")
+    public void thenCloseBtnIsShown(){
+        Assert.assertTrue(forgotPwdPgSteps.isCancelBtnPresent());
+    }
+
+    @Then("message apears saying $msg")
+    public void thenMsgApears(String msg){
+        Assert.assertThat(msg,is(forgotPwdPgSteps.getInvalidEmailMsg()));
+    }
+
 }
