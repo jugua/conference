@@ -32,9 +32,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class RepositoryConfig {
     
-    @Value("${driver}")
-    public String driver;
-    
     @Value("${url}")
     public String url;
     
@@ -47,8 +44,7 @@ public class RepositoryConfig {
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         BasicDataSource ds = new BasicDataSource();
-        	
-        ds.setDriverClassName(driver);
+
         ds.setUrl(url);
         ds.setUsername(user);
         ds.setPassword(password);
