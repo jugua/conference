@@ -30,12 +30,12 @@ public class UserInfo {
     @NotNull
     @Size(max = 2000)
     @Column(name = "short_bio", nullable = false)
-    private String shortBio;
+    private String shortBio = "";
 
     @NotNull
     @Size(max = 256)
     @Column(name = "job_title", nullable = false)
-    private String jobTitle;
+    private String jobTitle = "";
 
     @Size(max = 1000)
     @Column(name = "past_conference")
@@ -44,7 +44,7 @@ public class UserInfo {
     @NotNull
     @Size(max = 256)
     @Column(name = "company", nullable = false)
-    private String company;
+    private String company = "";
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_info_contact",
