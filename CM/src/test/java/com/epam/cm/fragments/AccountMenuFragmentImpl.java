@@ -44,7 +44,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//sign-in//input[@class='btn sign-in__submit']")
     private WebElementFacade signInBtn;
 
-    @FindBy(xpath = "//*[@class='menu-list']//li[@class='menu-list__item menu-list__item_sign-out']/a")
+    @FindBy(xpath = "//*[@class='menu-list']//li[contains(@class,'sign-out')]/a | //a[@class='menu-list__title']")
     private WebElementFacade signOutBtn;
 
     // forgotPw
@@ -144,8 +144,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
 
     public boolean isSignOutBtnExist() {
-        boolean b = findElements(By.xpath("//*[@class='menu-list']//li[contains(@class,'sign-out')]/a")).size() > 0;
-        return b;
+        return signOutBtn.isPresent();
     }
 
     public void clickSignInButton() {
