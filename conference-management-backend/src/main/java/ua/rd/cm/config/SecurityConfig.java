@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .mvcMatchers(HttpMethod.POST, "/api/login").permitAll()
                     .mvcMatchers(HttpMethod.POST, "/api/users").permitAll()
                     .antMatchers("/api/users/current").authenticated()
+                    .antMatchers("/api/helloworld").authenticated()
                     .and()
                 .exceptionHandling()
                     .authenticationEntryPoint(new RestAuthenticationEntryPoint())
