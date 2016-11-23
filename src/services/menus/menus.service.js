@@ -16,7 +16,7 @@ const Menus = function Menus() {
     ],
     o: [
       {
-        link: 'oaccount',
+        link: 'account',
         name: 'My Account'
       },
       {
