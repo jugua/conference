@@ -7,7 +7,6 @@ const editPasswordComponent = {
   },
   template,
   controller,
-  controllerAs: 'editPasswordCtrl'
 };
 
 export default editPasswordComponent;

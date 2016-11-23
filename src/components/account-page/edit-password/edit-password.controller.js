@@ -1,4 +1,4 @@
-export default class Edit-passwordController {
+export default class EditPasswordController {
   constructor() {
 
   }
