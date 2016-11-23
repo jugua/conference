@@ -14,7 +14,7 @@
             <label for="my-talk-status" class="form-label my-talk-settings__label my-talk-settings__label_status">Status</label>
             <select id="my-talk-status" class="my-talk-settings__select"
                     ng-model="$ctrl.filter.status"
-                    ng-options="status for status in $ctrl.menuStatus.getStatus()">
+                    ng-options="status for status in $ctrl.menuService.getStatus()">
             </select>
             </div>
             <div class="my-talk-settings__select-wrapper my-talk-settings__select-wrapper_topic">
