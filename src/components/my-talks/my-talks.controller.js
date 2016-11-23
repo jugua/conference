@@ -6,7 +6,6 @@ export default class MyTalksController {
     this.talks = Talks.getAll();
     this.filter = {};
     this.menuService = Menus;
-    this.menuStatus = Menus;
     this.showFilters = true;
   }
 
