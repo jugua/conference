@@ -10,6 +10,7 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.RegistrationDto;
 import ua.rd.cm.web.controller.dto.UserDto;
 import javax.validation.Valid;
@@ -31,21 +32,24 @@ public class UserController {
     @PostMapping
     public ResponseEntity register(@Valid @RequestBody RegistrationDto dto, BindingResult bindingResult){
         HttpStatus status;
+        MessageDto message = new MessageDto();
         if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)){
             status = HttpStatus.BAD_REQUEST;
+            message.setError("empty_fields");
         } else if (userService.isEmailExist(dto.getEmail())){
             status = HttpStatus.CONFLICT;
+            message.setError("email_already_exists");
         } else {
             userService.save(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
+            message.setStatus("success");
         }
-        return new ResponseEntity(status);
+        return  ResponseEntity.status(status).body(message);
     }
 
     @GetMapping("/current")
     public ResponseEntity<UserDto> getCurrentUser(Principal principal){
         if (principal == null) {
-            System.out.println("UNANTHORIZED in user controller");
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
