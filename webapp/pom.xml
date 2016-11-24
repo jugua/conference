@@ -43,7 +43,7 @@
                                 <id>tomcat-run</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
-                                    <goal>run</goal>
+                                    <goal>run-war-only</goal>
                                 </goals>
                             </execution>
                         </executions>
