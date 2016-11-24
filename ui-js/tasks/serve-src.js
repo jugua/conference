@@ -18,7 +18,7 @@ gulp.task('serve-src', () => {
   new WebpackDevServer(webpack(myConfig), {
     contentBase: __dirname + "/src",
     proxy: {
-      "*": 'http://localhost:'+ process.env.PORT
+      "*": 'http://localhost:8025'
     },
     stats: {
       colors: true

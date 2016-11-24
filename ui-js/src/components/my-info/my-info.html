@@ -1,45 +1,49 @@
+<user-photo user="$ctrl.user"></user-photo>
 <form class="my-info" name="$ctrl.userInfoForm" novalidate ng-submit="$ctrl.submit()">
-  <div class="my-info__ava" ngf-background="$ctrl.ava || $ctrl.user.photo || $ctrl.defaultImage">
-    <input type="button" class="my-info__remove">
-    <div class="slide">
-      <input type="button" class="slide__button" value="{{ $ctrl.currentPhotoStatus.button }}" ng-click="$ctrl.toggleSlide()">
-    </div>
-  </div>
   <label for="my-info-bio" class="form-label form-label_required my-info__label my-info__label_bio">Short Bio</label>
-  <textarea name="bio" id="my-info-bio" class="my-info__bio" maxlength="2000"
+  <textarea name="bio" id="my-info-bio" class="textarea my-info__bio" maxlength="2000"
               ng-model="$ctrl.user.bio"
               ng-maxlength="2000"
               ng-required="true">{{$ctrl.user.bio}}</textarea>
-  <label for="my-info-job" class="form-label form-label_required my-info__label">Job</label>
+  <label for="my-info-job" class="form-label form-label_required my-info__label">Job Title</label>
   <input type="text" name="job" id="my-info-job"
-         class="field my-info__field my-info__field_job"
+         class="field field_border my-info__field_job"
          maxlength="256"
          ng-model="$ctrl.user.job"
          ng-required="true">
-  <label for="my-info-linkedin-past-conferences" class="form-label form-label_required my-info__label">Past Conferences</label>
-  <input type="text" name="past" id="my-info-linkedin-past-conferences"
-         class="field my-info__field my-info__field_past"
-         maxlength="1000"
-         ng-model="$ctrl.user.past"
+  <label for="my-info-company" class="form-label form-label_required my-info__label">Company
+    <md-icon class="icon icon_info">
+      <md-tooltip md-direction="right" class="tooltip tooltip_required">e.g. Company name or self-employed</md-tooltip>
+    </md-icon>
+  </label>
+  <input type="text" name="company" id="my-info-company"
+         class="field field_border my-info__field_company"
+         maxlength="256"
+         ng-model="$ctrl.user.company"
          ng-required="true">
+  <label for="my-info-linkedin-past-conferences" class="form-label my-info__label">Past Conferences</label>
+  <textarea type="text" name="past" id="my-info-linkedin-past-conferences" rows="5"
+         class="textarea"
+         maxlength="1000"
+         ng-model="$ctrl.user.past">{{$ctrl.user.past}}</textarea>
   <label for="my-info-linkedin" class="form-label my-info__label">LinkedIn</label>
   <input type="text" name="linkedin" id="my-info-linkedin"
-         class="field my-info__field"
+         class="field field_border"
          ng-model="$ctrl.user.linkedin">
   <label for="my-info-twitter" class="form-label my-info__label">twitter</label>
   <input type="text" name="twitter" id="my-info-twitter"
-         class="field my-info__field"
+         class="field field_border"
          ng-model="$ctrl.user.twitter">
   <label for="my-info-facebook" class="form-label my-info__label">facebook</label>
   <input type="text" name="facebook" id="my-info-facebook"
-          class="field my-info__field"
+          class="field field_border"
          ng-model="$ctrl.user.facebook">
   <label for="my-info-blog" class="form-label my-info__label">blog</label>
   <input type="text" name="blog" id="my-info-blog"
-         class="field my-info__field"
+         class="field field_border"
          ng-model="$ctrl.user.blog">
   <label for="my-info-additional-info" class="form-label my-info__label">Additional Info</label>
-  <textarea name="info" id="my-info-additional-info" rows="5" class="my-info__info"
+  <textarea name="info" id="my-info-additional-info" rows="5" class="textarea"
             ng-model="$ctrl.user.info"
             maxlength="1000">{{$ctrl.user.info}}</textarea>
 
@@ -47,104 +51,32 @@
 
 </form>
 
-<div class="pop-up-wrapper" ng-if="$ctrl.showLoad">
-  <div class="pop-up" ng-show="!$ctrl.uploadPreview">
-    <h3 class="pop-up__title">{{$ctrl.currentPhotoStatus.title}}</h3>
-    <button class="pop-up__close" ng-click="$ctrl.toggleSlide()"></button>
-    <form novalidate
-          name="$ctrl.uploadForm"
-          ngf-drop="$ctrl.togglePreview()"
-          ng-model="$ctrl.file"
-          ngf-max-size="2MB"
-          ngf-min-size="1"
-          ngf-pattern="image/jpeg,image/png,image/gif"
-          required
-          class="upload-form">
-        <p class="pop-up__notification pop-up__notification_light">
-          It is much easier to identify you if you have a photo.
-        </p>
-        <p class="pop-up__notification pop-up__notification_light">
-          You can upload an image in JPG, PNG or GIF format. The maximum allowed size for uploads is 2 Mb
-        </p>
-
-        <label class="file-upload">
-          <span class="btn file-upload__button">Choose</span>
-          <input type="file"
-                 class="file-upload__uploading"
-                 ng-model="$ctrl.file"
-                 required
-                 ngf-select="$ctrl.togglePreview()"
-                 ngf-max-size="2MB"
-                 ngf-min-size="1"
-                 ngf-pattern="image/jpeg,image/png,image/gif"
-                 accept="image/jpeg,image/png,image/gif"
-          >
-        </label>
-        <p ng-if="$ctrl.uploadForm.$error.maxSize" class="field-error field-error_center">
-          You exceeded maximum allowed size for uploaded photo (2Mb)
-        </p>
-      <p ng-if="$ctrl.uploadForm.$error.minSize" class="field-error field-error_center">
-        You try to upload an empty file
-      </p>
-        <p ng-if="$ctrl.uploadForm.$error.pattern" class="field-error field-error_center">
-          We could not understand the contents of your file. Make sure it is a jpg, gif or png formatted image.
-        </p>
-        <p ng-if="$ctrl.uploadForm.$error.save" class="field-error field-error_center">
-          Sorry we can`t save Your photo try do change it some later.
-        </p>
-    </form>
-  </div>
-
-  <div class="pop-up" ng-show="$ctrl.uploadPreview">
-    <h3 class="pop-up__title">Photo preview</h3>
-
+<div class="pop-up-wrapper" ng-show="$ctrl.alertVisible">
+  <div class="pop-up">
+    <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
+    <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
     <p class="pop-up__notification">
-      It is how a selected photo will look on the My Info page.
+      {{$ctrl.message.content}}
     </p>
-
-    <div class="preview-wrapper">
-      <div class="preview" ngf-background="$ctrl.file"></div>
-      <div class="load-animation" ng-show="$ctrl.animation">
-        <div class="squaresWaveG squaresWaveG_1"></div>
-        <div class="squaresWaveG squaresWaveG_2"></div>
-        <div class="squaresWaveG squaresWaveG_3"></div>
-        <div class="squaresWaveG squaresWaveG_4"></div>
-        <div class="squaresWaveG squaresWaveG_5"></div>
-      </div>
-    </div>
-
-    <p class="pop-up__notification pop-up__notification_light">
-      By clicking on the Save button your changes will be saved and you will see your photo on the My Info page.
-    </p>
-    <p class="pop-up__notification pop-up__notification_light">
-      By clicking on the Cancel button you will be redirected to the Upload new photo window.
-    </p>
-
-    <div class="pop-up-button-wrapper">
-      <input type="button" value="Save" class="btn"
-             ng-click="$ctrl.uploadAva()">
-      <input type="button" value="Cancel" class="btn btn_cancel"
-             ng-click="$ctrl.togglePreview()">
-    </div>
-    <button class="pop-up__close" ng-click="$ctrl.togglePreview()"></button>
+    <input type="button" value="ok" class="btn btn_right btn_small"
+           ng-click="$ctrl.hideMessage()">
   </div>
+  <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
 </div>
 
-<div class="pop-up-wrapper" ng-show="$ctrl.isShowMessage">
+
+<div class="pop-up-wrapper" ng-show="$ctrl.confirmVisible">
   <div class="pop-up">
     <h3 class="pop-up__title">{{$ctrl.message.title}}</h3>
     <p class="pop-up__notification">
-      {{$ctrl.message.p}}
+      {{$ctrl.message.content}}
     </p>
-
     <div class="pop-up-button-wrapper">
       <input type="button" value="yes" class="btn"
-             ng-if="$ctrl.message.showBtns"
              ng-click="$ctrl.saveChangesBeforeOut()">
-      <input type="button" value="No" class="btn btn_cancel"
-             ng-if="$ctrl.message.showBtns"
+      <input type="button" value="no" class="btn btn_cancel"
              ng-click="$ctrl.cancelChanges()">
     </div>
-    <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
   </div>
+  <button class="pop-up__close" ng-click="$ctrl.hideMessage()"></button>
 </div>
