@@ -14,7 +14,7 @@ class Logout {
   logout() {
     const deferred = this.q.defer();
 
-    this.http.get('/api/logout', {
+    this.http.post('/api/logout', {
       headers: {
         token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
