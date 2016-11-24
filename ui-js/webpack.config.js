@@ -47,7 +47,6 @@ module.exports = {
   ],
   module: {
     loaders: [
-      //{ test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       {test: /\.js$/, exclude: /node_modules/, loaders: ['ng-annotate', 'babel-loader']},
       {test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader'},
       {test: /\.sass$/, loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url!sass?sourceMap')},
