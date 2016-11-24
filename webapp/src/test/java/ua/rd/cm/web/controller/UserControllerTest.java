@@ -53,7 +53,7 @@ public class UserControllerTest {
 
     @Test
     public void correctRegistrationTest() throws Exception{
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctRegistrationDto))
         ).andExpect(status().isAccepted());
@@ -65,7 +65,7 @@ public class UserControllerTest {
 
         when(userServiceMock.isEmailExist(alreadyRegisteredEmail)).thenReturn(true);
 
-        mockMvc.perform(post("/api/users")
+        mockMvc.perform(post("/api/user")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctRegistrationDto))
         ).andExpect(status().isConflict());
@@ -182,7 +182,7 @@ public class UserControllerTest {
 
         when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
 
-        mockMvc.perform(get("/api/users/current")
+        mockMvc.perform(get("/api/user/current")
                 .principal(correctPrincipal)
         ).andExpect(status().isAccepted())
                 .andExpect(jsonPath("fname", is(user.getFirstName())))
@@ -202,7 +202,7 @@ public class UserControllerTest {
 
     private void checkForBadRequest(){
         try {
-            mockMvc.perform(post("/api/users")
+            mockMvc.perform(post("/api/user")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(convertObjectToJsonBytes(correctRegistrationDto))
             ).andExpect(status().isBadRequest());

@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
     private ModelMapper mapper;
     private UserService userService;
