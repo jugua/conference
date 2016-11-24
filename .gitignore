@@ -1,21 +1,16 @@
-node_modules
-dist
-dist-dev
-conference-management-frontend/runApiServer.js
-/conference-management-backend/target
-
-# Generated frontend files
-conference-management-backend/src/main/webapp/assets
-conference-management-backend/src/main/webapp/*.js
-conference-management-backend/src/main/webapp/*.map
-conference-management-backend/src/main/webapp/*.html
-conference-management-backend/src/main/webapp/*.css
+.gitignore
+# Maven target
+/**/target
 
 ### Node template
 # Logs
 logs
 *.log
 npm-debug.log*
+
+node_modules
+dist
+dist-dev
 
 # Runtime data
 pids
@@ -191,4 +186,3 @@ fabric.properties
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-#/conference-management-backend/src/main/resources/jdbc.properties

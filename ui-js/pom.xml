@@ -4,29 +4,31 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ua.rd.cm</groupId>
-    <artifactId>conference-management-frontend</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <parent>
+        <groupId>ua.rd.cm</groupId>
+        <artifactId>conference</artifactId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
-    <packaging>pom</packaging>
+    <artifactId>ui-js</artifactId>
+    <packaging>war</packaging>
 
     <properties>
+        <dir.dist>target/dist</dir.dist>
         <build-task>build-dev</build-task>
     </properties>
 
     <build>
-
         <plugins>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.4.0</version>
 
                 <executions>
                     <execution>
                         <id>exec-npm-install</id>
-                        <phase>generate-sources</phase>
+                        <phase>initialize</phase>
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
@@ -40,7 +42,7 @@
 
                     <execution>
                         <id>exec-gulp</id>
-                        <phase>process-resources</phase>
+                        <phase>process-sources</phase>
                         <configuration>
                             <executable>gulp</executable>
                             <arguments>
@@ -53,9 +55,13 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceDirectory>${dir.dist}</warSourceDirectory>
+                </configuration>
+            </plugin>
         </plugins>
-
     </build>
-
 </project>

@@ -14,7 +14,7 @@ gulp.task('build-dev', () => {
   myConfig.debug = true;
   myConfig.output = {
     publicPath: "/",
-    path: __dirname + '/../../conference-management-backend/src/main/webapp',
+    path: __dirname + '/../target/dist',
     filename: "[name].js"
   };
 
