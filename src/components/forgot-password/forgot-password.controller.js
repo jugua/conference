@@ -1,11 +1,12 @@
 export default class ForgotPasswordController {
-  constructor(ForgotPasswordService) {
+  constructor(ForgotPasswordService, Constants) {
     'ngInject';
 
     this.user = {};
     this.userForm = {};
     this.service = ForgotPasswordService;
     this.forgotten = false;
+    this.passwordConstants = Constants.passwordConstants;
   }
 
   restore() {
