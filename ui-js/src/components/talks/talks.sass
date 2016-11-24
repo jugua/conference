@@ -1,0 +1,30 @@
+.talks-container
+  margin: 20px auto 0
+  box-sizing: border-box
+  padding: 20px
+  +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+
+  @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
+    padding: 5px
+    margin: 0
+    width: 100%
+
+  @media ($mnw: $ldmn)
+    width: 90%
+
+  @media ($mnw: $xmdmx)
+    height: calc(100vh - 100px)
+
+.talks
+  height: 100%
+
+  &__header
+    height: 45px
+    border-bottom: 1px solid $sharp-blue
+
+  &__button
+    width: 140px
+    margin: 0 10px 10px 0
+    @media ($mnw: $xsdmn) and ($mxw: $mdmx)
+      margin: 10px auto
+

@@ -1,7 +1,7 @@
 'use strict';
 
 let User = require('./../model/User');
-const userfields = ['mail', 'fname', 'lname', 'roles', 'bio', 'job', 'past', 'photo', 'linkedin', 'twitter', 'facebook', 'blog', 'info'];
+const userfields = ['mail', 'fname', 'lname', 'roles', 'bio', 'job', 'company', 'past', 'photo', 'linkedin', 'twitter', 'facebook', 'blog', 'info'];
 
 function get(req, res) {
   if (!req.headers.token) {

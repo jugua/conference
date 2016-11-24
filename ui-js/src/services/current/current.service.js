@@ -1,26 +1,12 @@
-/* global angular */
-/* global FormData */
 
-function Current($resource, $window, $q, $rootScope, $http) {
-  function getToken() {
-    let info = $window.localStorage.userInfo;
-    let token;
+function Current($resource, $q, $rootScope, LocalStorage) {
+  'ngInject';
 
-    if (info) {
-      info = JSON.parse(info);
-      token = info.token;
-    } else {
-      token = '';
-    }
-
-    return token;
-  }
-
-  const users = $resource('/api/users/current', {}, {
+  const users = $resource('/api/user/current', {}, {
     getCurrentUser: {
       method: 'GET',
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -28,7 +14,7 @@ function Current($resource, $window, $q, $rootScope, $http) {
     updateCurrentUser: {
       method: 'POST',
       headers: {
-        token: getToken,
+        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -36,54 +22,37 @@ function Current($resource, $window, $q, $rootScope, $http) {
   });
 
   function getInfo() {
+    if (!LocalStorage.getToken()) {
+      this.current = null;
+      return;
+    }
     const current = $q.defer();
     users.getCurrentUser({}, (data) => {
-        current.resolve(data);
-      },
-      () => {
-        current.resolve(null);
-      });
+      current.resolve(data);
+    },
+    () => {
+      current.resolve(null);
+    });
 
     this.current = current.promise;
   }
 
   function updateInfo(userInfo) {
     users.updateCurrentUser(userInfo, () => {
-      },
-      () => {
-        $rootScope.$broadcast('signInEvent');
-      });
-  }
-
-  function uploadPhoto(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    return $http.post('api/users/current/photo', formData, {
-      transformRequest: angular.identity,
-      headers: {
-        token: getToken,
-        'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache',
-        'Content-Type': undefined
-      }
+    },
+    () => {
+      $rootScope.$broadcast('signInEvent');
     });
   }
 
-  function logout() {
-    return $http.post('/api/logout', {
-      headers: {
-        token: getToken,
-        'Cache-Control': 'no-cache, no-store',
-        Pragma: 'no-cache'
-      }
-    });
+  function clear() {
+    this.current = null;
   }
 
   return {
+    clear,
     getInfo,
     updateInfo,
-    uploadPhoto,
-    logout
   };
 }
 

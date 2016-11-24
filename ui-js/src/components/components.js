@@ -8,6 +8,10 @@ import tabsComponent from './tabs/tabs';
 import signUpComponent from './sign-up/sign-up';
 import myTalksComponent from './my-talks/my-talks';
 import forgotPasswordComponent from './forgot-password/forgot-password';
+import userPhotoComponent from './user-photo/user-photo';
+import logoutComponent from './logout/logout';
+import newTalkComponent from './newtalk/newtalk';
+import talksComponent from './talks/talks';
 
 export default (app) => {
   include_all_modules([
@@ -19,6 +23,10 @@ export default (app) => {
     tabsComponent,
     myTalksComponent,
     signUpComponent,
-    forgotPasswordComponent
+    forgotPasswordComponent,
+    userPhotoComponent,
+    newTalkComponent,
+    talksComponent,
+    logoutComponent
   ], app);
 };

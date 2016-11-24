@@ -10,11 +10,12 @@ import appConfiguration from './app.config';
 // Single Style Entry Point
 import './main.sass';
 
-const app = angular.module('app', ['ui.router', 'ngResource', 'ngFileUpload'])
+const app = angular.module('app', ['ui.router', 'ngResource', 'ngFileUpload', 'ngMaterial'])
   .config(function($httpProvider){
+    'ngInject';
+
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
   });
-
 // Components Entrypoint
 appComponents(app);
 
