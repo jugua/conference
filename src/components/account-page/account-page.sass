@@ -6,10 +6,40 @@
   padding: 20px
   +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
 
-.settings__header
-  border-bottom: 1px solid $sharp-blue
-  text-transform: capitalize
+.settings
+  &__block
+    margin-top: 20px
 
-  &_block
-    +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
+  &__header
+    border-bottom: 1px solid $sharp-blue
+    text-transform: capitalize
+
+  &__row
+    display: flex
+    justify-content: space-between
+    border-bottom: 1px solid $light-grey
+    box-sizing: border-box
+    padding: 10px
+
+    &:hover
+      cursor: pointer
+      background: #f2f2f2
+
+    &:hover .settings__edit
+      text-decoration: underline
+      &:before
+        content: ''
+        display: block
+        width: 15px
+        height: 15px
+        float: left
+        background: url(assets/img/pen-icon.svg) no-repeat center
+        background-size: 80%
+        margin: 4px
+
+  &__row-content
+    font-family: Oswald Light, sans-serif
+
+  &__title
+    text-transform: capitalize
 
