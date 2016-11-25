@@ -18,7 +18,7 @@ export default class EditPasswordController {
   changePassword() {
     this.setToDefault();
     console.log(this.passwords);
-    // if (this.editPasswordForm.$valid && this.checkMatchPasswords()) {
+    if (this.editPasswordForm.$valid && this.checkMatchPasswords()) {
       this.editPasswordService.changePassword(this.passwords)
         .then(() => {
           this.successChanged();
@@ -27,7 +27,7 @@ export default class EditPasswordController {
           this.errorChanged(error.data);
         });
       return;
-    // }
+    }
 
     this.showError();
   }
