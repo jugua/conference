@@ -1,5 +1,6 @@
 import accountPageComponent from './account-page.component';
 import editPasswordComponent from './edit-password/edit-password.component';
+import EditPasswordService from './edit-password/edit-password.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -11,5 +12,6 @@ export default (app) => {
         template: '<account-page></account-page>'
       });
   }).component('accountPage', accountPageComponent)
-    .component('editPassword', editPasswordComponent);
+    .component('editPassword', editPasswordComponent)
+    .service('EditPasswordService', EditPasswordService);
 };

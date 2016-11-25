@@ -6,7 +6,7 @@ export default class ForgotPasswordController {
     this.userForm = {};
     this.service = ForgotPasswordService;
     this.forgotten = false;
-    this.passwordConstants = Constants.passwordConstants;
+    this.emailPattern = Constants.email;
   }
 
   restore() {
