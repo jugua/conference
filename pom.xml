@@ -26,6 +26,15 @@
         </profile>
 
         <profile>
+            <id>java</id>
+            <modules>
+                <module>domain</module>
+                <module>service</module>
+                <module>webapp</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>webapp</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
