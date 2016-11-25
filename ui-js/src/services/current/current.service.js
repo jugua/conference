@@ -6,7 +6,6 @@ function Current($resource, $q, $rootScope, LocalStorage) {
     getCurrentUser: {
       method: 'GET',
       headers: {
-        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
@@ -14,7 +13,6 @@ function Current($resource, $q, $rootScope, LocalStorage) {
     updateCurrentUser: {
       method: 'POST',
       headers: {
-        token: LocalStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }

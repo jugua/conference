@@ -9,7 +9,7 @@ export default (app) => {
     .config(($mdThemingProvider, $mdDateLocaleProvider, $httpProvider) => {
       'ngInject';
 
-      $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+      $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
       $mdThemingProvider.disableTheming();
       $mdDateLocaleProvider.formatDate = (date) => {
         if (!date) {

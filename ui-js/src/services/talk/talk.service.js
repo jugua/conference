@@ -1,13 +1,12 @@
 export default class TalkService {
 
-  constructor($resource, LocalStorage) {
+  constructor($resource) {
     'ngInject';
 
     this.talks = $resource('api/talk', {}, {
       add: {
         method: 'POST',
         headers: {
-          token: LocalStorage.getToken,
           'Cache-Control': 'no-cache, no-store',
           Pragma: 'no-cache'
         }
@@ -16,7 +15,6 @@ export default class TalkService {
         method: 'GET',
         isArray: true,
         headers: {
-          token: LocalStorage.getToken,
           'Cache-Control': 'no-cache, no-store',
           Pragma: 'no-cache'
         }

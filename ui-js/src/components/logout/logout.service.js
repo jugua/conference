@@ -2,10 +2,9 @@
 /* global FormData */
 
 class Logout {
-  constructor($window, $q, $http, LocalStorage) {
+  constructor($window, $q, $http) {
     'ngInject';
 
-    this.localStorage = LocalStorage;
     this.q = $q;
     this.window = $window;
     this.http = $http;
@@ -16,7 +15,6 @@ class Logout {
 
     this.http.post('/api/logout', {
       headers: {
-        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
       }
