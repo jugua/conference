@@ -25,3 +25,5 @@ import './tasks/component';
 gulp.task('default',['build-dev','serve-src'], ()=> {
   server();
 });
+
+gulp.task('java',['serve-java']);
