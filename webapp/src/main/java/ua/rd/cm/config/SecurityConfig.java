@@ -19,6 +19,8 @@ import ua.rd.cm.services.CustomUserDetailsService;
 import ua.rd.cm.services.CustomAuthenticationProvider;
 import ua.rd.cm.web.security.CsrfHeaderFilter;
 import ua.rd.cm.web.security.CustomBasicAuthFilter;
+import ua.rd.cm.web.security.RestAuthenticationEntryPoint;
+
 /**
  * @author Yaroslav_Revin
  */
