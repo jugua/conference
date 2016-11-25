@@ -6,9 +6,10 @@ export default (app) => {
       $rootScope.$broadcast('closeDropdown');
     });
   })
-    .config(($mdThemingProvider, $mdDateLocaleProvider) => {
+    .config(($mdThemingProvider, $mdDateLocaleProvider, $httpProvider) => {
       'ngInject';
 
+      $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
       $mdThemingProvider.disableTheming();
       $mdDateLocaleProvider.formatDate = (date) => {
         if (!date) {
