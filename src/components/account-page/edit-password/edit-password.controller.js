@@ -15,9 +15,12 @@ export default class EditPasswordController {
     this.errorMessages = this.editPasswordService.getErrors();
   }
 
+  closeEditPassword() {
+    console.log('df');
+  }
+
   changePassword() {
     this.setToDefault();
-    console.log(this.passwords);
     if (this.editPasswordForm.$valid && this.checkMatchPasswords()) {
       this.editPasswordService.changePassword(this.passwords)
         .then(() => {
@@ -42,11 +45,12 @@ export default class EditPasswordController {
   }
 
   errorChanged(error) {
-    console.log(error);
-    error.fields.forEach((field) => {
-      this.editPasswordForm[field].$setValidity(error.error, false);
-    });
-    this.showError();
+    if (error.fields) {
+      error.fields.forEach((field) => {
+        this.editPasswordForm[field].$setValidity(error.error, false);
+      });
+      this.showError();
+    }
   }
 
   checkMatchPasswords() {
