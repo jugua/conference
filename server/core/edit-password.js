@@ -1,6 +1,6 @@
 'use strict';
 
-let User = require('./../model/User');
+const User = require('./../model/User');
 
 function editPassword(req, res) {
   if (!req.headers.token) {
@@ -15,7 +15,7 @@ function editPassword(req, res) {
     }
 
     if (!current) {
-      res.status(401).send({error: 'no-current-user'});
+      res.status(401).send({ error: 'no-current-user' });
       return;
     }
 
@@ -78,17 +78,16 @@ function editPassword(req, res) {
     }
 
 
-    if (userInfo.currentPassword !== current.password) {
+    if (!current.checkPassword(userInfo.currentPassword)) {
       error.error = 'wrong_password';
       error.fields.push('currentPassword');
-      console.log(req.body);
       res.status(400).send(error);
       return;
     }
 
     current.password = userInfo.newPassword;
-    current.save((err) => {
-      if (err) {
+    current.save((error) => {
+      if (error) {
         res.status(500).send({ error: 'save' });
         return;
       }
