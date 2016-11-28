@@ -3,7 +3,7 @@ import controller from './edit-password.controller';
 
 const editPasswordComponent = {
   bindings: {
-
+    editing: '='
   },
   template,
   controller,

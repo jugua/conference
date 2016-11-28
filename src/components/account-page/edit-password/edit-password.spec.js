@@ -18,6 +18,7 @@ describe('EditPassword', () => {
     // const user = { photo: 'df' };
     let sut;
     let timeout;
+    const editing = true;
     const errors = {
       nonSpace: 'Please use at least one non-space character in your password.',
       minLength: 'Your password must be at least 6 characters long. Please try another',
@@ -39,12 +40,76 @@ describe('EditPassword', () => {
       EditPasswordService.changePassword.and.returnValue(q.when([]));
       Constants = jasmine.createSpyObj('Constants', ['password']);
 
-      sut = $controller('EditPasswordController', { EditPasswordService, Constants, timeout });
+      sut = $controller('EditPasswordController', { EditPasswordService, Constants, timeout }, { editing });
     }));
 
     beforeEach(() => {
       sut.editPasswordForm = jasmine.createSpyObj('editPasswordForm',
         ['currentPassword', 'newPassword', 'confirmNewPassword', '$valid', '$setPristine']);
+    });
+
+    describe('Controller has needed property and function', () => {
+      it('has property editPasswordForm', () => {
+        expect(sut.editPasswordForm).toBeDefined();
+      });
+      it('has binding property editPassword', () => {
+        expect(sut.editing).toBeDefined();
+      });
+      it('has property passwords to equal empty object', () => {
+        expect(sut.passwords).toEqual({});
+      });
+      it('has property changed to equal false', () => {
+        expect(sut.changed).toBe(false);
+      });
+      it('has property error to equal false', () => {
+        expect(sut.error).toBe(false);
+      });
+      it('has property error to equal false', () => {
+        expect(sut.errorMessage).toBeNull();
+      });
+      it('has function closeEditPassword', () => {
+        expect(typeof sut.closeEditPassword).toBe('function');
+      });
+      it('has function changePassword', () => {
+        expect(typeof sut.changePassword).toBe('function');
+      });
+      it('has function successChanged', () => {
+        expect(typeof sut.successChanged).toBe('function');
+      });
+      it('has function errorChanged', () => {
+        expect(typeof sut.errorChanged).toBe('function');
+      });
+      it('has function checkMatchPasswords', () => {
+        expect(typeof sut.checkMatchPasswords).toBe('function');
+      });
+      it('has function setToDefault', () => {
+        expect(typeof sut.setToDefault).toBe('function');
+      });
+      it('has function showError', () => {
+        expect(typeof sut.showError).toBe('function');
+      });
+    });
+
+    describe('closeEditPassword function', () => {
+      beforeEach(() => {
+        sut.closeEditPassword();
+      });
+
+      it('should set passwords object to empty object', () => {
+        expect(sut.passwords).toEqual({});
+      });
+      it('should error property to false', () => {
+        expect(sut.error).toEqual(false);
+      });
+      it('should set errorMessage property to null', () => {
+        expect(sut.errorMessage).toBeNull();
+      });
+      it('should call $setPristine', () => {
+        expect(sut.editPasswordForm.$setPristine).toHaveBeenCalled();
+      });
+      it('should set binding property editPassword to false', () => {
+        expect(sut.editing).toEqual(false);
+      });
     });
 
     describe('changePassword function', () => {
@@ -113,6 +178,12 @@ describe('EditPassword', () => {
           expect(sut.errorChanged).toHaveBeenCalled();
         });
       });
+      it('should call errorUpload', () => {
+        EditPasswordService.changePassword.and.returnValue(q.when(false));
+        sut.editPasswordService.changePassword().then(() => {
+          expect(sut.successChanged).not.toHaveBeenCalled();
+        });
+      });
     });
 
     describe('successChanged function', () => {
@@ -131,6 +202,10 @@ describe('EditPassword', () => {
       it('should set changed to false after sometime', () => {
         timeout.flush();
         expect(sut.changed).toEqual(false);
+      });
+      it('should set changed to false after sometime', () => {
+        timeout.flush();
+        expect(sut.editing).toEqual(false);
       });
     });
 

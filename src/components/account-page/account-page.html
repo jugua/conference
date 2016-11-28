@@ -11,7 +11,7 @@
                <edit-name></edit-name>
            </div>
         </div>
-        <div class="settings__row" ng-click="$ctrl.showEditpass()">
+        <div class="settings__row" ng-click="$ctrl.showEditemail()">
             <div class="settings__brief">
                 <div class="settings__title">email</div>
                 <div class="settings__row-content settings__row-content_name">organizer@organizer.com</div>
@@ -21,14 +21,14 @@
                 <edit-email></edit-email>
             </div>
         </div>
-        <div class="settings__row" ng-click="$ctrl.showEditpass()">
-            <div class="settings__brief" >
+        <div class="settings__row">
+            <div class="settings__brief" ng-click="$ctrl.showEditpass()" ng-show="!$ctrl.editPass">
                 <div class="settings__title">password</div>
                 <div class="settings__row-content settings__row-content_name">*******</div>
                 <div class="settings__edit">edit</div>
             </div>
             <div class="settings__details" ng-show="$ctrl.editPass">
-                <edit-password></edit-password>
+                <edit-password editing="$ctrl.editPass"></edit-password>
             </div>
         </div>
     </div>

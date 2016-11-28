@@ -6,8 +6,7 @@ const accountPageComponent = {
 
   },
   template,
-  controller,
-  controllerAs: 'accountPageCtrl'
+  controller
 };
 
 export default accountPageComponent;

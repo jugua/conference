@@ -4,10 +4,10 @@ export default class EditPasswordController {
 
     this.timeout = $timeout;
     this.editPasswordService = EditPasswordService;
+    this.passwordPattern = Constants.password;
 
     this.editPasswordForm = {};
     this.passwords = {};
-    this.passwordPattern = Constants.password;
     this.changed = false;
     this.error = false;
     this.errorMessage = null;
@@ -16,7 +16,11 @@ export default class EditPasswordController {
   }
 
   closeEditPassword() {
-    console.log('df');
+    this.passwords = {};
+    this.error = false;
+    this.errorMessage = null;
+    this.editPasswordForm.$setPristine();
+    this.editing = false;
   }
 
   changePassword() {
@@ -41,6 +45,7 @@ export default class EditPasswordController {
     this.changed = true;
     this.timeout(() => {
       this.changed = false;
+      this.editing = false;
     }, 1000);
   }
 
