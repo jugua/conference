@@ -10,9 +10,10 @@ const auth = require('./core/auth');
 const registration = require('./core/registration');
 const current = require('./core/current');
 const forgotPassword = require('./core/forgot-password');
-const photo = require('./core/upload-image');
+const photo = require('./core/photo');
 const logout = require('./core/logout');
 const talk = require('./core/talk');
+const editPassword = require('./core/edit-password');
 
 const multer = require('multer');
 const upload = multer();
@@ -51,7 +52,7 @@ module.exports = (PORT) => {
     .post(auth);
 
   router.route('/forgot-password')
-    .post(forgotPassword)
+    .post(forgotPassword);
 
   router.route('/logout')
     .get(logout);
@@ -61,9 +62,9 @@ module.exports = (PORT) => {
     .post(registration)
     .get((req, res) => {
       User.find((err, current) => {
-        if (err)
+        if (err) {
           res.send(err);
-
+        }
         res.json(current);
       });
     });
@@ -73,8 +74,8 @@ module.exports = (PORT) => {
     .get(current.get)
     .post(current.update);
 
-  router.route('/logout')
-    .get(logout);
+  router.route('/user/current/setting/password')
+    .post(editPassword);
 
   router.route('/user/current/photo')
     .post(upload.any(), photo.uploadImage)

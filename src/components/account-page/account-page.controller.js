@@ -3,10 +3,12 @@ export default class AccountPageController {
     'ngInject';
 
     this.controler = 'controller';
-    this.editName = false;
   }
   showEditname() {
     this.editName = true;
+  }
+  showEditpass() {
+    this.editPass = true;
   }
 }
 

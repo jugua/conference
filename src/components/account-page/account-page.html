@@ -1,31 +1,34 @@
 <div class="settings-wrapper">
-    <div class="settings__header">general settings account</div>
+    <div class="settings__header">settings account</div>
     <div class="settings__block">
         <div class="settings__row" ng-click="$ctrl.showEditname()">
            <div class="settings__brief">
                <div class="settings__title">name</div>
                <div class="settings__row-content settings__row-content_name">Organizer</div>
-               <a class="settings__edit">edit</a>
+               <div class="settings__edit">edit</div>
            </div>
            <div class="settings__details" ng-show="$ctrl.editName">
-               some component
+               <edit-name></edit-name>
            </div>
         </div>
         <div class="settings__row">
             <div class="settings__brief">
                 <div class="settings__title">email</div>
                 <div class="settings__row-content settings__row-content_name">organizer@organizer.com</div>
-                <a class="settings__edit">edit</a>
-            </div>
-    </div>
-        <div class="settings__row">
-            <div class="settings__brief">
-                <div class="settings__title">password</div>
-                <div class="settings__row-content settings__row-content_name">*******</div>
-                <a class="settings__edit">edit</a>
+                <div class="settings__edit">edit</div>
             </div>
             <div class="settings__details" ng-show="$ctrl.editName">
-                some component
+                <edit-email></edit-email>
+            </div>
+        </div>
+        <div class="settings__row">
+            <div class="settings__brief" >
+                <div class="settings__title">password</div>
+                <div class="settings__row-content settings__row-content_name">*******</div>
+                <div class="settings__edit">edit</div>
+            </div>
+            <div class="settings__details">
+                <edit-password style="display: none;"></edit-password>
             </div>
         </div>
     </div>
