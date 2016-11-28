@@ -59,4 +59,5 @@ public class UserInfo {
     @Size(max = 1000)
     @Column(name = "additional_info")
     private String additionalInfo;
+
 }
