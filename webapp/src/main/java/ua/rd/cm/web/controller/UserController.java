@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
     private ModelMapper mapper;
     private UserService userService;
@@ -76,7 +76,7 @@ public class UserController {
     @PostMapping("/current")
     public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto, Principal principal, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         if (principal == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
