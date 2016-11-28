@@ -18,7 +18,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "language")
-@SequenceGenerator(name = "seqLanguageGen", allocationSize = 1)
+@SequenceGenerator(name = "seqLanguageGen", allocationSize = 1,
+        sequenceName = "language_seq")
 public class Language {
 
     @Id

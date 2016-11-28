@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
-@SequenceGenerator(name = "seqTalkGen", allocationSize = 1)
+@SequenceGenerator(name = "seqTalkGen", allocationSize = 1,
+        sequenceName = "talk_seq")
 @Table(name = "talk", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "time"})
 })
@@ -46,7 +47,7 @@ public class Talk {
     private Topic topic;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "type_id")
     private Type type;
 
