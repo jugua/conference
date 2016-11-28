@@ -1,0 +1,45 @@
+package ua.rd.cm.repository;
+
+import org.springframework.stereotype.Repository;
+import ua.rd.cm.domain.ContactType;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.repository.specification.Specification;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+
+/**
+ * @author Olha_Melnyk
+ */
+@Repository
+public class JpaContactTypeRepository implements ContactTypeRepository {
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @Override
+    public void saveContactType(ContactType contactType) {
+        em.persist(contactType);
+    }
+
+    @Override
+    public void updateContactType(ContactType contactType) {
+        em.merge(contactType);
+    }
+
+    @Override
+    public void removeContactType(ContactType contactType) {
+        em.remove(contactType);
+    }
+
+    @Override
+    public List<ContactType> findAll() {
+        return em.createQuery("SELECT c FROM ContactType c", ContactType.class).getResultList();
+    }
+
+    @Override
+    public List<ContactType> findBySpecification(Specification<ContactType> spec) {
+        return em.createQuery("SELECT c FROM ContactType c WHERE " + spec.toSqlClauses(), ContactType.class).getResultList();
+    }
+}
