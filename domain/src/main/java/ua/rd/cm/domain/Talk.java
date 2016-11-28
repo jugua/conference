@@ -47,7 +47,7 @@ public class Talk {
     private Topic topic;
 
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "type_id")
     private Type type;
 
