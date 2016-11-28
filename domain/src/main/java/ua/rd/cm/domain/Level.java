@@ -18,7 +18,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "level")
-@SequenceGenerator(name = "seqLevelGen", allocationSize = 1)
+@SequenceGenerator(name = "seqLevelGen", allocationSize = 1,
+        sequenceName = "level_seq")
 public class Level {
 
     @Id
