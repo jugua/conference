@@ -15,11 +15,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import ua.rd.cm.services.CustomUserDetailsService;
 import ua.rd.cm.services.CustomAuthenticationProvider;
 import ua.rd.cm.web.security.CsrfHeaderFilter;
 import ua.rd.cm.web.security.CustomBasicAuthFilter;
-import ua.rd.cm.web.security.RestAuthenticationEntryPoint;
 
 /**
  * @author Yaroslav_Revin
@@ -28,11 +26,8 @@ import ua.rd.cm.web.security.RestAuthenticationEntryPoint;
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackages = "ua.rd.cm.web.security")
-@Import({CustomUserDetailsService.class, CustomAuthenticationProvider.class})
+@Import(CustomAuthenticationProvider.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
@@ -41,8 +36,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private AuthenticationManager authManager;
 
     @Autowired
+    private CustomBasicAuthFilter basicAuthFilter;
+
+    @Autowired
+    private CsrfHeaderFilter csrfHeaderFilter;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("user@user.com").password("user").roles("USER");
+        auth.authenticationProvider(authenticationProvider);
     }
 
     @Override
@@ -55,21 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .antMatchers("/api/user/current").authenticated()
                     .antMatchers("/api/helloworld").authenticated()
                     .and()
-                .exceptionHandling()
-                    .authenticationEntryPoint(new RestAuthenticationEntryPoint())
-                    .and()
                 .csrf()
                     .csrfTokenRepository(csrfTokenRepository())
                     .and()
-//                .formLogin()
-//                    .loginPage("/index.html")
-//                    .loginProcessingUrl("/api/login")
-//                    .successForwardUrl("/")
-//                    .failureForwardUrl("/")
-//                    .passwordParameter("password")
-//                    .usernameParameter("mail")
-//                    .permitAll()
-//                    .and()
                 .httpBasic()
                     .and()
                 .logout()
@@ -80,15 +69,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .deleteCookies("JSESSIONID")
                     .permitAll()
                     .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterAfter(new CustomBasicAuthFilter(authManager), BasicAuthenticationFilter.class)
-                .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+                .addFilterBefore(basicAuthFilter, BasicAuthenticationFilter.class)
+                .addFilterAfter(csrfHeaderFilter, CsrfFilter.class);
     }
 
     @Bean(name = "authManager")
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public CustomBasicAuthFilter basicAuthFilter() throws Exception {
+        return new CustomBasicAuthFilter(authManager);
+    }
+
+    @Bean
+    public CsrfHeaderFilter csrfHeaderFilter(){
+        return new CsrfHeaderFilter();
     }
 
     private CsrfTokenRepository csrfTokenRepository() {

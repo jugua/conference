@@ -16,14 +16,14 @@ import org.springframework.stereotype.Component;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        UserDetails user = userDetailsService.loadUserByUsername(username);
+        UserDetails user = customUserDetailsService.loadUserByUsername(username);
 
         if (user == null) {
             throw new BadCredentialsException("{\"error\":\"login_auth_err\"}");
