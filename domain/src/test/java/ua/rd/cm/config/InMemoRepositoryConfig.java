@@ -3,9 +3,7 @@ package ua.rd.cm.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
@@ -23,19 +21,14 @@ import net.sf.log4jdbc.tools.LoggingType;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.Properties;
 
 /**
  * @author Mariia Lapovska
  */
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
-@PropertySources(@PropertySource("classpath:inMemoPersistence.properties"))
 @EnableTransactionManagement
 public class InMemoRepositoryConfig {
-
-    @Autowired
-    private Environment env;
 
     @Bean
     public DataSource dataSourceSpied() {
@@ -65,28 +58,14 @@ public class InMemoRepositoryConfig {
     }
 
     @Bean
-    public Properties jpaProperties() {
-        Properties properties = new Properties();
-
-        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-        properties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-        properties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
-
-        return properties;
-    }
-
-    @Bean
     public AbstractEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
-                                                                 JpaVendorAdapter jpaVendorAdapter,
-                                                                 Properties jpaProperties) {
+                                                                 JpaVendorAdapter jpaVendorAdapter) {
         LocalContainerEntityManagerFactoryBean emf =
                 new LocalContainerEntityManagerFactoryBean();
 
         emf.setDataSource(dataSource);
         emf.setJpaVendorAdapter(jpaVendorAdapter);
         emf.setPackagesToScan("ua.rd.cm.domain");
-        emf.setJpaProperties(jpaProperties);
 
         return emf;
     }
