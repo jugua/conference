@@ -22,7 +22,7 @@ import './tasks/build-dev';
 import './tasks/build-prod';
 import './tasks/component';
 
-gulp.task('default',['build-dev','serve-src'], ()=> {
+gulp.task('default',['serve-src'], ()=> {
   server();
 });
 

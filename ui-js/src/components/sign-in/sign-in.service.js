@@ -4,13 +4,27 @@ function SignIn($http, $q, $window, $rootScope) {
 
   function login(user) {
     const deferred = $q.defer();
-    const headers = user ? { authorization: 'Basic '+ utf8ToB64(user.mail + ':' + user.password) } : { };
+    let headers;
+    let body;
 
-    $http.post('/api/login/', { }, { headers }).then(() => {
-      userInfo = {
-        token: 'auth'
-      };
+    if (!document.cookie.includes('XSRF')) {
+      headers = {};
+      body = user;
+    } else {
+      headers = user ? { authorization: 'Basic '+ utf8ToB64(user.mail + ':' + user.password) } : { };
+      body = {};
+    }
 
+    $http.post('/api/login/', body, { headers }).then(({ data }) => {
+      if (data.token) {
+        userInfo = {
+          token: data.token
+        };
+      } else {
+        userInfo = {
+          token: 'auth'
+        };
+      }
       $window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
       deferred.resolve(userInfo);
     }, (error) => {

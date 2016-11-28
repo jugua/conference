@@ -5,6 +5,7 @@ import talksService from './talk/talk';
 import localStorage from './local-storage/local-storage';
 import constants from './constants/constants';
 import permissionsService from './permissions/permissions';
+import tokenInjector from './node-intercepter/node-intercepter';
 
 
 export default (app) => {
@@ -14,6 +15,7 @@ export default (app) => {
     currentUserService,
     menusService,
     talksService,
-    permissionsService
+    permissionsService,
+    tokenInjector
   ], app);
 };
