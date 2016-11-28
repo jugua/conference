@@ -51,6 +51,7 @@ public class UserInfoDto {
     private String blog;
 
     @JsonProperty("info")
+    @Size(min = 1, max = 1000)
     private String userInfoAdditionalInfo;
 
 }
