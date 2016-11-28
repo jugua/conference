@@ -19,7 +19,8 @@ import java.util.Map;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_info")
-@SequenceGenerator(name = "seqUserInfoGen", allocationSize = 1)
+@SequenceGenerator(name = "seqUserInfoGen", allocationSize = 1,
+        sequenceName = "user_info_seq")
 public class UserInfo {
 
     @Id

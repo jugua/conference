@@ -19,10 +19,9 @@ import java.util.Set;
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @Entity
-@Table(name = "user", indexes = {
-        @Index(name = "email_index",  columnList="email", unique = true)
-})
-@SequenceGenerator(name = "seqUserGen", allocationSize = 1)
+@Table(name = "user")
+@SequenceGenerator(name = "seqUserGen", allocationSize = 1,
+        sequenceName = "user_seq")
 public class User {
 
     @Id

@@ -18,7 +18,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "contact_type")
-@SequenceGenerator(name = "seqContactTypeGen", allocationSize = 1)
+@SequenceGenerator(name = "seqContactTypeGen", allocationSize = 1,
+        sequenceName = "contact_type_seq")
 public class ContactType {
 
     @Id
