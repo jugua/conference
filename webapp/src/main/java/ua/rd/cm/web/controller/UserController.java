@@ -95,7 +95,6 @@ public class UserController {
 
     private UserInfo userInfoDtoToEntity(UserInfoDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
-        //userInfo.setCompany("EPAM");
         Map<ContactType, String> contacts = userInfo.getContacts();
         contacts.put(contactTypeService.findByName("LinkedIn").get(0), dto.getLinkedIn());
         contacts.put(contactTypeService.findByName("Twitter").get(0), dto.getTwitter());
@@ -107,10 +106,6 @@ public class UserController {
 
     private UserDto userToDto(User user){
         UserDto dto = mapper.map(user, UserDto.class);
-        /*dto.setLinkedin(getContactLink(user, "linkedin"));
-        dto.setBlog(getContactLink(user, "blog"));
-        dto.setFacebook(getContactLink(user, "facebook"));
-        dto.setTwitter(getContactLink(user, "twitter"));*/
         dto.setLinkedin(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
         dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
@@ -118,13 +113,7 @@ public class UserController {
         dto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
         return  dto;
     }
-/* // Dimasik's
-    private String getContactLink(User user, String contactName) {
-        ContactType contactType = new ContactType();
-        contactType.setName(contactName);
-        return user.getUserInfo().getContacts().get(contactType);
-    }
-*/
+
     private String[] convertRolesTypeToFirstLetters(Set<Role> roles){
         String[] rolesFirstLetters = new String[roles.size()];
         Role[] rolesFullNames = roles.toArray(new Role[roles.size()]);
