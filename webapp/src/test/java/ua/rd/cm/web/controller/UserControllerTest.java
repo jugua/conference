@@ -18,29 +18,46 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.services.ContactTypeService;
+import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.RegistrationDto;
+import ua.rd.cm.web.controller.dto.UserInfoDto;
 
 import java.security.Principal;
 import java.util.*;
 
-import static org.mockito.Mockito.*;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class})
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
 @WebAppConfiguration
 public class UserControllerTest {
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
+    private UserInfoDto userInfoDto;
     private String uniqueEmail = "unique@gmail.com";
     private String alreadyRegisteredEmail = "registered@gmail.com";
 
     @Autowired
     private UserService userServiceMock;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private ContactTypeService contactTypeService;
 
     @Autowired
     private UserController userController;
@@ -53,7 +70,7 @@ public class UserControllerTest {
 
     @Test
     public void correctRegistrationTest() throws Exception{
-        mockMvc.perform(post("/api/user")
+        mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctRegistrationDto))
         ).andExpect(status().isAccepted());
@@ -65,7 +82,7 @@ public class UserControllerTest {
 
         when(userServiceMock.isEmailExist(alreadyRegisteredEmail)).thenReturn(true);
 
-        mockMvc.perform(post("/api/user")
+        mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctRegistrationDto))
         ).andExpect(status().isConflict());
@@ -174,7 +191,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public  void correctPrincipalGetCurrentUserTest() throws Exception{
+    public void correctPrincipalGetCurrentUserTest() throws Exception{
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
@@ -182,7 +199,15 @@ public class UserControllerTest {
 
         when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
 
-        mockMvc.perform(get("/api/user/current")
+        ContactType contactType = new ContactType(1L, "LinkedIn");
+        ContactType contactType2 = new ContactType(2L, "Twitter");
+        ContactType contactType3 = new ContactType(3L, "FaceBook");
+        ContactType contactType4 = new ContactType(4L, "Blog");
+        List contactTypes = spy(List.class);
+        when(contactTypes.get(anyInt())).thenReturn(contactType).thenReturn(contactType2).thenReturn(contactType3).thenReturn(contactType4);
+        when(contactTypeService.findByName(anyString())).thenReturn(contactTypes);
+
+        mockMvc.perform(get("/api/users/current")
                 .principal(correctPrincipal)
         ).andExpect(status().isAccepted())
                 .andExpect(jsonPath("fname", is(user.getFirstName())))
@@ -193,16 +218,16 @@ public class UserControllerTest {
                 .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
                 .andExpect(jsonPath("photo", is(user.getPhoto())))
                 .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
-                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "linkedin")))))
-                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(1L, "twitter")))))
-                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(1L, "facebook")))))
-                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(1L, "blog")))))
+                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(contactType))))
+                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(contactType2))))
+                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(contactType3))))
+                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(contactType4))))
                 .andExpect(jsonPath("roles[0]", is("s")));
     }
 
     private void checkForBadRequest(){
         try {
-            mockMvc.perform(post("/api/user")
+            mockMvc.perform(post("/api/users")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(convertObjectToJsonBytes(correctRegistrationDto))
             ).andExpect(status().isBadRequest());
@@ -249,20 +274,34 @@ public class UserControllerTest {
     }
 
     private UserInfo createUserInfo(){
-        Map<ContactType, String> contacts = new HashMap<>();
+        /*Map<ContactType, String> contacts = new HashMap<>();
         for (ContactType contactType : createContactTypes()){
             contacts.put(contactType, contactType.getName());
-        }
-        UserInfo info = new UserInfo(1L, "bio", "job", "pastConference", "test", contacts, "addInfo");
-        return info;
+        }*/
+        Map<ContactType, String> contacts = new HashMap<ContactType, String>(){{
+            put(new ContactType(1L, "LinkedIn"), "LinkedIn");
+            put(new ContactType(2L, "Twitter"), "Twitter");
+            put(new ContactType(3L, "FaceBook"), "FaceBook");
+            put(new ContactType(4L, "Blog"), "Blog");
+        }};
+        return new UserInfo(1L, "bio", "job", "pastConference", "test", contacts, "addInfo");
     }
 
     private Set<ContactType> createContactTypes(){
+        ContactType contactType = new ContactType(1L, "LinkedIn");
+        ContactType contactType2 = new ContactType(2L, "Twitter");
+        ContactType contactType3 = new ContactType(3L, "FaceBook");
+        ContactType contactType4 = new ContactType(4L, "Blog");
+        when(contactTypeService.findByName("LinkedIn").get(0)).thenReturn(contactType);
+        when(contactTypeService.findByName("Twitter").get(0)).thenReturn(contactType2);
+        when(contactTypeService.findByName("FaceBook").get(0)).thenReturn(contactType3);
+        when(contactTypeService.findByName("Blog").get(0)).thenReturn(contactType4);
+
         Set<ContactType> contactTypes = new HashSet<>();
-        contactTypes.add(new ContactType(1L, "linkedin"));
-        contactTypes.add(new ContactType(2L, "twitter"));
-        contactTypes.add(new ContactType(3L, "facebook"));
-        contactTypes.add(new ContactType(4L, "blog"));
+        contactTypes.add(contactType);
+        contactTypes.add(contactType2);
+        contactTypes.add(contactType3);
+        contactTypes.add(contactType4);
         return contactTypes;
     }
 }

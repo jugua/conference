@@ -27,15 +27,16 @@ public class UserInfoDto {
     private String userInfoJobTitle;
 
     @NotNull
+    @JsonProperty("company")
+    @Size(min = 1, max = 256)
+    private String userInfoCompany;
+
     @JsonProperty("past")
     @Size(min = 1, max = 1000)
     private String userInfoPastConference;
 
     @JsonProperty("photo")
     private String photo;
-
-    @JsonProperty("company")
-    private String userInfoCompany;
 
     @JsonProperty("linkedin")
     private String linkedIn;
