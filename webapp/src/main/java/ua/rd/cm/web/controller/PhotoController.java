@@ -33,7 +33,7 @@ public class PhotoController {
     }
 
     @PostMapping
-    public ResponseEntity upload(PhotoDto photoDto) {
+    public ResponseEntity upload(PhotoDto photoDto, Principal principal) {
 
         MultipartFile file = photoDto.getFile();
 
@@ -58,6 +58,10 @@ public class PhotoController {
                         new FileOutputStream(serverFile));
                 stream.write(bytes);
                 stream.close();
+
+                User currentUser = userService.getByEmail(principal.getName());
+                currentUser.setPhoto(serverFile.getAbsolutePath());
+                userService.updateUserProfile(currentUser);
 
                 //200 { "answer": <url>} - on success upload or update photo
                 return new ResponseEntity(HttpStatus.OK);
