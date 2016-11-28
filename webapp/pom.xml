@@ -54,14 +54,14 @@
     </profiles>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>ua.rd.cm</groupId>-->
-            <!--<artifactId>domain</artifactId>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>ua.rd.cm</groupId>-->
-            <!--<artifactId>service</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>ua.rd.cm</groupId>
+            <artifactId>domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ua.rd.cm</groupId>
+            <artifactId>service</artifactId>
+        </dependency>
         <dependency>
             <groupId>ua.rd.cm</groupId>
             <artifactId>ui-js</artifactId>

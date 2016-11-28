@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,8 @@ import ua.rd.cm.services.CustomUserDetailsService;
 import ua.rd.cm.services.CustomAuthenticationProvider;
 import ua.rd.cm.web.security.CsrfHeaderFilter;
 import ua.rd.cm.web.security.CustomBasicAuthFilter;
+import ua.rd.cm.web.security.RestAuthenticationEntryPoint;
+
 /**
  * @author Yaroslav_Revin
  */
@@ -25,6 +28,7 @@ import ua.rd.cm.web.security.CustomBasicAuthFilter;
 @Configuration
 @EnableWebSecurity
 @ComponentScan(basePackages = "ua.rd.cm.web.security")
+@Import({CustomUserDetailsService.class, CustomAuthenticationProvider.class})
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
@@ -47,8 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
                     .mvcMatchers(HttpMethod.POST, "/api/login").permitAll()
-                    .mvcMatchers(HttpMethod.POST, "/api/users").permitAll()
-                    .antMatchers("/api/users/current").authenticated()
+                    .mvcMatchers(HttpMethod.POST, "/api/user").permitAll()
+                    .antMatchers("/api/user/current").authenticated()
                     .antMatchers("/api/helloworld").authenticated()
                     .and()
                 .exceptionHandling()

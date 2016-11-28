@@ -1,9 +1,12 @@
 export default class SignInController {
-  constructor(SignIn, $scope) {
+  constructor(signInService, $scope, Constants) {
+    'ngInject';
+
     this.user = {};
     this.userForm = {};
-    this.service = SignIn;
+    this.service = signInService;
     this.scope = $scope;
+    this.emailPattern = Constants.email;
   }
 
   login() {

@@ -1,5 +1,5 @@
 <div class="sign-up-wrapper">
-  <form class="sign-up" name="signUpCtrl.userForm" novalidate ng-submit="signUpCtrl.signUp()">
+  <form class="sign-up" name="$ctrl.userForm" novalidate ng-submit="$ctrl.signUp()">
     <h2 class="form-title sign-up__title">create new account</h2>
 
     <label for="name" class="form-label form-label_required">first name:</label>
@@ -7,12 +7,12 @@
            class="field sign-up__field"
            required
            maxlength="56"
-           ng-model="signUpCtrl.user.fname">
+           ng-model="$ctrl.user.fname">
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.fname.$error.required">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.fname.$error.required">
                 All fields are mandatory. Please make sure all required fields are filled out</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.fname.$error.maxlength">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.fname.$error.maxlength">
                 Your First Name should not be longer than 56 characters. Please try another</span>
 
     <label for="surname" class="form-label form-label_required">last name:</label>
@@ -20,30 +20,30 @@
            class="field sign-up__field"
            required
            maxlength="56"
-           ng-model="signUpCtrl.user.lname">
+           ng-model="$ctrl.user.lname">
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.lname.$error.required">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.lname.$error.required">
                 All fields are mandatory. Please make sure all required fields are filled out</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.fname.$error.maxlength">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.fname.$error.maxlength">
                 Your Last Name should not be longer than 56 characters. Please try another</span>
 
     <label for="mail" class="form-label form-label_required">Email:</label>
     <input type="email" id="mail" name="mail"
            class="field sign-up__field"
            required
-           ng-model="signUpCtrl.user.mail"
-           ng-pattern="/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,6}$/i"
-           ng-change="signUpCtrl.resetEmailAlreadyExists()">
+           ng-model="$ctrl.user.mail"
+           ng-pattern="$ctrl.emailPattern"
+           ng-change="$ctrl.resetEmailAlreadyExists()">
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.mail.$error.required">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.mail.$error.required">
                 All fields are mandatory. Please make sure all required fields are filled out</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.mail.$error.pattern">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.mail.$error.pattern">
                 Please enter a valid email address</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.mail.$error.email_already_exists">
-                There is an existing account associated with {{signUpCtrl.user.mail}}</span>
+          ng-show="$ctrl.userForm.mail.$error.email_already_exists">
+                There is an existing account associated with {{$ctrl.user.mail}}</span>
 
     <label for="password" class="form-label form-label_required">password:</label>
     <input type="password" id="password" name="password"
@@ -51,20 +51,20 @@
            required
            minlength="6"
            maxlength="30"
-           ng-pattern="/\S+\s*/"
-           ng-model="signUpCtrl.user.password"
-           ng-change="signUpCtrl.setPasswordsMatch(true)">
+           ng-pattern="$ctrl.passwordPattern"
+           ng-model="$ctrl.user.password"
+           ng-change="$ctrl.setPasswordsMatch(true)">
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.password.$error.required">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.password.$error.required">
                 All fields are mandatory. Please make sure all required fields are filled out</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.password.$error.pattern">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.password.$error.pattern">
                 Please use at least one non-space character in your password</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.password.$error.minlength">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.password.$error.minlength">
                 Your password must be at least 6 characters long. Please try another</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.password.$error.maxlength">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.password.$error.maxlength">
                 Your password should not be longer than 30 characters. Please try another</span>
 
     <label for="confirm" class="form-label form-label_required">confirm password:</label>
@@ -73,31 +73,31 @@
            required
            minlength="6"
            maxlength="30"
-           ng-model="signUpCtrl.user.confirm"
-           ng-change="signUpCtrl.setPasswordsMatch(true)">
+           ng-model="$ctrl.user.confirm"
+           ng-change="$ctrl.setPasswordsMatch(true)">
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.confirm.$error.required">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.confirm.$error.required">
                 All fields are mandatory. Please make sure all required fields are filled out</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.confirm.$error.minlength">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.confirm.$error.minlength">
                 Your password must be at least 6 characters long. Please try another</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.$submitted && signUpCtrl.userForm.confirm.$error.maxlength">
+          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.confirm.$error.maxlength">
                 Your password should not be longer than 30 characters. Please try another</span>
     <span class="field-error"
-          ng-show="signUpCtrl.userForm.confirm.$error.passwords_match">
+          ng-show="$ctrl.userForm.confirm.$error.passwords_match">
                 Passwords do not match</span>
 
     <input type="submit" class="sign-up__button btn" value="submit">
   </form>
 </div>
 
-<div class="pop-up-wrapper" ng-show="signUpCtrl.showPopup">
+<div class="pop-up-wrapper" ng-show="$ctrl.showPopup">
   <div class="pop-up">
     <h3 class="pop-up__title">You've successfully registered.</h3>
     <p class="pop-up__notification">
-      <span class="pop-up__notification-user">{{signUpCtrl.user.fname}}</span>, go to
-      <span class="pop-up__notification-user">{{signUpCtrl.user.mail}}</span> to complete the sign-up process</p>
+      <span class="pop-up__notification-user">{{$ctrl.user.fname}}</span>, go to
+      <span class="pop-up__notification-user">{{$ctrl.user.mail}}</span> to complete the sign-up process</p>
     <button class="btn pop-up__button" ui-sref="header.home">OK</button>
   </div>
 </div>

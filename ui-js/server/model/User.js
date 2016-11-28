@@ -27,6 +27,9 @@ var UserSchema = new Schema({
   job: {
     type: String
   },
+  company: {
+    type: String
+  },
   past: {
     type: String
   },
@@ -53,7 +56,34 @@ var UserSchema = new Schema({
   },
   hash: {
     type: Array
-  }
+  },
+  talks: [{
+    title: {
+      type: String
+    },
+    description: {
+      type: String
+    },
+    topic: {
+      type: String
+    },
+    lang: {
+      type: String
+    },
+    level: {
+      type: String
+    },
+    addon: {
+      type: String
+    },
+    status: {
+      type: String
+    },
+    date: {
+      type: Number
+    },
+
+  }]
 });
 
 module.exports = mongoose.model('User', UserSchema);
