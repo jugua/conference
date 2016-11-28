@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -14,27 +15,26 @@ const photo = require('./core/photo');
 const logout = require('./core/logout');
 const talk = require('./core/talk');
 const editPassword = require('./core/edit-password');
-
 const multer = require('multer');
+
 const upload = multer();
 
 
-
 module.exports = (PORT) => {
-
   if (!PORT) {
     PORT = process.env.PORT || 9000;
   }
 
-  let router = express.Router();
+  const router = new express.Router();
 
- //mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
- mongoose.connect('mongodb://conference:management@ds151127.mlab.com:51127/managment');
+ // mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
+ // mongoose.connect('mongodb://conference:management@ds151127.mlab.com:51127/managment');
+  mongoose.connect('mongodb://conference:management@ds163667.mlab.com:63667/crypto');
 
   app.use(express.static(path.join(__dirname, './../dist')));
-  app.use("/", express.static(path.join(__dirname, './../dist')));
-  app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
-  app.use(bodyParser.json({limit: '5mb'}));
+  app.use('/', express.static(path.join(__dirname, './../dist')));
+  app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
+  app.use(bodyParser.json({ limit: '5mb' }));
 
   router.use((req, res, next) => {
     console.log('Something is happening.');
@@ -55,7 +55,7 @@ module.exports = (PORT) => {
     .post(forgotPassword);
 
   router.route('/logout')
-    .get(logout);
+    .post(logout);
 
 // EXAMPLE REST FOR  testing adding users NOW NOT USED------------------------------------
   router.route('/user')
@@ -74,7 +74,7 @@ module.exports = (PORT) => {
     .get(current.get)
     .post(current.update);
 
-  router.route('/user/current/setting/password')
+  router.route('/user/current/password')
     .post(editPassword);
 
   router.route('/user/current/photo')
@@ -86,10 +86,11 @@ module.exports = (PORT) => {
   router.route('/user/:user_id')
 
     // get the user  with that id )
-    .get(function (req, res) {
+    .get((req, res) => {
       User.findById(req.params.user_id, (err, current) => {
-        if (err)
+        if (err) {
           res.send(err);
+        }
         res.json(current);
       });
     });
@@ -97,13 +98,13 @@ module.exports = (PORT) => {
 
   app.use('/api', router);
 
-  app.get("/*", (req, res) => {
-    res.redirect("/");
+  app.get('/*', (req, res) => {
+    res.redirect('/');
   });
 
 
 // START THE SERVER
 // =============================================================================
   app.listen(PORT);
-  console.log('Magic happens on port ' + PORT);
-}
+  console.log(`Server run on ${PORT} port`);
+};
