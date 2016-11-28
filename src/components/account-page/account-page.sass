@@ -15,9 +15,19 @@
     text-transform: capitalize
 
   &__row
+    position: relative
+    border-bottom: 1px solid $light-grey
+
+  &__row-content
+    font-family: Oswald Light, sans-serif
+
+  &__title
+    text-transform: capitalize
+
+  &__brief
+    height: 45px
     display: flex
     justify-content: space-between
-    border-bottom: 1px solid $light-grey
     box-sizing: border-box
     padding: 10px
 
@@ -37,9 +47,9 @@
         background-size: 80%
         margin: 4px
 
-  &__row-content
-    font-family: Oswald Light, sans-serif
-
-  &__title
-    text-transform: capitalize
-
+  &__details
+    width: 100%
+    height: 200px
+    position: relative
+    background: #f2f2f2
+    margin-top: -45px
