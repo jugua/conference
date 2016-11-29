@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ua.rd.cm.domain.User user = userService.getByEmail(username);
+        ua.rd.cm.domain.User user = userService.getByEmail(username.toLowerCase());
         if (user == null){
             throw new UsernameNotFoundException("{\"error\":\"login_auth_err\"}");
         }
