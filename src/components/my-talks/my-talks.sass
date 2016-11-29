@@ -95,7 +95,6 @@
   &__filters
     display: flex
     flex-wrap: wrap
-    justify-content: center
 
   &__title
     text-transform: capitalize
@@ -157,7 +156,8 @@
     padding-left: 15px
 
   &__date
-    margin: 15px 0
+    margin: 0
+    position: relative
 
   &__select-wrapper
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
@@ -490,8 +490,22 @@
   @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
     display: none
 
+.calendars-wrapper
+  display: flex
+
 .md-datepicker-input-mask
   background: #fff
+
+.md-datepicker-button
+  position: absolute
+  right: 0
+  z-index: 1
+
+.md-datepicker-input
+  pointer-events: none
+
+.md-icon-button + .md-datepicker-input-container
+  padding: 3px 0
 
 .md-datepicker-input-mask-opaque
   color: rgba(0,0,0,0.87)

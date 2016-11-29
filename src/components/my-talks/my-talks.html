@@ -26,15 +26,22 @@
             </div>
             <div class="my-talk-settings__date-wrapper">
                 <div class="form-label my-talk-settings__date-label">submitted date</div>
-                <md-datepicker ng-model="myDate_start"
-                               md-placeholder="Select date"
-                               class="my-talk-settings__date"
-                               id="my-talk-date"
-                ></md-datepicker>
-                <md-datepicker ng-model="myDate_finish"
-                               md-placeholder="Select date"
-                               class="my-talk-settings__date"
-                ></md-datepicker>
+                <div class="calendars-wrapper">
+                    <md-datepicker ng-model="$ctrl.myDate_start"
+                                   md-placeholder="Select date"
+                                   class="my-talk-settings__date"
+
+                                   md-hide-icons="triangle"
+                                   md-max-date="$ctrl.myDate_finish"
+                    ></md-datepicker>
+                    <md-datepicker ng-model="$ctrl.myDate_finish"
+                                   md-placeholder="Select date"
+                                   class="my-talk-settings__date"
+
+                                   md-hide-icons="triangle"
+                                   md-min-date="$ctrl.myDate_start"
+                    ></md-datepicker>
+                </div>
             </div>
                 <div class="my-talk-settings__button-wrapper">
                     <input type="button" class="my-talk-settings__button" value="apply">
