@@ -3,7 +3,7 @@ function Permissions($rootScope) {
   'ngInject';
 
   function permitted(role, user) {
-    if (!user || user.roles.indexOf(role) === -1) {
+    if (!user || !user.roles.includes(role)) {
       $rootScope.$broadcast('signInEvent');
     }
   }
