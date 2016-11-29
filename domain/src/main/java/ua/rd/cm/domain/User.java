@@ -41,7 +41,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "photo", nullable = false)
+    @Column(name = "photo")
     private String photo;
 
     @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})

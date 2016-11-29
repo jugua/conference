@@ -124,7 +124,19 @@ public class PhotoController {
         HttpStatus status;
         User currentUser = userService.getByEmail(principal.getName());
         currentUser.setPhoto(null);
+        deleteFromFolder(currentUser);
+        userService.updateUserProfile(currentUser);
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
+    private void deleteFromFolder(User user) {
+        File file= null;
+        try {
+            file = new File(getFromPropFile().getProperty(ROOT) + getFromPropFile().getProperty(FOLDER)+
+                    File.separator + user.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        file.delete();
+    }
 }
