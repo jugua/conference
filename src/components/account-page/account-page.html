@@ -4,17 +4,17 @@
         <div class="settings__row">
            <div class="settings__brief" ng-click="$ctrl.showEditname()">
                <div class="settings__title">name</div>
-               <div class="settings__row-content settings__row-content_name">Organizer</div>
+               <div class="settings__row-content settings__row-content_name">{{$ctrl.user.fname}} {{$ctrl.user.lname}}</div>
                <div class="settings__edit">edit</div>
            </div>
            <div class="settings__details" ng-show="$ctrl.editName">
-               <edit-name></edit-name>
+               <edit-name changename="$ctrl.editName" user="$ctrl.user"></edit-name>
            </div>
         </div>
         <div class="settings__row">
             <div class="settings__brief" ng-click="$ctrl.showEditemail()">
                 <div class="settings__title">email</div>
-                <div class="settings__row-content settings__row-content_name">organizer@organizer.com</div>
+                <div class="settings__row-content settings__row-content_name">{{$ctrl.user.mail}}</div>
                 <div class="settings__edit">edit</div>
             </div>
             <div class="settings__details" ng-show="$ctrl.editEmail">
