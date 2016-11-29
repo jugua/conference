@@ -1,6 +1,5 @@
 package ua.rd.cm.web.controller;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,75 +12,90 @@ import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import java.io.*;
 import java.security.Principal;
-import java.util.Properties;
 
 @RestController
 @RequestMapping("/api/user/current/photo")
 public class PhotoController {
-    private ModelMapper mapper;
     private UserService userService;
 
-    public static final String ROOT = "root";
-    public static final String FOLDER = "folder";
+    public static final String ROOT = "C://";
+    public static final String FOLDER = "/ConferenceManagement/user/photos/";
     public static final long MAX_SIZE = 2097152;
 
     @Autowired
-    public PhotoController(ModelMapper mapper, UserService userService) {
-        this.mapper = mapper;
+    public PhotoController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping
     public ResponseEntity upload(PhotoDto photoDto, Principal principal) {
-
         MessageDto message = new MessageDto();
         HttpStatus status;
-
         MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(principal.getName());
 
-        if (!file.isEmpty()) {
-
-            if (file.getSize() > MAX_SIZE) {
-                message.setError("maxSize");
-                status = HttpStatus.PAYLOAD_TOO_LARGE;
-                return ResponseEntity.status(status).body(message);
-            }
-            if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
-                message.setError("pattern");
-                status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-                return ResponseEntity.status(status).body(message);
-            }
-
-            try {
-                byte[] bytes = file.getBytes();
-                File dir = createDir();
-                File serverFile = putFileIntoDir(currentUser, bytes, dir,
-                        getImageFormat(file.getOriginalFilename()));
-
-                currentUser.setPhoto(serverFile.getAbsolutePath());
-                userService.updateUserProfile(currentUser);
-
-                message.setStatus(serverFile.getAbsolutePath());
-                status = HttpStatus.OK;
-                return ResponseEntity.status(status).body(message);
-            } catch (IOException e) {
-                return new ResponseEntity(HttpStatus.FORBIDDEN);
-            }
-        } else {
+        if (file.isEmpty()) {
             message.setError("save");
             status = HttpStatus.BAD_REQUEST;
-            return ResponseEntity.status(status).body(message);
+        } else if (file.getSize() > MAX_SIZE) {
+            message.setError("maxSize");
+            status = HttpStatus.PAYLOAD_TOO_LARGE;
+        } else if (!file.getOriginalFilename()
+                .matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
+            message.setError("pattern");
+            status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+        } else {
+            try {
+                String path = saveFile(file, currentUser);
+
+                currentUser.setPhoto(path);
+                userService.updateUserProfile(currentUser);
+
+                message.setStatus(path);
+                status = HttpStatus.OK;
+            } catch (IOException e) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            } //TODO: update
         }
+
+        return ResponseEntity.status(status).body(message);
     }
 
-    private File createDir() throws IOException {
-        Properties propFile = getFromPropFile();
-        File dir = new File(propFile.getProperty(ROOT) + propFile.getProperty(FOLDER));
-        if (!dir.exists()) {
-            dir.mkdirs();
+    @DeleteMapping
+    public ResponseEntity delete(Principal principal){
+        MessageDto message = new MessageDto();
+        HttpStatus status;
+        User currentUser = userService.getByEmail(principal.getName());
+
+        try {
+            File serverFile = find(getDir().getAbsolutePath(),
+                    currentUser.getId().toString());
+
+            if (serverFile != null && serverFile.delete()) {
+                currentUser.setPhoto(null);
+                userService.updateUserProfile(currentUser);
+
+                status = HttpStatus.OK;
+            } else {
+                message.setError("delete");
+                status = HttpStatus.BAD_REQUEST;
+            }
+        } catch (IOException e) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
-        return dir;
+
+        return ResponseEntity.status(status).body(message);
+    }
+
+    private File getDir() throws IOException {
+        return new File(ROOT + FOLDER);
+    }
+
+    private String saveFile(MultipartFile file, User currentUser) throws IOException {
+        File serverFile = putFileIntoDir(currentUser, file.getBytes(),
+                getDir(), getFileFormat(file.getOriginalFilename()));
+
+        return serverFile.getAbsolutePath();
     }
 
     private File putFileIntoDir(User currentUser, byte[] bytes, File dir, String format) throws IOException {
@@ -94,37 +108,35 @@ public class PhotoController {
         return serverFile;
     }
 
-    private Properties getFromPropFile() throws IOException {
-        Properties propFile = new Properties();
-        InputStream input = null;
-        try {
-            input = new FileInputStream("webapp/src/main/resources/path.properties");
-            propFile.load(input);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return propFile;
-    }
-
-    private String getImageFormat(String fileName) {
-        System.out.println("fileName=" + fileName);
+    private String getFileFormat(String fileName) {
         int index = fileName.lastIndexOf('.');
-        System.out.println("index=" + index);
         if (index == -1) {
-            return null;
+            return null; //TODO: handle
         }
-        String format = fileName.substring(index);
-        return format;
+        return fileName.substring(index);
     }
 
-    @DeleteMapping
-    public ResponseEntity delete(Principal principal){
-        MessageDto message = new MessageDto();
-        HttpStatus status;
-        User currentUser = userService.getByEmail(principal.getName());
-        currentUser.setPhoto(null);
-        return ResponseEntity.status(HttpStatus.OK).body(message);
+    private String getFileName(String fileName) {
+        int index = fileName.lastIndexOf('.');
+        if (index == -1) {
+            return fileName;
+        }
+        return fileName.substring(0, index);
     }
 
+    private File find(String path, String fileName) {
+        File f = new File(path);
+
+        if (fileName.equalsIgnoreCase(getFileName(f.getName()))) {
+            return f;
+        }
+        if (f.isDirectory()) {
+            for (String aChild : f.list()) {
+                File ff = find(path + File.separator + aChild, fileName);
+                if (ff != null) return ff;
+            }
+        }
+
+        return null;
+    }
 }
