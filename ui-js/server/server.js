@@ -30,8 +30,8 @@ module.exports = (PORT) => {
  //mongoose.connect('mongodb://mey:computers@ds015574.mlab.com:15574/mey_test');
  mongoose.connect('mongodb://conference:management@ds151127.mlab.com:51127/managment');
 
-  app.use(express.static(path.join(__dirname, './../dist')));
-  app.use("/", express.static(path.join(__dirname, './../dist')));
+  app.use(express.static(path.join(__dirname, './../target/dist')));
+  app.use("/", express.static(path.join(__dirname, './../target/dist')));
   app.use(bodyParser.urlencoded({limit: '5mb', extended: true}));
   app.use(bodyParser.json({limit: '5mb'}));
 
