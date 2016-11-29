@@ -4,7 +4,7 @@ const tokenInjector = (LocalStorage) => {
 
   const sessionInjector = {
     request: (config) => {
-      if (!document.cookie.includes('XSRF')
+      if (document.cookie.indexOf('XSRF') === -1
         && LocalStorage.getToken()
         && LocalStorage.getToken() !== 'auth') {
         config.headers.token = LocalStorage.getToken();

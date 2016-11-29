@@ -47,7 +47,7 @@ public class UserController {
         if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)){
             status = HttpStatus.BAD_REQUEST;
             message.setError("empty_fields");
-        } else if (userService.isEmailExist(dto.getEmail())){
+        } else if (userService.isEmailExist(dto.getEmail().toLowerCase())){
             status = HttpStatus.CONFLICT;
             message.setError("email_already_exists");
         } else {
@@ -90,7 +90,9 @@ public class UserController {
     }
 
     private User dtoToEntity(RegistrationDto dto) {
-        return mapper.map(dto, User.class);
+        User user = mapper.map(dto, User.class);
+        user.setEmail(user.getEmail().toLowerCase());
+        return user;
     }
 
     private UserInfo userInfoDtoToEntity(UserInfoDto dto) {

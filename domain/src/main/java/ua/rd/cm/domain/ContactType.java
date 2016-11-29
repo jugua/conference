@@ -27,7 +27,6 @@ public class ContactType {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqContactTypeGen")
     private Long id;
 
-    @NotNull
     @Column(name = "contact_type_name", nullable = false, unique = true)
     private String name;
 }
