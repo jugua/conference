@@ -2,26 +2,26 @@ const Menus = function Menus() {
   const menu = {
     s: [
       {
-        link: 'account',
-        name: 'My Account'
-      },
-      {
         link: 'tabs.myInfo',
         name: 'My Info'
       },
       {
         link: 'tabs.myTalks',
         name: 'My Talks'
+      },
+      {
+        link: 'account',
+        name: 'Settings'
       }
     ],
     o: [
       {
-        link: 'oaccount',
-        name: 'My Account'
-      },
-      {
         link: 'talks',
         name: 'Talks'
+      },
+      {
+        link: 'account',
+        name: 'Settings'
       }
     ]
   };
