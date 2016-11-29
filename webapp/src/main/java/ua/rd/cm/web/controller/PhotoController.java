@@ -47,7 +47,7 @@ public class PhotoController {
                 status = HttpStatus.PAYLOAD_TOO_LARGE;
                 return ResponseEntity.status(status).body(message);
             }
-            if (!file.getName().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
+            if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
                 message.setError("pattern");
                 status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
                 return ResponseEntity.status(status).body(message);
