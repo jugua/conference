@@ -27,7 +27,6 @@ public class Language {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqLanguageGen")
     private Long id;
 
-    @NotNull
     @Column(name = "language_name", nullable = false, unique = true)
     private String name;
 }

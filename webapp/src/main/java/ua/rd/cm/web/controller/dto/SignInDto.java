@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 public class SignInDto {
     @NotNull
-    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
+    @Pattern(regexp = "(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
     @JsonProperty("mail")
     private String email;
 

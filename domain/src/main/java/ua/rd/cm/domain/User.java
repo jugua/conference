@@ -29,26 +29,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUserGen")
     private Long id;
 
-    @NotNull
-    @Size(min = 1, max = 56)
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @NotNull
-    @Size(min = 1, max = 56)
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @NotNull
-    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")
     @Column(name = "email", nullable = false, unique =  true)
     private String email;
 
-    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
-    @NotNull
     @Column(name = "photo", nullable = false)
     private String photo;
 

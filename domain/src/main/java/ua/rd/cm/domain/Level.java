@@ -27,7 +27,6 @@ public class Level {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqLevelGen")
     private Long id;
 
-    @NotNull
     @Column(name = "level_name", nullable = false, unique = true)
     private String name;
 }
