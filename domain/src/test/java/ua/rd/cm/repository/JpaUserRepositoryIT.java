@@ -47,7 +47,8 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	
 	@Test
 	public void testSaveUser() {
-		User user = new User("testName3", "testSurname3", "test3@gmail.com", "tribel1234PASSWORD3", 
+		User user = new User(null, "testName3", "testSurname3", "test3@gmail" +
+				".com",	"tribel1234PASSWORD3",
 				"testUrl3", null, null);
 		
 		repository.saveUser(user);
@@ -62,7 +63,8 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 
 	@Test
 	public void testUpdateUser() {
-		User user = new User("testName3", "testSurname3", "test3@gmail.com", "tribel1234PASSWORD3", 
+		User user = new User(null, "testName3", "testSurname3", "test3@gmail" +
+				".com", "tribel1234PASSWORD3",
 				"testUrl3", null, null);
 		
 		repository.saveUser(user);

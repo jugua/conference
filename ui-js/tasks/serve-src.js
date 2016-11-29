@@ -10,6 +10,9 @@ import LiveReloadPlugin from 'webpack-livereload-plugin';
 gulp.task('serve-src', () => {
   let myConfig = Object.create(webpackConfig);
   myConfig.debug = true;
+  myConfig.plugins.push(new webpack.DefinePlugin({
+    localRunFE : false
+  }));
   myConfig.plugins.push( new LiveReloadPlugin({
     port:3011,
     appendScriptTag:true
@@ -18,7 +21,7 @@ gulp.task('serve-src', () => {
   new WebpackDevServer(webpack(myConfig), {
     contentBase: __dirname + "/src",
     proxy: {
-      "*": 'http://localhost:8025'
+      "*": 'http://localhost:'+ process.env.PORT
     },
     stats: {
       colors: true
@@ -26,5 +29,31 @@ gulp.task('serve-src', () => {
   }).listen(process.env.PORT-1, "0.0.0.0", function (err) {
     if (err) throw new gutil.PluginError("serve-src", err);
     gutil.log("[serve-src]", "http://localhost:"+ (process.env.PORT-1));
+  });
+});
+
+gulp.task('serve-java', () => {
+  let myConfig = Object.create(webpackConfig);
+  myConfig.debug = true;
+  myConfig.plugins.push(new webpack.DefinePlugin({
+    localRunFE : true
+  }));
+  myConfig.plugins.push( new LiveReloadPlugin({
+    port:3011,
+    appendScriptTag:true
+  }));
+
+  new WebpackDevServer(webpack(myConfig), {
+    contentBase: __dirname + "/src",
+    proxy: {
+      "**": 'http://localhost:8025',
+      changeOrigin: true
+    },
+    stats: {
+      colors: true
+    }
+  }).listen(process.env.PORT-1, "0.0.0.0", function (err) {
+    if (err) throw new gutil.PluginError("serve-java", err);
+    gutil.log('[serve-java]', 'http://localhost:8025');
   });
 });

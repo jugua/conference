@@ -19,7 +19,8 @@ import javax.validation.constraints.NotNull;
 @EqualsAndHashCode(exclude = "id")
 @Entity
 @Table(name = "role")
-@SequenceGenerator(name = "seqRoleGen", allocationSize = 1)
+@SequenceGenerator(name = "seqRoleGen", allocationSize = 1,
+        sequenceName = "role_seq")
 public class Role implements GrantedAuthority {
 
     @Id

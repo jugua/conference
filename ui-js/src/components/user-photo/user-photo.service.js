@@ -2,10 +2,9 @@
 /* global angular */
 
 class UserPhoto {
-  constructor($http, LocalStorage) {
+  constructor($http) {
     'ngInject';
 
-    this.localStorage = LocalStorage;
     this.http = $http;
   }
 
@@ -15,7 +14,6 @@ class UserPhoto {
     return this.http.post('api/user/current/photo', formData, {
       transformRequest: angular.identity,
       headers: {
-        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
         'Content-Type': undefined
@@ -27,7 +25,6 @@ class UserPhoto {
   deleteUserPhoto() {
     return this.http.delete('api/user/current/photo', {
       headers: {
-        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
       }
