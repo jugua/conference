@@ -7,7 +7,7 @@
                <div class="settings__row-content settings__row-content_name">{{$ctrl.user.fname}} {{$ctrl.user.lname}}</div>
                <div class="settings__edit">edit</div>
            </div>
-           <div class="settings__details" ng-show="$ctrl.editName">
+           <div class="settings__details" ng-if="$ctrl.editName">
                <edit-name changename="$ctrl.editName" user="$ctrl.user"></edit-name>
            </div>
         </div>
