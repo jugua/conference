@@ -28,7 +28,6 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqRoleGen")
     private Long id;
 
-    @NotNull
     @Column(name = "role_name", nullable = false, unique = true)
     private String name;
 

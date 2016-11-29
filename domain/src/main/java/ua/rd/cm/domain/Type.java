@@ -27,7 +27,6 @@ public class Type {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTypeGen")
     private Long id;
 
-    @NotNull
     @Column(name = "type_name", nullable = false, unique = true)
     private String name;
 }

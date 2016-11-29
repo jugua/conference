@@ -27,7 +27,6 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTopicGen")
     private Long id;
 
-    @NotNull
     @Column(name = "topic_name", nullable = false, unique = true)
     private String name;
 }
