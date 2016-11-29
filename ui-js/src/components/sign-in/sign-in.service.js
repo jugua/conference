@@ -7,7 +7,7 @@ function SignIn($http, $q, $window, $rootScope) {
     let headers;
     let body;
 
-    if (!document.cookie.includes('XSRF')) {
+    if (document.cookie.indexOf('XSRF') === -1) {
       headers = {};
       body = user;
     } else {
