@@ -47,7 +47,7 @@ public class PhotoController {
                 status = HttpStatus.PAYLOAD_TOO_LARGE;
                 return ResponseEntity.status(status).body(message);
             }
-            if (file.getName().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
+            if (!file.getName().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
                 message.setError("pattern");
                 status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
                 return ResponseEntity.status(status).body(message);
@@ -118,9 +118,13 @@ public class PhotoController {
         return format;
     }
 
-//    @DeleteMapping
-//    public ResponseEntity delete(@Valid @RequestBody RegistrationDto dto,
-//                            BindingResult bindingResult){
-//    }
+    @DeleteMapping
+    public ResponseEntity delete(Principal principal){
+        MessageDto message = new MessageDto();
+        HttpStatus status;
+        User currentUser = userService.getByEmail(principal.getName());
+        currentUser.setPhoto(null);
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 
 }
