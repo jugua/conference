@@ -23,6 +23,7 @@ public class PhotoController {
 
     public static final String ROOT="root";
     public static final String FOLDER="folder";
+    public static final long MAX_SIZE=2097152;
     @Autowired
     public PhotoController(ModelMapper mapper, UserService userService) {
         this.mapper = mapper;
@@ -40,9 +41,14 @@ public class PhotoController {
 
         if (!file.isEmpty()) {
 
-            if(file.getSize()>2097152){
+            if(file.getSize()>MAX_SIZE){
                 message.setError("maxSize");
                 status=HttpStatus.PAYLOAD_TOO_LARGE;
+                return ResponseEntity.status(status).body(message);
+            }
+            if(file.getName().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")){
+                message.setError("pattern");
+                status=HttpStatus.UNSUPPORTED_MEDIA_TYPE;
                 return ResponseEntity.status(status).body(message);
             }
 
@@ -99,6 +105,9 @@ public class PhotoController {
         return propFile;
     }
 
+    private String getImageFormat(String fileName){
+        return null;
+    }
 
 //    @DeleteMapping
 //    public ResponseEntity delete(@Valid @RequestBody RegistrationDto dto,
