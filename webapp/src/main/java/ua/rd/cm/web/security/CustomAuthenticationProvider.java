@@ -1,7 +1,8 @@
-package ua.rd.cm.services;
+package ua.rd.cm.web.security;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,9 +11,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ua.rd.cm.services.CustomUserDetailsService;
 
 
 @Component
+@Import(CustomUserDetailsService.class)
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
