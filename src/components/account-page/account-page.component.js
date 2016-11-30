@@ -3,7 +3,7 @@ import controller from './account-page.controller';
 
 const accountPageComponent = {
   bindings: {
-
+    user: '='
   },
   template,
   controller
