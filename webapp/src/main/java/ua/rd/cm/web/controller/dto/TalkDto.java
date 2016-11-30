@@ -39,7 +39,7 @@ public class TalkDto {
 	@JsonProperty("level")
 	private String level;
 	
-	@Size(min = 1, max = 1500)
+	@Size( max = 1500)
 	@JsonProperty("addon")
 	private String addInfo;
 	
