@@ -1,45 +1,45 @@
 import MenuService from './menus.service';
 
 describe('menuService', () => {
-  let cut;
+  let sut;
   beforeEach(()=> {
-    cut = new MenuService();
+    sut = new MenuService();
   });
 
   it('has property getMenu', () => {
-    expect(typeof cut.getMenu).toBe('function');
+    expect(typeof sut.getMenu).toBe('function');
   });
 
   it('has property getTopics', () => {
-    expect(typeof cut.getTopics).toBe('function');
+    expect(typeof sut.getTopics).toBe('function');
   });
 
   it('has property getTypes', () => {
-    expect(typeof cut.getTypes).toBe('function');
+    expect(typeof sut.getTypes).toBe('function');
   });
 
   it('has property getLang', () => {
-    expect(typeof cut.getLang).toBe('function');
+    expect(typeof sut.getLang).toBe('function');
   });
 
   it('has property getTalksLevels', () => {
-    expect(typeof cut.getTalksLevels).toBe('function');
+    expect(typeof sut.getTalksLevels).toBe('function');
   });
 
   it('getTopics returns array', () => {
-    expect(cut.getTopics() instanceof Array).toBe(true);
+    expect(sut.getTopics() instanceof Array).toBe(true);
   });
 
   it('getTypes reurns array', () => {
-    expect(cut.getTypes() instanceof Array).toBe(true);
+    expect(sut.getTypes() instanceof Array).toBe(true);
   });
 
   it('getLang returns array', () => {
-    expect(cut.getLang() instanceof Array).toBe(true);
+    expect(sut.getLang() instanceof Array).toBe(true);
   });
 
   it('getTalksLevel returns array', () => {
-    expect(cut.getTalksLevels() instanceof Array).toBe(true);
+    expect(sut.getTalksLevels() instanceof Array).toBe(true);
   });
 
 
