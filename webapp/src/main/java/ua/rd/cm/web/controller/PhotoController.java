@@ -18,7 +18,7 @@ import java.security.Principal;
 public class PhotoController {
     private UserService userService;
 
-    public static final String ROOT = "/";
+    public static final String ROOT = "C://";
     public static final String FOLDER = "var/lib/cm/user/photos/";
     public static final long MAX_SIZE = 2097152;
 
@@ -88,7 +88,11 @@ public class PhotoController {
     }
 
     private File getDir() throws IOException {
-        return new File(ROOT + FOLDER);
+        File dir= new File(ROOT + FOLDER);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir;
     }
 
     private String saveFile(MultipartFile file, User currentUser) throws IOException {
