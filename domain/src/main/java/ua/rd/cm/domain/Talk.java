@@ -66,16 +66,16 @@ public class Talk {
 
     @NotNull
     @Size(max = 250)
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 250)
     private String title;
 
     @NotNull
     @Size(max = 3000)
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 3000)
     private String description;
 
     @NotNull
     @Size(max = 1500)
-    @Column(name = "additional_info", nullable = false)
+    @Column(name = "additional_info", nullable = false, length = 1500)
     private String additionalInfo;
 }
