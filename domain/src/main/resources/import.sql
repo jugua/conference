@@ -64,7 +64,9 @@ INSERT INTO `language` VALUES (1, "English"), (2, "Ukrainian"), (3, "Russian");
 
 UPDATE language_seq SET next_val = 4 WHERE next_val = 3;
 
-
+--
+-- Setting default user with role SPEAKER with all fields
+--
 
 INSERT INTO user_info VALUES (1, "Additional info", "EPAM", "Jun", "Past conference", "Short bio");
 UPDATE user_info_seq SET next_val = 2 WHERE next_val = 1;
@@ -79,3 +81,27 @@ INSERT INTO user_info_contact VALUES (1, "twitter.com", 2);
 INSERT INTO user_info_contact VALUES (1, "facebook.com", 3);
 INSERT INTO user_info_contact VALUES (1, "linkedin.com", 1);
 INSERT INTO user_info_contact VALUES (1, "userblog.com", 4);
+
+--
+-- Setting default user with role SPEAKER with only registration fields
+--
+
+INSERT INTO user_info (user_info_id, company, job_title, short_bio) VALUES (2, "", "", "");
+UPDATE user_info_seq SET next_val = 3 WHERE next_val = 2;
+
+
+INSERT INTO `user`  (user_id, email, first_name, last_name, password, user_info_id) VALUES (2, "user@gmail.com", "User", "User", "password", 2);
+UPDATE user_seq SET next_val = 3 WHERE next_val = 2;
+INSERT INTO user_role VALUES (2, 1);
+
+--
+-- Setting default user with role ORGANIZER with only registration fields
+--
+
+INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (3, "", "", "");
+UPDATE user_info_seq SET next_val = 4 WHERE next_val = 3;
+
+
+INSERT INTO `user`  (user_id, email, first_name, last_name, password, user_info_id) VALUES (3, "organiser@gmail.com", "Organiser", "Organiser", "organiser", 3);
+UPDATE user_seq SET next_val = 4 WHERE next_val = 3;
+INSERT INTO user_role VALUES (3, 2);
