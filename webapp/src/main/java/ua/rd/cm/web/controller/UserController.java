@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ public class UserController {
     private UserService userService;
     private UserInfoService userInfoService;
     private ContactTypeService contactTypeService;
+    private Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
     public UserController(ModelMapper mapper, UserService userService, UserInfoService userInfoService,
@@ -42,20 +44,22 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity register(@Valid @RequestBody RegistrationDto dto, BindingResult bindingResult){
-        logger.info("Registration of new user started");
+        logger.info("Registration of new user " + dto.toString() + " started");
         HttpStatus status;
         MessageDto message = new MessageDto();
         if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)){
+            logger.error("Registration failed: 400 Bad Request");
             status = HttpStatus.BAD_REQUEST;
             message.setError("empty_fields");
         } else if (userService.isEmailExist(dto.getEmail().toLowerCase())){
+            logger.error("Registration failed: email '" + dto.getEmail() + "' is already in use");
             status = HttpStatus.CONFLICT;
             message.setError("email_already_exists");
         } else {
             userService.save(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
             message.setStatus("success");
-            logger.info("Registration of new user completed");
+            logger.info("Registration of new user " + dto.toString() + " completed");
         }
         return  ResponseEntity.status(status).body(message);
     }
