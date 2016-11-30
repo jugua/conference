@@ -29,6 +29,7 @@ function Current($resource, $q, $rootScope, LocalStorage) {
       current.resolve(data);
     },
     () => {
+      window.localStorage.removeItem('userInfo');
       current.resolve(null);
     });
 
