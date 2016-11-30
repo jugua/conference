@@ -32,7 +32,7 @@ public class UserInfoDto {
     private String userInfoCompany;
 
     @JsonProperty("past")
-    @Size(min = 1, max = 1000)
+    @Size(max = 1000)
     private String userInfoPastConference;
 
     @JsonProperty("photo")
@@ -51,7 +51,7 @@ public class UserInfoDto {
     private String blog;
 
     @JsonProperty("info")
-    @Size(min = 1, max = 1000)
+    @Size(max = 1000)
     private String userInfoAdditionalInfo;
 
 }
