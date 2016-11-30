@@ -19,7 +19,7 @@ public class PhotoController {
     private UserService userService;
 
     public static final String ROOT = "/";
-    public static final String FOLDER = "var/lib/cm/user/photos/";
+    public static final String FOLDER = "var/cm/user/photos/";
     public static final long MAX_SIZE = 2097152;
 
     @Autowired
