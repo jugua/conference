@@ -42,6 +42,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity register(@Valid @RequestBody RegistrationDto dto, BindingResult bindingResult){
+        logger.info("Registration of new user started");
         HttpStatus status;
         MessageDto message = new MessageDto();
         if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)){
@@ -54,6 +55,7 @@ public class UserController {
             userService.save(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
             message.setStatus("success");
+            logger.info("Registration of new user completed");
         }
         return  ResponseEntity.status(status).body(message);
     }
