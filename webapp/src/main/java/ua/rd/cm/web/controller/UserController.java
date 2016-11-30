@@ -44,11 +44,10 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity register(@Valid @RequestBody RegistrationDto dto, BindingResult bindingResult){
-        logger.info("Registration of new user " + dto.toString() + " started");
         HttpStatus status;
         MessageDto message = new MessageDto();
         if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)){
-            logger.error("Registration failed: 400 Bad Request");
+            logger.error("Request for [api/user] is failed: validation is failed");
             status = HttpStatus.BAD_REQUEST;
             message.setError("empty_fields");
         } else if (userService.isEmailExist(dto.getEmail().toLowerCase())){
@@ -59,7 +58,6 @@ public class UserController {
             userService.save(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
             message.setStatus("success");
-            logger.info("Registration of new user " + dto.toString() + " completed");
         }
         return  ResponseEntity.status(status).body(message);
     }
@@ -69,10 +67,9 @@ public class UserController {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         User currentUser = userService.getByEmail(principal.getName());
-
         if (currentUser == null) {
+            logger.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
@@ -82,6 +79,7 @@ public class UserController {
     @PostMapping("/current")
     public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto, Principal principal, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
+            logger.error("Request for [api/user/current] is failed: validation is failed");
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         if (principal == null) {
@@ -90,7 +88,6 @@ public class UserController {
         User currentUser = userService.getByEmail(principal.getName());
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
         currentUserInfo.setId(currentUser.getUserInfo().getId());
-
         userInfoService.update(currentUserInfo);
         return new ResponseEntity(HttpStatus.OK);
     }
