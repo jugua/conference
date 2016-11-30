@@ -65,7 +65,7 @@
             </div>
             <div class="data-table__inner-wrapper">
                 <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
-                    <div class="data-table__column data-table__column_title">{{talk.title}}</div>
+                    <div class="data-table__column data-table__column_title"><a href="#" class="link">{{talk.title}}</a></div>
                     <div class="data-table__column data-table__column_topic">{{talk.topic}}</div>
                     <div class="data-table__column data-table__column_date">{{talk.date |date:"dd/MM/yyyy"}}</div>
                     <div class="data-table__column data-table__column_status">{{talk.status}}</div>
