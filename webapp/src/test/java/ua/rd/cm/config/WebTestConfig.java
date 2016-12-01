@@ -2,10 +2,7 @@ package ua.rd.cm.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ua.rd.cm.services.ContactTypeService;
-import ua.rd.cm.services.TalkService;
-import ua.rd.cm.services.UserInfoService;
-import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.*;
 
 import static org.mockito.Mockito.mock;
 
@@ -27,4 +24,25 @@ public class WebTestConfig {
     public TalkService mockTalkService() {
     	return mock(TalkService.class);
     }
+    @Bean
+    public TopicService mockTopicService() {
+        return mock(TopicService.class);
+    }
+    @Bean
+    public TypeService mockTypeService() {
+        return mock(TypeService.class);
+    }
+    @Bean
+    public LevelService mockLevelService() {
+        return mock(LevelService.class);
+    }
+    @Bean
+    public LanguageService mockLanguageService() {
+        return mock(LanguageService.class);
+    }
+    @Bean
+    public StatusService mockStatusService() {
+        return mock(StatusService.class);
+    }
+
 }
