@@ -33,8 +33,10 @@ public class SimpleLevelService implements LevelService {
     }
 
     @Override
-    public List<Level> getByName(String name) {
-        return levelRepository.findBySpecification(new LevelByName(name));
+    public Level getByName(String name) {
+        List<Level> list = levelRepository.findBySpecification(new LevelByName(name));
+        if (list.isEmpty()) return null;
+        else return list.get(0);
     }
 
     @Override
