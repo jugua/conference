@@ -40,7 +40,9 @@ public class SimpleTypeService implements TypeService {
     }
 
     @Override
-    public List<Type> getByName(String name) {
-        return typeRepository.findBySpecification(new TypeByName(name));
+    public Type getByName(String name) {
+        List<Type> list = typeRepository.findBySpecification(new TypeByName(name));
+        if (list.isEmpty()) return null;
+        else return list.get(0);
     }
 }

@@ -15,5 +15,5 @@ public interface TypeService {
 
     List<Type> findAll();
 
-    List<Type> getByName(String name);
+    Type getByName(String name);
 }
