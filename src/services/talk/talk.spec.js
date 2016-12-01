@@ -4,29 +4,41 @@ describe('Talk Service', () => {
   let sut;
   let q;
   let LocalStorage;
+  let mockResource;
 
   beforeEach(inject((_$q_) => {
 
     q = _$q_;
-    mockResource = {
-      add: () => {
-        deferred = $q.defer();
-        deferred.resolve({id: 1, :name:'test'});
-        return deferred.promise;
-      },
-      getAll: () => {
-        deferred = $q.defer();
-        deferred.resolve({id: 1, :name:'test'});
-        return deferred.promise;
+    LocalStorage = {
+      getToken: ()=> {
+
       }
     };
 
-    sut = new TalkService(LocalStorage, mockResource);
+    mockResource = function () {
+      return {
+        add: () => {
+          let deferred = q.defer();
+          deferred.resolve({id: 1, name: 'test'});
+          return deferred.promise;
+        },
+        getAll: () => {
+          let deferred = q.defer();
+          deferred.resolve({id: 1, name: 'test'});
+          return deferred.promise;
+        }
+      }
+
+    };
+
+    sut = new TalkService(mockResource, LocalStorage);
   }));
 
 
-  it('TalkService has method clear', () => {
-
+  it('TalkService method clear clears _talks', () => {
+    sut._talks = ['test'];
+    sut.clear();
+    expect(sut._talks).toEqual(null);
   });
 });
 
