@@ -33,7 +33,7 @@ public class JpaTalkRepository implements TalkRepository{
 
 	@Override
 	public List<Talk> findAll() {
-		return em.createQuery("SELECT t FROM talk t ", Talk.class).getResultList();
+		return em.createQuery("SELECT t FROM Talk t ", Talk.class).getResultList();
 	}
 
 	@Override
