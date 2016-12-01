@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TalkDto {
 	@NotNull
 	@Size(min = 1, max = 250)
@@ -42,8 +44,11 @@ public class TalkDto {
 	@JsonProperty("level")
 	private String level;
 	
-	@Size( max = 1500)
+	@Size(max = 1500)
 	@JsonProperty("addon")
 	private String additionalInfo;
+
+	@JsonProperty("status")
+	private String status;
 	
 }
