@@ -12,7 +12,7 @@ public interface LanguageService {
 
     void save(Language language);
 
-    List<Language> getByName(String name);
+    Language getByName(String name);
 
     List<Language> findAll();
 

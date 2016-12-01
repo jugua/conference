@@ -35,8 +35,10 @@ public class SimpleLanguageService implements LanguageService {
     }
 
     @Override
-    public List<Language> getByName(String name) {
-        return languageRepository.findBySpecification(new LanguageByName(name));
+    public Language getByName(String name) {
+        List<Language> list = languageRepository.findBySpecification(new LanguageByName(name));
+        if (list.isEmpty()) return null;
+        else return list.get(0);
     }
 
     @Override
