@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.PhotoService;
 
 import static org.mockito.Mockito.mock;
 
@@ -21,5 +22,9 @@ public class WebTestConfig {
     @Bean
     public ContactTypeService mockContactTypeService(){
         return mock(ContactTypeService.class);
+    }
+    @Bean
+    public PhotoService mockPhotoService() {
+        return mock(PhotoService.class);
     }
 }
