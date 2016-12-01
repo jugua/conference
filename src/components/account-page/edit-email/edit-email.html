@@ -1,1 +1,51 @@
-<! *** !>
+<div class="edit-email">
+  <div class="edit-email__result edit-email__result_confirm"
+        ng-show="$ctrl.confirm"
+        ng-bind="$ctrl.confirmMessage"></div>
+  <div class="edit-email__result edit-email__result_error"
+        ng-show="$ctrl.error"
+        ng-bind="$ctrl.errorMessage"></div>
+
+    <form class="edit-email__form"
+          novalidate
+          name="$ctrl.editEmailForm"
+          ng-submit="$ctrl.changeEmail()">
+
+      <p class="edit-email__title ">Email</p>
+      <div class="edit-email__fields-wrapper">
+        <label class="form-label">Current Email</label>
+        <input class="field field_border edit-email__field"
+               type="text"
+               name="currentEmail"
+               disabled
+               ng-model="$ctrl.user.mail">
+
+        <label class="form-label edit-email__label">New Email</label>
+        <input class="field field_border edit-email__field"
+               type="text"
+               name="newEmail"
+               required
+               ng-pattern="$ctrl.emailPattern"
+               ng-model="$ctrl.newEmail"
+               ng-focus="$ctrl.showTooltip()"
+               ng-blur="$ctrl.hideTooltip()">
+        <div class="edit-email__tooltip" ng-show="$ctrl.tooltipVisible">
+          <div>A confirmation link will be sent to your <strong>new</strong> address</div>
+          <div>A notification will be sent to your <strong>old</strong> address</div>
+        </div>
+
+        <div class="edit-email__buttons-wrapper">
+          <input type="submit"
+               value="Save"
+               class="btn edit-email__button edit-email__button_left"
+               ng-disabled="$ctrl.changed">
+
+          <input type="button"
+               value="Cancel"
+               class="btn edit-email__button"
+               ng-disabled="$ctrl.changed"
+               ng-click="$ctrl.closeEditEmail()">
+        </div>
+      </div>
+    </form>
+</div>

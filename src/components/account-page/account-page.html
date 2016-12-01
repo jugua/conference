@@ -12,13 +12,13 @@
            </div>
         </div>
         <div class="settings__row">
-            <div class="settings__brief" ng-click="$ctrl.showEditemail()">
+            <div class="settings__brief" ng-click="$ctrl.showEditemail()" ng-show="!$ctrl.editEmail">
                 <div class="settings__title">email</div>
                 <div class="settings__row-content settings__row-content_name">{{$ctrl.user.mail}}</div>
                 <div class="settings__edit">edit</div>
             </div>
             <div class="settings__details" ng-show="$ctrl.editEmail">
-                <edit-email></edit-email>
+                <edit-email editing="$ctrl.editEmail" user="$ctrl.user"></edit-email>
             </div>
         </div>
         <div class="settings__row">

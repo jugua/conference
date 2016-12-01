@@ -1,6 +1,7 @@
 import accountPageComponent from './account-page.component';
 import editPasswordComponent from './edit-password/edit-password.component';
 import editNameComponent from './edit-name/edit-name.component';
+import editEmailComponent from './edit-email/edit-email.component';
 import EditPasswordService from './edit-password/edit-password.service';
 
 export default (app) => {
@@ -26,5 +27,6 @@ export default (app) => {
   }).component('accountPage', accountPageComponent)
     .component('editPassword', editPasswordComponent)
     .component('editName', editNameComponent)
+    .component('editEmail', editEmailComponent)
     .service('EditPasswordService', EditPasswordService);
 };
