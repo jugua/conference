@@ -1,5 +1,6 @@
 package ua.rd.cm.repository;
 
+import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Topic;
 import ua.rd.cm.repository.specification.Specification;
 
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * @author Mariia Lapovska
  */
+@Repository
 public class JpaTopicRepository implements TopicRepository {
 
     @PersistenceContext

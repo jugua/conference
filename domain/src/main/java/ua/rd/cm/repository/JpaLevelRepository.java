@@ -1,5 +1,6 @@
 package ua.rd.cm.repository;
 
+import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Level;
 import ua.rd.cm.repository.specification.Specification;
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import java.util.List;
 /**
  * @author Olha_Melnyk
  */
+@Repository
 public class JpaLevelRepository implements LevelRepository {
 
     @PersistenceContext
