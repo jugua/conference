@@ -1,16 +1,14 @@
 package ua.rd.cm.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.repository.TalkRepository;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
-import ua.rd.cm.services.exception.EmptyInformationException;
+
+import java.util.List;
 
 @Service
 public class SimpleTalkService implements TalkService{
@@ -25,9 +23,6 @@ public class SimpleTalkService implements TalkService{
 	@Override
 	@Transactional
 	public void save(Talk talk) {
-		if(talk.getUser().getUserInfo().getShortBio().isEmpty())
-			throw new EmptyInformationException();
-		
 		talkRepository.saveTalk(talk);
 	}
 

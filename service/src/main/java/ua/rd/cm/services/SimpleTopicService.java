@@ -1,5 +1,6 @@
 package ua.rd.cm.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Topic;
@@ -7,7 +8,6 @@ import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.repository.specification.topic.TopicById;
 import ua.rd.cm.repository.specification.topic.TopicByName;
 
-import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -18,7 +18,7 @@ public class SimpleTopicService implements TopicService {
 
     private TopicRepository topicRepository;
 
-    @Inject
+    @Autowired
     public SimpleTopicService(TopicRepository topicRepository) {
         this.topicRepository = topicRepository;
     }
