@@ -40,7 +40,9 @@ public class SimpleTopicService implements TopicService {
     }
 
     @Override
-    public List<Topic> getByName(String name) {
-        return topicRepository.findBySpecification(new TopicByName(name));
+    public Topic getByName(String name) {
+        List<Topic> list = topicRepository.findBySpecification(new TopicByName(name));
+        if (list.isEmpty()) return null;
+        else return list.get(0);
     }
 }
