@@ -1,5 +1,6 @@
 package ua.rd.cm.repository;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.User;
@@ -18,19 +19,24 @@ public class JpaContactTypeRepository implements ContactTypeRepository {
     @PersistenceContext
     private EntityManager em;
 
+    private Logger logger = Logger.getLogger(JpaContactTypeRepository.class);
+
     @Override
     public void saveContactType(ContactType contactType) {
         em.persist(contactType);
+        logger.info(contactType + " is saved");
     }
 
     @Override
     public void updateContactType(ContactType contactType) {
         em.merge(contactType);
+        logger.info(contactType + " is updated");
     }
 
     @Override
     public void removeContactType(ContactType contactType) {
         em.remove(contactType);
+        logger.info(contactType + " is removed");
     }
 
     @Override
