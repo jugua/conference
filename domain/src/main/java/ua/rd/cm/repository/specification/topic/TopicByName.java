@@ -11,7 +11,6 @@ public class TopicByName implements Specification<Topic> {
     private String name;
 
     public TopicByName(String name) {
-        super();
         this.name = name;
     }
 
@@ -22,6 +21,6 @@ public class TopicByName implements Specification<Topic> {
 
     @Override
     public String toSqlClauses() {
-        return String.format(" t.name = ' %s '", name);
+        return String.format(" t.name = '%s'", name);
     }
 }
