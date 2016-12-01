@@ -41,6 +41,6 @@ public class TalkDto {
 	
 	@Size( max = 1500)
 	@JsonProperty("addon")
-	private String addInfo;
+	private String additionalInfo;
 	
 }

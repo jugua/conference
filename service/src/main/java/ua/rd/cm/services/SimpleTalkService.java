@@ -2,6 +2,7 @@ package ua.rd.cm.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,11 @@ public class SimpleTalkService implements TalkService{
 
 	private TalkRepository talkRepository;
 	
+	@Autowired
+	public SimpleTalkService(TalkRepository talkRepository) {
+		this.talkRepository = talkRepository;
+	}
+
 	@Override
 	@Transactional
 	public void save(Talk talk) {

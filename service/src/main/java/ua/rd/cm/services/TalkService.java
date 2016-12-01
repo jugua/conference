@@ -18,5 +18,4 @@ public interface TalkService {
 	
 	Talk findTalkById(Long id);
 	
-	//List<Talk> findByStatusTopicDate();
 }

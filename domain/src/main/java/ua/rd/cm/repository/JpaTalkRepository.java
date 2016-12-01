@@ -38,7 +38,7 @@ public class JpaTalkRepository implements TalkRepository{
 
 	@Override
 	public List<Talk> findBySpecification(Specification<Talk> spec) {
-		return em.createQuery("SELECT t FROM talk t WHERE " + spec.toSqlClauses(), Talk.class).getResultList();
+		return em.createQuery("SELECT t FROM Talk t WHERE " + spec.toSqlClauses(), Talk.class).getResultList();
 	}
 
 }

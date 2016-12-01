@@ -19,7 +19,7 @@ public class TalkByUserId implements Specification<Talk>{
 
 	@Override
 	public String toSqlClauses() {
-		return String.format(" t.user_id = '%s' ", userId);
+		return String.format(" t.user.id = '%s' ", userId);
 	}
 
 }
