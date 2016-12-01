@@ -8,8 +8,8 @@ import java.io.*;
 @Service
 public class SimplePhotoService implements PhotoService {
 
-    public static final String ROOT = "/";
-    public static final String FOLDER = "var/lib/cm/user/photos/";
+    public static final String ROOT = "C:/";
+    public static final String FOLDER = "var/lib/";
 
     @Override
     public String savePhoto(MultipartFile photo, String fileNameId) {
@@ -37,6 +37,24 @@ public class SimplePhotoService implements PhotoService {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    @Override
+    public File getPhoto(String fileNameId) {
+        try {
+            File dir = getDir();
+            return find(dir, fileNameId);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private String getFormat(String fileName) {
+        int index = fileName.lastIndexOf('.');
+        if (index == -1) {
+            return null;
+        }
+        return fileName.substring(index);
     }
 
     private File getDir() throws IOException {
@@ -67,7 +85,7 @@ public class SimplePhotoService implements PhotoService {
     private String saveFile(MultipartFile file, String fileNameId, File dir)
             throws IOException {
         File serverFile = putFileIntoDir(dir, fileNameId,
-                getFileFormat(file.getOriginalFilename()), file.getBytes());
+                getFormat(file.getOriginalFilename()), file.getBytes());
 
         return serverFile.getAbsolutePath();
     }
@@ -83,14 +101,6 @@ public class SimplePhotoService implements PhotoService {
         stream.write(bytes);
         stream.close();
         return serverFile;
-    }
-
-    private String getFileFormat(String fileName) {
-        int index = fileName.lastIndexOf('.');
-        if (index == -1) {
-            return null;
-        }
-        return fileName.substring(index);
     }
 
     private String getFileName(String fileName) {
