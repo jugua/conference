@@ -17,14 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ua.rd.cm.domain.Language;
-import ua.rd.cm.domain.Level;
-import ua.rd.cm.domain.Status;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.Topic;
-import ua.rd.cm.domain.Type;
-import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.*;
 import ua.rd.cm.services.TalkService;
+import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
@@ -85,5 +80,16 @@ public class TalkController {
 		talk.setType(new Type(1L, ""));
 		talk.setTopic(new Topic(1L, ""));
 		return talk;
+	}
+
+	private boolean checkForFilledUserInfo(Principal principal) {
+		User currentUser = userService.getByEmail(principal.getName());
+		UserInfo currentUserInfo = currentUser.getUserInfo();
+		if (currentUserInfo.getShortBio().equals("") ||
+			currentUserInfo.getJobTitle().equals("") ||
+			currentUserInfo.getCompany().equals("")) {
+			return false;
+		}
+		return true;
 	}
 }
