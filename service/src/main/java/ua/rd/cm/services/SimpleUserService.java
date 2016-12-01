@@ -38,9 +38,6 @@ public class SimpleUserService implements UserService{
 		if (user.getUserRoles().size() == 0) {
 			user.addRole(roleService.getByName("SPEAKER"));
 		}
-		if (user.getPhoto() == null) {
-			user.setPhoto("https://www.google.com.ua/url?sa=i&rct=j&q=&esrc=s&source=imgres&cd=&cad=rja&uact=8&ved=0ahUKEwiv6N6qmqvQAhWTKCwKHQRbDw0QjRwIBw&url=https%3A%2F%2Fwww.pinterest.com%2Fvolker513%2Fche-guevara%2F&psig=AFQjCNEny2Kuv7EyU_uiXwNkol1SCNWTqA&ust=1479314564214955");
-		}
 		if (user.getUserInfo() == null) {
 		    user.setUserInfo(new UserInfo());
 		}
