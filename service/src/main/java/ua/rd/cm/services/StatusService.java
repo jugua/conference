@@ -12,7 +12,7 @@ public interface StatusService {
 
     void save(Status status);
 
-    List<Status> getByName(String name);
+    Status getByName(String name);
 
     List<Status> findAll();
 
