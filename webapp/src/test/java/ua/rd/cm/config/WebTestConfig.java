@@ -3,6 +3,7 @@ package ua.rd.cm.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ua.rd.cm.services.ContactTypeService;
+import ua.rd.cm.services.PhotoService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.PhotoService;
@@ -24,7 +25,31 @@ public class WebTestConfig {
         return mock(ContactTypeService.class);
     }
     @Bean
-    public PhotoService mockPhotoService() {
+    public TalkService mockTalkService() {
+    	return mock(TalkService.class);
+    }
+    @Bean
+    public TopicService mockTopicService() {
+        return mock(TopicService.class);
+    }
+    @Bean
+    public TypeService mockTypeService() {
+        return mock(TypeService.class);
+    }
+    @Bean
+    public LevelService mockLevelService() {
+        return mock(LevelService.class);
+    }
+    @Bean
+    public LanguageService mockLanguageService() {
+        return mock(LanguageService.class);
+    }
+    @Bean
+    public StatusService mockStatusService() {
+        return mock(StatusService.class);
+    }
+    @Bean
+    public PhotoService mockPhotoService(){
         return mock(PhotoService.class);
     }
 }
