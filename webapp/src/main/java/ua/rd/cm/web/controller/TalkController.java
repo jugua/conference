@@ -61,7 +61,7 @@ public class TalkController {
 			User currentUser = userService.getByEmail(principal.getName());
 			Talk currentTalk = dtoToEntity(dto);
 			currentTalk.setUser(currentUser);
-			httpStatus = HttpStatus.ACCEPTED;
+			httpStatus = HttpStatus.OK;
 			talkService.save(currentTalk);
 		}
 		return ResponseEntity.status(httpStatus).body(messageDto);
@@ -75,7 +75,7 @@ public class TalkController {
 		User currentUser = userService.getByEmail(principal.getName());
 		List<Talk> userTalks = talkService.findByUserId(currentUser.getId());
 		List<TalkDto> userTalkDtoList = dtoToTalkDtoList(userTalks);
-		return new ResponseEntity<>(userTalkDtoList, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
 	}
 
 	private List<TalkDto> dtoToTalkDtoList(List<Talk> userTalks) {
@@ -96,6 +96,7 @@ public class TalkController {
 		dto.setTopic(t.getTopic().getName());
 		dto.setType(t.getType().getName());
 		dto.setStatus(t.getStatus().getName());
+		dto.setDate(t.getTime().toString());
 		return dto;
 	}
 
