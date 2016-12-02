@@ -34,8 +34,9 @@ describe('UserPhoto', () => {
     }));
 
     beforeEach(() => {
-      sut.uploadForm = { $setValidity: () => {} };
-      spyOn(sut.uploadForm, '$setValidity');
+      sut.uploadForm = jasmine.createSpyObj('uploadForm', ['$setValidity', 'file', 'dragfile']);
+      sut.uploadForm.file = { $setValidity: () => {} };
+      sut.uploadForm.dragfile = { $setValidity: () => {} };
     });
 
     describe('Controller has all elements', () => {
@@ -66,8 +67,14 @@ describe('UserPhoto', () => {
       it('has function toggleSlide', () => {
         expect(typeof sut.toggleSlide).toBe('function');
       });
-      it('has function togglePreview', () => {
-        expect(typeof sut.togglePreview).toBe('function');
+      it('has function toggleSlide', () => {
+        expect(typeof sut.toggleSlide).toBe('function');
+      });
+      it('has function downloadByDrag', () => {
+        expect(typeof sut.downloadByDrag).toBe('function');
+      });
+      it('has function downloadBySelect', () => {
+        expect(typeof sut.downloadBySelect).toBe('function');
       });
       it('has function toggleAnimation', () => {
         expect(typeof sut.toggleAnimation).toBe('function');
@@ -101,7 +108,7 @@ describe('UserPhoto', () => {
       });
     });
 
-    describe('toggle preview function', () => {
+    describe('toggle slide function', () => {
       let preview;
       beforeEach(() => {
         preview = sut.showLoad;
@@ -110,6 +117,53 @@ describe('UserPhoto', () => {
 
       it('should toggle slide', () => {
         expect(sut.showLoad).toEqual(!preview);
+      });
+    });
+    describe('downloadByDrag function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'togglePreview');
+        spyOn(sut.uploadForm.file, '$setValidity');
+        sut.downloadByDrag();
+      });
+
+      it('should call togglePreview', () => {
+        expect(sut.togglePreview).toHaveBeenCalled();
+      });
+      it('should call $setValidity for file', () => {
+        expect(sut.uploadForm.file.$setValidity).toHaveBeenCalled();
+      });
+      it('should call $setValidity for file with maxSize true', () => {
+        expect(sut.uploadForm.file.$setValidity).toHaveBeenCalledWith('maxSize', true);
+      });
+      it('should call $setValidity for file with minSize true', () => {
+        expect(sut.uploadForm.file.$setValidity).toHaveBeenCalledWith('minSize', true);
+      });
+      it('should call $setValidity for file with pattern true', () => {
+        expect(sut.uploadForm.file.$setValidity).toHaveBeenCalledWith('pattern', true);
+      });
+    });
+
+    describe('downloadBySelect function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'togglePreview');
+        spyOn(sut.uploadForm.dragfile, '$setValidity');
+        sut.downloadBySelect();
+      });
+
+      it('should call togglePreview', () => {
+        expect(sut.togglePreview).toHaveBeenCalled();
+      });
+      it('should call $setValidity for file', () => {
+        expect(sut.uploadForm.dragfile.$setValidity).toHaveBeenCalled();
+      });
+      it('should call $setValidity for file with maxSize true', () => {
+        expect(sut.uploadForm.dragfile.$setValidity).toHaveBeenCalledWith('maxSize', true);
+      });
+      it('should call $setValidity for file with minSize true', () => {
+        expect(sut.uploadForm.dragfile.$setValidity).toHaveBeenCalledWith('minSize', true);
+      });
+      it('should call $setValidity for file with pattern true', () => {
+        expect(sut.uploadForm.dragfile.$setValidity).toHaveBeenCalledWith('pattern', true);
       });
     });
 
