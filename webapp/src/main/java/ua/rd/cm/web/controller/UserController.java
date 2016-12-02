@@ -108,7 +108,9 @@ public class UserController {
 
     private UserDto userToDto(User user){
         UserDto dto = mapper.map(user, UserDto.class);
-        dto.setPhoto("api/user/current/photo/" + user.getId());
+        if (user.getPhoto() != null) {
+            dto.setPhoto("api/user/current/photo/" + user.getId());
+        }
         dto.setLinkedin(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
         dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
