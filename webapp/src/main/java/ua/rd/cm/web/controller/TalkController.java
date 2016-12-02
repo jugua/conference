@@ -57,7 +57,7 @@ public class TalkController {
 		} else if (!checkForFilledUserInfo(principal)) {
 			httpStatus = HttpStatus.FORBIDDEN;
 		} else {
-			dto.setStatus(statusService.getByName("New").getName());
+			dto.setStatus("New");
 			User currentUser = userService.getByEmail(principal.getName());
 			Talk currentTalk = dtoToEntity(dto);
 			currentTalk.setUser(currentUser);
