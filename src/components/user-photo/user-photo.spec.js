@@ -17,7 +17,7 @@ describe('UserPhoto', () => {
   describe('Controller', () => {
     let q;
     let userPhotoService;
-    const user = { photo: 'df' };
+    const user = { photo: '' };
     let sut;
 
     beforeEach(angular.mock.module(($controllerProvider) => {
@@ -33,46 +33,297 @@ describe('UserPhoto', () => {
       sut = $controller('UserPhotoController', { userPhotoService }, { user });
     }));
 
-    it('should toggle preview', () => {
-      const preview = sut.uploadPreview;
-      sut.uploadForm.$valid = true;
-      sut.uploadForm.$setValidity = () => {};
-
-      sut.togglePreview();
-      expect(sut.uploadPreview).toEqual(!preview);
-    });
-
-    it('shouldn`t toggle preview', () => {
-      const preview = sut.uploadPreview;
-      sut.uploadForm.$valid = false;
-      sut.uploadForm.$setValidity = () => {};
-
-      sut.togglePreview();
-      expect(sut.uploadPreview).toEqual(preview);
-    });
-
-    it('should call functions in successUpload', () => {
-      spyOn(sut, 'togglePreview');
-      spyOn(sut, 'toggleSlide');
-      spyOn(sut, 'toggleAnimation');
-
-      sut.successUpload({ data: { answer: 'link' } });
-      expect(sut.togglePreview).toHaveBeenCalled();
-      expect(sut.toggleSlide).toHaveBeenCalled();
-      expect(sut.toggleAnimation).toHaveBeenCalled();
-    });
-
-    it('should call functions in errorUpload', () => {
-      sut.uploadForm.$setValidity = () => {};
-
-      spyOn(sut, 'togglePreview');
-      spyOn(sut, 'toggleAnimation');
+    beforeEach(() => {
+      sut.uploadForm = { $setValidity: () => {} };
       spyOn(sut.uploadForm, '$setValidity');
-      sut.errorUpload({ data: { error: 'maxSize' } });
+    });
 
-      expect(sut.togglePreview).toHaveBeenCalled();
-      expect(sut.toggleAnimation).toHaveBeenCalled();
-      expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
+    describe('toggle preview function', () => {
+      let preview;
+      beforeEach(() => {
+        preview = sut.showLoad;
+        sut.toggleSlide();
+      });
+
+      it('should toggle slide', () => {
+        expect(sut.showLoad).toEqual(!preview);
+      });
+    });
+
+    describe('toggle preview function', () => {
+      let preview;
+      beforeEach(() => {
+        preview = sut.animation;
+        sut.toggleAnimation();
+      });
+
+      it('should toggle slide', () => {
+        expect(sut.animation).toEqual(!preview);
+      });
+    });
+
+    describe('toggle preview function', () => {
+      let preview;
+      beforeEach(() => {
+        preview = sut.uploadPreview;
+      });
+
+      it('should toggle preview', () => {
+        sut.uploadForm.$valid = true;
+        sut.togglePreview();
+        expect(sut.uploadPreview).toEqual(!preview);
+      });
+      it('shouldn`t toggle preview', () => {
+        sut.uploadForm.$valid = false;
+        sut.togglePreview();
+        expect(sut.uploadPreview).toEqual(preview);
+      });
+      it('should call $setValidity when $valid true', () => {
+        sut.uploadForm.$valid = true;
+        sut.togglePreview();
+        expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
+      });
+      it('should call $setValidity when $valid false', () => {
+        sut.uploadForm.$valid = false;
+        sut.togglePreview();
+        expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
+      });
+    });
+
+    describe('successUpload function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'togglePreview');
+        spyOn(sut, 'toggleSlide');
+        spyOn(sut, 'toggleAnimation');
+        spyOn(sut, 'getCurrentPhotoStatus');
+        sut.file = 'file';
+        sut.successUpload({ data: { answer: 'link' } });
+      });
+
+      it('should call function togglePreview', () => {
+        expect(sut.togglePreview).toHaveBeenCalled();
+      });
+      it('should call function toggleSlide', () => {
+        expect(sut.toggleSlide).toHaveBeenCalled();
+      });
+      it('should call function toggleAnimation', () => {
+        expect(sut.toggleAnimation).toHaveBeenCalled();
+      });
+      it('should call function getCurrentPhotoStatus', () => {
+        expect(sut.getCurrentPhotoStatus).toHaveBeenCalled();
+      });
+      it('should change user.photo link', () => {
+        expect(sut.user.photo).toEqual('link');
+      });
+      it('should ava change to file', () => {
+        expect(sut.ava).toEqual(sut.file);
+      });
+    });
+
+    describe('errorUpload function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'togglePreview');
+        spyOn(sut, 'toggleAnimation');
+        sut.errorUpload({ data: { error: 'maxSize' } });
+      });
+
+      it('should call function togglePreview', () => {
+        expect(sut.togglePreview).toHaveBeenCalled();
+      });
+      it('should call function toggleAnimation', () => {
+        expect(sut.toggleAnimation).toHaveBeenCalled();
+      });
+      it('should call function $setValidity', () => {
+        expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
+      });
+      it('should file set to null', () => {
+        expect(sut.file).toBeNull();
+      });
+    });
+
+    describe('uploadAva function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'toggleAnimation');
+        sut.uploadAva();
+      });
+
+      it('should call function toggleAnimation', () => {
+        expect(sut.toggleAnimation).toHaveBeenCalled();
+      });
+      it('should call function upload from service', () => {
+        expect(sut.userPhotoService.uploadPhoto).toHaveBeenCalled();
+      });
+    });
+
+    describe('call function on upload photo depended on server answer', () => {
+      beforeEach(() => {
+        spyOn(sut, 'successUpload');
+        spyOn(sut, 'errorUpload');
+      });
+
+      it('should call function successUpload', () => {
+        sut.userPhotoService.uploadPhoto().then(() => {
+          expect(sut.successUpload).toHaveBeenCalled();
+        });
+      });
+      it('shouldn`t call function errorUpload', () => {
+        sut.userPhotoService.uploadPhoto().then(() => {
+          expect(sut.errorUpload).not.toHaveBeenCalled();
+        });
+      });
+      it('should call function errorUpload', () => {
+        sut.userPhotoService.uploadPhoto.and.returnValue(q.when(false));
+        sut.userPhotoService.uploadPhoto().then(() => {
+          expect(sut.errorUpload).toHaveBeenCalled();
+        });
+      });
+      it('shouldn`t call function successUpload', () => {
+        sut.userPhotoService.uploadPhoto.and.returnValue(q.when(false));
+        sut.userPhotoService.uploadPhoto().then(() => {
+          expect(sut.successUpload).not.toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('getCurrentPhotoStatus function', () => {
+      const isUserPhoto = { button: 'Update Photo', title: 'Update Your Photo' };
+      const isNotUserPhoto = { button: 'Upload Photo', title: 'Upload new photo' };
+
+      it('should button toEqual "Upload Photo" when does not have photo', () => {
+        sut.user.photo = false;
+        sut.currentPhotoStatus = sut.getCurrentPhotoStatus();
+        expect(sut.currentPhotoStatus.button).toEqual(isNotUserPhoto.button);
+      });
+      it('should title toEqual "Upload new photo" when does not have photo', () => {
+        sut.user.photo = false;
+        sut.currentPhotoStatus = sut.getCurrentPhotoStatus();
+        expect(sut.currentPhotoStatus.title).toEqual(isNotUserPhoto.title);
+      });
+
+      it('should button toEqual "Update Photo" when have photo', () => {
+        sut.user.photo = 'photo link';
+        sut.currentPhotoStatus = sut.getCurrentPhotoStatus();
+        expect(sut.currentPhotoStatus.button).toEqual(isUserPhoto.button);
+      });
+      it('should title toEqual "Update Your Photo" when have photo', () => {
+        sut.user.photo = 'photo link';
+        sut.currentPhotoStatus = sut.getCurrentPhotoStatus();
+        expect(sut.currentPhotoStatus.title).toEqual(isUserPhoto.title);
+      });
+    });
+
+    describe('toggle delete function', () => {
+      let preview;
+      beforeEach(() => {
+        preview = sut.deletePreview;
+        sut.toggleDeletePreview();
+      });
+
+      it('should toggle deletePreview', () => {
+        expect(sut.deletePreview).toEqual(!preview);
+      });
+    });
+
+    describe('askToDeletePhoto function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'toggleDeletePreview');
+      });
+      it('should call deletePreview', () => {
+        sut.ava = 'ava';
+        sut.user.photo = null;
+        sut.askToDeletePhoto();
+        expect(sut.toggleDeletePreview).toHaveBeenCalled();
+      });
+      it('should call deletePreview', () => {
+        sut.ava = null;
+        sut.user.photo = 'link to photo';
+        sut.askToDeletePhoto();
+        expect(sut.toggleDeletePreview).toHaveBeenCalled();
+      });
+      it('shouldn`t call deletePreview', () => {
+        sut.ava = null;
+        sut.user.photo = null;
+        sut.askToDeletePhoto();
+        expect(sut.toggleDeletePreview).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('deletePhoto function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'toggleAnimation');
+        sut.deletePhoto();
+      });
+      it('should call toggleAnimation', () => {
+        expect(sut.toggleAnimation).toHaveBeenCalled();
+      });
+      it('should call deleteUserPhoto from service', () => {
+        expect(sut.userPhotoService.deleteUserPhoto).toHaveBeenCalled();
+      });
+    });
+
+    describe('call function on delete photo depended on server answer', () => {
+      beforeEach(() => {
+        spyOn(sut, 'successDelete');
+        spyOn(sut, 'errorDelete');
+      });
+
+      it('should call function successDelete', () => {
+        sut.userPhotoService.deleteUserPhoto().then(() => {
+          expect(sut.successUpload).toHaveBeenCalled();
+        });
+      });
+      it('shouldn`t call function errorDelete', () => {
+        sut.userPhotoService.deleteUserPhoto().then(() => {
+          expect(sut.errorUpload).not.toHaveBeenCalled();
+        });
+      });
+      it('should call function errorDelete', () => {
+        sut.userPhotoService.deleteUserPhoto.and.returnValue(q.when(false));
+        sut.userPhotoService.deleteUserPhoto().then(() => {
+          expect(sut.errorUpload).toHaveBeenCalled();
+        });
+      });
+      it('shouldn`t call function successDelete', () => {
+        sut.userPhotoService.deleteUserPhoto.and.returnValue(q.when(false));
+        sut.userPhotoService.deleteUserPhoto().then(() => {
+          expect(sut.successUpload).not.toHaveBeenCalled();
+        });
+      });
+    });
+
+    describe('successDelete function', () => {
+      beforeEach(() => {
+        spyOn(sut, 'toggleDeletePreview');
+        spyOn(sut, 'toggleAnimation');
+        spyOn(sut, 'getCurrentPhotoStatus');
+        sut.successDelete();
+      });
+      it('should ava toBeNull', () => {
+        expect(sut.ava).toBeNull();
+      });
+      it('should call toggleAnimation', () => {
+        expect(sut.toggleAnimation).toHaveBeenCalled();
+      });
+      it('should call toggleDeletePreview', () => {
+        expect(sut.toggleDeletePreview).toHaveBeenCalled();
+      });
+      it('should call getCurrentPhotoStatus', () => {
+        expect(sut.getCurrentPhotoStatus).toHaveBeenCalled();
+      });
+      it('should user.photo to be empty string', () => {
+        expect(sut.user.photo).toEqual('');
+      });
+    });
+    describe('errorDelete function', () => {
+      let errorMessage;
+      beforeEach(() => {
+        spyOn(sut, 'toggleAnimation');
+        errorMessage = sut.deleteMessage;
+        sut.errorDelete();
+      });
+      it('should toggle error message', () => {
+        expect(sut.deleteMessage).toEqual(!errorMessage);
+      });
     });
   });
 });
