@@ -10,48 +10,51 @@
     <h3 class="pop-up__title">{{$ctrl.currentPhotoStatus.title}}</h3>
     <button class="pop-up__close" ng-click="$ctrl.toggleSlide()"></button>
     <form novalidate
-          name="$ctrl.uploadForm"
-          ngf-drop="$ctrl.togglePreview()"
-          ng-model="$ctrl.file"
-          ngf-max-size="2MB"
-          ngf-min-size="1"
-          ngf-pattern="image/jpeg,image/png,image/gif"
-          required
-          class="upload-form">
+          name="$ctrl.uploadForm">
+      <div
+        ngf-drop="$ctrl.downloadByDrag()"
+        ng-model="$ctrl.file"
+        ngf-max-size="2MB"
+        ngf-min-size="1"
+        ngf-pattern="image/jpeg,image/png,image/gif"
+        required
+        name="dragfile">
 
-      <p class="pop-up__notification pop-up__notification_light">
-        It is much easier to identify you if you have a photo.
-      </p>
+        <p class="pop-up__notification pop-up__notification_light">
+          It is much easier to identify you if you have a photo.
+        </p>
 
-      <p class="pop-up__notification pop-up__notification_light">
-        You can upload an image in JPG, PNG or GIF format. The maximum allowed size for uploads is 2 Mb
-      </p>
+        <p class="pop-up__notification pop-up__notification_light">
+          You can upload an image in JPG, PNG or GIF format. The maximum allowed size for uploads is 2 Mb
+        </p>
 
-      <label class="file-upload">
-        <span class="btn file-upload__button">Choose</span>
-        <input type="file"
-               class="file-upload__uploading"
-               ng-model="$ctrl.file"
-               required
-               ngf-select="$ctrl.togglePreview()"
-               ngf-max-size="2MB"
-               ngf-min-size="1"
-               ngf-pattern="image/jpeg,image/png,image/gif"
-               accept="image/jpeg,image/png,image/gif"
-        >
-      </label>
-      <p ng-if="$ctrl.uploadForm.$error.maxSize" class="field-error field-error_center">
-        You exceeded maximum allowed size for uploaded photo (2Mb)
-      </p>
-      <p ng-if="$ctrl.uploadForm.$error.minSize" class="field-error field-error_center">
-        You try to upload an empty file
-      </p>
-      <p ng-if="$ctrl.uploadForm.$error.pattern" class="field-error field-error_center">
-        We could not understand the contents of your file. Make sure it is a jpg, gif or png formatted image.
-      </p>
-      <p ng-if="$ctrl.uploadForm.$error.save" class="field-error field-error_center">
-        Sorry we can`t save Your photo try do change it some later.
-      </p>
+        <label class="file-upload">
+          <span class="btn file-upload__button">Choose</span>
+          <input type="file"
+                 class="file-upload__uploading"
+                 ng-model="$ctrl.file"
+                 required
+                 ngf-select="$ctrl.downloadBySelect()"
+                 ngf-max-size="2MB"
+                 ngf-min-size="1"
+                 ngf-pattern="image/jpeg,image/png,image/gif"
+                 accept="image/jpeg,image/png,image/gif"
+                 name="file"
+          >
+        </label>
+        <p ng-if="$ctrl.uploadForm.$error.maxSize" class="field-error field-error_center">
+          You exceeded maximum allowed size for uploaded photo (2Mb)
+        </p>
+        <p ng-if="$ctrl.uploadForm.$error.minSize" class="field-error field-error_center">
+          You try to upload an empty file
+        </p>
+        <p ng-if="$ctrl.uploadForm.$error.pattern" class="field-error field-error_center">
+          We could not understand the contents of your file. Make sure it is a jpg, gif or png formatted image.
+        </p>
+        <p ng-if="$ctrl.uploadForm.$error.save" class="field-error field-error_center">
+          Sorry we can`t save Your photo try do change it some later.
+        </p>
+      </div>
     </form>
   </div>
 

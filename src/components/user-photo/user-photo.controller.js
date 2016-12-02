@@ -21,7 +21,22 @@ export default class UserPhotoController {
     this.showLoad = !this.showLoad;
   }
 
+  downloadByDrag() {
+    this.uploadForm.file.$setValidity('pattern', true);
+    this.uploadForm.file.$setValidity('minSize', true);
+    this.uploadForm.file.$setValidity('maxSize', true);
+    this.togglePreview();
+  }
+
+  downloadBySelect() {
+    this.uploadForm.dragfile.$setValidity('pattern', true);
+    this.uploadForm.dragfile.$setValidity('minSize', true);
+    this.uploadForm.dragfile.$setValidity('maxSize', true);
+    this.togglePreview();
+  }
+
   togglePreview() {
+    console.log(this.uploadForm);
     this.uploadForm.$setValidity('save', true);
     if (this.uploadForm.$valid) {
       this.uploadPreview = !this.uploadPreview;
