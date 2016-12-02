@@ -22,6 +22,6 @@ public class TypeByName implements Specification<Type> {
 
     @Override
     public String toSqlClauses() {
-        return String.format(" t.name = ' %s '", name);
+        return String.format(" t.name = '%s'", name);
     }
 }

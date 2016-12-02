@@ -12,7 +12,7 @@ public interface LevelService {
 
     void save(Level level);
 
-    List<Level> getByName(String name);
+    Level getByName(String name);
 
     List<Level> findAll();
 

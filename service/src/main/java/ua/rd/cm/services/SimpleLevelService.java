@@ -1,21 +1,23 @@
 package ua.rd.cm.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.rd.cm.domain.Level;
 import ua.rd.cm.repository.LevelRepository;
 import ua.rd.cm.repository.specification.level.LevelById;
 import ua.rd.cm.repository.specification.level.LevelByName;
 
-import javax.inject.Inject;
 import java.util.List;
 
 /**
  * @author Olha_Melnyk
  */
+@Service
 public class SimpleLevelService implements LevelService {
 
     private LevelRepository levelRepository;
 
-    @Inject
+    @Autowired
     public SimpleLevelService(LevelRepository levelRepository) {
         this.levelRepository = levelRepository;
     }
@@ -31,8 +33,10 @@ public class SimpleLevelService implements LevelService {
     }
 
     @Override
-    public List<Level> getByName(String name) {
-        return levelRepository.findBySpecification(new LevelByName(name));
+    public Level getByName(String name) {
+        List<Level> list = levelRepository.findBySpecification(new LevelByName(name));
+        if (list.isEmpty()) return null;
+        else return list.get(0);
     }
 
     @Override

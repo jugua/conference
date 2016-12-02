@@ -1,21 +1,24 @@
 package ua.rd.cm.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Language;
 import ua.rd.cm.repository.LanguageRepository;
 import ua.rd.cm.repository.specification.language.LanguageById;
 import ua.rd.cm.repository.specification.language.LanguageByName;
-import javax.inject.Inject;
+
 import java.util.List;
 
 /**
  * @author Olha_Melnyk
  */
+@Service
 public class SimpleLanguageService implements LanguageService {
 
     private LanguageRepository languageRepository;
 
-    @Inject
+    @Autowired
     public SimpleLanguageService(LanguageRepository languageRepository) {
         this.languageRepository = languageRepository;
     }
@@ -32,8 +35,10 @@ public class SimpleLanguageService implements LanguageService {
     }
 
     @Override
-    public List<Language> getByName(String name) {
-        return languageRepository.findBySpecification(new LanguageByName(name));
+    public Language getByName(String name) {
+        List<Language> list = languageRepository.findBySpecification(new LanguageByName(name));
+        if (list.isEmpty()) return null;
+        else return list.get(0);
     }
 
     @Override

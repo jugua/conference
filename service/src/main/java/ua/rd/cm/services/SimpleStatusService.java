@@ -1,21 +1,23 @@
 package ua.rd.cm.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.rd.cm.domain.Status;
 import ua.rd.cm.repository.StatusRepository;
 import ua.rd.cm.repository.specification.status.StatusById;
 import ua.rd.cm.repository.specification.status.StatusByName;
 
-import javax.inject.Inject;
 import java.util.List;
 
 /**
  * @author Olha_Melnyk
  */
+@Service
 public class SimpleStatusService implements StatusService {
 
     private StatusRepository statusRepository;
 
-    @Inject
+    @Autowired
     public SimpleStatusService(StatusRepository statusRepository) {
         this.statusRepository = statusRepository;
     }
@@ -31,8 +33,10 @@ public class SimpleStatusService implements StatusService {
     }
 
     @Override
-    public List<Status> getByName(String name) {
-        return statusRepository.findBySpecification(new StatusByName(name));
+    public Status getByName(String name) {
+        List<Status> list = statusRepository.findBySpecification(new StatusByName(name));
+        if (list.isEmpty()) return null;
+        else return list.get(0);
     }
 
     @Override

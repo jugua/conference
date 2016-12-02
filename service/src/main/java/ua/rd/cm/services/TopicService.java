@@ -15,5 +15,5 @@ public interface TopicService {
 
     List<Topic> findAll();
 
-    List<Topic> getByName(String name);
+    Topic getByName(String name);
 }
