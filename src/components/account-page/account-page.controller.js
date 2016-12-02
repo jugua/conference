@@ -8,7 +8,8 @@ export default class AccountPageController {
     this.editPass = false;
   }
   showEditname() {
-    this.editName = true;
+    this.editName = !true;
+    this.editPass = false;
   }
   showEditemail() {
     this.editEmail = true;

@@ -2,7 +2,7 @@
     <div class="settings__header">settings account</div>
     <div class="settings__block">
         <div class="settings__row">
-           <div class="settings__brief" ng-click="$ctrl.showEditname()">
+           <div class="settings__brief" ng-click="$ctrl.showEditname()" ng-if="$ctrl.hideEditname()">
                <div class="settings__title">name</div>
                <div class="settings__row-content settings__row-content_name">{{$ctrl.user.fname}} {{$ctrl.user.lname}}</div>
                <div class="settings__edit">edit</div>
@@ -17,7 +17,7 @@
                 <div class="settings__row-content settings__row-content_name">{{$ctrl.user.mail}}</div>
                 <div class="settings__edit">edit</div>
             </div>
-            <div class="settings__details" ng-show="$ctrl.editEmail">
+            <div class="settings__details" ng-if="$ctrl.editEmail">
                 <edit-email></edit-email>
             </div>
         </div>
