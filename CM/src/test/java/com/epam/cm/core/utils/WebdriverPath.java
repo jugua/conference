@@ -1,6 +1,10 @@
 package com.epam.cm.core.utils;
 
-import static com.epam.cm.core.properties.PropertiesController.getProperty;
+//import static com.epam.cm.core.properties.PropertiesController.getProperty;
+
+import org.openqa.selenium.WebDriver;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Denys_Shmyhin on 11/20/2016.
@@ -8,7 +12,10 @@ import static com.epam.cm.core.properties.PropertiesController.getProperty;
 public final class WebdriverPath {
 
     public  static void bindWebdriverPath() {
-        switch( getProperty("webdriver.driver")){
+
+        String browser = System.getProperty("webdriver.driver","firefox");
+
+        switch(browser){
 
             case "edge":
                 System.setProperty("webdriver.edge.driver", "drivers/edgedriver-windows-64bit.exe");

@@ -6,11 +6,15 @@ import net.serenitybdd.core.exceptions.SerenityManagedException;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
+import net.thucydides.core.annotations.WhenPageOpens;
 import org.openqa.selenium.WebDriver;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 @DefaultUrl("/#/sign-up")
 public class SignUpPage extends AnyPage {
+
 
     public static final String SUCCESSFULLY_REGISTERED = "You've successfully registered.";
 
@@ -91,7 +95,8 @@ public class SignUpPage extends AnyPage {
     public boolean isRegistered() {
 
         try {
-            waitFor(successRegistrationPopUp);
+            successRegistrationPopUp.withTimeoutOf(3, SECONDS).waitUntilVisible();
+            //waitFor(successRegistrationPopUp);
         }
         catch(Exception ex){
             return false;
@@ -199,23 +204,18 @@ public class SignUpPage extends AnyPage {
     }
 
     public int getNameFieldLength() {
-        int realLength = userNameFild.getValue().length();
-        return realLength;
+        return userNameFild.getValue().length();
     }
     public int getLastNameFieldLength() {
-        int realLength = userLastNameField.getValue().length();
-        return realLength;
+        return userLastNameField.getValue().length();
     }
     public int getEmailFieldLength() {
-        int realLength = userEmailField.getValue().length();
-        return realLength;
+        return userEmailField.getValue().length();
     }
     public int getPassFieldLength() {
-        int realLength = userPasswordField.getValue().length();
-        return realLength;
+        return userPasswordField.getValue().length();
     }
     public int getConfPassFieldLength() {
-        int realLength = userConfPasswordField.getValue().length();
-        return realLength;
+        return userConfPasswordField.getValue().length();
     }
 }

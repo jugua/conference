@@ -58,6 +58,8 @@ public class LoginPageDefinitionSteps {
 
     @Given("user filled in login form: $activityTable")
     public void givenUserFilledInLoginFormEmailPassword(ExamplesTable data) {
+
+
         CredentialsDTO user = new CredentialsDTO() {
             {
                 setEmail(data.getRowAsParameters(0, true).valueAs("email", String.class));

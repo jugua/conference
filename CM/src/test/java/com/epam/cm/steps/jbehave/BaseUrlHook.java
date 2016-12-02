@@ -16,9 +16,9 @@ public class BaseUrlHook {
 
     @BeforeStory
     public void urlSetup(){
-        String env_url =  getProperty(SITE_HOST)+":"+
-                getProperty(SITE_PORT);
-        WebDriverSupport.setBaseUrl(env_url);
+//        String env_url =  getProperty(SITE_HOST)+":"+
+//                getProperty(SITE_PORT);
+//        WebDriverSupport.setBaseUrl(env_url);
         WebDriverSupport.maximizeWindow();
     }
 }

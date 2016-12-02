@@ -1,5 +1,6 @@
 package com.epam.cm.steps.serenity;
 
+import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.UserRegistrationInfoDTO;
 import com.epam.cm.pages.SignUpPage;
 import net.thucydides.core.annotations.Step;
@@ -15,6 +16,7 @@ public class CreateAccountPageSteps extends ScenarioSteps {
     @Step
     public void goToSignUpPage() {
         signUpPage.open();
+        //waitABit(2000);
     }
 
     @Step

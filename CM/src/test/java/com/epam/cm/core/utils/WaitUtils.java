@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 
 import static com.epam.cm.core.properties.PropertiesNames.WAIT_UTILS_INTERVAL;
 import static com.epam.cm.core.properties.PropertiesNames.WAIT_UTILS_TIMEOUT;
+
 import static com.jayway.awaitility.Awaitility.with;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
