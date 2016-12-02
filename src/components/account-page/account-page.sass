@@ -6,6 +6,16 @@
   padding: 20px
   +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
 
+  @media ($mnw: $mdmn) and ($mxw: $xmdmx)
+    width: 90%
+
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+    width: 100%
+    padding: 20px 10px
+
+  @media ($mnw: $xmmn) and ($mxw: $ldmx)
+    width: 80%
+
 .settings
   &__block
     margin-top: 20px
@@ -13,15 +23,21 @@
   &__header
     border-bottom: 1px solid $sharp-blue
     text-transform: capitalize
-
+    box-sizing: border-box
+    padding-bottom: 5px
 
   &__title
     width: 15%
     text-transform: capitalize
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+      width: 100%
 
   &__row-content
     font-family: Oswald Light, sans-serif
     width: 79%
+    &_name
+      overflow: hidden
+      text-overflow: ellipsis
 
   &__edit
     width: 6%
@@ -31,6 +47,7 @@
   &__brief
     display: flex
     justify-content: space-between
+    flex-wrap: wrap
     box-sizing: border-box
     padding: 10px
     border-bottom: 1px solid $light-grey
@@ -44,15 +61,16 @@
 
     &:hover .settings__edit
       text-decoration: underline
-      &:before
-        content: ''
-        display: block
-        width: 15px
-        height: 15px
-        float: left
-        background: url(assets/img/pen-icon.svg) no-repeat center
-        background-size: 80%
-        margin: 4px
+      @media ($mnw: $mdmn)
+        &:before
+          content: ''
+          display: block
+          width: 15px
+          height: 15px
+          float: left
+          background: url(assets/img/pen-icon.svg) no-repeat center
+          background-size: 80%
+          margin: 4px
 
   &__details
     width: 100%
