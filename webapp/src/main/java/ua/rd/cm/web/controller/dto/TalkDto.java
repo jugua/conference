@@ -50,5 +50,8 @@ public class TalkDto {
 
 	@JsonProperty("status")
 	private String status;
+
+	@JsonProperty("date")
+	private String date;
 	
 }
