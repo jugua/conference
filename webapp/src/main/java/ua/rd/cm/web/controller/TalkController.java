@@ -5,12 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
 import ua.rd.cm.web.controller.dto.MessageDto;
@@ -58,7 +53,7 @@ public class TalkController {
 		}
 		if(bindingResult.hasFieldErrors()) {
 			httpStatus = HttpStatus.BAD_REQUEST;
-            messageDto.setError("fields_error");
+			messageDto.setError("fields_error");
 		} else if (!checkForFilledUserInfo(principal)) {
 			httpStatus = HttpStatus.FORBIDDEN;
 		} else {
@@ -71,7 +66,7 @@ public class TalkController {
 		}
 		return ResponseEntity.status(httpStatus).body(messageDto);
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<List<TalkDto>> getTalks(Principal principal) {
 		if(principal == null) {
@@ -120,8 +115,8 @@ public class TalkController {
 		User currentUser = userService.getByEmail(principal.getName());
 		UserInfo currentUserInfo = currentUser.getUserInfo();
 		if (currentUserInfo.getShortBio().equals("") ||
-			currentUserInfo.getJobTitle().equals("") ||
-			currentUserInfo.getCompany().equals("")) {
+				currentUserInfo.getJobTitle().equals("") ||
+				currentUserInfo.getCompany().equals("")) {
 			return false;
 		}
 		return true;
