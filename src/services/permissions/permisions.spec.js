@@ -10,17 +10,17 @@ describe('Permissions service', () => {
     sut = Permissions(rootScope);
   }));
 
-  it('called if no user', () => {
+  it('called SignIn event if no user', () => {
     sut.permitted('s', null);
     expect(rootScope.$broadcast).toHaveBeenCalledWith('signInEvent');
   });
 
-  it('not called if role is in user roles', () => {
+  it('SignIn event not called if role is in user roles', () => {
     sut.permitted('s', {roles: ['s', 'u']});
     expect(rootScope.$broadcast).not.toHaveBeenCalled();
   });
 
-  it('called if role is not in user roles', () => {
+  it('SignIn event called if role is not in user roles', () => {
     sut.permitted('s', {roles: ['a', 'o']});
     expect(rootScope.$broadcast).toHaveBeenCalled();
   });
