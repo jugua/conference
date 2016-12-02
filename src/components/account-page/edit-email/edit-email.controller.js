@@ -3,9 +3,10 @@ export default class EditEmailController {
     'ngInject';
 
     this.timeout = $timeout;
+    this.editEmailService = EditEmailService;
 
     this.emailPattern = Constants.email;
-    this.messages = EditEmailService.getMessages();
+    this.messages = this.editEmailService.getMessages();
 
     this.timeoutHandler = null;
 
