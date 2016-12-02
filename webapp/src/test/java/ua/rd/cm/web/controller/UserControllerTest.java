@@ -13,7 +13,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
-import sun.misc.Request;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.ContactType;
@@ -38,8 +37,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -253,13 +250,13 @@ public class UserControllerTest {
     }
 
     @Test
-    public void toShortBioTest(){
+    public void tooShortBioTest(){
         correctUserInfoDto.setUserInfoShortBio("");
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
-    public void toLongBioTest(){
+    public void tooLongBioTest(){
         correctUserInfoDto.setUserInfoShortBio(createStringWithLength(2001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
@@ -271,13 +268,13 @@ public class UserControllerTest {
     }
 
     @Test
-    public void toShortJobTest(){
+    public void tooShortJobTest(){
         correctUserInfoDto.setUserInfoJobTitle("");
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
-    public void toLongJobTest(){
+    public void tooLongJobTest(){
         correctUserInfoDto.setUserInfoJobTitle(createStringWithLength(257));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
@@ -289,37 +286,25 @@ public class UserControllerTest {
     }
 
     @Test
-    public void toShortCompanyTest(){
+    public void tooShortCompanyTest(){
         correctUserInfoDto.setUserInfoCompany("");
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
-    public void toLongCompanyTest(){
+    public void tooLongCompanyTest(){
         correctUserInfoDto.setUserInfoCompany(createStringWithLength(257));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
-    public void toShortPastConferenceTest(){
-        correctUserInfoDto.setUserInfoPastConference("");
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
-    }
-
-    @Test
-    public void toLongPastConferenceTest(){
+    public void tooLongPastConferenceTest(){
         correctUserInfoDto.setUserInfoPastConference(createStringWithLength(1001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
-    public void toShortAdditionalInfoTest(){
-        correctUserInfoDto.setUserInfoAdditionalInfo("");
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
-    }
-
-    @Test
-    public void toLongAdditionalInfoTest(){
+    public void tooLongAdditionalInfoTest(){
         correctUserInfoDto.setUserInfoAdditionalInfo(createStringWithLength(1001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }

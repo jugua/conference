@@ -43,7 +43,7 @@ export default class TalkService {
   add(talk) {
     this.talks.add(talk, (res) => {
       if (this._talks instanceof Array) {
-        this._talks.push(res);
+        this._talks.push(talk);
       }
     },
       (err) => {

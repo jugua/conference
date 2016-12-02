@@ -7,10 +7,10 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
 import java.util.Arrays;
 
 /**
@@ -36,6 +36,16 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         context.refresh();
         return context;
     }*/
+    
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        OpenEntityManagerInViewFilter openEntityManagerInViewFilter = new OpenEntityManagerInViewFilter();
+        return new Filter[] { characterEncodingFilter, openEntityManagerInViewFilter };
+    }
+    
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[] {

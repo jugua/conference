@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -143,4 +144,21 @@ public class PhotoControllerTest {
     }
 
 
+=======
+/**
+ * Created by Artem_Pryzhkov on 29-Nov-16.
+ */
+//
+    /*
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
+@WebAppConfiguration */
+public class PhotoControllerTest {
+//    public static final String API_PHOTO = "/api/user/current/photo";
+//    private MockMvc mockMvc;
+//
+//    @Autowired
+//    private UserService userServiceMock;
+//
+>>>>>>> 33de745504d5114f6a5423e1066abf7bc09e17c2
 }

@@ -2,6 +2,7 @@ package ua.rd.cm.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ua.rd.cm.services.*;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.PhotoService;
 import ua.rd.cm.services.UserInfoService;
@@ -49,7 +50,11 @@ public class WebTestConfig {
         return mock(StatusService.class);
     }
     @Bean
+<<<<<<< HEAD
     public PhotoService mockPhotoService(){
+=======
+    public PhotoService mockPhotoService() {
+>>>>>>> 33de745504d5114f6a5423e1066abf7bc09e17c2
         return mock(PhotoService.class);
     }
 }

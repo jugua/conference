@@ -107,5 +107,4 @@ public class PhotoController {
         return ResponseEntity.status(status).body(message);
     }
 
-
 }
