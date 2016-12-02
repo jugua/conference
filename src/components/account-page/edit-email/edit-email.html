@@ -28,7 +28,8 @@
                ng-pattern="$ctrl.emailPattern"
                ng-model="$ctrl.newEmail"
                ng-focus="$ctrl.showTooltip()"
-               ng-blur="$ctrl.hideTooltip()">
+               ng-blur="$ctrl.hideTooltip()"
+               ng-change="$ctrl.resetEmailValidity()">
         <div class="edit-email__tooltip" ng-show="$ctrl.tooltipVisible">
           <div>A confirmation link will be sent to your <strong>new</strong> address</div>
           <div>A notification will be sent to your <strong>old</strong> address</div>

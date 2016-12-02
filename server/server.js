@@ -15,6 +15,7 @@ const photo = require('./core/photo');
 const logout = require('./core/logout');
 const talk = require('./core/talk');
 const editPassword = require('./core/edit-password');
+const editEmail = require('./core/edit-email');
 const multer = require('multer');
 
 const upload = multer();
@@ -76,6 +77,9 @@ module.exports = (PORT) => {
 
   router.route('/user/current/password')
     .post(editPassword);
+
+  router.route('/user/current/email')
+    .post(editEmail);
 
   router.route('/user/current/photo')
     .post(upload.any(), photo.uploadImage)

@@ -1,11 +1,12 @@
 export default class EditEmailController {
-  constructor(Current, Constants, $timeout) {
+  constructor(Constants, EditEmailService, $timeout) {
     'ngInject';
 
-    this.currentUserService = Current;
-    this.emailPattern = Constants.email;
-
     this.timeout = $timeout;
+
+    this.emailPattern = Constants.email;
+    this.messages = EditEmailService.getMessages();
+
     this.timeoutHandler = null;
 
     this.editEmailForm = {};
@@ -21,26 +22,38 @@ export default class EditEmailController {
   changeEmail() {
     if (this.editEmailForm.newEmail.$error.pattern ||
         this.editEmailForm.newEmail.$error.required) {
-      this.showError();
+      this.showError(this.messages.errInvalidEmail);
+    } else if (this.user.mail === this.newEmail) {
+      this.showError(this.messages.errEmailIsTheSame);
+      this.editEmailForm.newEmail.$setValidity('email_is_the_same', false);
     } else if (this.editEmailForm.$valid) {
+      this.editEmailService.updateEmail(this.newEmail)
+        .then(() => {
+          this.user.mail = this.newEmail;
+          this.showConfirm(this.messages.confirmationSent);
+        })
+        .catch((err) => {
+          if (err.data.error === 'email_already_exists') {
+            this.editEmailForm.newEmail.$setValidity('email_already_exists', false);
 
-      this.currentUserService.updateInfo({ mail: this.newEmail });
-      this.user.mail = this.newEmail;
-
-      this.showConfirm();
+            const errMessage = this.messages.errEmailAlreadyExists.replace('{{email}}', this.newEmail);
+            this.showError(errMessage);
+          } else {  // unknown error, default handler
+            this.showError(err.data.error);
+          }
+        });
     }
   }
-  showError() {
+  showError(message) {
     this.error = true;
-    this.errorMessage = 'Please enter a valid email address';
+    this.errorMessage = message;
   }
-  showConfirm() {
+  showConfirm(message) {
     this.error = false;
     this.errorMessage = null;
 
     this.confirm = true;
-    this.confirmMessage = `We've sent a confirmation link to your new email address,
-                           please check your inbox and confirm your changes`;
+    this.confirmMessage = message;
 
     this.changed = true;
 
@@ -69,5 +82,9 @@ export default class EditEmailController {
     if (this.timeoutHandler) {  // cancel a pending timeout promise if any
       this.timeout.cancel(this.timeoutHandler);
     }
+  }
+  resetEmailValidity() {
+    this.editEmailForm.newEmail.$setValidity('email_is_the_same', true);
+    this.editEmailForm.newEmail.$setValidity('email_already_exists', true);
   }
 }
