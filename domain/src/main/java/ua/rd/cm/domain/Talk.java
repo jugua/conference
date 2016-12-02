@@ -54,12 +54,12 @@ public class Talk {
     @Column(name = "time", nullable = false)
     private LocalDateTime time;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 250)
     private String title;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 3000)
     private String description;
 
-    @Column(name = "additional_info")
+    @Column(name = "additional_info", nullable = false, length = 1500)
     private String additionalInfo;
 }
