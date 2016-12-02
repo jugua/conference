@@ -213,7 +213,7 @@ public class UserControllerTest {
                 .andExpect(jsonPath("bio", is(user.getUserInfo().getShortBio())))
                 .andExpect(jsonPath("job", is(user.getUserInfo().getJobTitle())))
                 .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
-                .andExpect(jsonPath("photo", is(user.getPhoto())))
+                .andExpect(jsonPath("photo", is("api/user/current/photo/" + user.getId())))
                 .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
                 .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "LinkedIn")))))
                 .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
