@@ -8,8 +8,8 @@ import java.io.*;
 @Service
 public class SimplePhotoService implements PhotoService {
 
-    public static final String ROOT = "C:/";
-    public static final String FOLDER = "var/lib/";
+    public static final String ROOT = "/";
+    public static final String FOLDER = "home/cm/user/photos";
 
     @Override
     public String savePhoto(MultipartFile photo, String fileNameId) {
