@@ -3,11 +3,11 @@ import controller from './edit-name.controller';
 
 const editNameComponent = {
   bindings: {
-
+    changename: '=',
+    user: '='
   },
   template,
   controller,
-  controllerAs: 'editNameCtrl'
 };
 
 export default editNameComponent;

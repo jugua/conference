@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-let User = require('./../model/User');
+const User = require('./../model/User');
 
 function uploadImage(req, res) {
   if (!req.headers.token) {
@@ -12,54 +12,53 @@ function uploadImage(req, res) {
     return;
   }
 
-  User.findOne({hash: req.headers.token}, (err, current) => {
+  User.findOne({ hash: req.headers.token }, (err, current) => {
     if (err) {
       res.status(403).send(err);
       return;
     }
 
     if (!current) {
-      res.status(401).send({error: 'no-current-user'});
+      res.status(401).send({ error: 'no-current-user' });
       return;
     }
 
-    let file = req.files[0];
+    const file = req.files[0];
 
     // Logic for handling missing file, wrong mimetype, no buffer, etc.
 
-    if (file.size > 2097152){
-      res.status(413).send({error: 'maxSize'});
+    if (file.size > 2097152) {
+      res.status(413).send({ error: 'maxSize' });
       return;
     }
-    if (file.size === 0){
-      res.status(413).send({error: 'minSize'});
+    if (file.size === 0) {
+      res.status(413).send({ error: 'minSize' });
       return;
     }
-    if (!/jp(e)?g|gif|png$/.test(file.mimetype)){
-      res.status(415).send({error: 'pattern'});
-      return
+    if (!/jp(e)?g|gif|png$/.test(file.mimetype)) {
+      res.status(415).send({ error: 'pattern' });
+      return;
     }
 
-    if(current.photo) {
-
-      fs.unlink(path.join(__dirname, '/../../dist/' + current.photo), (err)=>{
+    if (current.photo) {
+      fs.unlink(path.join(__dirname, `/../../dist/${current.photo}`), (err) => {
         console.log(err);
         if (err) {
-          res.status(403).send({error: 'delete'});
-          return
+          res.status(403).send({ error: 'delete' });
+          return;
         }
-        console.log('successfully deleted')
+        console.log('successfully deleted');
       });
     }
 
-    let pathFile = path.join(__dirname, '/../../dist/assets/img/'),
-        buffer = file.buffer,
-        random = Math.random().toString(36).substr(2, 5),
-        fileName = current._id,
-        stream = fs.createWriteStream(pathFile + fileName + random);
+    const pathFile = path.join(__dirname, '/../../dist/assets/img/');
+    const buffer = file.buffer;
+    const random = Math.random().toString(36).substr(2, 5);
+    const fileName = current._id;
+    const stream = fs.createWriteStream(pathFile + fileName + random);
 
     stream.write(buffer);
-    stream.on('error', function(err) {
+    stream.on('error', (err) => {
       console.log(err);
       console.log('Could not write file to memory.');
 
@@ -68,22 +67,21 @@ function uploadImage(req, res) {
       });
     });
 
-    stream.on('finish', function() {
+    stream.on('finish', () => {
       console.log('File saved successfully.');
 
-      current['photo'] = 'assets/img/' + fileName + random;
+      current.photo = `assets/img/${fileName}${random}`;
 
       current.save((err) => {
         if (err) {
-          res.send({error:"save"});
+          res.send({ error: 'save' });
           return;
         }
 
-        let data = {
-          answer: current['photo']
+        const data = {
+          answer: current.photo
         };
         res.send(data);
-
       });
     });
 
@@ -113,7 +111,7 @@ function deleteImage(req, res) {
     }
 
     if (current.photo) {
-      fs.unlink(path.join(__dirname, '/../../dist/' + current.photo), (err) => {
+      fs.unlink(path.join(__dirname, `/../../dist/${current.photo}`), (err) => {
         console.log(err);
         if (err) {
           res.status(403).send({ error: 'delete' });
@@ -122,11 +120,11 @@ function deleteImage(req, res) {
         console.log('successfully deleted');
       });
 
-      current['photo'] = '';
+      current.photo = '';
 
       current.save((err) => {
         if (err) {
-          res.send({ error: "delete" });
+          res.send({ error: 'delete' });
           return;
         }
 
@@ -139,4 +137,4 @@ function deleteImage(req, res) {
 module.exports = {
   uploadImage,
   deleteImage
-}
+};

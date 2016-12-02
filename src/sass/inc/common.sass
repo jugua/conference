@@ -16,7 +16,8 @@
   cursor: pointer
   transition: all 0.3s ease
 
-  &:hover
+  &:hover,
+  &:focus
     background: darken($dark-blue, 20%)
 
   &_right
@@ -124,7 +125,7 @@
 .pop-up
   position: relative
   width: 450px
-  margin: auto
+  margin: auto 0
   background: white
 
   @media ($mxw:$sdmx)
@@ -153,6 +154,7 @@
 
     &-user
       overflow-wrap: break-word
+      word-wrap: break-word
       hyphens: auto
       font-family: "Oswald Bold"
 

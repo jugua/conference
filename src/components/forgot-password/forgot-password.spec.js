@@ -1,21 +1,18 @@
-import module from './forgot-password';
+/* global describe, it, expect */
+
 import component from './forgot-password.component';
 import Controller from './forgot-password.controller';
 import template from './forgot-password.html';
 
 describe('ForgotPassword', () => {
+  const constantsServiceMock = { passwordConstants: '' };
+  const ForgotPasswordServiceMock = {};
 
   it('has template defined', () => {
     expect(component.template).toBeDefined();
   });
   it('has controller defined', () => {
     expect(component.controller).toBeDefined();
-  });
-  it('has controllerAs defined', () => {
-    expect(component.controllerAs).toBeDefined();
-  });
-  it('has controllerAs set to forgotPasswordCtrl', () => {
-    expect(component.controllerAs).toBe('forgotPasswordCtrl');
   });
   it('has controller configured to the same controller we check', () => {
     expect(component.controller).toBe(Controller);
@@ -38,7 +35,7 @@ describe('ForgotPassword', () => {
   });
 
   describe('Controller instance', () => {
-    let controller = new Controller();
+    const controller = new Controller(ForgotPasswordServiceMock, constantsServiceMock);
     it('has forgotten property defined', () => {
       expect(controller.forgotten).toBeDefined();
     });
