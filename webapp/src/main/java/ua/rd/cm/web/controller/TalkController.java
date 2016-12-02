@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/talk")
@@ -29,6 +30,8 @@ public class TalkController {
 	private LanguageService languageService;
 	private LevelService levelService;
 	private TopicService topicService;
+
+	private static final String DEFAULT_TALK_STATUS = "New";
 
 	@Autowired
 	public TalkController(ModelMapper mapper, UserService userService, TalkService talkService,
@@ -48,21 +51,22 @@ public class TalkController {
 	public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto, Principal principal, BindingResult bindingResult) {
 		MessageDto messageDto = new MessageDto();
 		HttpStatus httpStatus;
+
 		if(principal == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
-		if(bindingResult.hasFieldErrors()) {
-			httpStatus = HttpStatus.BAD_REQUEST;
-			messageDto.setError("fields_error");
-		} else if (!checkForFilledUserInfo(principal)) {
+
+		if (bindingResult.hasFieldErrors()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+		}
+
+		User currentUser = userService.getByEmail(principal.getName());
+
+		if (!checkForFilledUserInfo(currentUser)) {
 			httpStatus = HttpStatus.FORBIDDEN;
 		} else {
-			dto.setStatus(statusService.getByName("New").getName());
-			User currentUser = userService.getByEmail(principal.getName());
-			Talk currentTalk = dtoToEntity(dto);
-			currentTalk.setUser(currentUser);
+			saveNewTalk(dto, currentUser);
 			httpStatus = HttpStatus.OK;
-			talkService.save(currentTalk);
 		}
 		return ResponseEntity.status(httpStatus).body(messageDto);
 	}
@@ -72,47 +76,45 @@ public class TalkController {
 		if(principal == null) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
-		User currentUser = userService.getByEmail(principal.getName());
-		List<Talk> userTalks = talkService.findByUserId(currentUser.getId());
-		List<TalkDto> userTalkDtoList = dtoToTalkDtoList(userTalks);
+		String userEmail = principal.getName();
+		List<TalkDto> userTalkDtoList = prepareTalkDtos(userEmail);
 		return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
 	}
 
-	private List<TalkDto> dtoToTalkDtoList(List<Talk> userTalks) {
-		List<TalkDto> list = new ArrayList<>();
-		for (Talk t: userTalks) {
-			list.add(entityToDto(t));
-		}
-		return list;
+	private void saveNewTalk(TalkDto dto, User currentUser) {
+		dto.setStatusName(DEFAULT_TALK_STATUS);
+		Talk currentTalk = dtoToEntity(dto);
+		currentTalk.setUser(currentUser);
+		talkService.save(currentTalk);
 	}
 
-	private TalkDto entityToDto(Talk t) {
-		TalkDto dto = new TalkDto();
-		dto.setAdditionalInfo(t.getAdditionalInfo());
-		dto.setDescription(t.getDescription());
-		dto.setTitle(t.getTitle());
-		dto.setLanguage(t.getLanguage().getName());
-		dto.setLevel(t.getLevel().getName());
-		dto.setTopic(t.getTopic().getName());
-		dto.setType(t.getType().getName());
-		dto.setStatus(t.getStatus().getName());
-		dto.setDate(t.getTime().toString());
+	private List<TalkDto> prepareTalkDtos(String userEmail) {
+		User currentUser = userService.getByEmail(userEmail);
+
+		return talkService.findByUserId(currentUser.getId())
+								.stream()
+								.map((talk) -> entityToDto(talk))
+								.collect(Collectors.toList());
+	}
+
+	private TalkDto entityToDto(Talk talk) {
+		TalkDto dto = mapper.map(talk, TalkDto.class);
+		dto.setDate(talk.getTime().toString());
 		return dto;
 	}
 
 	private Talk dtoToEntity(TalkDto dto) {
 		Talk talk = mapper.map(dto, Talk.class);
 		talk.setTime(LocalDateTime.now());
-		talk.setStatus(statusService.getByName(dto.getStatus()));
-		talk.setLanguage(languageService.getByName(dto.getLanguage()));
-		talk.setLevel(levelService.getByName(dto.getLevel()));
-		talk.setType(typeService.getByName(dto.getType()));
-		talk.setTopic(topicService.getByName(dto.getTopic()));
+		talk.setStatus(statusService.getByName(dto.getStatusName()));
+		talk.setLanguage(languageService.getByName(dto.getLanguageName()));
+		talk.setLevel(levelService.getByName(dto.getLevelName()));
+		talk.setType(typeService.getByName(dto.getTypeName()));
+		talk.setTopic(topicService.getByName(dto.getTopicName()));
 		return talk;
 	}
 
-	private boolean checkForFilledUserInfo(Principal principal) {
-		User currentUser = userService.getByEmail(principal.getName());
+	private boolean checkForFilledUserInfo(User currentUser) {
 		UserInfo currentUserInfo = currentUser.getUserInfo();
 		if (currentUserInfo.getShortBio().equals("") ||
 				currentUserInfo.getJobTitle().equals("") ||
