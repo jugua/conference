@@ -15,7 +15,6 @@ describe('EditPassword', () => {
     let q;
     let EditPasswordService;
     let Constants;
-    // const user = { photo: 'df' };
     let sut;
     let timeout;
     const editing = true;
