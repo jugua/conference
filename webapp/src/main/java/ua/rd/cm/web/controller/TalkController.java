@@ -114,9 +114,9 @@ public class TalkController {
 	private boolean checkForFilledUserInfo(Principal principal) {
 		User currentUser = userService.getByEmail(principal.getName());
 		UserInfo currentUserInfo = currentUser.getUserInfo();
-		if (currentUserInfo.getShortBio().equals("") ||
-				currentUserInfo.getJobTitle().equals("") ||
-				currentUserInfo.getCompany().equals("")) {
+		if (currentUserInfo.getShortBio().isEmpty() ||
+				currentUserInfo.getJobTitle().isEmpty() ||
+				currentUserInfo.getCompany().isEmpty()) {
 			return false;
 		}
 		return true;
