@@ -1,30 +1,56 @@
 package ua.rd.cm.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.services.PhotoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/user/current/photo")
 public class PhotoController {
     private UserService userService;
+    private PhotoService photoService;
 
-    public static final String ROOT = "/";
-    public static final String FOLDER = "var/cm/user/photos/";
     public static final long MAX_SIZE = 2097152;
 
     @Autowired
-    public PhotoController(UserService userService) {
+    public PhotoController(UserService userService, PhotoService photoService) {
         this.userService = userService;
+        this.photoService = photoService;
+    }
+
+    private String getFormat(String fileName) {
+        int index = fileName.lastIndexOf('.');
+        if (index == -1) {
+            return "";
+        }
+        return fileName.substring(index + 1);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity getFile(@PathVariable("id") String fileName) throws IOException {
+        File file = photoService.getPhoto(fileName);
+        InputStream inputStream = new FileInputStream(file);
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+        HttpHeaders header = new HttpHeaders();
+
+        header.setContentType(new MediaType("image", getFormat(file.getName())));
+        header.setContentLength(file.length());
+        return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
     }
 
     @PostMapping
@@ -45,102 +71,39 @@ public class PhotoController {
             message.setError("pattern");
             status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
-            try {
-                String path = saveFile(file, currentUser);
+            String path = photoService.savePhoto(file, currentUser.getId()
+                    .toString());
 
+            if (path != null) {
                 currentUser.setPhoto(path);
                 userService.updateUserProfile(currentUser);
 
                 message.setStatus(path);
                 status = HttpStatus.OK;
-            } catch (IOException e) {
+            } else {
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
-            } //TODO: update
+            }
         }
 
         return ResponseEntity.status(status).body(message);
     }
 
     @DeleteMapping
-    public ResponseEntity delete(Principal principal){
+    public ResponseEntity delete(Principal principal) {
         MessageDto message = new MessageDto();
         HttpStatus status;
         User currentUser = userService.getByEmail(principal.getName());
 
-        try {
-            File serverFile = find(getDir().getAbsolutePath(),
-                    currentUser.getId().toString());
+        if (photoService.deletePhoto(currentUser.getId().toString())) {
+            currentUser.setPhoto(null);
+            userService.updateUserProfile(currentUser);
 
-            if (serverFile != null && serverFile.delete()) {
-                currentUser.setPhoto(null);
-                userService.updateUserProfile(currentUser);
-
-                status = HttpStatus.OK;
-            } else {
-                message.setError("delete");
-                status = HttpStatus.BAD_REQUEST;
-            }
-        } catch (IOException e) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+            status = HttpStatus.OK;
+        } else {
+            message.setError("delete");
+            status = HttpStatus.BAD_REQUEST;
         }
 
         return ResponseEntity.status(status).body(message);
-    }
-
-    private File getDir() throws IOException {
-        File dir= new File(ROOT + FOLDER);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        return dir;
-    }
-
-    private String saveFile(MultipartFile file, User currentUser) throws IOException {
-        File serverFile = putFileIntoDir(currentUser, file.getBytes(),
-                getDir(), getFileFormat(file.getOriginalFilename()));
-
-        return serverFile.getAbsolutePath();
-    }
-
-    private File putFileIntoDir(User currentUser, byte[] bytes, File dir, String format) throws IOException {
-        File serverFile = new File(dir.getAbsolutePath()
-                + File.separator + currentUser.getId() + format);
-        BufferedOutputStream stream = new BufferedOutputStream(
-                new FileOutputStream(serverFile));
-        stream.write(bytes);
-        stream.close();
-        return serverFile;
-    }
-
-    private String getFileFormat(String fileName) {
-        int index = fileName.lastIndexOf('.');
-        if (index == -1) {
-            return null; //TODO: handle
-        }
-        return fileName.substring(index);
-    }
-
-    private String getFileName(String fileName) {
-        int index = fileName.lastIndexOf('.');
-        if (index == -1) {
-            return fileName;
-        }
-        return fileName.substring(0, index);
-    }
-
-    private File find(String path, String fileName) {
-        File f = new File(path);
-
-        if (fileName.equalsIgnoreCase(getFileName(f.getName()))) {
-            return f;
-        }
-        if (f.isDirectory()) {
-            for (String aChild : f.list()) {
-                File ff = find(path + File.separator + aChild, fileName);
-                if (ff != null) return ff;
-            }
-        }
-
-        return null;
     }
 }
