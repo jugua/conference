@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestMethod;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.Role;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -52,10 +54,18 @@ public class TalkControllerTest {
     @Autowired
     private UserService userService;
 
+    private UserInfo userInfo;
+    private Role role;
+    private User user;
+
     @Before
     public void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(talkController).build();
         correctTalkDto = setupCorrectTalkDto();
+        userInfo = createUserInfo();
+        role = createSpeakerRole();
+        user = createUser(role, userInfo);
+        mockServices(user, userInfo);
     }
 
     private void mockServices(User user, UserInfo userInfo) {
@@ -65,18 +75,33 @@ public class TalkControllerTest {
 
     @Test
     public void correctSubmitNewTalkTest() throws Exception{
-        UserInfo userInfo = createUserInfo();
-        Role role = createSpeakerRole();
-        User user = createUser(role, userInfo);
         Principal correctPrincipal = () -> user.getEmail();
-
-        mockServices(user, userInfo);
-
         mockMvc.perform(post(API_TALK)
                 .principal(correctPrincipal)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctTalkDto))
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    public void emptyCompanyMyInfoSubmitNewTalkTest() {
+        userInfo.setCompany("");
+        Principal correctPrincipal = () -> user.getEmail();
+        checkForForbidden(API_TALK, correctPrincipal);
+    }
+
+    @Test
+    public void emptyJobMyInfoSubmitNewTalkTest() {
+        userInfo.setJobTitle("");
+        Principal correctPrincipal = () -> user.getEmail();
+        checkForForbidden(API_TALK, correctPrincipal);
+    }
+
+    @Test
+    public void emptyBioMyInfoSubmitNewTalkTest() {
+        userInfo.setShortBio("");
+        Principal correctPrincipal = () -> user.getEmail();
+        checkForForbidden(API_TALK, correctPrincipal);
     }
 
     @Test
@@ -93,6 +118,122 @@ public class TalkControllerTest {
         ).andExpect(status().isUnauthorized());
     }
 
+    @Test
+    public void nullTitleSubmitNewTalkTest() {
+        correctTalkDto.setTitle(null);
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void emptyTitleSubmitNewTalkTest() {
+        correctTalkDto.setTitle("");
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void tooLongTitleSubmitNewTalkTest() {
+        correctTalkDto.setTitle(createStringWithLength(251));
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void nullDescriptionSubmitNewTalkTest() {
+        correctTalkDto.setDescription(null);
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void emptyDescriptionSubmitNewTalkTest() {
+        correctTalkDto.setDescription("");
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void tooLongDescriptionSubmitNewTalkTest() {
+        correctTalkDto.setDescription(createStringWithLength(3001));
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void nullTopicSubmitNewTalkTest() {
+        correctTalkDto.setTopic(null);
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void emptyTopicSubmitNewTalkTest() {
+        correctTalkDto.setTopic("");
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void tooLongTopicSubmitNewTalkTest() {
+        correctTalkDto.setTopic(createStringWithLength(256));
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void nullTypeSubmitNewTalkTest() {
+        correctTalkDto.setType(null);
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void emptyTypeSubmitNewTalkTest() {
+        correctTalkDto.setType("");
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void tooLongTypeSubmitNewTalkTest() {
+        correctTalkDto.setType(createStringWithLength(256));
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void nullLanguageSubmitNewTalkTest() {
+        correctTalkDto.setLanguage(null);
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void emptyLanguageSubmitNewTalkTest() {
+        correctTalkDto.setLanguage("");
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void tooLongLanguageSubmitNewTalkTest() {
+        correctTalkDto.setLanguage(createStringWithLength(256));
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void nullLevelSubmitNewTalkTest() {
+        correctTalkDto.setLevel(null);
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void emptyLevelSubmitNewTalkTest() {
+        correctTalkDto.setLevel("");
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void tooLongLevelSubmitNewTalkTest() {
+        correctTalkDto.setLevel(createStringWithLength(256));
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+    @Test
+    public void tooLongAddInfoSubmitNewTalkTest() {
+        correctTalkDto.setAdditionalInfo(createStringWithLength(1501));
+        checkForBadRequest(API_TALK, RequestMethod.POST);
+    }
+
+
+
     private TalkDto setupCorrectTalkDto() {
         TalkDto correctTalkDto = new TalkDto();
         correctTalkDto.setDescription("Description");
@@ -107,10 +248,48 @@ public class TalkControllerTest {
         return correctTalkDto;
     }
 
+    private void checkForBadRequest(String uri, RequestMethod method) {
+        try {
+            if (method == RequestMethod.GET) {
+                mockMvc.perform(get(uri)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(convertObjectToJsonBytes(correctTalkDto))
+                ).andExpect(status().isBadRequest());
+            } else if (method == RequestMethod.POST) {
+                mockMvc.perform(post(uri)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(convertObjectToJsonBytes(correctTalkDto))
+                ).andExpect(status().isBadRequest());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkForForbidden(String uri, Principal principal) {
+        try {
+            mockMvc.perform(post(uri)
+                    .principal(principal)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(convertObjectToJsonBytes(correctTalkDto))
+            ).andExpect(status().isForbidden());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private byte[] convertObjectToJsonBytes(Object object) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsBytes(object);
+    }
+
+    private String createStringWithLength(int length) {
+        StringBuilder builder = new StringBuilder();
+        for (int index = 0; index < length; index++) {
+            builder.append("a");
+        }
+        return builder.toString();
     }
 
     private User createUser(Role role , UserInfo info){
