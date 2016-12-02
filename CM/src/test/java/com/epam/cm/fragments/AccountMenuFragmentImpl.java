@@ -1,5 +1,6 @@
 package com.epam.cm.fragments;
 
+import com.epam.cm.dto.AccountButtonDTO;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -8,7 +9,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -47,6 +50,12 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//*[@class='menu-list']//li[contains(@class,'sign-out')]/a | //a[@class='menu-list__title']")
     private WebElementFacade signOutBtn;
 
+    @FindBy(xpath ="//*[@class='menu-list']")
+    private WebElementFacade menuRootElement;
+
+    @FindBy(xpath = "//*[@class='menu-list']/li[2]/a")
+    private WebElementFacade myTalksBtn;
+
     // forgotPw
 
     @FindBy(xpath = "//*[@class='sign-in__password-cont']/a")
@@ -78,6 +87,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
     @FindBy(xpath = "//forgot-password//form/span[2]")
     private WebElementFacade invalidEmailMsg;
+
+    public void clickMyTalksBtn(){
+        myTalksBtn.click();
+    }
 
     public void clickCancelBtn(){
         cancelNotifiPopUpBtn.click();
@@ -118,6 +131,17 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     @Override
+    public List<AccountButtonDTO> getAccountMenuItems() {
+        List<WebElementFacade> resElem = menuRootElement.thenFindAll(By.xpath("./li/a"));
+
+        return resElem.stream()
+                .map(s -> new AccountButtonDTO(s.getText(),s.getAttribute("href"))).
+                        collect(Collectors.toList());
+
+
+    }
+
+    @Override
     public String getEmtyEmailMsgTxt() {
         return emptyEmailMsg.getText();
     }
@@ -151,6 +175,14 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
         signInBtn.click();
     }
 
+    public boolean checkSignOutBtnIsLastItem(){
+
+        if(signOutBtn==findBy(By.xpath("(//*[@class='menu-list']//li[contains(@class,'menu-list__item')])[last()]/a"))){
+            return true;
+        }
+        return false;
+
+    }
 
     public void clickSignOutButton() {
         signOutBtn.click();
@@ -172,7 +204,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public String getAccountMenuTitle() {
-
+        accountBtn.waitUntilVisible();
         return accountBtn.getText();
     }
 
@@ -211,5 +243,4 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     public String getLoginErrorMsgTxt() {
         return find(By.xpath("//*[@id='sign-in-email']/following-sibling::span[1]")).getText();
     }
-
 }

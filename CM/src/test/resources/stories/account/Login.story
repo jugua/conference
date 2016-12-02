@@ -4,22 +4,12 @@ Narrative: User login
   As an anonymous user
   I want to be able to login to my account
 
-
-Scenario: User successfully logs in to the site
-Meta:
-@regression @smoke
-
-Given the unsigned user accesses home page
-And user clicks 'Your Account' menu option
-And user filled in login form:
-|email            |password|
-|tester@tester.com|tester  |
-When user clicks SignIn button on login form
-Then "Your Account" replaced by "Tester's Account"
-And there is 'Sign Out' button in account menu
-
-When user logs out
-
+- Being signed in as a speaker
+I have the following dropdown options available under *'First Name' Account* :
+Manage My Account page, My Info page and My Talks
+- Being signed in as an organizer
+I have the following dropdown options available under *'First Name' Account* :
+Manage My Account page and Talks
 
 
 Scenario: User unsuccessfully logs in to the site with invalid credentials
@@ -29,8 +19,8 @@ Meta:
 Given the unsigned user accesses home page
 And user clicks 'Your Account' menu option
 And user filled in login form:
-|email              |password|
-|invalid@site.com   |invalid |
+|email           |password|
+|invalid@site.com|invalid |
 
 When user clicks SignIn button on login form
 Then user still in login form
@@ -94,3 +84,44 @@ Examples:
 |tester@tester.com  |          |
 |tester@tester.com  |teste     |
 |speaker@speaker.com|tester    |
+
+
+Scenario: Being signed in as a speaker manage My Account page, My Info page and My Talks
+Meta:
+@regression @smoke
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email              |password|
+|speaker@speaker.com|speaker |
+When user clicks SignIn button on login form
+Then "Your Account" replaced by "Speaker's Account"
+And there are My_account, My_Info and  My Talks links in the given order
+|btnName   |link       |
+|My Info   |/#/my-info |
+|My Talks  |/#/my-talks|
+|Settings  |/#/account |
+|Sign Out  |/#/        |
+When user logs out
+
+
+
+Scenario: Being signed in as an organizer manage My Account page, My Info page and My Talks
+Meta:
+@regression @smoke @ignore
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email                  |password |
+|organizer@organizer.com|Organizer|
+When user clicks SignIn button on login form
+Then "Your Account" replaced by "Organizer's Account"
+Then there are My account and  My Talks links in the given order
+|btnName   |link    |
+|My Account|/#      |
+|Talks     |/#/talks|
+|Sign Out  |/#/     |
+
+When user logs out
