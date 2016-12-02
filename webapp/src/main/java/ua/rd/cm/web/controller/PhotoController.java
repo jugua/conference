@@ -78,7 +78,7 @@ public class PhotoController {
                 currentUser.setPhoto(path);
                 userService.updateUserProfile(currentUser);
 
-                message.setStatus("api/user/current/photo/" + currentUser.getId());
+                message.setAnswer("api/user/current/photo/" + currentUser.getId());
                 status = HttpStatus.OK;
             } else {
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
