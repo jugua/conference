@@ -23,7 +23,7 @@ class EditEmailService {
     });
   }
 
-  getErrors() {
+  getMessages() {
     return this.messages;
   }
 }
