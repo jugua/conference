@@ -159,73 +159,73 @@ public class TalkControllerTest {
 
     @Test
     public void nullTopicSubmitNewTalkTest() {
-        correctTalkDto.setTopic(null);
+        correctTalkDto.setTopicName(null);
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void emptyTopicSubmitNewTalkTest() {
-        correctTalkDto.setTopic("");
+        correctTalkDto.setTopicName("");
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void tooLongTopicSubmitNewTalkTest() {
-        correctTalkDto.setTopic(createStringWithLength(256));
+        correctTalkDto.setTopicName(createStringWithLength(256));
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void nullTypeSubmitNewTalkTest() {
-        correctTalkDto.setType(null);
+        correctTalkDto.setTypeName(null);
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void emptyTypeSubmitNewTalkTest() {
-        correctTalkDto.setType("");
+        correctTalkDto.setTypeName("");
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void tooLongTypeSubmitNewTalkTest() {
-        correctTalkDto.setType(createStringWithLength(256));
+        correctTalkDto.setTypeName(createStringWithLength(256));
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void nullLanguageSubmitNewTalkTest() {
-        correctTalkDto.setLanguage(null);
+        correctTalkDto.setLanguageName(null);
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void emptyLanguageSubmitNewTalkTest() {
-        correctTalkDto.setLanguage("");
+        correctTalkDto.setLanguageName("");
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void tooLongLanguageSubmitNewTalkTest() {
-        correctTalkDto.setLanguage(createStringWithLength(256));
+        correctTalkDto.setLanguageName(createStringWithLength(256));
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void nullLevelSubmitNewTalkTest() {
-        correctTalkDto.setLevel(null);
+        correctTalkDto.setLevelName(null);
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void emptyLevelSubmitNewTalkTest() {
-        correctTalkDto.setLevel("");
+        correctTalkDto.setLevelName("");
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
     @Test
     public void tooLongLevelSubmitNewTalkTest() {
-        correctTalkDto.setLevel(createStringWithLength(256));
+        correctTalkDto.setLevelName(createStringWithLength(256));
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
@@ -235,25 +235,36 @@ public class TalkControllerTest {
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
-    /*
-   [{"title":"Java","description":"Descr","topic":"JVM Languages and new programming paradigms","type":"Lighting Talk","lang":"English","level":"Advanced","addon":null,"status":"New","date":"2016-12-02T17:22:51"},
-   {"title":"title","description":"Description","topic":"JVM Languages and new programming paradigms","type":"Regular Talk","lang":"English","level":"Beginner","addon":"Additional info","status":"New","date":"2016-12-31T23:55"}]
-    */
     @Test
     public void correctGetMyTalksTest() throws Exception {
         Principal correctPrincipal = () -> user.getEmail();
-        System.out.println(user.getId());
         Talk talk = createTalk();
         List talks = new ArrayList() {{
             add(talk);
         }};
         when(talkService.findByUserId(anyLong())).thenReturn(talks);
-        System.out.println(talkService.findByUserId(user.getId()));
         mockMvc.perform(get(API_TALK)
                 .principal(correctPrincipal)
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].title", is("Title")));
+                .andExpect(jsonPath("$[0].title", is(talk.getTitle())))
+                .andExpect(jsonPath("$[0].description", is(talk.getDescription())))
+                .andExpect(jsonPath("$[0].topic", is(talk.getTopic().getName())))
+                .andExpect(jsonPath("$[0].type", is(talk.getType().getName())))
+                .andExpect(jsonPath("$[0].lang", is(talk.getLanguage().getName())))
+                .andExpect(jsonPath("$[0].level", is(talk.getLevel().getName())))
+                .andExpect(jsonPath("$[0].addon", is(talk.getAdditionalInfo())))
+                .andExpect(jsonPath("$[0].status", is(talk.getStatus().getName())));
+    }
+    @Test
+    public void incorrectGetMyTalksTest() throws Exception {
+        Talk talk = createTalk();
+        List talks = new ArrayList() {{
+            add(talk);
+        }};
+        when(talkService.findByUserId(anyLong())).thenReturn(talks);
+        mockMvc.perform(get(API_TALK)
+        ).andExpect(status().isUnauthorized());
     }
 
     private Talk createTalk() {
@@ -269,11 +280,11 @@ public class TalkControllerTest {
         TalkDto correctTalkDto = new TalkDto();
         correctTalkDto.setDescription("Description");
         correctTalkDto.setTitle("Title");
-        correctTalkDto.setLanguage("English");
-        correctTalkDto.setLevel("Beginner");
-        correctTalkDto.setStatus("New");
-        correctTalkDto.setType("Regular Talk");
-        correctTalkDto.setTopic("JVM Languages and new programming paradigms");
+        correctTalkDto.setLanguageName("English");
+        correctTalkDto.setLevelName("Beginner");
+        correctTalkDto.setStatusName("New");
+        correctTalkDto.setTypeName("Regular Talk");
+        correctTalkDto.setTopicName("JVM Languages and new programming paradigms");
         correctTalkDto.setDate(LocalDateTime.now().toString());
         correctTalkDto.setAdditionalInfo("Info");
         return correctTalkDto;
