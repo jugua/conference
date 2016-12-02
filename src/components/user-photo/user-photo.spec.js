@@ -38,6 +38,69 @@ describe('UserPhoto', () => {
       spyOn(sut.uploadForm, '$setValidity');
     });
 
+    describe('Controller has all elements', () => {
+      it('uploadPreview to equal false', () => {
+        expect(sut.uploadPreview).toBeFalsy();
+      });
+      it('deletePreview to equal false', () => {
+        expect(sut.deletePreview).toBeFalsy();
+      });
+      it('deleteMessage to equal false', () => {
+        expect(sut.deleteMessage).toBeFalsy();
+      });
+      it('animation to equal false', () => {
+        expect(sut.animation).toBeFalsy();
+      });
+      it('ava to equal null', () => {
+        expect(sut.ava).toBeNull();
+      });
+      it('file to equal null', () => {
+        expect(sut.file).toBeNull();
+      });
+      it('uploadForm to be defined', () => {
+        expect(sut.uploadForm).toBeDefined();
+      });
+      it('currentPhotoStatus to be defined', () => {
+        expect(sut.currentPhotoStatus).toBeDefined();
+      });
+      it('has function toggleSlide', () => {
+        expect(typeof sut.toggleSlide).toBe('function');
+      });
+      it('has function togglePreview', () => {
+        expect(typeof sut.togglePreview).toBe('function');
+      });
+      it('has function toggleAnimation', () => {
+        expect(typeof sut.toggleAnimation).toBe('function');
+      });
+      it('has function successUpload', () => {
+        expect(typeof sut.successUpload).toBe('function');
+      });
+      it('has function errorUpload', () => {
+        expect(typeof sut.errorUpload).toBe('function');
+      });
+      it('has function uploadAva', () => {
+        expect(typeof sut.uploadAva).toBe('function');
+      });
+      it('has function getCurrentPhotoStatus', () => {
+        expect(typeof sut.getCurrentPhotoStatus).toBe('function');
+      });
+      it('has function toggleDeletePreview', () => {
+        expect(typeof sut.toggleDeletePreview).toBe('function');
+      });
+      it('has function askToDeletePhoto', () => {
+        expect(typeof sut.askToDeletePhoto).toBe('function');
+      });
+      it('has function deletePhoto', () => {
+        expect(typeof sut.deletePhoto).toBe('function');
+      });
+      it('has function successDelete', () => {
+        expect(typeof sut.deletePhoto).toBe('function');
+      });
+      it('has function errorDelete', () => {
+        expect(typeof sut.deletePhoto).toBe('function');
+      });
+    });
+
     describe('toggle preview function', () => {
       let preview;
       beforeEach(() => {

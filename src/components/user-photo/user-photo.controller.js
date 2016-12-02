@@ -4,17 +4,17 @@ export default class UserPhotoController {
 
     this.userPhotoService = userPhotoService;
 
-
-    this.uploadPreview = false;
-    this.deletePreview = false;
-    this.deleteMessage = false;
     this.defaultImage = 'assets/img/default_ava.jpg';
     this.ava = null;
     this.file = null;
     this.uploadForm = {};
 
-    this.currentPhotoStatus = this.getCurrentPhotoStatus();
+    this.uploadPreview = false;
+    this.deletePreview = false;
+    this.deleteMessage = false;
     this.animation = false;
+
+    this.currentPhotoStatus = this.getCurrentPhotoStatus();
   }
 
   toggleSlide() {
