@@ -15,9 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.domain.*;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
@@ -25,13 +23,18 @@ import ua.rd.cm.web.controller.dto.TalkDto;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -232,7 +235,35 @@ public class TalkControllerTest {
         checkForBadRequest(API_TALK, RequestMethod.POST);
     }
 
+    /*
+   [{"title":"Java","description":"Descr","topic":"JVM Languages and new programming paradigms","type":"Lighting Talk","lang":"English","level":"Advanced","addon":null,"status":"New","date":"2016-12-02T17:22:51"},
+   {"title":"title","description":"Description","topic":"JVM Languages and new programming paradigms","type":"Regular Talk","lang":"English","level":"Beginner","addon":"Additional info","status":"New","date":"2016-12-31T23:55"}]
+    */
+    @Test
+    public void correctGetMyTalksTest() throws Exception {
+        Principal correctPrincipal = () -> user.getEmail();
+        System.out.println(user.getId());
+        Talk talk = createTalk();
+        List talks = new ArrayList() {{
+            add(talk);
+        }};
+        when(talkService.findByUserId(anyLong())).thenReturn(talks);
+        System.out.println(talkService.findByUserId(user.getId()));
+        mockMvc.perform(get(API_TALK)
+                .principal(correctPrincipal)
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].title", is("Title")));
+    }
 
+    private Talk createTalk() {
+        Status status = new Status(1L, "New");
+        Topic topic = new Topic(1L, "Topic");
+        Type type = new Type(1L, "Type");
+        Language language = new Language(1L, "Language");
+        Level level = new Level(1L, "Level");
+        return new Talk(1L, user, status, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info");
+    }
 
     private TalkDto setupCorrectTalkDto() {
         TalkDto correctTalkDto = new TalkDto();
