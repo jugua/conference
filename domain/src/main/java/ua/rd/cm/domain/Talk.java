@@ -54,7 +54,6 @@ public class Talk {
     @Column(name = "time")
     private LocalDateTime time;
 
-<<<<<<< HEAD
     @Column(name = "title")
     private String title;
 
@@ -62,20 +61,5 @@ public class Talk {
     private String description;
 
     @Column(name = "additional_info")
-=======
-    @NotNull
-    @Size(max = 250)
-    @Column(name = "title", nullable = false, length = 250)
-    private String title;
-
-    @NotNull
-    @Size(max = 3000)
-    @Column(name = "description", nullable = false, length = 3000)
-    private String description;
-
-    @NotNull
-    @Size(max = 1500)
-    @Column(name = "additional_info", nullable = false, length = 1500)
->>>>>>> 0f8fcac2e42334debc9c8e451cd5057bd6205dfc
     private String additionalInfo;
 }

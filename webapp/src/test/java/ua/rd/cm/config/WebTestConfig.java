@@ -48,6 +48,7 @@ public class WebTestConfig {
     public StatusService mockStatusService() {
         return mock(StatusService.class);
     }
+    @Bean
     public PhotoService mockPhotoService() {
         return mock(PhotoService.class);
     }
