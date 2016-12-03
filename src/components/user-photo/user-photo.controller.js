@@ -36,7 +36,6 @@ export default class UserPhotoController {
   }
 
   togglePreview() {
-    console.log(this.uploadForm);
     this.uploadForm.$setValidity('save', true);
     if (this.uploadForm.$valid) {
       this.uploadPreview = !this.uploadPreview;
