@@ -13,6 +13,11 @@ const auth = function auth(req, res) {
           return;
         }
 
+        if (!req.body.password) {
+          res.status(401).json({ error: 'password_auth_err' });
+          return;
+        }
+
         if (!user.checkPassword(req.body.password)) {
           res.status(401).json({ error: 'password_auth_err' });
           return;
