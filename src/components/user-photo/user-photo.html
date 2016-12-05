@@ -29,18 +29,21 @@
         </p>
 
         <label class="file-upload">
-          <span class="btn file-upload__button">Choose</span>
-          <input type="file"
-                 class="file-upload__uploading"
-                 ng-model="$ctrl.file"
-                 required
-                 ngf-select="$ctrl.downloadBySelect()"
-                 ngf-max-size="2MB"
-                 ngf-min-size="1"
-                 ngf-pattern="image/jpeg,image/png,image/gif"
-                 accept="image/jpeg,image/png,image/gif"
-                 name="file"
-          >
+          <span class="btn file-upload__button">
+            Choose
+            <input type="file"
+                   class="file-upload__uploading"
+                   ng-model="$ctrl.file"
+                   required
+                   ngf-select="$ctrl.downloadBySelect()"
+                   ngf-max-size="2MB"
+                   ngf-min-size="1"
+                   ngf-pattern="image/jpeg,image/png,image/gif"
+                   accept="image/jpeg,image/png,image/gif"
+                   name="file"
+            >
+          </span>
+
         </label>
         <p ng-if="$ctrl.uploadForm.$error.maxSize" class="field-error field-error_center">
           You exceeded maximum allowed size for uploaded photo (2Mb)

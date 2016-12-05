@@ -28,7 +28,7 @@ export default class UserPhotoController {
     this.togglePreview();
   }
 
-  downloadBySelect() {
+  downloadBySelect($event) {
     this.uploadForm.dragfile.$setValidity('pattern', true);
     this.uploadForm.dragfile.$setValidity('minSize', true);
     this.uploadForm.dragfile.$setValidity('maxSize', true);
