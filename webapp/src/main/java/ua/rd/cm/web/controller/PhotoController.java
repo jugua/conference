@@ -15,6 +15,8 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.security.Principal;
@@ -60,28 +62,46 @@ public class PhotoController {
         MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(principal.getName());
 
-        if (file.isEmpty()) {
+        if (file != null || file.isEmpty()) {
             message.setError("save");
             status = HttpStatus.BAD_REQUEST;
-        } else if (file.getSize() > MAX_SIZE) {
-            message.setError("maxSize");
-            status = HttpStatus.PAYLOAD_TOO_LARGE;
-        } else if (!file.getOriginalFilename()
-                .matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
-            message.setError("pattern");
-            status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
-            String path = photoService.savePhoto(file, currentUser.getId()
-                    .toString());
-
-            if (path != null) {
-                currentUser.setPhoto(path);
-                userService.updateUserProfile(currentUser);
-
-                message.setStatus(path);
-                status = HttpStatus.OK;
+            //TODO: check file for renaming another type into image type
+            try {
+                BufferedImage bi = ImageIO.read(file.getInputStream());
+                if (bi != null) {
+                    System.out.println(bi.toString());
+                } else {
+                    System.out.println("null");
+                    message.setError("pattern");
+                    status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
+                    return ResponseEntity.status(status).body(message);
+                }
+            } catch (IOException e) {
+                message.setError("save");
+                status = HttpStatus.BAD_REQUEST;
+                return ResponseEntity.status(status).body(message);
+            }
+            if (file.getSize() > MAX_SIZE) {
+                message.setError("maxSize");
+                status = HttpStatus.PAYLOAD_TOO_LARGE;
+            } else if (!file.getOriginalFilename()
+                    .matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
+                message.setError("pattern");
+                status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
             } else {
-                return new ResponseEntity(HttpStatus.FORBIDDEN);
+                String path = photoService.savePhoto(file, currentUser.getId()
+                        .toString());
+
+                if (path != null) {
+                    currentUser.setPhoto(path);
+                    userService.updateUserProfile(currentUser);
+
+                    message.setStatus(path);
+                    status = HttpStatus.OK;
+                } else {
+                    return new ResponseEntity(HttpStatus.FORBIDDEN);
+                }
             }
         }
 
