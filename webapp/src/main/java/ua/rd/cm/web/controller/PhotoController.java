@@ -60,7 +60,7 @@ public class PhotoController {
         MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(principal.getName());
 
-        if (file.isEmpty()) {
+        if (file!=null || file.isEmpty()) {
             message.setError("save");
             status = HttpStatus.BAD_REQUEST;
         } else if (file.getSize() > MAX_SIZE) {
