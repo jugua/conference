@@ -1,5 +1,7 @@
 class SignIn {
   constructor($http, $q, $window, $rootScope) {
+    'ngInject'
+
     this.userInfo = {};
     this.http = $http;
     this.q = $q;
