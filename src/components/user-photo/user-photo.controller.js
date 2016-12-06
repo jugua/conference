@@ -28,7 +28,7 @@ export default class UserPhotoController {
     this.togglePreview();
   }
 
-  downloadBySelect($event) {
+  downloadBySelect() {
     this.uploadForm.dragfile.$setValidity('pattern', true);
     this.uploadForm.dragfile.$setValidity('minSize', true);
     this.uploadForm.dragfile.$setValidity('maxSize', true);
@@ -59,7 +59,7 @@ export default class UserPhotoController {
     this.togglePreview();
     this.toggleAnimation();
     this.file = null;
-    this.uploadForm.$setValidity(data.error, false);
+    this.uploadForm.file.$setValidity(data.error, false);
   }
 
   uploadAva() {

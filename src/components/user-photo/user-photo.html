@@ -45,16 +45,16 @@
           </span>
 
         </label>
-        <p ng-if="$ctrl.uploadForm.$error.maxSize" class="field-error field-error_center">
+        <p ng-if="$ctrl.uploadForm.file.$error.maxSize || $ctrl.uploadForm.dragfile.$error.maxSize" class="field-error field-error_center">
           You exceeded maximum allowed size for uploaded photo (2Mb)
         </p>
-        <p ng-if="$ctrl.uploadForm.$error.minSize" class="field-error field-error_center">
+        <p ng-if="$ctrl.uploadForm.file.$error.minSize || $ctrl.uploadForm.dragfile.$error.minSize" class="field-error field-error_center">
           You try to upload an empty file
         </p>
-        <p ng-if="$ctrl.uploadForm.$error.pattern" class="field-error field-error_center">
+        <p ng-if="$ctrl.uploadForm.file.$error.pattern || $ctrl.uploadForm.dragfile.$error.pattern" class="field-error field-error_center">
           We could not understand the contents of your file. Make sure it is a jpg, gif or png formatted image.
         </p>
-        <p ng-if="$ctrl.uploadForm.$error.save" class="field-error field-error_center">
+        <p ng-if="$ctrl.uploadForm.file.$error.save || $ctrl.uploadForm.dragfile.$error.save" class="field-error field-error_center">
           Sorry we can`t save Your photo try do change it some later.
         </p>
       </div>

@@ -241,6 +241,8 @@ describe('UserPhoto', () => {
       beforeEach(() => {
         spyOn(sut, 'togglePreview');
         spyOn(sut, 'toggleAnimation');
+        sut.uploadForm = { file: { $setValidity: () => {} } };
+        spyOn(sut.uploadForm.file, '$setValidity');
         sut.errorUpload({ data: { error: 'maxSize' } });
       });
 
@@ -251,7 +253,7 @@ describe('UserPhoto', () => {
         expect(sut.toggleAnimation).toHaveBeenCalled();
       });
       it('should call function $setValidity', () => {
-        expect(sut.uploadForm.$setValidity).toHaveBeenCalled();
+        expect(sut.uploadForm.file.$setValidity).toHaveBeenCalled();
       });
       it('should file set to null', () => {
         expect(sut.file).toBeNull();
