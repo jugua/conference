@@ -190,4 +190,8 @@ public class MyInfoPage extends AnyPage {
         myInfoTab.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
+    public void scrollToTop(){
+        moveTo("//header");
+    }
+
 }

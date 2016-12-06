@@ -109,7 +109,7 @@ When user logs out
 
 Scenario: Being signed in as an organizer manage My Account page, My Info page and My Talks
 Meta:
-@regression @smoke @ignore
+@regression @smoke
 
 Given the unsigned user accesses home page
 And user clicks 'Your Account' menu option

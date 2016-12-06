@@ -123,9 +123,12 @@ public class MyInfoSteps {
     @Step
     public void userLogout() {
         myInfoPage.waitForPageToLoad();
+        myInfoPage.scrollToTop();
+
         if (!myInfoPage.getMenu().isAccountMenuUnfolded()) {
             myInfoPage.getMenu().clickAccountMenuButton();
         }
         myInfoPage.getMenu().clickSignOutButton();
+
     }
 }
