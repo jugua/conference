@@ -1,4 +1,4 @@
-/* global describe, it, expect */
+/* global describe, it, expect, spyOn, beforeEach, jasmine, angular */
 
 import component from './forgot-password.component';
 import Controller from './forgot-password.controller';
@@ -36,6 +36,7 @@ describe('ForgotPassword', () => {
 
   describe('Controller instance', () => {
     const controller = new Controller(ForgotPasswordServiceMock, constantsServiceMock);
+
     it('has forgotten property defined', () => {
       expect(controller.forgotten).toBeDefined();
     });
@@ -49,6 +50,48 @@ describe('ForgotPassword', () => {
       expect(controller.resetEmailNotFound).toBeDefined();
     });
   });
+
+  describe('controller methods', () => {
+
+    let sut;
+
+    let $q;
+    let $rootScope;
+
+    let $scope;
+    let deferred;
+
+    let Constants;
+    let ForgotPasswordService;
+
+    beforeEach(angular.mock.module(($controllerProvider) => {
+      $controllerProvider.register(Controller.name, Controller);
+    }));
+
+    beforeEach(angular.mock.inject(($injector, $controller) => {
+      $q = $injector.get('$q');
+      $rootScope = $injector.get('$rootScope');
+
+      deferred = $q.defer();
+      $scope = $rootScope.$new();
+
+      ForgotPasswordService = jasmine.createSpyObj('ForgotPasswordService', ['restore']);
+      ForgotPasswordService.restore.and.returnValue($q.when([]));
+
+      Constants = jasmine.createSpyObj('Constants', ['email']);
+
+      sut = $controller(Controller.name, { ForgotPasswordService, Constants, $scope });
+    }));
+
+    beforeEach(() => {
+      sut.userForm = { mail: { $setValidity: () => {} } };
+      spyOn(sut.userForm.mail, '$setValidity');
+    });
+    describe('resetEmailNotFound() method', () => {
+      it('should set validity of email_not_found to true', () => {
+        sut.resetEmailNotFound();
+        expect(sut.userForm.mail.$setValidity).toHaveBeenCalledWith('email_not_found', true);
+      });
+    });
+  });
 });
-
-
