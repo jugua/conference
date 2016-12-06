@@ -1,7 +1,9 @@
 package com.epam.cm.rest;
 
 
+import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.thucydides.core.annotations.Step;
 import org.junit.Test;
@@ -13,43 +15,63 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.jayway.restassured.http.ContentType.JSON;
 import static net.serenitybdd.rest.SerenityRest.given;
 
 @RunWith(SerenityRunner.class)
-public class Rest  {
+public class Rest {
 
+    Map<String, String> userCookie;
 
     @Test
-    public  void  login(){
-        Map<String, Object> jsonAsMap = new LinkedHashMap<>();
-        jsonAsMap.put("mail", "tester@tester.com");
-        jsonAsMap.put("password", "tester");
-        String  asd =jsonAsMap.toString();
+    public void loginAsUser(){
+        RestAssured.baseURI = "http://10.17.132.37:8025";
+        RestAssured.basePath = "/api";
+        Map<String, String> userCookie;
 
-        given()
-                .contentType(ContentType.JSON)
-                .body(jsonAsMap)
-        .when()
-                .post("http://localhost:5000/api/login")
-        .then().statusCode(200);
+        //stage 1: get "XSRF-TOKEN"
+        Response resp = RestAssured.given().log().all().get();
+
+        userCookie = new LinkedHashMap<>(resp.cookies());
+        //stage 2:  get new "JSESSIONID"
+        String newJsessionId =
+                RestAssured.given().auth().preemptive().
+                        basic("tester@tester.com", "tester").
+                        headers("X-XSRF-TOKEN", resp.getCookie("XSRF-TOKEN")).
+                        cookies(resp.cookies()).
+                        contentType(JSON).
+                        post("/login").
+                        then().statusCode(200).
+                        extract().cookie("JSESSIONID");
+
+        userCookie.put("JSESSIONID", newJsessionId);
+        //stage 3: update "XSRF-TOKEN" for  logged user
+        String newXsrfToken =
+                RestAssured.given().contentType(JSON).
+                        cookies(userCookie).
+                        get("/user/current").
+                        then().statusCode(202).
+                        extract().cookie("XSRF-TOKEN");
+
+        userCookie.put("XSRF-TOKEN", newXsrfToken);
+        //
+
+        userCookie.entrySet().forEach(System.out::println);
 
     }
 
     @Test
-    public  void logout(){
-
-        Map<String, Object> jsonAsMap = new LinkedHashMap<>();
-        jsonAsMap.put("token", "583c1601a1613bf076f5f6b443929");
+    public void logout() {
 
         given()
                 .contentType(ContentType.JSON)
-                .headers(jsonAsMap)
+                .cookies(userCookie)
                 .when()
-                .get("http://localhost:5000/api/logout")
+                .get("/logout")
 
-                .then().log().all().statusCode(200);
+                .then().statusCode(200);
 
 
     }
-    
+
 }
