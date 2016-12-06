@@ -1,11 +1,14 @@
 package com.epam.cm.steps.serenity;
 
 import com.epam.cm.core.utils.WebDriverSupport;
+import com.epam.cm.dto.AccountButtonDTO;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.pages.HomePage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import net.thucydides.core.steps.ScenarioSteps;
+
+import java.util.List;
 
 /**
  *
@@ -80,6 +83,15 @@ public class LoginPageSteps extends ScenarioSteps {
         return false;
     }
 
+    @Step
+    public boolean isLoggedInAsSpeaker() {
+        if (!homePage.getMenu().isAccountMenuUnfolded()) {
+            homePage.getMenu().clickAccountMenuButton();
+        }
+        if (homePage.getMenu().isSignOutBtnExist()) return true;
+        return false;
+    }
+
 
     @Step
     public boolean isHomePageOpened() {
@@ -95,8 +107,23 @@ public class LoginPageSteps extends ScenarioSteps {
     }
 
     @Step
+    public void clickMyTalks(){
+        homePage.waitForPageToLoad();
+
+        if (!homePage.getMenu().isAccountMenuUnfolded()) {
+            homePage.getMenu().clickAccountMenuButton();
+        }
+        homePage.getMenu().clickMyTalksBtn();
+    }
+
+    @Step
     public boolean isPasswordFieldIsHighlighted() {
         return homePage.getMenu().isPasswordFieldHighlited();
+    }
+
+    @Step
+    public List<AccountButtonDTO> accountMenuItems(){
+        return homePage.getMenu().getAccountMenuItems();
     }
 
     public String getPasswordValidationMsg() {
@@ -110,5 +137,19 @@ public class LoginPageSteps extends ScenarioSteps {
 
     public String getLoginValidationMsg() {
         return homePage.getMenu().getLoginErrorMsgTxt();
+    }
+
+
+    /**
+     * update for Sign-out
+     */
+
+    public boolean checkPositionOfSignOut(){
+        homePage.waitForPageToLoad();
+
+        if (!homePage.getMenu().isAccountMenuUnfolded()) {
+            homePage.getMenu().clickAccountMenuButton();
+        }
+        return homePage.getMenu().checkSignOutBtnIsLastItem();
     }
 }

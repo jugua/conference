@@ -1,8 +1,12 @@
 package com.epam.cm.fragments;
 
 
+import com.epam.cm.dto.AccountButtonDTO;
 import net.serenitybdd.core.annotations.ImplementedBy;
 import net.serenitybdd.core.pages.WidgetObject;
+
+import java.util.List;
+import java.util.Map;
 
 @ImplementedBy(AccountMenuFragmentImpl.class)
 public interface AccountMenuFragment extends WidgetObject {
@@ -10,6 +14,8 @@ public interface AccountMenuFragment extends WidgetObject {
 
 
     void clickAccountMenuButton();
+
+    void clickMyInfoButton();
 
     void clickSignInButton();
 
@@ -20,6 +26,8 @@ public interface AccountMenuFragment extends WidgetObject {
     void clickContinueButton();
 
     void clickCancelBtn();
+
+    void clickMyTalksBtn();
 
     void setLoginField(String login);
 
@@ -47,6 +55,8 @@ public interface AccountMenuFragment extends WidgetObject {
 
     boolean cancelNotifiPopUpBtnisPresent();
 
+    public boolean checkSignOutBtnIsLastItem();
+
     String getAccountMenuTitle();
 
     String getPasswordErrorMsgTxt();
@@ -60,5 +70,7 @@ public interface AccountMenuFragment extends WidgetObject {
     String getEmtyEmailMsgTxt();
 
     String getInvalidEmailMsg();
+
+    List<AccountButtonDTO> getAccountMenuItems();
 
 }

@@ -1,16 +1,26 @@
 package com.epam.cm.steps.jbehave;
 
 
+import com.epam.cm.dto.AccountButtonDTO;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
 import net.thucydides.core.annotations.Steps;
+import org.jbehave.core.annotations.Alias;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
+import org.junit.Assert;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.epam.cm.core.utils.WebDriverSupport.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertTrue;
 
 public class LoginPageDefinitionSteps {
@@ -19,7 +29,7 @@ public class LoginPageDefinitionSteps {
     private LoginPageSteps loginPageSteps;
 
     @Given("the user logged as: $credentials")
-    public void unsignedUserLoginAs(ExamplesTable table){
+    public void unsignedUserLoginAs(ExamplesTable table) {
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
 
         loginPageSteps.unsignedUserInHomePage();
@@ -33,6 +43,7 @@ public class LoginPageDefinitionSteps {
     @When("user logs out")
     @Given("user logs out")
     public void whenUserLogsOut() {
+        // Assert.assertTrue(loginPageSteps.checkPositionOfSignOut());
         loginPageSteps.logout();
     }
 
@@ -43,7 +54,7 @@ public class LoginPageDefinitionSteps {
 
     @Then("there is \"Your Account\" button in page header")
     public void thenThereIsYourAccountButtonInPageHeader() {
-        assertThat(loginPageSteps.getAccountMenuTitle(),is("Your Account"));
+        assertThat(loginPageSteps.getAccountMenuTitle(), is("Your Account"));
     }
 
     @Given("the unsigned user accesses home page")
@@ -58,8 +69,6 @@ public class LoginPageDefinitionSteps {
 
     @Given("user filled in login form: $activityTable")
     public void givenUserFilledInLoginFormEmailPassword(ExamplesTable data) {
-
-
         CredentialsDTO user = new CredentialsDTO() {
             {
                 setEmail(data.getRowAsParameters(0, true).valueAs("email", String.class));
@@ -94,7 +103,7 @@ public class LoginPageDefinitionSteps {
 
     @Then("password field is highlighted")
     public void passwordFieldIsHighlighted() {
-        assertTrue("password field  not hightlighted",loginPageSteps.isPasswordFieldIsHighlighted());
+        assertTrue("password field  not hightlighted", loginPageSteps.isPasswordFieldIsHighlighted());
     }
 
     @Then("password error message is displayed: \"$msg\"")
@@ -106,13 +115,22 @@ public class LoginPageDefinitionSteps {
     @Then("login field is highlighted")
     public void loginFieldIsHighlighted() {
 
-        assertTrue("login field  not hightlighted",loginPageSteps.isLoginFieldIsHighlighted());
+        assertTrue("login field  not hightlighted", loginPageSteps.isLoginFieldIsHighlighted());
     }
 
     @Then("login error message is displayed: \"$msg\"")
     public void isWrongLogin(String msg) {
 
         assertThat(loginPageSteps.getLoginValidationMsg(), is(msg));
+    }
+
+    @Then("there are My_account, My_Info and  My Talks links in the given order $links")
+    @Alias("there are My account and  My Talks links in the given order $links")
+    public void accountMenuItemsSpeaker(ExamplesTable links) {
+        List<AccountButtonDTO> expected = links.getRowsAs(AccountButtonDTO.class);
+        expected.forEach(o -> o.setLink(getBaseUrl()+o.getLink()));
+        loginPageSteps.isLoggedInAsSpeaker();
+        Assert.assertThat(loginPageSteps.accountMenuItems(), is(expected));
     }
 
 
