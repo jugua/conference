@@ -14,8 +14,7 @@ public class HomePage extends AnyPage {
     public HomePage(WebDriver driver) {
         super(driver);
     }
-
-
+    
 }
 
 
