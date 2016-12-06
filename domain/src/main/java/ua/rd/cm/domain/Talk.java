@@ -60,6 +60,6 @@ public class Talk {
     @Column(name = "description", nullable = false, length = 3000)
     private String description;
 
-    @Column(name = "additional_info", nullable = false, length = 1500)
+    @Column(name = "additional_info", length = 1500)
     private String additionalInfo;
 }
