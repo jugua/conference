@@ -15,6 +15,8 @@ public interface AccountMenuFragment extends WidgetObject {
 
     void clickAccountMenuButton();
 
+    void clickMyInfoButton();
+
     void clickSignInButton();
 
     void clickSignOutButton();

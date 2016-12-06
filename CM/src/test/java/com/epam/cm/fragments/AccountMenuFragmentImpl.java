@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 /**
  *
  */
@@ -55,6 +57,9 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
     @FindBy(xpath = "//*[@class='menu-list']/li[2]/a")
     private WebElementFacade myTalksBtn;
+
+    @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/my-info']")
+    private WebElementFacade myInfoBtn;
 
     // forgotPw
 
@@ -172,7 +177,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public void clickSignInButton() {
-        signInBtn.click();
+        signInBtn.withTimeoutOf(5,SECONDS).waitUntilClickable().click();
     }
 
     public boolean checkSignOutBtnIsLastItem(){
@@ -185,16 +190,16 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public void clickSignOutButton() {
-        signOutBtn.click();
+        signOutBtn.withTimeoutOf(5,SECONDS).waitUntilVisible().click();
     }
 
     public void setLoginField(String login) {
-        emailField.clear();
+        emailField.withTimeoutOf(5,SECONDS).waitUntilVisible().clear();
         emailField.type(login);
     }
 
     public void setPasswordField(String password) {
-        passwordField.clear();
+        passwordField.withTimeoutOf(5,SECONDS).waitUntilVisible().clear();
         passwordField.type(password);
     }
 
@@ -209,7 +214,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public void clickAccountMenuButton() {
-        accountBtn.click();
+        accountBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
     public boolean isEmailForgotPwHighlighted(){
@@ -230,6 +235,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     public String getPasswordErrorMsgTxt() {
 
         return find(By.xpath("//*[@id='sign-in-password']/following-sibling::span[1]")).getText();
+    }
+
+    public void clickMyInfoButton() {
+        myInfoBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
     public String getPopUpNotification(){
