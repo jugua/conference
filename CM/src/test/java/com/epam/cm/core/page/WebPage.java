@@ -6,9 +6,12 @@ import com.epam.cm.core.utils.WaitUtils;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class WebPage extends PageObject {
         waitForDocumentReady();
        // waitForAjaxRequestsComplete();
        // waitForAngularRequestComplete();
+        waitForAngularV1ToFinish();
     }
 
     public void moveToElementAction(final WebElementFacade element) {
@@ -114,6 +118,49 @@ public class WebPage extends PageObject {
 //    }
 
 
+    public void waitForAngularV1ToFinish() {
 
+        WebDriver driver = getDriver();
+        final String query =
+                "window.angularFinished;" + "waitForAngular =function() {"
+                        + "  window.angularFinished = false;"
+                        + "  var el = document.querySelector('body');"
+                        + "  var callback = (function(){window.angularFinished=1});"
+                        + "  angular.element(el).injector().get('$browser')."
+                        + "      notifyWhenNoOutstandingRequests(callback);};";
+        try {
+            ((JavascriptExecutor) driver).executeScript(query);
+            ((JavascriptExecutor) driver).executeScript("waitForAngular()");
+
+            ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver driver) {
+                    Object noAjaxRequests = ((JavascriptExecutor) driver).executeScript("return window.angularFinished;");
+                    return "1".equals(noAjaxRequests.toString());
+                }
+            };
+            WebDriverWait wait = new WebDriverWait(driver, 30);
+            wait.until(pageLoadCondition);
+        } catch (Exception e) {
+            LOGGER.error("Unable to load the page correctly");
+        }
+    }
+    public void waitForAngularV2ToFinish() {
+        WebDriver driver = getDriver();
+        try {
+            ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
+                @Override
+                public Boolean apply(WebDriver driver) {
+                    return Boolean.valueOf(((JavascriptExecutor) driver).executeScript(
+                            "return (window.angular !== undefined) "
+                                    + "&& (angular.element(document).injector() !== undefined) "
+                                    + "&& (angular.element(document).injector().get('$http').pendingRequests.length === 0)").toString());
+                }
+            };
+            WebDriverWait wait = new WebDriverWait(driver, 30);
+            wait.until(pageLoadCondition);
+        } catch (Exception e) {
+            LOGGER.error("Unable to load the page correctly");
+        }
+    }
 }
 

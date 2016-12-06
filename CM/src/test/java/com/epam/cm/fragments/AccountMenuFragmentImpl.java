@@ -190,6 +190,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public void clickSignOutButton() {
+
         signOutBtn.withTimeoutOf(5,SECONDS).waitUntilVisible().click();
     }
 
