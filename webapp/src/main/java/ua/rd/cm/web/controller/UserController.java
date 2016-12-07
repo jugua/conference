@@ -80,19 +80,25 @@ public class UserController {
     }
 
     @PostMapping("/current")
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto, Principal principal, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto, Principal principal, BindingResult bindingResult) {
+        HttpStatus status;
         if (bindingResult.hasFieldErrors()) {
-            logger.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            status = HttpStatus.BAD_REQUEST;
+        } else if (principal == null) {
+            status = HttpStatus.UNAUTHORIZED;
+        } else {
+            String userEmail = principal.getName();
+            userInfoService.update(prepareNewUserInfo(userEmail, dto));
+            status = HttpStatus.OK;
         }
-        if (principal == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }
-        User currentUser = userService.getByEmail(principal.getName());
+        return new ResponseEntity(status);
+    }
+
+    private UserInfo prepareNewUserInfo(String email, UserInfoDto dto) {
+        User currentUser = userService.getByEmail(email);
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
         currentUserInfo.setId(currentUser.getUserInfo().getId());
-        userInfoService.update(currentUserInfo);
-        return new ResponseEntity(HttpStatus.OK);
+        return currentUserInfo;
     }
 
     private User dtoToEntity(RegistrationDto dto) {
@@ -114,6 +120,9 @@ public class UserController {
 
     private UserDto userToDto(User user){
         UserDto dto = mapper.map(user, UserDto.class);
+        if (user.getPhoto() != null) {
+            dto.setPhoto("api/user/current/photo/" + user.getId());
+        }
         dto.setLinkedin(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
         dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));

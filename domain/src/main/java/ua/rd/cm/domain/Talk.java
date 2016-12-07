@@ -1,13 +1,8 @@
 package ua.rd.cm.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -18,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
+@ToString(exclude = "id")
 @Entity
 @SequenceGenerator(name = "seqTalkGen", allocationSize = 1,
         sequenceName = "talk_seq")
@@ -31,51 +27,39 @@ public class Talk {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTalkGen")
     private Long id;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "status_id", nullable = false)
     private Status status;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "topic_id")
+    @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id", nullable = false)
     private Type type;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "language_id")
+    @JoinColumn(name = "language_id", nullable = false)
     private Language language;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "level_id")
+    @JoinColumn(name = "level_id", nullable = false)
     private Level level;
 
     @Column(name = "time", nullable = false)
     private LocalDateTime time;
 
-    @NotNull
-    @Size(max = 250)
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 250)
     private String title;
 
-    @NotNull
-    @Size(max = 3000)
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 3000)
     private String description;
 
-    @NotNull
-    @Size(max = 1500)
-    @Column(name = "additional_info", nullable = false)
+    @Column(name = "additional_info", length = 1500)
     private String additionalInfo;
 }
