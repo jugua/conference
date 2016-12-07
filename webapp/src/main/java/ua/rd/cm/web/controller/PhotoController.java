@@ -62,7 +62,7 @@ public class PhotoController {
         MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(principal.getName());
 
-        if (file != null || file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             message.setError("save");
             status = HttpStatus.BAD_REQUEST;
         } else {
@@ -89,7 +89,7 @@ public class PhotoController {
                     .matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
                 message.setError("pattern");
                 status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-            } else {
+            }else{
                 String path = photoService.savePhoto(file, currentUser.getId()
                         .toString());
 
@@ -98,11 +98,13 @@ public class PhotoController {
                     userService.updateUserProfile(currentUser);
 
                     message.setStatus(path);
+                    //message.setAnswer("api/user/current/photo/" + currentUser.getId());
                     status = HttpStatus.OK;
                 } else {
                     return new ResponseEntity(HttpStatus.FORBIDDEN);
                 }
             }
+
         }
 
         return ResponseEntity.status(status).body(message);

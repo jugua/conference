@@ -17,6 +17,8 @@ import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.services.UserService;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestMethod;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
@@ -32,7 +34,6 @@ import static org.mockito.Mockito.spy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
@@ -55,18 +56,17 @@ public class PhotoControllerTest {
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
-        correctPhotoDto = setupCorrectPhotoDto();
-
+        correctPhotoDto =setupCorrectPhotoDto();
     }
 
-    private PhotoDto setupCorrectPhotoDto() {
-        PhotoDto photoDto = new PhotoDto();
+    private PhotoDto setupCorrectPhotoDto(){
+        PhotoDto photoDto=new PhotoDto();
         try {
-            File file = new File("src/test/resources/trybel_master.JPG");
+            File file= new File("src/test/resources/trybel_master.JPG");
             System.out.println(file.getAbsolutePath());
-            FileInputStream fileInputStream = new FileInputStream(file);
+            FileInputStream fileInputStream=new FileInputStream(file);
             System.out.println(fileInputStream.toString());
-            MockMultipartFile mockFile = new MockMultipartFile("trybel_master", fileInputStream);
+            MockMultipartFile mockFile=new MockMultipartFile("trybel_master",fileInputStream);
             System.out.println(mockFile.getName());
             photoDto.setFile(mockFile);
         } catch (IOException e) {
@@ -91,11 +91,10 @@ public class PhotoControllerTest {
 
 
     @Test
-    public void nullPhoto() {
+    public void nullPhoto(){
         correctPhotoDto.setFile(null);
         checkForBadRequest(API_PHOTO, RequestMethod.POST, correctPhotoDto);
     }
-
     private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
         try {
             if (method == RequestMethod.POST) {
@@ -108,7 +107,6 @@ public class PhotoControllerTest {
             e.printStackTrace();
         }
     }
-
     private byte[] convertObjectToJsonBytes(Object object) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -123,15 +121,15 @@ public class PhotoControllerTest {
         return user;
     }
 
-    private Role createSpeakerRole() {
+    private Role createSpeakerRole(){
         return new Role(1L, "SPEAKER");
     }
-
-    private UserInfo createUserInfo() {
+    private UserInfo createUserInfo(){
         ContactType contactType = new ContactType(1L, "LinkedIn");
         ContactType contactType2 = new ContactType(2L, "Twitter");
         ContactType contactType3 = new ContactType(3L, "FaceBook");
         ContactType contactType4 = new ContactType(4L, "Blog");
+
 
         Map<ContactType, String> contacts = new HashMap<ContactType, String>() {{
             put(contactType, "LinkedIn");
