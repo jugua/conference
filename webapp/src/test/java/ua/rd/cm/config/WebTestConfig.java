@@ -50,11 +50,7 @@ public class WebTestConfig {
         return mock(StatusService.class);
     }
     @Bean
-<<<<<<< HEAD
     public PhotoService mockPhotoService(){
-=======
-    public PhotoService mockPhotoService() {
->>>>>>> 33de745504d5114f6a5423e1066abf7bc09e17c2
         return mock(PhotoService.class);
     }
 }
