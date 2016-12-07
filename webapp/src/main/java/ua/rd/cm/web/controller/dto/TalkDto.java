@@ -27,29 +27,29 @@ public class TalkDto {
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("topic")
-	private String topic;
+	private String topicName;
 	
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("type")
-	private String type;
+	private String typeName;
 	
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("lang")
-	private String language;
+	private String languageName;
 	
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("level")
-	private String level;
+	private String levelName;
 	
 	@Size(max = 1500)
 	@JsonProperty("addon")
 	private String additionalInfo;
 
 	@JsonProperty("status")
-	private String status;
+	private String statusName;
 
 	@JsonProperty("date")
 	private String date;
