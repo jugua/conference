@@ -28,38 +28,38 @@ public class Talk {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "status_id", nullable = false)
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "topic_id")
+    @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id", nullable = false)
     private Type type;
 
     @ManyToOne
-    @JoinColumn(name = "language_id")
+    @JoinColumn(name = "language_id", nullable = false)
     private Language language;
 
     @ManyToOne
-    @JoinColumn(name = "level_id")
+    @JoinColumn(name = "level_id", nullable = false)
     private Level level;
 
-    @Column(name = "time")
+    @Column(name = "time", nullable = false)
     private LocalDateTime time;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false, length = 250)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 3000)
     private String description;
 
-    @Column(name = "additional_info")
+    @Column(name = "additional_info", length = 1500)
     private String additionalInfo;
 }

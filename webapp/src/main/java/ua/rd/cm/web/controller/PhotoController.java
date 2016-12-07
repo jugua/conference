@@ -60,7 +60,7 @@ public class PhotoController {
         MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(principal.getName());
 
-        if (file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             message.setError("save");
             status = HttpStatus.BAD_REQUEST;
         } else if (file.getSize() > MAX_SIZE) {
@@ -78,7 +78,7 @@ public class PhotoController {
                 currentUser.setPhoto(path);
                 userService.updateUserProfile(currentUser);
 
-                message.setStatus(path);
+                message.setAnswer("api/user/current/photo/" + currentUser.getId());
                 status = HttpStatus.OK;
             } else {
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
