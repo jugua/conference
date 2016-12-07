@@ -18,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
+@ToString(exclude = {"id", "password", "photo", "userInfo"})
 @Entity
 @Table(name = "user")
 @SequenceGenerator(name = "seqUserGen", allocationSize = 1,
