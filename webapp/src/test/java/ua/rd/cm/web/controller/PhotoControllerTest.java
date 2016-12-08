@@ -119,7 +119,7 @@ public class PhotoControllerTest {
         Set<Role> roles = new HashSet<>();
         roles.add(role);
         User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "src/test/trybel_master.JPG", "url",
-                info, roles);
+                User.UserStatus.CONFIRMED, info, roles);
         return user;
     }
 
