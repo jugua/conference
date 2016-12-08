@@ -95,22 +95,20 @@ public class PhotoControllerTest {
         correctPhotoDto.setFile(null);
         checkForBadRequest(API_PHOTO, RequestMethod.POST, correctPhotoDto);
     }
-    private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
+    private void checkForBadRequest(String uri, RequestMethod method, PhotoDto dto) {
         try {
+            System.out.println("dto="+dto);
             if (method == RequestMethod.POST) {
                 mockMvc.perform(post(uri)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(dto))
+                        //.contentType(MediaType.APPLICATION_JSON_UTF8)
+                        //.content(dto.getFile().getBytes())
                 ).andExpect(status().isBadRequest());
             }
         } catch (Exception e) {
+            System.out.println("EXCEPTION");
+            //mockMvc.perform()
             e.printStackTrace();
         }
-    }
-    private byte[] convertObjectToJsonBytes(Object object) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        return mapper.writeValueAsBytes(object);
     }
 
     private User createUser(Role role, UserInfo info) {
