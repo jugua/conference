@@ -54,4 +54,15 @@ public class UserInfoDto {
     @Size(max = 1000)
     private String userInfoAdditionalInfo;
 
+    @JsonProperty("mail")
+    private String email;
+
+    @JsonProperty("fname")
+    private String firstName;
+
+    @JsonProperty("lname")
+    private String lastName;
+
+    private String[] roles;
+
 }

@@ -15,10 +15,7 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.web.controller.dto.MessageDto;
-import ua.rd.cm.web.controller.dto.RegistrationDto;
-import ua.rd.cm.web.controller.dto.UserDto;
-import ua.rd.cm.web.controller.dto.UserInfoDto;
+import ua.rd.cm.web.controller.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -79,9 +76,10 @@ public class UserController {
         }
     }
 
-    @PostMapping("/current")
+    @PostMapping(value = "/current")
     public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto, Principal principal, BindingResult bindingResult) {
         HttpStatus status;
+        System.out.println(dto.getFirstName());
         if (bindingResult.hasFieldErrors()) {
             status = HttpStatus.BAD_REQUEST;
         } else if (principal == null) {
@@ -93,6 +91,23 @@ public class UserController {
         }
         return new ResponseEntity(status);
     }
+
+//    @PostMapping("/current")
+//    public ResponseEntity updateUserName(@Valid @RequestBody SimpleUserDto dto, Principal principal,
+//                                         BindingResult bindingResult){
+//        System.out.println(dto.getFirstName());
+//        HttpStatus status;
+//        if (bindingResult.hasFieldErrors()) {
+//            status = HttpStatus.BAD_REQUEST;
+//        } else if (principal == null) {
+//            status = HttpStatus.UNAUTHORIZED;
+//        } else {
+//            String userEmail = principal.getName();
+//            //userInfoService.update(prepareNewUserInfo(userEmail, dto));
+//            status = HttpStatus.OK;
+//        }
+//        return new ResponseEntity(status);
+//    }
 
     private UserInfo prepareNewUserInfo(String email, UserInfoDto dto) {
         User currentUser = userService.getByEmail(email);
