@@ -1,6 +1,5 @@
 package ua.rd.cm.web.controller;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -23,14 +22,11 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.PhotoService;
-import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import java.io.*;
 import java.util.*;
 
-import static org.mockito.Mockito.spy;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -142,23 +138,4 @@ public class PhotoControllerTest {
         }};
         return new UserInfo(1L, "bio", "job", "pastConference", "EPAM", contacts, "addInfo");
     }
-
-
-=======
-/**
- * Created by Artem_Pryzhkov on 29-Nov-16.
- */
-//
-    /*
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
-@WebAppConfiguration */
-public class PhotoControllerTest {
-//    public static final String API_PHOTO = "/api/user/current/photo";
-//    private MockMvc mockMvc;
-//
-//    @Autowired
-//    private UserService userServiceMock;
-//
->>>>>>> 33de745504d5114f6a5423e1066abf7bc09e17c2
 }

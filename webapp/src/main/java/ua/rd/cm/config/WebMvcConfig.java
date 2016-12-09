@@ -26,14 +26,7 @@ public class WebMvcConfig  extends WebMvcConfigurerAdapter {
 
     @Bean(name="multipartResolver")
     public CommonsMultipartResolver getResolver() throws IOException {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-
-        //Set the maximum allowed size (in bytes) for each individual file.
-        resolver.setMaxUploadSizePerFile(2097152);//2MB
-
-        //You may also set other available properties.
-
-        return resolver;
+        return new CommonsMultipartResolver();
     }
 
     @Override

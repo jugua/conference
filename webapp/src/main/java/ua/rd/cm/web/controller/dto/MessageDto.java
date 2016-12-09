@@ -6,4 +6,5 @@ import lombok.Data;
 public class MessageDto {
     private String error;
     private String status;
+    private String answer;
 }
