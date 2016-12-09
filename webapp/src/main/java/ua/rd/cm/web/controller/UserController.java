@@ -104,6 +104,7 @@ public class UserController {
     private User dtoToEntity(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
+        user.setStatus(User.UserStatus.UNCONFIRMED);
         return user;
     }
 
