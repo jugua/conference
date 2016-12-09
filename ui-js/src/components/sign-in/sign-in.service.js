@@ -1,9 +1,20 @@
-function SignIn($http, $q, $window, $rootScope) {
-  let userInfo;
-  const utf8ToB64 = str => $window.btoa(unescape(encodeURIComponent(str)));
+class SignIn {
+  constructor($http, $q, $window, $rootScope) {
+    'ngInject'
 
-  function login(user) {
-    const deferred = $q.defer();
+    this.userInfo = null;
+    this.http = $http;
+    this.q = $q;
+    this.window = $window;
+    this.rootScope = $rootScope;
+  }
+
+  utf8ToB64(str) {
+    return this.window.btoa(unescape(encodeURIComponent(str)));
+  }
+
+  login(user) {
+    const deferred = this.q.defer();
     let headers;
     let body;
 
@@ -11,11 +22,11 @@ function SignIn($http, $q, $window, $rootScope) {
       headers = {};
       body = user;
     } else {
-      headers = user ? { authorization: 'Basic '+ utf8ToB64(user.mail + ':' + user.password) } : { };
+      headers = user ? { authorization: 'Basic '+ this.utf8ToB64(user.mail + ':' + user.password) } : { };
       body = {};
     }
 
-    $http.post('/api/login/', body, { headers }).then(({ data }) => {
+    this.http.post('/api/login/', body, { headers }).then(({ data }) => {
       if (data.token) {
         userInfo = {
           token: data.token
@@ -25,24 +36,20 @@ function SignIn($http, $q, $window, $rootScope) {
           token: 'auth'
         };
       }
-      $window.localStorage.setItem('userInfo', JSON.stringify(userInfo));
-      deferred.resolve(userInfo);
+
+      this.window.localStorage.setItem('userInfo', JSON.stringify(this.userInfo));
+      deferred.resolve(this.userInfo);
     }, (error) => {
-      $window.localStorage.removeItem('userInfo');
+      this.window.localStorage.removeItem('userInfo');
       deferred.reject(error);
     });
 
     return deferred.promise;
   }
 
-  function callTheEvent() {
-    $rootScope.$broadcast('signInEvent');
+  callTheEvent() {
+    this.rootScope.$broadcast('signInEvent');
   }
-
-  return {
-    login,
-    callTheEvent
-  };
 }
 
 export default SignIn;

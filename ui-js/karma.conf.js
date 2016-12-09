@@ -9,15 +9,25 @@ module.exports = function (config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-phantomjs-launcher'),
+      require('karma-coverage'),
       require('karma-spec-reporter'),
       require('karma-webpack')
     ],
     webpack: {
+      isparta: {
+        embedSource: true,
+        noAutoWrap: true,
+        babel: {
+          presets: ['es2015']
+        }
+      },
+
       devtool: 'inline-source-map',
       module: {
         loaders: [
           { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
           { test: /\.html/, exclude: /(node_modules)/, loader: 'html-loader' },
+          { test: /\.js/, exclude: /(node_modules|\.spec\.js)/, loader: 'isparta' }
         ]
       }
     },
@@ -26,7 +36,15 @@ module.exports = function (config) {
     },
 
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['spec'],
+    reporters: ['spec', 'coverage'],
+
+    coverageReporter: {
+      reporters: [
+        { type: 'html', dir: 'coverage', subdir: '.' },
+        { type: 'text-summary', dir: 'coverage', subdir: '.' },
+        { type: 'lcovonly', dir: 'coverage', subdir: '.' }
+      ]
+    },
 
     // web server port
     port: 9876,
