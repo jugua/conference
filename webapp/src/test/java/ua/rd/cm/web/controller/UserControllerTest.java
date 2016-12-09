@@ -197,7 +197,7 @@ public class UserControllerTest {
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
+        Principal correctPrincipal = user::getEmail;
 
         when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
 
@@ -224,7 +224,7 @@ public class UserControllerTest {
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
+        Principal correctPrincipal = user::getEmail;
 
         when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
 
