@@ -28,11 +28,11 @@ class SignIn {
 
     this.http.post('/api/login/', body, { headers }).then(({ data }) => {
       if (data.token) {
-        userInfo = {
+        this.userInfo = {
           token: data.token
         };
       } else {
-        userInfo = {
+        this.userInfo = {
           token: 'auth'
         };
       }
