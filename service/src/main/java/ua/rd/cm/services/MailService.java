@@ -20,14 +20,12 @@ public class MailService {
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
-    
     public void sendEmail(CustomMimeMessagePreparator preparator, Map<String, String> model) {
     	preparator.setModel(model);
     	preparator.setFreemarkerConfiguration(freemarkerConfiguration);
     	
     	try {
     		mailSender.send(preparator);
-    	
     	} catch (MailException e) {
     		System.out.println("so sad (");
     	}

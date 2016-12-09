@@ -1,7 +1,9 @@
 package ua.rd.cm.services;
 
+import java.io.IOException;
 import java.util.Map;
 
+import freemarker.template.TemplateException;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -13,7 +15,6 @@ public abstract class CustomMimeMessagePreparator implements MimeMessagePreparat
 	private Configuration freemarkerConfiguration;
 	
 	public CustomMimeMessagePreparator(Configuration freemarkerConfiguration) {
-		super();
 		this.freemarkerConfiguration = freemarkerConfiguration;
 	}
 	
@@ -25,10 +26,10 @@ public abstract class CustomMimeMessagePreparator implements MimeMessagePreparat
             content.append(FreeMarkerTemplateUtils.processTemplateIntoString(
                     freemarkerConfiguration.getTemplate(getTemplateName()),model));
             return content.toString();
-        }catch(Exception e){
+        } catch (IOException | TemplateException e){
             System.out.println("Exception occured while processing fmtemplate:"+e.getMessage());
         }
-        return "";
+		return "";
     }
 
 	public void setModel(Map<String, String> model) {
@@ -38,5 +39,4 @@ public abstract class CustomMimeMessagePreparator implements MimeMessagePreparat
 	public void setFreemarkerConfiguration(Configuration freemarkerConfiguration) {
 		this.freemarkerConfiguration = freemarkerConfiguration;
 	}
-	
 }
