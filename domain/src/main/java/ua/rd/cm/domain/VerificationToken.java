@@ -21,22 +21,33 @@ public class VerificationToken {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTokenGen")
     private Long id;
 
+    @Column(nullable = false)
     private String token;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false)
     private LocalDateTime expiryDate;
 
-    public VerificationToken(String token, User user) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TokenType type;
+
+    public VerificationToken(String token, User user, TokenType type) {
         this.token = token;
         this.user = user;
+        this.type = type;
         expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
     private LocalDateTime calculateExpiryDate(int expiryTimeInHours){
         LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
         return currentTime.plusHours(expiryTimeInHours);
+    }
+
+    public enum TokenType {
+        CONFIRMATION, FORGOT_PASS, CHANGING_EMAIL
     }
 }
