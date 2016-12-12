@@ -2,7 +2,6 @@ package ua.rd.cm.web.controller;
 
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,7 +76,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/current")
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto, Principal principal, BindingResult bindingResult) {
+    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto, Principal principal, BindingResult bindingResult) {
         HttpStatus status;
         System.out.println(dto.getFirstName());
         if (bindingResult.hasFieldErrors()) {
@@ -95,14 +94,14 @@ public class UserController {
 
 
 
-    private UserInfo prepareNewUserInfo(String email, UserInfoDto dto) {
+    private UserInfo prepareNewUserInfo(String email, UserDto dto) {
         User currentUser = userService.getByEmail(email);
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
         currentUserInfo.setId(currentUser.getUserInfo().getId());
         return currentUserInfo;
     }
 
-    private User prepareNewUser(String email,UserInfoDto dto){
+    private User prepareNewUser(String email,UserDto dto){
         User currentUser = userService.getByEmail(email);
         currentUser.setFirstName(dto.getFirstName());
         currentUser.setLastName(dto.getLastName());
@@ -116,7 +115,7 @@ public class UserController {
     }
 
 
-    private UserInfo userInfoDtoToEntity(UserInfoDto dto) {
+    private UserInfo userInfoDtoToEntity(UserDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
         Map<ContactType, String> contacts = userInfo.getContacts();
         contacts.put(contactTypeService.findByName("LinkedIn").get(0), dto.getLinkedIn());
@@ -132,7 +131,7 @@ public class UserController {
         if (user.getPhoto() != null) {
             dto.setPhoto("api/user/current/photo/" + user.getId());
         }
-        dto.setLinkedin(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
+        dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
         dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
         dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
