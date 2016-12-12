@@ -2,14 +2,19 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const crypto = require('crypto');
 
-var UserSchema = new Schema({
+const UserSchema = new Schema({
   mail: {
     type: String,
     unique: true,
     required: true
   },
-  password: {
+  hashedPassword: {
+    type: String,
+    required: true
+  },
+  salt: {
     type: String,
     required: true
   },
@@ -85,5 +90,22 @@ var UserSchema = new Schema({
 
   }]
 });
+
+UserSchema.methods.encryptPassword = function(password) {
+  return crypto.createHmac('sha256', this.salt).update(password).digest('hex');
+};
+
+UserSchema.virtual('password')
+  .set(function(password) {
+    this._plainPassword = password;
+    this.salt = `${Math.random()}`;
+    this.hashedPassword = this.encryptPassword(password);
+  })
+  .get(function() { return this._plainPassword; });
+
+
+UserSchema.methods.checkPassword = function(password) {
+  return this.encryptPassword(password) === this.hashedPassword;
+};
 
 module.exports = mongoose.model('User', UserSchema);
