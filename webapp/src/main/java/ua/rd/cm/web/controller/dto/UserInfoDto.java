@@ -16,19 +16,28 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class UserInfoDto {
 
+
+    @JsonProperty("mail")
+    private String email;
+
+    @JsonProperty("fname")
+    private String firstName;
+
+    @JsonProperty("lname")
+    private String lastName;
     @NotNull
     @JsonProperty("bio")
-    @Size(min = 1, max = 2000)
+    @Size( max = 2000)
     private String userInfoShortBio;
 
     @NotNull
     @JsonProperty("job")
-    @Size(min = 1, max = 256)
+    @Size( max = 256)
     private String userInfoJobTitle;
 
     @NotNull
     @JsonProperty("company")
-    @Size(min = 1, max = 256)
+    @Size( max = 256)
     private String userInfoCompany;
 
     @JsonProperty("past")
@@ -53,15 +62,6 @@ public class UserInfoDto {
     @JsonProperty("info")
     @Size(max = 1000)
     private String userInfoAdditionalInfo;
-
-    @JsonProperty("mail")
-    private String email;
-
-    @JsonProperty("fname")
-    private String firstName;
-
-    @JsonProperty("lname")
-    private String lastName;
 
     private String[] roles;
 

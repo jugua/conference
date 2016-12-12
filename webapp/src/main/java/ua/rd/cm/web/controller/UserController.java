@@ -87,27 +87,13 @@ public class UserController {
         } else {
             String userEmail = principal.getName();
             userInfoService.update(prepareNewUserInfo(userEmail, dto));
+            userService.updateUserProfile(prepareNewUser(userEmail,dto));
             status = HttpStatus.OK;
         }
         return new ResponseEntity(status);
     }
 
-//    @PostMapping("/current")
-//    public ResponseEntity updateUserName(@Valid @RequestBody SimpleUserDto dto, Principal principal,
-//                                         BindingResult bindingResult){
-//        System.out.println(dto.getFirstName());
-//        HttpStatus status;
-//        if (bindingResult.hasFieldErrors()) {
-//            status = HttpStatus.BAD_REQUEST;
-//        } else if (principal == null) {
-//            status = HttpStatus.UNAUTHORIZED;
-//        } else {
-//            String userEmail = principal.getName();
-//            //userInfoService.update(prepareNewUserInfo(userEmail, dto));
-//            status = HttpStatus.OK;
-//        }
-//        return new ResponseEntity(status);
-//    }
+
 
     private UserInfo prepareNewUserInfo(String email, UserInfoDto dto) {
         User currentUser = userService.getByEmail(email);
@@ -116,11 +102,19 @@ public class UserController {
         return currentUserInfo;
     }
 
+    private User prepareNewUser(String email,UserInfoDto dto){
+        User currentUser = userService.getByEmail(email);
+        currentUser.setFirstName(dto.getFirstName());
+        currentUser.setLastName(dto.getLastName());
+        return currentUser;
+    }
+
     private User dtoToEntity(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
         return user;
     }
+
 
     private UserInfo userInfoDtoToEntity(UserInfoDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
