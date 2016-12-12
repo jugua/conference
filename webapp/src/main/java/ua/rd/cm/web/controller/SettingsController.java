@@ -1,7 +1,9 @@
 package ua.rd.cm.web.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.log4j.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,8 @@ import ua.rd.cm.web.controller.dto.SettingsDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
+import java.io.IOException;
 import java.security.Principal;
-import java.util.Set;
 
 /**
  * @author Olha_Melnyk
@@ -23,12 +25,12 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/user/current")
 public class SettingsController {
-    private ModelMapper mapper;
+    private ObjectMapper mapper;
     private UserService userService;
     private Logger logger = Logger.getLogger(SettingsController.class);
 
     @Autowired
-    public SettingsController(ModelMapper mapper, UserService userService) {
+    public SettingsController(ObjectMapper mapper, UserService userService) {
         this.mapper = mapper;
         this.userService = userService;
     }
@@ -64,6 +66,30 @@ public class SettingsController {
         }
         user.setPassword(dto.getNewPassword());
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/email")
+    public String changeEmail(@RequestBody String mail, Principal principal) {
+        String email = parseMail(mail);
+
+        if (email == null) {
+
+        }
+
+        return mail;
+    }
+
+    private String parseMail(String mail) {
+        try {
+            JsonNode node = mapper.readValue(mail, ObjectNode.class).get("mail");
+
+            if (node == null) {
+                return null;
+            }
+            return node.textValue();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     private boolean checkCurrentPasswordMatches(SettingsDto dto, User user) {
