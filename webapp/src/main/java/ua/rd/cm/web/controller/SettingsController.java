@@ -65,6 +65,7 @@ public class SettingsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
         }
         user.setPassword(dto.getNewPassword());
+        userService.updateUserProfile(user);
         return new ResponseEntity(HttpStatus.OK);
     }
 
