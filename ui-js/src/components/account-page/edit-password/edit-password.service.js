@@ -18,7 +18,6 @@ class EditPasswordService {
   changePassword(passwords) {
     return this.http.post('api/user/current/password', passwords, {
       headers: {
-        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
       }

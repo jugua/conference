@@ -16,7 +16,6 @@ class EditEmailService {
   updateEmail(newEmail) {
     return this.http.post('api/user/current/email', { mail: newEmail }, {
       headers: {
-        token: this.localStorage.getToken,
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
       }
