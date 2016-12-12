@@ -11,11 +11,10 @@ import freemarker.template.Configuration;
 
 public abstract class CustomMimeMessagePreparator implements MimeMessagePreparator{
 
-	protected Map<String, String> model;
+	protected Map<String, Object> model;
 	private Configuration freemarkerConfiguration;
 	
-	public CustomMimeMessagePreparator(Configuration freemarkerConfiguration) {
-		this.freemarkerConfiguration = freemarkerConfiguration;
+	public CustomMimeMessagePreparator() {
 	}
 	
 	public abstract String getTemplateName();
@@ -32,7 +31,7 @@ public abstract class CustomMimeMessagePreparator implements MimeMessagePreparat
 		return "";
     }
 
-	public void setModel(Map<String, String> model) {
+	public void setModel(Map<String, Object> model) {
 		this.model = model;
 	}
 
