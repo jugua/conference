@@ -56,14 +56,11 @@ public class ChangePasswordControllerTest {
 
     @Test
     public void correctChangePasswordTest() throws Exception {
-        System.out.println("User before: " + user);
-        System.out.println("Dto: " + settingsDto);
         mockMvc.perform(post(API_USER_CURRENT_PASSWORD)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(settingsDto))
                 .principal(principal)
         ).andExpect(status().isOk());
-        System.out.println("User after: " + user);
     }
 
     @Test
@@ -77,41 +74,29 @@ public class ChangePasswordControllerTest {
     @Test
     public void unconfirmedPasswordTest() throws Exception {
         settingsDto.setConfirmedNewPassword("123456789");
-        System.out.println("User before: " + user);
-        System.out.println("Dto: " + settingsDto);
         mockMvc.perform(post(API_USER_CURRENT_PASSWORD)
                 .principal(principal)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(settingsDto))
         ).andExpect(status().isForbidden());
-        System.out.println("User after: " + user);
     }
 
     @Test
     public void nullCurrentPasswordTest() throws Exception {
         settingsDto.setCurrentPassword(null);
-        System.out.println("Dto before: " + settingsDto);
         checkForBadRequest(principal);
-        System.out.println("Dto before: " + settingsDto);
-        System.out.println("User after: " + user);
     }
 
     @Test
     public void tooSmallCurrentPasswordTest() throws Exception {
         settingsDto.setCurrentPassword(createStringWithLength(5));
-        System.out.println("Dto before: " + settingsDto);
         checkForBadRequest(principal);
-        System.out.println("Dto before: " + settingsDto);
-        System.out.println("User after: " + user);
     }
 
     @Test
     public void tooLongCurrentPasswordTest() throws Exception {
         settingsDto.setCurrentPassword(createStringWithLength(31));
-        System.out.println("Dto before: " + settingsDto);
         checkForBadRequest(principal);
-        System.out.println("Dto before: " + settingsDto);
-        System.out.println("User after: " + user);
     }
 
     @Test
