@@ -4,12 +4,13 @@ import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.MyInfoFieldsDTO;
 import com.epam.cm.pages.HomePage;
 import com.epam.cm.pages.MyInfoPage;
+
 import net.thucydides.core.annotations.Step;
 
 /**
  * Created by Lev_Serba on 11/23/2016.
  */
-public class MyInfoSteps {
+public class MyInfoPageSteps {
 
     MyInfoPage myInfoPage;
     HomePage homePage;
@@ -22,10 +23,10 @@ public class MyInfoSteps {
     }
 
     @Step
-    public boolean isMyInfoTabActive(){
-        if(myInfoPage.isMyInfoTabActive()){
+    public boolean isMyInfoTabActive() {
+        if (myInfoPage.isMyInfoTabActive()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -44,7 +45,7 @@ public class MyInfoSteps {
 
     @Step
     public boolean isInformationSavedSuccessfullyPopUp() {
-        if(myInfoPage.isInformationSavedSuccessfullyPopUp()){
+        if (myInfoPage.isInformationSavedSuccessfullyPopUp()) {
             myInfoPage.clickInformationSavedSuccessfullyPopUpOkButton();
             WebDriverSupport.reloadPage();
             return true;
@@ -71,7 +72,7 @@ public class MyInfoSteps {
 
     @Step
     public boolean isAttentionPopUpShown() {
-        if(myInfoPage.isAttentionPopUpShown()){
+        if (myInfoPage.isAttentionPopUpShown()) {
             myInfoPage.clickAttentionPopUpYesButton();
             WebDriverSupport.reloadPage();
             return true;
@@ -81,7 +82,7 @@ public class MyInfoSteps {
 
     @Step
     public boolean isErrorPopUpShown() {
-        if(myInfoPage.isErrorPopUpShown()){
+        if (myInfoPage.isErrorPopUpShown()) {
             myInfoPage.clickErrorPopUpOkButton();
             WebDriverSupport.reloadPage();
             return true;
@@ -91,10 +92,10 @@ public class MyInfoSteps {
 
     @Step
     public boolean userCantTypeMoreThanMaxAllowedCharacters(MyInfoFieldsDTO myInfoDTO) {
-        if(myInfoPage.getShortBioActualLength() <= myInfoDTO.getShortBio().length() &&
-           myInfoPage.getJobTitleActualLength() <= myInfoDTO.getJobTitle().length() &&
-           myInfoPage.getPastConferencesActualLength() <= myInfoDTO.getPastConferences().length()&&
-           myInfoPage.getAdditionalInfoActualLength() <= myInfoDTO.getAdditionalInfo().length()){
+        if (myInfoPage.getShortBioActualLength() <= myInfoDTO.getShortBio().length()
+                && myInfoPage.getJobTitleActualLength() <= myInfoDTO.getJobTitle().length()
+                && myInfoPage.getPastConferencesActualLength() <= myInfoDTO.getPastConferences().length()
+                && myInfoPage.getAdditionalInfoActualLength() <= myInfoDTO.getAdditionalInfo().length()) {
             WebDriverSupport.reloadPage();
             return true;
         }
@@ -108,9 +109,9 @@ public class MyInfoSteps {
 
     @Step
     public boolean isMyTalksTabActive() {
-        if(myInfoPage.myTalksTabIsActive()){
+        if (myInfoPage.myTalksTabIsActive()) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

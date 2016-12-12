@@ -1,5 +1,6 @@
-Meta:
 
+Meta:
+@ignore
 Narrative:
 As a user
 I want to perform an action

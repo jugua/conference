@@ -1,17 +1,5 @@
 package com.epam.cm;
 
-import ch.lambdaj.Lambda;
-import com.epam.cm.core.properties.PropertiesNames;
-import com.epam.cm.core.utils.OsCheck;
-import com.epam.cm.core.properties.ProjectProperties;
-import net.serenitybdd.core.Serenity;
-import net.serenitybdd.jbehave.SerenityStories;
-import net.thucydides.core.guice.Injectors;
-import net.thucydides.core.util.EnvironmentVariables;
-import org.jbehave.core.io.StoryFinder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -22,8 +10,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.epam.cm.core.utils.OsCheck;
+
+import net.serenitybdd.jbehave.SerenityStories;
+import net.thucydides.core.guice.Injectors;
+import net.thucydides.core.util.EnvironmentVariables;
+
+import org.jbehave.core.io.StoryFinder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static com.epam.cm.core.properties.PropertiesNames.*;
 import static com.epam.cm.core.utils.WebdriverPath.bindWebdriverPath;
+
+import ch.lambdaj.Lambda;
 
 public class AcceptanceTestSuite extends SerenityStories {
     private static final Logger LOG = LoggerFactory.getLogger(AcceptanceTestSuite.class.getSimpleName());
@@ -37,7 +37,6 @@ public class AcceptanceTestSuite extends SerenityStories {
         } catch (ClassNotFoundException e) {
             LOG.error("Error instantiating ProjectProperties", e);
         }
-
 
         bindWebdriverPath();
         // setDriverAccordingToOS();
@@ -68,11 +67,9 @@ public class AcceptanceTestSuite extends SerenityStories {
         List<String> stories = new StoryFinder().findPaths(System.getProperty(STORIES_PATH), storyPaths, null);
         // To give matrix jobs an ability to use unique workspaces Batch names are named like on Jenkins:
         // JobName_BatchNumber.
-        final String[] agentNumberStrArr = environmentVariables
-                .getProperty(PARALLEL_AGENT_NUMBER, "1").split("_");
+        final String[] agentNumberStrArr = environmentVariables.getProperty(PARALLEL_AGENT_NUMBER, "1").split("_");
         Integer agentNumber = Integer.parseInt(agentNumberStrArr[agentNumberStrArr.length - 1]);
-        Integer agentTotal = environmentVariables
-                .getPropertyAsInteger(PARALLEL_AGENT_TOTAL, 1);
+        Integer agentTotal = environmentVariables.getPropertyAsInteger(PARALLEL_AGENT_TOTAL, 1);
 
         List<String> storiesForThisAgent;
 

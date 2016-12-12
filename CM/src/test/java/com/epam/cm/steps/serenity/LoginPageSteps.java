@@ -1,32 +1,32 @@
 package com.epam.cm.steps.serenity;
 
+import java.util.List;
+
 import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.AccountButtonDTO;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.pages.HomePage;
+
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import net.thucydides.core.steps.ScenarioSteps;
-
-import java.util.List;
 
 /**
  *
  */
 public class LoginPageSteps extends ScenarioSteps {
 
+    HomePage homePage;
+
     public LoginPageSteps(final Pages pages) {
         super(pages);
     }
-
-    HomePage homePage;
-
 
     @Step
     public void unsignedUserInHomePage() {
         homePage.open();
         homePage.waitForPageToLoad();
-        if(!homePage.getMenu().getAccountMenuTitle().matches("Your Account")){
+        if (!homePage.getMenu().getAccountMenuTitle().matches("Your Account")) {
             logout();
         }
         WebDriverSupport.reloadPage();
@@ -79,7 +79,8 @@ public class LoginPageSteps extends ScenarioSteps {
         if (!homePage.getMenu().isAccountMenuUnfolded()) {
             homePage.getMenu().clickAccountMenuButton();
         }
-        if (homePage.getMenu().isSignOutBtnExist()) return true;
+        if (homePage.getMenu().isSignOutBtnExist())
+            return true;
         return false;
     }
 
@@ -88,10 +89,10 @@ public class LoginPageSteps extends ScenarioSteps {
         if (!homePage.getMenu().isAccountMenuUnfolded()) {
             homePage.getMenu().clickAccountMenuButton();
         }
-        if (homePage.getMenu().isSignOutBtnExist()) return true;
+        if (homePage.getMenu().isSignOutBtnExist())
+            return true;
         return false;
     }
-
 
     @Step
     public boolean isHomePageOpened() {
@@ -102,12 +103,13 @@ public class LoginPageSteps extends ScenarioSteps {
     @Step
     public boolean isSignInFormOpened() {
 
-        if (homePage.getMenu().isAccountMenuUnfolded() && !homePage.getMenu().isSignOutBtnExist()) return true;
+        if (homePage.getMenu().isAccountMenuUnfolded() && !homePage.getMenu().isSignOutBtnExist())
+            return true;
         return false;
     }
 
     @Step
-    public void clickMyTalks(){
+    public void clickMyTalks() {
         homePage.waitForPageToLoad();
 
         if (!homePage.getMenu().isAccountMenuUnfolded()) {
@@ -122,7 +124,7 @@ public class LoginPageSteps extends ScenarioSteps {
     }
 
     @Step
-    public List<AccountButtonDTO> accountMenuItems(){
+    public List<AccountButtonDTO> accountMenuItems() {
         return homePage.getMenu().getAccountMenuItems();
     }
 
@@ -139,12 +141,11 @@ public class LoginPageSteps extends ScenarioSteps {
         return homePage.getMenu().getLoginErrorMsgTxt();
     }
 
-
     /**
      * update for Sign-out
      */
 
-    public boolean checkPositionOfSignOut(){
+    public boolean checkPositionOfSignOut() {
         homePage.waitForPageToLoad();
 
         if (!homePage.getMenu().isAccountMenuUnfolded()) {

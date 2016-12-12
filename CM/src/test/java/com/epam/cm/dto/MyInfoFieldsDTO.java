@@ -34,11 +34,11 @@ public class MyInfoFieldsDTO {
     }
 
     public void setShortBio(String shortBio) {
-        if(shortBio.equals(STRINGS_NUMBERS_2001)){
+        if (shortBio.equals(STRINGS_NUMBERS_2001)) {
             this.shortBio = generateRandomAlphaNumericString(2001);
-        }else if(shortBio.equals(STRINGS_NUMBERS_3000)){
+        } else if (shortBio.equals(STRINGS_NUMBERS_3000)) {
             this.shortBio = generateRandomAlphaNumericString(3000);
-        }else {
+        } else {
             this.shortBio = shortBio;
         }
         listOfFields.add(this.shortBio);
@@ -49,11 +49,11 @@ public class MyInfoFieldsDTO {
     }
 
     public void setJobTitle(String jobTitle) {
-        if(jobTitle.equals(STRINGS_NUMBERS_257)){
-           this.jobTitle = generateRandomAlphaNumericString(257);
-        }else if(jobTitle.equals(STRINGS_NUMBERS_400)){
-           this.jobTitle = generateRandomAlphaNumericString(400);
-        }else {
+        if (jobTitle.equals(STRINGS_NUMBERS_257)) {
+            this.jobTitle = generateRandomAlphaNumericString(257);
+        } else if (jobTitle.equals(STRINGS_NUMBERS_400)) {
+            this.jobTitle = generateRandomAlphaNumericString(400);
+        } else {
             this.jobTitle = jobTitle;
         }
         listOfFields.add(this.jobTitle);
@@ -73,11 +73,11 @@ public class MyInfoFieldsDTO {
     }
 
     public void setPastConferences(String pastConferences) {
-        if(pastConferences.equals(STRINGS_NUMBERS_1001)){
+        if (pastConferences.equals(STRINGS_NUMBERS_1001)) {
             this.pastConferences = generateRandomAlphaNumericString(1001);
-        }else if(pastConferences.equals(STRINGS_NUMBERS_1200)){
+        } else if (pastConferences.equals(STRINGS_NUMBERS_1200)) {
             this.pastConferences = generateRandomAlphaNumericString(1200);
-        }else {
+        } else {
             this.pastConferences = pastConferences;
         }
         listOfFields.add(this.pastConferences);
@@ -124,11 +124,11 @@ public class MyInfoFieldsDTO {
     }
 
     public void setAdditionalInfo(String additionalInfo) {
-        if(additionalInfo.equals(STRINGS_NUMBERS_1001)){
+        if (additionalInfo.equals(STRINGS_NUMBERS_1001)) {
             this.additionalInfo = generateRandomAlphaNumericString(1001);
-        }else if(additionalInfo.equals(STRINGS_NUMBERS_1600)){
+        } else if (additionalInfo.equals(STRINGS_NUMBERS_1600)) {
             this.additionalInfo = generateRandomAlphaNumericString(1600);
-        }else {
+        } else {
             this.additionalInfo = additionalInfo;
         }
         listOfFields.add(this.additionalInfo);
@@ -138,15 +138,16 @@ public class MyInfoFieldsDTO {
         return listOfFields;
     }
 
-    private String generateRandomAlphaNumericString(int strLength){
+    private String generateRandomAlphaNumericString(int strLength) {
         StringBuffer randomString = new StringBuffer();
-        for(int i=0; i<strLength; i++){
+        for (int i = 0; i < strLength; i++) {
             int number = getRandomNumber();
             char symbol = ALPHA_NUMERIC_LIST.charAt(number);
             randomString.append(symbol);
         }
         return randomString.toString();
     }
+
     private int getRandomNumber() {
         int randomInt = 0;
         Random randomGenerator = new Random();

@@ -68,7 +68,6 @@ public class Rest {
                 .cookies(userCookie)
                 .when()
                 .get("/logout")
-
                 .then().statusCode(200);
 
 

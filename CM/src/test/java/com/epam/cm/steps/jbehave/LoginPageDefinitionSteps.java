@@ -1,10 +1,13 @@
 package com.epam.cm.steps.jbehave;
 
+import java.util.List;
 
 import com.epam.cm.dto.AccountButtonDTO;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
+
 import net.thucydides.core.annotations.Steps;
+
 import org.jbehave.core.annotations.Alias;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
@@ -12,15 +15,9 @@ import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 import org.junit.Assert;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static com.epam.cm.core.utils.WebDriverSupport.*;
+import static com.epam.cm.core.utils.WebDriverSupport.getBaseUrl;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertTrue;
 
 public class LoginPageDefinitionSteps {
@@ -36,7 +33,6 @@ public class LoginPageDefinitionSteps {
         loginPageSteps.clickOnAccountMenu();
         loginPageSteps.typeLoginAndPassword(user);
         loginPageSteps.clickSignInButton();
-
 
     }
 
@@ -128,10 +124,9 @@ public class LoginPageDefinitionSteps {
     @Alias("there are My account and  My Talks links in the given order $links")
     public void accountMenuItemsSpeaker(ExamplesTable links) {
         List<AccountButtonDTO> expected = links.getRowsAs(AccountButtonDTO.class);
-        expected.forEach(o -> o.setLink(getBaseUrl()+o.getLink()));
+        expected.forEach(o -> o.setLink(getBaseUrl() + o.getLink()));
         loginPageSteps.isLoggedInAsSpeaker();
         Assert.assertThat(loginPageSteps.accountMenuItems(), is(expected));
     }
-
 
 }

@@ -4,11 +4,16 @@ package com.epam.cm.dto;
  * Created by Serhii_Kobzar on 11/23/2016.
  */
 public class AccountButtonDTO {
+    String link;
+    String btnName;
+
     public AccountButtonDTO(String btnName, String link) {
         this.link = link;
         this.btnName = btnName;
     }
-    public AccountButtonDTO(){}
+
+    public AccountButtonDTO() {
+    }
 
     public String getLink() {
         return link;
@@ -18,8 +23,6 @@ public class AccountButtonDTO {
         this.link = link;
     }
 
-    String link;
-
     public String getBtnName() {
         return btnName;
     }
@@ -28,16 +31,17 @@ public class AccountButtonDTO {
         this.btnName = btnName;
     }
 
-    String btnName;
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccountButtonDTO)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof AccountButtonDTO))
+            return false;
 
         AccountButtonDTO that = (AccountButtonDTO) o;
 
-        if (!link.equals(that.link)) return false;
+        if (!link.equals(that.link))
+            return false;
         return btnName.equals(that.btnName);
 
     }

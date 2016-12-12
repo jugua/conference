@@ -3,7 +3,6 @@ package com.epam.cm.core.json;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-
 public final class JsonUtil {
 
     private JsonUtil() {

@@ -1,6 +1,7 @@
 package com.epam.cm.core.mail;
 
-import org.codehaus.jackson.type.TypeReference;
+import java.util.*;
+import java.util.logging.Logger;
 
 import javax.mail.Message;
 import javax.mail.Multipart;
@@ -15,46 +16,28 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.*;
-import java.util.logging.Logger;
+
+import org.codehaus.jackson.type.TypeReference;
 
 import static com.epam.cm.core.json.JsonUtil.fromJSON;
 import static com.epam.cm.core.properties.PropertiesNames.*;
 
-
 public class MailCatcherClient {
 
-    public enum ResponseType {
-        HTML,
-        PLAIN,
-        JSON,
-        SOURCE
-    }
-
-    public enum ContentType {
-        HTML,
-        PLAIN
-    }
-
-    private Client client;
-    private WebTarget service;
-
-    private String smtpIP;
-    //private static final int SMTP_PORT = 1025;
-    private static final int SMTP_PORT = Integer.valueOf(System.getProperty(MAIL_CATCHER_SMTP_PORT,"1025"));
-
+    // private static final int SMTP_PORT = 1025;
+    private static final int SMTP_PORT = Integer.valueOf(System.getProperty(MAIL_CATCHER_SMTP_PORT, "1025"));
     private static final int HTTP_RESPONSE_OK = 200;
     private static final int HTTP_RESPONSE_NO_CONTENT = 204;
-
     private static final Logger LOGGER = Logger.getLogger(MailCatcherClient.class.getName());
-
+    private Client client;
+    private WebTarget service;
+    private String smtpIP;
     public MailCatcherClient() {
         smtpIP = System.getProperty(MAIL_CATCHER_IP);
-        String  httpPort = System.getProperty(MAIL_CATCHER_HTTP_PORT);
+        String httpPort = System.getProperty(MAIL_CATCHER_HTTP_PORT);
         client = ClientBuilder.newBuilder().build();
         service = client.target("http://" + smtpIP + ":" + httpPort);
     }
-
 
     public MailCatcherClient(final String ip, final int httpPort) {
         smtpIP = ip;
@@ -67,21 +50,19 @@ public class MailCatcherClient {
     }
 
     public Object getEmailById(final int id, final ResponseType responseType) {
-        final Response response = service.path("messages")
-                .path(id + "." + responseType.name().toLowerCase())
-                .request(MediaType.APPLICATION_JSON)
-                .get();
+        final Response response = service.path("messages").path(id + "." + responseType.name().toLowerCase())
+                .request(MediaType.APPLICATION_JSON).get();
 
         final String entity = response.readEntity(String.class);
 
-        return response.getStatus() == HTTP_RESPONSE_OK && responseType == ResponseType.JSON ?
-                fromJSON(new TypeReference<Email>() {}, entity) : entity;
+        return response.getStatus() == HTTP_RESPONSE_OK && responseType == ResponseType.JSON
+                ? fromJSON(new TypeReference<Email>() {
+                }, entity) : entity;
     }
 
     public Email getEmailByIndex(final int index) {
         final List<Email> emails = getEmails();
-        return emails != null && emails.size() > 0 ?
-                emails.get(index >= 0 && index < emails.size() ? index : 0) : null;
+        return emails != null && emails.size() > 0 ? emails.get(index >= 0 && index < emails.size() ? index : 0) : null;
     }
 
     public Email getLastEmail() {
@@ -89,11 +70,8 @@ public class MailCatcherClient {
     }
 
     public List<Email> getEmails() {
-        final List<Email> emails = fromJSON(new TypeReference<List<Email>>() {},
-                service.path("messages")
-                        .request(MediaType.APPLICATION_JSON)
-                        .get()
-                        .readEntity(String.class));
+        final List<Email> emails = fromJSON(new TypeReference<List<Email>>() {
+        }, service.path("messages").request(MediaType.APPLICATION_JSON).get().readEntity(String.class));
 
         Collections.sort(emails, new Comparator<Email>() {
             @Override
@@ -112,9 +90,7 @@ public class MailCatcherClient {
     }
 
     public boolean deleteEmails() {
-        return service.path("messages")
-                .request(MediaType.APPLICATION_JSON)
-                .delete()
+        return service.path("messages").request(MediaType.APPLICATION_JSON).delete()
                 .getStatus() == HTTP_RESPONSE_NO_CONTENT;
     }
 
@@ -124,7 +100,7 @@ public class MailCatcherClient {
     }
 
     public void sendEmail(final String from, final String to, final String subject, final String body,
-                          final ContentType contentType) {
+            final ContentType contentType) {
         final Properties properties = new Properties();
         properties.put("mail.smtp.host", smtpIP);
         properties.put("mail.smtp.port", SMTP_PORT);
@@ -135,7 +111,7 @@ public class MailCatcherClient {
     }
 
     private void sendEmail(final Session session, final String from, final String to, final String subject,
-                           final String body, final ContentType contentType) {
+            final String body, final ContentType contentType) {
         try {
             final Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
@@ -153,5 +129,13 @@ public class MailCatcherClient {
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
         }
+    }
+
+    public enum ResponseType {
+        HTML, PLAIN, JSON, SOURCE
+    }
+
+    public enum ContentType {
+        HTML, PLAIN
     }
 }

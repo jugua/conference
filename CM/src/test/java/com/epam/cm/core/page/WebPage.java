@@ -1,20 +1,22 @@
 package com.epam.cm.core.page;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.epam.cm.core.logger.LoggerFactory;
 import com.epam.cm.core.properties.PropertiesController;
 import com.epam.cm.core.utils.WaitUtils;
+
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.epam.cm.core.properties.PropertiesNames.AWAITILITY_AJAX_TIMEOUT;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -43,8 +45,8 @@ public class WebPage extends PageObject {
 
     public void waitForPageToLoad() {
         waitForDocumentReady();
-       // waitForAjaxRequestsComplete();
-       // waitForAngularRequestComplete();
+        // waitForAjaxRequestsComplete();
+        // waitForAngularRequestComplete();
         waitForAngularV1ToFinish();
     }
 
@@ -97,7 +99,6 @@ public class WebPage extends PageObject {
         getDriver().switchTo().defaultContent();
     }
 
-
     private void waitForAjaxRequestsComplete() {
         WaitUtils.doWait().atMost(AJAX_TIMEOUT, MILLISECONDS).with().pollInterval(1, SECONDS)
                 .until(() -> (Boolean) getJavascriptExecutorFacade()
@@ -110,31 +111,29 @@ public class WebPage extends PageObject {
                         .executeScript("return document.readyState == 'complete'"));
     }
 
-//    private void waitForAngularRequestComplete() {
-//        WaitUtils.doWait().atMost(AJAX_TIMEOUT, MILLISECONDS).with().pollInterval(1, SECONDS)
-//                .until(() -> (Boolean) getJavascriptExecutorFacade()
-//                        .executeScript("return (window.angular != null) && (angular.element(document).injector()!= null) "+
-//                          "&& (angular.element(document).injector().get('$http').pendingRequests.length === 0)"));
-//    }
-
+    // private void waitForAngularRequestComplete() {
+    // WaitUtils.doWait().atMost(AJAX_TIMEOUT, MILLISECONDS).with().pollInterval(1, SECONDS)
+    // .until(() -> (Boolean) getJavascriptExecutorFacade()
+    // .executeScript("return (window.angular != null) && (angular.element(document).injector()!= null) "+
+    // "&& (angular.element(document).injector().get('$http').pendingRequests.length === 0)"));
+    // }
 
     public void waitForAngularV1ToFinish() {
 
         WebDriver driver = getDriver();
-        final String query =
-                "window.angularFinished;" + "waitForAngular =function() {"
-                        + "  window.angularFinished = false;"
-                        + "  var el = document.querySelector('body');"
-                        + "  var callback = (function(){window.angularFinished=1});"
-                        + "  angular.element(el).injector().get('$browser')."
-                        + "      notifyWhenNoOutstandingRequests(callback);};";
+        final String query = "window.angularFinished;" + "waitForAngular =function() {"
+                + "  window.angularFinished = false;" + "  var el = document.querySelector('body');"
+                + "  var callback = (function(){window.angularFinished=1});"
+                + "  angular.element(el).injector().get('$browser')."
+                + "      notifyWhenNoOutstandingRequests(callback);};";
         try {
             ((JavascriptExecutor) driver).executeScript(query);
             ((JavascriptExecutor) driver).executeScript("waitForAngular()");
 
             ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
                 public Boolean apply(WebDriver driver) {
-                    Object noAjaxRequests = ((JavascriptExecutor) driver).executeScript("return window.angularFinished;");
+                    Object noAjaxRequests = ((JavascriptExecutor) driver)
+                            .executeScript("return window.angularFinished;");
                     return "1".equals(noAjaxRequests.toString());
                 }
             };
@@ -144,16 +143,18 @@ public class WebPage extends PageObject {
             LOGGER.error("Unable to load the page correctly");
         }
     }
+
     public void waitForAngularV2ToFinish() {
         WebDriver driver = getDriver();
         try {
             ExpectedCondition<Boolean> pageLoadCondition = new ExpectedCondition<Boolean>() {
                 @Override
                 public Boolean apply(WebDriver driver) {
-                    return Boolean.valueOf(((JavascriptExecutor) driver).executeScript(
-                            "return (window.angular !== undefined) "
+                    return Boolean.valueOf(((JavascriptExecutor) driver)
+                            .executeScript("return (window.angular !== undefined) "
                                     + "&& (angular.element(document).injector() !== undefined) "
-                                    + "&& (angular.element(document).injector().get('$http').pendingRequests.length === 0)").toString());
+                                    + "&& (angular.element(document).injector().get('$http').pendingRequests.length === 0)")
+                            .toString());
                 }
             };
             WebDriverWait wait = new WebDriverWait(driver, 30);
@@ -163,4 +164,3 @@ public class WebPage extends PageObject {
         }
     }
 }
-

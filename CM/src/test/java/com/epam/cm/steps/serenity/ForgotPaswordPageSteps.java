@@ -2,6 +2,7 @@ package com.epam.cm.steps.serenity;
 
 import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.pages.HomePage;
+
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import net.thucydides.core.steps.ScenarioSteps;
@@ -11,11 +12,11 @@ import net.thucydides.core.steps.ScenarioSteps;
  */
 public class ForgotPaswordPageSteps extends ScenarioSteps {
 
+    HomePage homePage;
+
     public ForgotPaswordPageSteps(final Pages pages) {
         super(pages);
     }
-
-    HomePage homePage;
 
     @Step
     public void gotoTheHomePage() {
@@ -59,38 +60,39 @@ public class ForgotPaswordPageSteps extends ScenarioSteps {
     public void checkCancelBtn() {
         homePage.getMenu().cancelBtnIsPresent();
     }
+
     @Step
-    public void clickContinueBtn(){
+    public void clickContinueBtn() {
         homePage.getMenu().clickContinueButton();
     }
 
     @Step
-    public String getEmptyEmailMsgText(){
+    public String getEmptyEmailMsgText() {
         return homePage.getMenu().getEmtyEmailMsgTxt();
     }
 
     @Step
-    public String getInvalidEmailMsg(){
+    public String getInvalidEmailMsg() {
         return homePage.getMenu().getInvalidEmailMsg();
     }
 
     @Step
-    public boolean isEmailForgotPwFieldHighlighted(){
+    public boolean isEmailForgotPwFieldHighlighted() {
         return homePage.getMenu().isEmailForgotPwHighlighted();
     }
 
     @Step
-    public void typeEmailForgotPwField(String email){
+    public void typeEmailForgotPwField(String email) {
         homePage.getMenu().setEmailForgotPwFieldField(email);
     }
 
     @Step
-    public String getNotficationText(){
+    public String getNotficationText() {
         return homePage.getMenu().getPopUpNotification();
     }
 
     @Step
-    public boolean isCancelBtnPresent(){
+    public boolean isCancelBtnPresent() {
         return homePage.getMenu().cancelNotifiPopUpBtnisPresent();
     }
 

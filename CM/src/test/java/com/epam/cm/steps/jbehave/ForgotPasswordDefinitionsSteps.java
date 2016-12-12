@@ -1,7 +1,9 @@
 package com.epam.cm.steps.jbehave;
 
 import com.epam.cm.steps.serenity.ForgotPaswordPageSteps;
+
 import net.thucydides.core.annotations.Steps;
+
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -24,11 +26,13 @@ public class ForgotPasswordDefinitionsSteps {
     }
 
     @When("user clicks the login button")
-    public void whenUserClicksLoginBtn() { forgotPwdPgSteps.clickOnAccountMenu();
+    public void whenUserClicksLoginBtn() {
+        forgotPwdPgSteps.clickOnAccountMenu();
     }
 
     @When("clicks the forgot password link")
-    public void whenUserClicksForgotPWLink() { forgotPwdPgSteps.clickForgotPwLink();
+    public void whenUserClicksForgotPWLink() {
+        forgotPwdPgSteps.clickForgotPwLink();
     }
 
     @Then("new pop up will appears saying '$forgotLblMsg'")
@@ -74,19 +78,19 @@ public class ForgotPasswordDefinitionsSteps {
     }
 
     @Then("message apears saying:'$msg <email>'")
-    public void thenPopUpApears(String msg,String email){
-        Assert.assertThat(forgotPwdPgSteps.getNotficationText(),containsString(msg));
-        Assert.assertThat(forgotPwdPgSteps.getNotficationText(),containsString(email));
+    public void thenPopUpApears(String msg, String email) {
+        Assert.assertThat(forgotPwdPgSteps.getNotficationText(), containsString(msg));
+        Assert.assertThat(forgotPwdPgSteps.getNotficationText(), containsString(email));
     }
 
     @Then("'Close' button is shown")
-    public void thenCloseBtnIsShown(){
+    public void thenCloseBtnIsShown() {
         Assert.assertTrue(forgotPwdPgSteps.isCancelBtnPresent());
     }
 
     @Then("message apears saying $msg")
-    public void thenMsgApears(String msg){
-        Assert.assertThat(msg,is(forgotPwdPgSteps.getInvalidEmailMsg()));
+    public void thenMsgApears(String msg) {
+        Assert.assertThat(msg, is(forgotPwdPgSteps.getInvalidEmailMsg()));
     }
 
 }

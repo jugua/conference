@@ -1,11 +1,12 @@
 package com.epam.cm.steps.jbehave;
 
-import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.dto.MyInfoFieldsDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
-import com.epam.cm.steps.serenity.MyInfoSteps;
+import com.epam.cm.steps.serenity.MyInfoPageSteps;
+
 import net.thucydides.core.annotations.Steps;
+
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -17,12 +18,12 @@ import org.junit.Assert;
  */
 public class MyInfoPageDefinitionSteps {
     @Steps
-    MyInfoSteps myInfoSteps;
+    MyInfoPageSteps myInfoSteps;
     @Steps
     LoginPageSteps loginPageSteps;
 
     @Given("user logged as speaker: $loginTable")
-    public void userLoggedAsSpeaker(ExamplesTable table){
+    public void userLoggedAsSpeaker(ExamplesTable table) {
 
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
         loginPageSteps.unsignedUserInHomePage();
@@ -37,75 +38,78 @@ public class MyInfoPageDefinitionSteps {
     }
 
     @Then("my info page is opened with active My Info tab")
-    public void myInfoTabIsActive(){
+    public void myInfoTabIsActive() {
         Assert.assertTrue(myInfoSteps.isMyInfoTabActive());
     }
 
     @Then("all the following fields are empty Short Bio, Job Title, Company, Past Conferences, Linked In, Twitter, Facebook, Blog, Additional info")
-    public void areAllFieldsEmpty(){
-       Assert.assertTrue(myInfoSteps.areAllFieldsEmpty());
+    public void areAllFieldsEmpty() {
+        Assert.assertTrue(myInfoSteps.areAllFieldsEmpty());
     }
 
     @When("user fill valid info in fields: $examplesTable")
-    public void userFillValidInfo(final ExamplesTable myInfoTable){
+    public void userFillValidInfo(final ExamplesTable myInfoTable) {
         MyInfoFieldsDTO myInfoDTO = parseExamplesTable(myInfoTable);
         myInfoSteps.userFillValidInfo(myInfoDTO);
     }
+
     @When("user go away from my info tab without clicking save button")
-    public void userGoAwayFromMyInfoTab(){
+    public void userGoAwayFromMyInfoTab() {
         myInfoSteps.userGoAwayFromMyInfoTab();
     }
 
     @When("switch to MyTalks")
-    public void userSwitchToMyTalks(){
+    public void userSwitchToMyTalks() {
         myInfoSteps.switchToMyTalks();
     }
 
     @When("user switch back to MyInfo tab")
-    public void userSwitchToMyInfoTab(){
+    public void userSwitchToMyInfoTab() {
         myInfoSteps.switchToMyInfo();
     }
 
     @Then("successfully saved popup is shown")
-    public void checkInformationSavedSuccessfullyPopUp(){
+    public void checkInformationSavedSuccessfullyPopUp() {
         myInfoSteps.userClickSaveButton();
         System.out.println("cv");
         Assert.assertTrue(myInfoSteps.isInformationSavedSuccessfullyPopUp());
     }
 
     @Then("information saved successfully: $examplesTable")
-    public void informationSavedSuccessfully(final ExamplesTable myInfoTable){
+    public void informationSavedSuccessfully(final ExamplesTable myInfoTable) {
         MyInfoFieldsDTO myInfoDTO = parseExamplesTable(myInfoTable);
         Assert.assertTrue(myInfoSteps.isInformationSavedSuccessfully(myInfoDTO));
     }
 
     @Then("user logout")
-    public void userLogout(){
+    public void userLogout() {
         myInfoSteps.userLogout();
     }
 
     @Then("attention pop up is shown")
-    public void isAttentionPopUpShown(){
+    public void isAttentionPopUpShown() {
         Assert.assertTrue(myInfoSteps.isAttentionPopUpShown());
     }
+
     @Then("error popup is shown")
-    public void isErrorPopUpShown(){
+    public void isErrorPopUpShown() {
         myInfoSteps.userClickSaveButton();
         Assert.assertTrue(myInfoSteps.isErrorPopUpShown());
     }
+
     @Then("user can`t enter/type more than the maximum allowed characters: $examplesTable")
-    public void userCantTypeMoreThanMaxAllowedCharacters(final ExamplesTable myInfoTable){
+    public void userCantTypeMoreThanMaxAllowedCharacters(final ExamplesTable myInfoTable) {
         MyInfoFieldsDTO myInfoDTO = parseExamplesTable(myInfoTable);
         Assert.assertTrue(myInfoSteps.userCantTypeMoreThanMaxAllowedCharacters(myInfoDTO));
     }
 
     @Then("MyTalks tab is active")
-    public void isMyTalksTabActive(){
+    public void isMyTalksTabActive() {
         Assert.assertTrue(myInfoSteps.isMyTalksTabActive());
     }
 
     @Then("MyInfo tab is active")
-    public void isMyInfoTalksActive(){
+    public void isMyInfoTalksActive() {
         Assert.assertTrue(myInfoSteps.isMyInfoTabActive());
     }
 
@@ -114,24 +118,27 @@ public class MyInfoPageDefinitionSteps {
         String shortBio = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("shortBio", String.class);
         String jobTitle = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("jobTitle", String.class);
         String company = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("company", String.class);
-        String pastConferences = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("pastConferences", String.class);
+        String pastConferences = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("pastConferences",
+                String.class);
         String linkedIn = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("linkedIn", String.class);
         String twitter = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("twitter", String.class);
         String facebook = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("facebook", String.class);
         String blog = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("blog", String.class);
-        String additionalInfo = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("additionalInfo", String.class);
+        String additionalInfo = myInfoTable.getRowAsParameters(0, replaceNamedParameters).valueAs("additionalInfo",
+                String.class);
 
-        return new MyInfoFieldsDTO(){{
-            setShortBio(shortBio);
-            setJobTitle(jobTitle);
-            setCompany(company);
-            setPastConferences(pastConferences);
-            setLinkedIn(linkedIn);
-            setTwitter(twitter);
-            setFacebook(facebook);
-            setBlog(blog);
-            setAdditionalInfo(additionalInfo);
-        }
+        return new MyInfoFieldsDTO() {
+            {
+                setShortBio(shortBio);
+                setJobTitle(jobTitle);
+                setCompany(company);
+                setPastConferences(pastConferences);
+                setLinkedIn(linkedIn);
+                setTwitter(twitter);
+                setFacebook(facebook);
+                setBlog(blog);
+                setAdditionalInfo(additionalInfo);
+            }
         };
     }
 }
