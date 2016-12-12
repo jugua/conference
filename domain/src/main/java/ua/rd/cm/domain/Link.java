@@ -26,6 +26,10 @@ public class Link {
     @Enumerated(EnumType.STRING)
     private LinkStatus status;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LinkType type;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -35,5 +39,9 @@ public class Link {
 
     public enum LinkStatus {
         VALID, EXPIRED
+    }
+
+    public enum LinkType {
+        CONFIRMATION, FORGOT_PASS, CHANGING_EMAIL
     }
 }
