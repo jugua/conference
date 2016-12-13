@@ -32,7 +32,7 @@ public class SettingsPageSteps {
 
     @Step
     public void typeEmail(SettingsDTO settingsDTO){
-        settingsPage.typeEmail(settingsDTO.getEmail());
+        settingsPage.typeEmail(settingsDTO.getNewEmail());
     }
 
     @Step

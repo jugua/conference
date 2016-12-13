@@ -18,16 +18,17 @@ Given user on the settings page logged as speaker:
 |testUserSettingsStory@testUser.test|testuserpwd|
 When user click on the Edit link next to Email
 And type incorrect values in New email field:
-|wrongEmail  |
-|<wrongEmail>|
+|invalidEmail  |
+|<invalidEmail>|
 And clicks email save button
 Then user see a warning message saying 'Please enter a valid email address'
 
 Examples:
-|<wrongEmail>         |
+|<invalidEmail>       |
 |testAuto@auto.       |
 |testAuto@auto.t      |
 |testAuto@auto.ttttttt|
 |testAuto@.ttt        |
 |@auto.ttt            |
 |testAuto@auto.123    |
+   

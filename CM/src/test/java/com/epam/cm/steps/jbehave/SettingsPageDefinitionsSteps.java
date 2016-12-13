@@ -41,10 +41,10 @@ public class SettingsPageDefinitionsSteps {
     @When("type incorrect values in New email field: $examplesTable")
     public void typeIncorrectEmail(ExamplesTable table){
         boolean replaceNamedParameters = true;
-        String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("wrongEmail", String.class);
+        String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("invalidEmail", String.class);
         SettingsDTO settingsDTO = new SettingsDTO(){
             {
-                setEmail(email);
+                setNewEmail(email);
             }
         };
         settingsSteps.typeEmail(settingsDTO);
