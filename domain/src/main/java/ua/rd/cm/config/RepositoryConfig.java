@@ -40,10 +40,10 @@ public class RepositoryConfig {
     public DataSource dataSource() {
         BasicDataSource ds = new BasicDataSource();
 
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/conference_management");
-        ds.setUsername("trybel_master");
-        ds.setPassword("password");
+        ds.setDriverClassName(driver);
+        ds.setUrl(url);
+        ds.setUsername(user);
+        ds.setPassword(password);
 
         return ds;
     }
