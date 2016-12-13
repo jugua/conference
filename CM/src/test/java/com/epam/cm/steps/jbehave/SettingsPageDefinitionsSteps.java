@@ -1,6 +1,7 @@
 package com.epam.cm.steps.jbehave;
 
 import com.epam.cm.dto.CredentialsDTO;
+import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
 import com.epam.cm.steps.serenity.SettingsPageSteps;
 import net.thucydides.core.annotations.Steps;
@@ -36,9 +37,28 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.clickEditLinkNextToEmail();
     }
 
+
+    @When("type incorrect values in New email field: $examplesTable")
+    public void typeIncorrectEmail(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("wrongEmail", String.class);
+        SettingsDTO settingsDTO = new SettingsDTO(){
+            {
+                setEmail(email);
+            }
+        };
+        settingsSteps.typeEmail(settingsDTO);
+    }
+
+
     @When("user click on the Edit link next to Name")
     public void clickEditLinkNextToName(){
         settingsSteps.clickEditLinkNextToName();
+    }
+
+    @When("leaves 'First name' field empty")
+    public void leaveFirstNameEmpty(){
+        settingsSteps.leaveFirstNameInputEmpty();
     }
 
     @When("leaves 'Last name' field empty")
@@ -46,15 +66,26 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.leaveLastNameInputEmpty();
     }
 
-    @When("clicks Save button")
-    public void clickSaveBtn(){
-        settingsSteps.clickSaveBtn();
+    @When("clicks name save button")
+    public void clickNameSaveBtn(){
+        settingsSteps.clickNameSaveBtn();
+    }
+
+    @When("clicks email save button")
+    public void clickEmailSaveBtn(){
+        settingsSteps.clickEmailSaveBtn();
     }
 
     @Then("Current Email and New Email fields are visible")
     public void areCurrentEmailAndNewEmailFieldsVisible(){
         Assert.assertTrue(settingsSteps.areCurrentEmailAndNewEmailFieldsVisible());
     }
+
+    @Then("user see a warning message saying '$errorMsg'")
+    public void userSeeWarningMassage(String errorMsg){
+        Assert.assertTrue(settingsSteps.isErrorMsgShown(errorMsg));
+    }
+
 
     @Then("'Name' field has following elements: '$firstName', '$lastName' fields 'Save' and 'Cancel' buttons")
     public void checkNameFieldElements(String firstName, String lastName){
@@ -69,6 +100,13 @@ public class SettingsPageDefinitionsSteps {
     @Then("Empty field is highlighted in red and  message saying '$msg' is shown")
     public void lastNameIsHighlightedAndMsgAppears(String msg){
         Assert.assertTrue(settingsSteps.isLastNameHighlighted());
-        Assert.assertThat(msg,is(settingsSteps.getLastNameErrorMsg()));
+        Assert.assertThat(msg,is(settingsSteps.getNameErrorMsg()));
+    }
+
+    @Then("empty fields are highlighted in red and message saying '$msg' is shown")
+    public void emptyFieldsAreHighlighted(String msg){
+        Assert.assertTrue(settingsSteps.isFirstNameHighlighted());
+        Assert.assertTrue(settingsSteps.isLastNameHighlighted());
+        Assert.assertThat(msg,is(settingsSteps.getNameErrorMsg()));
     }
 }

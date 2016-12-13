@@ -1,5 +1,6 @@
 package com.epam.cm.steps.serenity;
 
+import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.pages.SettingsPage;
 import net.thucydides.core.annotations.Step;
 
@@ -30,6 +31,24 @@ public class SettingsPageSteps {
     }
 
     @Step
+    public void typeEmail(SettingsDTO settingsDTO){
+        settingsPage.typeEmail(settingsDTO.getEmail());
+    }
+
+    @Step
+    public void clickEmailSaveBtn() {
+        settingsPage.clickEmailSaveBtn();
+    }
+
+    @Step
+    public boolean isErrorMsgShown(String errorMsg) {
+        if(settingsPage.getErrorMsg().equals(errorMsg)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public boolean isSaveBtnVisible(){
         if(settingsPage.checkSaveBtn())
             return true;
@@ -54,12 +73,23 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void clickSaveBtn(){
+    public void clickNameSaveBtn(){
         settingsPage.clickNameSaveBtn();
     }
+
+    @Step
+    public void leaveFirstNameInputEmpty(){
+        settingsPage.setFirstNameEmpty();
+    }
+
     @Step
     public void leaveLastNameInputEmpty(){
         settingsPage.setLastNameEmpty();
+    }
+
+    @Step
+    public boolean isFirstNameHighlighted(){
+        return settingsPage.isFirstNameInputHighlighted();
     }
 
     @Step
@@ -68,8 +98,8 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public String getLastNameErrorMsg(){
-        return settingsPage.getLastNameErrorMsg();
+    public String getNameErrorMsg(){
+        return settingsPage.getNameErrorMsg();
     }
 
 }
