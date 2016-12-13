@@ -24,4 +24,3 @@ And leaves 'Last name' field empty
 And clicks Save button
 Then Empty field is highlighted in red and  message saying 'Please enter a name' is shown
 
-Scenario:
