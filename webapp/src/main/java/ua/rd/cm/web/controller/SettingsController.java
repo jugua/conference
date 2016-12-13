@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,8 +57,11 @@ public class SettingsController {
 
         if (!checkCurrentPasswordMatches(dto, user)) {
             logger.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest: " + request.toString() + "]");
-            messageDto.setAnswer("wrong_password");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(messageDto);
+            messageDto.setError("wrong_password");
+            messageDto.setFields(new ArrayList<String>() {{
+                add("currentPassword");
+            }});
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
         }
         if (!checkPasswordConfirmed(dto)) {
             logger.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " + request.toString() + "]");
