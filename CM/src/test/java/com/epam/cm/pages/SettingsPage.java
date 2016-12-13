@@ -12,6 +12,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  */
 public class SettingsPage extends AnyPage {
 
+    //email
+
     @FindBy(xpath = "//*[@class='settings__block']/div[2]")
     private WebElementFacade emailEditLink;
     @FindBy(xpath = "//*[@class='edit-email__fields-wrapper']/label[1]")
@@ -27,6 +29,25 @@ public class SettingsPage extends AnyPage {
     @FindBy(xpath = "//*[@class='edit-email__result edit-email__result_error ng-binding']")
     private WebElementFacade emailErrorMsg;
 
+    //name
+    @FindBy(xpath = "//*[@class='settings__block']/div[1]")
+    private WebElementFacade nameEditLink;
+    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='fname']")
+    private WebElementFacade firstNameInput;
+    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='lname']")
+    private WebElementFacade lastNameInput;
+    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/label[1]")
+    private WebElementFacade firstLbl;
+    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/label[2]")
+    private WebElementFacade secondLbl;
+    @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[1]")
+    private WebElementFacade saveBtn;
+    @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[2]")
+    private WebElementFacade cancelBtn;
+    @FindBy(xpath = "//*[@class='edit-password']/span")
+    private WebElementFacade namesErrorMsg;
+
+    //email
 
     public SettingsPage(WebDriver driver) {
         super(driver);
@@ -54,12 +75,13 @@ public class SettingsPage extends AnyPage {
         return false;
     }
 
+
     public void typeEmail(String email) {
         newEmailInput.withTimeoutOf(5, SECONDS).waitUntilVisible().clear();
         newEmailInput.type(email);
     }
 
-    public void clickSaveBtn() {
+    public void clickEmailSaveBtn() {
         waitABit(4000);
         emailSaveBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
@@ -68,4 +90,50 @@ public class SettingsPage extends AnyPage {
         String errorMsg = emailErrorMsg.withTimeoutOf(5,SECONDS).waitUntilVisible().getText();
         return errorMsg;
     }
+
+    //name
+
+    public void clickEditLinkNextToName() {
+        nameEditLink.click();
+    }
+
+    public boolean checkSaveBtn() {
+        waitFor(firstNameInput);
+        if (saveBtn.isVisible())
+            return true;
+        return false;
+    }
+
+    public boolean checkCancelBtn() {
+        waitFor(lastNameInput);
+        if (cancelBtn.isVisible())
+            return true;
+        return false;
+    }
+
+    public String getFirstLblText() {
+        return firstLbl.getText();
+    }
+
+    public String getSecondLblText() {
+        return secondLbl.getText();
+    }
+
+    public void setLastNameEmpty() {
+        lastNameInput.clear();
+    }
+
+    public void clickNameSaveBtn(){
+        saveBtn.click();
+    }
+
+    public boolean isLastNameInputHighlighted(){
+        //return passwordField.getAttribute("class").contains("invalid");
+        return lastNameInput.getAttribute("class").contains("invalid");
+    }
+
+    public String getLastNameErrorMsg(){
+        return namesErrorMsg.getText();
+    }
+
 }

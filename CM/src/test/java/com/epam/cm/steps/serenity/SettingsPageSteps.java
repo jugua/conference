@@ -16,6 +16,11 @@ public class SettingsPageSteps {
     }
 
     @Step
+    public void clickEditLinkNextToName(){
+        settingsPage.clickEditLinkNextToName();
+    }
+
+    @Step
     public boolean areCurrentEmailAndNewEmailFieldsVisible() {
         boolean currentEmailFieldVisible = settingsPage.isCurrentEmailFieldVisible();
         boolean newEmailfieldVisible = settingsPage.isNewEmailFieldVisible();
@@ -31,8 +36,8 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void clickSaveBtn() {
-        settingsPage.clickSaveBtn();
+    public void clickEmailSaveBtn() {
+        settingsPage.clickEmailSaveBtn();
     }
 
     @Step
@@ -43,4 +48,47 @@ public class SettingsPageSteps {
             return false;
         }
     }
+
+    public boolean isSaveBtnVisible(){
+        if(settingsPage.checkSaveBtn())
+            return true;
+        return false;
+    }
+
+    @Step
+    public boolean isCancelBtnVisble(){
+        if (settingsPage.checkCancelBtn())
+            return true;
+        return false;
+    }
+
+    @Step
+    public String getFirstNameLbl(){
+        return settingsPage.getFirstLblText();
+    }
+
+    @Step
+    public String getLastNameLbl(){
+        return settingsPage.getSecondLblText();
+    }
+
+    @Step
+    public void clickNameSaveBtn(){
+        settingsPage.clickNameSaveBtn();
+    }
+    @Step
+    public void leaveLastNameInputEmpty(){
+        settingsPage.setLastNameEmpty();
+    }
+
+    @Step
+    public boolean isLastNameHighlighted(){
+        return settingsPage.isLastNameInputHighlighted();
+    }
+
+    @Step
+    public String getLastNameErrorMsg(){
+        return settingsPage.getLastNameErrorMsg();
+    }
+
 }
