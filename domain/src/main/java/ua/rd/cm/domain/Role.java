@@ -21,6 +21,9 @@ import javax.validation.constraints.NotNull;
         sequenceName = "role_seq")
 public class Role implements GrantedAuthority {
 
+    public static String ORGANISER = "ORGANISER";
+    public static String SPEAKER = "SPEAKER";
+
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqRoleGen")
