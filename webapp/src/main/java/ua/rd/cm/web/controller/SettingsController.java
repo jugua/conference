@@ -1,21 +1,28 @@
 package ua.rd.cm.web.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.log4j.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.preparator.ChangePasswordPreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.SettingsDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
+import java.io.IOException;
 import java.security.Principal;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Olha_Melnyk
@@ -23,14 +30,16 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/user/current")
 public class SettingsController {
-    private ModelMapper mapper;
+    private ObjectMapper mapper;
     private UserService userService;
+    private MailService mailService;
     private Logger logger = Logger.getLogger(SettingsController.class);
 
     @Autowired
-    public SettingsController(ModelMapper mapper, UserService userService) {
+    public SettingsController(ObjectMapper mapper, UserService userService, MailService mailService) {
         this.mapper = mapper;
         this.userService = userService;
+        this.mailService = mailService;
     }
 
     @PostMapping("/password")
@@ -48,8 +57,11 @@ public class SettingsController {
 
         if (!checkCurrentPasswordMatches(dto, user)) {
             logger.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest: " + request.toString() + "]");
-            messageDto.setAnswer("wrong_password");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(messageDto);
+            messageDto.setError("wrong_password");
+            messageDto.setFields(new ArrayList<String>() {{
+                add("currentPassword");
+            }});
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
         }
         if (!checkPasswordConfirmed(dto)) {
             logger.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " + request.toString() + "]");
@@ -63,7 +75,37 @@ public class SettingsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
         }
         user.setPassword(dto.getNewPassword());
+        userService.updateUserProfile(user);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("name", userService.getByEmail(principal.getName()).getFirstName());
+        model.put("email", principal.getName());
+        mailService.sendEmail(new ChangePasswordPreparator(), model);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/email")
+    public String changeEmail(@RequestBody String mail, Principal principal) {
+        String email = parseMail(mail);
+
+        if (email == null) {
+
+        }
+
+        return mail;
+    }
+
+    private String parseMail(String mail) {
+        try {
+            JsonNode node = mapper.readValue(mail, ObjectNode.class).get("mail");
+
+            if (node == null) {
+                return null;
+            }
+            return node.textValue();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     private boolean checkCurrentPasswordMatches(SettingsDto dto, User user) {

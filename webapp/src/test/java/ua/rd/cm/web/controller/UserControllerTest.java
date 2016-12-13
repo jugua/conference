@@ -366,7 +366,7 @@ public class UserControllerTest {
     private User createUser(Role role , UserInfo info){
         Set<Role> roles = new HashSet<>();
         roles.add(role);
-        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "pass", "url", info, roles);
+        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "pass", "url", User.UserStatus.CONFIRMED, info, roles);
         return user;
     }
 
