@@ -1,1 +1,43 @@
-<! *** !>
+<div class="edit-password">
+  <span class="edit-password__result edit-password__result_success" ng-if="$ctrl.changed">
+    Your changes have been saved successfully
+  </span>
+  <span class="edit-password__result edit-password__result_error" ng-if="$ctrl.error">
+    Please enter a name
+  </span>
+
+
+  <form
+    class="edit-password__form"
+    novalidate
+    name="$ctrl.editNameForm"
+    ng-submit="$ctrl.submit()"
+  >
+    <p class="edit-password__title">Name</p>
+
+    <div class="edit-password__fields-wrapper">
+      <label class="form-label">first name</label>
+      <input class="field field_border edit-password__field"
+             type="text"
+             name="fname"
+             required
+             maxlength="56"
+             ng-model="$ctrl.userInfo.fname">
+
+      <label class="form-label">last name</label>
+      <input class="field field_border edit-password__field"
+             type="text"
+             name="lname"
+             required
+             maxlength="56"
+             ng-model="$ctrl.userInfo.lname">
+
+      <div class="edit-password__buttons-wrapper">
+        <input type="submit" value="Save" class="btn edit-password__button edit-password__button_left"
+               ng-disabled="$ctrl.changed">
+        <input type="reset" value="Cancel" class="btn edit-password__button"
+               ng-disabled="$ctrl.changed" ng-click="$ctrl.close()">
+      </div>
+    </div>
+  </form>
+</div>

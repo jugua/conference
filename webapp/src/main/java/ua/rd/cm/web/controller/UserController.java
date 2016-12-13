@@ -2,7 +2,6 @@ package ua.rd.cm.web.controller;
 
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +73,8 @@ public class UserController {
         if (currentUser == null) {
             logger.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } if (isUserUnconfirmed(currentUser)) {
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
         }
@@ -94,6 +95,14 @@ public class UserController {
         return new ResponseEntity(status);
     }
 
+    private boolean isPasswordConfirmed(RegistrationDto dto) {
+        return dto.getPassword().equals(dto.getConfirm());
+    }
+
+    private boolean isUserUnconfirmed(User currentUser) {
+        return User.UserStatus.UNCONFIRMED.equals(currentUser.getStatus());
+    }
+
     private UserInfo prepareNewUserInfo(String email, UserInfoDto dto) {
         User currentUser = userService.getByEmail(email);
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
@@ -104,6 +113,7 @@ public class UserController {
     private User dtoToEntity(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
+        user.setStatus(User.UserStatus.UNCONFIRMED);
         return user;
     }
 
@@ -138,9 +148,5 @@ public class UserController {
             rolesFirstLetters[i] = rolesFullNames[i].getName().substring(0, 1).toLowerCase();
         }
         return rolesFirstLetters;
-    }
-
-    private boolean isPasswordConfirmed(RegistrationDto dto) {
-        return dto.getPassword().equals(dto.getConfirm());
     }
 }
