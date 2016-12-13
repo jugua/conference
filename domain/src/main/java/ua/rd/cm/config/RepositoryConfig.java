@@ -24,17 +24,26 @@ import javax.sql.DataSource;
 @PropertySource("classpath:jdbc.properties")
 public class RepositoryConfig {
 
+    @Value("${driver}")
+    String driver;
+
     @Value("${url}")
     String url;
+
+    @Value("${user}")
+    String user;
+
+    @Value("${password}")
+    String password;
 
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         BasicDataSource ds = new BasicDataSource();
 
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setDriverClassName(driver);
         ds.setUrl(url);
-        ds.setUsername("trybel_master");
-        ds.setPassword("password");
+        ds.setUsername(user);
+        ds.setPassword(password);
 
         return ds;
     }
