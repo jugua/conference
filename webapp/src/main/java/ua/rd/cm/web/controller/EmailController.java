@@ -32,14 +32,16 @@ public class EmailController {
 
 	private MailService mailService;
 	private UserService userService;
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private ObjectMapper objectMapper;
 	private ModelMapper modelMapper;
 	
 	@Autowired
-	public EmailController(MailService mailService, UserService userService, ModelMapper modelMapper) {
+	public EmailController(MailService mailService, UserService userService,
+						   ModelMapper modelMapper, ObjectMapper objectMapper) {
 		this.mailService = mailService;
 		this.userService = userService;
 		this.modelMapper = modelMapper;
+		this.objectMapper = objectMapper;
 	}
 	
 	@PostMapping("/forgot-password")
