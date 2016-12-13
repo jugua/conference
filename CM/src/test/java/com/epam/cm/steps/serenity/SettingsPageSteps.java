@@ -55,7 +55,7 @@ public class SettingsPageSteps {
 
     @Step
     public void clickSaveBtn(){
-        settingsPage.clickSaveBtn();
+        settingsPage.clickNameSaveBtn();
     }
     @Step
     public void leaveLastNameInputEmpty(){

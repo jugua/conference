@@ -102,7 +102,7 @@ public class SettingsPage extends AnyPage {
         lastNameInput.clear();
     }
 
-    public void clickSaveBtn(){
+    public void clickNameSaveBtn(){
         saveBtn.click();
     }
 
