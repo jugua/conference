@@ -4,9 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Author: Serhii Kuts
- * Date: 9/4/2014
- * Time: 4:59 PM
+ * Author: Serhii Kuts Date: 9/4/2014 Time: 4:59 PM
  */
 public class Email {
 
@@ -106,17 +104,9 @@ public class Email {
     }
 
     public String toString() {
-        return "[id : " + getId() +
-                "; sender : " + getSender() +
-                "; recipients : " + getRecipients() +
-                "; subject : " + getSubject() +
-                "; size : " + getSize() +
-                "; created at : " + getCreated_at() +
-                "; source : " + getSource() +
-                "; formats : " + getFormats() +
-                "; attachments : " + getAttachments() +
-                "; type : " + getType() +
-                "]";
+        return "[id : " + getId() + "; sender : " + getSender() + "; recipients : " + getRecipients() + "; subject : "
+                + getSubject() + "; size : " + getSize() + "; created at : " + getCreated_at() + "; source : "
+                + getSource() + "; formats : " + getFormats() + "; attachments : " + getAttachments() + "; type : "
+                + getType() + "]";
     }
 }
-

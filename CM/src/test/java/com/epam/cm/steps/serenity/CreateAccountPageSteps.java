@@ -1,8 +1,8 @@
 package com.epam.cm.steps.serenity;
 
-import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.UserRegistrationInfoDTO;
 import com.epam.cm.pages.SignUpPage;
+
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
@@ -16,11 +16,11 @@ public class CreateAccountPageSteps extends ScenarioSteps {
     @Step
     public void goToSignUpPage() {
         signUpPage.open();
-        //waitABit(2000);
+        // waitABit(2000);
     }
 
     @Step
-    public void typeRegistrationInfo(UserRegistrationInfoDTO user){
+    public void typeRegistrationInfo(UserRegistrationInfoDTO user) {
         signUpPage.fillRegistrationInfo(user);
     }
 
@@ -32,9 +32,9 @@ public class CreateAccountPageSteps extends ScenarioSteps {
     @Step
     public boolean isRegisteredSuccessfully() {
 
-        if(signUpPage.isRegistered()){
+        if (signUpPage.isRegistered()) {
             return true;
-        }else{
+        } else {
             return false;
         }
 
@@ -48,12 +48,14 @@ public class CreateAccountPageSteps extends ScenarioSteps {
         signUpPage.fillRegistrationInfoNegativeTest(user);
     }
 
-    public String getHighlightedTextInIncorrectFields(String incorrectFieldsTemplate, String firstExpectedText, String secondExpectedText) {
-        return signUpPage.getHighlightedTextIncorrectFields(incorrectFieldsTemplate, firstExpectedText, secondExpectedText);
+    public String getHighlightedTextInIncorrectFields(String incorrectFieldsTemplate, String firstExpectedText,
+            String secondExpectedText) {
+        return signUpPage.getHighlightedTextIncorrectFields(incorrectFieldsTemplate, firstExpectedText,
+                secondExpectedText);
     }
 
     public int getNameFieldLength() {
-       return signUpPage.getNameFieldLength();
+        return signUpPage.getNameFieldLength();
     }
 
     public int getLastNameFieldLength() {

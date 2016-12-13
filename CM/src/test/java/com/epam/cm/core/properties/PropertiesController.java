@@ -1,11 +1,10 @@
 package com.epam.cm.core.properties;
 
-import com.epam.cm.core.logger.LoggerFactory;
-import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
+
+import com.epam.cm.core.logger.LoggerFactory;
+
+import org.slf4j.Logger;
 
 public final class PropertiesController {
 
@@ -20,7 +19,5 @@ public final class PropertiesController {
     public static String getProperty(final String propertyName) {
         return System.getProperty(propertyName);
     }
-
-
 
 }

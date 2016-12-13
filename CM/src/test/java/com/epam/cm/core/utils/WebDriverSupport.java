@@ -2,6 +2,7 @@ package com.epam.cm.core.utils;
 
 import net.serenitybdd.core.annotations.findby.By;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -53,6 +54,5 @@ public final class WebDriverSupport {
     private static WebDriver getDriver() {
         return ThucydidesWebDriverSupport.getDriver();
     }
-
 
 }

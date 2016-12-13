@@ -3,11 +3,11 @@ package com.epam.cm.core.utils;
 import com.epam.cm.core.logger.LoggerFactory;
 import com.epam.cm.core.properties.PropertiesController;
 import com.jayway.awaitility.core.ConditionFactory;
+
 import org.slf4j.Logger;
 
 import static com.epam.cm.core.properties.PropertiesNames.WAIT_UTILS_INTERVAL;
 import static com.epam.cm.core.properties.PropertiesNames.WAIT_UTILS_TIMEOUT;
-
 import static com.jayway.awaitility.Awaitility.with;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 

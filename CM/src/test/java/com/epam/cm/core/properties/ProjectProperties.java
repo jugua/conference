@@ -1,12 +1,5 @@
 package com.epam.cm.core.properties;
 
-import net.thucydides.core.guice.Injectors;
-import net.thucydides.core.util.EnvironmentVariables;
-import net.thucydides.core.util.PropertiesFileLocalPreferences;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +7,14 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+
+import net.thucydides.core.guice.Injectors;
+import net.thucydides.core.util.EnvironmentVariables;
+import net.thucydides.core.util.PropertiesFileLocalPreferences;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProjectProperties {
     private static final String ENV = System.getProperty("env.config");

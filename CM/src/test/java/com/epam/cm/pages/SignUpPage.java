@@ -1,20 +1,17 @@
 package com.epam.cm.pages;
 
 import com.epam.cm.dto.UserRegistrationInfoDTO;
+
 import net.serenitybdd.core.annotations.findby.FindBy;
-import net.serenitybdd.core.exceptions.SerenityManagedException;
-import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
-import net.thucydides.core.annotations.WhenPageOpens;
+
 import org.openqa.selenium.WebDriver;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-
 @DefaultUrl("/#/sign-up")
 public class SignUpPage extends AnyPage {
-
 
     public static final String SUCCESSFULLY_REGISTERED = "You've successfully registered.";
 
@@ -96,9 +93,8 @@ public class SignUpPage extends AnyPage {
 
         try {
             successRegistrationPopUp.withTimeoutOf(3, SECONDS).waitUntilVisible();
-            //waitFor(successRegistrationPopUp);
-        }
-        catch(Exception ex){
+            // waitFor(successRegistrationPopUp);
+        } catch (Exception ex) {
             return false;
         }
         if (((successRegistrationPopUp.getText()).equalsIgnoreCase(SUCCESSFULLY_REGISTERED))
@@ -109,46 +105,47 @@ public class SignUpPage extends AnyPage {
             return false;
         }
 
-
     }
 
     public String getHighlightedTextEmptyFields(String emptyFieldsTemplate, String expectedText) {
         return getTextFromEmptyFields(emptyFieldsTemplate, expectedText);
     }
 
-    public String getHighlightedTextIncorrectFields(String incorrectFieldsTemplate, String firstExpectedText, String secondExpectedText) {
+    public String getHighlightedTextIncorrectFields(String incorrectFieldsTemplate, String firstExpectedText,
+            String secondExpectedText) {
         return getTextFromIncorrectFields(incorrectFieldsTemplate, firstExpectedText, secondExpectedText);
     }
 
-    private String getTextFromIncorrectFields(String incorrectFieldsTemplate, String firstExpectedText, String secondExpectedText) {
-        if(incorrectFieldsTemplate.equals("emailField")) {
+    private String getTextFromIncorrectFields(String incorrectFieldsTemplate, String firstExpectedText,
+            String secondExpectedText) {
+        if (incorrectFieldsTemplate.equals("emailField")) {
             if (userEmailHighlightedSecondSpan.getText().equals(firstExpectedText)) {
-                return firstExpectedText+secondExpectedText;
+                return firstExpectedText + secondExpectedText;
             } else {
                 return "wrong text msg";
             }
-        } else if(incorrectFieldsTemplate.equals("passFields")) {
-            if (userPasswordHighlightedSecondSpan.getText().equals(firstExpectedText) &&
-                userPasswordHighlightedThirdSpan.getText().equals(secondExpectedText)) {
-                return firstExpectedText+secondExpectedText;
+        } else if (incorrectFieldsTemplate.equals("passFields")) {
+            if (userPasswordHighlightedSecondSpan.getText().equals(firstExpectedText)
+                    && userPasswordHighlightedThirdSpan.getText().equals(secondExpectedText)) {
+                return firstExpectedText + secondExpectedText;
             } else {
                 return "wrong text msg";
             }
-        } else if(incorrectFieldsTemplate.equals("passField")) {
+        } else if (incorrectFieldsTemplate.equals("passField")) {
             if (userPasswordHighlightedThirdSpan.getText().equals(firstExpectedText)) {
-                return firstExpectedText+secondExpectedText;
+                return firstExpectedText + secondExpectedText;
             } else {
                 return "wrong text msg";
             }
-        } else if(incorrectFieldsTemplate.equals("passField2")) {
+        } else if (incorrectFieldsTemplate.equals("passField2")) {
             if (userPasswordHighlightedSecondSpan.getText().equals(firstExpectedText)) {
-                return firstExpectedText+secondExpectedText;
+                return firstExpectedText + secondExpectedText;
             } else {
                 return "wrong text msg";
             }
-        } else if(incorrectFieldsTemplate.equals("confPassField")) {
+        } else if (incorrectFieldsTemplate.equals("confPassField")) {
             if (userConfPasswordHighlightedFourthSpan.getText().equals(firstExpectedText)) {
-                return firstExpectedText+secondExpectedText;
+                return firstExpectedText + secondExpectedText;
             } else {
                 return "wrong text msg";
             }
@@ -156,44 +153,43 @@ public class SignUpPage extends AnyPage {
         return "";
     }
 
-
     public String getTextFromEmptyFields(String emptyFieldsTemplate, String expectedText) {
 
         if (emptyFieldsTemplate.equals("allFields")) {
-            if (userNameHighlightedText.getText().equals(expectedText) &&
-                    userLastNameHighlightedText.getText().equals(expectedText) &&
-                    userEmailHighlightedText.getText().equals(expectedText) &&
-                    userPasswordHighlightedText.getText().equals(expectedText) &&
-                    userConfPasswordHighlightedText.getText().equals(expectedText)) {
+            if (userNameHighlightedText.getText().equals(expectedText)
+                    && userLastNameHighlightedText.getText().equals(expectedText)
+                    && userEmailHighlightedText.getText().equals(expectedText)
+                    && userPasswordHighlightedText.getText().equals(expectedText)
+                    && userConfPasswordHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
                 return "wrong text msg";
             }
-        }else if(emptyFieldsTemplate.equals("nameField")) {
+        } else if (emptyFieldsTemplate.equals("nameField")) {
             if (userNameHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
                 return "wrong text msg";
             }
-        }else if(emptyFieldsTemplate.equals("lastNameField")) {
+        } else if (emptyFieldsTemplate.equals("lastNameField")) {
             if (userLastNameHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
                 return "wrong text msg";
             }
-        }else if(emptyFieldsTemplate.equals("emailField")) {
+        } else if (emptyFieldsTemplate.equals("emailField")) {
             if (userEmailHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
                 return "wrong text msg";
             }
-        }else if(emptyFieldsTemplate.equals("passField")) {
+        } else if (emptyFieldsTemplate.equals("passField")) {
             if (userPasswordHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
                 return "wrong text msg";
             }
-        }else if(emptyFieldsTemplate.equals("confPassField")) {
+        } else if (emptyFieldsTemplate.equals("confPassField")) {
             if (userConfPasswordHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
@@ -206,15 +202,19 @@ public class SignUpPage extends AnyPage {
     public int getNameFieldLength() {
         return userNameFild.getValue().length();
     }
+
     public int getLastNameFieldLength() {
         return userLastNameField.getValue().length();
     }
+
     public int getEmailFieldLength() {
         return userEmailField.getValue().length();
     }
+
     public int getPassFieldLength() {
         return userPasswordField.getValue().length();
     }
+
     public int getConfPassFieldLength() {
         return userConfPasswordField.getValue().length();
     }

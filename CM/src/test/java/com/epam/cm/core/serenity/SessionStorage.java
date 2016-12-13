@@ -1,14 +1,15 @@
 package com.epam.cm.core.serenity;
 
-
-import com.epam.cm.core.logger.LoggerFactory;
-import net.serenitybdd.core.Serenity;
-import org.slf4j.Logger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.epam.cm.core.logger.LoggerFactory;
+
+import net.serenitybdd.core.Serenity;
+
+import org.slf4j.Logger;
 
 public class SessionStorage {
 
