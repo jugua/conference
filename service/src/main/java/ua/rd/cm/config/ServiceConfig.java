@@ -55,7 +55,7 @@ public class ServiceConfig {
     @Bean
     public FreeMarkerConfigurationFactoryBean getFreeMarkerConfiguration() {
         FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();
-        bean.setTemplateLoaderPath("/fmtemplates/");
+        bean.setTemplateLoaderPath("classpath:fmtemplates/");
         return bean;
     }
 }
