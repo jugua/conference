@@ -337,7 +337,7 @@ public class TalkControllerTest {
     private User createUser(Role role , UserInfo info){
         Set<Role> roles = new HashSet<>();
         roles.add(role);
-        return new User(1L,"Olya","Ivanova","ivanova@gmail.com", "123456", null, info, roles);
+        return new User(1L,"Olya","Ivanova","ivanova@gmail.com", "123456", null, User.UserStatus.CONFIRMED, info, roles);
     }
 
     private Role createSpeakerRole(){
