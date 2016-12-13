@@ -2,6 +2,7 @@ package ua.rd.cm.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 @Entity
 @SequenceGenerator(name = "seqTokenGen", allocationSize = 1,
         sequenceName = "token_seq")
