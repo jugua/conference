@@ -4,12 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ * @author Olha_Melnyk
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+
 
     @JsonProperty("mail")
     private String email;
@@ -19,21 +25,30 @@ public class UserDto {
 
     @JsonProperty("lname")
     private String lastName;
-
+    @NotNull
     @JsonProperty("bio")
+    @Size( max = 2000)
     private String userInfoShortBio;
 
+    @NotNull
     @JsonProperty("job")
+    @Size( max = 256)
     private String userInfoJobTitle;
 
+    @NotNull
+    @JsonProperty("company")
+    @Size( max = 256)
+    private String userInfoCompany;
+
     @JsonProperty("past")
+    @Size(max = 1000)
     private String userInfoPastConference;
 
     @JsonProperty("photo")
     private String photo;
 
     @JsonProperty("linkedin")
-    private String linkedin;
+    private String linkedIn;
 
     @JsonProperty("twitter")
     private String twitter;
@@ -45,10 +60,9 @@ public class UserDto {
     private String blog;
 
     @JsonProperty("info")
+    @Size(max = 1000)
     private String userInfoAdditionalInfo;
 
-    @JsonProperty("company")
-    private String userInfoCompany;
-
     private String[] roles;
+
 }
