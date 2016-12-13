@@ -78,7 +78,6 @@ public class UserController {
     @PostMapping(value = "/current")
     public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto, Principal principal, BindingResult bindingResult) {
         HttpStatus status;
-        System.out.println(dto.getFirstName());
         if (bindingResult.hasFieldErrors()) {
             status = HttpStatus.BAD_REQUEST;
         } else if (principal == null) {
