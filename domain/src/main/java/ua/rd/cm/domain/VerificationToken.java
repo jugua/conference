@@ -1,20 +1,21 @@
 package ua.rd.cm.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @SequenceGenerator(name = "seqTokenGen", allocationSize = 1,
         sequenceName = "token_seq")
 public class VerificationToken {
 
-    private static final int EXPIRATION = 1;
+    public static final int EXPIRATION_IN_MINUTES = 60;
 
     @Id
     @Column(name = "token_id")
@@ -34,18 +35,6 @@ public class VerificationToken {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TokenType type;
-
-    public VerificationToken(String token, User user, TokenType type) {
-        this.token = token;
-        this.user = user;
-        this.type = type;
-        expiryDate = calculateExpiryDate(EXPIRATION);
-    }
-
-    private LocalDateTime calculateExpiryDate(int expiryTimeInHours){
-        LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
-        return currentTime.plusHours(expiryTimeInHours);
-    }
 
     public enum TokenType {
         CONFIRMATION, FORGOT_PASS, CHANGING_EMAIL
