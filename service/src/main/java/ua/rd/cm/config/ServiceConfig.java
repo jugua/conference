@@ -11,6 +11,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import javax.persistence.EntityManagerFactory;
+import java.util.Properties;
 
 /**
  * @author Yaroslav_Revin
@@ -36,25 +37,25 @@ public class ServiceConfig {
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-//        mailSender.setHost("smtp.gmail.com");
-//        mailSender.setPort(587);
-//        mailSender.setUsername("Your-gmail-id");
-//        mailSender.setPassword("Your-gmail-password");
-//
-//        Properties javaMailProperties = new Properties();
-//        javaMailProperties.put("mail.smtp.starttls.enable", "true");
-//        javaMailProperties.put("mail.smtp.auth", "true");
-//        javaMailProperties.put("mail.transport.protocol", "smtp");
-//        javaMailProperties.put("mail.debug", "true");
-//
-//        mailSender.setJavaMailProperties(javaMailProperties);
+        mailSender.setHost("localhost");
+        mailSender.setPort(1025);
+        mailSender.setUsername("conference_manager");
+        mailSender.setPassword("password");
+
+        Properties javaMailProperties = new Properties();
+        javaMailProperties.put("mail.smtp.starttls.enable", "true");
+        javaMailProperties.put("mail.smtp.auth", "true");
+        javaMailProperties.put("mail.transport.protocol", "smtp");
+        javaMailProperties.put("mail.debug", "true");
+
+        mailSender.setJavaMailProperties(javaMailProperties);
         return mailSender;
     }
 
     @Bean
     public FreeMarkerConfigurationFactoryBean getFreeMarkerConfiguration() {
         FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();
-        bean.setTemplateLoaderPath("/fmtemplates/");
+        bean.setTemplateLoaderPath("classpath:fmtemplates/");
         return bean;
     }
 }

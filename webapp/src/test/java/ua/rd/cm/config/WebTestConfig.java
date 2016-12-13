@@ -44,9 +44,15 @@ public class WebTestConfig {
     public StatusService mockStatusService() {
         return mock(StatusService.class);
     }
-    @Bean
-    public PhotoService mockPhotoService(){
-        return mock(PhotoService.class);
-    }
+
+	@Bean
+	public PhotoService mockPhotoService() {
+		return mock(PhotoService.class);
+	}
+
+	@Bean
+	public MailService mockMailService() {
+		return mock(MailService.class);
+	}
 
 }
