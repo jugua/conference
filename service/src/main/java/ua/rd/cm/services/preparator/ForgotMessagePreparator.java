@@ -1,9 +1,10 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.preparator;
 
 import javax.mail.internet.MimeMessage;
 
 import lombok.NoArgsConstructor;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import ua.rd.cm.services.preparator.CustomMimeMessagePreparator;
 
 @NoArgsConstructor
 public class ForgotMessagePreparator extends CustomMimeMessagePreparator {

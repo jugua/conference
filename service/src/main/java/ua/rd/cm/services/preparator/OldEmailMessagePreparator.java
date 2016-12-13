@@ -1,15 +1,16 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.preparator;
 
 import lombok.NoArgsConstructor;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import ua.rd.cm.services.preparator.CustomMimeMessagePreparator;
 
 import javax.mail.internet.MimeMessage;
 
 @NoArgsConstructor
-public class NewEmailMessagePreparator extends CustomMimeMessagePreparator {
+public class OldEmailMessagePreparator extends CustomMimeMessagePreparator {
     @Override
     public String getTemplateName() {
-        return "new_email_template.ftl";
+        return "old_email_template.ftl";
     }
 
     @Override

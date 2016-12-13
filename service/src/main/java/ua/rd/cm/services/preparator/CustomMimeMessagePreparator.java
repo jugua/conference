@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.preparator;
 
 import java.io.IOException;
 import java.util.Map;

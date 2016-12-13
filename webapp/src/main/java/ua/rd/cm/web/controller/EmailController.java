@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ua.rd.cm.domain.User;
-import ua.rd.cm.services.ForgotMessagePreparator;
+import ua.rd.cm.services.preparator.ForgotMessagePreparator;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.NewPasswordDto;
