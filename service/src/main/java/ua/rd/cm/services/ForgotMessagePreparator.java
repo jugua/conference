@@ -2,13 +2,11 @@ package ua.rd.cm.services;
 
 import javax.mail.internet.MimeMessage;
 
+import lombok.NoArgsConstructor;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-public class ForgotMessagePreparator extends CustomMimeMessagePreparator{
-
-
-
-	public ForgotMessagePreparator() {}
+@NoArgsConstructor
+public class ForgotMessagePreparator extends CustomMimeMessagePreparator {
 
 	@Override
 	public void prepare(MimeMessage mimeMessage) throws Exception {

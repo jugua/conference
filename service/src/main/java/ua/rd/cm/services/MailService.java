@@ -32,5 +32,4 @@ public class MailService {
     		System.out.println("so sad (");
     	}
     }
-    
 }
