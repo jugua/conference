@@ -31,3 +31,5 @@ Examples:
 |testAuto@.ttt        |
 |@auto.ttt            |
 |testAuto@auto.123    |
+
+

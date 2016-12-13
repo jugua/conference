@@ -94,6 +94,7 @@ public class SettingsPage extends AnyPage {
     //name
 
     public void clickEditLinkNextToName() {
+        waitABit(2000);
         nameEditLink.click();
     }
 
@@ -123,8 +124,26 @@ public class SettingsPage extends AnyPage {
         lastNameInput.clear();
     }
 
+    public void setLastName(String lastName) {
+        lastNameInput.clear();
+        lastNameInput.type(lastName);
+    }
+
+    public String getLastNameInputText(){
+        return lastNameInput.getValue();
+    }
+
     public void setFirstNameEmpty(){
         firstNameInput.clear();
+    }
+
+    public void setFirstName(String firstName){
+        firstNameInput.clear();
+        firstNameInput.type(firstName);
+    }
+
+    public String getFirstNameInputText(){
+        return firstNameInput.getValue();
     }
 
     public void clickNameSaveBtn(){

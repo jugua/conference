@@ -3,6 +3,7 @@ package com.epam.cm.steps.serenity;
 import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.pages.SettingsPage;
 import net.thucydides.core.annotations.Step;
+import org.yecht.Data;
 
 /**
  * Created by Lev_Serba on 12/12/2016.
@@ -17,6 +18,7 @@ public class SettingsPageSteps {
 
     @Step
     public void clickEditLinkNextToName(){
+
         settingsPage.clickEditLinkNextToName();
     }
 
@@ -83,8 +85,18 @@ public class SettingsPageSteps {
     }
 
     @Step
+    public void typeFirstName(SettingsDTO settingsDTO){
+        settingsPage.setFirstName(settingsDTO.getFirstName());
+    }
+
+    @Step
     public void leaveLastNameInputEmpty(){
         settingsPage.setLastNameEmpty();
+    }
+
+    @Step
+    public void typeLastName(SettingsDTO settingsDTO){
+        settingsPage.setLastName(settingsDTO.getLastName());
     }
 
     @Step
@@ -100,6 +112,16 @@ public class SettingsPageSteps {
     @Step
     public String getNameErrorMsg(){
         return settingsPage.getNameErrorMsg();
+    }
+
+    @Step
+    public String getLastNameInput(){
+        return settingsPage.getLastNameInputText();
+    }
+
+    @Step
+    public String getFirstNameInput(){
+        return settingsPage.getFirstNameInputText();
     }
 
 }
