@@ -3,6 +3,7 @@ package ua.rd.cm.web.controller;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MockMvcBuilder;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.services.UserService;
@@ -31,6 +33,7 @@ import java.io.*;
 import java.util.*;
 
 import static org.mockito.Mockito.spy;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,6 +78,19 @@ public class PhotoControllerTest {
         return photoDto;
     }
 
+    private MockMultipartFile setupCorrectMultipartFile(){
+        try {
+            File file= new File("src/test/resources/trybel_master.JPG");
+            System.out.println(file.getAbsolutePath());
+            FileInputStream fileInputStream=new FileInputStream(file);
+            MockMultipartFile mockFile=new MockMultipartFile("trybel_master",fileInputStream);
+            System.out.println("Mock="+mockFile.getName());
+            return mockFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 //    @Test
 //    public void correctPhoto() throws Exception {
 ////        Role speaker = createSpeakerRole();
@@ -89,7 +105,15 @@ public class PhotoControllerTest {
 //    public void addCorrectPhoto(){
 //
 
+    @Test
+    public void correctUploadPhoto() throws Exception {
+        mockMvc.perform(fileUpload(API_PHOTO)
+                .file(setupCorrectMultipartFile())
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isOk());
+    }
 
+    @Ignore
     @Test
     public void nullPhoto(){
         correctPhotoDto.setFile(null);
@@ -99,14 +123,12 @@ public class PhotoControllerTest {
         try {
             System.out.println("dto="+dto);
             if (method == RequestMethod.POST) {
-                mockMvc.perform(post(uri)
-                        //.contentType(MediaType.APPLICATION_JSON_UTF8)
-                        //.content(dto.getFile().getBytes())
+                mockMvc.perform(fileUpload(uri)
+                        .file((MockMultipartFile) dto.getFile())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
                 ).andExpect(status().isBadRequest());
             }
         } catch (Exception e) {
-            System.out.println("EXCEPTION");
-            //mockMvc.perform()
             e.printStackTrace();
         }
     }
