@@ -1,18 +1,16 @@
 package com.epam.cm.fragments;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.epam.cm.dto.AccountButtonDTO;
-
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.pages.WidgetObjectImpl;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -70,7 +68,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     private WebElementFacade settingsOption;
 
     public AccountMenuFragmentImpl(PageObject page, ElementLocator locator, WebElement webElement,
-            long timeoutInMilliseconds) {
+                                   long timeoutInMilliseconds) {
         super(page, locator, webElement, timeoutInMilliseconds);
     }
 
@@ -239,7 +237,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
         return find(By.xpath("//*[@id='sign-in-email']/following-sibling::span[1]")).getText();
     }
 
-    public void clickSettingsOption(){
-        settingsOption.withTimeoutOf(5,SECONDS).waitUntilClickable().click();
+    public void clickSettingsOption() {
+        settingsOption.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 }
