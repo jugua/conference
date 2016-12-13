@@ -38,7 +38,6 @@ public class AcceptanceTestSuite extends SerenityStories {
             LOG.error("Error instantiating ProjectProperties", e);
         }
 
-
         bindWebdriverPath();
         // setDriverAccordingToOS();
         selectStoryFilesForRunningSuite();

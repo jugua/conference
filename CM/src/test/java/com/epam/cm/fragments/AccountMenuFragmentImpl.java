@@ -93,6 +93,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//forgot-password//form/span[2]")
     private WebElementFacade invalidEmailMsg;
 
+    @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/account']")
+    private WebElementFacade settingsOption;
+
+
     public void clickMyTalksBtn(){
         myTalksBtn.click();
     }
@@ -251,5 +255,9 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
     public String getLoginErrorMsgTxt() {
         return find(By.xpath("//*[@id='sign-in-email']/following-sibling::span[1]")).getText();
+    }
+
+    public void clickSettingsOption(){
+        settingsOption.withTimeoutOf(5,SECONDS).waitUntilClickable().click();
     }
 }

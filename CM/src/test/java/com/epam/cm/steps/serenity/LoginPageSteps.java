@@ -152,4 +152,11 @@ public class LoginPageSteps extends ScenarioSteps {
         }
         return homePage.getMenu().checkSignOutBtnIsLastItem();
     }
+
+    @Step
+    public void clickSettingsOption() {
+        homePage.waitForPageToLoad();
+        homePage.getMenu().clickAccountMenuButton();
+        homePage.getMenu().clickSettingsOption();
+    }
 }

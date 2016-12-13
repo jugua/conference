@@ -35,6 +35,8 @@ public interface AccountMenuFragment extends WidgetObject {
 
     void setEmailForgotPwFieldField(String email);
 
+    void clickSettingsOption();
+
     boolean isAccountMenuUnfolded();
 
     boolean isSignOutBtnExist();
