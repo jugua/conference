@@ -1,251 +1,340 @@
 package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.WebApplicationContext;
+import ua.rd.cm.config.SecurityConfig;
+import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.*;
+import ua.rd.cm.domain.User;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
+import javax.servlet.Filter;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-public class TalkControllerTest {
-    public static final String API_TALK = "/api/talk";
-    private MockMvc mockMvc;
-    private TalkDto correctTalkDto;
+public class TalkControllerTest{
+    private static final String API_TALK = "/api/talk";
+    private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
+    private static final String ORGANISER_EMAIL = "trybel@gmail.com";
+
+    @Autowired
+    private WebApplicationContext context;
+    @Autowired
+    private Filter springSecurityFilterChain;
 
     @Autowired
     private TalkService talkService;
-
     @Autowired
     private TalkController talkController;
-
     @Autowired
     private UserInfoService userInfoService;
-
     @Autowired
     private UserService userService;
 
+    private MockMvc mockMvc;
+
+    private User speakerUser;
+    private User organiserUser;
     private UserInfo userInfo;
-    private Role role;
-    private User user;
+    private TalkDto correctTalkDto;
 
     @Before
     public void setUp() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(talkController).build();
         correctTalkDto = setupCorrectTalkDto();
-        userInfo = createUserInfo();
-        role = createSpeakerRole();
-        user = createUser(role, userInfo);
-        mockServices(user, userInfo);
-    }
 
-    private void mockServices(User user, UserInfo userInfo) {
-        when(userService.getByEmail(user.getEmail())).thenReturn(user);
+        userInfo = new UserInfo(1L, "bio", "job", "pastConference", "EPAM", null, "addInfo");
+
+        Set<Role> speakerRole = new HashSet<>();
+        speakerRole.add(new Role(2L, Role.SPEAKER));
+        speakerUser = new User(1L,"Olya","Ivanova",
+                "ivanova@gmail.com", "123456",
+                null, userInfo, speakerRole);
+
+        Set<Role> organiserRole = new HashSet<>();
+        organiserRole.add(new Role(1L, Role.ORGANISER));
+        organiserUser = new User(1L,"Artem","Trybel",
+                "trybel@gmail.com", "123456",
+                null, userInfo, organiserRole);
+
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .addFilter(springSecurityFilterChain)
+                .apply(springSecurity())
+                .build();
+        when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speakerUser);
+        when(userService.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organiserUser);
         when(userInfoService.find(anyLong())).thenReturn(userInfo);
     }
 
     @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
     public void correctSubmitNewTalkTest() throws Exception{
-        Principal correctPrincipal = () -> user.getEmail();
-        mockMvc.perform(post(API_TALK)
-                .principal(correctPrincipal)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctTalkDto))
-        ).andExpect(status().isOk());
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isOk());
     }
 
     @Test
-    public void emptyCompanyMyInfoSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyCompanyMyInfoSubmitNewTalkTest() throws Exception{
         userInfo.setCompany("");
-        Principal correctPrincipal = () -> user.getEmail();
-        checkForForbidden(API_TALK, correctPrincipal);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    public void emptyJobMyInfoSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyJobMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setJobTitle("");
-        Principal correctPrincipal = () -> user.getEmail();
-        checkForForbidden(API_TALK, correctPrincipal);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isForbidden());
     }
 
     @Test
-    public void emptyBioMyInfoSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyBioMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setShortBio("");
-        Principal correctPrincipal = () -> user.getEmail();
-        checkForForbidden(API_TALK, correctPrincipal);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isForbidden());
     }
 
     @Test
     public void nullPrincipleSubmitNewTalkTest() throws Exception {
-        UserInfo userInfo = createUserInfo();
-        Role role = createSpeakerRole();
-        User user = createUser(role, userInfo);
-
-        mockServices(user, userInfo);
-
-        mockMvc.perform(post(API_TALK)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctTalkDto))
-        ).andExpect(status().isUnauthorized());
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void nullTitleSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void nullTitleSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTitle(null);
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void emptyTitleSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyTitleSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTitle("");
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void tooLongTitleSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void tooLongTitleSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTitle(createStringWithLength(251));
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void nullDescriptionSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void nullDescriptionSubmitNewTalkTest() throws Exception{
         correctTalkDto.setDescription(null);
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void emptyDescriptionSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyDescriptionSubmitNewTalkTest() throws Exception{
         correctTalkDto.setDescription("");
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void tooLongDescriptionSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void tooLongDescriptionSubmitNewTalkTest() throws Exception{
         correctTalkDto.setDescription(createStringWithLength(3001));
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void nullTopicSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void nullTopicSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTopicName(null);
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void emptyTopicSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyTopicSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTopicName("");
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void tooLongTopicSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void tooLongTopicSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTopicName(createStringWithLength(256));
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void nullTypeSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void nullTypeSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTypeName(null);
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void emptyTypeSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyTypeSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTypeName("");
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void tooLongTypeSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void tooLongTypeSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTypeName(createStringWithLength(256));
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void nullLanguageSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void nullLanguageSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLanguageName(null);
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void emptyLanguageSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyLanguageSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLanguageName("");
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void tooLongLanguageSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void tooLongLanguageSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLanguageName(createStringWithLength(256));
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void nullLevelSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void nullLevelSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLevelName(null);
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void emptyLevelSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void emptyLevelSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLevelName("");
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void tooLongLevelSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void tooLongLevelSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLevelName(createStringWithLength(256));
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void tooLongAddInfoSubmitNewTalkTest() {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void tooLongAddInfoSubmitNewTalkTest() throws Exception{
         correctTalkDto.setAdditionalInfo(createStringWithLength(1501));
-        checkForBadRequest(API_TALK, RequestMethod.POST);
+
+        mockMvc.perform(preparePostRequest(API_TALK))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
     public void correctGetMyTalksTest() throws Exception {
-        Principal correctPrincipal = () -> user.getEmail();
-        Talk talk = createTalk();
+        Talk talk = createTalk(speakerUser);
         List talks = new ArrayList() {{
             add(talk);
         }};
         when(talkService.findByUserId(anyLong())).thenReturn(talks);
-        mockMvc.perform(get(API_TALK)
-                .principal(correctPrincipal)
-        ).andExpect(status().isOk())
+
+        mockMvc.perform(prepareGetRequest(API_TALK))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title", is(talk.getTitle())))
                 .andExpect(jsonPath("$[0].description", is(talk.getDescription())))
@@ -256,18 +345,31 @@ public class TalkControllerTest {
                 .andExpect(jsonPath("$[0].addon", is(talk.getAdditionalInfo())))
                 .andExpect(jsonPath("$[0].status", is(talk.getStatus().getName())));
     }
+
     @Test
     public void incorrectGetMyTalksTest() throws Exception {
-        Talk talk = createTalk();
+        Talk talk = createTalk(speakerUser);
         List talks = new ArrayList() {{
             add(talk);
         }};
         when(talkService.findByUserId(anyLong())).thenReturn(talks);
-        mockMvc.perform(get(API_TALK)
-        ).andExpect(status().isUnauthorized());
+
+        mockMvc.perform(prepareGetRequest(API_TALK)).andExpect(status().isUnauthorized());
     }
 
-    private Talk createTalk() {
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
+        return MockMvcRequestBuilders.get(uri)
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
+    }
+
+    private MockHttpServletRequestBuilder preparePostRequest(String uri) throws JsonProcessingException{
+
+        return MockMvcRequestBuilders.post(uri)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(convertObjectToJsonBytes(correctTalkDto));
+    }
+
+    private Talk createTalk(User user) {
         Status status = new Status(1L, "New");
         Topic topic = new Topic(1L, "Topic");
         Type type = new Type(1L, "Type");
@@ -290,61 +392,19 @@ public class TalkControllerTest {
         return correctTalkDto;
     }
 
-    private void checkForBadRequest(String uri, RequestMethod method) {
-        try {
-            if (method == RequestMethod.GET) {
-                mockMvc.perform(get(uri)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(correctTalkDto))
-                ).andExpect(status().isBadRequest());
-            } else if (method == RequestMethod.POST) {
-                mockMvc.perform(post(uri)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(correctTalkDto))
-                ).andExpect(status().isBadRequest());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void checkForForbidden(String uri, Principal principal) {
-        try {
-            mockMvc.perform(post(uri)
-                    .principal(principal)
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(convertObjectToJsonBytes(correctTalkDto))
-            ).andExpect(status().isForbidden());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private byte[] convertObjectToJsonBytes(Object object) throws Exception {
+    private byte[] convertObjectToJsonBytes(Object object) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsBytes(object);
     }
 
     private String createStringWithLength(int length) {
-        StringBuilder builder = new StringBuilder();
-        for (int index = 0; index < length; index++) {
-            builder.append("a");
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++){
+            stringBuilder.append('x');
         }
-        return builder.toString();
-    }
-
-    private User createUser(Role role , UserInfo info){
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        return new User(1L,"Olya","Ivanova","ivanova@gmail.com", "123456", null, info, roles);
-    }
-
-    private Role createSpeakerRole(){
-        return new Role(1L, "SPEAKER");
-    }
-
-    private UserInfo createUserInfo(){
-       return new UserInfo(1L, "bio", "job", "pastConference", "EPAM", null, "addInfo");
+        return stringBuilder.toString();
     }
 }
+
+
