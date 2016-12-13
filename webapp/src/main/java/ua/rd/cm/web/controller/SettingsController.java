@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.preparator.ChangePasswordPreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.SettingsDto;
 
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Olha_Melnyk
@@ -27,12 +31,14 @@ import java.security.Principal;
 public class SettingsController {
     private ObjectMapper mapper;
     private UserService userService;
+    private MailService mailService;
     private Logger logger = Logger.getLogger(SettingsController.class);
 
     @Autowired
-    public SettingsController(ObjectMapper mapper, UserService userService) {
+    public SettingsController(ObjectMapper mapper, UserService userService, MailService mailService) {
         this.mapper = mapper;
         this.userService = userService;
+        this.mailService = mailService;
     }
 
     @PostMapping("/password")
@@ -66,6 +72,11 @@ public class SettingsController {
         }
         user.setPassword(dto.getNewPassword());
         userService.updateUserProfile(user);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("name", userService.getByEmail(principal.getName()).getFirstName());
+        model.put("email", principal.getName());
+        mailService.sendEmail(new ChangePasswordPreparator(), model);
         return new ResponseEntity(HttpStatus.OK);
     }
 
