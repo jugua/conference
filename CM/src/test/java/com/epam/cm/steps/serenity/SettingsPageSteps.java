@@ -1,5 +1,6 @@
 package com.epam.cm.steps.serenity;
 
+import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.pages.SettingsPage;
 import net.thucydides.core.annotations.Step;
 
@@ -22,5 +23,24 @@ public class SettingsPageSteps {
             return true;
         }
         return false;
+    }
+
+    @Step
+    public void typeEmail(SettingsDTO settingsDTO){
+        settingsPage.typeEmail(settingsDTO.getEmail());
+    }
+
+    @Step
+    public void clickSaveBtn() {
+        settingsPage.clickSaveBtn();
+    }
+
+    @Step
+    public boolean isErrorMsgShown(String errorMsg) {
+        if(settingsPage.getErrorMsg().equals(errorMsg)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
