@@ -18,6 +18,12 @@ public class TalkDto {
 	@Size(min = 1, max = 250)
 	@JsonProperty("title")
 	private String title;
+
+	@JsonProperty("speaker_id")
+	private Long speakerId;
+
+	@JsonProperty("name")
+	private String speakerFullName;
 	
 	@NotNull
 	@Size(min = 1, max = 3000)
