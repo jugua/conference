@@ -20,7 +20,7 @@ public class TalkDto {
 	private String title;
 
 	@JsonProperty("speaker_id")
-	private Long speakerId;
+	private Long userId;
 
 	@JsonProperty("name")
 	private String speakerFullName;
