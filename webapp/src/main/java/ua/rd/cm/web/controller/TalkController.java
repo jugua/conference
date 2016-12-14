@@ -4,17 +4,20 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.rd.cm.domain.*;
+import ua.rd.cm.domain.Talk;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.*;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,20 +50,17 @@ public class TalkController {
 		this.levelService = levelService;
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping
-	public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto, Principal principal, BindingResult bindingResult) {
+	public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto, BindingResult bindingResult, HttpServletRequest request) {
 		MessageDto messageDto = new MessageDto();
 		HttpStatus httpStatus;
-
-		if(principal == null) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		}
 
 		if (bindingResult.hasFieldErrors()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
 		}
 
-		User currentUser = userService.getByEmail(principal.getName());
+		User currentUser = userService.getByEmail(request.getRemoteUser());
 
 		if (!checkForFilledUserInfo(currentUser)) {
 			httpStatus = HttpStatus.FORBIDDEN;
@@ -71,14 +71,33 @@ public class TalkController {
 		return ResponseEntity.status(httpStatus).body(messageDto);
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping
-	public ResponseEntity<List<TalkDto>> getTalks(Principal principal) {
-		if(principal == null) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+	public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
+		List<TalkDto> userTalkDtoList;
+		
+		if(request.isUserInRole("ORGANISER")){
+			userTalkDtoList = getTalksForOrganiser();
+		}else {
+			userTalkDtoList = getTalksForSpeaker(request.getRemoteUser());
 		}
-		String userEmail = principal.getName();
-		List<TalkDto> userTalkDtoList = prepareTalkDtos(userEmail);
 		return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
+	}
+
+	private List<TalkDto> getTalksForSpeaker(String userEmail){
+		User currentUser = userService.getByEmail(userEmail);
+
+		return talkService.findByUserId(currentUser.getId())
+				.stream()
+				.map(this::entityToDto)
+				.collect(Collectors.toList());
+	}
+
+	private List<TalkDto> getTalksForOrganiser(){
+		return talkService.findAll()
+				.stream()
+				.map(this::entityToDto)
+				.collect(Collectors.toList());
 	}
 
 	private void saveNewTalk(TalkDto dto, User currentUser) {
@@ -86,15 +105,6 @@ public class TalkController {
 		Talk currentTalk = dtoToEntity(dto);
 		currentTalk.setUser(currentUser);
 		talkService.save(currentTalk);
-	}
-
-	private List<TalkDto> prepareTalkDtos(String userEmail) {
-		User currentUser = userService.getByEmail(userEmail);
-
-		return talkService.findByUserId(currentUser.getId())
-								.stream()
-								.map((talk) -> entityToDto(talk))
-								.collect(Collectors.toList());
 	}
 
 	private TalkDto entityToDto(Talk talk) {
@@ -116,11 +126,8 @@ public class TalkController {
 
 	private boolean checkForFilledUserInfo(User currentUser) {
 		UserInfo currentUserInfo = currentUser.getUserInfo();
-		if (currentUserInfo.getShortBio().isEmpty() ||
+		return !(currentUserInfo.getShortBio().isEmpty() ||
 				currentUserInfo.getJobTitle().isEmpty() ||
-				currentUserInfo.getCompany().isEmpty()) {
-			return false;
-		}
-		return true;
+				currentUserInfo.getCompany().isEmpty());
 	}
 }

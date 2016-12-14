@@ -4,20 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -26,31 +17,27 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ua.rd.cm.config.SecurityConfig;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.*;
-import ua.rd.cm.domain.User;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.Filter;
-import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -94,13 +81,13 @@ public class TalkControllerTest{
         speakerRole.add(new Role(2L, Role.SPEAKER));
         speakerUser = new User(1L,"Olya","Ivanova",
                 "ivanova@gmail.com", "123456",
-                null, userInfo, speakerRole);
+                null, User.UserStatus.CONFIRMED, userInfo, speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
         organiserUser = new User(1L,"Artem","Trybel",
                 "trybel@gmail.com", "123456",
-                null, userInfo, organiserRole);
+                null, User.UserStatus.CONFIRMED, userInfo, organiserRole);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -328,9 +315,9 @@ public class TalkControllerTest{
     @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
     public void correctGetMyTalksTest() throws Exception {
         Talk talk = createTalk(speakerUser);
-        List talks = new ArrayList() {{
-            add(talk);
-        }};
+        List<Talk> talks = new ArrayList<>();
+        talks.add(talk);
+
         when(talkService.findByUserId(anyLong())).thenReturn(talks);
 
         mockMvc.perform(prepareGetRequest(API_TALK))
@@ -349,12 +336,27 @@ public class TalkControllerTest{
     @Test
     public void incorrectGetMyTalksTest() throws Exception {
         Talk talk = createTalk(speakerUser);
-        List talks = new ArrayList() {{
-            add(talk);
-        }};
+        List<Talk> talks = new ArrayList<>();
+        talks.add(talk);
+
         when(talkService.findByUserId(anyLong())).thenReturn(talks);
 
         mockMvc.perform(prepareGetRequest(API_TALK)).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = "ORGANISER")
+    public void checkCallToPrepareOrganiserTalkMethod() throws Exception{
+        Talk talk = createTalk(speakerUser);
+        List talks = new ArrayList() {{
+            add(talk);
+            add(talk);
+        }};
+        when(talkService.findAll()).thenReturn(talks);
+
+        mockMvc.perform(prepareGetRequest(API_TALK))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
