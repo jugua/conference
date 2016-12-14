@@ -38,7 +38,15 @@ public class VerificationToken {
     @Column(nullable = false)
     private TokenType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TokenStatus status;
+
     public enum TokenType {
         CONFIRMATION, FORGOT_PASS, CHANGING_EMAIL
+    }
+
+    public enum TokenStatus {
+        VALID, EXPIRED
     }
 }

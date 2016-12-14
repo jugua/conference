@@ -44,7 +44,7 @@ public class VerificationTokenServiceTest {
         tokenService = new VerificationTokenService(tokenRepository);
         testedToken = createTokenUsingService();
         verificationToken = new VerificationToken(1L, "TOKEN", new User(),
-                LocalDateTime.now(ZoneId.systemDefault()), VerificationToken.TokenType.CONFIRMATION);
+                LocalDateTime.now(ZoneId.systemDefault()), VerificationToken.TokenType.CONFIRMATION, VerificationToken.TokenStatus.VALID);
     }
 
     @Test
@@ -69,8 +69,14 @@ public class VerificationTokenServiceTest {
     }
 
     @Test
-    public void testExpiredTokenIsTokenExpired() {
+    public void testExpiredByDateTokenIsTokenExpired() {
         verificationToken.setExpiryDate(createExpiredDate(1));
+        assertTrue(tokenService.isTokenExpired(verificationToken));
+    }
+    
+    @Test
+    public void testExpiredTokenIsTokenExpired() {
+        verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
         assertTrue(tokenService.isTokenExpired(verificationToken));
     }
 
