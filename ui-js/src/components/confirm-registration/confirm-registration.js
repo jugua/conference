@@ -5,7 +5,7 @@ export default (app) => {
   app.config(($stateProvider) => {
     $stateProvider
       .state('header.confirmRegistration', {
-        url: '/confirm-registration/:token',
+        url: '/confirmRegistration/:token',
         controller: confirmRegistrationControler
       });
   }).service('confirmRegistrationService', confirmRegistrationService);
