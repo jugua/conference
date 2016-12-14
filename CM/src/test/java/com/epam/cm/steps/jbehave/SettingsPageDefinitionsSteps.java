@@ -4,7 +4,9 @@ import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
 import com.epam.cm.steps.serenity.SettingsPageSteps;
+
 import net.thucydides.core.annotations.Steps;
+
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -13,6 +15,7 @@ import org.junit.Assert;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 /**
  * Created by Lev_Serba on 12/12/2016.
@@ -38,7 +41,6 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.clickEditLinkNextToEmail();
     }
 
-
     @When("type incorrect values in New email field: $examplesTable")
     public void typeIncorrectEmail(ExamplesTable table) {
         boolean replaceNamedParameters = true;
@@ -50,7 +52,6 @@ public class SettingsPageDefinitionsSteps {
         };
         settingsSteps.typeEmail(settingsDTO);
     }
-
 
     @When("user click on the Edit link next to Name")
     public void clickEditLinkNextToName() {
@@ -101,6 +102,11 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.clickEmailSaveBtn();
     }
 
+    @When("clicks Name's field Cancel button")
+    public void clickNameCancelBtn() {
+        settingsSteps.clickNameCancelBtn();
+    }
+
     @Then("Current Email and New Email fields are visible")
     public void areCurrentEmailAndNewEmailFieldsVisible() {
         Assert.assertTrue(settingsSteps.areCurrentEmailAndNewEmailFieldsVisible());
@@ -110,7 +116,6 @@ public class SettingsPageDefinitionsSteps {
     public void userSeeWarningMassage(String errorMsg) {
         Assert.assertTrue(settingsSteps.isErrorMsgShown(errorMsg));
     }
-
 
     @Then("'Name' field has following elements: '$firstName', '$lastName' fields 'Save' and 'Cancel' buttons")
     public void checkNameFieldElements(String firstName, String lastName) {
@@ -134,6 +139,7 @@ public class SettingsPageDefinitionsSteps {
         Assert.assertTrue(settingsSteps.isLastNameHighlighted());
         Assert.assertThat(msg, is(settingsSteps.getNameErrorMsg()));
     }
+
     @Then("user click on the Edit link next to Name")
     public void clickThenEditLinkNextToName() {
         settingsSteps.clickEditLinkNextToName();
@@ -168,7 +174,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Then("menu Title is replaced by new name: $exampleTable")
-    public void titleIsReplaced(ExamplesTable table){
+    public void titleIsReplaced(ExamplesTable table) {
         boolean replaceNamedParameters = true;
         String firstName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
         SettingsDTO settingsDTO = new SettingsDTO() {
@@ -180,7 +186,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Then("user can`t enter/type more than the maximum allowed characters in last name field: $actTable")
-    public void thenLastNameIsNotChanged(ExamplesTable table){
+    public void thenLastNameIsNotChanged(ExamplesTable table) {
         boolean replaceNamedParameters = true;
         String lastName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
         SettingsDTO settingsDTO = new SettingsDTO() {
@@ -193,7 +199,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Then("user can`t enter/type more than the maximum allowed characters in first name field: $actTable")
-    public void thenFirstNameIsNotChanged(ExamplesTable table){
+    public void thenFirstNameIsNotChanged(ExamplesTable table) {
         boolean replaceNamedParameters = true;
         String firstName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
         SettingsDTO settingsDTO = new SettingsDTO() {
@@ -203,5 +209,22 @@ public class SettingsPageDefinitionsSteps {
         };
 
         Assert.assertTrue(settingsSteps.userCantTypeMoreThenMaxFirstName(settingsDTO));
+    }
+
+    @Then("Changes are not saved and user can see his/her old name in the Name row: $actTbl")
+    public void isDataUnsaved(ExamplesTable table) {
+        boolean replaceNamedParameters = true;
+        String lastName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
+        String firstName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
+        SettingsDTO settingsDTO = new SettingsDTO() {
+            {
+                setFirstName(firstName);
+                setLastName(lastName);
+            }
+        };
+
+        Assert.assertThat(settingsDTO.getLastName(), is(not(settingsSteps.getLastNameInput())));
+        Assert.assertThat(settingsDTO.getFirstName(), is(not(settingsSteps.getFirstNameInput())));
+
     }
 }

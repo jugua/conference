@@ -43,7 +43,7 @@ public class SettingsPage extends AnyPage {
     @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[1]")
     private WebElementFacade saveBtn;
     @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[2]")
-    private WebElementFacade cancelBtn;
+    private WebElementFacade cancelNameBtn;
     @FindBy(xpath = "//*[@class='edit-password']/span")
     private WebElementFacade namesErrorMsg;
 
@@ -98,6 +98,10 @@ public class SettingsPage extends AnyPage {
         nameEditLink.click();
     }
 
+    public void clickNamesCancelBtn(){
+        cancelNameBtn.click();
+    }
+
     public boolean checkSaveBtn() {
         waitFor(firstNameInput);
         if (saveBtn.isVisible())
@@ -107,7 +111,7 @@ public class SettingsPage extends AnyPage {
 
     public boolean checkCancelBtn() {
         waitFor(lastNameInput);
-        if (cancelBtn.isVisible())
+        if (cancelNameBtn.isVisible())
             return true;
         return false;
     }

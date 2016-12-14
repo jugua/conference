@@ -80,6 +80,11 @@ public class SettingsPageSteps {
     }
 
     @Step
+    public void clickNameCancelBtn(){
+        settingsPage.clickNamesCancelBtn();
+    }
+
+    @Step
     public void leaveFirstNameInputEmpty() {
         settingsPage.setFirstNameEmpty();
     }
