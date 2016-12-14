@@ -13,7 +13,7 @@ export default class ConfirmRegistrationController {
     this.confirmService.confirmRegistration(this.token)
       .then(
         () => {
-          this.state.go('header', {}, { reload: true });
+          this.state.go('header.home', {}, { reload: true });
         },
         () => {
           this.state.go('header.invalidLink', {}, { reload: true });
