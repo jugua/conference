@@ -71,7 +71,7 @@ UPDATE language_seq SET next_val = 4 WHERE next_val = 3;
 INSERT INTO user_info VALUES (1, "Additional info", "EPAM", "Jun", "Past conference", "Short bio");
 UPDATE user_info_seq SET next_val = 2 WHERE next_val = 1;
 
-INSERT INTO `user`  (user_id, email, first_name, last_name, password, user_info_id) VALUES (1, "speaker@speaker.com", "Master", "Trybel", "speaker", 1);
+INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (1, "speaker@speaker.com", "Master", "Trybel", "CONFIRMED","speaker", 1);
 UPDATE user_seq SET next_val = 2 WHERE next_val = 1;
 INSERT INTO user_role VALUES (1, 1);
 
@@ -90,7 +90,7 @@ INSERT INTO user_info (user_info_id, company, job_title, short_bio) VALUES (2, "
 UPDATE user_info_seq SET next_val = 3 WHERE next_val = 2;
 
 
-INSERT INTO `user`  (user_id, email, first_name, last_name, password, user_info_id) VALUES (2, "user@gmail.com", "User", "User", "password", 2);
+INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (2, "user@gmail.com", "User", "User", "UNCONFIRMED", "password", 2);
 UPDATE user_seq SET next_val = 3 WHERE next_val = 2;
 INSERT INTO user_role VALUES (2, 1);
 
@@ -102,6 +102,6 @@ INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (3, 
 UPDATE user_info_seq SET next_val = 4 WHERE next_val = 3;
 
 
-INSERT INTO `user`  (user_id, email, first_name, last_name, password, user_info_id) VALUES (3, "organiser@gmail.com", "Organiser", "Organiser", "organiser", 3);
+INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (3, "organiser@gmail.com", "Organiser", "Organiser", "CONFIRMED","organiser", 3);
 UPDATE user_seq SET next_val = 4 WHERE next_val = 3;
 INSERT INTO user_role VALUES (3, 2);
