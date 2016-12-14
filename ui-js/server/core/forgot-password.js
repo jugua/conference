@@ -13,9 +13,9 @@ function forgotPassword(req, res) {
   },
     (err, user) => {
       if (user) {
-        res.status(200).json({result: 'new_password_sent'});
+        res.status(200).json({ result: 'new_password_sent' });
       } else {
-        res.status(404).send({error: 'email_not_found'});
+        res.status(404).send({ error: 'email_not_found' });
       }
     });
 }

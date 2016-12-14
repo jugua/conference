@@ -3,11 +3,11 @@ import controller from './edit-email.controller';
 
 const editEmailComponent = {
   bindings: {
-
+    editing: '=',
+    user: '='
   },
   template,
-  controller,
-  controllerAs: 'editEmailCtrl'
+  controller
 };
 
 export default editEmailComponent;
