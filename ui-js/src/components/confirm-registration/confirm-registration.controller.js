@@ -1,8 +1,9 @@
 export default class ConfirmRegistrationController {
-  constructor($state, confirmRegistrationService, $stateParams) {
+  constructor($state, $stateParams, confirmRegistrationService, Current) {
     'ngInject';
 
     this.state = $state;
+    this.currentService = Current;
     this.token = $stateParams.token;
     this.confirmService = confirmRegistrationService;
 
@@ -13,6 +14,7 @@ export default class ConfirmRegistrationController {
     this.confirmService.confirmRegistration(this.token)
       .then(
         () => {
+          this.currentService.getInfo();
           this.state.go('header.home', {}, { reload: true });
         },
         () => {
