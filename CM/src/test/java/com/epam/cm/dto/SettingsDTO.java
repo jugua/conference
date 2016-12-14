@@ -4,9 +4,19 @@ package com.epam.cm.dto;
  * Created by Lev_Serba on 12/13/2016.
  */
 public class SettingsDTO {
-    private String email;
+
+    private String oldEmail;
+    private String newEmail;
     private String firstName;
     private String lastName;
+
+    public String getOldEmail() {
+        return oldEmail;
+    }
+
+    public void setOldEmail(String oldEmail) {
+        this.oldEmail = oldEmail;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -24,15 +34,12 @@ public class SettingsDTO {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNewEmail() {
+        return newEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setNewEmail(String newEmail) {
+        this.newEmail = newEmail;
     }
-
-
-
 
 }

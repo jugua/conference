@@ -26,9 +26,14 @@ public class SettingsPageDefinitionsSteps {
     @Steps
     LoginPageSteps loginPageSteps;
 
+    SettingsDTO settingsDTO;
+    CredentialsDTO user;
+
     @Given("user on the settings page logged as speaker: $examplesTable")
-    public void goToSettingsPageAsSpeaker(ExamplesTable table) {
-        CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
+
+        public void goToSettingsPageAsSpeaker(ExamplesTable table){
+        user = table.getRowsAs(CredentialsDTO.class).get(0);
+
         loginPageSteps.unsignedUserInHomePage();
         loginPageSteps.clickOnAccountMenu();
         loginPageSteps.typeLoginAndPassword(user);
@@ -37,20 +42,29 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @When("user click on the Edit link next to Email")
+
+    public void clickEditLinkNextToEmail(){
+        settingsSteps.clickEditLinkNextToEmail();
+    }
+
+
+    @When("type email in New email field: $examplesTable")
+    public void typeEmail(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("newEmail", String.class);
+        settingsDTO = new SettingsDTO(){
+
     public void clickEdtLinkNextToEmail() {
         settingsSteps.clickEditLinkNextToEmail();
     }
 
-    @When("type incorrect values in New email field: $examplesTable")
-    public void typeIncorrectEmail(ExamplesTable table) {
-        boolean replaceNamedParameters = true;
-        String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("wrongEmail", String.class);
-        SettingsDTO settingsDTO = new SettingsDTO() {
+
             {
-                setEmail(email);
+                setOldEmail(user.getEmail());
+                setNewEmail(email);
             }
         };
-        settingsSteps.typeEmail(settingsDTO);
+        settingsSteps.typeEmail(settingsDTO.getNewEmail());
     }
 
     @When("user click on the Edit link next to Name")
@@ -226,5 +240,13 @@ public class SettingsPageDefinitionsSteps {
         Assert.assertThat(settingsDTO.getLastName(), is(not(settingsSteps.getLastNameInput())));
         Assert.assertThat(settingsDTO.getFirstName(), is(not(settingsSteps.getFirstNameInput())));
 
+    }
+
+    @Then("email has been changed")
+    public void emailHasBeenChanged(){
+       Assert.assertTrue(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
+       clickEditLinkNextToEmail();
+       settingsSteps.typeEmail(settingsDTO.getOldEmail());
+       clickEmailSaveBtn();
     }
 }

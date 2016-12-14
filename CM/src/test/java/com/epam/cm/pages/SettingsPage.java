@@ -84,6 +84,7 @@ public class SettingsPage extends AnyPage {
     public void clickEmailSaveBtn() {
         waitABit(4000);
         emailSaveBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
+        waitABit(4000);
     }
 
     public String getErrorMsg() {
@@ -176,4 +177,9 @@ public class SettingsPage extends AnyPage {
         return namesErrorMsg.getText();
     }
 
+    public String getCurrentEmailText() {
+        String currentEmailText = currentEmailInput.withTimeoutOf(5,SECONDS).waitUntilVisible().getValue();
+        System.out.println("bvb");
+        return currentEmailText;
+    }
 }

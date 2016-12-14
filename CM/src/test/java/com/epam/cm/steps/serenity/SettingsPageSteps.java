@@ -33,8 +33,9 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void typeEmail(SettingsDTO settingsDTO) {
-        settingsPage.typeEmail(settingsDTO.getEmail());
+    public void typeEmail(String email){
+        settingsPage.typeEmail(email);
+
     }
 
     @Step
@@ -120,6 +121,14 @@ public class SettingsPageSteps {
     }
 
     @Step
+
+    public boolean isEmailChanged(String newEmail) {
+        if(settingsPage.getCurrentEmailText().equals(newEmail)){
+            return true;
+        }else{
+            return false;
+        }
+    }
     public String getLastNameInput() {
         return settingsPage.getLastNameInputText();
     }
