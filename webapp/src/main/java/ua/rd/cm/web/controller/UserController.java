@@ -54,7 +54,7 @@ public class UserController {
             logger.error("Registration failed: " + dto.toString() +
                         ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
         } else {
-            userService.save(dtoToEntity(dto));
+            userService.registerNewUser(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
             message.setStatus("success");
         }
