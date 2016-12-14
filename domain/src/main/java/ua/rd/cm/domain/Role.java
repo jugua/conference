@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull;
         sequenceName = "role_seq")
 public class Role implements GrantedAuthority {
 
-    public static String ORGANISER = "ORGANISER";
-    public static String SPEAKER = "SPEAKER";
+    public static String ORGANISER = "ROLE_ORGANISER";
+    public static String SPEAKER = "ROLE_SPEAKER";
 
     @Id
     @Column(name = "role_id")
