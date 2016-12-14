@@ -371,7 +371,7 @@ public class UserControllerTest {
     }
 
     private Role createSpeakerRole(){
-        return new Role(1L, "SPEAKER");
+        return new Role(1L, "ROLE_SPEAKER");
     }
 
     private UserInfo createUserInfo(){
