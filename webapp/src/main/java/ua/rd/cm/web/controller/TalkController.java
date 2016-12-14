@@ -109,6 +109,7 @@ public class TalkController {
 
 	private TalkDto entityToDto(Talk talk) {
 		TalkDto dto = mapper.map(talk, TalkDto.class);
+		dto.setSpeakerFullName(talk.getUser().getFirstName() + " " + talk.getUser().getLastName());
 		dto.setDate(talk.getTime().toString());
 		return dto;
 	}
