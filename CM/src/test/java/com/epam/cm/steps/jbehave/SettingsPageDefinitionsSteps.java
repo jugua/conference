@@ -22,9 +22,12 @@ public class SettingsPageDefinitionsSteps {
     @Steps
     LoginPageSteps loginPageSteps;
 
+    SettingsDTO settingsDTO;
+    CredentialsDTO user;
+
     @Given("user on the settings page logged as speaker: $examplesTable")
         public void goToSettingsPageAsSpeaker(ExamplesTable table){
-        CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
+        user = table.getRowsAs(CredentialsDTO.class).get(0);
         loginPageSteps.unsignedUserInHomePage();
         loginPageSteps.clickOnAccountMenu();
         loginPageSteps.typeLoginAndPassword(user);
@@ -33,27 +36,33 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @When("user click on the Edit link next to Email")
-    public void clickEdtLinkNextToEmail(){
+    public void clickEditLinkNextToEmail(){
         settingsSteps.clickEditLinkNextToEmail();
     }
 
 
-    @When("type incorrect values in New email field: $examplesTable")
-    public void typeIncorrectEmail(ExamplesTable table){
+    @When("type email in New email field: $examplesTable")
+    public void typeEmail(ExamplesTable table){
         boolean replaceNamedParameters = true;
-        String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("invalidEmail", String.class);
-        SettingsDTO settingsDTO = new SettingsDTO(){
+        String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("newEmail", String.class);
+        settingsDTO = new SettingsDTO(){
             {
+                setOldEmail(user.getEmail());
                 setNewEmail(email);
             }
         };
-        settingsSteps.typeEmail(settingsDTO);
+        settingsSteps.typeEmail(settingsDTO.getNewEmail());
     }
 
 
     @When("user click on the Edit link next to Name")
     public void clickEditLinkNextToName(){
         settingsSteps.clickEditLinkNextToName();
+    }
+
+    @When("leaves 'First name' field empty")
+    public void leaveFirstNameEmpty(){
+        settingsSteps.leaveFirstNameInputEmpty();
     }
 
     @When("leaves 'Last name' field empty")
@@ -95,7 +104,21 @@ public class SettingsPageDefinitionsSteps {
     @Then("Empty field is highlighted in red and  message saying '$msg' is shown")
     public void lastNameIsHighlightedAndMsgAppears(String msg){
         Assert.assertTrue(settingsSteps.isLastNameHighlighted());
-        Assert.assertThat(msg,is(settingsSteps.getLastNameErrorMsg()));
+        Assert.assertThat(msg,is(settingsSteps.getNameErrorMsg()));
     }
 
+    @Then("empty fields are highlighted in red and message saying '$msg' is shown")
+    public void emptyFieldsAreHighlighted(String msg){
+        Assert.assertTrue(settingsSteps.isFirstNameHighlighted());
+        Assert.assertTrue(settingsSteps.isLastNameHighlighted());
+        Assert.assertThat(msg,is(settingsSteps.getNameErrorMsg()));
+    }
+
+    @Then("email has been changed")
+    public void emailHasBeenChanged(){
+       Assert.assertTrue(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
+       clickEditLinkNextToEmail();
+       settingsSteps.typeEmail(settingsDTO.getOldEmail());
+       clickEmailSaveBtn();
+    }
 }

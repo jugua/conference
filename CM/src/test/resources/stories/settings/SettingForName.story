@@ -7,6 +7,7 @@ As a user I would like to have an ability to update my account info: first name,
 Scenario: When user clicks on the Edit link next to Name the row is expanded and
 has following elements: 'First Name', 'Last Name' fields 'Save' and 'Cancel' buttons
 Meta:
+@regression
 Given user on the settings page logged as speaker:
 |email                              |password   |
 |testUserSettingsStory@testUser.test|testuserpwd|
@@ -24,3 +25,14 @@ And leaves 'Last name' field empty
 And clicks name save button
 Then Empty field is highlighted in red and  message saying 'Please enter a name' is shown
 
+Scenario: When user leaves all fields empty
+Meta:
+@regression
+Given user on the settings page logged as speaker:
+|email                              |password   |
+|testUserSettingsStory@testUser.test|testuserpwd|
+When user click on the Edit link next to Name
+And leaves 'First name' field empty
+And leaves 'Last name' field empty
+And clicks name save button
+Then empty fields are highlighted in red and message saying 'Please enter a name' is shown

@@ -84,6 +84,7 @@ public class SettingsPage extends AnyPage {
     public void clickEmailSaveBtn() {
         waitABit(4000);
         emailSaveBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
+        waitABit(4000);
     }
 
     public String getErrorMsg() {
@@ -123,8 +124,17 @@ public class SettingsPage extends AnyPage {
         lastNameInput.clear();
     }
 
+    public void setFirstNameEmpty(){
+        firstNameInput.clear();
+    }
+
     public void clickNameSaveBtn(){
         saveBtn.click();
+    }
+
+    public boolean isFirstNameInputHighlighted(){
+        //return passwordField.getAttribute("class").contains("invalid");
+        return firstNameInput.getAttribute("class").contains("invalid");
     }
 
     public boolean isLastNameInputHighlighted(){
@@ -132,8 +142,13 @@ public class SettingsPage extends AnyPage {
         return lastNameInput.getAttribute("class").contains("invalid");
     }
 
-    public String getLastNameErrorMsg(){
+    public String getNameErrorMsg(){
         return namesErrorMsg.getText();
     }
 
+    public String getCurrentEmailText() {
+        String currentEmailText = currentEmailInput.withTimeoutOf(5,SECONDS).waitUntilVisible().getValue();
+        System.out.println("bvb");
+        return currentEmailText;
+    }
 }

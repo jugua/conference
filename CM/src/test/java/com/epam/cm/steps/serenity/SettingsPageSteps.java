@@ -31,8 +31,8 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void typeEmail(SettingsDTO settingsDTO){
-        settingsPage.typeEmail(settingsDTO.getNewEmail());
+    public void typeEmail(String email){
+        settingsPage.typeEmail(email);
     }
 
     @Step
@@ -76,9 +76,20 @@ public class SettingsPageSteps {
     public void clickNameSaveBtn(){
         settingsPage.clickNameSaveBtn();
     }
+
+    @Step
+    public void leaveFirstNameInputEmpty(){
+        settingsPage.setFirstNameEmpty();
+    }
+
     @Step
     public void leaveLastNameInputEmpty(){
         settingsPage.setLastNameEmpty();
+    }
+
+    @Step
+    public boolean isFirstNameHighlighted(){
+        return settingsPage.isFirstNameInputHighlighted();
     }
 
     @Step
@@ -87,8 +98,16 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public String getLastNameErrorMsg(){
-        return settingsPage.getLastNameErrorMsg();
+    public String getNameErrorMsg(){
+        return settingsPage.getNameErrorMsg();
     }
 
+    @Step
+    public boolean isEmailChanged(String newEmail) {
+        if(settingsPage.getCurrentEmailText().equals(newEmail)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
