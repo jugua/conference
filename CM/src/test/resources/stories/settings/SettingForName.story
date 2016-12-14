@@ -1,7 +1,8 @@
 Meta:
 
 Narrative:
-As a user I would like to have an ability to update my account info: first name, last name
+As a user
+I would like to have an ability to update my account info: first name, last name
 Test cases 3350 - 3358
 
 Scenario: When user clicks on the Edit link next to Name the row is expanded and

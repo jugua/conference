@@ -2,7 +2,7 @@ package com.epam.cm.pages;
 
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
-import org.apache.commons.lang3.text.StrBuilder;
+
 import org.openqa.selenium.WebDriver;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -12,7 +12,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
  */
 public class SettingsPage extends AnyPage {
 
-    //email
+    // email
 
     @FindBy(xpath = "//*[@class='settings__block']/div[2]")
     private WebElementFacade emailEditLink;
@@ -29,7 +29,7 @@ public class SettingsPage extends AnyPage {
     @FindBy(xpath = "//*[@class='edit-email__result edit-email__result_error ng-binding']")
     private WebElementFacade emailErrorMsg;
 
-    //name
+    // name
     @FindBy(xpath = "//*[@class='settings__block']/div[1]")
     private WebElementFacade nameEditLink;
     @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='fname']")
@@ -41,13 +41,25 @@ public class SettingsPage extends AnyPage {
     @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/label[2]")
     private WebElementFacade secondLbl;
     @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[1]")
-    private WebElementFacade saveBtn;
+    private WebElementFacade nameSaveBtn;
     @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[2]")
     private WebElementFacade cancelNameBtn;
     @FindBy(xpath = "//*[@class='edit-password']/span")
     private WebElementFacade namesErrorMsg;
 
-    //email
+    // password
+    @FindBy(xpath = "//*[@class='settings__block']/div[3]")
+    private WebElementFacade pwEditLink;
+    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='currentPassword']")
+    private WebElementFacade currentPwInput;
+    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='newPassword']")
+    private WebElementFacade newPwInput;
+    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='confirmNewPassword']")
+    private WebElementFacade confirmNewPwInput;
+    @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[1]")
+    private WebElementFacade pwSaveBtn;
+
+    // email
 
     public SettingsPage(WebDriver driver) {
         super(driver);
@@ -57,10 +69,9 @@ public class SettingsPage extends AnyPage {
         emailEditLink.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
-    public boolean  isCurrentEmailFieldVisible() {
+    public boolean isCurrentEmailFieldVisible() {
         waitFor(currentEmailInput);
-        if (currentEmailLabel.getText().equalsIgnoreCase("Current Email") &&
-                currentEmailInput.isCurrentlyVisible()) {
+        if (currentEmailLabel.getText().equalsIgnoreCase("Current Email") && currentEmailInput.isCurrentlyVisible()) {
             return true;
         }
         return false;
@@ -68,13 +79,11 @@ public class SettingsPage extends AnyPage {
 
     public boolean isNewEmailFieldVisible() {
         waitFor(newEmailInput);
-        if (newEmailLabel.getText().equalsIgnoreCase("New Email") &&
-                newEmailInput.isCurrentlyVisible()) {
+        if (newEmailLabel.getText().equalsIgnoreCase("New Email") && newEmailInput.isCurrentlyVisible()) {
             return true;
         }
         return false;
     }
-
 
     public void typeEmail(String email) {
         newEmailInput.withTimeoutOf(5, SECONDS).waitUntilVisible().clear();
@@ -88,24 +97,24 @@ public class SettingsPage extends AnyPage {
     }
 
     public String getErrorMsg() {
-        String errorMsg = emailErrorMsg.withTimeoutOf(5,SECONDS).waitUntilVisible().getText();
+        String errorMsg = emailErrorMsg.withTimeoutOf(5, SECONDS).waitUntilVisible().getText();
         return errorMsg;
     }
 
-    //name
+    // name
 
     public void clickEditLinkNextToName() {
         waitABit(2000);
         nameEditLink.click();
     }
 
-    public void clickNamesCancelBtn(){
+    public void clickNamesCancelBtn() {
         cancelNameBtn.click();
     }
 
     public boolean checkSaveBtn() {
         waitFor(firstNameInput);
-        if (saveBtn.isVisible())
+        if (nameSaveBtn.isVisible())
             return true;
         return false;
     }
@@ -134,52 +143,77 @@ public class SettingsPage extends AnyPage {
         lastNameInput.type(lastName);
     }
 
-    public String getLastNameInputText(){
+    public String getLastNameInputText() {
         return lastNameInput.getValue();
     }
 
-    public int getLastNameLength(){
+    public int getLastNameLength() {
         return lastNameInput.getValue().length();
     }
 
-    public void setFirstNameEmpty(){
+    public void setFirstNameEmpty() {
         firstNameInput.clear();
     }
 
-    public void setFirstName(String firstName){
+    public void setFirstName(String firstName) {
         firstNameInput.clear();
         firstNameInput.type(firstName);
     }
 
-    public String getFirstNameInputText(){
+    public String getFirstNameInputText() {
         return firstNameInput.getValue();
     }
 
-    public int getFirstNameLength(){
+    public int getFirstNameLength() {
         return firstNameInput.getValue().length();
     }
 
-    public void clickNameSaveBtn(){
-        saveBtn.click();
+    public void clickNameSaveBtn() {
+        nameSaveBtn.click();
     }
 
-    public boolean isFirstNameInputHighlighted(){
-        //return passwordField.getAttribute("class").contains("invalid");
+    public boolean isFirstNameInputHighlighted() {
+        // return passwordField.getAttribute("class").contains("invalid");
         return firstNameInput.getAttribute("class").contains("invalid");
     }
 
-    public boolean isLastNameInputHighlighted(){
-        //return passwordField.getAttribute("class").contains("invalid");
+    public boolean isLastNameInputHighlighted() {
+        // return passwordField.getAttribute("class").contains("invalid");
         return lastNameInput.getAttribute("class").contains("invalid");
     }
 
-    public String getNameErrorMsg(){
+    public String getNameErrorMsg() {
         return namesErrorMsg.getText();
     }
 
     public String getCurrentEmailText() {
-        String currentEmailText = currentEmailInput.withTimeoutOf(5,SECONDS).waitUntilVisible().getValue();
-        System.out.println("bvb");
+        String currentEmailText = currentEmailInput.withTimeoutOf(5, SECONDS).waitUntilVisible().getValue();
         return currentEmailText;
+    }
+
+    // password
+
+    public void clickEditPwLink() {
+        waitABit(2000);
+        pwEditLink.click();
+    }
+
+    public void setCurrentPw(String currentPw) {
+        currentPwInput.clear();
+        currentPwInput.type(currentPw);
+    }
+
+    public void setNewPw(String newPw){
+        newPwInput.clear();
+        newPwInput.type(newPw);
+    }
+
+    public void setConfirmPw(String confirmPw){
+        confirmNewPwInput.clear();
+        confirmNewPwInput.type(confirmPw);
+    }
+
+    public void clickPwSaveBtn() {
+        pwSaveBtn.click();
     }
 }
