@@ -62,7 +62,7 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.leaveFirstNameInputEmpty();
     }
 
-    @When("puts valid data in First name: $examplesTable")
+    @When("puts data in First name: $examplesTable")
     public void putValidDataIntoFirstName(ExamplesTable table) {
         boolean replaceNamedParameters = true;
         String firstName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
@@ -79,7 +79,7 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.leaveLastNameInputEmpty();
     }
 
-    @When("puts valid data in Last name: $examplesTable")
+    @When("puts data in Last name: $examplesTable")
     public void putValidDataIntoLastName(ExamplesTable table) {
         boolean replaceNamedParameters = true;
         String lastName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
@@ -179,4 +179,29 @@ public class SettingsPageDefinitionsSteps {
         assertThat(settingsDTO.getFirstName() + "'s Account", is(loginPageSteps.getAccountMenuTitle()));
     }
 
+    @Then("user can`t enter/type more than the maximum allowed characters in last name field: $actTable")
+    public void thenLastNameIsNotChanged(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String lastName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
+        SettingsDTO settingsDTO = new SettingsDTO() {
+            {
+                setLastName(lastName);
+            }
+        };
+
+        Assert.assertTrue(settingsSteps.userCantTypeMoreThenMaxLastName(settingsDTO));
+    }
+
+    @Then("user can`t enter/type more than the maximum allowed characters in first name field: $actTable")
+    public void thenFirstNameIsNotChanged(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String firstName = table.getRowAsParameters(0, replaceNamedParameters).valueAs("validData", String.class);
+        SettingsDTO settingsDTO = new SettingsDTO() {
+            {
+                setFirstName(firstName);
+            }
+        };
+
+        Assert.assertTrue(settingsSteps.userCantTypeMoreThenMaxFirstName(settingsDTO));
+    }
 }

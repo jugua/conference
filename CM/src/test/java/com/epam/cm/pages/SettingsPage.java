@@ -133,6 +133,10 @@ public class SettingsPage extends AnyPage {
         return lastNameInput.getValue();
     }
 
+    public int getLastNameLength(){
+        return lastNameInput.getValue().length();
+    }
+
     public void setFirstNameEmpty(){
         firstNameInput.clear();
     }
@@ -144,6 +148,10 @@ public class SettingsPage extends AnyPage {
 
     public String getFirstNameInputText(){
         return firstNameInput.getValue();
+    }
+
+    public int getFirstNameLength(){
+        return firstNameInput.getValue().length();
     }
 
     public void clickNameSaveBtn(){

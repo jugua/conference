@@ -2,7 +2,7 @@ Meta:
 
 Narrative:
 As a user I would like to have an ability to update my account info: first name, last name
-
+Test cases 3350 - 3358
 
 Scenario: When user clicks on the Edit link next to Name the row is expanded and
 has following elements: 'First Name', 'Last Name' fields 'Save' and 'Cancel' buttons
@@ -43,7 +43,7 @@ Given user on the settings page logged as speaker:
 |email                              |password   |
 |testUserSettingsStory@testUser.test|testuserpwd|
 When user click on the Edit link next to Name
-And puts valid data in Last name:
+And puts data in Last name:
 |validData  |
 |<validData>|
 And clicks name save button
@@ -65,7 +65,7 @@ Given user on the settings page logged as speaker:
 |email                              |password   |
 |testUserSettingsStory@testUser.test|testuserpwd|
 When user click on the Edit link next to Name
-And puts valid data in First name:
+And puts data in First name:
 |validData  |
 |<validData>|
 And clicks name save button
@@ -80,8 +80,41 @@ And menu Title is replaced by new name:
 Examples:
 |<validData>                                             |
 |A                                                       |
-|0oDNrUrLUmUaKdOrQW5H5x3YIb2jFv6x9qXCD84nT4RCdDzftzPaDa9 |
-|0oDNrUrLUmUaKdOrQW5H5x3YIb2jFv6x9qXCD84nT4RCdDzftzPaDa57|
+|0oDNrUrLUmUaKdOrQW5H5x3YIb2jFv6x9qXCD84nT4RCdDzftzPaD55 |
+|0oDNrUrLUmUaKdOrQW5H5x3YIb2jFv6x9qXCD84nT4RCdDzftzPaDa56|
 |gjtsmdm                                                 |
 
-Scenario:
+Scenario: When users put invalid data for 'Last Name' field on 'Account Settings' page
+Meta:
+Given user on the settings page logged as speaker:
+|email                              |password   |
+|testUserSettingsStory@testUser.test|testuserpwd|
+When user click on the Edit link next to Name
+And puts data in Last name:
+|validData  |
+|<validData>|
+Then user can`t enter/type more than the maximum allowed characters in last name field:
+|validData  |
+|<validData>|
+
+Examples:
+|<validData>                                              |
+|yG6XL7qeWy2DWOqcEkefUem2BKWtVqPCXlFd48yM7ItzgqlMSTicTJHQn|
+
+
+Scenario: When users put invalid data for 'First Name' field on 'Account Settings' page
+Given user on the settings page logged as speaker:
+|email                              |password   |
+|testUserSettingsStory@testUser.test|testuserpwd|
+When user click on the Edit link next to Name
+And puts data in First name:
+|validData  |
+|<validData>|
+Then user can`t enter/type more than the maximum allowed characters in first name field:
+|validData  |
+|<validData>|
+
+
+Examples:
+|<validData>                                              |
+|yG6XL7qeWy2DWOqcEkefUem2BKWtVqPCXlFd48yM7ItzgqlMSTicTJHQn|     

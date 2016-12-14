@@ -1,9 +1,9 @@
 package com.epam.cm.steps.serenity;
 
+import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.pages.SettingsPage;
 import net.thucydides.core.annotations.Step;
-import org.yecht.Data;
 
 /**
  * Created by Lev_Serba on 12/12/2016.
@@ -17,7 +17,7 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void clickEditLinkNextToName(){
+    public void clickEditLinkNextToName() {
 
         settingsPage.clickEditLinkNextToName();
     }
@@ -26,14 +26,14 @@ public class SettingsPageSteps {
     public boolean areCurrentEmailAndNewEmailFieldsVisible() {
         boolean currentEmailFieldVisible = settingsPage.isCurrentEmailFieldVisible();
         boolean newEmailfieldVisible = settingsPage.isNewEmailFieldVisible();
-        if(currentEmailFieldVisible && newEmailfieldVisible){
+        if (currentEmailFieldVisible && newEmailfieldVisible) {
             return true;
         }
         return false;
     }
 
     @Step
-    public void typeEmail(SettingsDTO settingsDTO){
+    public void typeEmail(SettingsDTO settingsDTO) {
         settingsPage.typeEmail(settingsDTO.getEmail());
     }
 
@@ -44,84 +44,101 @@ public class SettingsPageSteps {
 
     @Step
     public boolean isErrorMsgShown(String errorMsg) {
-        if(settingsPage.getErrorMsg().equals(errorMsg)){
+        if (settingsPage.getErrorMsg().equals(errorMsg)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public boolean isSaveBtnVisible(){
-        if(settingsPage.checkSaveBtn())
+    public boolean isSaveBtnVisible() {
+        if (settingsPage.checkSaveBtn())
             return true;
         return false;
     }
 
     @Step
-    public boolean isCancelBtnVisble(){
+    public boolean isCancelBtnVisble() {
         if (settingsPage.checkCancelBtn())
             return true;
         return false;
     }
 
     @Step
-    public String getFirstNameLbl(){
+    public String getFirstNameLbl() {
         return settingsPage.getFirstLblText();
     }
 
     @Step
-    public String getLastNameLbl(){
+    public String getLastNameLbl() {
         return settingsPage.getSecondLblText();
     }
 
     @Step
-    public void clickNameSaveBtn(){
+    public void clickNameSaveBtn() {
         settingsPage.clickNameSaveBtn();
     }
 
     @Step
-    public void leaveFirstNameInputEmpty(){
+    public void leaveFirstNameInputEmpty() {
         settingsPage.setFirstNameEmpty();
     }
 
     @Step
-    public void typeFirstName(SettingsDTO settingsDTO){
+    public void typeFirstName(SettingsDTO settingsDTO) {
         settingsPage.setFirstName(settingsDTO.getFirstName());
     }
 
     @Step
-    public void leaveLastNameInputEmpty(){
+    public void leaveLastNameInputEmpty() {
         settingsPage.setLastNameEmpty();
     }
 
     @Step
-    public void typeLastName(SettingsDTO settingsDTO){
+    public void typeLastName(SettingsDTO settingsDTO) {
         settingsPage.setLastName(settingsDTO.getLastName());
     }
 
     @Step
-    public boolean isFirstNameHighlighted(){
+    public boolean isFirstNameHighlighted() {
         return settingsPage.isFirstNameInputHighlighted();
     }
 
     @Step
-    public boolean isLastNameHighlighted(){
+    public boolean isLastNameHighlighted() {
         return settingsPage.isLastNameInputHighlighted();
     }
 
     @Step
-    public String getNameErrorMsg(){
+    public String getNameErrorMsg() {
         return settingsPage.getNameErrorMsg();
     }
 
     @Step
-    public String getLastNameInput(){
+    public String getLastNameInput() {
         return settingsPage.getLastNameInputText();
     }
 
     @Step
-    public String getFirstNameInput(){
+    public String getFirstNameInput() {
         return settingsPage.getFirstNameInputText();
     }
+
+    @Step
+    public boolean userCantTypeMoreThenMaxLastName(SettingsDTO settingsDTO) {
+        if (settingsPage.getLastNameLength() <= settingsDTO.getLastName().length())
+            return true;
+        WebDriverSupport.reloadPage();
+        return false;
+    }
+
+    @Step
+    public boolean userCantTypeMoreThenMaxFirstName(SettingsDTO settingsDTO) {
+        if (settingsPage.getFirstNameLength() <= settingsDTO.getFirstName().length())
+            return true;
+        WebDriverSupport.reloadPage();
+        return false;
+    }
+
 
 }
