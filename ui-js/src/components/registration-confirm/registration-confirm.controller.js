@@ -1,17 +1,17 @@
-export default class ConfirmRegistrationController {
-  constructor($state, $stateParams, confirmRegistrationService, Current) {
+export default class registrationConfirmController {
+  constructor($state, $stateParams, RegistrationConfirmService, Current) {
     'ngInject';
 
     this.state = $state;
     this.currentService = Current;
     this.token = $stateParams.token;
-    this.confirmService = confirmRegistrationService;
+    this.confirmService = RegistrationConfirmService;
 
     this.confirm();
   }
 
   confirm() {
-    this.confirmService.confirmRegistration(this.token)
+    this.confirmService.registrationConfirm(this.token)
       .then(
         () => {
           this.currentService.getInfo();

@@ -12,7 +12,7 @@ import userPhotoComponent from './user-photo/user-photo';
 import logoutComponent from './logout/logout';
 import newTalkComponent from './newtalk/newtalk';
 import talksComponent from './talks/talks';
-import confirmRegistration from './confirm-registration/confirm-registration';
+import registrationConfirm from './registration-confirm/registration-confirm';
 import invalidLink from './invalid-link/invalid-link';
 
 export default (app) => {
@@ -30,7 +30,7 @@ export default (app) => {
     newTalkComponent,
     talksComponent,
     logoutComponent,
-    confirmRegistration,
+    registrationConfirm,
     invalidLink,
   ], app);
 };
