@@ -43,7 +43,7 @@ public class SettingsPage extends AnyPage {
     @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[1]")
     private WebElementFacade saveBtn;
     @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[2]")
-    private WebElementFacade cancelBtn;
+    private WebElementFacade cancelNameBtn;
     @FindBy(xpath = "//*[@class='edit-password']/span")
     private WebElementFacade namesErrorMsg;
 
@@ -95,7 +95,12 @@ public class SettingsPage extends AnyPage {
     //name
 
     public void clickEditLinkNextToName() {
+        waitABit(2000);
         nameEditLink.click();
+    }
+
+    public void clickNamesCancelBtn(){
+        cancelNameBtn.click();
     }
 
     public boolean checkSaveBtn() {
@@ -107,7 +112,7 @@ public class SettingsPage extends AnyPage {
 
     public boolean checkCancelBtn() {
         waitFor(lastNameInput);
-        if (cancelBtn.isVisible())
+        if (cancelNameBtn.isVisible())
             return true;
         return false;
     }
@@ -124,8 +129,34 @@ public class SettingsPage extends AnyPage {
         lastNameInput.clear();
     }
 
+    public void setLastName(String lastName) {
+        lastNameInput.clear();
+        lastNameInput.type(lastName);
+    }
+
+    public String getLastNameInputText(){
+        return lastNameInput.getValue();
+    }
+
+    public int getLastNameLength(){
+        return lastNameInput.getValue().length();
+    }
+
     public void setFirstNameEmpty(){
         firstNameInput.clear();
+    }
+
+    public void setFirstName(String firstName){
+        firstNameInput.clear();
+        firstNameInput.type(firstName);
+    }
+
+    public String getFirstNameInputText(){
+        return firstNameInput.getValue();
+    }
+
+    public int getFirstNameLength(){
+        return firstNameInput.getValue().length();
     }
 
     public void clickNameSaveBtn(){
