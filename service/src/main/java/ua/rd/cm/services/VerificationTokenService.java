@@ -59,6 +59,11 @@ public class VerificationTokenService {
         return tokens.get(0);
     }
 
+    @Transactional
+    public void updateToken(VerificationToken token) {
+        tokenRepository.updateToken(token);
+    }
+
     private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
         return currentTime.plusMinutes(expiryTimeInMinutes);

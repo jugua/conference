@@ -56,6 +56,7 @@ public class SignInController {
             SecurityContextHolder.getContext().setAuthentication(auth);
 
             verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+            tokenService.updateToken(verificationToken);
 
             user.setStatus(User.UserStatus.CONFIRMED);
             userService.updateUserProfile(user);
