@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.User;
@@ -16,6 +17,7 @@ import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -55,18 +57,21 @@ public class PhotoController {
         return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity upload(PhotoDto photoDto, Principal principal) {
+    public ResponseEntity upload(PhotoDto photoDto, HttpServletRequest request) {
         MessageDto message = new MessageDto();
         HttpStatus status;
         MultipartFile file = photoDto.getFile();
-        User currentUser = userService.getByEmail(principal.getName());
+        User currentUser = userService.getByEmail(request.getRemoteUser());
+
 
         if (file == null || file.isEmpty()) {
             message.setError("save");
             status = HttpStatus.BAD_REQUEST;
         } else {
             //TODO: check file for renaming another type into image type
+
             try {
                 BufferedImage bi = ImageIO.read(file.getInputStream());
                 if (bi != null) {
