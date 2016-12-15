@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class SignInController {
 
     private VerificationTokenService tokenService;
@@ -30,7 +30,7 @@ public class SignInController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/api/login")
     public void signIn() {
     }
 
@@ -39,10 +39,13 @@ public class SignInController {
         VerificationToken verificationToken = tokenService.getToken(token);
 
         if (!tokenService.isTokenValid(verificationToken, VerificationToken.TokenType.CONFIRMATION)) {
+            System.out.println("unvalid token");
             return ResponseEntity.badRequest().body(prepareMessageDto("invalid_link"));
         } else if (tokenService.isTokenExpired(verificationToken)) {
+            System.out.println("expired token");
             return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
         } else {
+            System.out.println("before getting user");
             User user = verificationToken.getUser();
 
             Principal principal = user::getEmail;
@@ -52,8 +55,12 @@ public class SignInController {
             Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, roleSet);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
+            verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+
             user.setStatus(User.UserStatus.CONFIRMED);
             userService.updateUserProfile(user);
+
+            System.out.println("good");
 
             return ResponseEntity.ok().build();
         }

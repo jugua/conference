@@ -1433,7 +1433,7 @@
                                 <br>
                                 This link will expire in 1 hour, so be sure to use it right away.
                             </p>
-                            <p>Sincerely yours, <br> The Conference Management team.</p>
+                            <p>Sincerely yours, <br> The Conference Management Team.</p>
                         </th>
                             <th class="expander"></th></tr></table></th>
                     </tr></tbody></table>
