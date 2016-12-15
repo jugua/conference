@@ -32,6 +32,7 @@ public class VerificationTokenService {
         token.setExpiryDate(calculateExpiryDate(VerificationToken.EXPIRATION_IN_MINUTES));
         token.setToken(UUID.randomUUID().toString());
         token.setType(tokenType);
+        token.setStatus(VerificationToken.TokenStatus.VALID);
         return token;
     }
 
@@ -58,8 +59,8 @@ public class VerificationTokenService {
         return tokens.get(0);
     }
 
-    private LocalDateTime calculateExpiryDate(int expiryTimeInHours) {
+    private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
-        return currentTime.plusMinutes(VerificationToken.EXPIRATION_IN_MINUTES);
+        return currentTime.plusMinutes(expiryTimeInMinutes);
     }
 }
