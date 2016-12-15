@@ -12,6 +12,7 @@ import userPhotoComponent from './user-photo/user-photo';
 import logoutComponent from './logout/logout';
 import newTalkComponent from './newtalk/newtalk';
 import talksComponent from './talks/talks';
+import newPasswordComponent from './new-password/new-password';
 
 export default (app) => {
   include_all_modules([
@@ -27,6 +28,7 @@ export default (app) => {
     userPhotoComponent,
     newTalkComponent,
     talksComponent,
-    logoutComponent
+    logoutComponent,
+    newPasswordComponent
   ], app);
 };
