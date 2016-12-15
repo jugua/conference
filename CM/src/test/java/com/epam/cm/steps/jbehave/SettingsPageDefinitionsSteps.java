@@ -306,6 +306,8 @@ public class SettingsPageDefinitionsSteps {
         loginPageSteps.clickSignInButton();
         loginPageSteps.clickSettingsOption();
 
+
+
     }
     @Given("changes his password: $actTable")
     @Then("changes his password: $actTable")

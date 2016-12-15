@@ -25,6 +25,21 @@ public class ForgotPasswordDefinitionsSteps {
         forgotPwdPgSteps.gotoTheHomePage();
     }
 
+    @When("uses forgot password function")
+    public void fastForgotPasswordCheck(){
+        forgotPwdPgSteps.clickOnAccountMenu();
+        forgotPwdPgSteps.clickForgotPwLink();
+        forgotPwdPgSteps.checkPopUpIsPresent();
+        forgotPwdPgSteps.checkForgotPwLinkIsPresent();
+    }
+
+    @When("user fiels email textbox with valid: <email>")
+    public void whenValidEmailFieldFilled(String email) {
+        forgotPwdPgSteps.typeEmailForgotPwField(email);
+    }
+
+
+
     @When("user clicks the login button")
     public void whenUserClicksLoginBtn() {
         forgotPwdPgSteps.clickOnAccountMenu();
@@ -92,6 +107,7 @@ public class ForgotPasswordDefinitionsSteps {
     public void thenMsgApears(String msg) {
         Assert.assertThat(msg, is(forgotPwdPgSteps.getInvalidEmailMsg()));
     }
+
 
 
 }

@@ -1,17 +1,15 @@
-Scenario: Email vlaidation for new Pw
-Given user on the settings page logged as speaker:
-|email            |password|
-|testerPw@test.com|tester  |
-And changes his password:
-|currentPw|newPw |confirmNewPw|
-|tester   |tester|tester      |
-Then an email is send to users email adress:
+Scenario: Sended mail verification
+Given the unsigned user accesses the conference management home page
+When uses forgot password function
+And user fiels email textbox with valid: <email>
+Then clicks on Continue button
+And message apears saying:'We sent a new password to your email address <email>'
+And an email is send to users email adress:
 |email            |
-|testerPw@test.com|
+|tester@tester.com|
 And subject's name is 'Password assistance'
-And body contains:'Hi <name>', 'Per your request, we have successfully changed your password.', 'The Conference Management Team.'
 
 
 Examples:
-|name  |
-|Tester|
+|email              |
+|tester@tester.com  |
