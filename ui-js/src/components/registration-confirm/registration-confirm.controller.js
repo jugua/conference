@@ -15,6 +15,7 @@ export default class registrationConfirmController {
       .then(
         () => {
           this.currentService.getInfo();
+          console.log(this.currentService.current);
           this.state.go('header.home', {}, { reload: true });
         },
         () => {

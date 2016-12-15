@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.Set;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class SignInController {
 
     private VerificationTokenService tokenService;
@@ -30,7 +30,7 @@ public class SignInController {
         this.userService = userService;
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/login")
     public void signIn() {
     }
 
