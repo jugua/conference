@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<UserDto> getCurrentUser(Principal principal){
+    public ResponseEntity getCurrentUser(Principal principal){
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -71,7 +71,9 @@ public class UserController {
             logger.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else if (currentUser.getStatus().equals(User.UserStatus.UNCONFIRMED)) {
-            return new ResponseEntity<>(HttpStatus.GONE);
+            MessageDto messageDto = new MessageDto();
+            messageDto.setError("confirm_reg");
+            return  ResponseEntity.status(HttpStatus.GONE).body(messageDto);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
         }
