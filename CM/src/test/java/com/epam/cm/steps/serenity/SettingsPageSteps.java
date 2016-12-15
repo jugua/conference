@@ -154,5 +154,8 @@ public class SettingsPageSteps {
         return false;
     }
 
-
+    @Step
+    public void clickEmailCancelBtn() {
+        settingsPage.clickEmailCancelBtn();
+    }
 }

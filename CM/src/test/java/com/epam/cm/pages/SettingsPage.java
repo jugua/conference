@@ -14,7 +14,8 @@ public class SettingsPage extends AnyPage {
 
     //email
 
-    @FindBy(xpath = "//*[@class='settings__block']/div[2]")
+   // @FindBy(xpath = "//*[@class='settings__block']/div[2]")
+    @FindBy(xpath = "//*[@class='settings__block']/div[2]/div/div[@class='settings__edit']")
     private WebElementFacade emailEditLink;
     @FindBy(xpath = "//*[@class='edit-email__fields-wrapper']/label[1]")
     private WebElementFacade currentEmailLabel;
@@ -28,6 +29,8 @@ public class SettingsPage extends AnyPage {
     private WebElementFacade emailSaveBtn;
     @FindBy(xpath = "//*[@class='edit-email__result edit-email__result_error ng-binding']")
     private WebElementFacade emailErrorMsg;
+    @FindBy(xpath = "//*[@ng-click='$ctrl.closeEditEmail()']")
+    private WebElementFacade emailCancelBtn;
 
     //name
     @FindBy(xpath = "//*[@class='settings__block']/div[1]")
@@ -179,7 +182,12 @@ public class SettingsPage extends AnyPage {
 
     public String getCurrentEmailText() {
         String currentEmailText = currentEmailInput.withTimeoutOf(5,SECONDS).waitUntilVisible().getValue();
-        System.out.println("bvb");
         return currentEmailText;
+    }
+
+    public void clickEmailCancelBtn() {
+        waitABit(4000);
+        emailCancelBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
+        waitABit(4000);
     }
 }
