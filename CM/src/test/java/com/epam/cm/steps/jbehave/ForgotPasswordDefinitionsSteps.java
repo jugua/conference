@@ -93,4 +93,5 @@ public class ForgotPasswordDefinitionsSteps {
         Assert.assertThat(msg, is(forgotPwdPgSteps.getInvalidEmailMsg()));
     }
 
+
 }

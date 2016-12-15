@@ -3,6 +3,7 @@ package com.epam.cm.steps.serenity;
 import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.pages.SettingsPage;
+
 import net.thucydides.core.annotations.Step;
 
 /**
@@ -18,8 +19,12 @@ public class SettingsPageSteps {
 
     @Step
     public void clickEditLinkNextToName() {
-
         settingsPage.clickEditLinkNextToName();
+    }
+
+    @Step
+    public void clickEditLinkNextToPw() {
+        settingsPage.clickEditPwLink();
     }
 
     @Step
@@ -33,7 +38,7 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void typeEmail(String email){
+    public void typeEmail(String email) {
         settingsPage.typeEmail(email);
 
     }
@@ -81,7 +86,7 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void clickNameCancelBtn(){
+    public void clickNameCancelBtn() {
         settingsPage.clickNamesCancelBtn();
     }
 
@@ -123,12 +128,13 @@ public class SettingsPageSteps {
     @Step
 
     public boolean isEmailChanged(String newEmail) {
-        if(settingsPage.getCurrentEmailText().equals(newEmail)){
+        if (settingsPage.getCurrentEmailText().equals(newEmail)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
     public String getLastNameInput() {
         return settingsPage.getLastNameInputText();
     }
@@ -154,8 +160,30 @@ public class SettingsPageSteps {
         return false;
     }
 
+
     @Step
     public void clickEmailCancelBtn() {
         settingsPage.clickEmailCancelBtn();
+    }
+
+    // password steps
+    @Step
+    public void typeCurrentPw(SettingsDTO settingsDTO) {
+        settingsPage.setCurrentPw(settingsDTO.getCurrentPw());
+    }
+
+    @Step
+    public void typeNewPw(SettingsDTO settingsDTO) {
+        settingsPage.setNewPw(settingsDTO.getNewPw());
+    }
+
+    @Step
+    public void typeConfirmPw(SettingsDTO settingsDTO){
+        settingsPage.setConfirmPw(settingsDTO.getConfirmNewPw());
+    }
+
+    @Step
+    public void clickPwSaveBtn() {
+        settingsPage.clickPwSaveBtn();
     }
 }

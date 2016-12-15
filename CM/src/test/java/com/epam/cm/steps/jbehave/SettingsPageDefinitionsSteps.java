@@ -1,5 +1,6 @@
 package com.epam.cm.steps.jbehave;
 
+import com.epam.cm.core.mail.MailCatcherClient;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
@@ -14,6 +15,7 @@ import org.jbehave.core.model.ExamplesTable;
 import org.junit.Assert;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
@@ -28,6 +30,7 @@ public class SettingsPageDefinitionsSteps {
 
     SettingsDTO settingsDTO;
     CredentialsDTO user;
+    MailCatcherClient mailCatcherClient = new MailCatcherClient();
 
     @Given("user on the settings page logged as speaker: $examplesTable")
 
@@ -39,6 +42,26 @@ public class SettingsPageDefinitionsSteps {
         loginPageSteps.typeLoginAndPassword(user);
         loginPageSteps.clickSignInButton();
         loginPageSteps.clickSettingsOption();
+    }
+
+    @Given("logged as speaker user changes his password: $actTable")
+    public void changePassword(ExamplesTable table){
+
+
+        user = table.getRowsAs(CredentialsDTO.class).get(0);
+
+        loginPageSteps.unsignedUserInHomePage();
+        loginPageSteps.clickOnAccountMenu();
+        loginPageSteps.typeLoginAndPassword(user);
+        loginPageSteps.clickSignInButton();
+        loginPageSteps.clickSettingsOption();
+        settingsSteps.clickEditLinkNextToPw();
+        settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);
+        settingsSteps.typeCurrentPw(settingsDTO);
+        settingsSteps.typeNewPw(settingsDTO);
+        settingsSteps.typeConfirmPw(settingsDTO);
+        settingsSteps.clickPwSaveBtn();
+        loginPageSteps.logout();
     }
 
     @When("user click on the Edit link next to Email")
@@ -126,6 +149,28 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.clickNameCancelBtn();
     }
 
+    @When("user click on the Edit link next to Password")
+    public void clickEditlinkNextToPw(){
+        settingsSteps.clickEditLinkNextToPw();
+    }
+
+    @When("enter current password in 'Current password' field: $actTable")
+    public void fillCurrentPwField(ExamplesTable table){
+        settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);
+        settingsSteps.typeCurrentPw(settingsDTO);
+    }
+    @When("enter new password in 'New password' field and confirms it: $actTable")
+    public void fillNewPwField(ExamplesTable table){
+        settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);
+        settingsSteps.typeNewPw(settingsDTO);
+        settingsSteps.typeConfirmPw(settingsDTO);
+    }
+
+    @When("clicks password's Save button")
+    public void clickPwSaveBtn(){
+        settingsSteps.clickPwSaveBtn();
+    }
+
     @Then("Current Email and New Email fields are visible")
     public void areCurrentEmailAndNewEmailFieldsVisible() {
         Assert.assertTrue(settingsSteps.areCurrentEmailAndNewEmailFieldsVisible());
@@ -140,8 +185,8 @@ public class SettingsPageDefinitionsSteps {
     public void checkNameFieldElements(String firstName, String lastName) {
         System.out.println();
 
-        Assert.assertThat(firstName, is(settingsSteps.getFirstNameLbl()));
-        Assert.assertThat(lastName, is(settingsSteps.getLastNameLbl()));
+        Assert.assertThat(firstName.trim().toLowerCase(), is(settingsSteps.getFirstNameLbl().trim().toLowerCase()));
+        Assert.assertThat(lastName.trim().toLowerCase(), is(settingsSteps.getLastNameLbl().trim().toLowerCase()));
         Assert.assertTrue(settingsSteps.isSaveBtnVisible());
         Assert.assertTrue(settingsSteps.isCancelBtnVisble());
     }
@@ -149,14 +194,14 @@ public class SettingsPageDefinitionsSteps {
     @Then("Empty field is highlighted in red and  message saying '$msg' is shown")
     public void lastNameIsHighlightedAndMsgAppears(String msg) {
         Assert.assertTrue(settingsSteps.isLastNameHighlighted());
-        Assert.assertThat(msg, is(settingsSteps.getNameErrorMsg()));
+        Assert.assertThat(msg.trim(), is(settingsSteps.getNameErrorMsg().trim()));
     }
 
     @Then("empty fields are highlighted in red and message saying '$msg' is shown")
     public void emptyFieldsAreHighlighted(String msg) {
         Assert.assertTrue(settingsSteps.isFirstNameHighlighted());
         Assert.assertTrue(settingsSteps.isLastNameHighlighted());
-        Assert.assertThat(msg, is(settingsSteps.getNameErrorMsg()));
+        Assert.assertThat(msg.trim(), is(settingsSteps.getNameErrorMsg().trim()));
     }
 
     @Then("user click on the Edit link next to Name")
@@ -255,6 +300,7 @@ public class SettingsPageDefinitionsSteps {
        clickEmailSaveBtn();
     }
 
+
     @Then("email didnt change")
     public void emailDidntChange(){
         Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getOldEmail()));
@@ -264,8 +310,14 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Then("user can log in with old credentials")
-    public void userCanUseOldCredentials(){
+    public void userCanUseOldCredentials() {
         loginPageSteps.logout();
+    }
+
+    @Then("user is able to login with new password: $actTable")
+    public void loginWithNewPw(ExamplesTable table){
+        loginPageSteps.logout();
+        CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
         loginPageSteps.unsignedUserInHomePage();
         loginPageSteps.clickOnAccountMenu();
         loginPageSteps.typeLoginAndPassword(user);
@@ -274,4 +326,42 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.clickEditLinkNextToEmail();
         Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getOldEmail()));
     }
+
+    @Given("changes his password: $actTable")
+    @Then("changes his password: $actTable")
+    public void resetBackPw(ExamplesTable table){
+        settingsSteps.clickEditLinkNextToPw();
+        settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);
+        settingsSteps.typeCurrentPw(settingsDTO);
+        settingsSteps.typeNewPw(settingsDTO);
+        settingsSteps.typeConfirmPw(settingsDTO);
+        settingsSteps.clickPwSaveBtn();
+        loginPageSteps.logout();
+    }
+
+    @Then("an email is send to users email adress: $actTable")
+    public void receiveEmail(ExamplesTable table){
+        user = table.getRowsAs(CredentialsDTO.class).get(0);
+        System.out.println(mailCatcherClient.getLastEmail());
+        //КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
+        Assert.assertThat( mailCatcherClient.getLastEmail().getRecipients().get(0), containsString(user.getEmail().toLowerCase()));
+    }
+
+    @Then("subject's name is '$subject'")
+    public void emailSubjectMatches(String subject){
+        Assert.assertThat(mailCatcherClient.getLastEmail().getSubject(), is(subject));
+    }
+
+    @Then("body contains:'$msg1 <name>', '$msg2', '$msg3'")
+    public void checkEmailsBody(String msg1,String name, String msg2, String msg3){
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg1));
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(name));
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg2));
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg3));
+    }
+
 }
