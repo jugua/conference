@@ -1428,7 +1428,7 @@
                     <th class="small-12 large-12 columns first last"><table><tr><th>
                         <p>Hi ${name},</p>
                         <p>Per your request, we have successfully changed your password.</p>
-                        <p>Thanks, <br> The Conference Management team.</p>
+                        <p>Thanks, <br> The Conference Management Team.</p>
                     </th>
 <th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
