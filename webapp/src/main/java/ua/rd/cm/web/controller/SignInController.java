@@ -39,37 +39,42 @@ public class SignInController {
         VerificationToken verificationToken = tokenService.getToken(token);
 
         if (!tokenService.isTokenValid(verificationToken, VerificationToken.TokenType.CONFIRMATION)) {
-            System.out.println("unvalid token");
             return ResponseEntity.badRequest().body(prepareMessageDto("invalid_link"));
         } else if (tokenService.isTokenExpired(verificationToken)) {
-            System.out.println("expired token");
             return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
         } else {
-            System.out.println("before getting user");
             User user = verificationToken.getUser();
 
-            Principal principal = user::getEmail;
-            String credentials = user.getPassword();
-            Set<Role> roleSet = user.getUserRoles();
-
-            Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, roleSet);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-            verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
-            tokenService.updateToken(verificationToken);
-
-            user.setStatus(User.UserStatus.CONFIRMED);
-            userService.updateUserProfile(user);
-
-            System.out.println("good");
+            setUserStatusConfirmed(user);
+            setTokenStatusExpired(verificationToken);
+            authenticateUser(verificationToken.getUser());
 
             return ResponseEntity.ok().build();
         }
+    }
+
+    private void setTokenStatusExpired(VerificationToken verificationToken) {
+        verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+        tokenService.updateToken(verificationToken);
+    }
+
+    private void setUserStatusConfirmed(User user) {
+        user.setStatus(User.UserStatus.CONFIRMED);
+        userService.updateUserProfile(user);
     }
 
     private MessageDto prepareMessageDto(String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setError(message);
         return  messageDto;
+    }
+
+    private void authenticateUser(User user) {
+        Principal principal = user::getEmail;
+        String credentials = user.getPassword();
+        Set<Role> roleSet = user.getUserRoles();
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, roleSet);
+        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }

@@ -70,10 +70,6 @@ public class UserController {
         if (currentUser == null) {
             logger.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else if (currentUser.getStatus().equals(User.UserStatus.UNCONFIRMED)) {
-            MessageDto messageDto = new MessageDto();
-            messageDto.setError("confirm_reg");
-            return  ResponseEntity.status(HttpStatus.GONE).body(messageDto);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
         }
@@ -94,8 +90,6 @@ public class UserController {
         }
         return new ResponseEntity(status);
     }
-
-
 
     private UserInfo prepareNewUserInfo(String email, UserDto dto) {
         User currentUser = userService.getByEmail(email);
