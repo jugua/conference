@@ -50,3 +50,20 @@ Examples:
 |<newEmail>                    |
 |testSettingsNewEmail@test.test|
 
+
+Scenario: user type valid email in New email field but cancel changes
+Given user on the settings page logged as speaker:
+|email                            |password   |
+|testSettingsChangeEmail@test.test|testuserpwd|
+When user click on the Edit link next to Email
+And type email in New email field:
+|newEmail  |
+|<newEmail>|
+And clicks email cancel button
+And user click on the Edit link next to Email
+Then email didnt change
+And user can log in with old credentials
+
+Examples:
+|<newEmail>                    |
+|testSettingsNewEmail@test.test|

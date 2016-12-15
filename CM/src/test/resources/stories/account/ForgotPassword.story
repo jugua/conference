@@ -11,7 +11,7 @@ Meta:
 Given the unsigned user accesses the conference management home page
 When user clicks the login button
 And clicks the forgot password link
-Then new pop up will appears saying 'Send me a new password to my email address:'
+Then new pop up will appears saying 'Please enter your email:'
 And Cancel button appears
 And Continue button appears
 
@@ -23,7 +23,7 @@ Meta:
 Given the unsigned user accesses the conference management home page
 When user clicks the login button
 And clicks the forgot password link
-Then new pop up will appears saying 'Send me a new password to my email address:'
+Then new pop up will appears saying 'Please enter your email:'
 And clicks on Continue button
 And message is shown sayin Email is required
 And email field is highlighted
@@ -33,7 +33,7 @@ Scenario: User input valid data into 'Forgot password?' form
 Given the unsigned user accesses the conference management home page
 When user clicks the login button
 And clicks the forgot password link
-Then new pop up will appears saying 'Send me a new password to my email address:'
+Then new pop up will appears saying 'Please enter your email:'
 And user fiels email textbox with valid: <email>
 And clicks on Continue button
 And message apears saying:'We sent a new password to your email address <email>'
@@ -52,7 +52,7 @@ Meta:
 Given the unsigned user accesses the conference management home page
 When user clicks the login button
 And clicks the forgot password link
-Then new pop up will appears saying 'Send me a new password to my email address:'
+Then new pop up will appears saying 'Please enter your email:'
 And user fiels email textbox with invalid: <email>
 And clicks on Continue button
 And message apears saying Please enter a valid email address

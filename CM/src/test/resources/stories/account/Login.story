@@ -96,7 +96,7 @@ And user filled in login form:
 |email              |password|
 |speaker@speaker.com|speaker |
 When user clicks SignIn button on login form
-Then "Your Account" replaced by "Speaker's Account"
+Then "Your Account" replaced by "Master's Account"
 And there are My_account, My_Info and  My Talks links in the given order
 |btnName   |link       |
 |My Info   |/#/my-info |

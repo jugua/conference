@@ -160,6 +160,12 @@ public class SettingsPageSteps {
         return false;
     }
 
+
+    @Step
+    public void clickEmailCancelBtn() {
+        settingsPage.clickEmailCancelBtn();
+    }
+
     // password steps
     @Step
     public void typeCurrentPw(SettingsDTO settingsDTO) {

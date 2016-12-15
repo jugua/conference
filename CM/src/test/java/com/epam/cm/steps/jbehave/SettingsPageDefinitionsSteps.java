@@ -139,6 +139,11 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.clickEmailSaveBtn();
     }
 
+    @When("clicks email cancel button")
+    public void clickEmailCancelBtn(){
+        settingsSteps.clickEmailCancelBtn();
+    }
+
     @When("clicks Name's field Cancel button")
     public void clickNameCancelBtn() {
         settingsSteps.clickNameCancelBtn();
@@ -290,25 +295,37 @@ public class SettingsPageDefinitionsSteps {
     @Then("email has been changed")
     public void emailHasBeenChanged(){
        Assert.assertTrue(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
-       clickEditLinkNextToEmail();
+       //clickEditLinkNextToEmail();
        settingsSteps.typeEmail(settingsDTO.getOldEmail());
        clickEmailSaveBtn();
+    }
+
+
+    @Then("email didnt change")
+    public void emailDidntChange(){
+        Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getOldEmail()));
+        //clickEditLinkNextToEmail();
+        settingsSteps.typeEmail(settingsDTO.getOldEmail());
+        clickEmailSaveBtn();
+    }
+
+    @Then("user can log in with old credentials")
+    public void userCanUseOldCredentials() {
+        loginPageSteps.logout();
     }
 
     @Then("user is able to login with new password: $actTable")
     public void loginWithNewPw(ExamplesTable table){
         loginPageSteps.logout();
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
-
         loginPageSteps.unsignedUserInHomePage();
         loginPageSteps.clickOnAccountMenu();
         loginPageSteps.typeLoginAndPassword(user);
         loginPageSteps.clickSignInButton();
         loginPageSteps.clickSettingsOption();
 
-
-
     }
+
     @Given("changes his password: $actTable")
     @Then("changes his password: $actTable")
     public void resetBackPw(ExamplesTable table){
@@ -345,6 +362,5 @@ public class SettingsPageDefinitionsSteps {
         Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
                 MailCatcherClient.ResponseType.HTML).toString(), containsString(msg3));
     }
-
 
 }
