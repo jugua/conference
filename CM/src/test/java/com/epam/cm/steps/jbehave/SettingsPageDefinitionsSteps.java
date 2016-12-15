@@ -180,8 +180,8 @@ public class SettingsPageDefinitionsSteps {
     public void checkNameFieldElements(String firstName, String lastName) {
         System.out.println();
 
-        Assert.assertThat(firstName.trim().toLowerCase(), is(settingsSteps.getFirstNameLbl().trim()));
-        Assert.assertThat(lastName.trim().toLowerCase(), is(settingsSteps.getLastNameLbl().trim()));
+        Assert.assertThat(firstName.trim().toLowerCase(), is(settingsSteps.getFirstNameLbl().trim().toLowerCase()));
+        Assert.assertThat(lastName.trim().toLowerCase(), is(settingsSteps.getLastNameLbl().trim().toLowerCase()));
         Assert.assertTrue(settingsSteps.isSaveBtnVisible());
         Assert.assertTrue(settingsSteps.isCancelBtnVisble());
     }
