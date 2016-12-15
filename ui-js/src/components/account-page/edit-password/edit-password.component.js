@@ -3,11 +3,10 @@ import controller from './edit-password.controller';
 
 const editPasswordComponent = {
   bindings: {
-
+    editing: '='
   },
   template,
   controller,
-  controllerAs: 'editPasswordCtrl'
 };
 
 export default editPasswordComponent;

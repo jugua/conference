@@ -30,11 +30,11 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	@Before
 	public void setUp() {
 		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD", 
-				"testUrl", null, null);
+				"testUrl", User.UserStatus.CONFIRMED, null, null);
 		saveUser(user);
 		
 		user = new User(31L, "testName2", "testSurname2", "test2@gmail.com", "tribel1234PASSWORD2", 
-				"testUrl2", null, null);
+				"testUrl2",  User.UserStatus.CONFIRMED,null, null);
 		
 		saveUser(user);
 	}
@@ -49,7 +49,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	public void testSaveUser() {
 		User user = new User(null, "testName3", "testSurname3", "test3@gmail" +
 				".com",	"tribel1234PASSWORD3",
-				"testUrl3", null, null);
+				"testUrl3",  User.UserStatus.CONFIRMED,null, null);
 		
 		repository.saveUser(user);
 		
@@ -65,7 +65,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	public void testUpdateUser() {
 		User user = new User(null, "testName3", "testSurname3", "test3@gmail" +
 				".com", "tribel1234PASSWORD3",
-				"testUrl3", null, null);
+				"testUrl3",  User.UserStatus.CONFIRMED,null, null);
 		
 		repository.saveUser(user);
 		user.setId(2L);

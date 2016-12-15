@@ -16,7 +16,8 @@
   cursor: pointer
   transition: all 0.3s ease
 
-  &:hover
+  &:hover,
+  &:focus
     background: darken($dark-blue, 20%)
 
   &_right
@@ -100,6 +101,8 @@
   margin: 0 auto 10px
   font-size: 13px
   color: red
+  overflow-wrap: break-word
+  word-wrap: break-word
 
   &_center
     text-align: center
@@ -118,13 +121,13 @@
   align-items: center
   justify-content: center
   overflow: auto
-  z-index: 1
+  z-index: 2
   background: rgba(51, 51, 51, 0.35)
 
 .pop-up
   position: relative
   width: 450px
-  margin: auto
+  margin: auto 0
   background: white
 
   @media ($mxw:$sdmx)
@@ -152,9 +155,10 @@
       margin: 0
 
     &-user
-      overflow-wrap: break-word
-      hyphens: auto
+      word-wrap: break-word
       font-family: "Oswald Bold"
+      display: inline-block
+      max-width: 100%
 
   &__button
     margin: 10px auto 15px
@@ -203,3 +207,10 @@
 .webpack_bundle_images
   background: url("assets/img/default_ava.jpg")
   background: url("assets/img/favicon.png")
+
+.link
+  color: $link-blue
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline

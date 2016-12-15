@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserRepository;
@@ -36,7 +37,7 @@ public class SimpleUserService implements UserService{
 	@Transactional
 	public void save(User user) {
 		if (user.getUserRoles().size() == 0) {
-			user.addRole(roleService.getByName("SPEAKER"));
+			user.addRole(roleService.getByName(Role.SPEAKER));
 		}
 		if (user.getUserInfo() == null) {
 		    user.setUserInfo(new UserInfo());

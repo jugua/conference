@@ -10,6 +10,7 @@ import webpackConfig from '../webpack.config.js';
 gulp.task('build-prod', () => {
 
   let myConfig = Object.create(webpackConfig);
+  myConfig.devtool = false;
   myConfig.plugins = myConfig.plugins.concat(
     new webpack.DefinePlugin({
       "process.env": {
