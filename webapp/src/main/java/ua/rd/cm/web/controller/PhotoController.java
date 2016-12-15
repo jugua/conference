@@ -115,11 +115,12 @@ public class PhotoController {
         return ResponseEntity.status(status).body(message);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping
-    public ResponseEntity delete(Principal principal) {
+    public ResponseEntity delete(HttpServletRequest request) {
         MessageDto message = new MessageDto();
         HttpStatus status;
-        User currentUser = userService.getByEmail(principal.getName());
+        User currentUser = userService.getByEmail(request.getRemoteUser());
 
         if (photoService.deletePhoto(currentUser.getId().toString())) {
             currentUser.setPhoto(null);
