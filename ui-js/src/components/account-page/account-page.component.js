@@ -3,11 +3,10 @@ import controller from './account-page.controller';
 
 const accountPageComponent = {
   bindings: {
-
+    user: '='
   },
   template,
-  controller,
-  controllerAs: 'accountPageCtrl'
+  controller
 };
 
 export default accountPageComponent;

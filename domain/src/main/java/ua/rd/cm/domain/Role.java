@@ -1,9 +1,6 @@
 package ua.rd.cm.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -17,11 +14,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
+@ToString(exclude = "id")
 @Entity
 @Table(name = "role")
 @SequenceGenerator(name = "seqRoleGen", allocationSize = 1,
         sequenceName = "role_seq")
 public class Role implements GrantedAuthority {
+
+    public static String ORGANISER = "ROLE_ORGANISER";
+    public static String SPEAKER = "ROLE_SPEAKER";
 
     @Id
     @Column(name = "role_id")

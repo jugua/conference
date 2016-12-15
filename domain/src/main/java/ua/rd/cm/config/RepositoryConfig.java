@@ -1,8 +1,10 @@
 package ua.rd.cm.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -13,12 +15,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 
-/**
- * @author Yaroslav_Revin
- */
+
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
+@PropertySource("classpath:jdbc.properties")
 public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
