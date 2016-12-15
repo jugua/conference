@@ -324,12 +324,24 @@ public class SettingsPageDefinitionsSteps {
         user = table.getRowsAs(CredentialsDTO.class).get(0);
         System.out.println(mailCatcherClient.getLastEmail());
         //КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
-        Assert.assertThat( mailCatcherClient.getLastEmail().toString(), containsString(user.getEmail().toLowerCase()));
+        Assert.assertThat( mailCatcherClient.getLastEmail().getRecipients().get(0), containsString(user.getEmail().toLowerCase()));
     }
 
     @Then("subject's name is '$subject'")
     public void emailSubjectMatches(String subject){
         Assert.assertThat(mailCatcherClient.getLastEmail().getSubject(), is(subject));
+    }
+
+    @Then("body contains:'$msg1 <name>', '$msg2', '$msg3'")
+    public void checkEmailsBody(String msg1,String name, String msg2, String msg3){
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg1));
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(name));
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg2));
+        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
+                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg3));
     }
 
 

@@ -8,4 +8,10 @@ And changes his password:
 Then an email is send to users email adress:
 |email            |
 |testerPw@test.com|
-And subject's name is 'Your password has been changed'
+And subject's name is 'Password assistance'
+And body contains:'Hi <name>', 'Per your request, we have successfully changed your password.', 'The Conference Management Team.'
+
+
+Examples:
+|name  |
+|Tester|
