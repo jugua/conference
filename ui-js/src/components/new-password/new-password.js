@@ -1,4 +1,5 @@
 import newPasswordComponent from './new-password.component';
+import newPasswordService from './new-password.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -7,5 +8,6 @@ export default (app) => {
         url: '/forgotPassword/:tokenId',
         template: '<new-password></new-password>'
       });
-  }).component('newPassword', newPasswordComponent);
+  }).component('newPassword', newPasswordComponent)
+    .service('newPasswordService', newPasswordService);
 };

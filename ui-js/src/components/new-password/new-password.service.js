@@ -1,4 +1,4 @@
-class NewPasswordService {
+class newPasswordService {
     constructor ($http) {
         'ngInject';
 
@@ -23,4 +23,4 @@ class NewPasswordService {
     }
 }
 
-export default NewPasswordService;
+export default newPasswordService;
