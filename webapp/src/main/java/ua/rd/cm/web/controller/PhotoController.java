@@ -1,7 +1,6 @@
 package ua.rd.cm.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,8 +19,10 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Files;
+import java.net.URLConnection;
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/current/photo")
@@ -30,6 +31,11 @@ public class PhotoController {
     private PhotoService photoService;
 
     public static final long MAX_SIZE = 2097152;
+    public static final List<String> SUPPORTED_TYPES = Arrays.asList(
+            MediaType.IMAGE_GIF_VALUE,
+            MediaType.IMAGE_JPEG_VALUE,
+            MediaType.IMAGE_PNG_VALUE
+    );
 
     @Autowired
     public PhotoController(UserService userService, PhotoService photoService) {
@@ -37,24 +43,34 @@ public class PhotoController {
         this.photoService = photoService;
     }
 
-    private String getFormat(String fileName) {
-        int index = fileName.lastIndexOf('.');
-        if (index == -1) {
-            return "";
-        }
-        return fileName.substring(index + 1);
-    }
-
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity getFile(@PathVariable("id") String fileName) throws IOException {
-        File file = photoService.getPhoto(fileName);
-        InputStream inputStream = new FileInputStream(file);
-        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
-        HttpHeaders header = new HttpHeaders();
+    public ResponseEntity get(@PathVariable("id") Long userId) {
+        User user = userService.find(userId);
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
 
-        header.setContentType(new MediaType("image", getFormat(file.getName())));
-        header.setContentLength(file.length());
-        return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
+        File file = photoService.getPhoto(user.getPhoto());
+        if (file == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        String mimeType = getTypeIfSupported(file);
+        if (mimeType == null) {
+            return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+        try (InputStream inputStream = new FileInputStream(file)) {
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            HttpHeaders header = new HttpHeaders();
+
+            header.setContentType(new MediaType(mimeType.split("/")[0], mimeType.split("/")[1]));
+            header.setContentLength(file.length());
+
+            return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -62,57 +78,31 @@ public class PhotoController {
     public ResponseEntity upload(PhotoDto photoDto, HttpServletRequest request) {
         MessageDto message = new MessageDto();
         HttpStatus status;
+
         MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-
         if (file == null || file.isEmpty()) {
-            message.setError("save");
-            status = HttpStatus.BAD_REQUEST;
-        } else {
-            //TODO: check file for renaming another type into image type
-
-            try {
-                BufferedImage bi = ImageIO.read(file.getInputStream());
-                if (bi != null) {
-                    System.out.println(bi.toString());
-                } else {
-                    System.out.println("null");
-                    message.setError("pattern");
-                    status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-                    return ResponseEntity.status(status).body(message);
-                }
-            } catch (IOException e) {
-                message.setError("save");
-                status = HttpStatus.BAD_REQUEST;
-                return ResponseEntity.status(status).body(message);
-            }
-            if (file.getSize() > MAX_SIZE) {
-                message.setError("maxSize");
-                status = HttpStatus.PAYLOAD_TOO_LARGE;
-            } else if (!file.getOriginalFilename()
-                    .matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
-                message.setError("pattern");
-                status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
-            }else{
-                String path = photoService.savePhoto(file, currentUser.getId()
-                        .toString());
-
-                if (path != null) {
-                    currentUser.setPhoto(path);
-                    userService.updateUserProfile(currentUser);
-
-                    message.setStatus(path);
-                    //message.setAnswer("api/user/current/photo/" + currentUser.getId());
-                    status = HttpStatus.OK;
-                } else {
-                    return new ResponseEntity(HttpStatus.FORBIDDEN);
-                }
-            }
+            return createError(HttpStatus.BAD_REQUEST, "save");
+        }
+        if (file.getSize() > MAX_SIZE) {
+            return createError(HttpStatus.PAYLOAD_TOO_LARGE, "maxSize");
+        }
+        if (getTypeIfSupported(file) == null) {
+            return createError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "pattern");
 
         }
 
-        return ResponseEntity.status(status).body(message);
+        String path = photoService.savePhoto(file, currentUser.getId().toString(), currentUser.getPhoto());
+
+        if (path == null) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        currentUser.setPhoto(path);
+        userService.updateUserProfile(currentUser);
+
+        return createAnswer(HttpStatus.OK, "api/user/current/photo/" + currentUser.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -122,17 +112,65 @@ public class PhotoController {
         HttpStatus status;
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-        if (photoService.deletePhoto(currentUser.getId().toString())) {
-            currentUser.setPhoto(null);
-            userService.updateUserProfile(currentUser);
-
-            status = HttpStatus.OK;
-        } else {
-            message.setError("delete");
-            status = HttpStatus.BAD_REQUEST;
+        if (!photoService.deletePhoto(currentUser.getPhoto())) {
+            return createError(HttpStatus.BAD_REQUEST, "delete");
         }
 
+        currentUser.setPhoto(null);
+        userService.updateUserProfile(currentUser);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private ResponseEntity createError(HttpStatus status, String message) {
+        MessageDto messageDto = new MessageDto();
+        messageDto.setError(message);
         return ResponseEntity.status(status).body(message);
     }
 
+    private ResponseEntity createStatus(HttpStatus status, String message) {
+        MessageDto messageDto = new MessageDto();
+        messageDto.setStatus(message);
+        return ResponseEntity.status(status).body(message);
+    }
+
+    private ResponseEntity createAnswer(HttpStatus status, String message) {
+        MessageDto messageDto = new MessageDto();
+        messageDto.setAnswer(message);
+        return ResponseEntity.status(status).body(message);
+    }
+
+    private String getTypeIfSupported(File file) {
+        try {
+            return getTypeIfSupported(new FileInputStream(file));
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private String getTypeIfSupported(MultipartFile file) {
+        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
+            return null;
+        }
+
+        try {
+            return getTypeIfSupported(file.getInputStream());
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private String getTypeIfSupported(InputStream stream) {
+        try (InputStream inputStream =
+                     new BufferedInputStream(stream)) {
+            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
+            if (mimeType == null || !SUPPORTED_TYPES.contains(mimeType)) {
+                return null;
+            }
+
+            return mimeType;
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }

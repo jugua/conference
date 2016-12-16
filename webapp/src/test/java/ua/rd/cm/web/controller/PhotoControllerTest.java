@@ -26,7 +26,6 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.PhotoService;
-import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import java.io.*;
@@ -91,19 +90,6 @@ public class PhotoControllerTest {
         }
         return null;
     }
-//    @Test
-//    public void correctPhoto() throws Exception {
-////        Role speaker = createSpeakerRole();
-////        UserInfo info = createUserInfo();
-////        User user = createUser(speaker, info);
-////        Principal correctPrincipal = () -> user.getEmail();
-//        mockMvc.perform(post(API_PHOTO)
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//        ).andExpect(status().isAccepted());
-//    }
-//    @Test
-//    public void addCorrectPhoto(){
-//
 
     @Test
     public void correctUploadPhoto() throws Exception {
