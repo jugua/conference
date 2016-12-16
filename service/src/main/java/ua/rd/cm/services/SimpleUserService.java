@@ -89,6 +89,7 @@ public class SimpleUserService implements UserService{
 		save(user);
 		VerificationToken token = tokenService.createToken(user, VerificationToken.TokenType.CONFIRMATION);
 		tokenService.saveToken(token);
+		tokenService.setPreviousTokensExpired(token);
 		Map<String, Object> messageValues = setupMessageValues(token);
 		mailService.sendEmail(new ConfirmAccountPreparator(), messageValues);
 	}
@@ -102,7 +103,7 @@ public class SimpleUserService implements UserService{
 
 	private Map<String, Object> setupMessageValues(VerificationToken token) {
 		Map<String, Object> values = new HashMap<>();
-		values.put("link", "http://localhost:8081/#/registrationConfirm/" + token.getToken());
+		values.put("link", "http://localhost:8025/#/registrationConfirm/" + token.getToken());
 		values.put("name" , token.getUser().getFirstName());
 		values.put("email", token.getUser().getEmail());
 		return values;
