@@ -1,22 +1,33 @@
 package com.epam.cm.steps.jbehave;
 
+import com.epam.cm.core.mail.Email;
+import com.epam.cm.core.mail.MailCatcherClient;
 import com.epam.cm.dto.UserRegistrationInfoDTO;
 import com.epam.cm.steps.serenity.CreateAccountPageSteps;
 
+import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Steps;
 
+import org.hamcrest.Matcher;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 import org.junit.Assert;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.containsString;
+import static org.jsoup.nodes.Document.OutputSettings.Syntax.html;
 
 public class CreateAccountDefinitionsSteps {
 
     @Steps
     CreateAccountPageSteps createAccountSteps;
+
+    MailCatcherClient mailCatcherClient = new MailCatcherClient();
 
     @Given("user is on the sign up page")
     public void userOnSignUpPage() {
@@ -61,6 +72,14 @@ public class CreateAccountDefinitionsSteps {
     public void userIsRegistered() {
         Assert.assertTrue(createAccountSteps.isRegisteredSuccessfully());
     }
+
+    @Then("notification link was sent on email")
+    public void notificationLinkWasSent(){
+        createAccountSteps.openLinkFromEmail();
+        Assert.assertTrue(createAccountSteps.isUserLoggedIn());
+    }
+
+
 
     @When("user  leaves some of the following fields empty: First Name, Last Name, E-mail, Password, Confirm Password: $activityTable")
     public void userLeavesEmptyFields(final ExamplesTable registrationTable) {

@@ -14,6 +14,7 @@ When user  fill in the following fields: First Name, Last Name, E-mail, Password
 |<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
 And click submit button
 Then new user is registered
+And notification link was sent on email
 
 Examples:
 |<firstName>|<lastName>|<email>                |<password>|<confirmPassword>|
