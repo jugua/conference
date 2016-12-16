@@ -12,46 +12,33 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-<<<<<<< HEAD
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
-=======
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.services.UserService;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
->>>>>>> 36dd93549d271aa57cff853ca97e45a1e29cdaa7
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.PhotoService;
-<<<<<<< HEAD
 import ua.rd.cm.services.UserService;
-=======
->>>>>>> 36dd93549d271aa57cff853ca97e45a1e29cdaa7
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import java.io.*;
 import java.util.*;
 
-<<<<<<< HEAD
 import static org.mockito.Mockito.spy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by Artem_Pryzhkov on 29-Nov-16.
- */
-=======
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
->>>>>>> 36dd93549d271aa57cff853ca97e45a1e29cdaa7
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
@@ -74,21 +61,10 @@ public class PhotoControllerTest {
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
-<<<<<<< HEAD
         correctPhotoDto=setupCorrectPhotoDto();
 
     }
 
-    private PhotoDto setupCorrectPhotoDto(){
-        PhotoDto photoDto=new PhotoDto();
-        try {
-            File file= new File("src/test/resources/trybel_master.JPG");
-            FileInputStream fileInputStream=new FileInputStream(file);
-            MockMultipartFile mockFile=new MockMultipartFile("trybel_master",fileInputStream);
-=======
-        correctPhotoDto = setupCorrectPhotoDto();
-
-    }
 
     private PhotoDto setupCorrectPhotoDto() {
         PhotoDto photoDto = new PhotoDto();
@@ -99,7 +75,6 @@ public class PhotoControllerTest {
             System.out.println(fileInputStream.toString());
             MockMultipartFile mockFile = new MockMultipartFile("trybel_master", fileInputStream);
             System.out.println(mockFile.getName());
->>>>>>> 36dd93549d271aa57cff853ca97e45a1e29cdaa7
             photoDto.setFile(mockFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,33 +82,12 @@ public class PhotoControllerTest {
         return photoDto;
     }
 
-<<<<<<< HEAD
     @Test
     public void run(){
 
     }
 
-=======
-//    @Test
-//    public void correctPhoto() throws Exception {
-////        Role speaker = createSpeakerRole();
-////        UserInfo info = createUserInfo();
-////        User user = createUser(speaker, info);
-////        Principal correctPrincipal = () -> user.getEmail();
-//        mockMvc.perform(post(API_PHOTO)
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//        ).andExpect(status().isAccepted());
-//    }
-//    @Test
-//    public void addCorrectPhoto(){
-//
 
-
-    @Test
-    public void nullPhoto() {
-        correctPhotoDto.setFile(null);
-        checkForBadRequest(API_PHOTO, RequestMethod.POST, correctPhotoDto);
-    }
 
     private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
         try {
@@ -154,13 +108,6 @@ public class PhotoControllerTest {
         return mapper.writeValueAsBytes(object);
     }
 
-    private User createUser(Role role, UserInfo info) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "src/test/trybel_master.JPG", "url",
-                info, roles);
-        return user;
-    }
 
     private Role createSpeakerRole() {
         return new Role(1L, "SPEAKER");
@@ -180,5 +127,4 @@ public class PhotoControllerTest {
         }};
         return new UserInfo(1L, "bio", "job", "pastConference", "EPAM", contacts, "addInfo");
     }
->>>>>>> 36dd93549d271aa57cff853ca97e45a1e29cdaa7
 }
