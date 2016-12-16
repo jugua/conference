@@ -1,5 +1,5 @@
 export default class NewPasswordController {
-  constructor(NewPasswordService) {
+  constructor($state, $stateParams, NewPasswordService) {
     'ngInject';
 
     this.newPasswordService = NewPasswordService;
