@@ -6,7 +6,14 @@ export default class NewPasswordController {
 
     this.newPasswordForm = {};
     this.passwords = {};
+    this.passwordPattern = Constants.password;
 
+  }
+
+  newPassword () {
+    if (this.newPasswordForm.$valid && this.checkMatchPassword()){
+      this.newPasswordService.newPassword(this.passwords)
+    }
   }
 }
 

@@ -1,9 +1,8 @@
 class NewPasswordService {
-    constructor ($http, LocalStorage) {
+    constructor ($http) {
         'ngInject';
 
         this.http = $http;
-        this.LocalStorage = LocalStorage;
 
         this.errors = {
             nonSpace: 'Please use at least one non-space character in your password.',
