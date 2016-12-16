@@ -21,6 +21,8 @@ export default class EditEmailController {
     this.tooltipVisible = false;
 
     this.confirmTimeout = 3600000;  // default 1 hour
+
+    this.checkPendingUpdate();
   }
   checkPendingUpdate() {
     this.EditEmailService.checkPendingUpdate()
@@ -30,6 +32,7 @@ export default class EditEmailController {
         if (res.data.answer === 'pending_email_change_found') {
           console.log('pending change found');
           this.confirmTimeout = res.data.secondsToExpiry;
+          this.showConfirm();
         }
       })
       .catch((err) => {
