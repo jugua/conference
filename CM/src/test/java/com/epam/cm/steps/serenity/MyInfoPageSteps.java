@@ -55,7 +55,7 @@ public class MyInfoPageSteps {
 
     @Step
     public boolean isInformationSavedSuccessfully(MyInfoFieldsDTO myInfoTable) {
-        WebDriverSupport.reloadPage();
+       //55 WebDriverSupport.reloadPage();
         myInfoPage.waitForPageToLoad();
         return myInfoPage.isInformationSavedSuccessfully(myInfoTable);
     }
