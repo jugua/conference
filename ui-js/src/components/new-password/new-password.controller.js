@@ -9,7 +9,7 @@ export default class NewPasswordController {
     this.newPasswordForm = {};
     this.passwords = {};
     this.passwordPattern = Constants.password;
-//    this.confirm ();
+    this.confirm();
 
   }
 
