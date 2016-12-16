@@ -60,7 +60,8 @@ public class PhotoController {
             return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
 
-        try (InputStream inputStream = new FileInputStream(file)) {
+        try {
+            InputStream inputStream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
             HttpHeaders header = new HttpHeaders();
 
@@ -75,11 +76,11 @@ public class PhotoController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity upload(PhotoDto photoDto, HttpServletRequest request) {
+    public ResponseEntity upload(MultipartFile file, HttpServletRequest request) {
         MessageDto message = new MessageDto();
         HttpStatus status;
 
-        MultipartFile file = photoDto.getFile();
+        //MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
         if (file == null || file.isEmpty()) {
@@ -125,19 +126,19 @@ public class PhotoController {
     private ResponseEntity createError(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setError(message);
-        return ResponseEntity.status(status).body(message);
+        return ResponseEntity.status(status).body( messageDto);
     }
 
     private ResponseEntity createStatus(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setStatus(message);
-        return ResponseEntity.status(status).body(message);
+        return ResponseEntity.status(status).body( messageDto);
     }
 
     private ResponseEntity createAnswer(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setAnswer(message);
-        return ResponseEntity.status(status).body(message);
+        return ResponseEntity.status(status).body(messageDto);
     }
 
     private String getTypeIfSupported(File file) {

@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -32,6 +33,7 @@ import java.io.*;
 import java.util.*;
 
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,9 +44,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class PhotoControllerTest {
     public static final String API_PHOTO = "/api/user/current/photo";
+    private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private MockMvc mockMvc;
-    private PhotoDto correctPhotoDto;
+    private PhotoDto photoDto;
     private String alreadyRegisteredEmail = "registered@gmail.com";
+    private User user;
 
     @Autowired
     private UserService userService;
@@ -58,18 +62,16 @@ public class PhotoControllerTest {
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
-        correctPhotoDto =setupCorrectPhotoDto();
+        photoDto =setupCorrectPhotoDto();
+        user=createUser(createSpeakerRole(),createUserInfo());
     }
 
     private PhotoDto setupCorrectPhotoDto(){
         PhotoDto photoDto=new PhotoDto();
         try {
             File file= new File("src/test/resources/trybel_master.JPG");
-            System.out.println(file.getAbsolutePath());
             FileInputStream fileInputStream=new FileInputStream(file);
-            System.out.println(fileInputStream.toString());
             MockMultipartFile mockFile=new MockMultipartFile("trybel_master",fileInputStream);
-            System.out.println(mockFile.getName());
             photoDto.setFile(mockFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,13 +79,11 @@ public class PhotoControllerTest {
         return photoDto;
     }
 
-    private MockMultipartFile setupCorrectMultipartFile(){
+    MockMultipartFile setupCorrectMultipartFile(){
         try {
             File file= new File("src/test/resources/trybel_master.JPG");
-            System.out.println(file.getAbsolutePath());
             FileInputStream fileInputStream=new FileInputStream(file);
             MockMultipartFile mockFile=new MockMultipartFile("trybel_master",fileInputStream);
-            System.out.println("Mock="+mockFile.getName());
             return mockFile;
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,19 +92,24 @@ public class PhotoControllerTest {
     }
 
     @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
     public void correctUploadPhoto() throws Exception {
+        when(userService.getByEmail(user.getEmail())).thenReturn(user);
+
+        System.out.println(photoDto.getFile().getName());
+//        mockMvc.perform(post(API_PHOTO)
+//                .contentType(MediaType.APPLICATION_JSON_UTF8)
+//                .content(convertObjectToJsonBytes(photoDto))
+//        ).andExpect(status().isOk());
+
         mockMvc.perform(fileUpload(API_PHOTO)
-                .file(setupCorrectMultipartFile())
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .file(setupCorrectMultipartFile())
+                //.contentType(MediaType.MULTIPART_FORM_DATA)
+                //.param("photoDto", String.valueOf(photoDto.getFile().getBytes()))
+                //.content(convertObjectToJsonBytes(photoDto))
         ).andExpect(status().isOk());
     }
 
-    @Ignore
-    @Test
-    public void nullPhoto(){
-        correctPhotoDto.setFile(null);
-        checkForBadRequest(API_PHOTO, RequestMethod.POST, correctPhotoDto);
-    }
     private void checkForBadRequest(String uri, RequestMethod method, PhotoDto dto) {
         try {
             System.out.println("dto="+dto);
