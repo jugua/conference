@@ -1,17 +1,21 @@
-Scenario: User successfully save valid info
-Given user logged as speaker:
-|email                   |password     |
-|testNewUser@testUser.com|testuser12345|
-When user clicks My Info option in account menu
-And user fill valid info in fields:
-|shortBio  |jobTitle  |company  |pastConferences  |linkedIn  |twitter  |facebook  |blog  |additionalInfo  |
-|<shortBio>|<jobTitle>|<company>|<pastConferences>|<linkedIn>|<twitter>|<facebook>|<blog>|<additionalInfo>|
-Then successfully saved popup is shown
-And information saved successfully:
-|shortBio  |jobTitle  |company  |pastConferences  |linkedIn  |twitter  |facebook  |blog  |additionalInfo  |
-|<shortBio>|<jobTitle>|<company>|<pastConferences>|<linkedIn>|<twitter>|<facebook>|<blog>|<additionalInfo>|
+Scenario: Input invalid data into a 'Current password' field
+Meta:
+@regression
+Given user on the settings page logged as speaker:
+|email            |password|
+|testerPw@test.com|tester  |
+When user click on the Edit link next to Password
+And enter current password in 'Current password' field:
+|currentPw  |
+|<currentPw>|
+And enter new password in 'New password' field and confirms it:
+|newPw  |confirmNewPw|
+|tester1|tester1     |
+And clicks password's Save button
+Then messages apears saying 'You entered an invalid current password'
+
 
 Examples:
-|<shortBio>|<jobTitle>|<company>         |<pastConferences>|<linkedIn>|<twitter>|<facebook>         |<blog>        |<additionalInfo>   |
-|some info |job title |info about company|                 |          |         |                   |              |                   |
-|some info |job title |info about company|info about conf  |srgwg     |facebook |facebook.com/fwfwgg|some blog info|some additional info|
+|<currentPw>                    |
+|tester1234tester1234tester1234t|
+ 

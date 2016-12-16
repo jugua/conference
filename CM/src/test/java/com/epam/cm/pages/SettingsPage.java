@@ -61,7 +61,8 @@ public class SettingsPage extends AnyPage {
     private WebElementFacade confirmNewPwInput;
     @FindBy(xpath = "//*[@class='edit-password__buttons-wrapper']/input[1]")
     private WebElementFacade pwSaveBtn;
-
+    @FindBy(xpath = "//*[@class='edit-password']/span")
+    private WebElementFacade currentPwError;
     // email
 
     public SettingsPage(WebDriver driver) {
@@ -225,5 +226,9 @@ public class SettingsPage extends AnyPage {
 
     public void clickPwSaveBtn() {
         pwSaveBtn.click();
+    }
+
+    public String getCurrentPwErrorMsg(){
+        return currentPwError.getText();
     }
 }

@@ -186,4 +186,9 @@ public class SettingsPageSteps {
     public void clickPwSaveBtn() {
         settingsPage.clickPwSaveBtn();
     }
+
+    @Step
+    public String getCurrentErrorPw(){
+        return settingsPage.getCurrentPwErrorMsg();
+    }
 }
