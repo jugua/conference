@@ -47,7 +47,7 @@ public class MyInfoPageSteps {
     public boolean isInformationSavedSuccessfullyPopUp() {
         if (myInfoPage.isInformationSavedSuccessfullyPopUp()) {
             myInfoPage.clickInformationSavedSuccessfullyPopUpOkButton();
-            WebDriverSupport.reloadPage();
+            //WebDriverSupport.reloadPage();
             return true;
         }
         return false;

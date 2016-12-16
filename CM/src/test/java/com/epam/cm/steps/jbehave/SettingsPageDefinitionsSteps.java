@@ -312,6 +312,13 @@ public class SettingsPageDefinitionsSteps {
     @Then("user can log in with old credentials")
     public void userCanUseOldCredentials() {
         loginPageSteps.logout();
+        loginPageSteps.unsignedUserInHomePage();
+        loginPageSteps.clickOnAccountMenu();
+        loginPageSteps.typeLoginAndPassword(user);
+        loginPageSteps.clickSignInButton();
+        loginPageSteps.clickSettingsOption();
+        settingsSteps.clickEditLinkNextToEmail();
+        Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getOldEmail()));
     }
 
     @Then("user is able to login with new password: $actTable")
@@ -323,9 +330,9 @@ public class SettingsPageDefinitionsSteps {
         loginPageSteps.typeLoginAndPassword(user);
         loginPageSteps.clickSignInButton();
         loginPageSteps.clickSettingsOption();
-
     }
 
+    //запихать это говно в другое говно сверху этого говна(логинВизНьюПв)
     @Given("changes his password: $actTable")
     @Then("changes his password: $actTable")
     public void resetBackPw(ExamplesTable table){
