@@ -1,12 +1,11 @@
-// import EmailConfirmController from './email-confirm.controller';
-import service from './email-confirm.service';
+import service from './new-email-confirm.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
     $stateProvider
       .state('header.emailConfirm', {
-        url: '/emailConfirm/:token',
-        onEnter($state, $stateParams, Current, EmailConfirmService) {
+        url: '/newEmailConfirm/:token',
+        onEnter($state, $stateParams, Current, NewEmailConfirmService) {
           'ngInject';
 
 
@@ -17,7 +16,7 @@ export default (app) => {
           console.log(EmailConfirmService.emailConfirm);
           console.log(Current);
 
-          EmailConfirmService.emailConfirm($stateParams.token)
+          NewEmailConfirmService.emailConfirm($stateParams.token)
             .then(
               (res) => {
                 console.log('resolve success');
@@ -34,5 +33,5 @@ export default (app) => {
             );
         }
       });
-  }).service('EmailConfirmService', service);
+  }).service('NewEmailConfirmService', service);
 };

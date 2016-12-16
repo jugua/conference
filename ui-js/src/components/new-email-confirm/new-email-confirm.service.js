@@ -1,4 +1,4 @@
-export default class EmailConfirmService {
+export default class NewEmailConfirmService {
   constructor($http) {
     'ngInject';
 
@@ -7,6 +7,6 @@ export default class EmailConfirmService {
   }
 
   emailConfirm(token) {
-    return this.http.get(`/api/emailConfirm/${token}`);
+    return this.http.get(`/api/newEmailConfirm/${token}`);
   }
 }
