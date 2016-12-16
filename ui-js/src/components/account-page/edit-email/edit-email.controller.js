@@ -25,7 +25,7 @@ export default class EditEmailController {
     this.checkPendingUpdate();
   }
   checkPendingUpdate() {
-    this.EditEmailService.checkPendingUpdate()
+    this.editEmailService.checkPendingUpdate()
       .then((res) => {
         console.log('successful result:');
         console.log(res);
