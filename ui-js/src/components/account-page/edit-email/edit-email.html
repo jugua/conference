@@ -25,6 +25,7 @@
                type="text"
                name="newEmail"
                required
+               ng-disabled="$ctrl.pendingChange"
                ng-pattern="$ctrl.emailPattern"
                ng-model="$ctrl.newEmail"
                ng-focus="$ctrl.showTooltip()"

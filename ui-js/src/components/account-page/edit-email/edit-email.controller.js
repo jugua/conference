@@ -20,6 +20,7 @@ export default class EditEmailController {
 
     this.tooltipVisible = false;
 
+    this.pendingChange = false;
     this.confirmTimeout = 3600000;  // default 1 hour
 
     this.checkPendingUpdate();
@@ -31,6 +32,7 @@ export default class EditEmailController {
         console.log(res);
         if (res.data.answer === 'pending_email_change_found') {
           console.log('pending change found');
+          this.pendingChange = true;
           this.confirmTimeout = res.data.secondsToExpiry;
           this.showConfirm();
         }
@@ -50,7 +52,8 @@ export default class EditEmailController {
     } else if (this.editEmailForm.$valid) {
       this.editEmailService.updateEmail(this.newEmail)
         .then(() => {
-          this.user.mail = this.newEmail;
+          // this.user.mail = this.newEmail;
+          this.pendingChange = true;
           this.showConfirm(this.messages.confirmationSent);
         })
         .catch((err) => {
