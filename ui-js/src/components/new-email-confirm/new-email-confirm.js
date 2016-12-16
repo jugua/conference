@@ -11,9 +11,9 @@ export default (app) => {
 
           console.log('onEnter:');
           console.log($stateParams.token);
-          console.log(EmailConfirmService);
-          console.log(EmailConfirmService.wat);
-          console.log(EmailConfirmService.emailConfirm);
+          console.log(NewEmailConfirmService);
+          console.log(NewEmailConfirmService.wat);
+          console.log(NewEmailConfirmService.emailConfirm);
           console.log(Current);
 
           NewEmailConfirmService.emailConfirm($stateParams.token)
