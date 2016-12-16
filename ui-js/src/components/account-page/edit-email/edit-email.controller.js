@@ -19,6 +19,23 @@ export default class EditEmailController {
     this.changed = false;
 
     this.tooltipVisible = false;
+
+    this.confirmTimeout = 3600000;  // default 1 hour
+  }
+  checkPendingUpdate() {
+    this.EditEmailService.checkPendingUpdate()
+      .then((res) => {
+        console.log('successful result:');
+        console.log(res);
+        if (res.data.answer === 'pending_email_change_found') {
+          console.log('pending change found');
+          this.confirmTimeout = res.data.secondsToExpiry;
+        }
+      })
+      .catch((err) => {
+        console.log('error:');
+        console.log(err);
+      });
   }
   changeEmail() {
     if (this.editEmailForm.newEmail.$error.pattern ||
@@ -63,7 +80,7 @@ export default class EditEmailController {
       this.confirmMessage = null;
       this.changed = false;
       this.closeEditEmail();
-    }, 2000);
+    }, this.confirmTimeout);
   }
   closeEditEmail() {
     this.error = false;
