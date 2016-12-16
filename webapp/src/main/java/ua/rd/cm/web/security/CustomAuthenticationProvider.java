@@ -11,22 +11,24 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ua.rd.cm.domain.User;
 import ua.rd.cm.services.CustomUserDetailsService;
+import ua.rd.cm.services.UserService;
 
 
 @Component
-@Import(CustomUserDetailsService.class)
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private UserService userService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        UserDetails user = customUserDetailsService.loadUserByUsername(username);
+        User currentUser = userService.getByEmail(username);
+        UserDetails user = createUserDetails(currentUser);
 
         if (user == null) {
             throw new BadCredentialsException("{\"error\":\"login_auth_err\"}");
@@ -34,6 +36,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         if (!password.equals(user.getPassword())) {
             throw new BadCredentialsException("{\"error\":\"password_auth_err\"}");
+        }
+
+        if (!isUserAccountConfirmed(currentUser)) {
+            throw new BadCredentialsException("{\"error\":\"confirm_reg\"}");
         }
 
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
@@ -44,5 +50,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public boolean supports(Class<?> arg0) {
         return true;
+    }
+
+    private UserDetails createUserDetails(User user) {
+        return  new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getUserRoles());
+    }
+
+    private boolean isUserAccountConfirmed(User currentUser) {
+        return currentUser.getStatus().equals(User.UserStatus.CONFIRMED);
     }
 }

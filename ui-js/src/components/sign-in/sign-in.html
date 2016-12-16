@@ -11,6 +11,7 @@
            required
            tabindex="1">
     <span class="field-error" ng-if="$ctrl.userForm.mail.$error.login_auth_err">We can not find an account with that email address</span>
+    <span class="field-error" ng-if="$ctrl.userForm.mail.$error.confirm_reg">You have to go to your email and confirm your account</span>
     <div class="sign-in__password-cont">
       <label for="sign-in-password" class="form-label">password:</label>
       <a href="#" ui-sref="header.home.forgotPassword" class="sign-in__forgot" tabindex="3">forgot password?</a>

@@ -34,11 +34,15 @@ public class SimpleUserServiceTest {
 	private UserRepository repository;
 	@Mock
 	private RoleService roleService;
+	@Mock
+	private MailService mailService;
+	@Mock
+	private VerificationTokenService tokenService;
 	private UserService service;
 	
 	@Before
 	public void initialize() {
-		service = new SimpleUserService(repository,roleService);
+		service = new SimpleUserService(repository, roleService, mailService, tokenService);
 	}
 
 	@Test

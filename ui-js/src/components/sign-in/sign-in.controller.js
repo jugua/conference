@@ -12,6 +12,7 @@ export default class SignInController {
   login() {
     this.userForm.password.$setValidity('password_auth_err', true);
     this.userForm.mail.$setValidity('login_auth_err', true);
+    this.userForm.mail.$setValidity('confirm_reg', true);
 
     if (this.userForm.mail.$error.required || this.userForm.mail.$error.pattern) {
       this.userForm.mail.$setValidity('login_auth_err', false);
@@ -32,6 +33,9 @@ export default class SignInController {
     }
 
     if (error === 'login_auth_err') {
+      this.userForm.mail.$setValidity(error, false);
+    }
+    if (error === 'confirm_reg') {
       this.userForm.mail.$setValidity(error, false);
     }
   }
