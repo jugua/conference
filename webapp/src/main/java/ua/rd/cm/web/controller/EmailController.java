@@ -21,9 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.services.preparator.ForgotMessagePreparator;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.controller.dto.NewPasswordDto;
 
 @RestController
@@ -34,14 +36,18 @@ public class EmailController {
 	private UserService userService;
 	private ObjectMapper objectMapper;
 	private ModelMapper modelMapper;
+	private VerificationTokenService tokenService;
 	
 	@Autowired
 	public EmailController(MailService mailService, UserService userService,
-						   ModelMapper modelMapper, ObjectMapper objectMapper) {
+						   ModelMapper modelMapper, ObjectMapper objectMapper,
+						   VerificationTokenService tokenService) {
+		
 		this.mailService = mailService;
 		this.userService = userService;
 		this.modelMapper = modelMapper;
 		this.objectMapper = objectMapper;
+		this.tokenService = tokenService;
 	}
 	
 	@PostMapping("/forgot-password")
@@ -50,11 +56,14 @@ public class EmailController {
 		ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
 		
 		if(node.get("mail") != null) {
-			String userEmail = node.get("mail").textValue();
+			User currentUser = userService.getByEmail(node.get("mail").textValue());
+			VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
+			tokenService.saveToken(token);
 			
 			Map<String, Object> model = new HashMap<>();
-			model.put("email", userEmail);
-			model.put("name", userService.getByEmail(userEmail).getFirstName());
+			model.put("email", currentUser.getEmail());
+			model.put("name", currentUser.getFirstName());
+			model.put("link", "http://site" + token.getToken());
 			mailService.sendEmail(new ForgotMessagePreparator(), model);
 			httpStatus = HttpStatus.OK;
 		} else {

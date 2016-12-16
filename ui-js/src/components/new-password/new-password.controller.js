@@ -11,6 +11,7 @@ export default class NewPasswordController {
   }
 
   newPassword () {
+    this.setToDefault();
     if (this.newPasswordForm.$valid && this.checkMatchPassword()){
       this.newPasswordService.newPassword(this.passwords)
     }

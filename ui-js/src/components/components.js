@@ -13,6 +13,9 @@ import logoutComponent from './logout/logout';
 import newTalkComponent from './newtalk/newtalk';
 import talksComponent from './talks/talks';
 import newPasswordComponent from './new-password/new-password';
+import registrationConfirm from './registration-confirm/registration-confirm';
+import invalidLink from './invalid-link/invalid-link';
+
 
 export default (app) => {
   include_all_modules([
@@ -29,6 +32,8 @@ export default (app) => {
     newTalkComponent,
     talksComponent,
     logoutComponent,
-    newPasswordComponent
+    newPasswordComponent,
+    registrationConfirm,
+    invalidLink
   ], app);
 };
