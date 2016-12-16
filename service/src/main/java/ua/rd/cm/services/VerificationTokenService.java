@@ -9,6 +9,8 @@ import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -42,7 +44,8 @@ public class VerificationTokenService {
     }
 
     public boolean isTokenValid(VerificationToken verificationToken, VerificationToken.TokenType currentType) {
-        return (verificationToken != null && verificationToken.getType().equals(currentType));
+        return (verificationToken != null && verificationToken.getType().equals(currentType) 
+        		&& verificationToken.getStatus().equals(VerificationToken.TokenStatus.VALID));
     }
 
     public boolean isTokenExpired(VerificationToken verificationToken) {
