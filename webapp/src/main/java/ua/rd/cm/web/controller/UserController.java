@@ -54,7 +54,7 @@ public class UserController {
             logger.error("Registration failed: " + dto.toString() +
                         ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
         } else {
-            userService.save(dtoToEntity(dto));
+            userService.registerNewUser(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
             message.setStatus("success");
         }
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<UserDto> getCurrentUser(Principal principal){
+    public ResponseEntity getCurrentUser(Principal principal){
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -90,8 +90,6 @@ public class UserController {
         }
         return new ResponseEntity(status);
     }
-
-
 
     private UserInfo prepareNewUserInfo(String email, UserDto dto) {
         User currentUser = userService.getByEmail(email);

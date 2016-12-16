@@ -4,21 +4,17 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.internet.MimeMessage;
 
-/**
- * @author Olha_Melnyk
- */
-public class ChangePasswordPreparator extends CustomMimeMessagePreparator {
-
+public class ConfirmAccountPreparator extends CustomMimeMessagePreparator{
     @Override
     public String getTemplateName() {
-        return "change_password_template.ftl";
+        return "confirmation-process.ftl";
     }
 
     @Override
     public void prepare(MimeMessage mimeMessage) throws Exception {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-        helper.setSubject("Your password has been changed");
+        helper.setSubject("Confirm Your Account");
         helper.setFrom("support@conference.com");
         helper.setTo((String)model.get("email"));
         helper.setText(getFreeMarkerTemplateContent(model), true);

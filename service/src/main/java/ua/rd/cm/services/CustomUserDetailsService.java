@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 /**
  * @author Yaroslav_Revin
  */
-@Service
+@Deprecated
 public class CustomUserDetailsService implements UserDetailsService{
 
     @Autowired
