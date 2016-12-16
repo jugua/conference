@@ -1,26 +1,27 @@
 class newPasswordService {
-    constructor ($http) {
-        'ngInject';
+  constructor($http) {
+    'ngInject';
 
-        this.http = $http;
-    }
+    this.http = $http;
+  }
 
-    passConfirm (token){
-      return this.http.get(`/api/registrationConfirm/${token}`);
-    }
+  passConfirm(token) {
+    return this.http.get(`/api/forgotPassword/${token}`, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+      }
+    });
+  }
 
-    changePassword(passwords) {
-        return this.http.post('api/user/current/password', passwords, {
-            headers: {
-                'Cache-Control': 'no-cache, no-store',
-                Pragma: 'no-cache',
-            }
-        });
-    }
-
-    getErrors() {
-        return this.errors;
-    }
+  changePassword(passwords, token) {
+    return this.http.post(`/api/forgotPassword/${token}`, passwords, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+      }
+    });
+  }
 }
 
 export default newPasswordService;
