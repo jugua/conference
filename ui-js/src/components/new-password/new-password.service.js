@@ -11,7 +11,8 @@ class newPasswordService {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
       }
-  });
+    });
+  }
 
   changePassword(passwords, token) {
     return this.http.post(`/api/forgotPassword/${token}`, passwords, {
