@@ -14,6 +14,7 @@ import newTalkComponent from './newtalk/newtalk';
 import talksComponent from './talks/talks';
 import registrationConfirm from './registration-confirm/registration-confirm';
 import invalidLink from './invalid-link/invalid-link';
+import emailConfirm from './email-confirm/email-confirm';
 
 export default (app) => {
   include_all_modules([
@@ -32,5 +33,6 @@ export default (app) => {
     logoutComponent,
     registrationConfirm,
     invalidLink,
+    emailConfirm,
   ], app);
 };
