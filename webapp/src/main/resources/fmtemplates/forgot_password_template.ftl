@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -1435,7 +1434,7 @@
                             <table class="button content_button float-center"><tr><td><table><tr><td><a href="${link}">Reset password</a></td></tr></table></td></tr></table>
                         </center>
                         <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
-                        <p>Sincerely yours, <br> The Conference Management Team.</p>
+                        <p>Sincerely yours, <br> The Conference Management team.</p>
                     </th>
 <th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
