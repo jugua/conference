@@ -71,7 +71,6 @@ public class MyInfoPageDefinitionSteps {
     @Then("successfully saved popup is shown")
     public void checkInformationSavedSuccessfullyPopUp() {
         myInfoSteps.userClickSaveButton();
-        System.out.println("cv");
         Assert.assertTrue(myInfoSteps.isInformationSavedSuccessfullyPopUp());
     }
 

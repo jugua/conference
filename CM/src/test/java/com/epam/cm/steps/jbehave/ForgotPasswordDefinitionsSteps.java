@@ -92,10 +92,10 @@ public class ForgotPasswordDefinitionsSteps {
         Assert.assertTrue(forgotPwdPgSteps.isEmailForgotPwFieldHighlighted());
     }
 
-    @Then("message apears saying:'$msg <email>'")
-    public void thenPopUpApears(String msg, String email) {
+    @Then("message apears saying:'$msg'")
+    public void thenPopUpApears(String msg) {
         Assert.assertThat(forgotPwdPgSteps.getNotficationText(), containsString(msg));
-        Assert.assertThat(forgotPwdPgSteps.getNotficationText(), containsString(email));
+
     }
 
     @Then("'Close' button is shown")

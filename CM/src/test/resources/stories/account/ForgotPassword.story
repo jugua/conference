@@ -36,7 +36,7 @@ And clicks the forgot password link
 Then new pop up will appears saying 'Please enter your email:'
 And user fiels email textbox with valid: <email>
 And clicks on Continue button
-And message apears saying:'We sent a new password to your email address <email>'
+And message apears saying:'We just emailed you a link. Please check your email and click the secure link.'
 And 'Close' button is shown
 
 Examples:
@@ -73,7 +73,7 @@ Given the unsigned user accesses the conference management home page
 When uses forgot password function
 And user fiels email textbox with valid: <email>
 Then clicks on Continue button
-And message apears saying:'We sent a new password to your email address <email>'
+And message apears saying:'We just emailed you a link. Please check your email and click the secure link.'
 And an email is send to users email adress:
 |email            |
 |tester@tester.com|
