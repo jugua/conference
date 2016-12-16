@@ -1426,7 +1426,7 @@
                     <th class="small-12 large-12 columns first last"><table><tr><th>
                         <p>Dear ${name},</p>
                         <p>You've just requested to change an email address. To complete the changes, please follow this link:</p>
-						<p>${link}</p>
+						<p><a href="${link}">${link}</a></p>
                         <p>This link will expire in 1 hour, so be sure to use it right away.</p>
                         <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
                         <center data-parsed="">
