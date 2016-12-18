@@ -88,8 +88,8 @@ public class SimpleUserService implements UserService{
 	public void registerNewUser(User user) {
 		save(user);
 		VerificationToken token = tokenService.createToken(user, VerificationToken.TokenType.CONFIRMATION);
-		tokenService.saveToken(token);
 		tokenService.setPreviousTokensExpired(token);
+		tokenService.saveToken(token);
 		Map<String, Object> messageValues = setupMessageValues(token);
 		mailService.sendEmail(new ConfirmAccountPreparator(), messageValues);
 	}

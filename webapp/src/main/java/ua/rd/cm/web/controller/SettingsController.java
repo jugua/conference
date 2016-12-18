@@ -115,9 +115,9 @@ public class SettingsController {
         }
 
         VerificationToken token = tokenService.createNewEmailToken(user,
-                VerificationToken.TokenType.CONFIRMATION, email);
-        tokenService.saveToken(token);
+                VerificationToken.TokenType.CHANGING_EMAIL, email);
         tokenService.setPreviousTokensExpired(token);
+        tokenService.saveToken(token);
 
         Map<String, Object> messageValues = setupMessageValues(user.getFirstName(), email,
                 "http://localhost:8025/#/newEmailConfirm/" + token.getToken());
