@@ -61,7 +61,7 @@ public class SignInController {
         }
     }
 
-    @GetMapping("/newEmailConfirm/{token}")
+    @GetMapping("/newEmailConfirm/{token:.+}")
     public ResponseEntity confirmNewEmail(@PathVariable String token) {
         VerificationToken verificationToken = tokenService.getToken(token);
 

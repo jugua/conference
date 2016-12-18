@@ -8,17 +8,10 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
-import ua.rd.cm.repository.specification.verificationtoken
-        .VerificationTokenByStatus;
+import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByStatus;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
-
-
-
-import ua.rd.cm.repository.specification.verificationtoken
-        .VerificationTokenByType;
-import ua.rd.cm.repository.specification.verificationtoken
-        .VerificationTokenByUserId;
-
+import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByType;
+import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByUserId;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -48,9 +41,7 @@ public class VerificationTokenService {
     public VerificationToken createNewEmailToken(User user, VerificationToken
             .TokenType tokenType, String newEmail) {
         VerificationToken token = createToken(user, tokenType);
-        String beforeAt = newEmail.split("@")[0];
-        String afterAt = newEmail.split("@")[1];
-        token.setToken(afterAt + "&" + token.getToken() + "&" + beforeAt);
+        token.setToken(token.getToken() + "|" + newEmail);
         return token;
     }
 
@@ -107,10 +98,13 @@ public class VerificationTokenService {
     }
 
     public String getEmail(String token) {
-        String afterAt = token.substring(token.indexOf('&'));
-        String beforeAt = token.substring(token.lastIndexOf('&'));
+        int index = token.indexOf('|');
 
-        return beforeAt + "@" + afterAt;
+        if (index == -1) {
+            return null;
+        }
+
+        return token.substring(index + 1);
     }
 
     @Transactional
