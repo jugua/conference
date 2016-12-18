@@ -34,7 +34,7 @@ export default class EditEmailController {
           console.log('pending change found');
           this.pendingChange = true;
           this.confirmTimeout = res.data.secondsToExpiry;
-          this.showConfirm();
+          this.showConfirm(this.messages.confirmationSent);
         }
       })
       .catch((err) => {
