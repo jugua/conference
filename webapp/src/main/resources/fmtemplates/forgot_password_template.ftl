@@ -1425,7 +1425,7 @@
                 <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
                 <table class="row"><tbody><tr>
                     <th class="small-12 large-12 columns first last"><table><tr><th>
-                        <p>Hello  ${name},</p>
+                        <p>Dear  ${name},</p>
                         <p>You recently requested a password reset. To change your password click the button or paste the following link into your browser:
                            ${link}</p>
                         <p>This link will expire in 1 hour, so be sure to use it right away.</p>
@@ -1434,7 +1434,7 @@
                             <table class="button content_button float-center"><tr><td><table><tr><td><a href="${link}">Reset password</a></td></tr></table></td></tr></table>
                         </center>
                         <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
-                        <p>Sincerely yours, <br> The Conference Management team.</p>
+                        <p>Sincerely yours, <br> The Conference Management Team.</p>
                     </th>
 <th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
