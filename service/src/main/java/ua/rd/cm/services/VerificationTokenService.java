@@ -67,7 +67,8 @@ public class VerificationTokenService {
     }
 
     public boolean isTokenValid(VerificationToken verificationToken, VerificationToken.TokenType currentType) {
-        return (verificationToken != null && verificationToken.getType().equals(currentType));
+        return (verificationToken != null && verificationToken.getType().equals(currentType) 
+        		&& verificationToken.getStatus().equals(VerificationToken.TokenStatus.VALID));
     }
 
     public boolean isTokenExpired(VerificationToken verificationToken) {

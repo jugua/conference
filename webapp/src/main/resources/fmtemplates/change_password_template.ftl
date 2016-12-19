@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/app.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Password reset</title>
+    <title>Your password has been changed</title>
       <style>
           .wrapper {
               width: 100%; }

@@ -12,9 +12,11 @@ import userPhotoComponent from './user-photo/user-photo';
 import logoutComponent from './logout/logout';
 import newTalkComponent from './newtalk/newtalk';
 import talksComponent from './talks/talks';
+import newPasswordComponent from './new-password/new-password';
 import registrationConfirm from './registration-confirm/registration-confirm';
 import invalidLink from './invalid-link/invalid-link';
 import newEmailConfirm from './new-email-confirm/new-email-confirm';
+
 
 export default (app) => {
   include_all_modules([
@@ -31,8 +33,9 @@ export default (app) => {
     newTalkComponent,
     talksComponent,
     logoutComponent,
+    newPasswordComponent,
     registrationConfirm,
     invalidLink,
-    newEmailConfirm,
+    newEmailConfirm
   ], app);
 };
