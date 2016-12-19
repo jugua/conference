@@ -15,9 +15,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 
-/**
- * @author Yaroslav_Revin
- */
+
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
@@ -29,9 +27,9 @@ public class RepositoryConfig {
         BasicDataSource ds = new BasicDataSource();
 
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/conference_management");
-        ds.setUsername("root");
-        ds.setPassword("Artem11063880AA");
+        ds.setUrl("jdbc:mysql://localhost:3306/conference_management_test");
+        ds.setUsername("trybel_master");
+        ds.setPassword("password");
 
         return ds;
     }

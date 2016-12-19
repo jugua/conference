@@ -9,7 +9,7 @@ import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
 
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
