@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/app.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Password reset</title>
+    <title>Your password has been changed</title>
       <style>
           .wrapper {
               width: 100%; }
@@ -1428,7 +1428,7 @@
                     <th class="small-12 large-12 columns first last"><table><tr><th>
                         <p>Hi ${name},</p>
                         <p>Per your request, we have successfully changed your password.</p>
-                        <p>Thanks, <br> The Conference Management team.</p>
+                        <p>Thanks, <br> The Conference Management Team.</p>
                     </th>
 <th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
