@@ -102,7 +102,7 @@ public class SimpleUserService implements UserService{
 
 	private Map<String, Object> setupMessageValues(VerificationToken token) {
 		Map<String, Object> values = new HashMap<>();
-		values.put("link", "http://localhost:8081/#/registrationConfirm/" + token.getToken());
+		values.put("link", "http://localhost:8050/#/registrationConfirm/" + token.getToken());
 		values.put("name" , token.getUser().getFirstName());
 		values.put("email", token.getUser().getEmail());
 		return values;

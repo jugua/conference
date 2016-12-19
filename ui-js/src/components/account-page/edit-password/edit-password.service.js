@@ -7,11 +7,11 @@ class EditPasswordService {
 
     this.errors = {
       nonSpace: 'Please use at least one non-space character in your password.',
-      minLength: 'Your password must be at least 6 characters long. Please try another',
+      minLength: 'Your password must be at least 6 characters long. Please try another.',
       maxLength: 'Your password should not be longer than 30 characters. Please try another.',
       require: 'All fields are mandatory. Please make sure all required fields are filled out.',
       passwordsMatch: 'Passwords do not match.',
-      wrongPassword: 'You entered an invalid current password'
+      wrongPassword: 'You entered an invalid current password.'
     };
   }
 
