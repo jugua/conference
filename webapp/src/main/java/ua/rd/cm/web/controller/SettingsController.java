@@ -120,7 +120,7 @@ public class SettingsController {
         tokenService.saveToken(token);
 
         Map<String, Object> messageValues = setupMessageValues(user.getFirstName(), email,
-                "http://localhost:8025/#/api/newEmailConfirm/" + token.getToken());
+                "http://localhost:8025/#/newEmailConfirm/" + token.getToken());
         mailService.sendEmail(new NewEmailMessagePreparator(), messageValues);
 
         return ResponseEntity.ok().build();

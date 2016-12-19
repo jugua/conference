@@ -34,7 +34,7 @@ export default (app) => {
     logoutComponent,
     newPasswordComponent,
     registrationConfirm,
-    invalidLink
+    invalidLink,
     newEmailConfirm,
   ], app);
 };
