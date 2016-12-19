@@ -17,9 +17,9 @@ public class OldEmailMessagePreparator extends CustomMimeMessagePreparator {
     public void prepare(MimeMessage mimeMessage) throws Exception {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-        helper.setSubject("Password assistance");
+        helper.setSubject("Email address has been changed");
         helper.setFrom("support@conference.com");
-        helper.setTo((String)model.get("email"));
+        helper.setTo((String)model.get("oldEmail"));
         helper.setText(getFreeMarkerTemplateContent(model), true);
     }
 }
