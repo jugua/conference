@@ -110,6 +110,14 @@ public class PhotoControllerTest {
         ).andExpect(status().isOk());
     }
 
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    public void nullUploadPhoto() throws Exception {
+        mockMvc.perform(fileUpload(API_PHOTO)
+                .file(setupCorrectMultipartFile())
+        ).andExpect(status().isBadRequest());
+    }
+
     private void checkForBadRequest(String uri, RequestMethod method, PhotoDto dto) {
         try {
             System.out.println("dto="+dto);
