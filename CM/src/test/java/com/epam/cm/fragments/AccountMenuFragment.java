@@ -37,6 +37,12 @@ public interface AccountMenuFragment extends WidgetObject {
 
     void clickSettingsOption();
 
+    void clickSaveBtn();
+
+    void setNewPwForConfirmationEmail(String pw);
+
+    void setConfirmNewPwForConfirmationEmail(String confPw);
+
     boolean isAccountMenuUnfolded();
 
     boolean isSignOutBtnExist();

@@ -25,7 +25,7 @@ When user clicks the login button
 And clicks the forgot password link
 Then new pop up will appears saying 'Please enter your email:'
 And clicks on Continue button
-And message is shown sayin Email is required
+And message is shown sayin Please enter your registered email
 And email field is highlighted
 
 Scenario: User input valid data into 'Forgot password?' form
@@ -78,8 +78,13 @@ And an email is send to users email adress:
 |email            |
 |tester@tester.com|
 And subject's name is 'Password assistance'
+And notification link was sent on email for Forgot Password
+And fills new password 'tester'
+And "Your Account" replaced by "Tester's Account"
 
 
 Examples:
 |email              |
 |tester@tester.com  |
+
+

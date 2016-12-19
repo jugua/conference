@@ -62,7 +62,12 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     private WebElementFacade cancelNotifiPopUpBtn;
     @FindBy(xpath = "//forgot-password//form/span[2]")
     private WebElementFacade invalidEmailMsg;
-
+    @FindBy(xpath = "//*[@class='password__block']/form/input[@name='newPassword']")
+    private WebElementFacade newPasswordInput;
+    @FindBy(xpath = "//*[@class='password__block']/form/input[@name='confirmPassword']")
+    private WebElementFacade confirmPasswordInput;
+    @FindBy(xpath = "//*[@class='password__block']/form/input[@class='btn password__btn']")
+    private WebElementFacade saveConfBtn;
 
     @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/account']")
     private WebElementFacade settingsOption;
@@ -239,5 +244,17 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
     public void clickSettingsOption() {
         settingsOption.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
+    }
+
+    public void setNewPwForConfirmationEmail(String password){
+        newPasswordInput.type(password);
+    }
+
+    public void setConfirmNewPwForConfirmationEmail(String confPw){
+        confirmPasswordInput.type(confPw);
+    }
+
+    public void clickSaveBtn(){
+        saveConfBtn.click();
     }
 }

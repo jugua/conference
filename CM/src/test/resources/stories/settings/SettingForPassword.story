@@ -85,7 +85,7 @@ And enter new password in 'New password' field and confirms it:
 |newPw  |confirmNewPw  |
 |<newPw>|<confirmNewPw>|
 And clicks password's Save button
-Then messages apears saying 'Your password must be at least 6 characters long. Please try another'
+Then messages apears saying 'Your password must be at least 6 characters long. Please try another.'
 Examples:
 |<newPw>|<confirmNewPw>|
 |1      |1             |
