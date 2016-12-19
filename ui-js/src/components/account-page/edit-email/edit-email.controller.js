@@ -28,18 +28,11 @@ export default class EditEmailController {
   checkPendingUpdate() {
     this.editEmailService.checkPendingUpdate()
       .then((res) => {
-        console.log('successful result:');
-        console.log(res);
         if (res.data.answer === 'pending_email_change_found') {
           this.pendingChange = true;
           this.confirmTimeout = res.data.secondsToExpiry * 1000;
-          console.log(`setting timeout to ${this.confirmTimeout} ms`);
           this.showConfirm(this.messages.confirmationSent);
         }
-      })
-      .catch((err) => {
-        console.log('error:');
-        console.log(err);
       });
   }
   changeEmail() {
@@ -53,7 +46,6 @@ export default class EditEmailController {
       this.buttonsBlocked = true;   // block the buttons until the promise is resolved
       this.editEmailService.updateEmail(this.newEmail)
         .then(() => {
-          // this.user.mail = this.newEmail;
           this.pendingChange = true;
           this.showConfirm(this.messages.confirmationSent);
         })
