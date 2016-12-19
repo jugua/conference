@@ -88,7 +88,7 @@
           ng-show="$ctrl.userForm.confirm.$error.passwords_match">
                 Passwords do not match</span>
 
-    <input type="submit" class="sign-up__button btn" value="submit">
+    <input type="submit" class="sign-up__button btn" value="submit" ng-disabled="$ctrl.formSented">
   </form>
 </div>
 
@@ -101,4 +101,3 @@
     <button class="btn pop-up__button" ui-sref="header.home">OK</button>
   </div>
 </div>
-
