@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.security.auth.x500.X500Principal;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +38,7 @@ import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.NewPasswordDto;
 import ua.rd.cm.web.controller.dto.UserDto;
+import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 @RestController
 @RequestMapping("/api")
@@ -46,6 +49,9 @@ public class EmailController {
 	private ObjectMapper objectMapper;
 	private ModelMapper modelMapper;
 	private VerificationTokenService tokenService;
+	
+	@Autowired
+	CustomAuthenticationProvider authenticationProvider;
 	
 	@Autowired
 	public EmailController(MailService mailService, UserService userService,
@@ -103,7 +109,13 @@ public class EmailController {
 	@PostMapping("/forgotPassword/{token}")
 	public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto, BindingResult bindingResult) {
 		VerificationToken verificationToken = tokenService.getToken(token);
-
+		if(!isPasswordConfirmed(dto)) 
+			return ResponseEntity.badRequest().build();
+		
+		User currentuser = verificationToken.getUser();
+		currentuser.setPassword(dto.getPassword());
+		userService.updateUserProfile(currentuser);
+			
 		return ResponseEntity.ok().build();
 	}
 	
@@ -120,11 +132,11 @@ public class EmailController {
     }
 	
 	private void authenticateUser(User user) {
-        Principal principal = user::getEmail;
+		String username = user.getEmail();
         String credentials = user.getPassword();
-        Set<Role> roleSet = user.getUserRoles();
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, roleSet);
+        Authentication auth = authenticationProvider
+        		.authenticate(new UsernamePasswordAuthenticationToken(username, credentials));
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 	
