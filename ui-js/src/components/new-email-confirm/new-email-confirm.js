@@ -9,15 +9,15 @@ export default (app) => {
           'ngInject';
 
           NewEmailConfirmService.emailConfirm($stateParams.token)
-            .then(
-              (res) => {
-                Current.getInfo();
-                $state.go('header.home', {}, { reload: true });
-              },
-              (err) => {
-                $state.go('header.invalidLink', {}, { reload: true });
-              }
-            );
+            .then((res) => {
+              console.log(res);
+              Current.getInfo();
+              $state.go('header.home', {}, { reload: true });
+            })
+            .catch((err) => {
+              console.log(err);
+              $state.go('header.invalidLink', {}, { reload: true });
+            });
         }
       });
   }).service('NewEmailConfirmService', service);
