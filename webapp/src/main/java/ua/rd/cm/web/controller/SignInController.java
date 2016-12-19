@@ -10,11 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
+import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.preparator.OldEmailMessagePreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -23,11 +28,14 @@ public class SignInController {
 
     private VerificationTokenService tokenService;
     private UserService userService;
+    private MailService mailService;
 
     @Autowired
-    public SignInController(VerificationTokenService tokenService, UserService userService) {
+    public SignInController(VerificationTokenService tokenService,
+                            UserService userService, MailService mailService) {
         this.tokenService = tokenService;
         this.userService = userService;
+        this.mailService = mailService;
     }
 
     @PostMapping("/login")
@@ -51,6 +59,44 @@ public class SignInController {
 
             return ResponseEntity.ok().build();
         }
+    }
+
+    @GetMapping("/newEmailConfirm/{token:.+}")
+    public ResponseEntity confirmNewEmail(@PathVariable String token) {
+        VerificationToken verificationToken = tokenService.getToken(token);
+
+        if (!tokenService.isTokenValid(verificationToken, VerificationToken.TokenType.CHANGING_EMAIL)) {
+            return ResponseEntity.badRequest().body(prepareMessageDto("invalid_link"));
+        }
+        if (tokenService.isTokenExpired(verificationToken)) {
+            return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
+        }
+
+        User user = verificationToken.getUser();
+        String newEmail = tokenService.getEmail(token);
+        String oldEmail = user.getEmail();
+
+        user.setEmail(newEmail);
+        userService.updateUserProfile(user);
+
+        setTokenStatusExpired(verificationToken);
+
+        Map<String, Object> messageValues = setupMessageValues(user.getFirstName(),
+                oldEmail, newEmail,  LocalDateTime.now().toString());
+        mailService.sendEmail(new OldEmailMessagePreparator(), messageValues);
+
+        authenticateUser(verificationToken.getUser());
+
+        return ResponseEntity.ok().build();
+    }
+
+    private Map<String, Object> setupMessageValues(String name, String oldEmail, String newEmail, String dateTime) {
+        Map<String, Object> values = new HashMap<>();
+        values.put("name" , name);
+        values.put("oldEmail", oldEmail);
+        values.put("newEmail", newEmail);
+        values.put("dateTime", dateTime);
+        return values;
     }
 
     private void setTokenStatusExpired(VerificationToken verificationToken) {
