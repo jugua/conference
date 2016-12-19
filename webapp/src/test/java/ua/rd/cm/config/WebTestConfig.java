@@ -54,5 +54,10 @@ public class WebTestConfig {
 	public MailService mockMailService() {
 		return mock(MailService.class);
 	}
+	
+	@Bean
+	public VerificationTokenService mockVerificationTokenService() {
+		return mock(VerificationTokenService.class);
+	}
 
 }

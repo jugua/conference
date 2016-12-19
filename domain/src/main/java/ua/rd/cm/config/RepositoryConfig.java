@@ -1,8 +1,10 @@
 package ua.rd.cm.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -19,6 +21,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
+@PropertySource("classpath:jdbc.properties")
 public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
@@ -27,8 +30,8 @@ public class RepositoryConfig {
 
         ds.setDriverClassName("com.mysql.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/conference_management");
-        ds.setUsername("root");
-        ds.setPassword("1234qwe");
+        ds.setUsername("trybel_master");
+        ds.setPassword("password");
 
         return ds;
     }

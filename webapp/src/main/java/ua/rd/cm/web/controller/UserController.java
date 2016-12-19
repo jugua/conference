@@ -14,10 +14,7 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.web.controller.dto.MessageDto;
-import ua.rd.cm.web.controller.dto.RegistrationDto;
-import ua.rd.cm.web.controller.dto.UserDto;
-import ua.rd.cm.web.controller.dto.UserInfoDto;
+import ua.rd.cm.web.controller.dto.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -57,7 +54,7 @@ public class UserController {
             logger.error("Registration failed: " + dto.toString() +
                         ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
         } else {
-            userService.save(dtoToEntity(dto));
+            userService.registerNewUser(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
             message.setStatus("success");
         }
@@ -65,7 +62,7 @@ public class UserController {
     }
 
     @GetMapping("/current")
-    public ResponseEntity<UserDto> getCurrentUser(Principal principal){
+    public ResponseEntity getCurrentUser(Principal principal){
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -73,15 +70,13 @@ public class UserController {
         if (currentUser == null) {
             logger.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } if (isUserUnconfirmed(currentUser)) {
-            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
         }
     }
 
-    @PostMapping("/current")
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto, Principal principal, BindingResult bindingResult) {
+    @PostMapping(value = "/current")
+    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto, Principal principal, BindingResult bindingResult) {
         HttpStatus status;
         if (bindingResult.hasFieldErrors()) {
             status = HttpStatus.BAD_REQUEST;
@@ -90,24 +85,24 @@ public class UserController {
         } else {
             String userEmail = principal.getName();
             userInfoService.update(prepareNewUserInfo(userEmail, dto));
+            userService.updateUserProfile(prepareNewUser(userEmail,dto));
             status = HttpStatus.OK;
         }
         return new ResponseEntity(status);
     }
 
-    private boolean isPasswordConfirmed(RegistrationDto dto) {
-        return dto.getPassword().equals(dto.getConfirm());
-    }
-
-    private boolean isUserUnconfirmed(User currentUser) {
-        return User.UserStatus.UNCONFIRMED.equals(currentUser.getStatus());
-    }
-
-    private UserInfo prepareNewUserInfo(String email, UserInfoDto dto) {
+    private UserInfo prepareNewUserInfo(String email, UserDto dto) {
         User currentUser = userService.getByEmail(email);
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
         currentUserInfo.setId(currentUser.getUserInfo().getId());
         return currentUserInfo;
+    }
+
+    private User prepareNewUser(String email,UserDto dto){
+        User currentUser = userService.getByEmail(email);
+        currentUser.setFirstName(dto.getFirstName());
+        currentUser.setLastName(dto.getLastName());
+        return currentUser;
     }
 
     private User dtoToEntity(RegistrationDto dto) {
@@ -117,7 +112,8 @@ public class UserController {
         return user;
     }
 
-    private UserInfo userInfoDtoToEntity(UserInfoDto dto) {
+
+    private UserInfo userInfoDtoToEntity(UserDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
         Map<ContactType, String> contacts = userInfo.getContacts();
         contacts.put(contactTypeService.findByName("LinkedIn").get(0), dto.getLinkedIn());
@@ -133,7 +129,7 @@ public class UserController {
         if (user.getPhoto() != null) {
             dto.setPhoto("api/user/current/photo/" + user.getId());
         }
-        dto.setLinkedin(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
+        dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
         dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
         dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
@@ -145,8 +141,13 @@ public class UserController {
         String[] rolesFirstLetters = new String[roles.size()];
         Role[] rolesFullNames = roles.toArray(new Role[roles.size()]);
         for(int i = 0; i < roles.size(); i++){
-            rolesFirstLetters[i] = rolesFullNames[i].getName().substring(0, 1).toLowerCase();
+            String role = rolesFullNames[i].getName().split("_")[1];
+            rolesFirstLetters[i] = role.substring(0, 1).toLowerCase();
         }
         return rolesFirstLetters;
+    }
+
+    private boolean isPasswordConfirmed(RegistrationDto dto) {
+        return dto.getPassword().equals(dto.getConfirm());
     }
 }

@@ -21,4 +21,6 @@ public interface UserService {
 	List<User> getByLastName(String lastName);
 	
 	boolean isEmailExist(String email);
+
+    void registerNewUser(User user);
 }

@@ -20,10 +20,6 @@ function Current($resource, $q, $rootScope, LocalStorage) {
   });
 
   function getInfo() {
-    if (!LocalStorage.getToken()) {
-      this.current = null;
-      return;
-    }
     const current = $q.defer();
     users.getCurrentUser({}, (data) => {
       current.resolve(data);
