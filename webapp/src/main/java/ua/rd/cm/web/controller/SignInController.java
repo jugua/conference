@@ -82,7 +82,7 @@ public class SignInController {
         setTokenStatusExpired(verificationToken);
 
         Map<String, Object> messageValues = setupMessageValues(user.getFirstName(),
-                newEmail, oldEmail, LocalDateTime.now().toString());
+                oldEmail, newEmail,  LocalDateTime.now().toString());
         mailService.sendEmail(new OldEmailMessagePreparator(), messageValues);
 
         authenticateUser(verificationToken.getUser());
