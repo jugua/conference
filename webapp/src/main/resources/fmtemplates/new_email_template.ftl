@@ -1433,7 +1433,7 @@
                             <table class="button content_button float-center"><tr><td><table><tr><td><a href="${link}">Confirm</a></td></tr></table></td></tr></table>
                         </center>
                         <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
-                        <p>Sincerely yours, <br> The Conference Management team.</p>
+                        <p>Sincerely yours, <br> The Conference Management Team.</p>
                     </th>
 <th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
