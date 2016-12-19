@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import ua.rd.cm.web.controller.dto.RegistrationDto;
 import ua.rd.cm.web.controller.dto.UserDto;
 import ua.rd.cm.web.controller.dto.UserInfoDto;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
@@ -30,6 +32,7 @@ public class UserController {
     private UserService userService;
     private UserInfoService userInfoService;
     private ContactTypeService contactTypeService;
+    private Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
     public UserController(ModelMapper mapper, UserService userService, UserInfoService userInfoService,
@@ -41,15 +44,18 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity register(@Valid @RequestBody RegistrationDto dto, BindingResult bindingResult){
+    public ResponseEntity register(@Valid @RequestBody RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request){
         HttpStatus status;
         MessageDto message = new MessageDto();
         if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)){
             status = HttpStatus.BAD_REQUEST;
             message.setError("empty_fields");
+            logger.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
         } else if (userService.isEmailExist(dto.getEmail().toLowerCase())){
             status = HttpStatus.CONFLICT;
             message.setError("email_already_exists");
+            logger.error("Registration failed: " + dto.toString() +
+                        ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
         } else {
             userService.save(dtoToEntity(dto));
             status = HttpStatus.ACCEPTED;
@@ -63,11 +69,12 @@ public class UserController {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
         User currentUser = userService.getByEmail(principal.getName());
-
         if (currentUser == null) {
+            logger.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } if (isUserUnconfirmed(currentUser)) {
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
         }
@@ -88,6 +95,14 @@ public class UserController {
         return new ResponseEntity(status);
     }
 
+    private boolean isPasswordConfirmed(RegistrationDto dto) {
+        return dto.getPassword().equals(dto.getConfirm());
+    }
+
+    private boolean isUserUnconfirmed(User currentUser) {
+        return User.UserStatus.UNCONFIRMED.equals(currentUser.getStatus());
+    }
+
     private UserInfo prepareNewUserInfo(String email, UserInfoDto dto) {
         User currentUser = userService.getByEmail(email);
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
@@ -98,6 +113,7 @@ public class UserController {
     private User dtoToEntity(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
+        user.setStatus(User.UserStatus.UNCONFIRMED);
         return user;
     }
 
@@ -132,9 +148,5 @@ public class UserController {
             rolesFirstLetters[i] = rolesFullNames[i].getName().substring(0, 1).toLowerCase();
         }
         return rolesFirstLetters;
-    }
-
-    private boolean isPasswordConfirmed(RegistrationDto dto) {
-        return dto.getPassword().equals(dto.getConfirm());
     }
 }

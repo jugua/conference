@@ -48,6 +48,8 @@ public class UserControllerTest {
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
     private UserInfoDto correctUserInfoDto;
+    private User user;
+    private Principal correctPrincipal;
     private String uniqueEmail = "unique@gmail.com";
     private String alreadyRegisteredEmail = "registered@gmail.com";
 
@@ -68,6 +70,8 @@ public class UserControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
         correctUserInfoDto = setupCorrectUserInfoDto();
+        user = createUser();
+        correctPrincipal = user::getEmail;
     }
 
     @Test
@@ -194,11 +198,6 @@ public class UserControllerTest {
 
     @Test
     public void correctPrincipalGetCurrentUserTest() throws Exception{
-        Role speaker = createSpeakerRole();
-        UserInfo info = createUserInfo();
-        User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
-
         when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
 
         mockMvc.perform(get(API_USER_CURRENT)
@@ -220,12 +219,18 @@ public class UserControllerTest {
     }
 
     @Test
-    public void correctFillUserInfoTest() throws Exception{
-        Role speaker = createSpeakerRole();
-        UserInfo info = createUserInfo();
-        User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
+    public void unconfirmedUserGettingAccessTest() throws Exception{
+        user.setStatus(User.UserStatus.UNCONFIRMED);
 
+        when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
+
+        mockMvc.perform(get(API_USER_CURRENT)
+                .principal(correctPrincipal)
+        ).andExpect(status().isIAmATeapot());
+    }
+
+    @Test
+    public void correctFillUserInfoTest() throws Exception{
         when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
 
         mockMvc.perform(post(API_USER_CURRENT)
@@ -309,6 +314,12 @@ public class UserControllerTest {
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
+    private User createUser() {
+        Role speaker = createSpeakerRole();
+        UserInfo info = createUserInfo();
+        return createUser(speaker, info);
+    }
+
     private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
         try {
             if (method == RequestMethod.GET) {
@@ -362,7 +373,7 @@ public class UserControllerTest {
     private User createUser(Role role , UserInfo info){
         Set<Role> roles = new HashSet<>();
         roles.add(role);
-        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "pass", "url", info, roles);
+        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "pass", "url", User.UserStatus.CONFIRMED, info, roles);
         return user;
     }
 

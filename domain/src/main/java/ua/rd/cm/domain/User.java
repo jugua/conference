@@ -18,6 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "id")
+@ToString(exclude = {"id", "password", "photo", "userInfo"})
 @Entity
 @Table(name = "user")
 @SequenceGenerator(name = "seqUserGen", allocationSize = 1,
@@ -44,6 +45,10 @@ public class User {
     @Column(name = "photo")
     private String photo;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_info_id", unique = true)
     private UserInfo userInfo;
@@ -56,4 +61,7 @@ public class User {
         return userRoles.add(role);
     }
 
+    public enum UserStatus {
+        CONFIRMED, UNCONFIRMED;
+    }
 }

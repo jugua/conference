@@ -69,7 +69,7 @@
       background-size: 50%
 
   &__select
-    width: 35px
+    width: 70px
     height: 25px
     display: block
     padding-left: 15px
@@ -78,6 +78,9 @@
     +box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15))
     font-family: Oswald Light, sans-serif
 
+  &__per-page
+    font-family: "Oswald Light"
+    margin-left: 20px
 
 .my-talk-settings
   height: 80px
@@ -95,7 +98,6 @@
   &__filters
     display: flex
     flex-wrap: wrap
-    justify-content: center
 
   &__title
     text-transform: capitalize
@@ -134,7 +136,7 @@
     font-family: Oswald Light, sans-serif
 
     &:focus
-     outline: none
+      outline: none
 
     &:hover
       cursor: pointer
@@ -157,7 +159,8 @@
     padding-left: 15px
 
   &__date
-    margin: 15px 0
+    margin: 0
+    position: relative
 
   &__select-wrapper
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
@@ -356,8 +359,8 @@
         width: 100%
         padding: 2px
         &:before
-           content: 'Date'
-           +my-talk-before-title
+          content: 'Date'
+          +my-talk-before-title
 
     &_status-talk
       width: 7%
@@ -490,8 +493,25 @@
   @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
     display: none
 
+.calendars-wrapper
+  display: flex
+
 .md-datepicker-input-mask
   background: #fff
+
+.md-datepicker-button
+  position: absolute
+  right: 0
+  z-index: 1
+
+.md-datepicker-input
+  pointer-events: none
+
+.md-icon-button + .md-datepicker-input-container
+  padding: 3px 0
+
+.md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator
+  border: 1px solid rgb(16,108,200)
 
 .md-datepicker-input-mask-opaque
   color: rgba(0,0,0,0.87)
