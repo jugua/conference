@@ -15,6 +15,7 @@ import talksComponent from './talks/talks';
 import newPasswordComponent from './new-password/new-password';
 import registrationConfirm from './registration-confirm/registration-confirm';
 import invalidLink from './invalid-link/invalid-link';
+import newEmailConfirm from './new-email-confirm/new-email-confirm';
 
 
 export default (app) => {
@@ -34,6 +35,7 @@ export default (app) => {
     logoutComponent,
     newPasswordComponent,
     registrationConfirm,
-    invalidLink
+    invalidLink,
+    newEmailConfirm
   ], app);
 };

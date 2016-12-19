@@ -28,11 +28,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         User currentUser = userService.getByEmail(username);
-        UserDetails user = createUserDetails(currentUser);
 
-        if (user == null) {
+        if (currentUser == null) {
             throw new BadCredentialsException("{\"error\":\"login_auth_err\"}");
         }
+
+        UserDetails user = createUserDetails(currentUser);
 
         if (!password.equals(user.getPassword())) {
             throw new BadCredentialsException("{\"error\":\"password_auth_err\"}");
