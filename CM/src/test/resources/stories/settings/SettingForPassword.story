@@ -61,7 +61,7 @@ And enter new password in 'New password' field and confirms it:
 |newPw  |confirmNewPw|
 |tester1|tester1     |
 And clicks password's Save button
-Then messages apears saying 'You entered an invalid current password'
+Then messages apears saying 'You entered an invalid current password.'
 
 
 Examples:
