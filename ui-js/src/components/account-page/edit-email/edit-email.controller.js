@@ -16,7 +16,7 @@ export default class EditEmailController {
     this.error = false;
     this.errorMessage = null;
 
-    this.changed = false;
+    this.buttonsBlocked = false;
 
     this.tooltipVisible = false;
 
@@ -33,7 +33,7 @@ export default class EditEmailController {
         if (res.data.answer === 'pending_email_change_found') {
           this.pendingChange = true;
           this.confirmTimeout = res.data.secondsToExpiry * 1000;
-          console.log('setting timeout to '+this.confirmTimeout+' ms');
+          console.log(`setting timeout to ${this.confirmTimeout} ms`);
           this.showConfirm(this.messages.confirmationSent);
         }
       })
@@ -50,6 +50,7 @@ export default class EditEmailController {
       this.showError(this.messages.errEmailIsTheSame);
       this.editEmailForm.newEmail.$setValidity('email_is_the_same', false);
     } else if (this.editEmailForm.$valid) {
+      this.buttonsBlocked = true;   // block the buttons until the promise is resolved
       this.editEmailService.updateEmail(this.newEmail)
         .then(() => {
           // this.user.mail = this.newEmail;
@@ -65,7 +66,8 @@ export default class EditEmailController {
           } else {  // unknown error, default handler
             this.showError(err.data.error);
           }
-        });
+        })
+        .finally(this.buttonsBlocked = false);
     }
   }
   showError(message) {
@@ -79,12 +81,9 @@ export default class EditEmailController {
     this.confirm = true;
     this.confirmMessage = message;
 
-    this.changed = true;
-
     this.timeout(() => {
       this.confirm = false;
       this.confirmMessage = null;
-      this.changed = false;
       this.closeEditEmail();
     }, this.confirmTimeout);
   }
