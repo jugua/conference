@@ -78,7 +78,7 @@ public class EmailController {
 			Map<String, Object> model = new HashMap<>();
 			model.put("email", currentUser.getEmail());
 			model.put("name", currentUser.getFirstName());
-			model.put("link", "http://localhost:8025/#/forgotPassword/" + token.getToken());
+			model.put("link", "http://localhost:8050/#/forgotPassword/" + token.getToken());
 			mailService.sendEmail(new ForgotMessagePreparator(), model);
 			httpStatus = HttpStatus.OK;
 		} else {
