@@ -50,6 +50,7 @@ public class SimplePhotoService implements PhotoService {
         if (!dir.exists()) {
             dir.mkdirs();
         }
+
         return dir;
     }
 

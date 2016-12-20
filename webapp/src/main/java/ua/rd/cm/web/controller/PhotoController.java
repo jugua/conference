@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.User;
@@ -14,6 +15,9 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLConnection;
 import java.security.Principal;
@@ -56,7 +60,8 @@ public class PhotoController {
             return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
 
-        try (InputStream inputStream = new FileInputStream(file)) {
+        try {
+            InputStream inputStream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
             HttpHeaders header = new HttpHeaders();
 
@@ -69,10 +74,14 @@ public class PhotoController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity upload(PhotoDto photoDto, Principal principal) {
-        MultipartFile file = photoDto.getFile();
-        User currentUser = userService.getByEmail(principal.getName());
+    public ResponseEntity upload(MultipartFile file, HttpServletRequest request) {
+        MessageDto message = new MessageDto();
+        HttpStatus status;
+
+        //MultipartFile file = photoDto.getFile();
+        User currentUser = userService.getByEmail(request.getRemoteUser());
 
         if (file == null || file.isEmpty()) {
             return createError(HttpStatus.BAD_REQUEST, "save");
@@ -82,6 +91,7 @@ public class PhotoController {
         }
         if (getTypeIfSupported(file) == null) {
             return createError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "pattern");
+
         }
 
         String path = photoService.savePhoto(file, currentUser.getId().toString(), currentUser.getPhoto());
@@ -96,9 +106,12 @@ public class PhotoController {
         return createAnswer(HttpStatus.OK, "api/user/current/photo/" + currentUser.getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping
-    public ResponseEntity delete(Principal principal) {
-        User currentUser = userService.getByEmail(principal.getName());
+    public ResponseEntity delete(HttpServletRequest request) {
+        MessageDto message = new MessageDto();
+        HttpStatus status;
+        User currentUser = userService.getByEmail(request.getRemoteUser());
 
         if (!photoService.deletePhoto(currentUser.getPhoto())) {
             return createError(HttpStatus.BAD_REQUEST, "delete");
@@ -113,13 +126,13 @@ public class PhotoController {
     private ResponseEntity createError(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setError(message);
-        return ResponseEntity.status(status).body(messageDto);
+        return ResponseEntity.status(status).body( messageDto);
     }
 
     private ResponseEntity createStatus(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setStatus(message);
-        return ResponseEntity.status(status).body(messageDto);
+        return ResponseEntity.status(status).body( messageDto);
     }
 
     private ResponseEntity createAnswer(HttpStatus status, String message) {
