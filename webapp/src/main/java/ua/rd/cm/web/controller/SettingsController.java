@@ -10,9 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.ChangePasswordPreparator;
+import ua.rd.cm.services.preparator.NewEmailMessagePreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.SettingsDto;
 
@@ -20,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,13 +38,17 @@ public class SettingsController {
     private ObjectMapper mapper;
     private UserService userService;
     private MailService mailService;
+    private VerificationTokenService tokenService;
     private Logger logger = Logger.getLogger(SettingsController.class);
 
     @Autowired
-    public SettingsController(ObjectMapper mapper, UserService userService, MailService mailService) {
+    public SettingsController(ObjectMapper mapper, UserService userService,
+                              MailService mailService,
+                              VerificationTokenService tokenService) {
         this.mapper = mapper;
         this.userService = userService;
         this.mailService = mailService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/password")
@@ -85,14 +94,63 @@ public class SettingsController {
     }
 
     @PostMapping("/email")
-    public String changeEmail(@RequestBody String mail, Principal principal) {
-        String email = parseMail(mail);
-
-        if (email == null) {
-
+    public ResponseEntity changeEmail(@RequestBody String mail, Principal principal) {
+        if (principal == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 
-        return mail;
+        User user = userService.getByEmail(principal.getName());
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        String email = parseMail(mail);
+        if (email == null || !email.matches("(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        if (userService.getByEmail(email) != null) {
+            MessageDto messageDto = new MessageDto();
+            messageDto.setError("email_already_exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(messageDto);
+        }
+
+        VerificationToken token = tokenService.createNewEmailToken(user,
+                VerificationToken.TokenType.CHANGING_EMAIL, email);
+        tokenService.setPreviousTokensExpired(token);
+        tokenService.saveToken(token);
+
+        Map<String, Object> messageValues = setupMessageValues(user.getFirstName(), email,
+                "http://localhost:8050/#/newEmailConfirm/" + token.getToken());
+        mailService.sendEmail(new NewEmailMessagePreparator(), messageValues);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity getEmailVerificationState(Principal principal) {
+        if (principal == null) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        User user = userService.getByEmail(principal.getName());
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        VerificationToken token = tokenService.getValidTokenByUserIdAndType
+                (user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);
+        MessageDto messageDto = new MessageDto();
+
+        if (token == null) {
+            messageDto.setAnswer("no_pending_email_changes");
+            return ResponseEntity.ok(messageDto);
+        }
+
+        messageDto.setAnswer("pending_email_change_found");
+        messageDto.setSecondsToExpiry(String.valueOf(
+                ChronoUnit.SECONDS.between(
+                        LocalDateTime.now(), token.getExpiryDate())));
+        return ResponseEntity.ok(messageDto);
     }
 
     private String parseMail(String mail) {
@@ -106,6 +164,15 @@ public class SettingsController {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    private Map<String, Object> setupMessageValues(String name, String email,
+                                                   String link) {
+        Map<String, Object> values = new HashMap<>();
+        values.put("name" , name);
+        values.put("email", email);
+        values.put("link", link);
+        return values;
     }
 
     private boolean checkCurrentPasswordMatches(SettingsDto dto, User user) {

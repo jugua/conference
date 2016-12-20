@@ -17,7 +17,7 @@ public class NewEmailMessagePreparator extends CustomMimeMessagePreparator {
     public void prepare(MimeMessage mimeMessage) throws Exception {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-        helper.setSubject("Password assistance");
+        helper.setSubject("Email Verification");
         helper.setFrom("support@conference.com");
         helper.setTo((String)model.get("email"));
         helper.setText(getFreeMarkerTemplateContent(model), true);

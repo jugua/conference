@@ -22,6 +22,15 @@ class EditEmailService {
     });
   }
 
+  checkPendingUpdate() {
+    return this.http.get('api/user/current/email', {
+      headers: {
+        'Cache-Control': 'no-cache, no-store',
+        Pragma: 'no-cache',
+      }
+    });
+  }
+
   getMessages() {
     return this.messages;
   }
