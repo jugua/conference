@@ -1,4 +1,3 @@
-/* global include_all_modules */
 import headerComponent from './header/header';
 import homeComponent from './home/home';
 import signInComponent from './sign-in/sign-in';
@@ -15,6 +14,7 @@ import talksComponent from './talks/talks';
 import newPasswordComponent from './new-password/new-password';
 import registrationConfirm from './registration-confirm/registration-confirm';
 import invalidLink from './invalid-link/invalid-link';
+import newEmailConfirm from './new-email-confirm/new-email-confirm';
 
 
 export default (app) => {
@@ -35,6 +35,6 @@ export default (app) => {
     newPasswordComponent,
     registrationConfirm,
     invalidLink,
-    newEmailConfirm,
+    newEmailConfirm
   ], app);
 };
