@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -1427,12 +1426,9 @@
                     <table class="row"><tbody><tr>
                         <th class="small-12 large-12 columns first last"><table><tr><th>
                             <p>Dear ${name},</p>
-                            <p>You recently registered for Conference Management.
-                                To complete your registration, please confirm your account
-                                <a href="${link}">link</a>
-                                <br>
-                                This link will expire in 1 hour, so be sure to use it right away.
-                            </p>
+                            <p>You recently registered for Conference Management. To complete your registration, please confirm your account</p>
+                            <p><a href="${link}">${link}</a></p>
+                            <p>This link will expire in 1 hour, so be sure to use it right away.</p>
                             <p>Sincerely yours, <br> The Conference Management Team.</p>
                         </th>
                             <th class="expander"></th></tr></table></th>
