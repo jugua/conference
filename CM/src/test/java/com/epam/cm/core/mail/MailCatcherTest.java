@@ -43,7 +43,7 @@ public class MailCatcherTest {
 //        System.out.println("Last email: " + client.getLastEmail());
 //        System.out.println("Email with index 1: " + client.getEmailByIndex(1));
 //        System.out.println("JSON of an email with index 1: " + client.getEmailById(1, ResponseType.JSON));
-        System.out.println("Last email's html body: " + client.getEmailById(client.getLastEmail().getId(), ResponseType.PLAIN));
+        System.out.println(client.getEmailById(client.getLastEmail().getId(), ResponseType.HTML).toString());
 //        System.out.println("First email's plain text body: " + client.getEmailById(1, ResponseType.PLAIN));
 //        System.out.println("Last email's source: " + client.getEmailById(2, ResponseType.SOURCE));
 //        System.out.println("Deleting emails: " + client.deleteEmails());

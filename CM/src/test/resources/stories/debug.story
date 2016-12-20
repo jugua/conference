@@ -1,17 +1,22 @@
-Scenario: User successfully save valid info
-Given user logged as speaker:
-|email                   |password     |
-|testNewUser@testUser.com|testuser12345|
-When user clicks My Info option in account menu
-And user fill valid info in fields:
-|shortBio  |jobTitle  |company  |pastConferences  |linkedIn  |twitter  |facebook  |blog  |additionalInfo  |
-|<shortBio>|<jobTitle>|<company>|<pastConferences>|<linkedIn>|<twitter>|<facebook>|<blog>|<additionalInfo>|
-Then successfully saved popup is shown
-And information saved successfully:
-|shortBio  |jobTitle  |company  |pastConferences  |linkedIn  |twitter  |facebook  |blog  |additionalInfo  |
-|<shortBio>|<jobTitle>|<company>|<pastConferences>|<linkedIn>|<twitter>|<facebook>|<blog>|<additionalInfo>|
+
+Scenario: Sended mail verification
+Meta:
+@regression
+
+Given the unsigned user accesses the conference management home page
+When uses forgot password function
+And user fiels email textbox with valid: <email>
+Then clicks on Continue button
+And message apears saying:'We just emailed you a link. Please check your email and click the secure link.'
+And an email is send to users email adress:
+|email            |
+|tester@tester.com|
+And subject's name is 'Password assistance'
+And notification link was sent on email for Forgot Password
+And fills new password 'tester'
+And "Your Account" replaced by "Tester's Account"
+
 
 Examples:
-|<shortBio>|<jobTitle>|<company>         |<pastConferences>|<linkedIn>|<twitter>|<facebook>         |<blog>        |<additionalInfo>   |
-|some info |job title |info about company|                 |          |         |                   |              |                   |
-|some info |job title |info about company|info about conf  |srgwg     |facebook |facebook.com/fwfwgg|some blog info|some additional info|
+|email              |
+|tester@tester.com  |

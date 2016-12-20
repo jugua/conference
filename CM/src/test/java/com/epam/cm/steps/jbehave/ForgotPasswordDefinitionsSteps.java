@@ -108,6 +108,16 @@ public class ForgotPasswordDefinitionsSteps {
         Assert.assertThat(msg, is(forgotPwdPgSteps.getInvalidEmailMsg()));
     }
 
+    @Then("notification link was sent on email for Forgot Password")
+    public void openConfirmationLink(){
+        forgotPwdPgSteps.openLinkFromEmail();
+    }
 
+    @Then("fills new password '$pw'")
+    public  void fillNewPassword(String password){
+        forgotPwdPgSteps.typeNewPassword(password);
+        forgotPwdPgSteps.typeConfirmNewPassword(password);
+        forgotPwdPgSteps.clickOnSaveBtn();
+    }
 
 }

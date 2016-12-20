@@ -5,6 +5,8 @@ package com.epam.cm.dto;
  */
 public class SettingsDTO {
 
+    private static final String CONFPASSWORD_6_SPACE = "confPassword6space";
+
     private String oldEmail;
     private String newEmail;
     private String firstName;
@@ -18,7 +20,12 @@ public class SettingsDTO {
     }
 
     public void setCurrentPw(String currentPw) {
-        this.currentPw = currentPw;
+        if(currentPw.equals(CONFPASSWORD_6_SPACE)){
+            this.currentPw = "      ";
+        }
+        else {
+            this.currentPw = currentPw;
+        }
     }
 
     public String getNewPw() {
@@ -26,7 +33,12 @@ public class SettingsDTO {
     }
 
     public void setNewPw(String newPw) {
-        this.newPw = newPw;
+        if(newPw.equals(CONFPASSWORD_6_SPACE)){
+            this.newPw = "      ";
+        }
+        else {
+            this.newPw = newPw;
+        }
     }
 
     public String getConfirmNewPw() {
@@ -34,7 +46,10 @@ public class SettingsDTO {
     }
 
     public void setConfirmNewPw(String confirmNewPw) {
-        this.confirmNewPw = confirmNewPw;
+        if (confirmNewPw.equals(CONFPASSWORD_6_SPACE))
+            this.confirmNewPw = "      ";
+        else
+            this.confirmNewPw = confirmNewPw;
     }
 
     public String getOldEmail() {

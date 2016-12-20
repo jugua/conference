@@ -5,7 +5,9 @@ package com.epam.cm;
  */
 public class RunSingleStory extends AcceptanceTestSuite {
 
-    final String CUR_STORY = "stories/account/CreateAccount.story";
+
+    final String CUR_STORY = "stories/debug.story";
+
     @Override
     protected String getStoryPath() {
         return CUR_STORY;

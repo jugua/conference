@@ -156,12 +156,29 @@ public class SettingsPageDefinitionsSteps {
 
     @When("enter current password in 'Current password' field: $actTable")
     public void fillCurrentPwField(ExamplesTable table){
-        settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);
+        boolean replaceNamedParameters = true;
+        String currentPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("currentPw",
+                String.class);
+        SettingsDTO settingsDTO = new SettingsDTO(){
+            {
+                setCurrentPw(currentPw);
+            }
+        };
         settingsSteps.typeCurrentPw(settingsDTO);
     }
     @When("enter new password in 'New password' field and confirms it: $actTable")
     public void fillNewPwField(ExamplesTable table){
-        settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);
+        boolean replaceNamedParameters = true;
+        String newPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("newPw",
+                String.class);
+        String confirmPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("confirmNewPw",
+                String.class);
+        SettingsDTO settingsDTO = new SettingsDTO(){
+            {
+                setNewPw(newPw);
+                setConfirmNewPw(confirmPw);
+            }
+        };
         settingsSteps.typeNewPw(settingsDTO);
         settingsSteps.typeConfirmPw(settingsDTO);
     }
@@ -368,6 +385,11 @@ public class SettingsPageDefinitionsSteps {
                 MailCatcherClient.ResponseType.HTML).toString(), containsString(msg2));
         Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
                 MailCatcherClient.ResponseType.HTML).toString(), containsString(msg3));
+    }
+
+    @Then("messages apears saying '$msg'")
+    public void checkCurrentMsgError(String msg){
+        Assert.assertThat(msg, is(settingsSteps.getCurrentErrorPw()));
     }
 
 }
