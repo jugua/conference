@@ -91,7 +91,8 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public void clickContinueButton() {
-        continueBtn.click();
+
+        continueBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();;
     }
 
     public void clickForgotPwLink() {
