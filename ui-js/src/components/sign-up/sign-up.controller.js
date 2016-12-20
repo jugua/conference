@@ -8,6 +8,7 @@ export default class SignUpController {
     this.showPopup = false;
     this.emailPattern = Constants.email;
     this.passwordPattern = Constants.password;
+    this.formSented = false;
   }
 
   signUp() {
@@ -17,6 +18,8 @@ export default class SignUpController {
         return;
       }
 
+      this.formSented = true;
+
       this.service.signUp(this.user,
         () => {  // success callback
           this.userForm.$setPristine();
@@ -25,6 +28,7 @@ export default class SignUpController {
         (error) => {  // error callback
           if (error.data.error === 'email_already_exists') {
             this.userForm.mail.$setValidity('email_already_exists', false);
+            this.formSented = false;
           }
         });
     }

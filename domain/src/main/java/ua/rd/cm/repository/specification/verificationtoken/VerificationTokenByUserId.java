@@ -18,6 +18,6 @@ public class VerificationTokenByUserId implements Specification<VerificationToke
 
     @Override
     public boolean test(VerificationToken verificationToken) {
-        return verificationToken.getUser().equals(userId);
+        return verificationToken.getUser().getId().equals(userId);
     }
 }

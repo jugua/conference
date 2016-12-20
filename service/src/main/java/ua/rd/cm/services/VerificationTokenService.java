@@ -7,10 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
+import ua.rd.cm.repository.specification.AndSpecification;
+import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByStatus;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
-
-
-
+import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByType;
+import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByUserId;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -27,7 +28,6 @@ public class VerificationTokenService {
         this.tokenRepository = tokenRepository;
     }
 
-    @Transactional
     public VerificationToken createToken(User user, VerificationToken.TokenType tokenType) {
         VerificationToken token = new VerificationToken();
         token.setUser(user);
@@ -38,9 +38,32 @@ public class VerificationTokenService {
         return token;
     }
 
+    public VerificationToken createNewEmailToken(User user, VerificationToken
+            .TokenType tokenType, String newEmail) {
+        VerificationToken token = createToken(user, tokenType);
+        token.setToken(token.getToken() + "|" + newEmail);
+        return token;
+    }
+
     @Transactional
     public void saveToken(VerificationToken token) {
         tokenRepository.saveToken(token);
+    }
+
+    @Transactional
+    public void setPreviousTokensExpired(VerificationToken token) {
+        List<VerificationToken> tokens = tokenRepository.findBySpecification
+                (new AndSpecification<>(new AndSpecification<>(new
+                        VerificationTokenByUserId(token.getUser().getId())
+                        , new VerificationTokenByStatus(VerificationToken.TokenStatus.VALID))
+                        , new VerificationTokenByType(token.getType())));
+
+        if (!tokens.isEmpty()) {
+            for (VerificationToken t : tokens) {
+                t.setStatus(VerificationToken.TokenStatus.EXPIRED);
+                tokenRepository.updateToken(t);
+            }
+        }
     }
 
     public boolean isTokenValid(VerificationToken verificationToken, VerificationToken.TokenType currentType) {
@@ -60,6 +83,29 @@ public class VerificationTokenService {
             return null;
         }
         return tokens.get(0);
+    }
+
+    public VerificationToken getValidTokenByUserIdAndType(Long userId,
+                                                          VerificationToken.TokenType tokenType) {
+        List<VerificationToken> tokens = tokenRepository.findBySpecification
+                (new AndSpecification<>(new AndSpecification<>(new VerificationTokenByUserId(userId)
+                        , new VerificationTokenByStatus(VerificationToken.TokenStatus.VALID))
+                        , new VerificationTokenByType(tokenType)));
+
+        if (tokens.isEmpty()) {
+            return null;
+        }
+        return tokens.get(0);
+    }
+
+    public String getEmail(String token) {
+        int index = token.indexOf('|');
+
+        if (index == -1) {
+            return null;
+        }
+
+        return token.substring(index + 1);
     }
 
     @Transactional
