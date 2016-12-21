@@ -74,7 +74,7 @@ public class EmailController {
 		if(node.get("mail") != null) {
 			if(!userService.isEmailExist(node.get("mail").textValue())) {
 				httpStatus = HttpStatus.BAD_REQUEST;
-				responseMessage.setError("Please enter your registered email");
+				responseMessage.setError("email_not_found");
 			
 			} else {
 				User currentUser = userService.getByEmail(node.get("mail").textValue());
@@ -92,6 +92,7 @@ public class EmailController {
 			}
 		} else {
 			httpStatus = HttpStatus.BAD_REQUEST;
+			responseMessage.setError("email_is_empty");
 		}
 		
 		return ResponseEntity.status(httpStatus).body(responseMessage);
