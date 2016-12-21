@@ -68,9 +68,15 @@ public class EmailController {
 	@PostMapping("/forgot-password")
 	public ResponseEntity forgotPassword(@RequestBody String mail) throws  IOException {
 		HttpStatus httpStatus;
+		MessageDto responseMessage = new MessageDto();
 		ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
 		
 		if(node.get("mail") != null) {
+			if(!userService.isEmailExist(node.get("mail").textValue())) {
+				httpStatus = HttpStatus.BAD_REQUEST;
+				responseMessage.setError("Please enter your registered email");
+			}
+			
 			User currentUser = userService.getByEmail(node.get("mail").textValue());
 			VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
 			tokenService.setPreviousTokensExpired(token);
@@ -82,11 +88,12 @@ public class EmailController {
 			model.put("link", "http://localhost:8050/#/forgotPassword/" + token.getToken());
 			mailService.sendEmail(new ForgotMessagePreparator(), model);
 			httpStatus = HttpStatus.OK;
+			responseMessage.setStatus("success");
 		} else {
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}
 		
-		return new ResponseEntity(httpStatus);
+		return ResponseEntity.status(httpStatus).body(responseMessage);
 	}     
 	
 	@GetMapping("/forgotPassword/{token}")
