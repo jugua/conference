@@ -19,7 +19,7 @@ public class TestUtil {
     }
 
     protected Role createSpeakerRole(){
-        return new Role(1L, "SPEAKER");
+        return new Role(1L, "ROLE_SPEAKER");
     }
     protected UserInfo createUserInfo(){
         ContactType contactType = new ContactType(1L, "LinkedIn");
