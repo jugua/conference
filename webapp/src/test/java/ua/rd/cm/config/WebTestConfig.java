@@ -44,10 +44,6 @@ public class WebTestConfig {
     public StatusService mockStatusService() {
         return mock(StatusService.class);
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 3064/3246_photo_test
 	@Bean
 	public PhotoService mockPhotoService() {
 		return mock(PhotoService.class);

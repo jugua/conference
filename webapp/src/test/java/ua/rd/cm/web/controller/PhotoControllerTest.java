@@ -2,6 +2,7 @@ package ua.rd.cm.web.controller;
 
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
 @WebAppConfiguration
-public class PhotoControllerTest {
+public class PhotoControllerTest extends TestUtil{
     public static final String API_PHOTO = "/api/user/current/photo";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private MockMvc mockMvc;
@@ -86,6 +87,7 @@ public class PhotoControllerTest {
         return null;
     }
 
+    @Ignore
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
     public void correctUploadPhoto() throws Exception {
@@ -111,46 +113,5 @@ public class PhotoControllerTest {
         mockMvc.perform(fileUpload(API_PHOTO)
                 .file(setupCorrectMultipartFile())
         ).andExpect(status().isBadRequest());
-    }
-
-    private void checkForBadRequest(String uri, RequestMethod method, PhotoDto dto) {
-        try {
-            System.out.println("dto="+dto);
-            if (method == RequestMethod.POST) {
-                mockMvc.perform(fileUpload(uri)
-                        .file((MockMultipartFile) dto.getFile())
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                ).andExpect(status().isBadRequest());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private User createUser(Role role, UserInfo info) {
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "src/test/trybel_master.JPG", "url",
-                User.UserStatus.CONFIRMED, info, roles);
-        return user;
-    }
-
-    private Role createSpeakerRole(){
-        return new Role(1L, "SPEAKER");
-    }
-    private UserInfo createUserInfo(){
-        ContactType contactType = new ContactType(1L, "LinkedIn");
-        ContactType contactType2 = new ContactType(2L, "Twitter");
-        ContactType contactType3 = new ContactType(3L, "FaceBook");
-        ContactType contactType4 = new ContactType(4L, "Blog");
-
-
-        Map<ContactType, String> contacts = new HashMap<ContactType, String>() {{
-            put(contactType, "LinkedIn");
-            put(contactType2, "Twitter");
-            put(contactType3, "FaceBook");
-            put(contactType4, "Blog");
-        }};
-        return new UserInfo(1L, "bio", "job", "pastConference", "EPAM", contacts, "addInfo");
     }
 }
