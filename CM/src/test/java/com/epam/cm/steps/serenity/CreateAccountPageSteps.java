@@ -3,6 +3,7 @@ package com.epam.cm.steps.serenity;
 import com.epam.cm.core.mail.MailCatcherClient;
 import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.UserRegistrationInfoDTO;
+import com.epam.cm.pages.HomePage;
 import com.epam.cm.pages.SignUpPage;
 
 import net.thucydides.core.annotations.Step;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
 public class CreateAccountPageSteps extends ScenarioSteps {
 
     SignUpPage signUpPage;
+    HomePage homePage;
     MailCatcherClient mailCatcherClient = new MailCatcherClient();
 
     @Step
@@ -91,8 +93,8 @@ public class CreateAccountPageSteps extends ScenarioSteps {
 
     @Step
     public boolean isUserLoggedIn() {
-        signUpPage.waitForPageToLoad();
-        String accountMenuTitle = signUpPage.getMenu().getAccountMenuTitle();
+       // homePage.waitForPageToLoad();
+        String accountMenuTitle = homePage.getMenu().getAccountMenuTitle();
         if(!accountMenuTitle.matches("Your Account")){
             return true;
         }
