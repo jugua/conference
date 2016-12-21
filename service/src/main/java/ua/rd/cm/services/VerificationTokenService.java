@@ -74,8 +74,7 @@ public class VerificationTokenService {
 
     public boolean isTokenExpired(VerificationToken verificationToken) {
         return (verificationToken.getStatus().equals(VerificationToken.TokenStatus.EXPIRED)) ||
-                (ChronoUnit.MINUTES.between(LocalDateTime.now(ZoneId.systemDefault()),
-                verificationToken.getExpiryDate()) >= VerificationToken.EXPIRATION_IN_MINUTES);
+                (verificationToken.getExpiryDate().isBefore(LocalDateTime.now(ZoneId.systemDefault())));
     }
 
     public VerificationToken getToken(String token) {
