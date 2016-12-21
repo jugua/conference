@@ -6,9 +6,9 @@ import java.io.File;
 
 public interface PhotoService {
 
-    String savePhoto(MultipartFile photo, String fileNameId);
+    String savePhoto(MultipartFile photo, String fileNameId, String oldFileAbsolutePath);
 
-    boolean deletePhoto(String fileNameId);
+    boolean deletePhoto(String fileAbsolutePath);
 
-    File getPhoto(String fileNameId);
+    File getPhoto(String fileAbsolutePath);
 }

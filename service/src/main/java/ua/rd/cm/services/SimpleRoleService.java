@@ -10,9 +10,6 @@ import ua.rd.cm.repository.specification.role.RoleByName;
 
 import java.util.List;
 
-/**
- * @author Mariia Lapovska ٩(̾●̮̮̃̾•̃̾)
- */
 @Service
 public class SimpleRoleService implements RoleService {
 
