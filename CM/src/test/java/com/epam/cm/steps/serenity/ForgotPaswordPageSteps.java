@@ -128,4 +128,9 @@ public class ForgotPaswordPageSteps extends ScenarioSteps {
     public void clickOnSaveBtn() {
         homePage.getMenu().clickSaveBtn();
     }
+
+    @Step
+    public String getNoExistAccErrorMsg(){
+        return homePage.getMenu().forgotErrorMsg();
+    }
 }

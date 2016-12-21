@@ -68,6 +68,8 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     private WebElementFacade confirmPasswordInput;
     @FindBy(xpath = "//*[@class='password__block']/form/input[@class='btn password__btn']")
     private WebElementFacade saveConfBtn;
+    @FindBy(xpath = "//forgot-password//form/span[3]")
+    private WebElementFacade errorNotExistingEmail;
 
     @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/account']")
     private WebElementFacade settingsOption;
@@ -123,6 +125,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
     public String forgotLblText() {
         return forgotLbl.getText();
+    }
+
+    public String forgotErrorMsg(){
+        return errorNotExistingEmail.getText();
     }
 
     @Override
