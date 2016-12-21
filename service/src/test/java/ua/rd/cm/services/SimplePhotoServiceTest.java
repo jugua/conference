@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SimplePhotoServiceTest {
     public static final String ROOT = "/";
-    public static final String FOLDER = "home/cm/user/photos/";
+    public static final String FOLDER = "home/cm/user/photos";
     private PhotoService photoService= new SimplePhotoService();
 
 
