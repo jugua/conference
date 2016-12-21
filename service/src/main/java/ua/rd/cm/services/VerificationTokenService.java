@@ -10,6 +10,7 @@ import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByStatus;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
+
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByType;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByUserId;
 import java.time.LocalDateTime;

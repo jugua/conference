@@ -73,6 +73,7 @@ public class EmailController {
 		if(node.get("mail") != null) {
 			User currentUser = userService.getByEmail(node.get("mail").textValue());
 			VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
+			tokenService.setPreviousTokensExpired(token);
 			tokenService.saveToken(token);
 			
 			Map<String, Object> model = new HashMap<>();

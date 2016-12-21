@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -1427,12 +1426,13 @@
                     <table class="row"><tbody><tr>
                         <th class="small-12 large-12 columns first last"><table><tr><th>
                             <p>Dear ${name},</p>
-                            <p>You recently registered for Conference Management.
-                                To complete your registration, please confirm your account
-                                <a href="${link}">link</a>
-                                <br>
-                                This link will expire in 1 hour, so be sure to use it right away.
-                            </p>
+                            <p>You recently registered for Conference Management. To complete your registration click the button or paste the following link into your browser: </p>
+                            <p><a href="${link}">${link}</a></p>
+                            <p>This link will expire in 1 hour, so be sure to use it right away.</p>
+                            <table class="spacer"><tbody><tr><td height="10px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table>
+                            <center data-parsed="">
+                                <table class="button content_button float-center"><tr><td><table><tr><td><a href="${link}">Confirm</a></td></tr></table></td></tr></table>
+                            </center>
                             <p>Sincerely yours, <br> The Conference Management Team.</p>
                         </th>
                             <th class="expander"></th></tr></table></th>
