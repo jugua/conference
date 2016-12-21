@@ -42,13 +42,12 @@ And type email in New email field:
 |newEmail  |
 |<newEmail>|
 And clicks email save button
-And user click on the Edit link next to Email
-Then email has been changed
-And user can log in with it
+Then notification change email link was sent on email
+And email is changed
 
 Examples:
 |<newEmail>                    |
-|testSettingsNewEmail@test.test|
+|testSettingsNewSecondEmail@test.test|
 
 
 Scenario: user type valid email in New email field but cancel changes
@@ -66,4 +65,4 @@ And user can log in with old credentials
 
 Examples:
 |<newEmail>                    |
-|testSettingsNewEmail@test.test|
+|testSettingsNewSecondEmail@test.test|

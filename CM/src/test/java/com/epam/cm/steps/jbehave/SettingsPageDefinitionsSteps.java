@@ -3,6 +3,7 @@ package com.epam.cm.steps.jbehave;
 import com.epam.cm.core.mail.MailCatcherClient;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.dto.SettingsDTO;
+import com.epam.cm.steps.serenity.CreateAccountPageSteps;
 import com.epam.cm.steps.serenity.LoginPageSteps;
 import com.epam.cm.steps.serenity.SettingsPageSteps;
 
@@ -27,6 +28,8 @@ public class SettingsPageDefinitionsSteps {
     SettingsPageSteps settingsSteps;
     @Steps
     LoginPageSteps loginPageSteps;
+    @Steps
+    CreateAccountPageSteps createAccountPageSteps;
 
     SettingsDTO settingsDTO;
     CredentialsDTO user;
@@ -309,21 +312,9 @@ public class SettingsPageDefinitionsSteps {
 
     }
 
-    @Then("email has been changed")
-    public void emailHasBeenChanged(){
-       Assert.assertTrue(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
-       //clickEditLinkNextToEmail();
-       settingsSteps.typeEmail(settingsDTO.getOldEmail());
-       clickEmailSaveBtn();
-    }
-
-
     @Then("email didnt change")
     public void emailDidntChange(){
-        Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getOldEmail()));
-        //clickEditLinkNextToEmail();
-        settingsSteps.typeEmail(settingsDTO.getOldEmail());
-        clickEmailSaveBtn();
+        Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
     }
 
     @Then("user can log in with old credentials")
@@ -335,7 +326,7 @@ public class SettingsPageDefinitionsSteps {
         loginPageSteps.clickSignInButton();
         loginPageSteps.clickSettingsOption();
         settingsSteps.clickEditLinkNextToEmail();
-        Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getOldEmail()));
+        Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
     }
 
     @Then("user is able to login with new password: $actTable")
@@ -392,4 +383,19 @@ public class SettingsPageDefinitionsSteps {
         Assert.assertThat(msg, is(settingsSteps.getCurrentErrorPw()));
     }
 
+    @Then("notification change email link was sent on email")
+    public void changeEmailLinkWasSent(){
+        createAccountPageSteps.openLinkFromEmail();
+        Assert.assertTrue(createAccountPageSteps.isUserLoggedIn());
+    }
+    @Then("email is changed")
+    public void isEmailchanged(){
+        loginPageSteps.clickSettingsOption();
+        settingsSteps.clickEditLinkNextToEmail();
+        Assert.assertTrue(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
+        settingsSteps.typeEmail(settingsDTO.getOldEmail());
+        clickEmailSaveBtn();
+        createAccountPageSteps.openLinkFromEmail();
+        //Assert.assertTrue(createAccountPageSteps.isUserLoggedIn());
+    }
 }

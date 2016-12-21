@@ -1,22 +1,61 @@
+Scenario: When user click on the Edit link next to Email Current Email and New Email fields are visible
+Given user on the settings page logged as speaker:
+|email                              |password   |
+|testUserSettingsStory@testUser.test|testuserpwd|
+When user click on the Edit link next to Email
+Then Current Email and New Email fields are visible
 
-Scenario: Sended mail verification
-Meta:
-@regression
-
-Given the unsigned user accesses the conference management home page
-When uses forgot password function
-And user fiels email textbox with valid: <email>
-Then clicks on Continue button
-And message apears saying:'We just emailed you a link. Please check your email and click the secure link.'
-And an email is send to users email adress:
-|email            |
-|tester@tester.com|
-And subject's name is 'Password assistance'
-And notification link was sent on email for Forgot Password
-And fills new password 'tester'
-And "Your Account" replaced by "Tester's Account"
-
+Scenario: user type invalid email in New email field
+Given user on the settings page logged as speaker:
+|email                              |password   |
+|testUserSettingsStory@testUser.test|testuserpwd|
+When user click on the Edit link next to Email
+And type email in New email field:
+|newEmail  |
+|<newEmail>|
+And clicks email save button
+Then user see a warning message saying 'Please enter a valid email address'
 
 Examples:
-|email              |
-|tester@tester.com  |
+|<newEmail>           |
+|testAuto@auto.       |
+|testAuto@auto.t      |
+|testAuto@auto.ttttttt|
+|testAuto@.ttt        |
+|@auto.ttt            |
+|testAuto@auto.123    |
+
+
+Scenario: user type valid email in New email field
+Given user on the settings page logged as speaker:
+|email                            |password   |
+|testSettingsChangeEmail@test.test|testuserpwd|
+When user click on the Edit link next to Email
+And type email in New email field:
+|newEmail  |
+|<newEmail>|
+And clicks email save button
+Then notification change email link was sent on email
+And email is changed
+
+Examples:
+|<newEmail>                    |
+|testSettingsNewSecondEmail@test.test|
+
+
+Scenario: user type valid email in New email field but cancel changes
+Given user on the settings page logged as speaker:
+|email                            |password   |
+|testSettingsChangeEmail@test.test|testuserpwd|
+When user click on the Edit link next to Email
+And type email in New email field:
+|newEmail  |
+|<newEmail>|
+And clicks email cancel button
+And user click on the Edit link next to Email
+Then email didnt change
+And user can log in with old credentials
+
+Examples:
+|<newEmail>                    |
+|testSettingsNewSecondEmail@test.test|
