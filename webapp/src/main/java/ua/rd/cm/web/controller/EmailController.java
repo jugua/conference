@@ -75,20 +75,21 @@ public class EmailController {
 			if(!userService.isEmailExist(node.get("mail").textValue())) {
 				httpStatus = HttpStatus.BAD_REQUEST;
 				responseMessage.setError("Please enter your registered email");
+			
+			} else {
+				User currentUser = userService.getByEmail(node.get("mail").textValue());
+				VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
+				tokenService.setPreviousTokensExpired(token);
+				tokenService.saveToken(token);
+				
+				Map<String, Object> model = new HashMap<>();
+				model.put("email", currentUser.getEmail());
+				model.put("name", currentUser.getFirstName());
+				model.put("link", "http://localhost:8050/#/forgotPassword/" + token.getToken());
+				mailService.sendEmail(new ForgotMessagePreparator(), model);
+				httpStatus = HttpStatus.OK;
+				responseMessage.setStatus("success");
 			}
-			
-			User currentUser = userService.getByEmail(node.get("mail").textValue());
-			VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
-			tokenService.setPreviousTokensExpired(token);
-			tokenService.saveToken(token);
-			
-			Map<String, Object> model = new HashMap<>();
-			model.put("email", currentUser.getEmail());
-			model.put("name", currentUser.getFirstName());
-			model.put("link", "http://localhost:8050/#/forgotPassword/" + token.getToken());
-			mailService.sendEmail(new ForgotMessagePreparator(), model);
-			httpStatus = HttpStatus.OK;
-			responseMessage.setStatus("success");
 		} else {
 			httpStatus = HttpStatus.BAD_REQUEST;
 		}
