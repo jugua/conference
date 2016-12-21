@@ -72,7 +72,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/account']")
     private WebElementFacade settingsOption;
 
-    public AccountMenuFragmentImpl(PageObject page, ElementLocator locator, WebElement webElement,
+    public  AccountMenuFragmentImpl(PageObject page, ElementLocator locator, WebElement webElement,
                                    long timeoutInMilliseconds) {
         super(page, locator, webElement, timeoutInMilliseconds);
     }
