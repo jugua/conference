@@ -31,6 +31,9 @@ public class SignInController {
     private MailService mailService;
 
     @Autowired
+	CustomAuthenticationProvider authenticationProvider;
+	
+    @Autowired
     public SignInController(VerificationTokenService tokenService,
                             UserService userService, MailService mailService) {
         this.tokenService = tokenService;
@@ -116,11 +119,11 @@ public class SignInController {
     }
 
     private void authenticateUser(User user) {
-        Principal principal = user::getEmail;
+    	String username = user.getEmail();
         String credentials = user.getPassword();
-        Set<Role> roleSet = user.getUserRoles();
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, roleSet);
+        Authentication auth = authenticationProvider
+        		.authenticate(new UsernamePasswordAuthenticationToken(username, credentials));
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }
