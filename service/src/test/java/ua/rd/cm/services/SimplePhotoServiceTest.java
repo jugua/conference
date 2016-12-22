@@ -63,7 +63,7 @@ public class SimplePhotoServiceTest {
         assertEquals(null,photoService.getPhoto(null));
     }
 
-
+    @Ignore
     @Test
     public void getPhoto(){
         assertEquals(ROOT+FOLDER+"fileNameId.jpg",

@@ -1,5 +1,6 @@
 package ua.rd.cm.services;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,12 +16,15 @@ public class SimplePhotoService implements PhotoService {
     public String savePhoto(MultipartFile photo, String fileNameId, String oldFileAbsolutePath) {
         if (oldFileAbsolutePath != null) {
             File searchFile = new File(oldFileAbsolutePath);
-            if (!searchFile.delete()) {
-                return null;
+
+            if (searchFile.isFile()) {
+                if (!searchFile.delete()) {
+                    return null;
+                }
             }
         }
+
         File dir = getDir(ROOT + FOLDER);
-        System.out.println("DIR="+dir.getAbsolutePath());
         return saveFile(photo, fileNameId, dir);
     }
 
@@ -30,8 +34,7 @@ public class SimplePhotoService implements PhotoService {
             return false;
         }
         File searchFile = new File(fileAbsolutePath);
-        System.out.println("SearchFile="+searchFile.getAbsolutePath()+""+searchFile.delete());
-        return searchFile.delete();
+        return (searchFile.isFile() && searchFile.delete());
     }
 
     @Override
@@ -39,10 +42,9 @@ public class SimplePhotoService implements PhotoService {
         if (fileAbsolutePath == null) {
             return null;
         }
-        File searchFile=new File(fileAbsolutePath);
-        return searchFile;
+        File searchFile = new File(fileAbsolutePath);
+        return searchFile.isFile() ? searchFile : null;
     }
-
 
     private File getDir(String path) {
         File dir = new File(path);
@@ -55,16 +57,15 @@ public class SimplePhotoService implements PhotoService {
 
     private String saveFile(MultipartFile file, String fileNameId, File dir) {
         File serverFile = new File(dir.getAbsolutePath() +
-                                    File.separator +
-                                    fileNameId +
-                                    getFileFormat(file.getOriginalFilename()));
+                File.separator +
+                fileNameId +
+                getFileFormat(file.getOriginalFilename()));
 
         try (BufferedOutputStream stream =
                      new BufferedOutputStream(new FileOutputStream(serverFile))) {
             stream.write(file.getBytes());
             stream.close();
 
-            System.out.println("serverFile="+serverFile.getAbsolutePath());
             return serverFile.getAbsolutePath();
         } catch (IOException e) {
             return null;
