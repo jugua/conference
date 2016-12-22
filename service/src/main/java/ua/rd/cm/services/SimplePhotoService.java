@@ -15,14 +15,10 @@ public class SimplePhotoService implements PhotoService {
     public String savePhoto(MultipartFile photo, String fileNameId, String oldFileAbsolutePath) {
         if (oldFileAbsolutePath != null) {
             File searchFile = new File(oldFileAbsolutePath);
-
-            if (searchFile.isFile()) {
-                if (!searchFile.delete()) {
-                    return null;
-                }
+            if (!searchFile.delete()) {
+                return null;
             }
         }
-
         File dir = getDir(ROOT + FOLDER);
         return saveFile(photo, fileNameId, dir);
     }
@@ -33,7 +29,7 @@ public class SimplePhotoService implements PhotoService {
             return false;
         }
         File searchFile = new File(fileAbsolutePath);
-        return (searchFile.isFile() && searchFile.delete());
+        return searchFile.delete();
     }
 
     @Override

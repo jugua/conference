@@ -68,7 +68,6 @@ public class SimplePhotoServiceTest {
                 photoService.getPhoto(ROOT+FOLDER+"fileNameId.jpg").getAbsolutePath());
     }
 
-    @Ignore
     @Test
     public void getNotAPhoto(){
         assertEquals(null,photoService.getPhoto("1.jpg"));
