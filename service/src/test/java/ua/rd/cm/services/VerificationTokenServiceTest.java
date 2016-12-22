@@ -70,7 +70,7 @@ public class VerificationTokenServiceTest {
 
     @Test
     public void testExpiredByDateTokenIsTokenExpired() {
-        verificationToken.setExpiryDate(createExpiredDate(1));
+        verificationToken.setExpiryDate(createExpiredDate(61));
         assertTrue(tokenService.isTokenExpired(verificationToken));
     }
     
@@ -134,8 +134,8 @@ public class VerificationTokenServiceTest {
                 "testUrl3",  User.UserStatus.CONFIRMED,null, null);
     }
 
-    private LocalDateTime createExpiredDate(int increasingTimeInMinutes) {
+    private LocalDateTime createExpiredDate(int decreasingTimeInMinutes) {
         LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
-        return currentTime.plusMinutes(VerificationToken.EXPIRATION_IN_MINUTES +  increasingTimeInMinutes);
+        return currentTime.plusMinutes(VerificationToken.EXPIRATION_IN_MINUTES - decreasingTimeInMinutes);
     }
 }

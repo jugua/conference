@@ -1428,9 +1428,8 @@
                         <p>Your email address was changed from ${oldEmail} to ${newEmail} on ${dateTime}</p>
 						<p>If you did this, you can safely disregard this email.</p>
                         <p>If you didn't do this, please contact us immediately.</p>
-                        <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table>
-                        <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
-                        <p>Thanks, <br> The Conference Management Team.</p>
+                        <table class="spacer"><tbody><tr><td height="10px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table>
+                       <p>Sincerely yours, <br> The Conference Management Team.</p>
                     </th>
 					<th class="expander"></th></tr></table></th>
                 </tr></tbody></table>

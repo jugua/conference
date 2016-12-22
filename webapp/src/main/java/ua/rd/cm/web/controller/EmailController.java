@@ -68,24 +68,34 @@ public class EmailController {
 	@PostMapping("/forgot-password")
 	public ResponseEntity forgotPassword(@RequestBody String mail) throws  IOException {
 		HttpStatus httpStatus;
+		MessageDto responseMessage = new MessageDto();
 		ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
 		
 		if(node.get("mail") != null) {
-			User currentUser = userService.getByEmail(node.get("mail").textValue());
-			VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
-			tokenService.saveToken(token);
+			if(!userService.isEmailExist(node.get("mail").textValue())) {
+				httpStatus = HttpStatus.BAD_REQUEST;
+				responseMessage.setError("email_not_found");
 			
-			Map<String, Object> model = new HashMap<>();
-			model.put("email", currentUser.getEmail());
-			model.put("name", currentUser.getFirstName());
-			model.put("link", "http://localhost:8050/#/forgotPassword/" + token.getToken());
-			mailService.sendEmail(new ForgotMessagePreparator(), model);
-			httpStatus = HttpStatus.OK;
+			} else {
+				User currentUser = userService.getByEmail(node.get("mail").textValue());
+				VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
+				tokenService.setPreviousTokensExpired(token);
+				tokenService.saveToken(token);
+				
+				Map<String, Object> model = new HashMap<>();
+				model.put("email", currentUser.getEmail());
+				model.put("name", currentUser.getFirstName());
+				model.put("link", "http://localhost:8050/#/forgotPassword/" + token.getToken());
+				mailService.sendEmail(new ForgotMessagePreparator(), model);
+				httpStatus = HttpStatus.OK;
+				responseMessage.setStatus("success");
+			}
 		} else {
 			httpStatus = HttpStatus.BAD_REQUEST;
+			responseMessage.setError("email_is_empty");
 		}
 		
-		return new ResponseEntity(httpStatus);
+		return ResponseEntity.status(httpStatus).body(responseMessage);
 	}     
 	
 	@GetMapping("/forgotPassword/{token}")
