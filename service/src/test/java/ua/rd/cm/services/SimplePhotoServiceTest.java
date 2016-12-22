@@ -29,7 +29,6 @@ public class SimplePhotoServiceTest {
         photoService= new SimplePhotoService();
     }
 
-    @Ignore
     @Test
     public void uploadFile() throws IOException {
         MockMultipartFile multipartFile=mock(MockMultipartFile.class);
@@ -47,7 +46,6 @@ public class SimplePhotoServiceTest {
         assertEquals(false,photoService.deletePhoto(null));
     }
 
-    @Ignore
     @Test
     public void deleteNotNullFile(){
         assertEquals(true,photoService.deletePhoto(ROOT+FOLDER+"fileNameId.jpg"));
@@ -66,7 +64,6 @@ public class SimplePhotoServiceTest {
 
     @Test
     public void getPhoto(){
-        System.out.println(photoService.getPhoto(ROOT+FOLDER+"fileNameId.jpg").getAbsolutePath());
         assertEquals(ROOT+FOLDER+"fileNameId.jpg",
                 photoService.getPhoto(ROOT+FOLDER+"fileNameId.jpg").getAbsolutePath());
     }

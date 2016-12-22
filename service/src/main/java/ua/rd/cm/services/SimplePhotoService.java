@@ -42,7 +42,6 @@ public class SimplePhotoService implements PhotoService {
             return null;
         }
         File searchFile=new File(fileAbsolutePath);
-        System.out.println(searchFile.getAbsolutePath());
         return searchFile;
     }
 
