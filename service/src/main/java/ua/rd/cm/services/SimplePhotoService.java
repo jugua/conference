@@ -20,6 +20,7 @@ public class SimplePhotoService implements PhotoService {
             }
         }
         File dir = getDir(ROOT + FOLDER);
+        System.out.println("DIR="+dir.getAbsolutePath());
         return saveFile(photo, fileNameId, dir);
     }
 
@@ -29,6 +30,7 @@ public class SimplePhotoService implements PhotoService {
             return false;
         }
         File searchFile = new File(fileAbsolutePath);
+        System.out.println("SearchFile="+searchFile.getAbsolutePath()+""+searchFile.delete());
         return searchFile.delete();
     }
 
@@ -62,6 +64,7 @@ public class SimplePhotoService implements PhotoService {
             stream.write(file.getBytes());
             stream.close();
 
+            System.out.println("serverFile="+serverFile.getAbsolutePath());
             return serverFile.getAbsolutePath();
         } catch (IOException e) {
             return null;
