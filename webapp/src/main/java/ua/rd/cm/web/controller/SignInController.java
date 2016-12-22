@@ -15,6 +15,7 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.OldEmailMessagePreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
