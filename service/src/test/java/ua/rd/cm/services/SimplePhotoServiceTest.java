@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SimplePhotoServiceTest {
     public static final String ROOT = "/";
-    public static final String FOLDER = "home/cm/user/photos";
+    public static final String FOLDER = "home/cm/user/photos/";
     private PhotoService photoService= new SimplePhotoService();
 
 
@@ -63,10 +63,9 @@ public class SimplePhotoServiceTest {
         assertEquals(null,photoService.getPhoto(null));
     }
 
-    @Ignore
+
     @Test
     public void getPhoto(){
-        //when(((SimplePhotoService)photoService).isSearchFile(new File(anyString()))).thenReturn(true);
         System.out.println(photoService.getPhoto(ROOT+FOLDER+"fileNameId.jpg").getAbsolutePath());
         assertEquals(ROOT+FOLDER+"fileNameId.jpg",
                 photoService.getPhoto(ROOT+FOLDER+"fileNameId.jpg").getAbsolutePath());
