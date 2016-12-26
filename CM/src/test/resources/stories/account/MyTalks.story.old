@@ -1,0 +1,43 @@
+Meta:
+
+Narrative:
+As a Speaker
+I would like to have an ability to submit a new talk.
+This feature will be available for speakers who have filled in 'My Info' page
+otherwise they will be prompted to fill in their personal info first.
+
+
+Scenario: Speaker didnt filled My info majority fields
+Given user logged as speaker accessing 'My Talks' page:
+|email                  |password|
+|mytalksEmpty@tester.com|tester  |
+When user clicks on 'Submit New Talk' button
+Then pop up is shown with text 'Please fill out all required info on the My Info page before submitting a talk.'
+And clicks OK button
+
+Scenario: Submit new Talk with empty fields
+Given user logged as speaker accessing 'My Talks' page:
+|email             |password|
+|mytalks@tester.com|tester  |
+When user clicks on 'Submit New Talk' button
+And clicks 'Submit' button
+Then all fields are highlighted in red
+And pop-up window 'Please fill in all mandatory fields' is shown
+
+Scenario: Fill invalid data in all field
+Given user logged as speaker accessing 'My Talks' page:
+|email             |password|
+|mytalks@tester.com|tester  |
+When user clicks on 'Submit New Talk' button
+And user fiels data in 'Title','Description' and 'Additional Info'
+Then data are not filled. System doesn't accept invalid data
+
+Scenario: Fill valid data in all field
+Given user logged as speaker accessing 'My Talks' page:
+|email             |password|
+|mytalks@tester.com|tester  |
+When user clicks on 'Submit New Talk' button
+And user fiels data in 'Title','Description' and 'Additional Info'
+And choose Topic, Type, Language, Level dropdown menu
+And clicks 'Submit' button
+Then talk apears in grid and have 'New' status

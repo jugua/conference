@@ -37,6 +37,7 @@ public interface AccountMenuFragment extends WidgetObject {
 
     void clickSettingsOption();
 
+
     void clickSaveBtn();
 
     void setNewPwForConfirmationEmail(String pw);
