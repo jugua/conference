@@ -93,7 +93,7 @@ public class CreateAccountPageSteps extends ScenarioSteps {
 
     @Step
     public boolean isUserLoggedIn() {
-       // homePage.waitForPageToLoad();
+        homePage.waitForPageToLoad();
         String accountMenuTitle = homePage.getMenu().getAccountMenuTitle();
         if(!accountMenuTitle.matches("Your Account")){
             return true;
