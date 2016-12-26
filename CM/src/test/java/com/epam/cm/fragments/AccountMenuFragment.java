@@ -79,6 +79,8 @@ public interface AccountMenuFragment extends WidgetObject {
 
     String getInvalidEmailMsg();
 
+    String forgotErrorMsg();
+
     List<AccountButtonDTO> getAccountMenuItems();
 
 }

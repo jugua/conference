@@ -105,7 +105,7 @@ public class ForgotPasswordDefinitionsSteps {
 
     @Then("message apears saying $msg")
     public void thenMsgApears(String msg) {
-        Assert.assertThat(msg, is(forgotPwdPgSteps.getInvalidEmailMsg()));
+        Assert.assertThat(msg, is(forgotPwdPgSteps.getNoExistAccErrorMsg()));
     }
 
     @Then("notification link was sent on email for Forgot Password")
