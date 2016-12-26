@@ -76,9 +76,18 @@ public class MyTalksDefinitionsSteps {
 
     }
 
-    @Then("talk apears in grid and have 'New' status")
+    @Then("talk appears in grid and have 'New' status")
     public void checkNewTalk(){
 
     }
 
+    @Then("info msg is shown saying '$firstMsg', '$secondMsg', '$thirdMsg'")
+    public void checkInfoMsgs(String firstMsg, String secondMsg, String thirdMsg){
+
+    }
+
+    @Then("click 'Yes' button")
+    public void clickYesBtn(){
+
+    }
 }

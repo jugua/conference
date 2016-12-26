@@ -40,4 +40,17 @@ When user clicks on 'Submit New Talk' button
 And user fiels data in 'Title','Description' and 'Additional Info'
 And choose Topic, Type, Language, Level dropdown menu
 And clicks 'Submit' button
-Then talk apears in grid and have 'New' status
+Then talk appears in grid and have 'New' status
+
+Scenario: Fill valid data in all field not saving it
+Given user logged as speaker accessing 'My Talks' page:
+|email             |password|
+|mytalks@tester.com|tester  |
+When user clicks on 'Submit New Talk' button
+And user fiels data in 'Title','Description' and 'Additional Info'
+And choose Topic, Type, Language, Level dropdown menu
+And clicks 'Submit' button
+Then info msg is shown saying 'Are you sure you want to leave the window?',
+ 'Click 'Yes' to leave and all your changes will lost.',
+  'Click 'No' to return and Submit/Update your changes'
+And click 'Yes' button
