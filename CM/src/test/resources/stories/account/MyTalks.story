@@ -21,8 +21,8 @@ Given user logged as speaker accessing 'My Talks' page:
 |mytalks@tester.com|tester  |
 When user clicks on 'Submit New Talk' button
 And clicks 'Submit' button
-Then all fields are highlighted in red
-And pop-up window 'Please fill in all mandatory fields' is shown
+Then pop-up window 'Please fill in all mandatory fields.' is shown
+And all fields are highlighted in red
 
 Scenario: Fill invalid data in all field
 Given user logged as speaker accessing 'My Talks' page:
