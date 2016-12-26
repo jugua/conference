@@ -14,6 +14,17 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class SignUpPage extends AnyPage {
 
     public static final String SUCCESSFULLY_REGISTERED = "You've successfully registered.";
+    public static final String EMAIL_FIELD = "emailField";
+    public static final String WRONG_TEXT_MSG = "wrong text msg";
+    public static final String PASSWORD_FIELDS = "passFields";
+    public static final String FIRST_PASSWORD_FIELD = "passField";
+    public static final String SECOND_PASSWORD_FIELD = "passField2";
+    public static final String CONFIRM_PASSWORD_FIELD = "confPassField";
+    public static final String EMPTY_FIELD = "";
+    public static final String ALL_FIELDS = "allFields";
+    public static final String NAME_FIELD = "nameField";
+    public static final String LAST_NAME_FIELD = "lastNameField";
+    public static final String EMAIL_FIELD1 = "emailField";
 
     @FindBy(xpath = "//*[@id='name']")
     WebElementFacade inputName;
@@ -83,6 +94,7 @@ public class SignUpPage extends AnyPage {
         inputEmail.type(user.getEmail());
         inputPassword.type(user.getPassword());
         inputConfirmPassword.type(user.getConfirmPasswordNegativeTest());
+        System.out.println();
     }
 
     public void clickSubmit() {
@@ -93,7 +105,6 @@ public class SignUpPage extends AnyPage {
 
         try {
             successRegistrationPopUp.withTimeoutOf(3, SECONDS).waitUntilVisible();
-            // waitFor(successRegistrationPopUp);
         } catch (Exception ex) {
             return false;
         }
@@ -104,7 +115,6 @@ public class SignUpPage extends AnyPage {
         } else {
             return false;
         }
-
     }
 
     public String getHighlightedTextEmptyFields(String emptyFieldsTemplate, String expectedText) {
@@ -118,44 +128,44 @@ public class SignUpPage extends AnyPage {
 
     private String getTextFromIncorrectFields(String incorrectFieldsTemplate, String firstExpectedText,
             String secondExpectedText) {
-        if (incorrectFieldsTemplate.equals("emailField")) {
+        if (incorrectFieldsTemplate.equals(EMAIL_FIELD)) {
             if (userEmailHighlightedSecondSpan.getText().equals(firstExpectedText)) {
                 return firstExpectedText + secondExpectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (incorrectFieldsTemplate.equals("passFields")) {
+        } else if (incorrectFieldsTemplate.equals(PASSWORD_FIELDS)) {
             if (userPasswordHighlightedSecondSpan.getText().equals(firstExpectedText)
                     && userPasswordHighlightedThirdSpan.getText().equals(secondExpectedText)) {
                 return firstExpectedText + secondExpectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (incorrectFieldsTemplate.equals("passField")) {
+        } else if (incorrectFieldsTemplate.equals(FIRST_PASSWORD_FIELD)) {
             if (userPasswordHighlightedThirdSpan.getText().equals(firstExpectedText)) {
                 return firstExpectedText + secondExpectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (incorrectFieldsTemplate.equals("passField2")) {
+        } else if (incorrectFieldsTemplate.equals(SECOND_PASSWORD_FIELD)) {
             if (userPasswordHighlightedSecondSpan.getText().equals(firstExpectedText)) {
                 return firstExpectedText + secondExpectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (incorrectFieldsTemplate.equals("confPassField")) {
+        } else if (incorrectFieldsTemplate.equals(CONFIRM_PASSWORD_FIELD)) {
             if (userConfPasswordHighlightedFourthSpan.getText().equals(firstExpectedText)) {
                 return firstExpectedText + secondExpectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
         }
-        return "";
+        return EMPTY_FIELD;
     }
 
     public String getTextFromEmptyFields(String emptyFieldsTemplate, String expectedText) {
 
-        if (emptyFieldsTemplate.equals("allFields")) {
+        if (emptyFieldsTemplate.equals(ALL_FIELDS)) {
             if (userNameHighlightedText.getText().equals(expectedText)
                     && userLastNameHighlightedText.getText().equals(expectedText)
                     && userEmailHighlightedText.getText().equals(expectedText)
@@ -163,40 +173,40 @@ public class SignUpPage extends AnyPage {
                     && userConfPasswordHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (emptyFieldsTemplate.equals("nameField")) {
+        } else if (emptyFieldsTemplate.equals(NAME_FIELD)) {
             if (userNameHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (emptyFieldsTemplate.equals("lastNameField")) {
+        } else if (emptyFieldsTemplate.equals(LAST_NAME_FIELD)) {
             if (userLastNameHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (emptyFieldsTemplate.equals("emailField")) {
+        } else if (emptyFieldsTemplate.equals(EMAIL_FIELD)) {
             if (userEmailHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (emptyFieldsTemplate.equals("passField")) {
+        } else if (emptyFieldsTemplate.equals(FIRST_PASSWORD_FIELD)) {
             if (userPasswordHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
-        } else if (emptyFieldsTemplate.equals("confPassField")) {
+        } else if (emptyFieldsTemplate.equals(CONFIRM_PASSWORD_FIELD)) {
             if (userConfPasswordHighlightedText.getText().equals(expectedText)) {
                 return expectedText;
             } else {
-                return "wrong text msg";
+                return WRONG_TEXT_MSG;
             }
         }
-        return "wrong text msg";
+        return WRONG_TEXT_MSG;
     }
 
     public int getNameFieldLength() {

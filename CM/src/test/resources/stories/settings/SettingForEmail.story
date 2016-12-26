@@ -46,7 +46,7 @@ Then notification change email link was sent on email
 And email is changed
 
 Examples:
-|<newEmail>                    |
+|<newEmail>                          |
 |testSettingsNewSecondEmail@test.test|
 
 
@@ -64,5 +64,5 @@ Then email didnt change
 And user can log in with old credentials
 
 Examples:
-|<newEmail>                    |
+|<newEmail>                          |
 |testSettingsNewSecondEmail@test.test|

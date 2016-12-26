@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
  */
 public class CreateAccountPageSteps extends ScenarioSteps {
 
+    public static final String HREF_REGEX = "href=\"([^\"]*)\"";
+    public static final String UNSIGNED_ACC_TITLE = "Your Account";
     SignUpPage signUpPage;
     HomePage homePage;
     MailCatcherClient mailCatcherClient = new MailCatcherClient();
@@ -24,7 +26,6 @@ public class CreateAccountPageSteps extends ScenarioSteps {
     @Step
     public void goToSignUpPage() {
         signUpPage.open();
-        // waitABit(2000);
     }
 
     @Step
@@ -39,13 +40,11 @@ public class CreateAccountPageSteps extends ScenarioSteps {
 
     @Step
     public boolean isRegisteredSuccessfully() {
-
         if (signUpPage.isRegistered()) {
             return true;
         } else {
             return false;
         }
-
     }
 
     public String getHighlightedTextInEmptyFields(String emptyFieldsTemplate, String expectedText) {
@@ -81,7 +80,7 @@ public class CreateAccountPageSteps extends ScenarioSteps {
     @Step
     public void openLinkFromEmail() {
         String emailHtml = mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString();
-        Pattern pattern = Pattern.compile("href=\"([^\"]*)\"");
+        Pattern pattern = Pattern.compile(HREF_REGEX);
         java.util.regex.Matcher matcher = pattern.matcher(emailHtml);
         ArrayList<String> links = new ArrayList<String>();
         while(matcher.find()){
@@ -93,9 +92,9 @@ public class CreateAccountPageSteps extends ScenarioSteps {
 
     @Step
     public boolean isUserLoggedIn() {
-       // homePage.waitForPageToLoad();
+        homePage.waitForPageToLoad();
         String accountMenuTitle = homePage.getMenu().getAccountMenuTitle();
-        if(!accountMenuTitle.matches("Your Account")){
+        if(!accountMenuTitle.matches(UNSIGNED_ACC_TITLE)){
             return true;
         }
         return false;

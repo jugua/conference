@@ -1,82 +1,89 @@
 
-Scenario: When user click on the Edit link next to Email Current Email and New Email fields are visible
-Given user on the settings page logged as speaker:
-|email                              |password   |
-|testUserSettingsStory@testUser.test|testuserpwd|
-When user click on the Edit link next to Email
-Then Current Email and New Email fields are visible
+Narrative: User create account
+  In order to gain access to all features of the site
+  As an anonymous user
+  I want to be able to create account
 
-Scenario: user type invalid email in New email field
-Given user on the settings page logged as speaker:
-|email                              |password   |
-|testUserSettingsStory@testUser.test|testuserpwd|
-When user click on the Edit link next to Email
-And type email in New email field:
-|newEmail  |
-|<newEmail>|
-And clicks email save button
-Then user see a warning message saying 'Please enter a valid email address'
-
-Examples:
-|<newEmail>           |
-|testAuto@auto.       |
-|testAuto@auto.t      |
-|testAuto@auto.ttttttt|
-|testAuto@.ttt        |
-|@auto.ttt            |
-|testAuto@auto.123    |
-
-
-Scenario: user type valid email in New email field
-Given user on the settings page logged as speaker:
-|email                            |password   |
-|testSettingsChangeEmail@test.test|testuserpwd|
-When user click on the Edit link next to Email
-And type email in New email field:
-|newEmail  |
-|<newEmail>|
-And clicks email save button
-Then notification change email link was sent on email
-And email is changed
-
-Examples:
-|<newEmail>                    |
-|testSettingsNewSecondEmail@test.test|
-
-
-Scenario: user type valid email in New email field but cancel changes
-Given user on the settings page logged as speaker:
-|email                            |password   |
-|testSettingsChangeEmail@test.test|testuserpwd|
-When user click on the Edit link next to Email
-And type email in New email field:
-|newEmail  |
-|<newEmail>|
-And clicks email cancel button
-And user click on the Edit link next to Email
-Then email didnt change
-And user can log in with old credentials
-
-Examples:
-|<newEmail>                    |
-|testSettingsNewSecondEmail@test.test|
-
-Scenario: User input invalid email into 'Forgot password?' form
+Scenario: User successfully create new account
 Meta:
-@regression
+@regression @smoke
 
-Given the unsigned user accesses the conference management home page
-When user clicks the login button
-And clicks the forgot password link
-Then new pop up will appears saying 'Please enter your email:'
-And user fiels email textbox with invalid: <email>
-And clicks on Continue button
-And message apears saying Please enter a valid email address
+Given user is on the sign up page
+When user  fill in the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
+|firstName  |lastName  |email  |password  |confirmPassword  |
+|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
+And click submit button
+Then new user is registered
+And notification link was sent on email
 
 Examples:
-|email           |
-|example.com     |
-|user@example    |
-|t@i.u           |
-|tester@tester.22|
+|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
+|1          |1         |1,1,2  |6         |6                |
+|56         |56        |36,20,4|30        |30               |
+|27         |34        |4,13,6 |16        |16               |
 
+
+Scenario: User unsuccessfully create new account with empty fields
+Given user is on the sign up page
+When user  leaves some of the following fields empty: First Name, Last Name, E-mail, Password, Confirm Password:
+|firstName  |lastName  |email  |password  |confirmPassword  |expectedText  |position  |
+|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|<expectedText>|<position>|
+And click submit button
+Then <expectedText> is highlighted in all the empty fields:
+|expectedText  |position  |
+|<expectedText>|<position>|
+And new user is not registered
+
+Examples:
+|<firstName>|<lastName>|<email>|<password>         |<confirmPassword>  |<expectedText>                                                               |<position>   |
+|           |          |       |                   |                   |All fields are mandatory. Please make sure all required fields are filled out|allFields    |
+|           |1         |1,1,2  |testAutoPassNegpass|testAutoPassNegpass|All fields are mandatory. Please make sure all required fields are filled out|nameField    |
+|56         |          |36,20,4|testAutoPassNegpass|testAutoPassNegpass|All fields are mandatory. Please make sure all required fields are filled out|lastNameField|
+|27         |34        |       |testAutoPassNegpass|testAutoPassNegpass|All fields are mandatory. Please make sure all required fields are filled out|emailField   |
+|27         |34        |4,13,6 |                   |testAutoPassNegpass|All fields are mandatory. Please make sure all required fields are filled out|passField    |
+|1          |1         |1,1,2  |testAutoPassNegpass|                   |All fields are mandatory. Please make sure all required fields are filled out|confPassField|
+
+
+
+Scenario: User unsuccessfully create new account with wrong input
+Given user is on the sign up page
+When user  types wrong values in some of the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
+|firstName  |lastName  |email  |password  |confirmPassword  |
+|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
+And click submit button
+Then text msg is highlighted in all the incorrect fields:
+|firstExpectedText  |secondExpectedText  |position  |
+|<firstExpectedText>|<secondExpectedText>|<position>|
+And new user is not registered
+
+Examples:
+|<firstName>|<lastName>|<email>              |<password>           |<confirmPassword>    |<firstExpectedText>                                                 |<secondExpectedText>                                                |<position>   |
+|27         |27        |testAuto@auto.       |someAutoTestPass     |someAutoTestPass     |Please enter a valid email address                                  |no text msg                                                         |emailField   |
+|27         |27        |testAuto@auto.t      |someAutoTestPass     |someAutoTestPass     |Please enter a valid email address                                  |no text msg                                                         |emailField   |
+|27         |27        |testAuto@auto.ttttttt|someAutoTestPass     |someAutoTestPass     |Please enter a valid email address                                  |no text msg                                                         |emailField   |
+|27         |27        |testAuto@.ttt        |someAutoTestPass     |someAutoTestPass     |Please enter a valid email address                                  |no text msg                                                         |emailField   |
+|27         |27        |@auto.ttt            |someAutoTestPass     |someAutoTestPass     |Please enter a valid email address                                  |no text msg                                                         |emailField   |
+|27         |27        |testAuto@auto.123    |someAutoTestPass     |someAutoTestPass     |Please enter a valid email address                                  |no text msg                                                         |emailField   |
+|27         |27        |some@valid.mail      |5space               |5space               |Please use at least one non-space character in your password        |Your password must be at least 6 characters long. Please try another|passFields   |
+|27         |27        |some@valid.mail      |6space               |6space               |Please use at least one non-space character in your password        |no text msg                                                         |passField2   |
+|27         |27        |some@valid.mail      |4                    |4                    |Your password must be at least 6 characters long. Please try another|no text msg                                                         |passField    |
+|27         |27        |some@valid.mail      |testAutoPass         |testAutoDifferentPass|Passwords do not match                                              |no text msg                                                         |confPassField|
+|27         |27        |some@valid.mail      |testAutoDifferentPass|testAutoPass         |Passwords do not match                                              |no text msg                                                         |confPassField|
+
+
+Scenario: User unsuccessfully create new account with wrong length
+Given user is on the sign up page
+When user  types wrong values in some of the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
+|firstName  |lastName  |email  |password  |confirmPassword  |
+|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
+Then user cant enter/type more than the maximum allowed characters:
+|firstExpectedText  |secondExpectedText  |position  |
+|<firstExpectedText>|<secondExpectedText>|<position>|
+
+Examples:
+|<firstName>|<lastName>|<email>          |<password>                         |<confirmPassword>                  |<firstExpectedText>|<secondExpectedText>|<position>   |
+|57         |27        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |nameField    |
+|93         |27        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |nameField    |
+|27         |57        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |lastNameField|
+|27         |87        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |lastNameField|
+|27         |27        |tesAuto@auto.tttt|SvfvYTsaeaegbeeejjrjrjejgjejvjejejr|SvfvYTsaeaegbeeejjrjrjejgjejvjejejr|no text msg        |no text msg         |passFieldMax |
