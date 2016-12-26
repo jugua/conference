@@ -25,6 +25,9 @@ public class MyInfoPage extends AnyPage {
     private static final String EXPECTED_SUCCESS_SAVE_MSG = "Changes saved successfully";
     private static final String EXPECTED_ATTENTION_SAVE_MSG = "Would you like to save changes?";
     private static final String EXPECTED_ERROR_SAVE_MSG = "Please fill in all mandatory fields";
+    public static final String MY_INFO_PATH = "//ul[@class = 'tabs-list']/li[1]/a";
+    public static final String HEADER = "//header";
+
     @FindBy(xpath = "//ul[@class='tabs-list']/li[1]/a[@class = 'tabs-list__anchor tabs-list__anchor_active']")
     WebElementFacade myInfoTabActive;
     @FindBy(xpath = "//ul[@class='tabs-list']/li[2]/a[@class = 'tabs-list__anchor tabs-list__anchor_active']")
@@ -103,10 +106,6 @@ public class MyInfoPage extends AnyPage {
         int i = 0;
         withTimeoutOf(5, SECONDS).waitFor(additionalInfoField);
         myInfoFields = findAll(xpath(MY_INFO_FIELDS));
-        /*
-         * List<String> actual = myInfoFields .stream() .map(s -> s.getValue()) .collect(Collectors.toList());
-         * actual.equals(myInfoDTO.getListOfFields());
-         */
         for (WebElementFacade element : myInfoFields) {
             String actual = element.getValue();
             String expected = myInfoDTO.getListOfFields().get(i).trim();
@@ -132,7 +131,7 @@ public class MyInfoPage extends AnyPage {
     }
 
     public void clickMyTalksTab() {
-        moveTo("//ul[@class = 'tabs-list']/li[1]/a");
+        moveTo(MY_INFO_PATH);
         myTalksTab.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
@@ -188,7 +187,7 @@ public class MyInfoPage extends AnyPage {
     }
 
     public void scrollToTop() {
-        moveTo("//header");
+        moveTo(HEADER);
     }
 
 }
