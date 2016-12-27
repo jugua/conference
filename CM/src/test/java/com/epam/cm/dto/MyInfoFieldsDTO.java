@@ -1,23 +1,18 @@
 package com.epam.cm.dto;
 
+import com.epam.cm.core.utils.Randomizer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static com.epam.cm.dto.UserRegistrationInfoDTO.EMPTY;
+import static com.epam.cm.dto.UserRegistrationInfoDTO.NOT_NUMERIC;
 
 /**
  * Created by Lev_Serba on 11/28/2016.
  */
 public class MyInfoFieldsDTO {
-    private static final String STRINGS_NUMBERS_2001 = "stringsNumbers2001";
-    private static final String STRINGS_NUMBERS_3000 = "stringsNumbers3000";
-    private static final String STRINGS_NUMBERS_257 = "stringsNumbers257";
-    private static final String STRINGS_NUMBERS_400 = "stringsNumbers400";
-    private static final String STRINGS_NUMBERS_1001 = "stringsNumbers1001";
-    private static final String STRINGS_NUMBERS_1200 = "stringsNumbers1200";
-    private static final String STRINGS_NUMBERS_1600 = "stringsNumbers1600";
-    private static final String CHAR_LIST = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static final String ALPHA_NUMERIC_LIST = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
     private String shortBio;
     private String jobTitle;
     private String company;
@@ -34,14 +29,15 @@ public class MyInfoFieldsDTO {
     }
 
     public void setShortBio(String shortBio) {
-        if (shortBio.equals(STRINGS_NUMBERS_2001)) {
-            this.shortBio = generateRandomAlphaNumericString(2001);
-        } else if (shortBio.equals(STRINGS_NUMBERS_3000)) {
-            this.shortBio = generateRandomAlphaNumericString(3000);
-        } else {
+        String digits = shortBio.replaceAll(NOT_NUMERIC, EMPTY);
+        if(digits.length() == 0){
             this.shortBio = shortBio;
+            listOfFields.add(this.shortBio);
+        }else {
+            int shortBioLength = Integer.parseInt(digits);
+            this.shortBio = Randomizer.generateRandomAlphaNumericString(shortBioLength);
+            listOfFields.add(this.shortBio);
         }
-        listOfFields.add(this.shortBio);
     }
 
     public String getJobTitle() {
@@ -49,14 +45,15 @@ public class MyInfoFieldsDTO {
     }
 
     public void setJobTitle(String jobTitle) {
-        if (jobTitle.equals(STRINGS_NUMBERS_257)) {
-            this.jobTitle = generateRandomAlphaNumericString(257);
-        } else if (jobTitle.equals(STRINGS_NUMBERS_400)) {
-            this.jobTitle = generateRandomAlphaNumericString(400);
-        } else {
+        String digits = jobTitle.replaceAll(NOT_NUMERIC, EMPTY);
+        if(digits.length() == 0){
             this.jobTitle = jobTitle;
+            listOfFields.add(this.jobTitle);
+        }else {
+            int jobtitleLength = Integer.parseInt(digits);
+            this.jobTitle = Randomizer.generateRandomAlphaNumericString(jobtitleLength);
+            listOfFields.add(this.jobTitle);
         }
-        listOfFields.add(this.jobTitle);
     }
 
     public String getCompany() {
@@ -73,14 +70,15 @@ public class MyInfoFieldsDTO {
     }
 
     public void setPastConferences(String pastConferences) {
-        if (pastConferences.equals(STRINGS_NUMBERS_1001)) {
-            this.pastConferences = generateRandomAlphaNumericString(1001);
-        } else if (pastConferences.equals(STRINGS_NUMBERS_1200)) {
-            this.pastConferences = generateRandomAlphaNumericString(1200);
-        } else {
+        String digits = pastConferences.replaceAll(NOT_NUMERIC, EMPTY);
+        if(digits.length() == 0){
             this.pastConferences = pastConferences;
+            listOfFields.add(this.pastConferences);
+        }else {
+            int pastConferencesLength = Integer.parseInt(digits);
+            this.pastConferences = Randomizer.generateRandomAlphaNumericString(pastConferencesLength);
+            listOfFields.add(this.pastConferences);
         }
-        listOfFields.add(this.pastConferences);
     }
 
     public String getLinkedIn() {
@@ -124,38 +122,17 @@ public class MyInfoFieldsDTO {
     }
 
     public void setAdditionalInfo(String additionalInfo) {
-        if (additionalInfo.equals(STRINGS_NUMBERS_1001)) {
-            this.additionalInfo = generateRandomAlphaNumericString(1001);
-        } else if (additionalInfo.equals(STRINGS_NUMBERS_1600)) {
-            this.additionalInfo = generateRandomAlphaNumericString(1600);
-        } else {
+        String digits = additionalInfo.replaceAll(NOT_NUMERIC, EMPTY);
+        if(digits.length() == 0){
             this.additionalInfo = additionalInfo;
+            listOfFields.add(this.additionalInfo);
+        }else {
+            int additionalInfoLength = Integer.parseInt(digits);
+            this.additionalInfo = Randomizer.generateRandomAlphaNumericString(additionalInfoLength);
+            listOfFields.add(this.additionalInfo);
         }
-        listOfFields.add(this.additionalInfo);
     }
-
     public List<String> getListOfFields() {
         return listOfFields;
-    }
-
-    private String generateRandomAlphaNumericString(int strLength) {
-        StringBuffer randomString = new StringBuffer();
-        for (int i = 0; i < strLength; i++) {
-            int number = getRandomNumber();
-            char symbol = ALPHA_NUMERIC_LIST.charAt(number);
-            randomString.append(symbol);
-        }
-        return randomString.toString();
-    }
-
-    private int getRandomNumber() {
-        int randomInt = 0;
-        Random randomGenerator = new Random();
-        randomInt = randomGenerator.nextInt(CHAR_LIST.length());
-        if (randomInt - 1 == -1) {
-            return randomInt;
-        } else {
-            return randomInt - 1;
-        }
     }
 }

@@ -24,7 +24,7 @@ public class UserRegistrationInfoDTO {
         if(digits.length() == 0){
             this.firstName = firstName;
         }else {
-                int firstNameLength = Integer.parseInt(firstName);
+                int firstNameLength = Integer.parseInt(digits);
                 this.firstName = Randomizer.generateRandomAlphaString(firstNameLength);
         }
     }
@@ -34,7 +34,7 @@ public class UserRegistrationInfoDTO {
         if(digits.length() == 0){
             this.lastName = lastName;
         }else {
-                int lastNameLength = Integer.parseInt(lastName);
+                int lastNameLength = Integer.parseInt(digits);
                 this.lastName = Randomizer.generateRandomAlphaString(lastNameLength);
         }
     }
@@ -58,7 +58,7 @@ public class UserRegistrationInfoDTO {
                 } else if (password.equalsIgnoreCase(TEMPLATE_6_SPACE)) {
                     this.password = SIX_SPACES;
                 } else {
-                    int passwordLength = Integer.parseInt(password);
+                    int passwordLength = Integer.parseInt(digits);
                     this.password = Randomizer.generateRandomAlphaNumericString(passwordLength);
                 }
         }
@@ -74,7 +74,7 @@ public class UserRegistrationInfoDTO {
                 } else if (confirmPassword.equalsIgnoreCase(TEMPLATE_6_SPACE)) {
                     this.confirmPassword = SIX_SPACES;
                 } else {
-                    int confirmPasswordLength = Integer.parseInt(confirmPassword);
+                    int confirmPasswordLength = Integer.parseInt(digits);
                     this.confirmPassword = Randomizer.generateRandomAlphaNumericString(confirmPasswordLength);
                 }
         }
