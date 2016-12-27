@@ -103,7 +103,7 @@ And there are My_account, My_Info and  My Talks links in the given order
 |My Talks  |/#/my-talks|
 |Settings  |/#/account |
 |Sign Out  |/#/        |
-When user logs out
+Then user logs out
 
 
 Scenario: Being signed in as an organizer manage My Account page, My Info page and My Talks
@@ -123,4 +123,4 @@ Then there are My account and  My Talks links in the given order
 |Settings|/#/account|
 |Sign Out|/#/       |
 
-When user logs out
+Then user logs out

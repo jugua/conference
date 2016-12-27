@@ -36,7 +36,7 @@ public class LoginPageDefinitionSteps {
 
     }
 
-    @When("user logs out")
+    @Then("user logs out")
     @Given("user logs out")
     public void whenUserLogsOut() {
         // Assert.assertTrue(loginPageSteps.checkPositionOfSignOut());

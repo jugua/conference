@@ -1,4 +1,3 @@
-Meta:
 
 Narrative:
 As a Speaker
@@ -8,6 +7,7 @@ otherwise they will be prompted to fill in their personal info first.
 
 
 Scenario: Speaker didnt filled My info majority fields
+
 Given user logged as speaker accessing 'My Talks' page:
 |email                  |password|
 |mytalksEmpty@tester.com|tester  |
@@ -18,6 +18,7 @@ And clicks OK button
 
 
 Scenario: Submit new Talk with empty fields
+
 Given user logged as speaker accessing 'My Talks' page:
 |email             |password|
 |mytalks@tester.com|tester  |
@@ -29,6 +30,7 @@ And all fields are highlighted in red
 
 
 Scenario: Fill invalid data in all field
+
 Given user logged as speaker accessing 'My Talks' page:
 |email             |password|
 |mytalks@tester.com|tester  |
@@ -46,8 +48,7 @@ Examples:
 
 
 Scenario: Fill valid data in all field
-Meta:
-@ignore
+
 Given user logged as speaker accessing 'My Talks' page:
 |email             |password|
 |mytalks@tester.com|tester  |
@@ -66,7 +67,9 @@ Examples:
 |10     |10           |10              |
 
 
+
 Scenario: Fill valid data in all field not saving it
+
 Given user logged as speaker accessing 'My Talks' page:
 |email             |password|
 |mytalks@tester.com|tester  |
