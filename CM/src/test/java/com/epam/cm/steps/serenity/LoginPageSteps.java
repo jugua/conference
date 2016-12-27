@@ -160,4 +160,5 @@ public class LoginPageSteps extends ScenarioSteps {
         homePage.getMenu().clickAccountMenuButton();
         homePage.getMenu().clickSettingsOption();
     }
+
 }

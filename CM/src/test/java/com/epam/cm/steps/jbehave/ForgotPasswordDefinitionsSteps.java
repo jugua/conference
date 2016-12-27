@@ -105,6 +105,11 @@ public class ForgotPasswordDefinitionsSteps {
 
     @Then("message apears saying $msg")
     public void thenMsgApears(String msg) {
+        Assert.assertThat(msg, is(forgotPwdPgSteps.getInvalidEmailMsg()));
+    }
+
+    @Then("message appears saying for not existing email '$msg'")
+    public void thenErrorMsgApears(String msg) {
         Assert.assertThat(msg, is(forgotPwdPgSteps.getNoExistAccErrorMsg()));
     }
 

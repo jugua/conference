@@ -84,7 +84,6 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     }
 
     public void clickMyTalksBtn() {
-
         myTalksBtn.click();
     }
 
