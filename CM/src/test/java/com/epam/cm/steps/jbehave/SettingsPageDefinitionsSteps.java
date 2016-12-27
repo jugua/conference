@@ -16,9 +16,7 @@ import org.jbehave.core.model.ExamplesTable;
 import org.junit.Assert;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Created by Lev_Serba on 12/12/2016.
@@ -37,7 +35,7 @@ public class SettingsPageDefinitionsSteps {
 
     @Given("user on the settings page logged as speaker: $examplesTable")
 
-        public void goToSettingsPageAsSpeaker(ExamplesTable table){
+    public void goToSettingsPageAsSpeaker(ExamplesTable table) {
         user = table.getRowsAs(CredentialsDTO.class).get(0);
 
         loginPageSteps.unsignedUserInHomePage();
@@ -48,8 +46,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Given("logged as speaker user changes his password: $actTable")
-    public void changePassword(ExamplesTable table){
-
+    public void changePassword(ExamplesTable table) {
 
         user = table.getRowsAs(CredentialsDTO.class).get(0);
 
@@ -69,25 +66,23 @@ public class SettingsPageDefinitionsSteps {
 
     @When("user click on the Edit link next to Email")
 
-    public void clickEditLinkNextToEmail(){
+    public void clickEditLinkNextToEmail() {
         settingsSteps.clickEditLinkNextToEmail();
     }
-
 
     @When("type email in New email field: $examplesTable")
-    public void typeEmail(ExamplesTable table){
+    public void typeEmail(ExamplesTable table) {
         boolean replaceNamedParameters = true;
         String email = table.getRowAsParameters(0, replaceNamedParameters).valueAs("newEmail", String.class);
-        settingsDTO = new SettingsDTO(){
-
-    public void clickEdtLinkNextToEmail() {
-        settingsSteps.clickEditLinkNextToEmail();
-    }
-
+        settingsDTO = new SettingsDTO() {
 
             {
                 setOldEmail(user.getEmail());
                 setNewEmail(email);
+            }
+
+            public void clickEdtLinkNextToEmail() {
+                settingsSteps.clickEditLinkNextToEmail();
             }
         };
         settingsSteps.typeEmail(settingsDTO.getNewEmail());
@@ -143,7 +138,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @When("clicks email cancel button")
-    public void clickEmailCancelBtn(){
+    public void clickEmailCancelBtn() {
         settingsSteps.clickEmailCancelBtn();
     }
 
@@ -153,30 +148,28 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @When("user click on the Edit link next to Password")
-    public void clickEditlinkNextToPw(){
+    public void clickEditlinkNextToPw() {
         settingsSteps.clickEditLinkNextToPw();
     }
 
     @When("enter current password in 'Current password' field: $actTable")
-    public void fillCurrentPwField(ExamplesTable table){
+    public void fillCurrentPwField(ExamplesTable table) {
         boolean replaceNamedParameters = true;
-        String currentPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("currentPw",
-                String.class);
-        SettingsDTO settingsDTO = new SettingsDTO(){
+        String currentPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("currentPw", String.class);
+        SettingsDTO settingsDTO = new SettingsDTO() {
             {
                 setCurrentPw(currentPw);
             }
         };
         settingsSteps.typeCurrentPw(settingsDTO);
     }
+
     @When("enter new password in 'New password' field and confirms it: $actTable")
-    public void fillNewPwField(ExamplesTable table){
+    public void fillNewPwField(ExamplesTable table) {
         boolean replaceNamedParameters = true;
-        String newPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("newPw",
-                String.class);
-        String confirmPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("confirmNewPw",
-                String.class);
-        SettingsDTO settingsDTO = new SettingsDTO(){
+        String newPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("newPw", String.class);
+        String confirmPw = table.getRowAsParameters(0, replaceNamedParameters).valueAs("confirmNewPw", String.class);
+        SettingsDTO settingsDTO = new SettingsDTO() {
             {
                 setNewPw(newPw);
                 setConfirmNewPw(confirmPw);
@@ -187,7 +180,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @When("clicks password's Save button")
-    public void clickPwSaveBtn(){
+    public void clickPwSaveBtn() {
         settingsSteps.clickPwSaveBtn();
     }
 
@@ -313,7 +306,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Then("email didnt change")
-    public void emailDidntChange(){
+    public void emailDidntChange() {
         Assert.assertFalse(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
     }
 
@@ -330,7 +323,7 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Then("user is able to login with new password: $actTable")
-    public void loginWithNewPw(ExamplesTable table){
+    public void loginWithNewPw(ExamplesTable table) {
         loginPageSteps.logout();
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
         loginPageSteps.unsignedUserInHomePage();
@@ -340,10 +333,10 @@ public class SettingsPageDefinitionsSteps {
         loginPageSteps.clickSettingsOption();
     }
 
-    //запихать это говно в другое говно сверху этого говна(логинВизНьюПв)
+    // запихать это говно в другое говно сверху этого говна(логинВизНьюПв)
     @Given("changes his password: $actTable")
     @Then("changes his password: $actTable")
-    public void resetBackPw(ExamplesTable table){
+    public void resetBackPw(ExamplesTable table) {
         settingsSteps.clickEditLinkNextToPw();
         settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);
         settingsSteps.typeCurrentPw(settingsDTO);
@@ -354,48 +347,54 @@ public class SettingsPageDefinitionsSteps {
     }
 
     @Then("an email is send to users email adress: $actTable")
-    public void receiveEmail(ExamplesTable table){
+    public void receiveEmail(ExamplesTable table) {
         user = table.getRowsAs(CredentialsDTO.class).get(0);
         System.out.println(mailCatcherClient.getLastEmail());
-        //КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
-        Assert.assertThat( mailCatcherClient.getLastEmail().getRecipients().get(0), containsString(user.getEmail().toLowerCase()));
+        // КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
+        Assert.assertThat(mailCatcherClient.getLastEmail().getRecipients().get(0),
+                containsString(user.getEmail().toLowerCase()));
     }
 
     @Then("subject's name is '$subject'")
-    public void emailSubjectMatches(String subject){
+    public void emailSubjectMatches(String subject) {
         Assert.assertThat(mailCatcherClient.getLastEmail().getSubject(), is(subject));
     }
 
     @Then("body contains:'$msg1 <name>', '$msg2', '$msg3'")
-    public void checkEmailsBody(String msg1,String name, String msg2, String msg3){
-        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
-                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg1));
-        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
-                MailCatcherClient.ResponseType.HTML).toString(), containsString(name));
-        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
-                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg2));
-        Assert.assertThat(mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(),
-                MailCatcherClient.ResponseType.HTML).toString(), containsString(msg3));
+    public void checkEmailsBody(String msg1, String name, String msg2, String msg3) {
+        Assert.assertThat(mailCatcherClient
+                .getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString(),
+                containsString(msg1));
+        Assert.assertThat(mailCatcherClient
+                .getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString(),
+                containsString(name));
+        Assert.assertThat(mailCatcherClient
+                .getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString(),
+                containsString(msg2));
+        Assert.assertThat(mailCatcherClient
+                .getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString(),
+                containsString(msg3));
     }
 
     @Then("messages apears saying '$msg'")
-    public void checkCurrentMsgError(String msg){
+    public void checkCurrentMsgError(String msg) {
         Assert.assertThat(msg, is(settingsSteps.getCurrentErrorPw()));
     }
 
     @Then("notification change email link was sent on email")
-    public void changeEmailLinkWasSent(){
+    public void changeEmailLinkWasSent() {
         createAccountPageSteps.openLinkFromEmail();
         Assert.assertTrue(createAccountPageSteps.isUserLoggedIn());
     }
+
     @Then("email is changed")
-    public void isEmailchanged(){
+    public void isEmailchanged() {
         loginPageSteps.clickSettingsOption();
         settingsSteps.clickEditLinkNextToEmail();
         Assert.assertTrue(settingsSteps.isEmailChanged(settingsDTO.getNewEmail()));
         settingsSteps.typeEmail(settingsDTO.getOldEmail());
         clickEmailSaveBtn();
         createAccountPageSteps.openLinkFromEmail();
-        //Assert.assertTrue(createAccountPageSteps.isUserLoggedIn());
+        // Assert.assertTrue(createAccountPageSteps.isUserLoggedIn());
     }
 }

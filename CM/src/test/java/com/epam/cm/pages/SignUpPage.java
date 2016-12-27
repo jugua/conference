@@ -94,7 +94,6 @@ public class SignUpPage extends AnyPage {
         inputEmail.type(user.getEmail());
         inputPassword.type(user.getPassword());
         inputConfirmPassword.type(user.getConfirmPasswordNegativeTest());
-        System.out.println();
     }
 
     public void clickSubmit() {

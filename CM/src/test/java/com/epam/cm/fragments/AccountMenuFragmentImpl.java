@@ -1,16 +1,18 @@
 package com.epam.cm.fragments;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.epam.cm.dto.AccountButtonDTO;
+
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.PageObject;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.serenitybdd.core.pages.WidgetObjectImpl;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 

@@ -1,16 +1,15 @@
 package com.epam.cm.steps.serenity;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import com.epam.cm.core.mail.MailCatcherClient;
-import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.UserRegistrationInfoDTO;
 import com.epam.cm.pages.HomePage;
 import com.epam.cm.pages.SignUpPage;
 
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
-
-import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 /**
  * Created by Lev_Serba on 11/10/2016.
@@ -79,14 +78,15 @@ public class CreateAccountPageSteps extends ScenarioSteps {
 
     @Step
     public void openLinkFromEmail() {
-        String emailHtml = mailCatcherClient.getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString();
+        String emailHtml = mailCatcherClient
+                .getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString();
         Pattern pattern = Pattern.compile(HREF_REGEX);
         java.util.regex.Matcher matcher = pattern.matcher(emailHtml);
         ArrayList<String> links = new ArrayList<String>();
-        while(matcher.find()){
+        while (matcher.find()) {
             links.add(matcher.group(1));
         }
-        String link = links.get(links.size()-1);
+        String link = links.get(links.size() - 1);
         getDriver().get(link);
     }
 
@@ -94,7 +94,7 @@ public class CreateAccountPageSteps extends ScenarioSteps {
     public boolean isUserLoggedIn() {
         homePage.waitForPageToLoad();
         String accountMenuTitle = homePage.getMenu().getAccountMenuTitle();
-        if(!accountMenuTitle.matches(UNSIGNED_ACC_TITLE)){
+        if (!accountMenuTitle.matches(UNSIGNED_ACC_TITLE)) {
             return true;
         }
         return false;

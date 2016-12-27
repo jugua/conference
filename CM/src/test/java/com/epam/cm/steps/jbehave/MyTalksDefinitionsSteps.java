@@ -1,6 +1,7 @@
 package com.epam.cm.steps.jbehave;
 
 import com.epam.cm.dto.CredentialsDTO;
+import com.epam.cm.dto.MyTalksDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
 import com.epam.cm.steps.serenity.MyTalksPageSteps;
 
@@ -44,14 +45,58 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.clickBigPopUpSubmitBtn();
     }
 
-    @When("user fiels data in 'Title','Description' and 'Additional Info'")
-    public void fielInvalidDataInFields() {
+    @When("user fills data in 'Title','Description' and 'Additional Info': $exampleTable")
+    public void fillInvalidDataInFields(ExamplesTable table) {
+        boolean replaceNamedParameters = true;
+        String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
+        String description = table.getRowAsParameters(0, replaceNamedParameters).valueAs("description", String.class);
+        String additionalInfo = table.getRowAsParameters(0, replaceNamedParameters).valueAs("additionalInfo",
+                String.class);
+
+        MyTalksDTO myTalksDTO = new MyTalksDTO() {
+            {
+                setTitle(title);
+                setDescription(description);
+                setAdditionalInfo(additionalInfo);
+            }
+        };
+
+        myTalksPageSteps.typeTitle(myTalksDTO);
+        myTalksPageSteps.typeDescription(myTalksDTO);
+        myTalksPageSteps.typeAdditionalInfo(myTalksDTO);
 
     }
 
-    @When("choose Topic, Type, Language, Level dropdown menu")
-    public void chooseAllDopDownMenu() {
+    @When("choose Topic, Type, Language, Level dropdown menu: $exTable")
+    public void chooseAllDropDownMenu(ExamplesTable table) {
+        boolean replaceNamedParameters = true;
+        String topic = table.getRowAsParameters(0, replaceNamedParameters).valueAs("topic",
+                String.class);
+        String type = table.getRowAsParameters(0,replaceNamedParameters).valueAs("type",
+                String.class);
+        String language = table.getRowAsParameters(0,replaceNamedParameters).valueAs("language",
+                String.class);
+        String level = table.getRowAsParameters(0,replaceNamedParameters).valueAs("level",
+                String.class);
 
+        MyTalksDTO myTalksDTO = new MyTalksDTO(){
+            {
+                setTopic(topic);
+                setType(type);
+                setLanguage(language);
+                setLevel(level);
+            }
+        };
+
+        myTalksPageSteps.chooseTopic(myTalksDTO);
+        myTalksPageSteps.chooseType(myTalksDTO);
+        myTalksPageSteps.chooseLanguage(myTalksDTO);
+        myTalksPageSteps.chooseLevel(myTalksDTO);
+    }
+
+    @When("clicks 'Exit' button")
+    public void clickBigPopUpCancel() {
+        myTalksPageSteps.clickBigPopUpCancelBtn();
     }
 
     @Then("pop up is shown with text '$msg'")
@@ -76,12 +121,29 @@ public class MyTalksDefinitionsSteps {
 
     @Then("pop-up window '$msg' is shown")
     public void checkPopUpMsgInSubmitNewTalk(String msg) {
-        Assert.assertThat(msg,is(myTalksPageSteps.getEmptyFieldsPopUpText()));
+        Assert.assertThat(msg, is(myTalksPageSteps.getEmptyFieldsPopUpText()));
     }
 
-    @Then("data are not filled. System doesn't accept invalid data")
-    public void checkInFieldDataLength() {
+    @Then("data are not filled. System doesn't accept invalid data: $exampleTable")
+    public void checkInFieldDataLength(ExamplesTable table) {
 
+        boolean replaceNamedParameters = true;
+        String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
+        String description = table.getRowAsParameters(0, replaceNamedParameters).valueAs("description", String.class);
+        String additionalInfo = table.getRowAsParameters(0, replaceNamedParameters).valueAs("additionalInfo",
+                String.class);
+
+        MyTalksDTO myTalksDTO = new MyTalksDTO() {
+            {
+                setTitle(title);
+                setDescription(description);
+                setAdditionalInfo(additionalInfo);
+            }
+        };
+
+        Assert.assertTrue(myTalksPageSteps.userCantTypeMoreThenMaxTitle(myTalksDTO));
+        Assert.assertTrue(myTalksPageSteps.userCantTypeMoreThenMaxDescription(myTalksDTO));
+        Assert.assertTrue(myTalksPageSteps.userCantTypeMoreThenMaAdditionalInfo(myTalksDTO));
     }
 
     @Then("talk appears in grid and have 'New' status")
@@ -91,11 +153,13 @@ public class MyTalksDefinitionsSteps {
 
     @Then("info msg is shown saying '$firstMsg', '$secondMsg', '$thirdMsg'")
     public void checkInfoMsgs(String firstMsg, String secondMsg, String thirdMsg) {
-
+        Assert.assertThat(firstMsg, is(myTalksPageSteps.getFirstInfoMsg()));
+        Assert.assertThat(secondMsg, is(myTalksPageSteps.getSecondInfoMsg()));
+        Assert.assertThat(thirdMsg, is(myTalksPageSteps.getThirdInfoMsg()));
     }
 
     @Then("click 'Yes' button")
     public void clickYesBtn() {
-
+        myTalksPageSteps.clickYesInfoBtn();
     }
 }

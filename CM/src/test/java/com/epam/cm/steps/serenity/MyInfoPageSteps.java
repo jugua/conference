@@ -6,11 +6,12 @@ import com.epam.cm.pages.HomePage;
 import com.epam.cm.pages.MyInfoPage;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 
 /**
  * Created by Lev_Serba on 11/23/2016.
  */
-public class MyInfoPageSteps {
+public class MyInfoPageSteps extends ScenarioSteps {
 
     MyInfoPage myInfoPage;
     HomePage homePage;
@@ -47,7 +48,7 @@ public class MyInfoPageSteps {
     public boolean isInformationSavedSuccessfullyPopUp() {
         if (myInfoPage.isInformationSavedSuccessfullyPopUp()) {
             myInfoPage.clickInformationSavedSuccessfullyPopUpOkButton();
-            //WebDriverSupport.reloadPage();
+            // WebDriverSupport.reloadPage();
             return true;
         }
         return false;
@@ -55,7 +56,7 @@ public class MyInfoPageSteps {
 
     @Step
     public boolean isInformationSavedSuccessfully(MyInfoFieldsDTO myInfoTable) {
-       //55 WebDriverSupport.reloadPage();
+        // 55 WebDriverSupport.reloadPage();
         myInfoPage.waitForPageToLoad();
         return myInfoPage.isInformationSavedSuccessfully(myInfoTable);
     }

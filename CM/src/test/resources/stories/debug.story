@@ -1,17 +1,20 @@
-
-Scenario: User unsuccessfully create new account with wrong length
-Given user is on the sign up page
-When user  types wrong values in some of the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
-|firstName  |lastName  |email  |password  |confirmPassword  |
-|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
-Then user cant enter/type more than the maximum allowed characters:
-|firstExpectedText  |secondExpectedText  |position  |
-|<firstExpectedText>|<secondExpectedText>|<position>|
+Scenario: Fill valid data in all field not saving it
+Given user logged as speaker accessing 'My Talks' page:
+|email             |password|
+|mytalks@tester.com|tester  |
+When user clicks on 'Submit New Talk' button
+And user fills data in 'Title','Description' and 'Additional Info':
+|title  |description  |additionalInfo  |
+|<title>|<description>|<additionalInfo>|
+And choose Topic, Type, Language, Level dropdown menu:
+|topic  |type  |language  |level  |
+|<topic>|<type>|<language>|<level>|
+And clicks 'Exit' button
+Then info msg is shown saying 'Are you sure you want to leave the window?',
+ 'Click 'Yes' to leave and all your changes will lost.',
+  'Click 'No' to return and Submit/Update your changes'
+And click 'Yes' button
 
 Examples:
-|<firstName>|<lastName>|<email>          |<password>                         |<confirmPassword>                  |<firstExpectedText>|<secondExpectedText>|<position>   |
-|57         |27        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |nameField    |
-|93         |27        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |nameField    |
-|27         |57        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |lastNameField|
-|27         |87        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |lastNameField|
-|27         |27        |tesAuto@auto.tttt|SvfvYTsaeaegbeeejjrjrjejgjejvjejejr|SvfvYTsaeaegbeeejjrjrjejgjejvjejejr|no text msg        |no text msg         |passFieldMax
+|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
+|10     |10           |10              |1      |1     |1         |1      |
