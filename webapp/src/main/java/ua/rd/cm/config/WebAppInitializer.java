@@ -18,25 +18,7 @@ import java.util.Arrays;
  */
 @Order(2)
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer/*WebApplicationInitializer*/{
-    private Logger logger = Logger.getLogger(WebAppInitializer.class);
 
-    /*@Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        WebApplicationContext context = setUpContext(servletContext);
-        logger.info("LOADED BEANS " + Arrays.toString(context.getBeanDefinitionNames()));
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/*");
-    }
-
-    private AnnotationConfigWebApplicationContext setUpContext(ServletContext servletContext) {
-        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(AppConfig.class, SecurityConfig.class);
-        context.setServletContext(servletContext);
-        context.refresh();
-        return context;
-    }*/
-    
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();

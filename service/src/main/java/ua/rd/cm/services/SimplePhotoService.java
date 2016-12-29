@@ -1,5 +1,6 @@
 package ua.rd.cm.services;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,102 +13,70 @@ public class SimplePhotoService implements PhotoService {
     public static final String FOLDER = "home/cm/user/photos";
 
     @Override
-    public String savePhoto(MultipartFile photo, String fileNameId) {
-        try {
-            File dir = getDir();
-            File searchFile = find(dir, fileNameId);
+    public String savePhoto(MultipartFile photo, String fileNameId, String oldFileAbsolutePath) {
+        if (oldFileAbsolutePath != null) {
+            File searchFile = new File(oldFileAbsolutePath);
 
-            if (searchFile != null) {
+            if (searchFile.isFile()) {
                 if (!searchFile.delete()) {
                     return null;
                 }
             }
-            return saveFile(photo, fileNameId, dir);
-        } catch (IOException e) {
-            return null;
         }
+
+        File dir = getDir(ROOT + FOLDER);
+        return saveFile(photo, fileNameId, dir);
     }
 
     @Override
-    public boolean deletePhoto(String fileNameId) {
-        try {
-            File dir = getDir();
-            File searchFile = find(dir, fileNameId);
-            return (searchFile != null && searchFile.delete());
-        } catch (IOException e) {
+    public boolean deletePhoto(String fileAbsolutePath) {
+        if (fileAbsolutePath == null) {
             return false;
         }
+        File searchFile = new File(fileAbsolutePath);
+        return (searchFile.isFile() && searchFile.delete());
     }
 
     @Override
-    public File getPhoto(String fileNameId) {
-        try {
-            File dir = getDir();
-            return find(dir, fileNameId);
-        } catch (IOException e) {
+    public File getPhoto(String fileAbsolutePath) {
+        if (fileAbsolutePath == null) {
             return null;
         }
+        File searchFile = new File(fileAbsolutePath);
+        return searchFile.isFile() ? searchFile : null;
     }
 
-    private String getFormat(String fileName) {
-        int index = fileName.lastIndexOf('.');
-        if (index == -1) {
-            return null;
-        }
-        return fileName.substring(index);
-    }
-
-    private File getDir() throws IOException {
-        File dir = new File(ROOT + FOLDER);
+    private File getDir(String path) {
+        File dir = new File(path);
         if (!dir.exists()) {
             dir.mkdirs();
         }
+
         return dir;
     }
 
-    private File find(File currentFile, String fileName) {
-        if (fileName.equalsIgnoreCase(getFileName(currentFile.getName()))) {
-            return currentFile;
+    private String saveFile(MultipartFile file, String fileNameId, File dir) {
+        File serverFile = new File(dir.getAbsolutePath() +
+                File.separator +
+                fileNameId +
+                getFileFormat(file.getOriginalFilename()));
+
+        try (BufferedOutputStream stream =
+                     new BufferedOutputStream(new FileOutputStream(serverFile))) {
+            stream.write(file.getBytes());
+            stream.close();
+
+            return serverFile.getAbsolutePath();
+        } catch (IOException e) {
+            return null;
         }
-        if (currentFile.isDirectory()) {
-            for (String childName : currentFile.list()) {
-                File childFile = find(new File(currentFile.getAbsolutePath()
-                        + File.separator + childName), fileName);
-                if (childFile != null) {
-                    return childFile;
-                }
-            }
-        }
-
-        return null;
     }
 
-    private String saveFile(MultipartFile file, String fileNameId, File dir)
-            throws IOException {
-        File serverFile = putFileIntoDir(dir, fileNameId,
-                getFormat(file.getOriginalFilename()), file.getBytes());
-
-        return serverFile.getAbsolutePath();
-    }
-
-    private File putFileIntoDir(File dir,
-                                String fileNameId,
-                                String format,
-                                byte[] bytes) throws IOException {
-        File serverFile = new File(dir.getAbsolutePath() + File.separator +
-                fileNameId + format);
-        BufferedOutputStream stream = new BufferedOutputStream(
-                new FileOutputStream(serverFile));
-        stream.write(bytes);
-        stream.close();
-        return serverFile;
-    }
-
-    private String getFileName(String fileName) {
+    private String getFileFormat(String fileName) {
         int index = fileName.lastIndexOf('.');
         if (index == -1) {
-            return fileName;
+            return "";
         }
-        return fileName.substring(0, index);
+        return fileName.substring(index);
     }
 }
