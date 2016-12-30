@@ -1,13 +1,14 @@
 package ua.rd.cm.services;
 
 import freemarker.template.Configuration;
-
+import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.services.mapper.MessageModelMapper;
 import ua.rd.cm.services.preparator.CustomMimeMessagePreparator;
 
 @Service
@@ -30,5 +31,9 @@ public class MailService {
     	} catch (MailException e) {
     		System.out.println("so sad (");
     	}
+    }
+
+    public void notifyUsers(List<User> receivers, MessageModelMapper modelMapper, CustomMimeMessagePreparator preparator) {
+        receivers.forEach(receiver -> sendEmail(preparator, modelMapper.prepareModel(receiver)));
     }
 }
