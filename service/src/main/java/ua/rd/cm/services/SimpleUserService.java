@@ -13,10 +13,9 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.user.UserByEmail;
-import ua.rd.cm.repository.specification.user.UserByFirstName;
-import ua.rd.cm.repository.specification.user.UserById;
-import ua.rd.cm.repository.specification.user.UserByLastName;
+import ua.rd.cm.repository.specification.AndSpecification;
+import ua.rd.cm.repository.specification.WhereSpecification;
+import ua.rd.cm.repository.specification.user.*;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
 @Service
@@ -38,7 +37,7 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public User find(Long id) {
-		return userRepository.findBySpecification(new UserById(id)).get(0);
+		return userRepository.findBySpecification(new WhereSpecification<>(new UserById(id))).get(0);
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public User getByEmail(String email) {
-		List<User> users = userRepository.findBySpecification(new UserByEmail(email));
+		List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserByEmail(email)));
 		if (users.isEmpty()){
 			return null;
 		}
@@ -75,12 +74,12 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public List<User> getByLastName(String lastName) {
-		return userRepository.findBySpecification(new UserByLastName(lastName));
+		return userRepository.findBySpecification(new WhereSpecification<>(new UserByLastName(lastName)));
 	}
 
 	@Override
 	public boolean isEmailExist(String email) {
-		return !userRepository.findBySpecification(new UserByEmail(email)).isEmpty();
+		return !userRepository.findBySpecification(new WhereSpecification<>(new UserByEmail(email))).isEmpty();
 	}
 
 	@Override
@@ -99,10 +98,24 @@ public class SimpleUserService implements UserService{
 		userRepository.updateUser(user);
 	}
 
+	@Override
+	public List<User> getByRole(String role) {
+		return userRepository.findBySpecification(new UserByRoleJoin(role));
+	}
+
+	@Override
+	public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
+		return userRepository.findBySpecification(
+				new AndSpecification<>(
+						new UserByRoleJoin(roleName),
+						new UserExceptThisById(currentUser.getId())
+				)
+		);
+	}
 
 	private Map<String, Object> setupMessageValues(VerificationToken token) {
 		Map<String, Object> values = new HashMap<>();
-		values.put("link", "http://localhost:8050/#/registrationConfirm/" + token.getToken());
+		values.put("link", "http://localhost:8081/#/registrationConfirm/" + token.getToken());
 		values.put("name" , token.getUser().getFirstName());
 		values.put("email", token.getUser().getEmail());
 		return values;
