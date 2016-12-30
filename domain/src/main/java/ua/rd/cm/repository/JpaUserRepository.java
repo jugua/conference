@@ -41,8 +41,7 @@ public class JpaUserRepository implements UserRepository{
 	
 	@Override
 	public List<User> findBySpecification(Specification<User> spec) {
-		return em.createQuery("SELECT u FROM User u WHERE " + spec.toSqlClauses(), User.class).getResultList();
+		return em.createQuery("SELECT u FROM User u " + spec.toSqlClauses(), User.class).getResultList();
 	}
-
 
 }

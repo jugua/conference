@@ -20,6 +20,4 @@ public class AndSpecification<T> extends CompositeSpecification<T>{
 	public boolean test(T t) {
 		return true;
 	}
-
-	
 }
