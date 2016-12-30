@@ -8,10 +8,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.*;
+import ua.rd.cm.services.mapper.NewTalkModelMapper;
+import ua.rd.cm.services.preparator.SubmitNewTalkPreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
@@ -33,21 +36,25 @@ public class TalkController {
 	private LanguageService languageService;
 	private LevelService levelService;
 	private TopicService topicService;
-
+	private MailService mailService;
 	private static final String DEFAULT_TALK_STATUS = "New";
 
 	@Autowired
-	public TalkController(ModelMapper mapper, UserService userService, TalkService talkService,
-						  StatusService statusService, TypeService typeService, LevelService levelService,
-						  LanguageService languageService, TopicService topicService) {
+	public TalkController(
+			ModelMapper mapper, UserService userService,
+			TalkService talkService, StatusService statusService,
+			TypeService typeService, LanguageService languageService,
+			LevelService levelService, TopicService topicService, MailService mailService
+	) {
 		this.mapper = mapper;
 		this.userService = userService;
 		this.talkService = talkService;
 		this.statusService = statusService;
-		this.topicService = topicService;
 		this.typeService = typeService;
 		this.languageService = languageService;
 		this.levelService = levelService;
+		this.topicService = topicService;
+		this.mailService = mailService;
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -105,6 +112,8 @@ public class TalkController {
 		Talk currentTalk = dtoToEntity(dto);
 		currentTalk.setUser(currentUser);
 		talkService.save(currentTalk);
+		List<User> receivers = userService.getByRole(Role.ORGANISER);
+		mailService.notifyUsers(receivers, new NewTalkModelMapper(currentTalk), new SubmitNewTalkPreparator());
 	}
 
 	private TalkDto entityToDto(Talk talk) {
