@@ -25,7 +25,6 @@ public class MailService {
     public void sendEmail(CustomMimeMessagePreparator preparator, Map<String, Object> model) {
     	preparator.setModel(model);
     	preparator.setFreemarkerConfiguration(freemarkerConfiguration);
-    	
     	try {
     		mailSender.send(preparator);
     	} catch (MailException e) {
@@ -33,7 +32,11 @@ public class MailService {
     	}
     }
 
-    public void notifyUsers(List<User> receivers, MessageModelMapper modelMapper, CustomMimeMessagePreparator preparator) {
+    public void notifyUsers(
+            List<User> receivers,
+            MessageModelMapper modelMapper,
+            CustomMimeMessagePreparator preparator
+    ) {
         receivers.forEach(receiver -> sendEmail(preparator, modelMapper.prepareModel(receiver)));
     }
 }

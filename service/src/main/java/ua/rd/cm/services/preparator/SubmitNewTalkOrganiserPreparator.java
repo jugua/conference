@@ -4,10 +4,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.internet.MimeMessage;
 
-public class SubmitNewTalkPreparator extends CustomMimeMessagePreparator {
+public class SubmitNewTalkOrganiserPreparator extends CustomMimeMessagePreparator {
     @Override
     public String getTemplateName() {
-        return null;
+        return "submitted_talk_organizer.ftl";
     }
 
     @Override
