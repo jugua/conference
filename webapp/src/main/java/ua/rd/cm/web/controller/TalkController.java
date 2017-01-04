@@ -84,6 +84,31 @@ public class TalkController {
 		return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
 	}
 
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/reject")
+	public ResponseEntity rejectTalk(@Valid @RequestBody TalkDto dto, BindingResult bindingResult,HttpServletRequest request) {
+		MessageDto messageDto = new MessageDto();
+		HttpStatus httpStatus;
+
+		if(!request.isUserInRole("ORGANISER")){
+			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+		}
+
+		if (bindingResult.hasFieldErrors() || dto.getOrganiserComment()==null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+		}
+
+		User currentUser = userService.getByEmail(request.getRemoteUser());
+
+		if (!checkForFilledUserInfo(currentUser)) {
+			httpStatus = HttpStatus.FORBIDDEN;
+		} else {
+			saveNewTalk(dto, currentUser);
+			httpStatus = HttpStatus.OK;
+		}
+		return ResponseEntity.status(httpStatus).body(messageDto);
+	}
+
 	private List<TalkDto> getTalksForSpeaker(String userEmail){
 		User currentUser = userService.getByEmail(userEmail);
 

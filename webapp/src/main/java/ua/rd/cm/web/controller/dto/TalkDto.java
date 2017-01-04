@@ -59,5 +59,9 @@ public class TalkDto {
 
 	@JsonProperty("date")
 	private String date;
+
+	@Size(max = 1000)
+	@JsonProperty("org_comment")
+	private String organiserComment;
 	
 }

@@ -62,4 +62,7 @@ public class Talk {
 
     @Column(name = "additional_info", length = 1500)
     private String additionalInfo;
+
+    @Column(name="organiser_comment", length=1000)
+    private String organiserComment;
 }
