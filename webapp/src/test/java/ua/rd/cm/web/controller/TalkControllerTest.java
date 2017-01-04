@@ -401,12 +401,20 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void notAnOrganiserTryRejectATalk() throws Exception{
         mockMvc.perform(preparePostRequest(API_REJECT))
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void tryRejectWithEmptyOrganiserComment() throws Exception{
+        correctTalkDto.setOrganiserComment(null);
+        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePostRequest(API_REJECT))
+                .andExpect(status().isBadRequest());
+    }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
         return MockMvcRequestBuilders.get(uri)
