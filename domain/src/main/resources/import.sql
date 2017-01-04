@@ -53,7 +53,9 @@ UPDATE level_seq SET next_val = 5 WHERE next_val = 1;
 --
 
 INSERT INTO `status` VALUES (1, "New");
-
+INSERT INTO `status` VALUES (2, "In Progress");
+INSERT INTO `status` VALUES (3, "Rejected");
+INSERT INTO `status` VALUES (4, "Approved");
 UPDATE status_seq SET next_val = 2 WHERE next_val = 1;
 
 --

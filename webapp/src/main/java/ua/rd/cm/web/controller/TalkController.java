@@ -87,9 +87,6 @@ public class TalkController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/reject")
 	public ResponseEntity rejectTalk(@Valid @RequestBody TalkDto dto, HttpServletRequest request) {
-		MessageDto messageDto = new MessageDto();
-		HttpStatus httpStatus;
-
 		if(!request.isUserInRole("ORGANISER")){
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
 		}
@@ -98,16 +95,18 @@ public class TalkController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 		}
 
-		talkService.findTalkById(dto.getId());
-		User currentUser = userService.getByEmail(request.getRemoteUser());
+		Talk talk=talkService.findTalkById(dto.getId());
 
-		if (!checkForFilledUserInfo(currentUser)) {
-			httpStatus = HttpStatus.FORBIDDEN;
-		} else {
-			saveNewTalk(dto, currentUser);
-			httpStatus = HttpStatus.OK;
+		if(talk!=null){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no_talk");
 		}
-		return ResponseEntity.status(httpStatus).body(messageDto);
+
+		if(!dto.getStatusName().equals("New") || !dto.getStatusName().equals("In Progress")){
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
+		}
+		talk.setOrganiserComment(dto.getOrganiserComment());
+		talk.setStatus(statusService.getByName("Rejected"));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body("successfully_rejected");
 	}
 
 	private List<TalkDto> getTalksForSpeaker(String userEmail){
