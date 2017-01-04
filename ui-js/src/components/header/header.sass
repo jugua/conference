@@ -1,9 +1,13 @@
 .header
   width: 100%
+  height: 70px
   background: $graphite
   display: flex
   justify-content: center
   flex-wrap: wrap
+
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx)
+    height: 100px
 
   &__title
     height: 100%
@@ -21,7 +25,7 @@
       padding: 0
       text-align: center
 
-    @media ($mnw: $mdmn) and ($mxw: $mdmx)
+    @media ($mnw: $mdmn) and ($mxw: $ldmx)
       padding: 0 50px
 
 .menu-container
@@ -38,7 +42,7 @@
     background: $sharp-blue
     color: #fff
     font-size: 18px
-    margin: 20px 0
+    margin-top: 20px
     padding: 3px 15px
 
     &:hover
@@ -53,6 +57,16 @@
     @media ($mnw: $xsdmn) and ($mxw: $sdmx)
       padding: 0 10px
       margin-top: 5px
+      max-width: 350px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+
+    @media ($mnw: $mdmn) and ($mxw: $ldmn)
+      max-width: 220px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
 
   &__content
     width: 300px

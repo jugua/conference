@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
 @WebAppConfiguration
-public class UserControllerTest {
+public class UserControllerTest extends TestUtil{
     public static final String API_USER_CURRENT = "/api/user/current";
     public static final String API_USER = "/api/user";
     private MockMvc mockMvc;
@@ -363,18 +363,8 @@ public class UserControllerTest {
         return builder.toString();
     }
 
-    private User createUser(Role role , UserInfo info){
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
-        User user = new User(1L, "FirstName", "LastName", alreadyRegisteredEmail, "pass", "url", User.UserStatus.CONFIRMED, info, roles);
-        return user;
-    }
-
-    private Role createSpeakerRole(){
-        return new Role(1L, "ROLE_SPEAKER");
-    }
-
-    private UserInfo createUserInfo(){
+    @Override
+    protected UserInfo createUserInfo(){
         ContactType contactType = new ContactType(1L, "LinkedIn");
         ContactType contactType2 = new ContactType(2L, "Twitter");
         ContactType contactType3 = new ContactType(3L, "FaceBook");

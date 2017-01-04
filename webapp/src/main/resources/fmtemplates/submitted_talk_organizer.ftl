@@ -3,9 +3,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
+    <link rel="stylesheet" type="text/css" href="css/app.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Email address has been changed</title>
+    <title>A new talk has been submitted</title>
       <style>
           .wrapper {
               width: 100%; }
@@ -1419,19 +1420,21 @@
                         <table class="spacer"><tbody><tr><td height="15px" style="font-size:15px;line-height:15px;">&#xA0;</td></tr></tbody></table> 
                         <h2 class="text-center header_title">CONFERENCE MANAGEMENT</h2>
                     </th>
-					<th class="expander"></th></tr></table></th>
+<th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
                 <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
                 <table class="row"><tbody><tr>
                     <th class="small-12 large-12 columns first last"><table><tr><th>
-                        <p>Hi ${name},</p>
-                        <p>Your email address was changed from ${oldEmail} to ${newEmail} on ${dateTime}</p>
-						<p>If you did this, you can safely disregard this email.</p>
-                        <p>If you didn't do this, please contact us immediately.</p>
-                        <table class="spacer"><tbody><tr><td height="10px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table>
-                       <p>Sincerely yours, <br> The Conference Management Team.</p>
+                        <p>Dear  ${name},</p>
+                        <p>There is a new talk submitted by ${speaker_name} ${speaker_surname}. To review it click the button or paste the following link into your browser:</p>
+                        <p><a href="${link}">${link}</a></p>
+                        <table class="spacer"><tbody><tr><td height="10px" style="font-size:10px;line-height:10px;">&#xA0;</td></tr></tbody></table>
+                            <center data-parsed="">
+                                <table class="button content_button float-center"><tr><td><table><tr><td><a href="${link}">Review</a></td></tr></table></td></tr></table>
+                            </center>
+                        <p>Sincerely yours, <br> The Conference Management Team.</p>
                     </th>
-					<th class="expander"></th></tr></table></th>
+<th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
             </td></tr></tbody></table>
           </center>

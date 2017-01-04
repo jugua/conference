@@ -10,6 +10,7 @@ import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByStatus;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
+
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByType;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByUserId;
 import java.time.LocalDateTime;
@@ -73,8 +74,7 @@ public class VerificationTokenService {
 
     public boolean isTokenExpired(VerificationToken verificationToken) {
         return (verificationToken.getStatus().equals(VerificationToken.TokenStatus.EXPIRED)) ||
-                (ChronoUnit.MINUTES.between(LocalDateTime.now(ZoneId.systemDefault()),
-                verificationToken.getExpiryDate()) >= VerificationToken.EXPIRATION_IN_MINUTES);
+                (verificationToken.getExpiryDate().isBefore(LocalDateTime.now(ZoneId.systemDefault())));
     }
 
     public VerificationToken getToken(String token) {

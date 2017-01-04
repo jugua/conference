@@ -15,6 +15,7 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.OldEmailMessagePreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -30,6 +31,9 @@ public class SignInController {
     private UserService userService;
     private MailService mailService;
 
+    @Autowired
+	CustomAuthenticationProvider authenticationProvider;
+	
     @Autowired
     public SignInController(VerificationTokenService tokenService,
                             UserService userService, MailService mailService) {
@@ -116,11 +120,11 @@ public class SignInController {
     }
 
     private void authenticateUser(User user) {
-        Principal principal = user::getEmail;
+    	String username = user.getEmail();
         String credentials = user.getPassword();
-        Set<Role> roleSet = user.getUserRoles();
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, roleSet);
+        Authentication auth = authenticationProvider
+        		.authenticate(new UsernamePasswordAuthenticationToken(username, credentials));
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 }
