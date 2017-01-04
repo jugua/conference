@@ -86,18 +86,19 @@ public class TalkController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/reject")
-	public ResponseEntity rejectTalk(@Valid @RequestBody TalkDto dto, BindingResult bindingResult,HttpServletRequest request) {
+	public ResponseEntity rejectTalk(@Valid @RequestBody TalkDto dto, HttpServletRequest request) {
 		MessageDto messageDto = new MessageDto();
 		HttpStatus httpStatus;
 
 		if(!request.isUserInRole("ORGANISER")){
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
 		}
 
-		if (bindingResult.hasFieldErrors() || dto.getOrganiserComment()==null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+		if (dto.getOrganiserComment()==null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 		}
 
+		talkService.findTalkById(dto.getTalkId());
 		User currentUser = userService.getByEmail(request.getRemoteUser());
 
 		if (!checkForFilledUserInfo(currentUser)) {
