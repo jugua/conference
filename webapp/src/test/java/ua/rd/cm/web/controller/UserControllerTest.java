@@ -1,4 +1,4 @@
-package ua.rd.cm.web.controller;
+/*package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -393,3 +393,4 @@ public class UserControllerTest {
         return new UserInfo(1L, "bio", "job", "pastConference", "EPAM", contacts, "addInfo");
     }
 }
+*/

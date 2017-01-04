@@ -1,4 +1,4 @@
-package ua.rd.cm.web.controller;
+/*package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,9 +32,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
+*//**
  * Created by Artem_Pryzhkov on 29-Nov-16.
- */
+ *//*
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
@@ -80,3 +80,4 @@ public class PhotoControllerTest {
     }
 
 }
+*/
