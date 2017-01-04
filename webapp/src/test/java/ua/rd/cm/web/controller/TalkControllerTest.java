@@ -100,7 +100,7 @@ public class TalkControllerTest{
         when(userInfoService.find(anyLong())).thenReturn(userInfo);
     }
 
-    @Ignore
+
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
     public void correctSubmitNewTalkTest() throws Exception{
@@ -384,6 +384,7 @@ public class TalkControllerTest{
 
     private TalkDto setupCorrectTalkDto() {
         TalkDto correctTalkDto = new TalkDto();
+        correctTalkDto.setId(1L);
         correctTalkDto.setDescription("Description");
         correctTalkDto.setTitle("Title");
         correctTalkDto.setLanguageName("English");
@@ -393,6 +394,7 @@ public class TalkControllerTest{
         correctTalkDto.setTopicName("JVM Languages and new programming paradigms");
         correctTalkDto.setDate(LocalDateTime.now().toString());
         correctTalkDto.setAdditionalInfo("Info");
+        correctTalkDto.setOrganiserComment("Org comment");
         return correctTalkDto;
     }
 

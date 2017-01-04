@@ -98,7 +98,7 @@ public class TalkController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 		}
 
-		talkService.findTalkById(dto.getTalkId());
+		talkService.findTalkById(dto.getId());
 		User currentUser = userService.getByEmail(request.getRemoteUser());
 
 		if (!checkForFilledUserInfo(currentUser)) {

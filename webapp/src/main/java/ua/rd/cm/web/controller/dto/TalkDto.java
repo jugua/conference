@@ -14,8 +14,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @ToString
 public class TalkDto {
+
 	@JsonProperty("_id")
-	private Long talkId;
+	private Long id;
 
 	@NotNull
 	@Size(min = 1, max = 250)
