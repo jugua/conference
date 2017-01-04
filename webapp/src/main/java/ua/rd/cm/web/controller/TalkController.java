@@ -94,18 +94,19 @@ public class TalkController {
 		if (dto.getOrganiserComment()==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 		}
-
+		if(!dto.getStatusName().equals("New") || !dto.getStatusName().equals("In Progress")){
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
+		}
 		Talk talk=talkService.findTalkById(dto.getId());
 
 		if(talk!=null){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no_talk");
 		}
 
-		if(!dto.getStatusName().equals("New") || !dto.getStatusName().equals("In Progress")){
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
-		}
+
 		talk.setOrganiserComment(dto.getOrganiserComment());
 		talk.setStatus(statusService.getByName("Rejected"));
+		talkService.update(talk);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body("successfully_rejected");
 	}
 
