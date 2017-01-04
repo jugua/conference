@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +46,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class TalkControllerTest{
+
     private static final String API_TALK = "/api/talk";
+    private static final String API_REJECT = "/api/talk/reject";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
-
+    public static final String SPEAKER_ROLE = "SPEAKER";
+    public static final String ORGANISER_ROLE = "ORGANISER";
     @Autowired
     private WebApplicationContext context;
     @Autowired
@@ -102,7 +104,7 @@ public class TalkControllerTest{
 
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctSubmitNewTalkTest() throws Exception{
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -110,7 +112,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyCompanyMyInfoSubmitNewTalkTest() throws Exception{
         userInfo.setCompany("");
 
@@ -119,7 +121,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyJobMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setJobTitle("");
 
@@ -128,7 +130,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyBioMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setShortBio("");
 
@@ -143,7 +145,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void nullTitleSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTitle(null);
 
@@ -152,7 +154,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyTitleSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTitle("");
 
@@ -161,7 +163,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void tooLongTitleSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTitle(createStringWithLength(251));
 
@@ -170,7 +172,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void nullDescriptionSubmitNewTalkTest() throws Exception{
         correctTalkDto.setDescription(null);
 
@@ -179,7 +181,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyDescriptionSubmitNewTalkTest() throws Exception{
         correctTalkDto.setDescription("");
 
@@ -188,7 +190,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void tooLongDescriptionSubmitNewTalkTest() throws Exception{
         correctTalkDto.setDescription(createStringWithLength(3001));
 
@@ -197,7 +199,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void nullTopicSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTopicName(null);
 
@@ -206,7 +208,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyTopicSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTopicName("");
 
@@ -215,7 +217,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void tooLongTopicSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTopicName(createStringWithLength(256));
 
@@ -224,7 +226,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void nullTypeSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTypeName(null);
 
@@ -233,7 +235,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyTypeSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTypeName("");
 
@@ -242,7 +244,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void tooLongTypeSubmitNewTalkTest() throws Exception{
         correctTalkDto.setTypeName(createStringWithLength(256));
 
@@ -251,7 +253,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void nullLanguageSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLanguageName(null);
 
@@ -260,7 +262,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyLanguageSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLanguageName("");
 
@@ -269,7 +271,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void tooLongLanguageSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLanguageName(createStringWithLength(256));
 
@@ -278,7 +280,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void nullLevelSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLevelName(null);
 
@@ -287,7 +289,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyLevelSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLevelName("");
 
@@ -296,7 +298,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void tooLongLevelSubmitNewTalkTest() throws Exception{
         correctTalkDto.setLevelName(createStringWithLength(256));
 
@@ -305,7 +307,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void tooLongAddInfoSubmitNewTalkTest() throws Exception{
         correctTalkDto.setAdditionalInfo(createStringWithLength(1501));
 
@@ -314,7 +316,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctGetMyTalksTest() throws Exception {
         Talk talk = createTalk(speakerUser);
         List<Talk> talks = new ArrayList<>();
@@ -347,7 +349,7 @@ public class TalkControllerTest{
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = "ORGANISER")
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void checkCallToPrepareOrganiserTalkMethod() throws Exception{
         Talk talk = createTalk(speakerUser);
         List talks = new ArrayList() {{
@@ -360,6 +362,51 @@ public class TalkControllerTest{
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
     }
+
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void correctRejectNewTalk() throws Exception{
+        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePostRequest(API_REJECT))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void correctRejectInProgressTalk() throws Exception{
+        correctTalkDto.setStatusName(TalkController.IN_PROGRESS);
+        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePostRequest(API_REJECT))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void incorrectRejectRejectedTalk() throws Exception{
+        correctTalkDto.setStatusName(TalkController.REJECTED);
+        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new
+                User()));
+        mockMvc.perform(preparePostRequest(API_REJECT))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void incorrectRejectApprovedTalk() throws Exception{
+        correctTalkDto.setStatusName(TalkController.APPROVED);
+        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePostRequest(API_REJECT))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = SPEAKER_ROLE)
+    public void notAnOrganiserTryRejectATalk() throws Exception{
+        mockMvc.perform(preparePostRequest(API_REJECT))
+                .andExpect(status().isUnauthorized());
+    }
+
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
         return MockMvcRequestBuilders.get(uri)
@@ -389,7 +436,7 @@ public class TalkControllerTest{
         correctTalkDto.setTitle("Title");
         correctTalkDto.setLanguageName("English");
         correctTalkDto.setLevelName("Beginner");
-        correctTalkDto.setStatusName("New");
+        correctTalkDto.setStatusName(TalkController.NEW);
         correctTalkDto.setTypeName("Regular Talk");
         correctTalkDto.setTopicName("JVM Languages and new programming paradigms");
         correctTalkDto.setDate(LocalDateTime.now().toString());

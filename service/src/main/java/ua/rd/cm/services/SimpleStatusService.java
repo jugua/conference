@@ -9,13 +9,14 @@ import ua.rd.cm.repository.specification.status.StatusByName;
 
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
 @Service
 public class SimpleStatusService implements StatusService {
 
     private StatusRepository statusRepository;
+    private static final String NEW = "New";
+    private static final String IN_PROGRESS = "In Progress";
+    private static final String REJECTED = "Rejected";
+    private static final String APPROVED= "Approved";
 
     @Autowired
     public SimpleStatusService(StatusRepository statusRepository) {
@@ -43,4 +44,8 @@ public class SimpleStatusService implements StatusService {
     public List<Status> findAll() {
         return statusRepository.findAll();
     }
+
+//    public boolean canChangeAvailability(Status oldStatus,Status newStatus){
+//
+//    }
 }

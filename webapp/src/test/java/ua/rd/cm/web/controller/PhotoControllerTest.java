@@ -89,7 +89,7 @@ public class PhotoControllerTest extends TestUtil{
 
     @Ignore
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER_ROLE")
     public void correctUploadPhoto() throws Exception {
         when(userService.getByEmail(user.getEmail())).thenReturn(user);
 
@@ -108,7 +108,7 @@ public class PhotoControllerTest extends TestUtil{
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER_ROLE")
     public void nullUploadPhoto() throws Exception {
         mockMvc.perform(fileUpload(API_PHOTO)
                 .file(setupCorrectMultipartFile())

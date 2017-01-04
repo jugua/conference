@@ -35,10 +35,10 @@ public class TalkController {
 	private TopicService topicService;
 
 	private static final String DEFAULT_TALK_STATUS = "New";
-	private static final String NEW = "New";
-	private static final String IN_PROGRESS = "In Progress";
-	private static final String REJECTED = "Rejected";
-	private static final String APPROVED= "Approved";
+	public static final String NEW = "New";
+	public static final String IN_PROGRESS = "In Progress";
+	public static final String REJECTED = "Rejected";
+	public static final String APPROVED= "Approved";
 	@Autowired
 	public TalkController(ModelMapper mapper, UserService userService, TalkService talkService,
 						  StatusService statusService, TypeService typeService, LevelService levelService,
@@ -97,20 +97,20 @@ public class TalkController {
 		if (dto.getOrganiserComment()==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 		}
-		if(!dto.getStatusName().equals(NEW) || !dto.getStatusName().equals(IN_PROGRESS)){
+		if(!(dto.getStatusName().equals(NEW) || dto.getStatusName().equals(IN_PROGRESS))){
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
 		}
 		Talk talk=talkService.findTalkById(dto.getId());
 
-		if(talk!=null){
+		if(talk==null){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no_talk");
 		}
 
-
+		System.out.println(dto.getOrganiserComment());
 		talk.setOrganiserComment(dto.getOrganiserComment());
 		talk.setStatus(statusService.getByName(REJECTED));
 		talkService.update(talk);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body("successfully_rejected");
+		return ResponseEntity.status(HttpStatus.OK).body("successfully_rejected");
 	}
 
 	private List<TalkDto> getTalksForSpeaker(String userEmail){
