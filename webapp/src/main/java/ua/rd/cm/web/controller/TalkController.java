@@ -35,7 +35,10 @@ public class TalkController {
 	private TopicService topicService;
 
 	private static final String DEFAULT_TALK_STATUS = "New";
-
+	private static final String NEW = "New";
+	private static final String IN_PROGRESS = "In Progress";
+	private static final String REJECTED = "Rejected";
+	private static final String APPROVED= "Approved";
 	@Autowired
 	public TalkController(ModelMapper mapper, UserService userService, TalkService talkService,
 						  StatusService statusService, TypeService typeService, LevelService levelService,
@@ -94,7 +97,7 @@ public class TalkController {
 		if (dto.getOrganiserComment()==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 		}
-		if(!dto.getStatusName().equals("New") || !dto.getStatusName().equals("In Progress")){
+		if(!dto.getStatusName().equals(NEW) || !dto.getStatusName().equals(IN_PROGRESS)){
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
 		}
 		Talk talk=talkService.findTalkById(dto.getId());
@@ -105,7 +108,7 @@ public class TalkController {
 
 
 		talk.setOrganiserComment(dto.getOrganiserComment());
-		talk.setStatus(statusService.getByName("Rejected"));
+		talk.setStatus(statusService.getByName(REJECTED));
 		talkService.update(talk);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body("successfully_rejected");
 	}
