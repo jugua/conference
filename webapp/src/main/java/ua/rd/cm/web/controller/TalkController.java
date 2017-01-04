@@ -93,7 +93,6 @@ public class TalkController {
 		if(!request.isUserInRole("ORGANISER")){
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
 		}
-
 		if (dto.getOrganiserComment()==null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 		}
@@ -106,7 +105,6 @@ public class TalkController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no_talk");
 		}
 
-		System.out.println(dto.getOrganiserComment());
 		talk.setOrganiserComment(dto.getOrganiserComment());
 		talk.setStatus(statusService.getByName(REJECTED));
 		talkService.update(talk);
