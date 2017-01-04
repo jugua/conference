@@ -5,12 +5,12 @@ import ua.rd.cm.domain.User;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChangeTalkStatusModelMapper implements MessageModelMapper{
+public class ChangeTalkStatusOrganiserModelMapper implements MessageModelMapper{
 
     private User currentOrganiser;
     private Talk currentTalk;
 
-    public ChangeTalkStatusModelMapper(User currentOrganiser, Talk currentTalk) {
+    public ChangeTalkStatusOrganiserModelMapper(User currentOrganiser, Talk currentTalk) {
         this.currentOrganiser = currentOrganiser;
         this.currentTalk = currentTalk;
     }

@@ -6,11 +6,11 @@ import ua.rd.cm.domain.User;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewTalkModelMapper implements MessageModelMapper{
+public class NewTalkOrganiserModelMapper implements MessageModelMapper{
 
     private Talk currentTalk;
 
-    public NewTalkModelMapper(Talk currentTalk) {
+    public NewTalkOrganiserModelMapper(Talk currentTalk) {
         this.currentTalk = currentTalk;
     }
 
