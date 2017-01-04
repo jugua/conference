@@ -377,7 +377,7 @@ public class TalkControllerTest{
         Type type = new Type(1L, "Type");
         Language language = new Language(1L, "Language");
         Level level = new Level(1L, "Level");
-        return new Talk(1L, user, status, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info");
+        return new Talk(1L, user, status, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", "");
     }
 
     private TalkDto setupCorrectTalkDto() {

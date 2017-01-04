@@ -5,10 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * @author Artem_Pryzhkov
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -62,4 +58,7 @@ public class Talk {
 
     @Column(name = "additional_info", length = 1500)
     private String additionalInfo;
+
+    @Column(name = "organiser_comment")
+    private String organiserComment;
 }

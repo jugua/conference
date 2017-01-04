@@ -1,13 +1,9 @@
 package ua.rd.cm.services;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -49,7 +45,6 @@ public class SimpleUserService implements UserService{
 		if (user.getUserInfo() == null) {
 		    user.setUserInfo(new UserInfo());
 		}
-
 		userRepository.saveUser(user);
 	}
 	
@@ -88,8 +83,7 @@ public class SimpleUserService implements UserService{
 		save(user);
 		VerificationToken token = tokenService.createToken(user, VerificationToken.TokenType.CONFIRMATION);
 		tokenService.saveToken(token);
-		Map<String, Object> messageValues = setupMessageValues(token);
-		mailService.sendEmail(new ConfirmAccountPreparator(), messageValues);
+		mailService.sendEmail(user, new ConfirmAccountPreparator(token));
 	}
 
 	@Override
@@ -111,13 +105,5 @@ public class SimpleUserService implements UserService{
 						new UserExceptThisById(currentUser.getId())
 				)
 		);
-	}
-
-	private Map<String, Object> setupMessageValues(VerificationToken token) {
-		Map<String, Object> values = new HashMap<>();
-		values.put("link", "http://localhost:8081/#/registrationConfirm/" + token.getToken());
-		values.put("name" , token.getUser().getFirstName());
-		values.put("email", token.getUser().getEmail());
-		return values;
 	}
 }

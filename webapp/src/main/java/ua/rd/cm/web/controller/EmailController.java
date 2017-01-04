@@ -1,19 +1,11 @@
 package ua.rd.cm.web.controller;
 
 import java.io.IOException;
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.security.auth.x500.X500Principal;
 import javax.validation.Valid;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.services.preparator.ForgotMessagePreparator;
@@ -37,7 +26,6 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.NewPasswordDto;
-import ua.rd.cm.web.controller.dto.UserDto;
 import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 @RestController
@@ -57,7 +45,6 @@ public class EmailController {
 	public EmailController(MailService mailService, UserService userService,
 						   ModelMapper modelMapper, ObjectMapper objectMapper,
 						   VerificationTokenService tokenService) {
-		
 		this.mailService = mailService;
 		this.userService = userService;
 		this.modelMapper = modelMapper;
@@ -75,18 +62,12 @@ public class EmailController {
 			if(!userService.isEmailExist(node.get("mail").textValue())) {
 				httpStatus = HttpStatus.BAD_REQUEST;
 				responseMessage.setError("email_not_found");
-			
 			} else {
 				User currentUser = userService.getByEmail(node.get("mail").textValue());
 				VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
 				tokenService.setPreviousTokensExpired(token);
 				tokenService.saveToken(token);
-				
-				Map<String, Object> model = new HashMap<>();
-				model.put("email", currentUser.getEmail());
-				model.put("name", currentUser.getFirstName());
-				model.put("link", "http://localhost:8050/#/forgotPassword/" + token.getToken());
-				mailService.sendEmail(new ForgotMessagePreparator(), model);
+				mailService.sendEmail(currentUser, new ForgotMessagePreparator(token));
 				httpStatus = HttpStatus.OK;
 				responseMessage.setStatus("success");
 			}

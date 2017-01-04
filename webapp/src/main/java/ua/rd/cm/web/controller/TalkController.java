@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.Role;
@@ -13,8 +12,7 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.*;
-import ua.rd.cm.services.mapper.NewTalkModelMapper;
-import ua.rd.cm.services.preparator.SubmitNewTalkPreparator;
+import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
@@ -113,7 +111,7 @@ public class TalkController {
 		currentTalk.setUser(currentUser);
 		talkService.save(currentTalk);
 		List<User> receivers = userService.getByRole(Role.ORGANISER);
-		mailService.notifyUsers(receivers, new NewTalkModelMapper(currentTalk), new SubmitNewTalkPreparator());
+		mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
 	}
 
 	private TalkDto entityToDto(Talk talk) {

@@ -7,14 +7,13 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.repository.TalkRepository;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
-
 import java.util.List;
 
 @Service
 public class SimpleTalkService implements TalkService{
 
 	private TalkRepository talkRepository;
-	
+
 	@Autowired
 	public SimpleTalkService(TalkRepository talkRepository) {
 		this.talkRepository = talkRepository;
@@ -52,5 +51,4 @@ public class SimpleTalkService implements TalkService{
 	public Talk findTalkById(Long id) {
 		return talkRepository.findBySpecification(new TalkById(id)).get(0);
 	}
-
 }

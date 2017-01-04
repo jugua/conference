@@ -25,6 +25,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+
     private ModelMapper mapper;
     private UserService userService;
     private UserInfoService userInfoService;
