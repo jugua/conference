@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.Talk;
@@ -51,6 +50,17 @@ public class TalkController {
 		this.typeService = typeService;
 		this.languageService = languageService;
 		this.levelService = levelService;
+	}
+
+	@PreAuthorize("hasRole(ROLE_ORGANISER)")
+	@GetMapping("/{talkId}")
+	public ResponseEntity getTalk(@PathVariable Long talkId){
+		TalkDto talkDto = entityToDto(talkService.findTalkById(talkId));
+		HttpStatus status = HttpStatus.OK;
+		if(talkDto == null){
+			status = HttpStatus.NOT_FOUND;
+		}
+		return new ResponseEntity<>(talkDto, status);
 	}
 
 	@PreAuthorize("isAuthenticated()")
