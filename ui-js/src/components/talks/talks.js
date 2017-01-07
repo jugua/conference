@@ -1,4 +1,5 @@
 import talksComponent from './talks.component';
+import reviewTalkPopupComponent from './review-talk-popup/review-talk-popup.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -17,5 +18,6 @@ export default (app) => {
         },
         controllerAs: 'ctrl'
       });
-  }).component('talks', talksComponent);
+  }).component('talks', talksComponent)
+    .component('reviewTalkPopup', reviewTalkPopupComponent);
 };
