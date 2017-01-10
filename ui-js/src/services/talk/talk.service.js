@@ -3,7 +3,7 @@ export default class TalkService {
   constructor($resource) {
     'ngInject';
 
-    this.talks = $resource('api/talk/:id/:action', {}, {
+    this.talks = $resource('api/talk/:id', {}, {
       add: {
         method: 'POST',
         headers: {
@@ -27,29 +27,9 @@ export default class TalkService {
           Pragma: 'no-cache'
         }
       },
-      progress: {
-        method: 'POST',
-        params: { id: '@id', action: 'progress' },
-        headers: {
-          'Cache-Control': 'no-cache, no-store',
-          Pragma: 'no-cache'
-        }
-      },
-      approve: {
-        method: 'POST',
-        params: { id: '@id', action: 'approve' },
-        headers: {
-          'Cache-Control': 'no-cache, no-store',
-          Pragma: 'no-cache'
-        }
-      },
-      reject: {
-        method: 'POST',
-        params: { id: '@id', action: 'reject' },
-        headers: {
-          'Cache-Control': 'no-cache, no-store',
-          Pragma: 'no-cache'
-        }
+      update: {
+        method: 'PATCH',
+        params: { id: '@id' }
       }
     });
   }
@@ -59,7 +39,6 @@ export default class TalkService {
   }
 
   getAll() {
-
     if (this._talks) {
       return this._talks;
     }
@@ -86,31 +65,19 @@ export default class TalkService {
   }
 
   get(id) {
-    return this.talks.get({ id },
-      (res) => { console.dir(res); },
-      (err) => { console.log(err); });
-  }
-
-  progress(id) {
-    this.talks.progress({ id },
-      (res) => { console.log(res); },
-      (err) => { console.log(err); }
-    );
+    return this.talks.get({ id });
   }
 
   approve(id) {
-    this.talks.approve({ id },
-      (res) => { console.log(res); },
-      (err) => { console.log(err); }
-    );
+    this.talks.update({ id }, { status: 'approved' });
   }
 
-  reject(id) {
-    this.talks.reject({ id },
-      (res) => { console.log(res); },
-      (err) => { console.log(err); }
-    );
+  reject(id, comment) {
+    this.talks.update({ id }, { status: 'rejected', comment });
   }
 
+  progress(id, comment) {
+    this.talks.update({ id }, { status: 'progress', comment });
+  }
 }
 

@@ -19,12 +19,12 @@ export default class {
   }
 
   reject() {
-    this.talksService.reject(this.id);
+    this.talksService.reject(this.id, this.talk.comment);
     this.close();
   }
 
   progress() {
-    this.talksService.progress(this.id);
+    this.talksService.progress(this.id, this.talk.comment);
     this.close();
   }
 
