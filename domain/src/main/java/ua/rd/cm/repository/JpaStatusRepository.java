@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * @author Olha_Melnyk
  */
+@Deprecated
 @Repository
 public class JpaStatusRepository implements StatusRepository {
 

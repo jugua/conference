@@ -5,10 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * @author Artem_Pryzhkov
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -65,4 +61,12 @@ public class Talk {
 
     @Column(name="organiser_comment", length=1000)
     private String organiserComment;
+
+    public boolean setStatus(Status status){
+        if(this.status.canChangeTo(status)){
+            this.status=status;
+            return true;
+        }
+        return false;
+    }
 }

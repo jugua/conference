@@ -29,9 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Olha_Melnyk
- */
+
 @RestController
 @RequestMapping("/api/user/current")
 public class SettingsController {
@@ -78,8 +76,6 @@ public class SettingsController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDto);
         }
         if (bindingResult.hasFieldErrors()) {
-            System.out.println("Field error: " + bindingResult.getFieldError());
-            System.out.println("Field error default message: " + bindingResult.getFieldError().getDefaultMessage());
             logger.error("Request for [api/user/current/password] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
         }

@@ -4,9 +4,7 @@ import ua.rd.cm.domain.Status;
 import ua.rd.cm.repository.specification.Specification;
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
+
 public interface StatusRepository {
 
     void saveStatus(Status status);

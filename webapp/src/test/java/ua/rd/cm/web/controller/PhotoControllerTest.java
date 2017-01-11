@@ -59,7 +59,7 @@ public class PhotoControllerTest extends TestUtil{
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
         photoDto =setupCorrectPhotoDto();
-        user=createUser(createSpeakerRole(),createUserInfo());
+        user=createUser();
     }
 
     private PhotoDto setupCorrectPhotoDto(){
