@@ -63,6 +63,9 @@ public class Talk {
     private String organiserComment;
 
     public boolean setStatus(Status status){
+        if(this.status==null){
+            this.status=status;
+        }
         if(this.status.canChangeTo(status)){
             this.status=status;
             return true;

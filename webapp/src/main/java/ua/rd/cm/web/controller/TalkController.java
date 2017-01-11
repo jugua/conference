@@ -37,7 +37,7 @@ public class TalkController {
 	private TopicService topicService;
 	private ContactTypeService contactTypeService;
 
-	public static final String DEFAULT_TALK_STATUS = "NEW";
+	public static final String DEFAULT_TALK_STATUS = "New";
 	@Autowired
 	public TalkController(ModelMapper mapper, UserService userService, TalkService talkService,
 						  StatusService statusService, TypeService typeService, LevelService levelService,
@@ -180,6 +180,7 @@ public class TalkController {
 	private TalkDto entityToDto(Talk talk) {
 		TalkDto dto = mapper.map(talk, TalkDto.class);
 		dto.setSpeakerFullName(talk.getUser().getFirstName() + " " + talk.getUser().getLastName());
+		dto.setStatusName(talk.getStatus().getName());
 		dto.setDate(talk.getTime().toString());
 		return dto;
 	}
@@ -187,7 +188,7 @@ public class TalkController {
 	private Talk dtoToEntity(TalkDto dto) {
 		Talk talk = mapper.map(dto, Talk.class);
 		talk.setTime(LocalDateTime.now());
-		talk.setStatus(Status.valueOf(dto.getStatusName()));
+		talk.setStatus(Status.getStatusByName(dto.getStatusName()));
 		talk.setLanguage(languageService.getByName(dto.getLanguageName()));
 		talk.setLevel(levelService.getByName(dto.getLevelName()));
 		talk.setType(typeService.getByName(dto.getTypeName()));

@@ -48,7 +48,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TalkControllerTest extends TestUtil{
 
     private static final String API_TALK = "/api/talk";
-    private static final String API_REJECT = "/api/talk/reject";
     private static final String API_GET_USER_BY_ID = "/api/talk/1";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
@@ -365,13 +364,13 @@ public class TalkControllerTest extends TestUtil{
     }
 
 
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void correctRejectNewTalk() throws Exception{
-        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePostRequest(API_REJECT))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+//    public void correctApproveNewTalk() throws Exception{
+//        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
+//        mockMvc.perform(preparet(API_TALK+1))
+//                .andExpect(status().isOk());
+//    }
 //
 //    @Test
 //    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
@@ -417,15 +416,15 @@ public class TalkControllerTest extends TestUtil{
 //                .andExpect(status().isBadRequest());
 //    }
 
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void correctUserById() throws Exception{
-        User user=new User();
-        user.setId(1L);
-        when(userService.find(anyLong())).thenReturn(createUser());
-        mockMvc.perform(prepareGetRequest(API_GET_USER_BY_ID))
-                .andExpect(status().isAccepted());
-    }
+//    @Test
+//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+//    public void correctUserById() throws Exception{
+//        User user=new User();
+//        user.setId(1L);
+//        when(userService.find(anyLong())).thenReturn(createUser());
+//        mockMvc.perform(prepareGetRequest(API_GET_USER_BY_ID))
+//                .andExpect(status().isAccepted());
+//    }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
         return MockMvcRequestBuilders.get(uri)
@@ -438,6 +437,13 @@ public class TalkControllerTest extends TestUtil{
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctTalkDto));
     }
+
+//    private MockHttpServletRequestBuilder preparePatchRequest(String uri) throws JsonProcessingException{
+//
+//        return MockMvcRequestBuilders.patch(uri)
+//                .contentType(MediaType.APPLICATION_JSON_UTF8)
+//                //.content(convertObjectToJsonBytes())
+//    }
 
     private Talk createTalk(User user) {
         //Status status = new Status(1L, "New");
