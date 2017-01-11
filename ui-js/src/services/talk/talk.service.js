@@ -68,7 +68,7 @@ export default class TalkService {
     return this.talks.get({ id });
   }
 
-  approve(id) {
+  approve(id, comment) {
     this.talks.update({ id }, { status: 'Approved', comment });
   }
 

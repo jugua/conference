@@ -8,21 +8,28 @@ export default class {
 
     this.talk = Talks.get(this.id);
 
-    this.isLeaveConfirmOpen = false;
-    this.isMandatoryAlertOpen = false;
+    this.commentRequired = false;
   }
 
   approve() {
-    this.talksService.approve(this.id);
+    this.talksService.approve(this.id, this.talk.comment);
     this.close();
   }
 
   reject() {
+    if (!this.talk.comment) { // required
+      this.commentRequired = true;
+      return;
+    }
     this.talksService.reject(this.id, this.talk.comment);
     this.close();
   }
 
   progress() {
+    if (!this.talk.comment) { // required
+      this.commentRequired = true;
+      return;
+    }
     this.talksService.progress(this.id, this.talk.comment);
     this.close();
   }
@@ -31,11 +38,7 @@ export default class {
     this.onHideReviewPopup();
   }
 
-  closeLeaveConfirm() {
-    this.isLeaveConfirmOpen = false;
-  }
-
-  closeMandatoryAlert() {
-    this.isMandatoryAlertOpen = false;
+  resetCommentRequired() {
+    this.commentRequired = false;
   }
 }
