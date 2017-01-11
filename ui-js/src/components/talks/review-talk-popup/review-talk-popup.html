@@ -1,0 +1,105 @@
+<div class="pop-up-wrapper">
+  <div class="pop-up pop-up_big">
+    <h3 class="pop-up__title">Review talk</h3>
+    <button class="pop-up__close" ng-click="$ctrl.close()"></button>
+    <form class="new-talk" name="$ctrl.talkForm" novalidate>
+      <label for="new-talk-title" class="form-label">
+        title
+      </label>
+      <input type="text"
+             id="new-talk-title"
+             class="field field_border"
+             disabled
+             ng-model="$ctrl.talk.title">
+
+      <label for="new-talk-desc" class="form-label">
+        description
+      </label>
+      <textarea class="textarea"
+                disabled
+                ng-model="$ctrl.talk.description">
+
+      </textarea>
+
+      <label class="form-label">
+        topic
+      </label>
+      <input type="text"
+             class="field field_border"
+             disabled
+             ng-model="$ctrl.talk.topic">
+
+      <label class="form-label">
+        type
+      </label>
+      <input type="text"
+             class="field field_border"
+             disabled
+             ng-model="$ctrl.talk.type">
+
+      <label class="form-label">
+        language
+      </label>
+      <input type="text"
+             class="field field_border"
+             disabled
+             ng-model="$ctrl.talk.lang">
+
+      <label class="form-label">
+        level
+      </label>
+      <input type="text"
+             class="field field_border"
+             disabled
+             ng-model="$ctrl.talk.level">
+
+      <label for="new-talk-add-inf" class="form-label">
+        additional info
+      </label>
+      <textarea class="textarea"
+                disabled
+                ng-model="$ctrl.talk.addon">
+      </textarea>
+
+      <label for="new-talk-add-inf" class="form-label">
+        organizer's comments
+      </label>
+      <textarea class="textarea"
+                ng-model="$ctrl.talk.comment">
+      </textarea>
+
+      <div class="pop-up-button-wrapper pop-up-button-wrapper_wrap">
+        <button class="btn pop-up__button pop-up__button_triple" type="button"
+                ng-click="$ctrl.approve()">Approve</button>
+        <button class="btn pop-up__button pop-up__button_triple" type="button"
+                ng-click="$ctrl.reject()">Reject</button>
+        <button class="btn pop-up__button pop-up__button_triple" type="button"
+                ng-click="$ctrl.progress()">In Progress</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="pop-up-wrapper" ng-show="$ctrl.isShownPopup">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Info</h3>
+    <button class="pop-up__close" ng-click="$ctrl.isShownPopup = false"></button>
+    <p class="pop-up__notification">Are you sure you want to leave the window?</p>
+    <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'Yes' to leave and all your changes will lost.</p>
+    <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'No' to return and Submit/Update your changes</p>
+    <div class="pop-up-button-wrapper">
+      <button class="btn pop-up__button" ui-sref="header.tabs.myTalks">Yes</button>
+      <button class="btn btn__cancel pop-up__button" ng-click="$ctrl.isShownPopup = false">No</button>
+    </div>
+  </div>
+</div>
+
+<div class="pop-up-wrapper" ng-show="$ctrl.isShownMandatoryAlert">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Alert</h3>
+    <button class="pop-up__close" ng-click="$ctrl.isShownMandatoryAlert = false"></button>
+    <p class="pop-up__notification">Please fill in all mandatory fields.</p>
+    <input type="button" value="ok" class="btn btn_right btn_small"
+           ng-click="$ctrl.isShownMandatoryAlert = false">
+  </div>
+</div>

@@ -53,6 +53,17 @@ public class TalkController {
 		this.contactTypeService=contactTypeService;
 	}
 
+	@PreAuthorize("hasRole(ROLE_ORGANISER)")
+	@GetMapping("/{talkId}")
+	public ResponseEntity getTalk(@PathVariable Long talkId){
+		TalkDto talkDto = entityToDto(talkService.findTalkById(talkId));
+		HttpStatus status = HttpStatus.OK;
+		if(talkDto == null){
+			status = HttpStatus.NOT_FOUND;
+		}
+		return new ResponseEntity<>(talkDto, status);
+	}
+
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping
 	public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto, BindingResult bindingResult, HttpServletRequest request) {

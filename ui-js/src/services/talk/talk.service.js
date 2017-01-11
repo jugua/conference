@@ -3,7 +3,7 @@ export default class TalkService {
   constructor($resource) {
     'ngInject';
 
-    this.talks = $resource('api/talk', {}, {
+    this.talks = $resource('api/talk/:id', {}, {
       add: {
         method: 'POST',
         headers: {
@@ -18,6 +18,18 @@ export default class TalkService {
           'Cache-Control': 'no-cache, no-store',
           Pragma: 'no-cache'
         }
+      },
+      get: {
+        methog: 'GET',
+        params: { id: '@id' },
+        headers: {
+          'Cache-Control': 'no-cache, no-store',
+          Pragma: 'no-cache'
+        }
+      },
+      update: {
+        method: 'PATCH',
+        params: { id: '@id' }
       }
     });
   }
@@ -31,8 +43,8 @@ export default class TalkService {
       return this._talks;
     }
 
-    this._talks = this.talks.getAll(() => {
-    },
+    this._talks = this.talks.getAll(
+      () => {},
       () => {
         this._talks = null;
       });
@@ -40,16 +52,32 @@ export default class TalkService {
     return this._talks;
   }
 
-  add(talk) {
-    this.talks.add(talk, (res) => {
-      if (this._talks instanceof Array) {
-        this._talks.push(talk);
-      }
-    },
+  add(talk) {   // talk object passed
+    this.talks.add(talk,
+      () => {
+        if (this._talks instanceof Array) {
+          this._talks.push(talk);
+        }
+      },
       (err) => {
         console.log(err);
       });
   }
 
+  get(id) {
+    return this.talks.get({ id });
+  }
+
+  approve(id) {
+    this.talks.update({ id }, { status: 'approved' });
+  }
+
+  reject(id, comment) {
+    this.talks.update({ id }, { status: 'rejected', comment });
+  }
+
+  progress(id, comment) {
+    this.talks.update({ id }, { status: 'progress', comment });
+  }
 }
 

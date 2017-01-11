@@ -63,8 +63,13 @@
         <div class="data-table__inner-wrapper">
             <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
                 <div class="data-table__column data-table__column_check-talk"><input type="checkbox"></div>
-                <div class="data-table__column data-table__column_speaker-talk"><a href="#" class="link">{{talk.name}}</a></div>
-                <div class="data-table__column data-table__column_title-talk"><a href="#" class="link">{{talk.title}}</a></div>
+                <div class="data-table__column data-table__column_speaker-talk"><a ng-href="#" class="link">{{talk.name}}</a></div>
+                <div class="data-table__column data-table__column_title-talk">
+                    <a ng-click="( talk.status == 'In Progress' || talk.status == 'New' ) ? $ctrl.review(talk._id) : ''"
+                       ng-class="( talk.status == 'In Progress' || talk.status == 'New' ) ? 'link' : ''">
+                        {{talk.title}}
+                    </a>
+                </div>
                 <div class="data-table__column data-table__column_topic-talk">{{talk.topic}}</div>
                 <div class="data-table__column data-table__column_date-talk">{{talk.date | date:"dd/MM/yyyy"}}</div>
                 <div class="data-table__column data-table__column_status-talk">{{talk.status}}</div>
@@ -98,4 +103,7 @@
             </div>
         </div>
     </div>
+</div>
+<div ng-if="$ctrl.showReviewPopup">
+  <review-talk-popup id="$ctrl.reviewTalkId"></review-talk-popup>
 </div>

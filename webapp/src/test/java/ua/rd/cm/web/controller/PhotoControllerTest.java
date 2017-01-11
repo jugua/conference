@@ -1,4 +1,4 @@
-package ua.rd.cm.web.controller;
+/*package ua.rd.cm.web.controller;
 
 
 import org.junit.Before;
@@ -33,7 +33,13 @@ import java.util.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 
+<<<<<<< HEAD
+*//**
+ * Created by Artem_Pryzhkov on 29-Nov-16.
+ *//*
+=======
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+>>>>>>> 3d384a291a780ef257d330e0704130b3a2dabd54
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
@@ -107,6 +113,10 @@ public class PhotoControllerTest extends TestUtil{
         ).andExpect(status().isOk());
     }
 
+
+}
+
+
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER_ROLE")
     public void nullUploadPhoto() throws Exception {
@@ -115,3 +125,4 @@ public class PhotoControllerTest extends TestUtil{
         ).andExpect(status().isBadRequest());
     }
 }
+*/

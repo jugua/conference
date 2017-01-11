@@ -1,4 +1,4 @@
-package ua.rd.cm.web.controller;
+/*package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -486,3 +486,4 @@ public class TalkControllerTest extends TestUtil{
 }
 
 
+*/
