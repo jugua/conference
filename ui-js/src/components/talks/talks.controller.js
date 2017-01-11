@@ -1,5 +1,5 @@
 export default class TalksController {
-  constructor(Current, Talks, Menus, $scope) {
+  constructor(Current, Talks, Menus) {
     'ngInject';
 
     this.current = Current.current;
@@ -12,10 +12,6 @@ export default class TalksController {
 
     this.reviewTalkId = null;
     this.showReviewPopup = false;
-
-    $scope.$on('closeReviewPopup', () => {
-      this.showReviewPopup = false;
-    });
   }
   showSettings() {
     this.showFilters = !this.showFilters;
@@ -23,5 +19,9 @@ export default class TalksController {
   review(id) {
     this.reviewTalkId = id;
     this.showReviewPopup = true;
+  }
+  hideReviewPopup() {
+    this.reviewTalkId = null;
+    this.showReviewPopup = false;
   }
 }

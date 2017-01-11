@@ -105,5 +105,5 @@
     </div>
 </div>
 <div ng-if="$ctrl.showReviewPopup">
-  <review-talk-popup id="$ctrl.reviewTalkId"></review-talk-popup>
+  <review-talk-popup id="$ctrl.reviewTalkId" on-hide-review-popup="$ctrl.hideReviewPopup()"></review-talk-popup>
 </div>

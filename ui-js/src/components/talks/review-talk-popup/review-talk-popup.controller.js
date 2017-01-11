@@ -1,16 +1,15 @@
 export default class {
-  constructor(Menus, Talks, $state, $scope) {
+  constructor(Menus, Talks) {
     'ngInject';
 
     this.talksService = Talks;
-    this.scope = $scope;
     this.selectService = Menus;
-    this.state = $state;
     this.talkForm = {};
 
-    this.isShownPopup = false;
-
     this.talk = Talks.get(this.id);
+
+    this.isLeaveConfirmOpen = false;
+    this.isMandatoryAlertOpen = false;
   }
 
   approve() {
@@ -29,6 +28,14 @@ export default class {
   }
 
   close() {
-    this.scope.$emit('closeReviewPopup');
+    this.onHideReviewPopup();
+  }
+
+  closeLeaveConfirm() {
+    this.isLeaveConfirmOpen = false;
+  }
+
+  closeMandatoryAlert() {
+    this.isMandatoryAlertOpen = false;
   }
 }
