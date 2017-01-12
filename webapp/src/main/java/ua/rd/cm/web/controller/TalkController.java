@@ -53,17 +53,6 @@ public class TalkController {
 		this.contactTypeService=contactTypeService;
 	}
 
-	@PreAuthorize("hasRole(ROLE_ORGANISER)")
-	@GetMapping("/{talkId}")
-	public ResponseEntity getTalk(@PathVariable Long talkId){
-		TalkDto talkDto = entityToDto(talkService.findTalkById(talkId));
-		HttpStatus status = HttpStatus.OK;
-		if(talkDto == null){
-			status = HttpStatus.NOT_FOUND;
-		}
-		return new ResponseEntity<>(talkDto, status);
-	}
-
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping
 	public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto, BindingResult bindingResult, HttpServletRequest request) {
@@ -89,7 +78,7 @@ public class TalkController {
 	@GetMapping
 	public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
 		List<TalkDto> userTalkDtoList;
-		
+
 		if(request.isUserInRole("ORGANISER")){
 			userTalkDtoList = getTalksForOrganiser();
 		}else {
@@ -99,18 +88,49 @@ public class TalkController {
 	}
 
 	@PreAuthorize("isAuthenticated()")
-	@PatchMapping("{id}")
+	@GetMapping("/{talkId}")
+	public ResponseEntity getTalkById(@PathVariable Long talkId, HttpServletRequest request){
+		if(!request.isUserInRole("ORGANISER")){
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
+		}
+		TalkDto talkDto = entityToDto(talkService.findTalkById(talkId));
+		HttpStatus status = HttpStatus.OK;
+		if(talkDto == null){
+			status = HttpStatus.NOT_FOUND;
+		}
+		return new ResponseEntity<>(talkDto, status);
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/{id}/user")
+	public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
+		if(!request.isUserInRole("ORGANISER")){
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
+		}
+		User user = userService.find(userId);
+		if (user == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+		UserDto userDto=new UserDto();
+		userDto.setContactTypeService(contactTypeService);
+		return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.ACCEPTED);
+	}
+
+
+	@PreAuthorize("isAuthenticated()")
+	@PatchMapping("/{id}")
 	public ResponseEntity actionOnTalk(@PathVariable("id") Long talkId,
 									   @RequestBody @NotNull String comment,
 									   @RequestBody String status,
-									   BindingResult bindingResult,
+									   //BindingResult bindingResult,
 									   HttpServletRequest request) {
 		if(!request.isUserInRole("ORGANISER")){
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
 		}
-		if (bindingResult.hasFieldErrors()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
-		}
+		System.out.println("COMMENT="+comment+" status="+status);
+//		if (bindingResult.hasFieldErrors()) {
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+//		}
 		if(comment.length()>1000){
 			return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("comment_too_long");
 		}
@@ -149,21 +169,6 @@ public class TalkController {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
 	}
 
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/{id}")
-	public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
-		if(!request.isUserInRole("ORGANISER")){
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
-		}
-		User user = userService.find(userId);
-		System.out.println(user);
-		if (user == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
-		UserDto userDto=new UserDto();
-		userDto.setContactTypeService(contactTypeService);
-		return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.ACCEPTED);
-	}
 
 	private List<TalkDto> getTalksForSpeaker(String userEmail){
 		User currentUser = userService.getByEmail(userEmail);
