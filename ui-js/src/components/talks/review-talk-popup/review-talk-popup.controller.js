@@ -1,34 +1,44 @@
 export default class {
-  constructor(Menus, Talks, $state, $scope) {
+  constructor(Menus, Talks) {
     'ngInject';
 
     this.talksService = Talks;
-    this.scope = $scope;
     this.selectService = Menus;
-    this.state = $state;
     this.talkForm = {};
 
-    this.isShownPopup = false;
-
     this.talk = Talks.get(this.id);
+
+    this.commentRequired = false;
   }
 
   approve() {
-    this.talksService.approve(this.id);
+    this.talksService.approve(this.id, this.talk.comment);
     this.close();
   }
 
   reject() {
+    if (!this.talk.comment) { // required
+      this.commentRequired = true;
+      return;
+    }
     this.talksService.reject(this.id, this.talk.comment);
     this.close();
   }
 
   progress() {
+    if (!this.talk.comment) { // required
+      this.commentRequired = true;
+      return;
+    }
     this.talksService.progress(this.id, this.talk.comment);
     this.close();
   }
 
   close() {
-    this.scope.$emit('closeReviewPopup');
+    this.onHideReviewPopup();
+  }
+
+  resetCommentRequired() {
+    this.commentRequired = false;
   }
 }

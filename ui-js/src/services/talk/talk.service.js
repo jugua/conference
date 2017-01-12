@@ -68,16 +68,16 @@ export default class TalkService {
     return this.talks.get({ id });
   }
 
-  approve(id) {
-    this.talks.update({ id }, { status: 'approved' });
+  approve(id, comment) {
+    this.talks.update({ id }, { status: 'Approved', comment });
   }
 
   reject(id, comment) {
-    this.talks.update({ id }, { status: 'rejected', comment });
+    this.talks.update({ id }, { status: 'Rejected', comment });
   }
 
   progress(id, comment) {
-    this.talks.update({ id }, { status: 'progress', comment });
+    this.talks.update({ id }, { status: 'In Progress', comment });
   }
 }
 
