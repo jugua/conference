@@ -67,5 +67,6 @@ public class TalkDto {
 	@Size(max = 1000)
 	@JsonProperty("org_comment")
 	private String organiserComment;
-	
+
+
 }

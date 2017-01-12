@@ -3,13 +3,25 @@ export default class TalksController {
     'ngInject';
 
     this.current = Current.current;
+
     this.talks = Talks.getAll();
+
     this.filter = {};
     this.menuService = Menus;
     this.showFilters = true;
+
+    this.reviewTalkId = null;
+    this.showReviewPopup = false;
   }
   showSettings() {
     this.showFilters = !this.showFilters;
   }
+  review(id) {
+    this.reviewTalkId = id;
+    this.showReviewPopup = true;
+  }
+  hideReviewPopup() {
+    this.reviewTalkId = null;
+    this.showReviewPopup = false;
+  }
 }
-

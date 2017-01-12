@@ -11,7 +11,7 @@ export default class LogoutController {
 
   logout() {
     this.service.logout().then(() => {
-      this.talksService.clear();
+      //this.talksService.clear();
       this.userService.clear();
       this.state.go('header.home', {}, { reload: true });
     });

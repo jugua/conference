@@ -1,12 +1,9 @@
 package ua.rd.cm.repository.specification.status;
 
-import ua.rd.cm.domain.Status;
+import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.repository.specification.Specification;
-
-/**
- * @author Olha_Melnyk
- */
-public class StatusByName implements Specification<Status> {
+@Deprecated
+public class StatusByName implements Specification<TalkStatus> {
 
     private String name;
 
@@ -20,7 +17,7 @@ public class StatusByName implements Specification<Status> {
     }
 
     @Override
-    public boolean test(Status status) {
+    public boolean test(TalkStatus status) {
         return status.getName().equals(name);
     }
 }

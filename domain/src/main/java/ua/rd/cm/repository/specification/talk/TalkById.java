@@ -18,7 +18,7 @@ public class TalkById implements Specification<Talk>{
 
 	@Override
 	public String toSqlClauses() {
-		return String.format(" t.talk_id = '%s' ", id);
+		return String.format(" t.id = '%s' ", id);
 	}
 	
 }

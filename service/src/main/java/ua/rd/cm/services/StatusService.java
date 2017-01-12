@@ -1,19 +1,18 @@
 package ua.rd.cm.services;
 
-import ua.rd.cm.domain.Status;
+import ua.rd.cm.domain.TalkStatus;
+
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
+@Deprecated
 public interface StatusService {
 
-    Status find(Long id);
+    TalkStatus find(Long id);
 
-    void save(Status status);
+    void save(TalkStatus status);
 
-    Status getByName(String name);
+    TalkStatus getByName(String name);
 
-    List<Status> findAll();
+    List<TalkStatus> findAll();
 
 }
