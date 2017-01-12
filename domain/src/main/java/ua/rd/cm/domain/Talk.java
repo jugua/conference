@@ -28,8 +28,6 @@ public class Talk {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    //@ManyToOne
-    //@JoinColumn(name = "status_id", nullable = false)
     private TalkStatus status;
 
     @ManyToOne
