@@ -11,9 +11,6 @@ import net.thucydides.core.steps.ScenarioSteps;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-/**
- * Created by Serhii_Kobzar on 11/10/2016.
- */
 public class ForgotPaswordPageSteps extends ScenarioSteps {
 
     HomePage homePage;

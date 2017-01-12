@@ -18,9 +18,6 @@ import org.junit.Assert;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-/**
- * Created by Lev_Serba on 12/12/2016.
- */
 public class SettingsPageDefinitionsSteps {
     @Steps
     SettingsPageSteps settingsSteps;

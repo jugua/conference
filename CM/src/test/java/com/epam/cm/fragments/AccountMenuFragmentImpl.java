@@ -50,19 +50,19 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     // forgotPw
     @FindBy(xpath = "//*[@class='pop-up__notification']")
     private WebElementFacade forgotLbl;
-    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[2]")
+    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[@value='cancel']")
     private WebElementFacade cancelBtn;
-    @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[1]")
+    @FindBy(xpath = "//*[@value='Continue']")
     private WebElementFacade continueBtn;
     @FindBy(xpath = "//*[@class='field-error error-title_pop-up']")
     private WebElementFacade emptyEmailMsg;
-    @FindBy(xpath = "//forgot-password//form/input")
+    @FindBy(xpath = "//forgot-password//input[@type='email']")
     private WebElementFacade emailForgotPwField;
-    @FindBy(xpath = "//forgot-password/div/div/p")
+    @FindBy(xpath = "//div/p[@class='pop-up__notification']")
     private WebElementFacade notificationPopUp;
-    @FindBy(xpath = "//forgot-password/div/div/button")
+    @FindBy(xpath = "//button[@class='btn pop-up__button']")
     private WebElementFacade cancelNotifiPopUpBtn;
-    @FindBy(xpath = "//forgot-password//form/span[2]")
+    @FindBy(xpath = "//*[@class='field-error error-title_pop-up']")
     private WebElementFacade invalidEmailMsg;
     @FindBy(xpath = "//*[@class='password__block']/form/input[@name='newPassword']")
     private WebElementFacade newPasswordInput;
@@ -70,7 +70,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     private WebElementFacade confirmPasswordInput;
     @FindBy(xpath = "//*[@class='password__block']/form/input[@class='btn password__btn']")
     private WebElementFacade saveConfBtn;
-    @FindBy(xpath = "//forgot-password//form/span[3]")
+    @FindBy(xpath = "//*[@class='field-error error-title_pop-up']")
     private WebElementFacade errorNotExistingEmail;
 
     @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/account']")

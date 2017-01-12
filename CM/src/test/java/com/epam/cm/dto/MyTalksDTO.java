@@ -5,9 +5,7 @@ import com.epam.cm.core.utils.Randomizer;
 import static com.epam.cm.dto.UserRegistrationInfoDTO.EMPTY;
 import static com.epam.cm.dto.UserRegistrationInfoDTO.NOT_NUMERIC;
 
-/**
- * Created by Serhii_Kobzar on 12/26/2016.
- */
+
 public class MyTalksDTO {
 
     private String title;

@@ -1,8 +1,5 @@
 package com.epam.cm.dto;
 
-/**
- * Created by Lev_Serba on 12/13/2016.
- */
 public class SettingsDTO {
 
     private static final String CONFPASSWORD_6_SPACE = "confPassword6space";

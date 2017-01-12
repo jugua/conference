@@ -25,7 +25,7 @@ public class Rest {
 
     @Test
     public void loginAsUser(){
-        RestAssured.baseURI = "http://10.17.132.37:8025";
+        RestAssured.baseURI = "http://10.17.132.37:8050";
         RestAssured.basePath = "/api";
         Map<String, String> userCookie;
 

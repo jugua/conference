@@ -7,9 +7,6 @@ import net.serenitybdd.core.annotations.findby.FindBy;
 
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by Denys_Shmyhin on 11/11/2016.
- */
 public class AnyPage extends WebPage {
 
     @FindBy(xpath = "//*[@class='menu-container']")

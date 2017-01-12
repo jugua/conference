@@ -27,7 +27,6 @@ Then user still in login form
 And login field is highlighted
 And login error message is displayed: "We can not find an account with that email address"
 
-
 Scenario: User logs in with empty credentials
 Meta:
 @regression
@@ -96,13 +95,15 @@ And user filled in login form:
 |email              |password|
 |speaker@speaker.com|speaker |
 When user clicks SignIn button on login form
-Then "Your Account" replaced by "Master's Account"
+Then "Your Account" replaced by:
+|name            |
+|Master's Account|
 And there are My_account, My_Info and  My Talks links in the given order
-|btnName   |link       |
-|My Info   |/#/my-info |
-|My Talks  |/#/my-talks|
-|Settings  |/#/account |
-|Sign Out  |/#/        |
+|btnName |link       |
+|My Info |/#/my-info |
+|My Talks|/#/my-talks|
+|Settings|/#/account |
+|Sign Out|/#/        |
 Then user logs out
 
 

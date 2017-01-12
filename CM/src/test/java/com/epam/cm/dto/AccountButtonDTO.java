@@ -1,8 +1,5 @@
 package com.epam.cm.dto;
 
-/**
- * Created by Serhii_Kobzar on 11/23/2016.
- */
 public class AccountButtonDTO {
     String link;
     String btnName;

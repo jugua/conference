@@ -1,72 +1,103 @@
-
 Narrative:
-As a Speaker
-I would like to have an ability to submit a new talk.
-This feature will be available for speakers who have filled in 'My Info' page
-otherwise they will be prompted to fill in their personal info first.
+As a user
+I would to have an ability to reset my password
+Once a user clicks on the Forgot Password link the new pop up will appears saying
+"Send me a new password to my email address +user's email address+ " with the Cancel and Continue button bellow
+
+Scenario: Then user click 'Forgot pasword' link pop up element are present
+Meta:
+@regression @smoke
+
+Given the unsigned user accesses the conference management home page
+When user clicks the login button
+And clicks the forgot password link
+Then new pop up will appears saying 'Please enter your email:'
+And Cancel button appears
+And Continue button appears
 
 
-Scenario: Speaker didnt filled My info majority fields
+Scenario: User leaves empty 'E-mail' field in 'Forgot Password' form
+Meta:
+@regression
 
-Given user logged as speaker accessing 'My Talks' page:
-|email                  |password|
-|mytalksEmpty@tester.com|tester  |
-When user clicks on 'Submit New Talk' button
-Then pop up is shown with text 'Please fill out all required info on the My Info page before submitting a talk.'
-And clicks OK button
+Given the unsigned user accesses the conference management home page
+When user clicks the login button
+And clicks the forgot password link
+Then new pop up will appears saying 'Please enter your email:'
+And clicks on Continue button
+And message is shown sayin Please enter your registered email
+And email field is highlighted
 
+Scenario: User input valid data into 'Forgot password?' form
 
-
-Scenario: Submit new Talk with empty fields
-
-Given user logged as speaker accessing 'My Talks' page:
-|email             |password|
-|mytalks@tester.com|tester  |
-When user clicks on 'Submit New Talk' button
-And clicks 'Submit' button
-Then pop-up window 'Please fill in all mandatory fields.' is shown
-And all fields are highlighted in red
-
-
-
-Scenario: Fill valid data in all field
-
-Given user logged as speaker accessing 'My Talks' page:
-|email             |password|
-|mytalks@tester.com|tester  |
-When user clicks on 'Submit New Talk' button
-And user fills data in 'Title','Description' and 'Additional Info':
-|title  |description  |additionalInfo  |
-|<title>|<description>|<additionalInfo>|
-And choose Topic, Type, Language, Level dropdown menu:
-|topic  |type  |language  |level  |
-|<topic>|<type>|<language>|<level>|
-And clicks 'Submit' button
-Then talk appears in grid and have 'New' status
+Given the unsigned user accesses the conference management home page
+When user clicks the login button
+And clicks the forgot password link
+Then new pop up will appears saying 'Please enter your email:'
+And user fiels email textbox with valid: <email>
+And clicks on Continue button
+And message apears saying:'We just emailed you a link. Please check your email and click the secure link.'
+And 'Close' button is shown
 
 Examples:
-|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
-|10     |10           |10              |1      |1     |1         |1      |
+|email              |
+|tester@tester.com  |
+|speaker@speaker.com|
 
 
-Scenario: Fill valid data in all field not saving it
+Scenario: User input invalid email into 'Forgot password?' form
+Meta:
+@regression
 
-Given user logged as speaker accessing 'My Talks' page:
-|email             |password|
-|mytalks@tester.com|tester  |
-When user clicks on 'Submit New Talk' button
-And user fills data in 'Title','Description' and 'Additional Info':
-|title  |description  |additionalInfo  |
-|<title>|<description>|<additionalInfo>|
-And choose Topic, Type, Language, Level dropdown menu:
-|topic  |type  |language  |level  |
-|<topic>|<type>|<language>|<level>|
-And clicks 'Exit' button
-Then info msg is shown saying 'Are you sure you want to leave the window?',
- 'Click 'Yes' to leave and all your changes will lost.',
-  'Click 'No' to return and Submit/Update your changes'
-And click 'Yes' button
+Given the unsigned user accesses the conference management home page
+When user clicks the login button
+And clicks the forgot password link
+Then new pop up will appears saying 'Please enter your email:'
+And user fiels email textbox with invalid: <email>
+And clicks on Continue button
+And message apears saying Please enter a valid email address
 
 Examples:
-|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
-|10     |10           |10              |1      |1     |1         |1      |
+|email           |
+|example.com     |
+|user@example    |
+|t@i.u           |
+|tester@tester.22|
+
+
+Scenario: User input not registrated email
+Given the unsigned user accesses the conference management home page
+When user clicks the login button
+And clicks the forgot password link
+Then new pop up will appears saying 'Please enter your email:'
+And user fiels email textbox with invalid: <email>
+And clicks on Continue button
+And message appears saying for not existing email 'We can not find an account with that email address'
+
+Examples:
+|email          |
+|example@qwe.com|
+
+
+
+Scenario: Sended mail verification
+Meta:
+@regression
+
+Given the unsigned user accesses the conference management home page
+When uses forgot password function
+And user fiels email textbox with valid: <email>
+Then clicks on Continue button
+And message apears saying:'We just emailed you a link. Please check your email and click the secure link.'
+And an email is send to users email adress:
+|email            |
+|tester@tester.com|
+And subject's name is 'Password assistance'
+And notification link was sent on email for Forgot Password
+And fills new password 'tester'
+And "Your Account" replaced by "Tester's Account"
+
+
+Examples:
+|email            |
+|tester@tester.com|

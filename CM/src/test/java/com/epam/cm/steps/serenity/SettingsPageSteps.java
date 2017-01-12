@@ -7,9 +7,6 @@ import com.epam.cm.pages.SettingsPage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
-/**
- * Created by Lev_Serba on 12/12/2016.
- */
 public class SettingsPageSteps extends ScenarioSteps
 {
     SettingsPage settingsPage;

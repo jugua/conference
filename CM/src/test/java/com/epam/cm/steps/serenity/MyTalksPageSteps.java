@@ -7,9 +7,7 @@ import com.epam.cm.pages.MyTalksPage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
-/**
- * Created by Serhii_Kobzar on 12/26/2016.
- */
+
 public class MyTalksPageSteps extends ScenarioSteps {
 
     MyTalksPage myTalksPage;

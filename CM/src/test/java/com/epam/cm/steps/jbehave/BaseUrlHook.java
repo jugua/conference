@@ -4,9 +4,6 @@ import com.epam.cm.core.utils.WebDriverSupport;
 
 import org.jbehave.core.annotations.BeforeStory;
 
-/**
- * Created by Denys_Shmyhin on 11/16/2016.
- */
 public class BaseUrlHook {
 
     @BeforeStory

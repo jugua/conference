@@ -87,6 +87,17 @@ public class LoginPageDefinitionSteps {
         assertThat(loginPageSteps.getAccountMenuTitle(), is(namedAccount));
     }
 
+    @Then("\"Your Account\" replaced by: $actTable")
+    public void thenYourAccIsReplacedByTable(ExamplesTable table){
+        CredentialsDTO user = new CredentialsDTO() {
+            {
+                setName(table.getRowAsParameters(0, true).valueAs("name", String.class));
+            }
+        };
+        assertThat(loginPageSteps.getAccountMenuTitle(), is(user.getName()));
+
+    }
+
     @Then("there is 'Sign Out' button in account menu")
     public void thenThereIsSignOutButtonInAccountMenu() {
         assertTrue(loginPageSteps.isLoggedIn());
@@ -104,19 +115,16 @@ public class LoginPageDefinitionSteps {
 
     @Then("password error message is displayed: \"$msg\"")
     public void isWrongPassword(String msg) {
-
         assertThat(loginPageSteps.getPasswordValidationMsg(), is(msg));
     }
 
     @Then("login field is highlighted")
     public void loginFieldIsHighlighted() {
-
         assertTrue("login field  not hightlighted", loginPageSteps.isLoginFieldIsHighlighted());
     }
 
     @Then("login error message is displayed: \"$msg\"")
     public void isWrongLogin(String msg) {
-
         assertThat(loginPageSteps.getLoginValidationMsg(), is(msg));
     }
 

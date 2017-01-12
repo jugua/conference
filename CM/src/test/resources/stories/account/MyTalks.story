@@ -47,6 +47,7 @@ Examples:
 |251    |3001         |1501            |
 
 
+
 Scenario: Fill valid data in all field
 
 Given user logged as speaker accessing 'My Talks' page:
@@ -63,8 +64,8 @@ And clicks 'Submit' button
 Then talk appears in grid and have 'New' status
 
 Examples:
-|<title>|<description>|<additionalInfo>|
-|10     |10           |10              |
+|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
+|10     |10           |10              |1      |1     |1         |1      |
 
 
 

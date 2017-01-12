@@ -15,9 +15,6 @@ import org.junit.Assert;
 
 import static org.hamcrest.Matchers.is;
 
-/**
- * Created by Serhii_Kobzar on 12/26/2016.
- */
 public class MyTalksDefinitionsSteps {
 
     @Steps

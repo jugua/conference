@@ -8,9 +8,6 @@ import com.epam.cm.pages.MyInfoPage;
 import net.thucydides.core.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
-/**
- * Created by Lev_Serba on 11/23/2016.
- */
 public class MyInfoPageSteps extends ScenarioSteps {
 
     MyInfoPage myInfoPage;

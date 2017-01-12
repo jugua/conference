@@ -6,9 +6,7 @@ import net.serenitybdd.core.pages.WebElementFacade;
 
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by Serhii_Kobzar on 12/26/2016.
- */
+
 public class MyTalksPage extends AnyPage {
 
     @FindBy(xpath = "//*[@class='my-talks__header']/a")
@@ -60,6 +58,22 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade levelDropDown;
     @FindBy(xpath = "//*[@id='new-talk-add-inf']")
     WebElementFacade additionalInfoField;
+
+    //filters
+    @FindBy(xpath = "//*[@id='my-talk-status']")
+    WebElementFacade filterByStatus;
+    @FindBy(xpath = "//*[@id='my-talk-topic']")
+    WebElementFacade filterByTopic;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.myDate_start']")
+    WebElementFacade filterByStartedDate;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.myDate_finish']")
+    WebElementFacade filterByFinishDate;
+    @FindBy(xpath = "//*[@class='my-talk-settings__button-wrapper']/input[@value='apply']")
+    WebElementFacade myTalksApplyBtn;
+    @FindBy(xpath = "//*[@class='my-talk-settings__button-wrapper']/input[@value='reset']")
+    WebElementFacade myTTalksResetBtn;
+
+
 
     public MyTalksPage(WebDriver driver) {
         super(driver);
@@ -122,6 +136,7 @@ public class MyTalksPage extends AnyPage {
     }
 
     public void setTitleField(String title) {
+        titleField.clear();
         titleField.type(title);
     }
 
@@ -134,6 +149,7 @@ public class MyTalksPage extends AnyPage {
     }
 
     public void setDescriptionField(String description) {
+        descriptionField.clear();
         descriptionField.type(description);
     }
 
@@ -146,6 +162,7 @@ public class MyTalksPage extends AnyPage {
     }
 
     public void setAdditionalInfoField(String additionalInfo) {
+        additionalInfoField.clear();
         additionalInfoField.type(additionalInfo);
     }
 

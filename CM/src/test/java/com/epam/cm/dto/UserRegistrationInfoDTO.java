@@ -2,9 +2,6 @@ package com.epam.cm.dto;
 
 import com.epam.cm.core.utils.Randomizer;
 
-/**
- * Created by Lev_Serba on 11/10/2016.
- */
 public class UserRegistrationInfoDTO {
     public static final String TEMPLATE_5_SPACE = "5space";
     public static final String TEMPLATE_6_SPACE = "6space";

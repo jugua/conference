@@ -5,6 +5,16 @@ public class CredentialsDTO {
     private String email;
     private String password;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private String name;
+
     public String getEmail() {
         return email;
     }
