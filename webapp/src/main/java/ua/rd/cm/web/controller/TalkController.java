@@ -12,6 +12,7 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.*;
+import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 import ua.rd.cm.web.controller.dto.UserDto;
@@ -78,7 +79,6 @@ public class TalkController {
 	@GetMapping
 	public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
 		List<TalkDto> userTalkDtoList;
-
 		if(request.isUserInRole("ORGANISER")){
 			userTalkDtoList = getTalksForOrganiser();
 		}else {
@@ -120,39 +120,36 @@ public class TalkController {
 	@PreAuthorize("isAuthenticated()")
 	@PatchMapping("/{id}")
 	public ResponseEntity actionOnTalk(@PathVariable("id") Long talkId,
-									   @RequestBody @NotNull String comment,
-									   @RequestBody String status,
-									   //BindingResult bindingResult,
+									   @RequestBody ActionDto dto,
+									   BindingResult bindingResult,
 									   HttpServletRequest request) {
 		if(!request.isUserInRole("ORGANISER")){
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
 		}
-		System.out.println("COMMENT="+comment+" status="+status);
-//		if (bindingResult.hasFieldErrors()) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
-//		}
-		if(comment.length()>1000){
+		if (bindingResult.hasFieldErrors()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+		}
+		if(dto.getComment().length()>1000){
 			return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("comment_too_long");
 		}
 		Talk talk=talkService.findTalkById(talkId);
 		if(talk==null){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("talk_not_found");
 		}
-		if(TalkStatus.getStatusByName(status)==null || !talk.setStatus(TalkStatus.valueOf(status))){
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
-		}
-		switch (status){
+		System.out.println(TalkStatus.getStatusByName(dto.getStatus()));
+
+		switch (dto.getStatus()){
 			case "Rejected":{
-				if (comment.length()<1) {
+				if (dto.getComment().length()<1) {
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
 				}
-				return trySetStatus(comment, status, talk);
+				return trySetStatus(dto, talk);
 			}
 			case "In progress":{
-				return trySetStatus(comment, status, talk);
+				return trySetStatus(dto, talk);
 			}
 			case "Approved":{
-				return trySetStatus(comment, status, talk);
+				return trySetStatus(dto, talk);
 			}
 			default:{
 				return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
@@ -160,9 +157,10 @@ public class TalkController {
 		}
 	}
 
-	private ResponseEntity trySetStatus(@RequestBody @NotNull String comment, @RequestBody String status, Talk talk) {
-		if(talk.setStatus(TalkStatus.getStatusByName(status))){
-            talk.setOrganiserComment(comment);
+	private ResponseEntity trySetStatus(ActionDto dto, Talk talk) {
+		if(talk.setStatus(TalkStatus.getStatusByName(dto.getStatus()))){
+			System.out.println("in");
+			talk.setOrganiserComment(dto.getComment());
             talkService.update(talk);
 			return ResponseEntity.status(HttpStatus.OK).body("successfully_updated");
         }
