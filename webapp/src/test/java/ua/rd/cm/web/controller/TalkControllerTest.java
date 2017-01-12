@@ -1,4 +1,4 @@
-/*package ua.rd.cm.web.controller;
+package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -446,12 +446,12 @@ public class TalkControllerTest extends TestUtil{
 //    }
 
     private Talk createTalk(User user) {
-        //Status status = new Status(1L, "New");
+        //TalkStatus status = new TalkStatus(1L, "New");
         Topic topic = new Topic(1L, "Topic");
         Type type = new Type(1L, "Type");
         Language language = new Language(1L, "Language");
         Level level = new Level(1L, "Level");
-        return new Talk(1L, user, Status.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info",null);
+        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info",null);
     }
 
     private TalkDto setupCorrectTalkDto() {
@@ -486,4 +486,3 @@ public class TalkControllerTest extends TestUtil{
 }
 
 
-*/

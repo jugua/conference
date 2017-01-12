@@ -77,7 +77,7 @@ INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, us
 UPDATE user_seq SET next_val = 2 WHERE next_val = 1;
 INSERT INTO user_role VALUES (1, 1);
 
-INSERT INTO talk VALUES (1, "Additional info", "Description","Organiser comment", "2016-12-31 23:55:00", "title", 1, 1, 1, 1, 1, 1);
+INSERT INTO talk VALUES (1, "Additional info", "Description","Organiser comment", "2016-12-31 23:55:00", "title", "New", 1, 1, 1, 1, 1);
 UPDATE talk_seq SET next_val = 2 WHERE next_val = 1;
 INSERT INTO user_info_contact VALUES (1, "twitter.com", 2);
 INSERT INTO user_info_contact VALUES (1, "facebook.com", 3);

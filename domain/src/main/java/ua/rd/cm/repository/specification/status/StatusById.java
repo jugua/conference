@@ -1,10 +1,10 @@
 package ua.rd.cm.repository.specification.status;
 
-import ua.rd.cm.domain.Status;
+import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.repository.specification.Specification;
 
 @Deprecated
-public class StatusById implements Specification<Status> {
+public class StatusById implements Specification<TalkStatus> {
 
     private Long id;
 
@@ -18,7 +18,7 @@ public class StatusById implements Specification<Status> {
     }
 
     @Override
-    public boolean test(Status status) {
+    public boolean test(TalkStatus status) {
         return false;
     }
 }

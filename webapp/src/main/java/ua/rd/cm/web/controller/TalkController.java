@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.rd.cm.domain.Status;
+import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -118,7 +118,7 @@ public class TalkController {
 		if(talk==null){
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("talk_not_found");
 		}
-		if(Status.getStatusByName(status)==null || !talk.setStatus(Status.valueOf(status))){
+		if(TalkStatus.getStatusByName(status)==null || !talk.setStatus(TalkStatus.valueOf(status))){
 			return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
 		}
 		switch (status){
@@ -141,7 +141,7 @@ public class TalkController {
 	}
 
 	private ResponseEntity trySetStatus(@RequestBody @NotNull String comment, @RequestBody String status, Talk talk) {
-		if(talk.setStatus(Status.getStatusByName(status))){
+		if(talk.setStatus(TalkStatus.getStatusByName(status))){
             talk.setOrganiserComment(comment);
             talkService.update(talk);
 			return ResponseEntity.status(HttpStatus.OK).body("successfully_updated");
@@ -199,7 +199,7 @@ public class TalkController {
 	private Talk dtoToEntity(TalkDto dto) {
 		Talk talk = mapper.map(dto, Talk.class);
 		talk.setTime(LocalDateTime.now());
-		talk.setStatus(Status.getStatusByName(dto.getStatusName()));
+		talk.setStatus(TalkStatus.getStatusByName(dto.getStatusName()));
 		talk.setLanguage(languageService.getByName(dto.getLanguageName()));
 		talk.setLevel(levelService.getByName(dto.getLevelName()));
 		talk.setType(typeService.getByName(dto.getTypeName()));

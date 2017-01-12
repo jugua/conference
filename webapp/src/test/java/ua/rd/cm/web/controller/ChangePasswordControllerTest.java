@@ -1,4 +1,4 @@
-/*package ua.rd.cm.web.controller;
+package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +25,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-*//**
- * @author Olha_Melnyk
- *//*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
 @WebAppConfiguration
@@ -167,4 +164,3 @@ public class ChangePasswordControllerTest {
 
 
 }
-*/

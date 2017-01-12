@@ -27,9 +27,10 @@ public class Talk {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    //@ManyToOne
+    //@JoinColumn(name = "status_id", nullable = false)
+    private TalkStatus status;
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
@@ -62,7 +63,7 @@ public class Talk {
     @Column(name="organiser_comment", length=1000)
     private String organiserComment;
 
-    public boolean setStatus(Status status){
+    public boolean setStatus(TalkStatus status){
         if(this.status==null){
             this.status=status;
         }

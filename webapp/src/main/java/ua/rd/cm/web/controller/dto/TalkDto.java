@@ -5,12 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ua.rd.cm.domain.Status;
-import ua.rd.cm.domain.Talk;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
