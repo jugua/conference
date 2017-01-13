@@ -10,5 +10,6 @@ public class MessageDto {
     private String status;
     private String answer;
     private String secondsToExpiry;
+    private String result;
     private List<String> fields;
 }
