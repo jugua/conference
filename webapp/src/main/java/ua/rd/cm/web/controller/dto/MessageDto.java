@@ -11,5 +11,6 @@ public class MessageDto {
     private String answer;
     private String secondsToExpiry;
     private String result;
+    private Long id;
     private List<String> fields;
 }

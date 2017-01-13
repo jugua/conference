@@ -28,8 +28,8 @@ public class RepositoryConfig {
 
         ds.setDriverClassName("com.mysql.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/conference_management");
-        ds.setUsername("trybel_master");
-        ds.setPassword("password");
+        ds.setUsername("root");
+        ds.setPassword("Artem11063880AA");
 
         return ds;
     }

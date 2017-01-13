@@ -65,14 +65,16 @@ public class TalkController {
 		}
 
 		User currentUser = userService.getByEmail(request.getRemoteUser());
-
+		Long id=null;
 		if (!checkForFilledUserInfo(currentUser)) {
 			httpStatus = HttpStatus.FORBIDDEN;
 		} else {
-			saveNewTalk(dto, currentUser);
+			id=saveNewTalk(dto, currentUser);
 			httpStatus = HttpStatus.OK;
 		}
-		return ResponseEntity.status(httpStatus).body(messageDto);
+		messageDto.setId(id);
+		//return ResponseEntity.status(httpStatus).body(messageDto);
+		return new ResponseEntity<>(messageDto, httpStatus);
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -203,11 +205,12 @@ public class TalkController {
 				.collect(Collectors.toList());
 	}
 
-	private void saveNewTalk(TalkDto dto, User currentUser) {
+	private Long saveNewTalk(TalkDto dto, User currentUser) {
 		dto.setStatusName(DEFAULT_TALK_STATUS);
 		Talk currentTalk = dtoToEntity(dto);
 		currentTalk.setUser(currentUser);
 		talkService.save(currentTalk);
+		return currentTalk.getId();
 	}
 
 	private TalkDto entityToDto(Talk talk) {
