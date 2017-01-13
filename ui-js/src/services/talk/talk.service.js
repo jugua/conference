@@ -50,7 +50,7 @@ export default class TalkService {
 
   approve(id, comment, successCallback) {
     this.talks.update({ id }, { status: 'Approved', comment },
-      (res) => { this.log.error('success'); successCallback(res); },
+      (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
   }
