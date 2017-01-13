@@ -12,7 +12,8 @@ export default class {
   }
 
   approve() {
-    this.talksService.approve(this.id, this.talk.comment, this.close);
+    this.talksService.approve(this.id, this.talk.comment,
+      () => { this.close(); });   // success callback
   }
 
   reject() {
@@ -20,8 +21,8 @@ export default class {
       this.commentRequired = true;
       return;
     }
-    this.talksService.reject(this.id, this.talk.comment);
-    this.close();
+    this.talksService.reject(this.id, this.talk.comment,
+      () => { this.close(); });   // success callback
   }
 
   progress() {
@@ -29,8 +30,8 @@ export default class {
       this.commentRequired = true;
       return;
     }
-    this.talksService.progress(this.id, this.talk.comment);
-    this.close();
+    this.talksService.progress(this.id, this.talk.comment,
+      () => { this.close(); });   // success callback
   }
 
   close() {

@@ -1,7 +1,9 @@
 export default class TalkService {
 
-  constructor($resource) {
+  constructor($resource, $log) {
     'ngInject';
+
+    this.log = $log;
 
     this.talks = $resource('api/talk/:id', {}, {
       add: {
@@ -48,16 +50,23 @@ export default class TalkService {
 
   approve(id, comment, successCallback) {
     this.talks.update({ id }, { status: 'Approved', comment },
+      (res) => { this.log.error('success'); successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
+  }
+
+  reject(id, comment, successCallback) {
+    this.talks.update({ id }, { status: 'Rejected', comment },
       (res) => { successCallback(res); },
-      (err) => { console.log(err); });
+      (err) => { this.log.error(err); }
+    );
   }
 
-  reject(id, comment) {
-    this.talks.update({ id }, { status: 'Rejected', comment });
-  }
-
-  progress(id, comment) {
-    this.talks.update({ id }, { status: 'In Progress', comment });
+  progress(id, comment, successCallback) {
+    this.talks.update({ id }, { status: 'In Progress', comment },
+      (res) => { successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
   }
 }
 
