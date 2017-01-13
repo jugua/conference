@@ -126,26 +126,24 @@ public class TalkController {
 									   BindingResult bindingResult,
 									   HttpServletRequest request) {
 		MessageDto resultMessage = new MessageDto();
-		ResponseEntity responseEntity;
+
 		if(!request.isUserInRole("ORGANISER")){
 			resultMessage.setError("unauthorized");
-			responseEntity = prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
+			return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
 		}
 		if (bindingResult.hasFieldErrors()) {
 			resultMessage.setError("fields_error");
-			responseEntity = prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+			return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
 		}
 		if(dto.getComment().length()>1000){
 			resultMessage.setError("comment_too_long");
-			responseEntity = prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
+			return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
 		}
 		Talk talk=talkService.findTalkById(talkId);
 		if(talk==null){
 			resultMessage.setError("talk_not_found");
-			responseEntity = prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
+			return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
 		}
-		System.out.println(TalkStatus.getStatusByName(dto.getStatus()));
-
 		switch (dto.getStatus()){
 			case "Rejected":{
 				if (dto.getComment().length()<1) {
@@ -162,10 +160,9 @@ public class TalkController {
 			}
 			default:{
 				resultMessage.setError("wrong_status");
-				responseEntity = prepareResponse(HttpStatus.CONFLICT, resultMessage);
+				return prepareResponse(HttpStatus.CONFLICT, resultMessage);
 			}
 		}
-		return responseEntity;
 	}
 
 	private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
