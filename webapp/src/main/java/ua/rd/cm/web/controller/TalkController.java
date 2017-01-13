@@ -123,25 +123,32 @@ public class TalkController {
 									   @RequestBody ActionDto dto,
 									   BindingResult bindingResult,
 									   HttpServletRequest request) {
+		MessageDto resultMessage = new MessageDto();
+		ResponseEntity responseEntity;
 		if(!request.isUserInRole("ORGANISER")){
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
+			resultMessage.setError("unauthorized");
+			responseEntity = prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
 		}
 		if (bindingResult.hasFieldErrors()) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+			resultMessage.setError("fields_error");
+			responseEntity = prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
 		}
 		if(dto.getComment().length()>1000){
-			return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("comment_too_long");
+			resultMessage.setError("comment_too_long");
+			responseEntity = prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
 		}
 		Talk talk=talkService.findTalkById(talkId);
 		if(talk==null){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("talk_not_found");
+			resultMessage.setError("talk_not_found");
+			responseEntity = prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
 		}
 		System.out.println(TalkStatus.getStatusByName(dto.getStatus()));
 
 		switch (dto.getStatus()){
 			case "Rejected":{
 				if (dto.getComment().length()<1) {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("empty_comment");
+					resultMessage.setError("empty_comment");
+					return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
 				}
 				return trySetStatus(dto, talk);
 			}
@@ -152,19 +159,31 @@ public class TalkController {
 				return trySetStatus(dto, talk);
 			}
 			default:{
-				return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
+				resultMessage.setError("wrong_status");
+				responseEntity = prepareResponse(HttpStatus.CONFLICT, resultMessage);
 			}
 		}
+		return responseEntity;
+	}
+
+	private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
+		return ResponseEntity.status(status).body(message);
 	}
 
 	private ResponseEntity trySetStatus(ActionDto dto, Talk talk) {
+		MessageDto message = new MessageDto();
+		ResponseEntity responseEntity;
 		if(talk.setStatus(TalkStatus.getStatusByName(dto.getStatus()))){
 			System.out.println("in");
 			talk.setOrganiserComment(dto.getComment());
             talkService.update(talk);
-			return ResponseEntity.status(HttpStatus.OK).body("successfully_updated");
-        }
-		return ResponseEntity.status(HttpStatus.CONFLICT).body("wrong_status");
+            message.setResult("successfully_updated");
+			responseEntity = prepareResponse(HttpStatus.OK, message);
+        } else {
+			message.setError("wrong_status");
+			responseEntity = prepareResponse(HttpStatus.CONFLICT, message);
+		}
+		return responseEntity;
 	}
 
 
