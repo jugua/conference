@@ -76,11 +76,11 @@ UPDATE user_seq SET next_val = 2 WHERE next_val = 1;
 INSERT INTO user_role VALUES (1, 1);
 
 INSERT INTO talk VALUES (1, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #1", 1, 1, 1, 1, 1);
-INSERT INTO talk VALUES (2, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #2", 1, 1, 1, 1, 1);
-INSERT INTO talk VALUES (3, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #3", 1, 1, 1, 1, 1);
-INSERT INTO talk VALUES (4, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #4", 1, 1, 1, 1, 1);
-INSERT INTO talk VALUES (5, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #5", 1, 1, 1, 1, 1);
-INSERT INTO talk VALUES (6, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #6", 1, 1, 1, 1, 1);
+INSERT INTO talk VALUES (2, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #2", 2, 1, 1, 1, 1);
+INSERT INTO talk VALUES (3, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #3", 3, 1, 1, 1, 1);
+INSERT INTO talk VALUES (4, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #4", 1, 1, 2, 1, 1);
+INSERT INTO talk VALUES (5, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #5", 1, 1, 3, 1, 1);
+INSERT INTO talk VALUES (6, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #6", 1, 1, 4, 1, 1);
 UPDATE talk_seq SET next_val = 7 WHERE next_val = 1;
 INSERT INTO user_info_contact VALUES (1, "twitter.com", 2);
 INSERT INTO user_info_contact VALUES (1, "facebook.com", 3);
