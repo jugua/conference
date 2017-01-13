@@ -40,8 +40,11 @@ export default class TalkService {
     return this.talks.getAll();
   }
 
-  add(talk) {   // talk object passeds
-    this.talks.add(talk);
+  add(talk, successCallback) {   // talk object passeds
+    this.talks.add(talk,
+      (res) => { successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
   }
 
   get(id) {
