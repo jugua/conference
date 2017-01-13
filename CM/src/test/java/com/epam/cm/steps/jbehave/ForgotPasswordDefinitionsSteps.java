@@ -12,9 +12,6 @@ import org.junit.Assert;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 
-/**
- * Created by Serhii_Kobzar on 11/10/2016.
- */
 public class ForgotPasswordDefinitionsSteps {
 
     @Steps

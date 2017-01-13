@@ -1,8 +1,11 @@
 package com.epam.cm.dto;
 
-/**
- * Created by Serhii_Kobzar on 12/26/2016.
- */
+import com.epam.cm.core.utils.Randomizer;
+
+import static com.epam.cm.dto.UserRegistrationInfoDTO.EMPTY;
+import static com.epam.cm.dto.UserRegistrationInfoDTO.NOT_NUMERIC;
+
+
 public class MyTalksDTO {
 
     private String title;
@@ -18,7 +21,13 @@ public class MyTalksDTO {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        String digits = title.replaceAll(NOT_NUMERIC, EMPTY);
+        if (digits.length() == 0)
+            this.title = title;
+        else {
+            int titleLength = Integer.parseInt(digits);
+            this.title = Randomizer.generateRandomAlphaNumericString(titleLength);
+        }
     }
 
     public String getDescription() {
@@ -26,7 +35,13 @@ public class MyTalksDTO {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        String digits = description.replaceAll(NOT_NUMERIC, EMPTY);
+        if (digits.length() == 0)
+            this.description = description;
+        else {
+            int descriptionLength = Integer.parseInt(digits);
+            this.description = Randomizer.generateRandomAlphaNumericString(descriptionLength);
+        }
     }
 
     public String getTopic() {
@@ -66,6 +81,13 @@ public class MyTalksDTO {
     }
 
     public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+        String digits = additionalInfo.replaceAll(NOT_NUMERIC, EMPTY);
+        if (digits.length() == 0)
+            this.additionalInfo = additionalInfo;
+        else {
+            int additionalInfoLength = Integer.parseInt(digits);
+            this.additionalInfo = Randomizer.generateRandomAlphaNumericString(additionalInfoLength);
+        }
     }
+
 }

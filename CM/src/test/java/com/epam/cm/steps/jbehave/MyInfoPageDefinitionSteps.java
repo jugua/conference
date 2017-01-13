@@ -13,9 +13,6 @@ import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 import org.junit.Assert;
 
-/**
- * Created by Lev_Serba on 11/23/2016.
- */
 public class MyInfoPageDefinitionSteps {
     @Steps
     MyInfoPageSteps myInfoSteps;

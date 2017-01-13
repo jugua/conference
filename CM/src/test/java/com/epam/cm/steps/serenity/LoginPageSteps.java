@@ -11,9 +11,6 @@ import net.thucydides.core.annotations.Step;
 import net.thucydides.core.pages.Pages;
 import net.thucydides.core.steps.ScenarioSteps;
 
-/**
- *
- */
 public class LoginPageSteps extends ScenarioSteps {
 
     HomePage homePage;

@@ -5,11 +5,10 @@ import com.epam.cm.dto.SettingsDTO;
 import com.epam.cm.pages.SettingsPage;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.steps.ScenarioSteps;
 
-/**
- * Created by Lev_Serba on 12/12/2016.
- */
-public class SettingsPageSteps {
+public class SettingsPageSteps extends ScenarioSteps
+{
     SettingsPage settingsPage;
 
     @Step
@@ -160,7 +159,6 @@ public class SettingsPageSteps {
         return false;
     }
 
-
     @Step
     public void clickEmailCancelBtn() {
         settingsPage.clickEmailCancelBtn();
@@ -178,7 +176,7 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public void typeConfirmPw(SettingsDTO settingsDTO){
+    public void typeConfirmPw(SettingsDTO settingsDTO) {
         settingsPage.setConfirmPw(settingsDTO.getConfirmNewPw());
     }
 
@@ -188,7 +186,7 @@ public class SettingsPageSteps {
     }
 
     @Step
-    public String getCurrentErrorPw(){
+    public String getCurrentErrorPw() {
         return settingsPage.getCurrentPwErrorMsg();
     }
 }

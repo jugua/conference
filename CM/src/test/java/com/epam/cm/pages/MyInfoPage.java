@@ -12,10 +12,6 @@ import org.openqa.selenium.WebDriver;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.openqa.selenium.By.xpath;
 
-/**
- * Created by Lev_Serba on 11/23/2016.
- */
-
 public class MyInfoPage extends AnyPage {
 
     public static final String SUCCESS_SAVE_OK_BUTTON = "./input[@type='button']";

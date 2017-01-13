@@ -1,13 +1,12 @@
 package com.epam.cm.pages;
 
+import jnr.ffi.annotations.In;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 
 import org.openqa.selenium.WebDriver;
 
-/**
- * Created by Serhii_Kobzar on 12/26/2016.
- */
+
 public class MyTalksPage extends AnyPage {
 
     @FindBy(xpath = "//*[@class='my-talks__header']/a")
@@ -59,6 +58,23 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade levelDropDown;
     @FindBy(xpath = "//*[@id='new-talk-add-inf']")
     WebElementFacade additionalInfoField;
+
+    //filters
+    @FindBy(xpath = "//*[@id='my-talk-status']")
+    WebElementFacade filterByStatus;
+    @FindBy(xpath = "//*[@id='my-talk-topic']")
+    WebElementFacade filterByTopic;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.myDate_start']")
+    WebElementFacade filterByStartedDate;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.myDate_finish']")
+    WebElementFacade filterByFinishDate;
+    @FindBy(xpath = "//*[@class='my-talk-settings__button-wrapper']/input[@value='apply']")
+    WebElementFacade myTalksApplyBtn;
+    @FindBy(xpath = "//*[@class='my-talk-settings__button-wrapper']/input[@value='reset']")
+    WebElementFacade myTTalksResetBtn;
+
+
+
     public MyTalksPage(WebDriver driver) {
         super(driver);
     }
@@ -75,15 +91,15 @@ public class MyTalksPage extends AnyPage {
         cancelMyInfoBtn.click();
     }
 
-    public void clickOKBtn() {
+    /*public void clickOKBtn() {
         errorMsgMyInfoSubmitBtn.click();
     }
-
+    */
     public void clickBigPopUpSbmBtn() {
         newTalkBigPopUpSubmitBtn.click();
     }
 
-    public void clickOkBtn() {
+    public void clickErrorMyInfoOkBtn() {
         okMyInfoNotFieldBtn.click();
     }
 
@@ -99,7 +115,7 @@ public class MyTalksPage extends AnyPage {
         return secondNotSavingMsg.getText();
     }
 
-    public String getThirdMsgText() {
+    public String getThirdInfoMsgText() {
         return thirdNotSavingMsg.getText();
     }
 
@@ -120,58 +136,73 @@ public class MyTalksPage extends AnyPage {
     }
 
     public void setTitleField(String title) {
+        titleField.clear();
         titleField.type(title);
     }
 
-    public boolean isTitleHighlighted(){
+    public int getTitleLength(){
+        return titleField.getValue().length();
+    }
+
+    public boolean isTitleHighlighted() {
         return titleField.getAttribute("class").contains("invalid");
     }
 
     public void setDescriptionField(String description) {
+        descriptionField.clear();
         descriptionField.type(description);
     }
 
-    public boolean isDescriptionHighlighted(){
+    public int getDescriptionLength(){
+        return descriptionField.getValue().length();
+    }
+
+    public boolean isDescriptionHighlighted() {
         return descriptionField.getAttribute("class").contains("invalid");
     }
 
     public void setAdditionalInfoField(String additionalInfo) {
+        additionalInfoField.clear();
         additionalInfoField.type(additionalInfo);
     }
 
-    public boolean isAdditionalInfoHighlighted(){
+    public int getAdditionalInfoLength(){
+        return additionalInfoField.getValue().length();
+    }
+
+    public boolean isAdditionalInfoHighlighted() {
         return additionalInfoField.getAttribute("class").contains("invalid");
     }
 
     public void selectTopic(String topic) {
-        topicDropDown.selectByValue(topic);
+        topicDropDown.selectByIndex(Integer.parseInt(topic));
     }
 
-    public boolean isTopicHighLighted(){
+    public boolean isTopicHighLighted() {
         return topicDropDown.getAttribute("class").contains("invalid");
     }
 
     public void selectType(String type) {
-        typeDropDown.selectByValue(type);
+        typeDropDown.selectByIndex(Integer.parseInt(type));
     }
 
-    public boolean isTypeHighlighted(){
+    public boolean isTypeHighlighted() {
         return typeDropDown.getAttribute("class").contains("invalid");
     }
 
     public void selectLanguage(String language) {
-        languageDropDown.selectByValue(language);
+        languageDropDown.selectByIndex(Integer.parseInt(language));
     }
 
-    public boolean isLanguageHighlighted(){
+    public boolean isLanguageHighlighted() {
         return languageDropDown.getAttribute("class").contains("invalid");
     }
 
     public void selectLevel(String level) {
-        levelDropDown.selectByValue(level);
+        levelDropDown.selectByIndex(Integer.parseInt(level));
     }
 
-    public boolean isLevelHighlighted(){
+    public boolean isLevelHighlighted() {
         return levelDropDown.getAttribute("class").contains("invalid");
     }
 }

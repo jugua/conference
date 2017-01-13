@@ -7,9 +7,6 @@ import org.openqa.selenium.WebDriver;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-/**
- * Created by Lev_Serba on 12/12/2016.
- */
 public class SettingsPage extends AnyPage {
 
     // email
@@ -33,13 +30,13 @@ public class SettingsPage extends AnyPage {
     private WebElementFacade emailCancelBtn;
 
     // name
-    @FindBy(xpath = "//*[@class='settings__block']/div[1]")
+    @FindBy(xpath = "//*[@class='settings__block']/div[1]/div/div[@class='settings__edit']")
     private WebElementFacade nameEditLink;
     @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='fname']")
     private WebElementFacade firstNameInput;
     @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='lname']")
     private WebElementFacade lastNameInput;
-    @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/label[1]")
+    @FindBy(xpath = "//*[@name='fname']/../descendant::label"/*"/*//*[@class='edit-password__fields-wrapper']/label[1]"*/)
     private WebElementFacade firstLbl;
     @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/label[2]")
     private WebElementFacade secondLbl;
@@ -51,7 +48,7 @@ public class SettingsPage extends AnyPage {
     private WebElementFacade namesErrorMsg;
 
     // password
-    @FindBy(xpath = "//*[@class='settings__block']/div[3]")
+    @FindBy(xpath = "//*[@class='settings__block']/div[3]/div/div[@class='settings__edit']")
     private WebElementFacade pwEditLink;
     @FindBy(xpath = "//*[@class='edit-password__fields-wrapper']/input[@name='currentPassword']")
     private WebElementFacade currentPwInput;

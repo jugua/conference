@@ -206,13 +206,13 @@
                             <bit>32</bit>
                             <version>2.25.0</version>
                         </driver>
-                        <!--<driver>-->
-                            <!--<name>edgedriver</name>-->
-                            <!--<platform>windows</platform>-->
-                            <!--<bit>64</bit>-->
-                            <!--<version>2.10586</version>-->
-                            <!--<url>https://download.microsoft.com/download/C/0/7/C07EBF21-5305-4EC8-83B1-A6FCC8F93F45/MicrosoftWebDriver.msi</url>-->
-                        <!--</driver>-->
+                        <driver>
+                            <name>edgedriver</name>
+                            <platform>windows</platform>
+                            <bit>64</bit>
+                            <version>2.10586</version>
+                            <url>https://download.microsoft.com/download/C/0/7/C07EBF21-5305-4EC8-83B1-A6FCC8F93F45/MicrosoftWebDriver.msi</url>
+                        </driver>
                     </drivers>
                 </configuration>
             </plugin>
