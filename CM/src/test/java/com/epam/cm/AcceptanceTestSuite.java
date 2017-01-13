@@ -37,9 +37,7 @@ public class AcceptanceTestSuite extends SerenityStories {
         } catch (ClassNotFoundException e) {
             LOG.error("Error instantiating ProjectProperties", e);
         }
-
          bindWebdriverPath();
-        // setDriverAccordingToOS();
         selectStoryFilesForRunningSuite();
     }
 

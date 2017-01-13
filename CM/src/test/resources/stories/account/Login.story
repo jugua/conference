@@ -21,7 +21,6 @@ And user clicks 'Your Account' menu option
 And user filled in login form:
 |email           |password|
 |invalid@site.com|invalid |
-
 When user clicks SignIn button on login form
 Then user still in login form
 And login field is highlighted
@@ -40,6 +39,37 @@ When user clicks SignIn button on login form
 Then user still in login form
 And login field is highlighted
 And login error message is displayed: "We can not find an account with that email address"
+
+Scenario: User uses sql injections in login form
+Meta:
+@regression
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email  |password  |
+|<email>|<password>|
+When user clicks SignIn button on login form
+Then user still in login form
+And login error message is displayed: "We can not find an account with that email address"
+
+Examples:
+|<email>            |<password>|
+|'-'                |'-'       |
+|' '                |' '       |
+|'&'                |'&'       |
+|'^'                |'^'       |
+|'*'                |'*'       |
+|' or ''-'          |' or ''-' |
+|' or '' '          |' or '' ' |
+|' or ''&'          |' or ''&' |
+|' or ''^'          |' or ''^' |
+|' or ''*'          |' or ''*' |
+|"-"                |"-"       |
+|" "                |" "       |
+|"&"                |"&"       |
+|"^"                |"^"       |
+|"*"                |"*"       |
+|" or ""-"          |" or ""-" |
 
 
 Scenario: User logs in with login that does not comply with validation rules
@@ -98,11 +128,11 @@ And user filled in login form:
 When user clicks SignIn button on login form
 Then "Your Account" replaced by "Master's Account"
 And there are My_account, My_Info and  My Talks links in the given order
-|btnName   |link       |
-|My Info   |/#/my-info |
-|My Talks  |/#/my-talks|
-|Settings  |/#/account |
-|Sign Out  |/#/        |
+|btnName |link       |
+|My Info |/#/my-info |
+|My Talks|/#/my-talks|
+|Settings|/#/account |
+|Sign Out|/#/        |
 When user logs out
 
 
@@ -124,3 +154,6 @@ Then there are My account and  My Talks links in the given order
 |Sign Out|/#/       |
 
 When user logs out
+
+
+

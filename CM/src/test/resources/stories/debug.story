@@ -1,17 +1,159 @@
 
-Scenario: User unsuccessfully create new account with wrong length
-Given user is on the sign up page
-When user  types wrong values in some of the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
-|firstName  |lastName  |email  |password  |confirmPassword  |
-|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
-Then user cant enter/type more than the maximum allowed characters:
-|firstExpectedText  |secondExpectedText  |position  |
-|<firstExpectedText>|<secondExpectedText>|<position>|
+Narrative: User login
+  In order to gain access to all features of the site
+  As an anonymous user
+  I want to be able to login to my account
+
+- Being signed in as a speaker
+I have the following dropdown options available under *'First Name' Account* :
+Manage My Account page, My Info page and My Talks
+- Being signed in as an organizer
+I have the following dropdown options available under *'First Name' Account* :
+Manage My Account page and Talks
+
+
+Scenario: User unsuccessfully logs in to the site with invalid credentials
+Meta:
+@regression @smoke
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email           |password|
+|invalid@site.com|invalid |
+When user clicks SignIn button on login form
+Then user still in login form
+And login field is highlighted
+And login error message is displayed: "We can not find an account with that email address"
+
+
+Scenario: User logs in with empty credentials
+Meta:
+@regression
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email|password|
+|     |        |
+When user clicks SignIn button on login form
+Then user still in login form
+And login field is highlighted
+And login error message is displayed: "We can not find an account with that email address"
+
+Scenario: User uses sql injections in login form
+Meta:
+@regression
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email  |password  |
+|<email>|<password>|
+When user clicks SignIn button on login form
+Then user still in login form
+And login error message is displayed: "We can not find an account with that email address"
 
 Examples:
-|<firstName>|<lastName>|<email>          |<password>                         |<confirmPassword>                  |<firstExpectedText>|<secondExpectedText>|<position>   |
-|57         |27        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |nameField    |
-|93         |27        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |nameField    |
-|27         |57        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |lastNameField|
-|27         |87        |tesAuto@auto.tttt|someAutoTestPass                   |someAutoTestPass                   |no text msg        |no text msg         |lastNameField|
-|27         |27        |tesAuto@auto.tttt|SvfvYTsaeaegbeeejjrjrjejgjejvjejejr|SvfvYTsaeaegbeeejjrjrjejgjejvjejejr|no text msg        |no text msg         |passFieldMax
+|<email>            |<password>|
+|'-'                |'-'       |
+|' '                |' '       |
+|'&'                |'&'       |
+|'^'                |'^'       |
+|'*'                |'*'       |
+|' or ''-'          |' or ''-' |
+|' or '' '          |' or '' ' |
+|' or ''&'          |' or ''&' |
+|' or ''^'          |' or ''^' |
+|' or ''*'          |' or ''*' |
+|"-"                |"-"       |
+|" "                |" "       |
+|"&"                |"&"       |
+|"^"                |"^"       |
+|"*"                |"*"       |
+|" or ""-"          |" or ""-" |
+
+
+Scenario: User logs in with login that does not comply with validation rules
+Meta:
+@regression
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email  |password  |
+|<email>|<password>|
+When user clicks SignIn button on login form
+Then user still in login form
+And login field is highlighted
+And login error message is displayed: "We can not find an account with that email address"
+
+Examples:
+|<email>         |<password>|
+|example.com     |tester    |
+|user@example    |tester    |
+|t@i.u           |tester    |
+|tester@tester.22|tester    |
+
+
+
+Scenario: User logs in with password that does not comply with validation rules
+Meta:
+@regression
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email  |password  |
+|<email>|<password>|
+When user clicks SignIn button on login form
+Then user still in login form
+And password field is highlighted
+And password error message is displayed: "Your password is incorrect"
+
+Examples:
+|<email>            |<password>|
+|tester@tester.com  |          |
+|tester@tester.com  |teste     |
+|speaker@speaker.com|tester    |
+
+
+Scenario: Being signed in as a speaker manage My Account page, My Info page and My Talks
+Meta:
+@regression @smoke
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email              |password|
+|speaker@speaker.com|speaker |
+When user clicks SignIn button on login form
+Then "Your Account" replaced by "Master's Account"
+And there are My_account, My_Info and  My Talks links in the given order
+|btnName |link       |
+|My Info |/#/my-info |
+|My Talks|/#/my-talks|
+|Settings|/#/account |
+|Sign Out|/#/        |
+When user logs out
+
+
+Scenario: Being signed in as an organizer manage My Account page, My Info page and My Talks
+Meta:
+@regression @smoke @ignore
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email                  |password |
+|organizer@organizer.com|organizer|
+When user clicks SignIn button on login form
+Then "Your Account" replaced by "Organizer's Account"
+Then there are My account and  My Talks links in the given order
+|btnName |link      |
+|Talks   |/#/talks  |
+|Settings|/#/account|
+|Sign Out|/#/       |
+
+When user logs out
+
+
+
