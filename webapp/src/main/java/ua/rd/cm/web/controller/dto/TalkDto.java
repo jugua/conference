@@ -65,7 +65,7 @@ public class TalkDto {
 	private String date;
 
 	@Size(max = 1000)
-	@JsonProperty("org_comment")
+	@JsonProperty("comment")
 	private String organiserComment;
 
 

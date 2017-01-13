@@ -20,7 +20,7 @@ export default class TalkService {
         }
       },
       get: {
-        methog: 'GET',
+        method: 'GET',
         params: { id: '@id' },
         headers: {
           'Cache-Control': 'no-cache, no-store',
@@ -34,34 +34,13 @@ export default class TalkService {
     });
   }
 
-  clear() {
-    this._talks = null;
-  }
-
   getAll() {
-    if (this._talks) {
-      return this._talks;
-    }
-
-    this._talks = this.talks.getAll(
-      () => {},
-      () => {
-        this._talks = null;
-      });
-
-    return this._talks;
+    return this.talks.getAll();
   }
 
   add(talk) {   // talk object passed
-    this.talks.add(talk,
-      () => {
-        if (this._talks instanceof Array) {
-          this._talks.push(talk);
-        }
-      },
-      (err) => {
-        console.log(err);
-      });
+
+    this.talks.add(talk);
   }
 
   get(id) {
