@@ -66,6 +66,8 @@ Then talk appears in grid and have 'New' status
 Examples:
 |<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
 |10     |10           |10              |1      |1     |1         |1      |
+|15     |12           |12              |2      |2     |2         |2      |
+|15     |12           |12              |2      |2     |2         |2      |
 
 
 

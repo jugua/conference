@@ -71,8 +71,22 @@ public class MyTalksPage extends AnyPage {
     @FindBy(xpath = "//*[@class='my-talk-settings__button-wrapper']/input[@value='apply']")
     WebElementFacade myTalksApplyBtn;
     @FindBy(xpath = "//*[@class='my-talk-settings__button-wrapper']/input[@value='reset']")
-    WebElementFacade myTTalksResetBtn;
+    WebElementFacade myTalksResetBtn;
 
+    // organiser
+
+    //approve
+
+    @FindBy(xpath = "")
+    WebElementFacade approveBtn;
+
+    //reject
+    @FindBy(xpath = "")
+    WebElementFacade rejectBtn;
+    
+    //inProgress
+    @FindBy(xpath = "")
+    WebElementFacade inProgressBtn;
 
 
     public MyTalksPage(WebDriver driver) {
