@@ -4,6 +4,7 @@ export default class TalksController {
 
     this.current = Current.current;
 
+    this.talksService = Talks;
     this.talks = Talks.getAll();
 
     this.filter = {};
@@ -23,5 +24,9 @@ export default class TalksController {
   hideReviewPopup() {
     this.reviewTalkId = null;
     this.showReviewPopup = false;
+    this.refresh();
+  }
+  refresh() {
+    this.talks = this.talksService.getAll();
   }
 }

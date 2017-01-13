@@ -38,8 +38,7 @@ export default class TalkService {
     return this.talks.getAll();
   }
 
-  add(talk) {   // talk object passed
-
+  add(talk) {   // talk object passeds
     this.talks.add(talk);
   }
 
@@ -47,8 +46,10 @@ export default class TalkService {
     return this.talks.get({ id });
   }
 
-  approve(id, comment) {
-    this.talks.update({ id }, { status: 'Approved', comment });
+  approve(id, comment, successCallback) {
+    this.talks.update({ id }, { status: 'Approved', comment },
+      (res) => { successCallback(res); },
+      (err) => { console.log(err); });
   }
 
   reject(id, comment) {

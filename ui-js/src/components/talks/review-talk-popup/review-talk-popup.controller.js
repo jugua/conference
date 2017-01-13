@@ -12,8 +12,7 @@ export default class {
   }
 
   approve() {
-    this.talksService.approve(this.id, this.talk.comment);
-    this.close();
+    this.talksService.approve(this.id, this.talk.comment, this.close);
   }
 
   reject() {
