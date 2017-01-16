@@ -92,20 +92,24 @@ public class TalkController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{talkId}")
 	public ResponseEntity getTalkById(@PathVariable Long talkId, HttpServletRequest request){
+		MessageDto resultMessage = new MessageDto();
+
 		if(!request.isUserInRole("ORGANISER")){
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
+			resultMessage.setError("unauthorized");
+			return prepareResponse(HttpStatus.CONFLICT,resultMessage );
 		}
 
 		Talk talk=talkService.findTalkById(talkId);
 		if(talk==null){
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no_talk_with_such_id");
+			resultMessage.setError("no_talk_with_such_id");
+			return prepareResponse(HttpStatus.NOT_FOUND,resultMessage);
 		}
 		TalkDto talkDto = entityToDto(talk);
 		return new ResponseEntity<>(talkDto,  HttpStatus.OK);
 	}
 
 //	@PreAuthorize("isAuthenticated()")
-//	@GetMapping("/{id}/user")
+//	@GetMapping("/user/{id}")
 //	public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
 //		if(!request.isUserInRole("ORGANISER")){
 //			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");

@@ -50,7 +50,7 @@ public class SimpleTalkService implements TalkService{
 
 	@Override
 	public Talk findTalkById(Long id) {
-		return talkRepository.findBySpecification(new TalkById(id)).get(0);
+		return talkRepository.findBySpecification(new TalkById(id)).isEmpty() ? null : talkRepository.findBySpecification(new TalkById(id)).get(0);
 	}
 
 

@@ -427,13 +427,13 @@ public class TalkControllerTest extends TestUtil{
                 andExpect(status().isNotFound());
     }
 
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void correctApproveNewTalk() throws Exception{
-        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+//    public void correctApproveNewTalk() throws Exception{
+//        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+//        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1))
+//                .andExpect(status().isOk());
+//    }
 //    @Test
 //    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
 //    public void correctApproveNewTalk() throws Exception{
