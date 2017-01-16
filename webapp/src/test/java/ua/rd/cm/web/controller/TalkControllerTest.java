@@ -24,6 +24,7 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.Filter;
@@ -538,6 +539,13 @@ public class TalkControllerTest extends TestUtil{
         correctTalkDto.setAdditionalInfo("Info");
         correctTalkDto.setOrganiserComment("Org comment");
         return correctTalkDto;
+    }
+
+    private ActionDto setupCorrectActionDto(String status){
+        ActionDto actionDto= new ActionDto();
+        actionDto.setComment("comment");
+        actionDto.setStatus(status);
+        return actionDto;
     }
 
     private byte[] convertObjectToJsonBytes(Object object) throws JsonProcessingException{
