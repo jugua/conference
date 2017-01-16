@@ -15,7 +15,26 @@ public class ChangeTalkStatusPreparator extends CustomMimeMessagePreparator {
 
     @Override
     public String getTemplateName() {
-        return null;
+        String template;
+        switch (currentTalk.getStatus().getName()) {
+            case "In Progress" : {
+                template = "talk_status_updated_to_in-progress_organizer.ftl";
+                break;
+            }
+            case "Approved" : {
+                template = "talk_status_updated_to_approved_organizer.ftl";
+                break;
+            }
+            case "Rejected" : {
+                template = "talk_status_updated_to_rejected_organizer.ftl";
+                break;
+            }
+            default : {
+                template = ""; //TODO template for wrong message or exception
+                break;
+            }
+        }
+        return template;
     }
 
     @Override
