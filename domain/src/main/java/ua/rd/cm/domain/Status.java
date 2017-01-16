@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-/**
- * @author Artem_Pryzhkov
- */
-
+@Deprecated
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

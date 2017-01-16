@@ -1,6 +1,5 @@
 package ua.rd.cm.web.controller;
 
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,8 +31,8 @@ import java.util.*;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
@@ -59,7 +58,7 @@ public class PhotoControllerTest extends TestUtil{
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
         photoDto =setupCorrectPhotoDto();
-        user=createUser(createSpeakerRole(),createUserInfo());
+        user=createUser();
     }
 
     private PhotoDto setupCorrectPhotoDto(){
@@ -89,7 +88,7 @@ public class PhotoControllerTest extends TestUtil{
 
     @Ignore
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER_ROLE")
     public void correctUploadPhoto() throws Exception {
         when(userService.getByEmail(user.getEmail())).thenReturn(user);
 
@@ -107,11 +106,14 @@ public class PhotoControllerTest extends TestUtil{
         ).andExpect(status().isOk());
     }
 
+
+
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER")
+    @WithMockUser(username = SPEAKER_EMAIL, roles = "SPEAKER_ROLE")
     public void nullUploadPhoto() throws Exception {
         mockMvc.perform(fileUpload(API_PHOTO)
                 .file(setupCorrectMultipartFile())
         ).andExpect(status().isBadRequest());
     }
 }
+

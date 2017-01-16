@@ -53,7 +53,7 @@ UPDATE level_seq SET next_val = 5 WHERE next_val = 1;
 --
 
 INSERT INTO `status` VALUES (1, "New");
-
+INSERT INTO `status` VALUES (2, "In Progress");
 UPDATE status_seq SET next_val = 2 WHERE next_val = 1;
 
 --
@@ -75,8 +75,13 @@ INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, us
 UPDATE user_seq SET next_val = 2 WHERE next_val = 1;
 INSERT INTO user_role VALUES (1, 1);
 
-INSERT INTO talk VALUES (1, "Additional info", "Description", "2016-12-31 23:55:00", "title", 1, 1, 1, 1, 1, 1);
-UPDATE talk_seq SET next_val = 2 WHERE next_val = 1;
+INSERT INTO talk VALUES (1, "Additional info", "Description","","NEW", "2016-12-31 23:51:00", "talk #1", 1, 1, 1, 1, 1);
+INSERT INTO talk VALUES (2, "Additional info", "Description","","NEW", "2016-12-31 23:52:00", "talk #2", 2, 1, 1, 1, 1);
+INSERT INTO talk VALUES (3, "Additional info", "Description","","NEW", "2016-12-31 23:53:00", "talk #3", 3, 1, 1, 1, 1);
+INSERT INTO talk VALUES (4, "Additional info", "Description","","NEW", "2016-12-31 23:54:00", "talk #4", 1, 1, 2, 1, 1);
+INSERT INTO talk VALUES (5, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #5", 1, 1, 3, 1, 1);
+INSERT INTO talk VALUES (6, "Additional info", "Description","","NEW", "2016-12-31 23:56:00", "talk #6", 1, 1, 4, 1, 1);
+UPDATE talk_seq SET next_val = 7 WHERE next_val = 1;
 INSERT INTO user_info_contact VALUES (1, "twitter.com", 2);
 INSERT INTO user_info_contact VALUES (1, "facebook.com", 3);
 INSERT INTO user_info_contact VALUES (1, "linkedin.com", 1);
@@ -105,3 +110,15 @@ UPDATE user_info_seq SET next_val = 4 WHERE next_val = 3;
 INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (3, "organiser@gmail.com", "Organiser", "Organiser", "CONFIRMED","organiser", 3);
 UPDATE user_seq SET next_val = 4 WHERE next_val = 3;
 INSERT INTO user_role VALUES (3, 2);
+
+--
+-- Setting default user with role ORGANIZER with only registration fields
+--
+
+INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (4, "", "", "");
+UPDATE user_info_seq SET next_val = 5 WHERE next_val = 4;
+
+
+INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (4, "organiser2@gmail.com", "Organiser2", "Organiser2", "CONFIRMED","organiser", 4);
+UPDATE user_seq SET next_val = 5 WHERE next_val = 4;
+INSERT INTO user_role VALUES (4, 2);

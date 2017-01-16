@@ -44,7 +44,11 @@ export default class NewtalkController {
     this.talk.status = 'New';
     this.talk.date = Date.now();
 
-    this.talksService.add(this.talk);
-    this.state.go('header.tabs.myTalks');
+    this.talksService.add(this.talk,
+      () => { this.state.go('header.tabs.myTalks', {}, { reload: true }); }
+    );
   }
 }
+
+
+

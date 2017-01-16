@@ -14,6 +14,10 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @ToString
 public class TalkDto {
+
+	@JsonProperty("_id")
+	private Long id;
+
 	@NotNull
 	@Size(min = 1, max = 250)
 	@JsonProperty("title")
@@ -59,5 +63,10 @@ public class TalkDto {
 
 	@JsonProperty("date")
 	private String date;
-	
+
+	@Size(max = 1000)
+	@JsonProperty("comment")
+	private String organiserComment;
+
+
 }

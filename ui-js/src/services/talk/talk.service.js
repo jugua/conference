@@ -1,9 +1,11 @@
 export default class TalkService {
 
-  constructor($resource) {
+  constructor($resource, $log) {
     'ngInject';
 
-    this.talks = $resource('api/talk', {}, {
+    this.log = $log;
+
+    this.talks = $resource('api/talk/:id', {}, {
       add: {
         method: 'POST',
         headers: {
@@ -18,38 +20,56 @@ export default class TalkService {
           'Cache-Control': 'no-cache, no-store',
           Pragma: 'no-cache'
         }
+      },
+      get: {
+        method: 'GET',
+        params: { id: '@id' },
+        headers: {
+          'Cache-Control': 'no-cache, no-store',
+          Pragma: 'no-cache'
+        }
+      },
+      update: {
+        method: 'PATCH',
+        params: { id: '@id' }
       }
     });
   }
 
-  clear() {
-    this._talks = null;
-  }
-
   getAll() {
-    if (this._talks) {
-      return this._talks;
-    }
-
-    this._talks = this.talks.getAll(() => {
-    },
-      () => {
-        this._talks = null;
-      });
-
-    return this._talks;
+    return this.talks.getAll();
   }
 
-  add(talk) {
-    this.talks.add(talk, (res) => {
-      if (this._talks instanceof Array) {
-        this._talks.push(talk);
-      }
-    },
-      (err) => {
-        console.log(err);
-      });
+  add(talk, successCallback) {   // talk object passeds
+    this.talks.add(talk,
+      (res) => { successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
   }
 
+  get(id) {
+    return this.talks.get({ id });
+  }
+
+  approve(id, comment, successCallback) {
+    this.talks.update({ id }, { status: 'Approved', comment },
+      (res) => { successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
+  }
+
+  reject(id, comment, successCallback) {
+    this.talks.update({ id }, { status: 'Rejected', comment },
+      (res) => { successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
+  }
+
+  progress(id, comment, successCallback) {
+    this.talks.update({ id }, { status: 'In Progress', comment },
+      (res) => { successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
+  }
 }
 

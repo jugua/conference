@@ -51,4 +51,5 @@ public class SimpleTalkService implements TalkService{
 	public Talk findTalkById(Long id) {
 		return talkRepository.findBySpecification(new TalkById(id)).get(0);
 	}
+
 }
