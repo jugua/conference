@@ -75,6 +75,8 @@ public class MyTalksPage extends AnyPage {
 
     // organiser
 
+    @FindBy(xpath = "")
+    WebElementFacade someElement;
     //approve
 
     @FindBy(xpath = "")
@@ -83,7 +85,7 @@ public class MyTalksPage extends AnyPage {
     //reject
     @FindBy(xpath = "")
     WebElementFacade rejectBtn;
-    
+
     //inProgress
     @FindBy(xpath = "")
     WebElementFacade inProgressBtn;
