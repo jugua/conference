@@ -98,7 +98,7 @@ public class TalkController {
 
         if (!request.isUserInRole("ORGANISER")) {
             resultMessage.setError("unauthorized");
-            return prepareResponse(HttpStatus.CONFLICT, resultMessage);
+            return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
         }
 
         Talk talk = talkService.findTalkById(talkId);
