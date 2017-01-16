@@ -95,28 +95,29 @@ public class TalkController {
 		if(!request.isUserInRole("ORGANISER")){
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
 		}
-		TalkDto talkDto = entityToDto(talkService.findTalkById(talkId));
-		HttpStatus status = HttpStatus.OK;
-		if(talkDto == null){
-			status = HttpStatus.NOT_FOUND;
+
+		Talk talk=talkService.findTalkById(talkId);
+		if(talk==null){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("no_talk_with_such_id");
 		}
-		return new ResponseEntity<>(talkDto, status);
+		TalkDto talkDto = entityToDto(talk);
+		return new ResponseEntity<>(talkDto,  HttpStatus.OK);
 	}
 
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/{id}/user")
-	public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
-		if(!request.isUserInRole("ORGANISER")){
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
-		}
-		User user = userService.find(userId);
-		if (user == null) {
-			return new ResponseEntity(HttpStatus.NOT_FOUND);
-		}
-		UserDto userDto=new UserDto();
-		userDto.setContactTypeService(contactTypeService);
-		return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.ACCEPTED);
-	}
+//	@PreAuthorize("isAuthenticated()")
+//	@GetMapping("/{id}/user")
+//	public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
+//		if(!request.isUserInRole("ORGANISER")){
+//			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
+//		}
+//		User user = userService.find(userId);
+//		if (user == null) {
+//			return new ResponseEntity(HttpStatus.NOT_FOUND);
+//		}
+//		UserDto userDto=new UserDto();
+//		userDto.setContactTypeService(contactTypeService);
+//		return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.ACCEPTED);
+//	}
 
 
 	@PreAuthorize("isAuthenticated()")
@@ -170,10 +171,10 @@ public class TalkController {
 	}
 
 	private ResponseEntity trySetStatus(ActionDto dto, Talk talk) {
+		System.out.println(talk);
 		MessageDto message = new MessageDto();
 		ResponseEntity responseEntity;
 		if(talk.setStatus(TalkStatus.getStatusByName(dto.getStatus()))){
-			System.out.println("in");
 			talk.setOrganiserComment(dto.getComment());
             talkService.update(talk);
             message.setResult("successfully_updated");
@@ -215,6 +216,7 @@ public class TalkController {
 		dto.setSpeakerFullName(talk.getUser().getFirstName() + " " + talk.getUser().getLastName());
 		dto.setStatusName(talk.getStatus().getName());
 		dto.setDate(talk.getTime().toString());
+
 		return dto;
 	}
 
