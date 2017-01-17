@@ -16,6 +16,7 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.*;
 import ua.rd.cm.services.preparator.ChangeTalkStatusPreparator;
 import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
+import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
@@ -203,7 +204,6 @@ public class TalkController {
 
     private List<TalkDto> getTalksForSpeaker(String userEmail) {
         User currentUser = userService.getByEmail(userEmail);
-
         return talkService.findByUserId(currentUser.getId())
                 .stream()
                 .map(this::entityToDto)
@@ -224,6 +224,7 @@ public class TalkController {
         talkService.save(currentTalk);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
         mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
+        mailService.sendEmail(currentUser, new SubmitNewTalkSpeakerPreparator());
         return currentTalk.getId();
     }
 
