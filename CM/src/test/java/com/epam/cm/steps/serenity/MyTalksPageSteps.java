@@ -160,7 +160,7 @@ public class MyTalksPageSteps extends ScenarioSteps {
         return false;
     }
 
-    @Step
+/*    @Step
     public String findRowWithStatus(String status){
         return myTalksPage.getStatus(status);
     }
@@ -168,5 +168,5 @@ public class MyTalksPageSteps extends ScenarioSteps {
     @Step
     public void clickFoundedTitle(String name){
         myTalksPage.clickTitle(name);
-    }
+    }*/
 }

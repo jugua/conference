@@ -1,6 +1,7 @@
 package com.epam.cm.rest;
 
 
+import com.epam.cm.dto.restDto.TalksRestDTO;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -74,7 +75,7 @@ public class Rest {
         //stage 2:  get new "JSESSIONID"
         String newJsessionId =
                 RestAssured.given().auth().preemptive().
-                        basic("tester@tester.com", "tester").
+                        basic("speaker@speaker.com", "speaker").
                         headers("X-XSRF-TOKEN", resp.getCookie("XSRF-TOKEN")).
                         cookies(resp.cookies()).
                         contentType(JSON).log().all().
@@ -84,17 +85,28 @@ public class Rest {
 
         userCookie.put("JSESSIONID", newJsessionId);
         //stage 3: update "XSRF-TOKEN" for  logged user
-        String newXsrfToken =
+/*        String newXsrfToken =
                 RestAssured.given().contentType(JSON).
                         cookies(userCookie).log().all().
                         get("/user/current").
                         then().log().all().statusCode(202).
                         extract().cookie("XSRF-TOKEN");
 
-        userCookie.put("XSRF-TOKEN", newXsrfToken);
+        userCookie.put("XSRF-TOKEN", newXsrfToken);*/
         //
 
         userCookie.entrySet().forEach(System.out::println);
+
+        /*TalksRestDTO talksRest = new TalksRestDTO();
+        talksRest.setAddon("add info");
+        talksRest.setDescription("bbwerbe");*/
+
+
+        RestAssured.given().contentType(JSON).
+                cookies(userCookie).
+                body("{\"title\":\"asd\",\"description\":\"asd\",\"topic\":\"JVM Languages and new programming paradigms\",\"type\":\"Lighting Talk\",\"lang\":\"Ukrainian\",\"level\":\"Beginner\",\"addon\":\"as\",\"status\":\"New\",\"date\":1484661167062}").
+                log().all().post("/api/talk").then().log().all().statusCode(200);
+                //extract().cookie("XSRF-TOKEN");
 
 
     }

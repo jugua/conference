@@ -1,7 +1,10 @@
 package com.epam.cm.core.json;
 
+import com.epam.cm.dto.restDto.TalksRestDTO;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+
+import java.io.IOException;
 
 public final class JsonUtil {
 
@@ -18,5 +21,11 @@ public final class JsonUtil {
         }
 
         return data;
+    }
+
+    public static String toJSON(TalksRestDTO talksRestDTO) throws IOException {
+
+        return new ObjectMapper().writeValueAsString(talksRestDTO);
+
     }
 }
