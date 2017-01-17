@@ -1,6 +1,5 @@
 package ua.rd.cm.web.controller;
 
-import jdk.nashorn.internal.ir.RuntimeNode;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,8 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.*;
-import ua.rd.cm.services.preparator.ChangeTalkStatusPreparator;
+import ua.rd.cm.services.preparator.ChangeTalkStatusOrganiserPreparator;
+import ua.rd.cm.services.preparator.ChangeTalkStatusSpeakerPreparator;
 import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
 import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 import ua.rd.cm.web.controller.dto.ActionDto;
@@ -188,6 +188,7 @@ public class TalkController {
             message.setResult("successfully_updated");
             responseEntity = prepareResponse(HttpStatus.OK, message);
             notifyOrganisers(talk, request);
+            mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
         } else {
             message.setError("wrong_status");
             responseEntity = prepareResponse(HttpStatus.CONFLICT, message);
@@ -199,7 +200,7 @@ public class TalkController {
         String organiserEmail = request.getUserPrincipal().getName();
         User currentOrganiser = userService.getByEmail(organiserEmail);
         List<User> receivers = userService.getByRoleExceptCurrent(currentOrganiser, Role.ORGANISER);
-        mailService.notifyUsers(receivers, new ChangeTalkStatusPreparator(currentOrganiser, talk));
+        mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(currentOrganiser, talk));
     }
 
     private List<TalkDto> getTalksForSpeaker(String userEmail) {

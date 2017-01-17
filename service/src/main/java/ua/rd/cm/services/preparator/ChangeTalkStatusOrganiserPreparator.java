@@ -8,7 +8,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 
 @AllArgsConstructor
-public class ChangeTalkStatusPreparator extends CustomMimeMessagePreparator {
+public class ChangeTalkStatusOrganiserPreparator extends CustomMimeMessagePreparator {
 
     private User currentOrganiser;
     private Talk currentTalk;

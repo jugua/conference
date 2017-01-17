@@ -1426,7 +1426,7 @@
                     <th class="small-12 large-12 columns first last"><table><tr><th>
                         <p>Dear ${name},</p>
                         <p>Your talk has been reviewed but we need some more additional information. Could you please update your talk according to the following request?</p>
-                        <p>And then place the text from the Organizer's comments texbox.</p>
+                        <p>${comment}</p>
                         <table class="spacer"><tbody><tr><td height="10px" style="font-size:10px;line-height:10px;">&#xA0;</td></tr></tbody></table> 
                         <p>Sincerely yours, <br> The Conference Management Team.</p>
                     </th>
