@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.TalkStatus;
@@ -123,7 +124,7 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
     public ResponseEntity actionOnTalk(@PathVariable("id") Long talkId,
-                                       @RequestBody ActionDto dto,
+                                       @Validated @RequestBody ActionDto dto,
                                        BindingResult bindingResult,
                                        HttpServletRequest request) {
         MessageDto resultMessage = new MessageDto();
@@ -133,12 +134,13 @@ public class TalkController {
             return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
         }
         if (bindingResult.hasFieldErrors()) {
-            resultMessage.setError("fields_error");
-            return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
-        }
-        if (dto.getComment().length() > 1000) {
-            resultMessage.setError("comment_too_long");
-            return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
+            if (isCommentToLong(bindingResult)) {
+                resultMessage.setError("comment_too_long");
+                return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
+            } else {
+                resultMessage.setError("fields_error");
+                return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+            }
         }
         Talk talk = talkService.findTalkById(talkId);
         if (talk == null) {
@@ -164,6 +166,10 @@ public class TalkController {
                 return prepareResponse(HttpStatus.CONFLICT, resultMessage);
             }
         }
+    }
+
+    private boolean isCommentToLong(BindingResult bindingResult) {
+        return bindingResult.getFieldError("comment").getDefaultMessage().equals("comment_too_long");
     }
 
     private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
