@@ -120,6 +120,7 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.typeOrgComments(myGlobalTalksDTO);
         myTalksPageSteps.clickRejectBtn();
 
+
     }
 
     @When("user clicks on 'Submit New Talk' button")
@@ -250,7 +251,7 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.clickYesInfoBtn();
     }
 
-    /*@Then("reject status is shown: $table")
+    @Then("reject status is shown: $table")
     public void checkRejectStatus(ExamplesTable table){
         boolean replaceNamedParameters = true;
         String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
@@ -265,5 +266,5 @@ public class MyTalksDefinitionsSteps {
         Assert.assertThat(
                 myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
 
-    }*/
+    }
 }
