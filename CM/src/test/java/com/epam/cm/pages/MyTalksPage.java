@@ -1,6 +1,6 @@
 package com.epam.cm.pages;
 
-import jnr.ffi.annotations.In;
+import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
 
@@ -9,6 +9,10 @@ import org.openqa.selenium.WebDriver;
 
 public class MyTalksPage extends AnyPage {
 
+ /*   private final String RowByName = "//*[@class='data-table__row ng-scope']/../div[contains(.,%s)]";
+    private final String STATUS = ".//div[@class='data-table__column data-table__column_status-talk ng-binding']";
+    private final String TITLE = "//*[@class='data-table__row ng-scope']/div[contains(.,%s)]";
+*/
     @FindBy(xpath = "//*[@class='my-talks__header']/a")
     WebElementFacade submitNewTalkBtn;
     // no my info
@@ -74,22 +78,45 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade myTalksResetBtn;
 
     // organiser
+    @FindBy(xpath = "//*[@class='data-table__row ng-scope']/descendant::div[contains(.,'New')]")
+    WebElementFacade tableRow;
+    @FindBy(xpath = "//*[@id=\"$ctrl.reviewTalkId\"]/div[1]/div/form/textarea[3]")
+    WebElementFacade orgComments;
 
-    @FindBy(xpath = "")
-    WebElementFacade someElement;
     //approve
-
     @FindBy(xpath = "")
     WebElementFacade approveBtn;
 
+
     //reject
-    @FindBy(xpath = "")
+    @FindBy(xpath = "//button[@ng-click='$ctrl.reject()']")
     WebElementFacade rejectBtn;
 
     //inProgress
     @FindBy(xpath = "")
     WebElementFacade inProgressBtn;
+/*
+    public WebElementFacade findRow(String name){
+        WebElementFacade row = find(By.xpath(String.format(RowByName,name)));
+        return row;
+    }
 
+    public void clickRejectBtn(){
+        rejectBtn.click();
+    }
+
+    public String getStatus(String name){
+        return findRow(name).find(By.xpath(STATUS)).getText();
+    }
+
+    public void clickTitle(String name){
+        WebElementFacade titleTable = find(By.xpath(String.format(TITLE, name)));
+        titleTable.click();
+    }*/
+
+    public void clickRejectBtn(){
+        rejectBtn.click();
+    }
 
     public MyTalksPage(WebDriver driver) {
         super(driver);
@@ -149,6 +176,11 @@ public class MyTalksPage extends AnyPage {
 
     public void clickCancelInvalidData() {
         cancelInvalidDataBtn.click();
+    }
+
+    public void setOrgComments(String comments){
+        orgComments.clear();
+        orgComments.type(comments);
     }
 
     public void setTitleField(String title) {

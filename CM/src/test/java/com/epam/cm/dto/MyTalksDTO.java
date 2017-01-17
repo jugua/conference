@@ -15,6 +15,27 @@ public class MyTalksDTO {
     private String language;
     private String level;
     private String additionalInfo;
+    private String status;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    private String comment;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String orgComment;
 
     public String getTitle() {
         return title;

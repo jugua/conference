@@ -108,6 +108,15 @@ public class MyTalksPageSteps extends ScenarioSteps {
     }
 
     @Step
+    public void typeOrgComments(MyTalksDTO myTalksDTO){
+        myTalksPage.setOrgComments(myTalksDTO.getComment());
+    }
+
+    public void clickRejectBtn(){
+        myTalksPage.clickRejectBtn();
+    }
+
+    @Step
     public void chooseTopic(MyTalksDTO myTalksDTO){
         myTalksPage.selectTopic(myTalksDTO.getTopic());
     }
@@ -149,5 +158,15 @@ public class MyTalksPageSteps extends ScenarioSteps {
             return true;
         WebDriverSupport.reloadPage();
         return false;
+    }
+
+    @Step
+    public String findRowWithStatus(String status){
+        return myTalksPage.getStatus(status);
+    }
+
+    @Step
+    public void clickFoundedTitle(String name){
+        myTalksPage.clickTitle(name);
     }
 }

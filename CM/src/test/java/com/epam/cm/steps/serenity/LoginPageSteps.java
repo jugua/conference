@@ -116,6 +116,16 @@ public class LoginPageSteps extends ScenarioSteps {
     }
 
     @Step
+    public void clickTalksBtnAsOrg(){
+        homePage.waitForPageToLoad();
+
+        if (!homePage.getMenu().isAccountMenuUnfolded()) {
+            homePage.getMenu().clickAccountMenuButton();
+        }
+        homePage.getMenu().clickMyTalksOrg();
+    }
+
+    @Step
     public boolean isPasswordFieldIsHighlighted() {
         return homePage.getMenu().isPasswordFieldHighlited();
     }

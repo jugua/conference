@@ -37,6 +37,7 @@ public interface AccountMenuFragment extends WidgetObject {
 
     void clickSettingsOption();
 
+    void clickMyTalksOrg();
 
     void clickSaveBtn();
 

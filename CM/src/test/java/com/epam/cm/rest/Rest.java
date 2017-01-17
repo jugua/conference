@@ -39,18 +39,18 @@ public class Rest {
                         basic("tester@tester.com", "tester").
                         headers("X-XSRF-TOKEN", resp.getCookie("XSRF-TOKEN")).
                         cookies(resp.cookies()).
-                        contentType(JSON).
+                        contentType(JSON).log().all().
                         post("/login").
-                        then().statusCode(200).
+                        then().log().all().statusCode(200).
                         extract().cookie("JSESSIONID");
 
         userCookie.put("JSESSIONID", newJsessionId);
         //stage 3: update "XSRF-TOKEN" for  logged user
         String newXsrfToken =
                 RestAssured.given().contentType(JSON).
-                        cookies(userCookie).
+                        cookies(userCookie).log().all().
                         get("/user/current").
-                        then().statusCode(202).
+                        then().log().all().statusCode(202).
                         extract().cookie("XSRF-TOKEN");
 
         userCookie.put("XSRF-TOKEN", newXsrfToken);
@@ -61,14 +61,40 @@ public class Rest {
     }
 
     @Test
-    public void logout() {
+    public void createTalk() {
 
-        given()
-                .contentType(ContentType.JSON)
-                .cookies(userCookie)
-                .when()
-                .get("/logout")
-                .then().statusCode(200);
+        RestAssured.baseURI = "http://10.17.132.37:8050";
+        RestAssured.basePath = "/api";
+        Map<String, String> userCookie;
+
+        //stage 1: get "XSRF-TOKEN"
+        Response resp = RestAssured.given().log().all().get();
+
+        userCookie = new LinkedHashMap<>(resp.cookies());
+        //stage 2:  get new "JSESSIONID"
+        String newJsessionId =
+                RestAssured.given().auth().preemptive().
+                        basic("tester@tester.com", "tester").
+                        headers("X-XSRF-TOKEN", resp.getCookie("XSRF-TOKEN")).
+                        cookies(resp.cookies()).
+                        contentType(JSON).log().all().
+                        post("/login").
+                        then().log().all().statusCode(200).
+                        extract().cookie("JSESSIONID");
+
+        userCookie.put("JSESSIONID", newJsessionId);
+        //stage 3: update "XSRF-TOKEN" for  logged user
+        String newXsrfToken =
+                RestAssured.given().contentType(JSON).
+                        cookies(userCookie).log().all().
+                        get("/user/current").
+                        then().log().all().statusCode(202).
+                        extract().cookie("XSRF-TOKEN");
+
+        userCookie.put("XSRF-TOKEN", newXsrfToken);
+        //
+
+        userCookie.entrySet().forEach(System.out::println);
 
 
     }

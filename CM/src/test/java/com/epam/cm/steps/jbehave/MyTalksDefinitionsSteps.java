@@ -22,6 +22,9 @@ public class MyTalksDefinitionsSteps {
     @Steps
     MyTalksPageSteps myTalksPageSteps;
 
+    MyTalksDTO myGlobalTalksDTO;
+
+
     @Given("user logged as speaker accessing 'My Talks' page: $loginTable")
     public void loginAsUser(ExamplesTable table) {
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
@@ -30,6 +33,91 @@ public class MyTalksDefinitionsSteps {
         loginPageSteps.typeLoginAndPassword(user);
         loginPageSteps.clickSignInButton();
         loginPageSteps.clickMyTalks();
+    }
+
+    @Given("user logged as organiser 'Talks' page: $loginTable")
+    public void loginAsOrganiser(ExamplesTable table){
+        CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
+        loginPageSteps.unsignedUserInHomePage();
+        loginPageSteps.clickOnAccountMenu();
+        loginPageSteps.typeLoginAndPassword(user);
+        loginPageSteps.clickSignInButton();
+        loginPageSteps.clickTalksBtnAsOrg();
+    }
+
+    @Given("creates new Talk: $newTalk")
+    public void userCreatesNewTalk(ExamplesTable table){
+        myTalksPageSteps.clickSubmitNewTalkBtn();
+        boolean replaceNamedParameters = true;
+        String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
+        String description = table.getRowAsParameters(0, replaceNamedParameters).valueAs("description", String.class);
+        String additionalInfo = table.getRowAsParameters(0, replaceNamedParameters).valueAs("additionalInfo",
+                String.class);
+        String topic = table.getRowAsParameters(0, replaceNamedParameters).valueAs("topic",
+                String.class);
+        String type = table.getRowAsParameters(0,replaceNamedParameters).valueAs("type",
+                String.class);
+        String language = table.getRowAsParameters(0,replaceNamedParameters).valueAs("language",
+                String.class);
+        String level = table.getRowAsParameters(0,replaceNamedParameters).valueAs("level",
+                String.class);
+
+        myGlobalTalksDTO = new MyTalksDTO() {
+            {
+                setTitle(title);
+                setDescription(description);
+                setAdditionalInfo(additionalInfo);
+                setTopic(topic);
+                setType(type);
+                setLanguage(language);
+                setLevel(level);
+            }
+        };
+
+        myTalksPageSteps.typeTitle(myGlobalTalksDTO);
+        myTalksPageSteps.typeDescription(myGlobalTalksDTO);
+        myTalksPageSteps.typeAdditionalInfo(myGlobalTalksDTO);
+        myTalksPageSteps.chooseTopic(myGlobalTalksDTO);
+        myTalksPageSteps.chooseType(myGlobalTalksDTO);
+        myTalksPageSteps.chooseLanguage(myGlobalTalksDTO);
+        myTalksPageSteps.chooseLevel(myGlobalTalksDTO);
+        myTalksPageSteps.clickBigPopUpSubmitBtn();
+        System.out.println(myGlobalTalksDTO.getTitle());
+        loginPageSteps.logout();
+
+    }
+
+    @When("organiser clicks new created Talk: $table")
+    public void checkStatus(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
+        String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
+
+        myGlobalTalksDTO = new MyTalksDTO() {
+            {
+                setStatus(status);
+                setTitle(title);
+            }
+        };
+
+        Assert.assertThat(
+                myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
+        myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
+    }
+
+    @When("clicks reject button after filling comment: $table")
+    public void rejectTalk(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String comment = table.getRowAsParameters(0, replaceNamedParameters).valueAs("comment", String.class);
+        myGlobalTalksDTO = new MyTalksDTO() {
+            {
+                setComment(comment);
+            }
+        };
+
+        myTalksPageSteps.typeOrgComments(myGlobalTalksDTO);
+        myTalksPageSteps.clickRejectBtn();
+
     }
 
     @When("user clicks on 'Submit New Talk' button")
@@ -158,5 +246,22 @@ public class MyTalksDefinitionsSteps {
     @Then("click 'Yes' button")
     public void clickYesBtn() {
         myTalksPageSteps.clickYesInfoBtn();
+    }
+
+    @Then("reject status is shown: $table")
+    public void checkRejectStatus(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
+        String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
+
+        myGlobalTalksDTO = new MyTalksDTO() {
+            {
+                setStatus(status);
+                setTitle(title);
+            }
+        };
+        Assert.assertThat(
+                myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
+
     }
 }
