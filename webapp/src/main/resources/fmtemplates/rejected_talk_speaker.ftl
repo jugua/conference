@@ -1425,7 +1425,7 @@
                 <table class="row"><tbody><tr>
                     <th class="small-12 large-12 columns first last"><table><tr><th>
                         <p>Dear ${name},</p>
-                        <p>Unfortunately we cannot approved your talk due to the following reason:</p>
+                        <p>Unfortunately we cannot approve your talk due to the following reason:</p>
                         <p>${comment}</p>
                         <table class="spacer"><tbody><tr><td height="10px" style="font-size:10px;line-height:10px;">&#xA0;</td></tr></tbody></table> 
                         <p>Sincerely yours, <br> The Conference Management Team.</p>

@@ -18,7 +18,6 @@ import ua.rd.cm.services.preparator.ChangePasswordPreparator;
 import ua.rd.cm.services.preparator.NewEmailMessagePreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.SettingsDto;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.*;
 import java.io.IOException;
@@ -26,9 +25,6 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 
 @RestController
 @RequestMapping("/api/user/current")
@@ -81,11 +77,7 @@ public class SettingsController {
         }
         user.setPassword(dto.getNewPassword());
         userService.updateUserProfile(user);
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("name", userService.getByEmail(principal.getName()).getFirstName());
-        model.put("email", principal.getName());
-        mailService.sendEmail(new ChangePasswordPreparator(), model);
+        mailService.sendEmail(user, new ChangePasswordPreparator());
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -109,16 +101,14 @@ public class SettingsController {
             messageDto.setError("email_already_exists");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(messageDto);
         }
-
-        VerificationToken token = tokenService.createNewEmailToken(user,
-                VerificationToken.TokenType.CHANGING_EMAIL, email);
+        VerificationToken token = tokenService.createNewEmailToken(
+                user,
+                VerificationToken.TokenType.CHANGING_EMAIL,
+                email
+        );
         tokenService.setPreviousTokensExpired(token);
         tokenService.saveToken(token);
-
-        Map<String, Object> messageValues = setupMessageValues(user.getFirstName(), email,
-                "http://localhost:8050/#/newEmailConfirm/" + token.getToken());
-        mailService.sendEmail(new NewEmailMessagePreparator(), messageValues);
-
+        mailService.sendEmail(user, new NewEmailMessagePreparator(token));
         return ResponseEntity.ok().build();
     }
 
@@ -160,15 +150,6 @@ public class SettingsController {
         } catch (IOException e) {
             return null;
         }
-    }
-
-    private Map<String, Object> setupMessageValues(String name, String email,
-                                                   String link) {
-        Map<String, Object> values = new HashMap<>();
-        values.put("name" , name);
-        values.put("email", email);
-        values.put("link", link);
-        return values;
     }
 
     private boolean checkCurrentPasswordMatches(SettingsDto dto, User user) {

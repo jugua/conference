@@ -7,7 +7,6 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.repository.TalkRepository;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
-
 import java.util.List;
 
 @Service
@@ -53,7 +52,5 @@ public class SimpleTalkService implements TalkService{
 		List<Talk> talks=talkRepository.findBySpecification(new TalkById(id));
 		return talks.isEmpty() ? null : talks.get(0);
 	}
-
-
 
 }

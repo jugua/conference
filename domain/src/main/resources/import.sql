@@ -110,3 +110,15 @@ UPDATE user_info_seq SET next_val = 4 WHERE next_val = 3;
 INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (3, "organiser@gmail.com", "Organiser", "Organiser", "CONFIRMED","organiser", 3);
 UPDATE user_seq SET next_val = 4 WHERE next_val = 3;
 INSERT INTO user_role VALUES (3, 2);
+
+--
+-- Setting default user with role ORGANIZER with only registration fields
+--
+
+INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (4, "", "", "");
+UPDATE user_info_seq SET next_val = 5 WHERE next_val = 4;
+
+
+INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (4, "organiser2@gmail.com", "Organiser2", "Organiser2", "CONFIRMED","organiser", 4);
+UPDATE user_seq SET next_val = 5 WHERE next_val = 4;
+INSERT INTO user_role VALUES (4, 2);

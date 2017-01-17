@@ -7,11 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.*;
+import ua.rd.cm.services.preparator.ChangeTalkStatusOrganiserPreparator;
+import ua.rd.cm.services.preparator.ChangeTalkStatusSpeakerPreparator;
+import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
+import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
@@ -19,7 +24,6 @@ import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,21 +40,26 @@ public class TalkController {
     private LanguageService languageService;
     private LevelService levelService;
     private TopicService topicService;
+    private MailService mailService;
     private ContactTypeService contactTypeService;
 
     public static final String DEFAULT_TALK_STATUS = "New";
 
     @Autowired
-    public TalkController(ModelMapper mapper, UserService userService, TalkService talkService,
-                          StatusService statusService, TypeService typeService, LevelService levelService,
-                          LanguageService languageService, TopicService topicService, ContactTypeService contactTypeService) {
+    public TalkController(ModelMapper mapper, UserService userService,
+                          TalkService talkService, StatusService statusService,
+                          TypeService typeService, LanguageService languageService,
+                          LevelService levelService, TopicService topicService,
+                          MailService mailService, ContactTypeService contactTypeService
+    ) {
         this.mapper = mapper;
         this.userService = userService;
         this.talkService = talkService;
         this.statusService = statusService;
-        this.topicService = topicService;
-        this.typeService = typeService;
         this.languageService = languageService;
+        this.topicService = topicService;
+        this.mailService = mailService;
+        this.typeService = typeService;
         this.levelService = levelService;
         this.contactTypeService = contactTypeService;
     }
@@ -142,13 +151,13 @@ public class TalkController {
                     resultMessage.setError("empty_comment");
                     return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
                 }
-                return trySetStatus(dto, talk);
+                return trySetStatus(dto, talk, request);
             }
             case "In Progress": {
-                return trySetStatus(dto, talk);
+                return trySetStatus(dto, talk, request);
             }
             case "Approved": {
-                return trySetStatus(dto, talk);
+                return trySetStatus(dto, talk, request);
             }
             default: {
                 resultMessage.setError("wrong_status");
@@ -161,8 +170,7 @@ public class TalkController {
         return ResponseEntity.status(status).body(message);
     }
 
-    private ResponseEntity trySetStatus(ActionDto dto, Talk talk) {
-        System.out.println(talk);
+    private ResponseEntity trySetStatus(ActionDto dto, Talk talk, HttpServletRequest request) {
         MessageDto message = new MessageDto();
         ResponseEntity responseEntity;
         if (talk.setStatus(TalkStatus.getStatusByName(dto.getStatus()))) {
@@ -170,6 +178,8 @@ public class TalkController {
             talkService.update(talk);
             message.setResult("successfully_updated");
             responseEntity = prepareResponse(HttpStatus.OK, message);
+            notifyOrganisers(talk, request);
+            mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
         } else {
             message.setError("wrong_status");
             responseEntity = prepareResponse(HttpStatus.CONFLICT, message);
@@ -177,10 +187,15 @@ public class TalkController {
         return responseEntity;
     }
 
+    private void notifyOrganisers(Talk talk, HttpServletRequest request) {
+        String organiserEmail = request.getUserPrincipal().getName();
+        User currentOrganiser = userService.getByEmail(organiserEmail);
+        List<User> receivers = userService.getByRoleExceptCurrent(currentOrganiser, Role.ORGANISER);
+        mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(currentOrganiser, talk));
+    }
 
     private List<TalkDto> getTalksForSpeaker(String userEmail) {
         User currentUser = userService.getByEmail(userEmail);
-
         return talkService.findByUserId(currentUser.getId())
                 .stream()
                 .map(this::entityToDto)
@@ -199,6 +214,9 @@ public class TalkController {
         Talk currentTalk = dtoToEntity(dto);
         currentTalk.setUser(currentUser);
         talkService.save(currentTalk);
+        List<User> receivers = userService.getByRole(Role.ORGANISER);
+        mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
+        mailService.sendEmail(currentUser, new SubmitNewTalkSpeakerPreparator());
         return currentTalk.getId();
     }
 
@@ -207,7 +225,6 @@ public class TalkController {
         dto.setSpeakerFullName(talk.getUser().getFirstName() + " " + talk.getUser().getLastName());
         dto.setStatusName(talk.getStatus().getName());
         dto.setDate(talk.getTime().toString());
-
         return dto;
     }
 

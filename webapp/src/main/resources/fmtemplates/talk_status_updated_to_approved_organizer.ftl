@@ -1420,17 +1420,17 @@
                         <table class="spacer"><tbody><tr><td height="15px" style="font-size:15px;line-height:15px;">&#xA0;</td></tr></tbody></table> 
                         <h2 class="text-center header_title">CONFERENCE MANAGEMENT</h2>
                     </th>
-<th class="expander"></th></tr></table></th>
+                    <th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
                 <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
                 <table class="row"><tbody><tr>
                     <th class="small-12 large-12 columns first last"><table><tr><th>
-                        <p>Dear  ${organizer_name},</p>
-                        <p>The ${talk_title} submitted by ${speaker_nmae} ${speaker_surname} has been approved by ${organizer_name} ${organizer_surname}.</p>
+                        <p>Dear  ${receiverName},</p>
+                        <p>The ${talkTitle} submitted by ${speakerFirstName} ${speakerLastName} has been approved by ${currentOrganiserFirstName} ${currentOrganiserLastName}.</p>
                         <table class="spacer"><tbody><tr><td height="10px" style="font-size:10px;line-height:10px;">&#xA0;</td></tr></tbody></table>
                         <p>Sincerely yours, <br> The Conference Management Team.</p>
                     </th>
-<th class="expander"></th></tr></table></th>
+                    <th class="expander"></th></tr></table></th>
                 </tr></tbody></table>
             </td></tr></tbody></table>
           </center>
