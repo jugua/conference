@@ -27,7 +27,7 @@ public class RepositoryConfig {
         BasicDataSource ds = new BasicDataSource();
 
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/conference_management");
+        ds.setUrl("jdbc:mysql://localhost:3306/conference_management_test");
         ds.setUsername("trybel_master");
         ds.setPassword("password");
 
