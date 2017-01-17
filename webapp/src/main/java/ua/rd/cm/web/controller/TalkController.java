@@ -133,14 +133,9 @@ public class TalkController {
             resultMessage.setError("unauthorized");
             return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
         }
-        if (bindingResult.hasFieldErrors()) {
-            if (isCommentToLong(bindingResult)) {
-                resultMessage.setError("comment_too_long");
-                return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
-            } else {
-                resultMessage.setError("fields_error");
-                return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
-            }
+        if (bindingResult.hasFieldErrors() && isCommentToLong(bindingResult)) {
+            resultMessage.setError("comment_too_long");
+            return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
         }
         Talk talk = talkService.findTalkById(talkId);
         if (talk == null) {
