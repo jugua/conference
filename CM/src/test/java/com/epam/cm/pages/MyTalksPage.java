@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 public class MyTalksPage extends AnyPage {
 
     private final String RowByName = "//*[@class='data-table__row ng-scope']/../div[contains(.,'%s')]";
-    private final String STATUS = "//div[@class='data-table__column data-table__column_status-talk ng-binding']";
+    private final String STATUS = "//*[@class='data-table__row ng-scope']/../div[contains(.,'%s')]/div[@class='data-table__column data-table__column_status-talk ng-binding']";
     private final String TITLE = "//*[@class='data-table__row ng-scope']/div[contains(.,'%s')]/a";
 
     @FindBy(xpath = "//*[@class='my-talks__header']/a")
@@ -107,7 +107,7 @@ public class MyTalksPage extends AnyPage {
 
     public String getStatus(String name) {
        // waitABit(3000);
-        return findRow(name).find(By.xpath(STATUS)).getText();
+        return find(By.xpath(String.format(STATUS, name))).getText();
     }
 
     public void clickTitle(String name){
