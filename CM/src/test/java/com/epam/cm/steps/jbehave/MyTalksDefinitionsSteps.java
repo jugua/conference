@@ -85,10 +85,12 @@ public class MyTalksDefinitionsSteps {
         System.out.println(myGlobalTalksDTO.getTitle());
         loginPageSteps.logout();
 
+
     }
 
-  /*  @When("organiser clicks new created Talk: $table")
-    public void checkStatus(ExamplesTable table){
+
+    @When("organiser clicks new created Talk: $table")
+    public void checkStatus(ExamplesTable table) {
         boolean replaceNamedParameters = true;
         String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
         String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
@@ -103,7 +105,7 @@ public class MyTalksDefinitionsSteps {
         Assert.assertThat(
                 myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
         myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
-    }*/
+    }
 
     @When("clicks reject button after filling comment: $table")
     public void rejectTalk(ExamplesTable table){

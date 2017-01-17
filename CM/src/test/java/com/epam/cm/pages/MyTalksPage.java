@@ -9,10 +9,10 @@ import org.openqa.selenium.WebDriver;
 
 public class MyTalksPage extends AnyPage {
 
- /*   private final String RowByName = "//*[@class='data-table__row ng-scope']/../div[contains(.,%s)]";
-    private final String STATUS = ".//div[@class='data-table__column data-table__column_status-talk ng-binding']";
-    private final String TITLE = "//*[@class='data-table__row ng-scope']/div[contains(.,%s)]";
-*/
+    private final String RowByName = "//*[@class='data-table__row ng-scope']/../div[contains(.,'%s')]";
+    private final String STATUS = "//div[@class='data-table__column data-table__column_status-talk ng-binding']";
+    private final String TITLE = "//*[@class='data-table__row ng-scope']/div[contains(.,'%s')]/a";
+
     @FindBy(xpath = "//*[@class='my-talks__header']/a")
     WebElementFacade submitNewTalkBtn;
     // no my info
@@ -95,24 +95,25 @@ public class MyTalksPage extends AnyPage {
     //inProgress
     @FindBy(xpath = "")
     WebElementFacade inProgressBtn;
-/*
+
     public WebElementFacade findRow(String name){
         WebElementFacade row = find(By.xpath(String.format(RowByName,name)));
         return row;
     }
 
-    public void clickRejectBtn(){
+   /* public void clickRejectBtn(){
         rejectBtn.click();
-    }
+    }*/
 
-    public String getStatus(String name){
+    public String getStatus(String name) {
+       // waitABit(3000);
         return findRow(name).find(By.xpath(STATUS)).getText();
     }
 
     public void clickTitle(String name){
         WebElementFacade titleTable = find(By.xpath(String.format(TITLE, name)));
         titleTable.click();
-    }*/
+    }
 
     public void clickRejectBtn(){
         rejectBtn.click();
