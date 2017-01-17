@@ -1,5 +1,6 @@
 package com.epam.cm.steps.jbehave;
 
+import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.dto.MyTalksDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
@@ -263,6 +264,7 @@ public class MyTalksDefinitionsSteps {
                 setTitle(title);
             }
         };
+        WebDriverSupport.reloadPage();
         Assert.assertThat(
                 myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
 

@@ -22,3 +22,4 @@ Then reject status is shown:
 Examples:
 |<title> |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
 |TestTiqtegegegegegwevde|10           |10              |1      |1     |1         |1      |comment  |
+
