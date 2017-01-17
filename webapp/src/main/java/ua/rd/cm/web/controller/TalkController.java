@@ -56,11 +56,11 @@ public class TalkController {
         this.userService = userService;
         this.talkService = talkService;
         this.statusService = statusService;
-        this.typeService = typeService;
         this.languageService = languageService;
-        this.levelService = levelService;
         this.topicService = topicService;
         this.mailService = mailService;
+        this.typeService = typeService;
+        this.levelService = levelService;
         this.contactTypeService = contactTypeService;
     }
 
@@ -71,7 +71,8 @@ public class TalkController {
         HttpStatus httpStatus;
 
         if (bindingResult.hasFieldErrors()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+            messageDto.setError("fields_error");
+            return prepareResponse(HttpStatus.BAD_REQUEST,messageDto);
         }
 
         User currentUser = userService.getByEmail(request.getRemoteUser());
@@ -102,30 +103,20 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{talkId}")
     public ResponseEntity getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
-        if (!request.isUserInRole("ORGANISER")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
-        }
-        TalkDto talkDto = entityToDto(talkService.findTalkById(talkId));
-        HttpStatus status = HttpStatus.OK;
-        if (talkDto == null) {
-            status = HttpStatus.NOT_FOUND;
-        }
-        return new ResponseEntity<>(talkDto, status);
-    }
+        MessageDto resultMessage = new MessageDto();
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{id}/user")
-    public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
         if (!request.isUserInRole("ORGANISER")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
+            resultMessage.setError("unauthorized");
+            return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
         }
-        User user = userService.find(userId);
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+
+        Talk talk = talkService.findTalkById(talkId);
+        if (talk == null) {
+            resultMessage.setError("no_talk_with_such_id");
+            return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
         }
-        UserDto userDto = new UserDto();
-        userDto.setContactTypeService(contactTypeService);
-        return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.ACCEPTED);
+        TalkDto talkDto = entityToDto(talk);
+        return new ResponseEntity<>(talkDto, HttpStatus.OK);
     }
 
 

@@ -7,6 +7,8 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.specification.userinfo.UserInfoById;
 
+import java.util.List;
+
 /**
  * @author Olha_Melnyk
  */
@@ -22,7 +24,8 @@ public class SimpleUserInfoService implements UserInfoService {
 
     @Override
     public UserInfo find(Long id) {
-        return userInfoRepository.findBySpecification(new UserInfoById(id)).get(0);
+        List<UserInfo> usersInfo=userInfoRepository.findBySpecification(new UserInfoById(id));
+        return usersInfo.isEmpty() ? null : usersInfo.get(0);
     }
 
     @Override

@@ -12,6 +12,10 @@ import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.WhereSpecification;
 import ua.rd.cm.repository.specification.user.*;
+import ua.rd.cm.repository.specification.user.UserByEmail;
+import ua.rd.cm.repository.specification.user.UserByFirstName;
+import ua.rd.cm.repository.specification.user.UserById;
+import ua.rd.cm.repository.specification.user.UserByLastName;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
 @Service
@@ -33,7 +37,8 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public User find(Long id) {
-		return userRepository.findBySpecification(new WhereSpecification<>(new UserById(id))).get(0);
+		List<User> users = userRepository.findBySpecification(new UserById(id));
+		return users.isEmpty() ? null : users.get(0);
 	}
 
 	@Override

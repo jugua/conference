@@ -24,6 +24,7 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.Filter;
@@ -53,6 +54,10 @@ public class TalkControllerTest extends TestUtil{
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
     public static final String SPEAKER_ROLE = "SPEAKER";
     public static final String ORGANISER_ROLE = "ORGANISER";
+    public static final String APPROVED="Approved";
+    public static final String IN_PROGRESS="In Progress";
+    public static final String REJECTED="Rejected";
+    public static final String NEW="New";
     @Autowired
     private WebApplicationContext context;
     @Autowired
@@ -345,7 +350,8 @@ public class TalkControllerTest extends TestUtil{
 
         when(talkService.findByUserId(anyLong())).thenReturn(talks);
 
-        mockMvc.perform(prepareGetRequest(API_TALK)).andExpect(status().isUnauthorized());
+        mockMvc.perform(prepareGetRequest(API_TALK)).
+                andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -363,68 +369,124 @@ public class TalkControllerTest extends TestUtil{
                 .andExpect(jsonPath("$", hasSize(2)));
     }
 
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void correctGetAllTalks() throws Exception{
+        Talk talk = createTalk(speakerUser);
+        List<Talk> talks = new ArrayList<>();
+        talks.add(talk);
+        when(talkService.findAll()).thenReturn(talks);
+        mockMvc.perform(prepareGetRequest(API_TALK))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].title", is(talk.getTitle())))
+                .andExpect(jsonPath("$[0].speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
+                .andExpect(jsonPath("$[0].name", is(talk.getUser().getFirstName() + " " + talk.getUser().getLastName())))
+                .andExpect(jsonPath("$[0].description", is(talk.getDescription())))
+                .andExpect(jsonPath("$[0].topic", is(talk.getTopic().getName())))
+                .andExpect(jsonPath("$[0].type", is(talk.getType().getName())))
+                .andExpect(jsonPath("$[0].lang", is(talk.getLanguage().getName())))
+                .andExpect(jsonPath("$[0].level", is(talk.getLevel().getName())))
+                .andExpect(jsonPath("$[0].addon", is(talk.getAdditionalInfo())))
+                .andExpect(jsonPath("$[0].status", is(talk.getStatus().getName())))
+                .andExpect(jsonPath("$[0].date", is(talk.getTime().toString())))
+                .andExpect(jsonPath("$[0].comment", is(talk.getOrganiserComment())));
 
-//    @Test
-//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-//    public void correctApproveNewTalk() throws Exception{
-//        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
-//        mockMvc.perform(preparet(API_TALK+1))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-//    public void correctRejectInProgressTalk() throws Exception{
-//        correctTalkDto.setStatusName(TalkController.IN_PROGRESS);
-//        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
-//        mockMvc.perform(preparePostRequest(API_REJECT))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-//    public void incorrectRejectRejectedTalk() throws Exception{
-//        correctTalkDto.setStatusName(TalkController.REJECTED);
-//        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new
-//                User()));
-//        mockMvc.perform(preparePostRequest(API_REJECT))
-//                .andExpect(status().isConflict());
-//    }
-//
-//    @Test
-//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-//    public void incorrectRejectApprovedTalk() throws Exception{
-//        correctTalkDto.setStatusName(TalkController.APPROVED);
-//        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
-//        mockMvc.perform(preparePostRequest(API_REJECT))
-//                .andExpect(status().isConflict());
-//    }
-//
-//    @Test
-//    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-//    public void notAnOrganiserTryRejectATalk() throws Exception{
-//        mockMvc.perform(preparePostRequest(API_REJECT))
-//                .andExpect(status().isUnauthorized());
-//    }
-//
-//    @Test
-//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-//    public void tryRejectWithEmptyOrganiserComment() throws Exception{
-//        correctTalkDto.setOrganiserComment(null);
-//        when(talkService.findTalkById(correctTalkDto.getId())).thenReturn(createTalk(new User()));
-//        mockMvc.perform(preparePostRequest(API_REJECT))
-//                .andExpect(status().isBadRequest());
-//    }
+    }
 
-//    @Test
-//    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-//    public void correctUserById() throws Exception{
-//        User user=new User();
-//        user.setId(1L);
-//        when(userService.find(anyLong())).thenReturn(createUser());
-//        mockMvc.perform(prepareGetRequest(API_GET_USER_BY_ID))
-//                .andExpect(status().isAccepted());
-//    }
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void getTalkById() throws Exception{
+        Talk talk=createTalk(createUser());
+        when(talkService.findTalkById(1L)).thenReturn(talk);
+        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("_id", is(Integer.parseInt(talk.getId().toString()))))
+                .andExpect(jsonPath("title", is(talk.getTitle())))
+                .andExpect(jsonPath("speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
+                .andExpect(jsonPath("name", is(talk.getUser().getFirstName() + " " + talk.getUser().getLastName())))
+                .andExpect(jsonPath("description", is(talk.getDescription())))
+                .andExpect(jsonPath("topic", is(talk.getTopic().getName())))
+                .andExpect(jsonPath("type", is(talk.getType().getName())))
+                .andExpect(jsonPath("lang", is(talk.getLanguage().getName())))
+                .andExpect(jsonPath("level", is(talk.getLevel().getName())))
+                .andExpect(jsonPath("addon", is(talk.getAdditionalInfo())))
+                .andExpect(jsonPath("status", is(talk.getStatus().getName())))
+                .andExpect(jsonPath("date", is(talk.getTime().toString())))
+                .andExpect(jsonPath("comment", is(talk.getOrganiserComment())));;
+    }
+
+    @Test
+    public void incorrectGetTalkById() throws Exception{
+        Talk talk=createTalk(createUser());
+        when(talkService.findTalkById(1L)).thenReturn(talk);
+        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1)).
+                andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void notFoundTalkById() throws Exception{
+        when(talkService.findTalkById(1L)).thenReturn(null);
+        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1)).
+                andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void correctApproveNewTalk() throws Exception{
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",APPROVED))
+                .andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void correctRejectNewTalk() throws Exception{
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",REJECTED))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void emptyCommentRejectNewTalk() throws Exception{
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"",REJECTED))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void correctInProgressNewTalk() throws Exception{
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",IN_PROGRESS))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void unauthorizedTalk() throws Exception{
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",IN_PROGRESS))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void CommentToLong() throws Exception{
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        char[] array=new char[1001];
+        String tooLongComment=new String(array);
+        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,tooLongComment,IN_PROGRESS))
+                .andExpect(status().isPayloadTooLarge());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void noTalkWithSuchId() throws Exception{
+        when(talkService.findTalkById(1L)).thenReturn(null);
+        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",IN_PROGRESS)).
+                andExpect(status().isNotFound());
+    }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
         return MockMvcRequestBuilders.get(uri)
@@ -438,12 +500,12 @@ public class TalkControllerTest extends TestUtil{
                 .content(convertObjectToJsonBytes(correctTalkDto));
     }
 
-//    private MockHttpServletRequestBuilder preparePatchRequest(String uri) throws JsonProcessingException{
-//
-//        return MockMvcRequestBuilders.patch(uri)
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                //.content(convertObjectToJsonBytes())
-//    }
+    private MockHttpServletRequestBuilder preparePatchRequest(String uri,String comment,String status) throws JsonProcessingException{
+
+        return MockMvcRequestBuilders.patch(uri)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(convertObjectToJsonBytes(setupCorrectActionDto(comment,status)));
+    }
 
     private Talk createTalk(User user) {
         //TalkStatus status = new TalkStatus(1L, "New");
@@ -468,6 +530,13 @@ public class TalkControllerTest extends TestUtil{
         correctTalkDto.setAdditionalInfo("Info");
         correctTalkDto.setOrganiserComment("Org comment");
         return correctTalkDto;
+    }
+
+    private ActionDto setupCorrectActionDto(String comment,String status){
+        ActionDto actionDto= new ActionDto();
+        actionDto.setComment(comment);
+        actionDto.setStatus(status);
+        return actionDto;
     }
 
     private byte[] convertObjectToJsonBytes(Object object) throws JsonProcessingException{

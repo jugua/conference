@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.ContactType;
@@ -91,6 +92,24 @@ public class UserController {
         }
         return new ResponseEntity(status);
     }
+
+    @PreAuthorize("isAuthenticated()")
+	@GetMapping("/{id}")
+	public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
+        MessageDto message = new MessageDto();
+		if(!request.isUserInRole("ORGANISER")){
+            message.setError("unauthorized");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+		}
+		User user = userService.find(userId);
+		if (user == null) {
+            message.setError("not_found_user");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+		}
+		UserDto userDto=new UserDto();
+		userDto.setContactTypeService(contactTypeService);
+		return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.OK);
+	}
 
     private UserInfo prepareNewUserInfo(String email, UserDto dto) {
         User currentUser = userService.getByEmail(email);
