@@ -1,9 +1,9 @@
 package ua.rd.cm.web.controller.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.services.ContactTypeService;
@@ -15,9 +15,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserDto {
-
 
     @JsonProperty("mail")
     private String email;
@@ -27,6 +25,7 @@ public class UserDto {
 
     @JsonProperty("lname")
     private String lastName;
+
     @NotNull
     @JsonProperty("bio")
     @Size( max = 2000)
@@ -66,28 +65,29 @@ public class UserDto {
     private String userInfoAdditionalInfo;
 
     private String[] roles;
-    private ContactTypeService contactTypeService;
 
-    public UserDto entityToDto(User user){
-        setFirstName(user.getFirstName());
-        setLastName(user.getLastName());
-        setEmail(user.getEmail());
-        setUserInfoShortBio(user.getUserInfo().getShortBio());
-        setUserInfoJobTitle(user.getUserInfo().getJobTitle());
-        setUserInfoCompany(user.getUserInfo().getCompany());
-        setUserInfoPastConference(user.getUserInfo().getPastConference());
-        setUserInfoAdditionalInfo(user.getUserInfo().getAdditionalInfo());
-        //UserDto dto = mapper.map(user, UserDto.class);
-        if (user.getPhoto() != null) {
-            setPhoto("api/user/current/photo/" + user.getId());
-        }
-        setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
-        setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
-        setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
-        setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
-        setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
-        return this;
-    }
+//    private ContactTypeService contactTypeService;
+//
+//    public UserDto entityToDto(User user){
+//        setFirstName(user.getFirstName());
+//        setLastName(user.getLastName());
+//        setEmail(user.getEmail());
+//        setUserInfoShortBio(user.getUserInfo().getShortBio());
+//        setUserInfoJobTitle(user.getUserInfo().getJobTitle());
+//        setUserInfoCompany(user.getUserInfo().getCompany());
+//        setUserInfoPastConference(user.getUserInfo().getPastConference());
+//        setUserInfoAdditionalInfo(user.getUserInfo().getAdditionalInfo());
+//        //UserDto dto = mapper.map(user, UserDto.class);
+//        if (user.getPhoto() != null) {
+//            setPhoto("api/user/current/photo/" + user.getId());
+//        }
+//        setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
+//        setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
+//        setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
+//        setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
+//        setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
+//        return this;
+//    }
 
     private String[] convertRolesTypeToFirstLetters(Set<Role> roles){
         String[] rolesFirstLetters = new String[roles.size()];
