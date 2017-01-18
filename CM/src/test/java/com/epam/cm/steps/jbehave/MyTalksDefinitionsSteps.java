@@ -93,17 +93,8 @@ public class MyTalksDefinitionsSteps {
     @When("organiser clicks new created Talk: $table")
     public void checkStatus(ExamplesTable table) {
         boolean replaceNamedParameters = true;
-        //String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
         String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
-
         myGlobalTalksDTO.setStatus(status);
-      /*  myGlobalTalksDTO = new MyTalksDTO() {
-            {
-                setStatus(status);
-                //setTitle(title);
-            }
-        };*/
-
         Assert.assertThat(
                 myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
         myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
@@ -114,16 +105,8 @@ public class MyTalksDefinitionsSteps {
         boolean replaceNamedParameters = true;
         String comment = table.getRowAsParameters(0, replaceNamedParameters).valueAs("comment", String.class);
         myGlobalTalksDTO.setComment(comment);
-       /* myGlobalTalksDTO = new MyTalksDTO() {
-            {
-                setComment(comment);
-            }
-        };*/
-
         myTalksPageSteps.typeOrgComments(myGlobalTalksDTO);
         myTalksPageSteps.clickRejectBtn();
-
-
     }
 
     @When("user clicks on 'Submit New Talk' button")
@@ -257,18 +240,10 @@ public class MyTalksDefinitionsSteps {
     @Then("reject status is shown: $table")
     public void checkRejectStatus(ExamplesTable table){
         boolean replaceNamedParameters = true;
-        //String title = table.getRowAsParameters(0, replaceNamedParameters).valueAs("title", String.class);
         String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
         myGlobalTalksDTO.setStatus(status);
-      /*  myGlobalTalksDTO = new MyTalksDTO() {
-            {
-                setStatus(status);
-               // setTitle(title);
-            }
-        };*/
         WebDriverSupport.reloadPage();
         Assert.assertThat(
                 myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
-
     }
 }

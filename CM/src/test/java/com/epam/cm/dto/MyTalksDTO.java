@@ -43,13 +43,6 @@ public class MyTalksDTO {
     }
 
     public void setTitle(String title) {
-      /*  String digits = title.replaceAll(NOT_NUMERIC, EMPTY);
-        if (digits.length() == 0)
-            this.title = title;
-        else {
-            int titleLength = Integer.parseInt(digits);
-            this.title = Randomizer.generateRandomAlphaNumericString(titleLength);
-        }*/
       this.title = title+Randomizer.generateRandomAlphaString(RAND_STR_LENGTH);
     }
 
