@@ -6,6 +6,7 @@ module.exports = {
     'comma-dangle': 'off',
     'eol-last': 'off',
     'no-underscore-dangle': 'off',
-    'no-param-reassign': ['error', { props: false }]
+    'no-param-reassign': ['error', { props: false }],
+    'max-len': ['warn', 120, 4],
   }
 }
