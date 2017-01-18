@@ -17,6 +17,15 @@ public class MyTalksDTO {
     private String level;
     private String additionalInfo;
     private String status;
+    private String noRejectionReasonErrMessage;
+
+    public String getNoRejectionReasonErrMessage() {
+        return noRejectionReasonErrMessage;
+    }
+
+    public void setNoRejectionReasonErrMessage(String noRejectionReasonErrMessage) {
+        this.noRejectionReasonErrMessage = noRejectionReasonErrMessage;
+    }
 
     public String getComment() {
         return comment;

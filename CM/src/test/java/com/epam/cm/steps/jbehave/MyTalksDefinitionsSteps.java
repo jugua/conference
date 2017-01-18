@@ -85,13 +85,12 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.clickBigPopUpSubmitBtn();
         System.out.println(myGlobalTalksDTO.getTitle());
         loginPageSteps.logout();
-
-
     }
 
 
     @When("organiser clicks new created Talk: $table")
     public void checkStatus(ExamplesTable table) {
+        WebDriverSupport.reloadPage();
         boolean replaceNamedParameters = true;
         String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
         myGlobalTalksDTO.setStatus(status);
@@ -107,6 +106,29 @@ public class MyTalksDefinitionsSteps {
         myGlobalTalksDTO.setComment(comment);
         myTalksPageSteps.typeOrgComments(myGlobalTalksDTO);
         myTalksPageSteps.clickRejectBtn();
+    }
+
+    @When("clicks in progress button after filling comment: $table")
+    public void inProgressTalk(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String comment = table.getRowAsParameters(0, replaceNamedParameters).valueAs("comment", String.class);
+        myGlobalTalksDTO.setComment(comment);
+        myTalksPageSteps.typeOrgComments(myGlobalTalksDTO);
+        myTalksPageSteps.clickInProgressBtn();
+    }
+
+    @When("clicks reject button without filling comment")
+    public void rejectTalkWithoutcomment(){
+        myTalksPageSteps.clickRejectBtn();
+    }
+
+    @When("clicks approve button after filling comment: $table")
+    public void approveTalk(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String comment = table.getRowAsParameters(0, replaceNamedParameters).valueAs("comment", String.class);
+        myGlobalTalksDTO.setComment(comment);
+        myTalksPageSteps.typeOrgComments(myGlobalTalksDTO);
+        myTalksPageSteps.clickApproveBtn();
     }
 
     @When("user clicks on 'Submit New Talk' button")
@@ -245,5 +267,33 @@ public class MyTalksDefinitionsSteps {
         WebDriverSupport.reloadPage();
         Assert.assertThat(
                 myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
+    }
+
+    @Then("in progress status is shown: $table")
+    public void checkInProgressStatus(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
+        myGlobalTalksDTO.setStatus(status);
+        WebDriverSupport.reloadPage();
+        Assert.assertThat(
+                myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
+    }
+
+    @Then("approve status is shown: $table")
+    public void checkApproveStatus(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
+        myGlobalTalksDTO.setStatus(status);
+        WebDriverSupport.reloadPage();
+        Assert.assertThat(
+                myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
+    }
+
+    @Then("message asking me to specify rejection reason: $table")
+    public void isRejectionReasonMessagePresented(ExamplesTable table){
+        boolean replaceNamedParameters = true;
+        String message = table.getRowAsParameters(0, replaceNamedParameters).valueAs("message", String.class);
+        myGlobalTalksDTO.setNoRejectionReasonErrMessage(message);
+        Assert.assertThat(myTalksPageSteps.getNoRejectionReasonErrMessage(),is(myGlobalTalksDTO.getNoRejectionReasonErrMessage()));
     }
 }

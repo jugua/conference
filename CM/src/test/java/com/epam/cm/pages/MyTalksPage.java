@@ -1,5 +1,6 @@
 package com.epam.cm.pages;
 
+import com.epam.cm.core.utils.WebDriverSupport;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -84,16 +85,18 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade orgComments;
 
     //approve
-    @FindBy(xpath = "")
+    @FindBy(xpath = "//button[@ng-click='$ctrl.approve()']")
     WebElementFacade approveBtn;
 
 
     //reject
     @FindBy(xpath = "//button[@ng-click='$ctrl.reject()']")
     WebElementFacade rejectBtn;
+    @FindBy(xpath = "//span[@class='field-error']")
+    WebElementFacade reviewTalk;
 
     //inProgress
-    @FindBy(xpath = "")
+    @FindBy(xpath = "//button[@ng-click='$ctrl.progress()']")
     WebElementFacade inProgressBtn;
 
     public WebElementFacade findRow(String name){
@@ -101,12 +104,7 @@ public class MyTalksPage extends AnyPage {
         return row;
     }
 
-   /* public void clickRejectBtn(){
-        rejectBtn.click();
-    }*/
-
     public String getStatus(String name) {
-       // waitABit(3000);
         return find(By.xpath(String.format(STATUS, name))).getText();
     }
 
@@ -135,10 +133,6 @@ public class MyTalksPage extends AnyPage {
         cancelMyInfoBtn.click();
     }
 
-    /*public void clickOKBtn() {
-        errorMsgMyInfoSubmitBtn.click();
-    }
-    */
     public void clickBigPopUpSbmBtn() {
         newTalkBigPopUpSubmitBtn.click();
     }
@@ -253,5 +247,18 @@ public class MyTalksPage extends AnyPage {
 
     public boolean isLevelHighlighted() {
         return levelDropDown.getAttribute("class").contains("invalid");
+    }
+
+    public void clickInProgressBtn() {
+        inProgressBtn.click();
+    }
+
+    public void clickApproveBtn() {
+        approveBtn.click();
+    }
+
+    public String getNoRejectionReasonErrMessage() {
+        String noRejectionReasonErrMessage = reviewTalk.getText();
+        return noRejectionReasonErrMessage;
     }
 }

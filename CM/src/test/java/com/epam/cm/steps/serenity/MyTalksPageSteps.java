@@ -171,4 +171,17 @@ public class MyTalksPageSteps extends ScenarioSteps {
         System.out.println();
         myTalksPage.clickTitle(name);
     }
+
+    public void clickInProgressBtn() {
+        myTalksPage.clickInProgressBtn();
+    }
+
+    public void clickApproveBtn() {
+        myTalksPage.clickApproveBtn();
+    }
+
+    @Step
+    public String getNoRejectionReasonErrMessage() {
+        return myTalksPage.getNoRejectionReasonErrMessage();
+    }
 }
