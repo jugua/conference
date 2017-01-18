@@ -8,6 +8,7 @@ import static com.epam.cm.dto.UserRegistrationInfoDTO.NOT_NUMERIC;
 
 public class MyTalksDTO {
 
+    public static final int RAND_STR_LENGTH = 13;
     private String title;
     private String description;
     private String topic;
@@ -42,13 +43,14 @@ public class MyTalksDTO {
     }
 
     public void setTitle(String title) {
-        String digits = title.replaceAll(NOT_NUMERIC, EMPTY);
+      /*  String digits = title.replaceAll(NOT_NUMERIC, EMPTY);
         if (digits.length() == 0)
             this.title = title;
         else {
             int titleLength = Integer.parseInt(digits);
             this.title = Randomizer.generateRandomAlphaNumericString(titleLength);
-        }
+        }*/
+      this.title = title+Randomizer.generateRandomAlphaString(RAND_STR_LENGTH);
     }
 
     public String getDescription() {

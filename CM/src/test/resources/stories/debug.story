@@ -9,17 +9,16 @@ And user logged as organiser 'Talks' page:
 |email              |password |
 |organiser@gmail.com|organiser|
 When organiser clicks new created Talk:
-|status|title  |
-|New   |<title>|
+|status|
+|New   |
 And clicks reject button after filling comment:
 |comment  |
 |<comment>|
 Then reject status is shown:
-|status  |title  |
-|Rejected|<title>|
+|status  |
+|Rejected|
 
 
 Examples:
-|<title> |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
-|TestTiqtegegegegegwevde|10           |10              |1      |1     |1         |1      |comment  |
-
+|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
+|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
