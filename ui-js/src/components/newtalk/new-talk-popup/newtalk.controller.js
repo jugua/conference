@@ -9,6 +9,7 @@ export default class NewtalkController {
     this.talkForm = {};
     this.talk = {};
     this.isShownPopup = false;
+    this.buttonsBlocked = false;
   }
 
   close() {
@@ -41,6 +42,8 @@ export default class NewtalkController {
       return;
     }
 
+    this.buttonsBlocked = true;   // block the buttons to avoid multiple submit
+
     this.talk.status = 'New';
     this.talk.date = Date.now();
 
@@ -49,6 +52,3 @@ export default class NewtalkController {
     );
   }
 }
-
-
-
