@@ -189,6 +189,7 @@ public class MyTalksPageSteps extends ScenarioSteps {
     }
 
     @Step
+<<<<<<< HEAD
     public boolean organiserCantTypeMoreThanMaxAllowedSymbol (){
         if(myTalksPage.getOrgCommentsActualLength()<= MAX_COMMENT_LENTH)
             return true;
@@ -224,5 +225,10 @@ public class MyTalksPageSteps extends ScenarioSteps {
         myTalksPage.setOrganiserLevel(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
         myTalksPage.setOrganiserAdditionalInfoField(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
     }*/
+=======
+    public void justWait(){
+        myTalksPage.waitABitLol();
+    }
+>>>>>>> 48020b0ffaccb360d13776b39ba8d698a01ffb21
 }
 

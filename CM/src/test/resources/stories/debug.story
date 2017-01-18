@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Scenario: All fields except Organizer's Comments box are read-only
 Given user logged as speaker accessing 'My Talks' page:
 |email              |password|
@@ -22,3 +23,5 @@ Then all fields except Organizer's Comments box are read-only
 Examples:
 |<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
 |TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
+=======
+>>>>>>> 48020b0ffaccb360d13776b39ba8d698a01ffb21

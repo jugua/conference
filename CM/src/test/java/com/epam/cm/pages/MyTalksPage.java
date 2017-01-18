@@ -332,14 +332,19 @@ public class MyTalksPage extends AnyPage {
 
     public boolean areFieldsReadOnly() {
         if (!organiserTitleField.isEnabled() &&
-            !organiserDescriptionField.isEnabled() &&
-            !organiserTopicField.isEnabled() &&
-            !organiserTypeField.isEnabled() &&
-            !organiserLanguageField.isEnabled() &&
-            !organiserLevelField.isEnabled() &&
-            !organiserAdditionalInfoField.isEnabled()) {
+                !organiserDescriptionField.isEnabled() &&
+                !organiserTopicField.isEnabled() &&
+                !organiserTypeField.isEnabled() &&
+                !organiserLanguageField.isEnabled() &&
+                !organiserLevelField.isEnabled() &&
+                !organiserAdditionalInfoField.isEnabled()) {
             return true;
         }
         return false;
+
+    }
+
+    public void waitABitLol(){
+        waitABit(3000);
     }
 }
