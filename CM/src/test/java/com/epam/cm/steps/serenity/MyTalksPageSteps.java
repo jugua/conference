@@ -1,5 +1,6 @@
 package com.epam.cm.steps.serenity;
 
+import com.epam.cm.core.utils.Randomizer;
 import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.MyTalksDTO;
 import com.epam.cm.pages.MyTalksPage;
@@ -10,7 +11,9 @@ import net.thucydides.core.steps.ScenarioSteps;
 
 public class MyTalksPageSteps extends ScenarioSteps {
 
+    public static final int RAND_STR_LENGTH = 10;
     MyTalksPage myTalksPage;
+    private static final int  MAX_COMMENT_LENTH = 1000;
 
     @Step
     public void clickSubmitNewTalkBtn() {
@@ -184,4 +187,42 @@ public class MyTalksPageSteps extends ScenarioSteps {
     public String getNoRejectionReasonErrMessage() {
         return myTalksPage.getNoRejectionReasonErrMessage();
     }
+
+    @Step
+    public boolean organiserCantTypeMoreThanMaxAllowedSymbol (){
+        if(myTalksPage.getOrgCommentsActualLength()<= MAX_COMMENT_LENTH)
+            return true;
+        return false;
+    }
+
+    @Step
+    public boolean areFieldsReadOnly() {
+        return myTalksPage.areFieldsReadOnly();
+    }
+
+/*    @Step
+    public boolean areFieldsReadOnly(MyTalksDTO dto) {
+        typeTextInFields(dto);
+        if(dto.getTitle().equals(myTalksPage.getOrganiserTitleValue()) &&
+           dto.getDescription().equals(myTalksPage.getOrganiserDescriptionValue())&&
+           dto.getTopic().equals(myTalksPage.getOrganiserTopicValue())&&
+           dto.getType().equals(myTalksPage.getOrganiserTypeValue())&&
+           dto.getLanguage().equals(myTalksPage.getOrganiserLanguageValue())&&
+           dto.getLevel().equals(myTalksPage.getOrganiserLevelValue())&&
+           dto.getAdditionalInfo().equals(myTalksPage.getOrganiserAdditionalInfoValue())){
+           return true;
+        }
+        return false;
+    }
+
+    public void typeTextInFields(MyTalksDTO dto){
+        myTalksPage.setOrganiserTitleField(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
+        myTalksPage.setOrganiserDescriptionField(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
+        myTalksPage.setOrganiserTopic(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
+        myTalksPage.setOrganiserType(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
+        myTalksPage.setOrganiserLanguage(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
+        myTalksPage.setOrganiserLevel(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
+        myTalksPage.setOrganiserAdditionalInfoField(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
+    }*/
 }
+

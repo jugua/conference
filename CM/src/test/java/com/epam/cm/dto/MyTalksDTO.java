@@ -32,7 +32,14 @@ public class MyTalksDTO {
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        String digits = comment.replaceAll(NOT_NUMERIC, EMPTY);
+        if (digits.length() == 0)
+            this.comment = comment;
+        else {
+            int commentLength = Integer.parseInt(digits);
+            this.comment = Randomizer.generateRandomAlphaNumericString(commentLength);
+        }
+
     }
 
     private String comment;
