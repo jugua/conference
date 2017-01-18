@@ -62,6 +62,11 @@ And choose Topic, Type, Language, Level dropdown menu:
 |<topic>|<type>|<language>|<level>|
 And clicks 'Submit' button
 Then talk appears in grid and have 'New' status
+And email was sent to users email :
+|email             |
+|mytalks@tester.com|
+And with subject 'Your talk's status has been updated'
+And body contains 'Thank you for your submitted talk. It has been successfully registered in our system. We will review it and send an additional info soon.'
 
 Examples:
 |<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|

@@ -184,4 +184,9 @@ public class MyTalksPageSteps extends ScenarioSteps {
     public String getNoRejectionReasonErrMessage() {
         return myTalksPage.getNoRejectionReasonErrMessage();
     }
+
+    @Step
+    public void justWait(){
+        myTalksPage.waitABitLol();
+    }
 }

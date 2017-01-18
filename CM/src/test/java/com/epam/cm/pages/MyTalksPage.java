@@ -261,4 +261,8 @@ public class MyTalksPage extends AnyPage {
         String noRejectionReasonErrMessage = reviewTalk.getText();
         return noRejectionReasonErrMessage;
     }
+
+    public void waitABitLol(){
+        waitABit(3000);
+    }
 }

@@ -1,5 +1,6 @@
 package com.epam.cm.steps.jbehave;
 
+import com.epam.cm.core.mail.MailCatcherClient;
 import com.epam.cm.core.utils.WebDriverSupport;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.dto.MyTalksDTO;
@@ -14,6 +15,7 @@ import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 import org.junit.Assert;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 public class MyTalksDefinitionsSteps {
@@ -24,6 +26,8 @@ public class MyTalksDefinitionsSteps {
     MyTalksPageSteps myTalksPageSteps;
 
     MyTalksDTO myGlobalTalksDTO;
+    CredentialsDTO user;
+    MailCatcherClient mailCatcherClient = new MailCatcherClient();
 
 
     @Given("user logged as speaker accessing 'My Talks' page: $loginTable")
@@ -295,5 +299,29 @@ public class MyTalksDefinitionsSteps {
         String message = table.getRowAsParameters(0, replaceNamedParameters).valueAs("message", String.class);
         myGlobalTalksDTO.setNoRejectionReasonErrMessage(message);
         Assert.assertThat(myTalksPageSteps.getNoRejectionReasonErrMessage(),is(myGlobalTalksDTO.getNoRejectionReasonErrMessage()));
+    }
+
+    @Then("email was sent to users email : $table")
+    public void checkEmailForTalk(ExamplesTable table){
+        myTalksPageSteps.justWait();
+        user = table.getRowsAs(CredentialsDTO.class).get(0);
+        System.out.println(mailCatcherClient.getLastEmail());
+        // КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
+        Assert.assertThat(mailCatcherClient.getLastEmail().getRecipients().get(0),
+                containsString(user.getEmail().toLowerCase()));
+
+    }
+
+    @Then("with subject '$sbj'")
+    public void checkSbj(String subject){
+        Assert.assertThat(mailCatcherClient.getLastEmail().getSubject(), is(subject));
+
+    }
+
+    @Then("body contains '$body'")
+    public void checkNewTalkEmailBody(String msg1){
+        Assert.assertThat(mailCatcherClient
+                        .getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString(),
+                containsString(msg1));
     }
 }
