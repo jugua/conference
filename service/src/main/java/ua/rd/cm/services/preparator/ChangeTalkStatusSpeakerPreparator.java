@@ -60,6 +60,6 @@ public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparat
     }
 
     private boolean isThereComment() {
-        return talk.getOrganiserComment().length() > 0;
+        return talk.getOrganiserComment()!=null && talk.getOrganiserComment().length() > 0;
     }
 }

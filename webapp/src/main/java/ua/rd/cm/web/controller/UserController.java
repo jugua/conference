@@ -102,13 +102,14 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
 		}
 		User user = userService.find(userId);
-		if (user == null) {
+        if (user == null) {
             message.setError("not_found_user");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 		}
+
 		UserDto userDto=new UserDto();
 		userDto.setContactTypeService(contactTypeService);
-		return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.OK);
+        return new ResponseEntity<>(userDto.entityToDto(user), HttpStatus.OK);
 	}
 
     private UserInfo prepareNewUserInfo(String email, UserDto dto) {
