@@ -37,7 +37,7 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public User find(Long id) {
-		List<User> users = userRepository.findBySpecification(new UserById(id));
+		List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserById(id)));
 		return users.isEmpty() ? null : users.get(0);
 	}
 
