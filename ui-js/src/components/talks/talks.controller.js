@@ -12,13 +12,15 @@ export default class TalksController {
     this.showFilters = true;
 
     this.reviewTalkId = null;
+    this.reviewTalkStatus = null;
     this.showReviewPopup = false;
   }
   showSettings() {
     this.showFilters = !this.showFilters;
   }
-  review(id) {
+  review(id, status) {
     this.reviewTalkId = id;
+    this.reviewTalkStatus = status;
     this.showReviewPopup = true;
   }
   hideReviewPopup() {

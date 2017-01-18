@@ -4,12 +4,19 @@ export default class {
 
     this.talksService = Talks;
     this.selectService = Menus;
-    this.talkForm = {};
+    this.form = {};
 
     this.talk = Talks.get(this.id);
 
     this.commentRequired = false;
     this.confirmShown = false;
+  }
+
+  get statusEditable() {  // getter, convenient for template inline triggers
+    if (this.status === 'New' || this.status === 'In Progress') {
+      return true;
+    }
+    return false;
   }
 
   approve() {
@@ -32,7 +39,7 @@ export default class {
   }
 
   closeCheck() {
-    if (this.talk.comment) {  // comment modified, but attempting to leave
+    if (this.statusEditable && this.form.comment.$dirty) {  // comment modified, but attempting to leave
       this.showConfirm();
     } else {
       this.close();
