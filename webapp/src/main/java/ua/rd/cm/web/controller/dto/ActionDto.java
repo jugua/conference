@@ -8,7 +8,6 @@ import javax.validation.constraints.Size;
 @Data
 public class ActionDto {
 
-    @NotNull(message = "comment_is_null")
     @Size(max = 1000, message = "comment_too_long")
     private String comment;
 
