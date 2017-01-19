@@ -40,9 +40,14 @@ public enum TalkStatus {
         return name;
     }
 
+    public boolean isStatusName(String name){
+        return this.name.equals(name);
+    }
+
     public boolean canChangeTo(TalkStatus status) {
         return Transition.transitions.get(this).contains(status);
     }
+
     public static TalkStatus getStatusByName(String statusName){
         for(TalkStatus status: TalkStatus.values()){
             if(status.getName().equals(statusName)){

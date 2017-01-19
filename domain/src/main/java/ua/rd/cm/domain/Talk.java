@@ -72,5 +72,8 @@ public class Talk {
         return false;
     }
 
+    public boolean isValidComment(){
+        return organiserComment != null && organiserComment.length() > 0;
+    }
 
 }
