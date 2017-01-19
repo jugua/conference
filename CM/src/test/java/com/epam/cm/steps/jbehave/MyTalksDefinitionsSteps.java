@@ -306,7 +306,6 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.justWait();
         user = table.getRowsAs(CredentialsDTO.class).get(0);
         System.out.println(mailCatcherClient.getLastEmail());
-        // КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
         Assert.assertThat(mailCatcherClient.getLastEmail().getRecipients().get(0),
                 containsString(user.getEmail().toLowerCase()));
 
