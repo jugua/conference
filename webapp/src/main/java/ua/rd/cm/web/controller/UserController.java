@@ -98,7 +98,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
         MessageDto message = new MessageDto();
-        if (!request.isUserInRole("ORGANISER")) {
+        if(!request.isUserInRole("ORGANISER")){
             message.setError("unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
