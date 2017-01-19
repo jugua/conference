@@ -2,7 +2,7 @@
 
 export default class HeaderController {
 
-  constructor(user, Menus, $state, $scope, $document) {
+  constructor($state, $scope, $document, $location, LocalStorage, user, Menus) {
     'ngInject';
 
     this.role = user ? user.roles : '';
