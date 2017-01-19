@@ -320,7 +320,7 @@ public class MyTalksDefinitionsSteps {
     public void areFieldsReadOnly() {
         Assert.assertTrue(myTalksPageSteps.areFieldsReadOnly());
     }
-    
+
     @Then("email was sent to users email : $table")
     public void checkEmailForTalk(ExamplesTable table){
         myTalksPageSteps.justWait();

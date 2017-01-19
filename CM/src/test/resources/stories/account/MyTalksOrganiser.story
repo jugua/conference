@@ -77,7 +77,6 @@ Examples:
 |<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
 |TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
 
-<<<<<<< HEAD
 
 Scenario: Organiser put in progress new talk
 Given user logged as speaker accessing 'My Talks' page:
@@ -105,10 +104,6 @@ Examples:
 
 
 Scenario: Organiser approve new talk
-=======
-
-Scenario: Organiser put in progress new talk
->>>>>>> 48020b0ffaccb360d13776b39ba8d698a01ffb21
 Given user logged as speaker accessing 'My Talks' page:
 |email              |password|
 |speaker@speaker.com|speaker |
@@ -121,50 +116,18 @@ And user logged as organiser 'Talks' page:
 When organiser clicks new created Talk:
 |status|
 |New   |
-<<<<<<< HEAD
 And clicks approve button after filling comment:
 |comment  |
 |<comment>|
 Then approve status is shown:
 |status  |
 |Approved|
-=======
-And clicks in progress button after filling comment:
-|comment  |
-|<comment>|
-Then in progress status is shown:
-|status     |
-|In Progress|
-
-Examples:
-|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
-|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
->>>>>>> 48020b0ffaccb360d13776b39ba8d698a01ffb21
 
 Examples:
 |<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
 |TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
 |TestMyTalks|10           |10              |1      |1     |1         |1      |         |
 
-Scenario: Organiser approve new talk
-Given user logged as speaker accessing 'My Talks' page:
-|email              |password|
-|speaker@speaker.com|speaker |
-And creates new Talk:
-|title  |description  |additionalInfo  |topic  |type  |language  |level  |
-|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
-And user logged as organiser 'Talks' page:
-|email              |password |
-|organiser@gmail.com|organiser|
-When organiser clicks new created Talk:
-|status|
-|New   |
-And clicks approve button after filling comment:
-|comment  |
-|<comment>|
-Then approve status is shown:
-|status  |
-|Approved|
 
 Scenario: Organiser approve  talk which was in progress
 Given user logged as speaker accessing 'My Talks' page:
@@ -198,7 +161,6 @@ Examples:
 |TestMyTalks|10           |10              |1      |1     |1         |1      |         |
 
 
-<<<<<<< HEAD
 Scenario: organiser cant type more than 1000 symbols in comment field
 Given user logged as speaker accessing 'My Talks' page:
 |email              |password|
@@ -224,9 +186,6 @@ Examples:
 
 
 Scenario: All fields except Organizer's Comments box are read-only
-=======
-Scenario: Organiser approve  talk which was in progress
->>>>>>> 48020b0ffaccb360d13776b39ba8d698a01ffb21
 Given user logged as speaker accessing 'My Talks' page:
 |email              |password|
 |speaker@speaker.com|speaker |
@@ -245,18 +204,4 @@ And clicks in progress button after filling comment:
 When organiser clicks new created Talk:
 |status     |
 |In Progress|
-<<<<<<< HEAD
 Then all fields except Organizer's Comments box are read-only
-=======
-And clicks approve button after filling comment:
-|comment  |
-|<comment>|
-Then approve status is shown:
-|status  |
-|Approved|
-
-Examples:
-|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
-|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
-|TestMyTalks|10           |10              |1      |1     |1         |1      |         |
->>>>>>> 48020b0ffaccb360d13776b39ba8d698a01ffb21

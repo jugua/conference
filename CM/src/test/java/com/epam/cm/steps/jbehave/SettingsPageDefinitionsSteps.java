@@ -330,7 +330,7 @@ public class SettingsPageDefinitionsSteps {
         loginPageSteps.clickSettingsOption();
     }
 
-    // запихать это говно в другое говно сверху этого говна(логинВизНьюПв)
+
     @Given("changes his password: $actTable")
     @Then("changes his password: $actTable")
     public void resetBackPw(ExamplesTable table) {
@@ -347,7 +347,6 @@ public class SettingsPageDefinitionsSteps {
     public void receiveEmail(ExamplesTable table) {
         user = table.getRowsAs(CredentialsDTO.class).get(0);
         System.out.println(mailCatcherClient.getLastEmail());
-        // КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
         Assert.assertThat(mailCatcherClient.getLastEmail().getRecipients().get(0),
                 containsString(user.getEmail().toLowerCase()));
     }
@@ -392,6 +391,5 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.typeEmail(settingsDTO.getOldEmail());
         clickEmailSaveBtn();
         createAccountPageSteps.openLinkFromEmail();
-        // Assert.assertTrue(createAccountPageSteps.isUserLoggedIn());
     }
 }
