@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
+
 import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 
 @AllArgsConstructor
-public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparator{
+public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparator {
 
     private Talk talk;
 
@@ -16,19 +17,19 @@ public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparat
     public String getTemplateName() {
         String template;
         switch (talk.getStatus().getName()) {
-            case "In Progress" : {
+            case "In Progress": {
                 template = "reviewed_talk_speaker.ftl";
                 break;
             }
-            case "Approved" : {
+            case "Approved": {
                 template = defineApprovedTemplate();
                 break;
             }
-            case "Rejected" : {
+            case "Rejected": {
                 template = "rejected_talk_speaker.ftl";
                 break;
             }
-            default : {
+            default: {
                 template = ""; //TODO template for wrong message or exception
                 break;
             }
@@ -51,7 +52,7 @@ public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparat
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
         helper.setSubject("Your talk's status has been updated");
         helper.setFrom("support@conference.com");
-        helper.setTo((String)model.get("email"));
+        helper.setTo((String) model.get("email"));
         helper.setText(getFreeMarkerTemplateContent(model), true);
     }
 
@@ -60,6 +61,6 @@ public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparat
     }
 
     private boolean isThereComment() {
-        return talk.getOrganiserComment()!=null && talk.getOrganiserComment().length() > 0;
+        return talk.getOrganiserComment() != null && talk.getOrganiserComment().length() > 0;
     }
 }
