@@ -205,3 +205,8 @@ When organiser clicks new created Talk:
 |status     |
 |In Progress|
 Then all fields except Organizer's Comments box are read-only
+
+Examples:
+|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
+|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
+|TestMyTalks|10           |10              |1      |1     |1         |1      |         |
