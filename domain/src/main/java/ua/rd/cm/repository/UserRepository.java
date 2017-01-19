@@ -23,5 +23,4 @@ public interface UserRepository {
 	List<User> findAll();
 	
 	List<User> findBySpecification(Specification<User> spec);
-	
 }

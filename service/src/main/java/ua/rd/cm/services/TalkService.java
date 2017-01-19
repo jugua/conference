@@ -1,7 +1,6 @@
 package ua.rd.cm.services;
 
 import java.util.List;
-
 import ua.rd.cm.domain.Talk;
 
 public interface TalkService {
@@ -17,5 +16,4 @@ public interface TalkService {
 	List<Talk> findByUserId(Long id);
 	
 	Talk findTalkById(Long id);
-	
 }

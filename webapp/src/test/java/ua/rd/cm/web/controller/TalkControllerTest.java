@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-public class TalkControllerTest extends TestUtil{
+public class TalkControllerTest extends TestUtil {
 
     private static final String API_TALK = "/api/talk";
     private static final String API_GET_USER_BY_ID = "/api/talk/1";
@@ -54,10 +54,10 @@ public class TalkControllerTest extends TestUtil{
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
     public static final String SPEAKER_ROLE = "SPEAKER";
     public static final String ORGANISER_ROLE = "ORGANISER";
-    public static final String APPROVED="Approved";
-    public static final String IN_PROGRESS="In Progress";
-    public static final String REJECTED="Rejected";
-    public static final String NEW="New";
+    public static final String APPROVED = "Approved";
+    public static final String IN_PROGRESS = "In Progress";
+    public static final String REJECTED = "Rejected";
+    public static final String NEW = "New";
     @Autowired
     private WebApplicationContext context;
     @Autowired
@@ -87,13 +87,13 @@ public class TalkControllerTest extends TestUtil{
 
         Set<Role> speakerRole = new HashSet<>();
         speakerRole.add(new Role(2L, Role.SPEAKER));
-        speakerUser = new User(1L,"Olya","Ivanova",
+        speakerUser = new User(1L, "Olya", "Ivanova",
                 "ivanova@gmail.com", "123456",
                 null, User.UserStatus.CONFIRMED, userInfo, speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
-        organiserUser = new User(1L,"Artem","Trybel",
+        organiserUser = new User(1L, "Artem", "Trybel",
                 "trybel@gmail.com", "123456",
                 null, User.UserStatus.CONFIRMED, userInfo, organiserRole);
 
@@ -110,7 +110,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void correctSubmitNewTalkTest() throws Exception{
+    public void correctSubmitNewTalkTest() throws Exception {
 
         mockMvc.perform(preparePostRequest(API_TALK))
                 .andExpect(status().isOk());
@@ -118,7 +118,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void emptyCompanyMyInfoSubmitNewTalkTest() throws Exception{
+    public void emptyCompanyMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setCompany("");
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -151,7 +151,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void nullTitleSubmitNewTalkTest() throws Exception{
+    public void nullTitleSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTitle(null);
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -160,7 +160,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void emptyTitleSubmitNewTalkTest() throws Exception{
+    public void emptyTitleSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTitle("");
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -169,7 +169,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void tooLongTitleSubmitNewTalkTest() throws Exception{
+    public void tooLongTitleSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTitle(createStringWithLength(251));
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -178,7 +178,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void nullDescriptionSubmitNewTalkTest() throws Exception{
+    public void nullDescriptionSubmitNewTalkTest() throws Exception {
         correctTalkDto.setDescription(null);
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -187,7 +187,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void emptyDescriptionSubmitNewTalkTest() throws Exception{
+    public void emptyDescriptionSubmitNewTalkTest() throws Exception {
         correctTalkDto.setDescription("");
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -196,7 +196,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void tooLongDescriptionSubmitNewTalkTest() throws Exception{
+    public void tooLongDescriptionSubmitNewTalkTest() throws Exception {
         correctTalkDto.setDescription(createStringWithLength(3001));
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -205,7 +205,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void nullTopicSubmitNewTalkTest() throws Exception{
+    public void nullTopicSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTopicName(null);
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -214,7 +214,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void emptyTopicSubmitNewTalkTest() throws Exception{
+    public void emptyTopicSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTopicName("");
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -223,7 +223,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void tooLongTopicSubmitNewTalkTest() throws Exception{
+    public void tooLongTopicSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTopicName(createStringWithLength(256));
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -232,7 +232,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void nullTypeSubmitNewTalkTest() throws Exception{
+    public void nullTypeSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTypeName(null);
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -241,7 +241,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void emptyTypeSubmitNewTalkTest() throws Exception{
+    public void emptyTypeSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTypeName("");
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -250,7 +250,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void tooLongTypeSubmitNewTalkTest() throws Exception{
+    public void tooLongTypeSubmitNewTalkTest() throws Exception {
         correctTalkDto.setTypeName(createStringWithLength(256));
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -259,7 +259,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void nullLanguageSubmitNewTalkTest() throws Exception{
+    public void nullLanguageSubmitNewTalkTest() throws Exception {
         correctTalkDto.setLanguageName(null);
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -268,7 +268,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void emptyLanguageSubmitNewTalkTest() throws Exception{
+    public void emptyLanguageSubmitNewTalkTest() throws Exception {
         correctTalkDto.setLanguageName("");
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -277,7 +277,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void tooLongLanguageSubmitNewTalkTest() throws Exception{
+    public void tooLongLanguageSubmitNewTalkTest() throws Exception {
         correctTalkDto.setLanguageName(createStringWithLength(256));
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -286,7 +286,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void nullLevelSubmitNewTalkTest() throws Exception{
+    public void nullLevelSubmitNewTalkTest() throws Exception {
         correctTalkDto.setLevelName(null);
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -295,7 +295,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void emptyLevelSubmitNewTalkTest() throws Exception{
+    public void emptyLevelSubmitNewTalkTest() throws Exception {
         correctTalkDto.setLevelName("");
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -304,7 +304,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void tooLongLevelSubmitNewTalkTest() throws Exception{
+    public void tooLongLevelSubmitNewTalkTest() throws Exception {
         correctTalkDto.setLevelName(createStringWithLength(256));
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -313,7 +313,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void tooLongAddInfoSubmitNewTalkTest() throws Exception{
+    public void tooLongAddInfoSubmitNewTalkTest() throws Exception {
         correctTalkDto.setAdditionalInfo(createStringWithLength(1501));
 
         mockMvc.perform(preparePostRequest(API_TALK))
@@ -356,7 +356,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void checkCallToPrepareOrganiserTalkMethod() throws Exception{
+    public void checkCallToPrepareOrganiserTalkMethod() throws Exception {
         Talk talk = createTalk(speakerUser);
         List talks = new ArrayList() {{
             add(talk);
@@ -371,7 +371,7 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void correctGetAllTalks() throws Exception{
+    public void correctGetAllTalks() throws Exception {
         Talk talk = createTalk(speakerUser);
         List<Talk> talks = new ArrayList<>();
         talks.add(talk);
@@ -396,10 +396,10 @@ public class TalkControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void getTalkById() throws Exception{
-        Talk talk=createTalk(createUser());
+    public void getTalkById() throws Exception {
+        Talk talk = createTalk(createUser());
         when(talkService.findTalkById(1L)).thenReturn(talk);
-        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1))
+        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("_id", is(Integer.parseInt(talk.getId().toString()))))
                 .andExpect(jsonPath("title", is(talk.getTitle())))
@@ -413,98 +413,100 @@ public class TalkControllerTest extends TestUtil{
                 .andExpect(jsonPath("addon", is(talk.getAdditionalInfo())))
                 .andExpect(jsonPath("status", is(talk.getStatus().getName())))
                 .andExpect(jsonPath("date", is(talk.getTime().toString())))
-                .andExpect(jsonPath("comment", is(talk.getOrganiserComment())));;
+                .andExpect(jsonPath("comment", is(talk.getOrganiserComment())));
+        ;
     }
 
     @Test
-    public void incorrectGetTalkById() throws Exception{
-        Talk talk=createTalk(createUser());
+    public void incorrectGetTalkById() throws Exception {
+        Talk talk = createTalk(createUser());
         when(talkService.findTalkById(1L)).thenReturn(talk);
-        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1)).
+        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)).
                 andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void notFoundTalkById() throws Exception{
+    public void notFoundTalkById() throws Exception {
         when(talkService.findTalkById(1L)).thenReturn(null);
-        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1)).
+        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)).
                 andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void correctApproveNewTalk() throws Exception{
+    public void correctApproveNewTalk() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",APPROVED))
-                .andExpect(status().isOk());
-    }
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void correctRejectNewTalk() throws Exception{
-        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",REJECTED))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", APPROVED))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void emptyCommentRejectNewTalk() throws Exception{
+    public void correctRejectNewTalk() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"",REJECTED))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", REJECTED))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void emptyCommentRejectNewTalk() throws Exception {
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "", REJECTED))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void correctInProgressNewTalk() throws Exception{
+    public void correctInProgressNewTalk() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",IN_PROGRESS))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void unauthorizedTalk() throws Exception{
+    public void unauthorizedTalk() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",IN_PROGRESS))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void CommentToLong() throws Exception{
+    public void CommentToLong() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        char[] array=new char[1001];
-        String tooLongComment=new String(array);
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,tooLongComment,IN_PROGRESS))
+        char[] array = new char[1001];
+        String tooLongComment = new String(array);
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, tooLongComment, IN_PROGRESS))
                 .andExpect(status().isPayloadTooLarge());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void noTalkWithSuchId() throws Exception{
+    public void noTalkWithSuchId() throws Exception {
         when(talkService.findTalkById(1L)).thenReturn(null);
-        mockMvc.perform(preparePatchRequest(API_TALK+"/"+1,"comment",IN_PROGRESS)).
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS)).
                 andExpect(status().isNotFound());
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
 
-    private MockHttpServletRequestBuilder preparePostRequest(String uri) throws JsonProcessingException{
+    private MockHttpServletRequestBuilder preparePostRequest(String uri) throws JsonProcessingException {
 
         return MockMvcRequestBuilders.post(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctTalkDto));
     }
 
-    private MockHttpServletRequestBuilder preparePatchRequest(String uri,String comment,String status) throws JsonProcessingException{
+    private MockHttpServletRequestBuilder preparePatchRequest(String uri, String comment, String status) throws JsonProcessingException {
 
         return MockMvcRequestBuilders.patch(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(setupCorrectActionDto(comment,status)));
+                .content(convertObjectToJsonBytes(setupCorrectActionDto(comment, status)));
     }
 
     private Talk createTalk(User user) {
@@ -513,7 +515,7 @@ public class TalkControllerTest extends TestUtil{
         Type type = new Type(1L, "Type");
         Language language = new Language(1L, "Language");
         Level level = new Level(1L, "Level");
-        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info",null);
+        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null);
     }
 
     private TalkDto setupCorrectTalkDto() {
@@ -532,14 +534,14 @@ public class TalkControllerTest extends TestUtil{
         return correctTalkDto;
     }
 
-    private ActionDto setupCorrectActionDto(String comment,String status){
-        ActionDto actionDto= new ActionDto();
+    private ActionDto setupCorrectActionDto(String comment, String status) {
+        ActionDto actionDto = new ActionDto();
         actionDto.setComment(comment);
         actionDto.setStatus(status);
         return actionDto;
     }
 
-    private byte[] convertObjectToJsonBytes(Object object) throws JsonProcessingException{
+    private byte[] convertObjectToJsonBytes(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsBytes(object);
@@ -547,7 +549,7 @@ public class TalkControllerTest extends TestUtil{
 
     private String createStringWithLength(int length) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             stringBuilder.append('x');
         }
         return stringBuilder.toString();

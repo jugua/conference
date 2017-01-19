@@ -10,9 +10,7 @@ import ua.rd.cm.repository.specification.type.TypeByName;
 
 import java.util.List;
 
-/**
- * @author Mariia Lapovska
- */
+
 @Service
 public class SimpleTypeService implements TypeService {
 

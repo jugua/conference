@@ -23,4 +23,8 @@ public interface UserService {
 	boolean isEmailExist(String email);
 
     void registerNewUser(User user);
+
+    List<User> getByRole(String role);
+
+    List<User> getByRoleExceptCurrent(User currentUser, String roleName);
 }

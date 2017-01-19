@@ -34,6 +34,12 @@ export default class TalkService {
         params: { id: '@id' }
       }
     });
+
+    // constant status strings
+    this.TALK_STATUS_NEW = 'New';
+    this.TALK_STATUS_APPROVED = 'Approved';
+    this.TALK_STATUS_REJECTED = 'Rejected';
+    this.TALK_STATUS_PROGRESS = 'In Progress';
   }
 
   getAll() {
@@ -52,21 +58,21 @@ export default class TalkService {
   }
 
   approve(id, comment, successCallback) {
-    this.talks.update({ id }, { status: 'Approved', comment },
+    this.talks.update({ id }, { status: this.TALK_STATUS_APPROVED, comment },
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
   }
 
   reject(id, comment, successCallback) {
-    this.talks.update({ id }, { status: 'Rejected', comment },
+    this.talks.update({ id }, { status: this.TALK_STATUS_REJECTED, comment },
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
   }
 
   progress(id, comment, successCallback) {
-    this.talks.update({ id }, { status: 'In Progress', comment },
+    this.talks.update({ id }, { status: this.TALK_STATUS_PROGRESS, comment },
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );

@@ -3,8 +3,12 @@ import controller from './talks.controller';
 
 
 const talksComponent = {
+  bindings: {
+    reviewTalkId: '<',
+  },
   template,
-  controller
+  controller,
 };
 
 export default talksComponent;
+

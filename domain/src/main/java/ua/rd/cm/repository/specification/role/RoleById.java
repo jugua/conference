@@ -3,9 +3,6 @@ package ua.rd.cm.repository.specification.role;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.repository.specification.Specification;
 
-/**
- * @author Mariia Lapovska
- */
 public class RoleById implements Specification<Role> {
 
     private Long id;

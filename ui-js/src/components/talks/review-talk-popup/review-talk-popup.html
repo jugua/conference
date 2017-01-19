@@ -2,7 +2,7 @@
   <div class="pop-up pop-up_big">
     <h3 class="pop-up__title">Review talk</h3>
     <button class="pop-up__close" ng-click="$ctrl.closeCheck()"></button>
-    <form class="new-talk" name="$ctrl.talkForm" novalidate>
+    <form class="new-talk" name="$ctrl.form" novalidate>
       <label for="new-talk-title" class="form-label">
         title
       </label>
@@ -64,14 +64,16 @@
       <label for="new-talk-add-inf" class="form-label">
         organizer's comments
       </label>
-      <textarea class="textarea"
-                ng-class="(!$ctrl.talk.comment && $ctrl.commentRequired) ? 'textarea_required' : ''"
+      <textarea class="textarea" name="comment"
+                ng-class="(!$ctrl.comment && $ctrl.commentRequired) ? 'textarea_required' : ''"
                 ng-change="$ctrl.resetCommentRequired()"
-                ng-model="$ctrl.talk.comment"
-                maxlength="1000"></textarea>
-      <span class="field-error" ng-show="(!$ctrl.talk.comment && $ctrl.commentRequired)">Please specify a rejection reason</span>
+                ng-model="$ctrl.comment"
+                maxlength="1000"
+                ng-disabled="!$ctrl.statusEditable">
+      </textarea>
+      <span class="field-error" ng-show="(!$ctrl.comment && $ctrl.commentRequired)">Please specify a rejection reason</span>
 
-      <div class="pop-up-button-wrapper pop-up-button-wrapper_wrap">
+      <div class="pop-up-button-wrapper pop-up-button-wrapper_wrap" ng-show="$ctrl.statusEditable">
         <button class="btn pop-up__button pop-up__button_triple" type="button"
                 ng-click="$ctrl.approve()">Approve</button>
         <button class="btn pop-up__button pop-up__button_triple" type="button"

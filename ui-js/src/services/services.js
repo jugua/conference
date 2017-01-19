@@ -6,7 +6,7 @@ import localStorage from './local-storage/local-storage';
 import constants from './constants/constants';
 import permissionsService from './permissions/permissions';
 import tokenInjector from './node-intercepter/node-intercepter';
-
+import userService from './user/user';
 
 export default (app) => {
   include_all_modules([
@@ -16,6 +16,7 @@ export default (app) => {
     menusService,
     talksService,
     permissionsService,
-    tokenInjector
+    tokenInjector,
+    userService,
   ], app);
 };

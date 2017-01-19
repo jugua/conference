@@ -1,10 +1,10 @@
 export default class UserPhotoController {
-  constructor(userPhotoService) {
+  constructor(userPhotoService, Constants) {
     'ngInject';
 
     this.userPhotoService = userPhotoService;
 
-    this.defaultImage = 'assets/img/default_ava.jpg';
+    this.defaultImage = Constants.ava;
     this.ava = null;
     this.file = null;
     this.uploadForm = {};

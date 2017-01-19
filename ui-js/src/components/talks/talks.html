@@ -1,109 +1,108 @@
 <div class="talks-container">
-    <div class="talks">
-        <div class="talks__header">
-            <a  class="btn talks__button">export to excel </a>
-         </div>
-        <div class="show-settings">
-            <button class="show-settings__button" ng-click="$ctrl.showSettings()"></button>
+  <div class="talks">
+    <div class="talks__header">
+      <a  class="btn talks__button">export to excel </a>
+    </div>
+    <div class="show-settings">
+      <button class="show-settings__button" ng-click="$ctrl.showSettings()"></button>
+    </div>
+    <div class="my-talk-settings" ng-show="$ctrl.showFilters">
+      <form class="my-talk-settings__filters">
+        <p class="my-talk-settings__title">filter by:</p>
+        <div class="my-talk-settings__select-wrapper">
+          <label for="my-talk-status" class="form-label my-talk-settings__label my-talk-settings__label_status">Status</label>
+          <select id="my-talk-status" class="my-talk-settings__select"
+                  ng-model="$ctrl.filter.status"
+                  ng-options="status for status in $ctrl.menuService.getStatus()">
+          </select>
         </div>
-        <div class="my-talk-settings" ng-show="$ctrl.showFilters">
-            <form class="my-talk-settings__filters">
-                <p class="my-talk-settings__title">filter by:</p>
-                <div class="my-talk-settings__select-wrapper">
-                    <label for="my-talk-status" class="form-label my-talk-settings__label my-talk-settings__label_status">Status</label>
-                    <select id="my-talk-status" class="my-talk-settings__select"
-                            ng-model="$ctrl.filter.status"
-                            ng-options="status for status in $ctrl.menuService.getStatus()">
-                    </select>
-                </div>
-                <div class="my-talk-settings__select-wrapper my-talk-settings__select-wrapper_topic">
-                    <label for="my-talk-topic" class="form-label my-talk-settings__label ">Topic</label>
-                    <select id="my-talk-topic" class="my-talk-settings__select my-talk-settings__select_topic"
-                            ng-model="$ctrl.filter.topic"
-                            ng-options="topic for topic in $ctrl.menuService.getTopics()">
-                    </select>
-                </div>
-                <div class="my-talk-settings__date-wrapper">
-                    <div class="form-label my-talk-settings__date-label">submitted date</div>
-                    <div class="calendars-wrapper">
-                        <md-datepicker ng-model="$ctrl.myDate_start"
-                                       md-placeholder="Select date"
-                                       class="my-talk-settings__date"
-
-                                       md-hide-icons="triangle"
-                                       md-max-date="$ctrl.myDate_finish"
-                        ></md-datepicker>
-                        <md-datepicker ng-model="$ctrl.myDate_finish"
-                                       md-placeholder="Select date"
-                                       class="my-talk-settings__date"
-
-                                       md-hide-icons="triangle"
-                                       md-min-date="$ctrl.myDate_start"
-                        ></md-datepicker>
-                    </div>
-                </div>
-                <div class="my-talk-settings__button-wrapper">
-                    <input type="button" class="my-talk-settings__button" value="apply">
-                    <input type="reset" class="my-talk-settings__button" value="reset">
-                </div>
-            </form>
+        <div class="my-talk-settings__select-wrapper my-talk-settings__select-wrapper_topic">
+          <label for="my-talk-topic" class="form-label my-talk-settings__label ">Topic</label>
+          <select id="my-talk-topic" class="my-talk-settings__select my-talk-settings__select_topic"
+                  ng-model="$ctrl.filter.topic"
+                  ng-options="topic for topic in $ctrl.menuService.getTopics()">
+          </select>
         </div>
+        <div class="my-talk-settings__date-wrapper">
+          <div class="form-label my-talk-settings__date-label">submitted date</div>
+          <div class="calendars-wrapper">
+            <md-datepicker ng-model="$ctrl.myDate_start"
+                           md-placeholder="Select date"
+                           class="my-talk-settings__date"
+                           md-hide-icons="triangle"
+                           md-max-date="$ctrl.myDate_finish">
+            </md-datepicker>
+            <md-datepicker ng-model="$ctrl.myDate_finish"
+                           md-placeholder="Select date"
+                           class="my-talk-settings__date"
+                           md-hide-icons="triangle"
+                           md-min-date="$ctrl.myDate_start">
+            </md-datepicker>
+          </div>
+        </div>
+        <div class="my-talk-settings__button-wrapper">
+          <input type="button" class="my-talk-settings__button" value="apply">
+          <input type="reset" class="my-talk-settings__button" value="reset">
+        </div>
+      </form>
+    </div>
     <div class="data-table">
-        <div class="table-header">
-            <div class="table-header__item table-header__item_check-talk"><input type="checkbox"></div>
-            <div class="table-header__item table-header__item_speaker-talk">speaker</div>
-            <div class="table-header__item table-header__item_title-talk">title</div>
-            <div class="table-header__item table-header__item_topic-talk">topic</div>
-            <div class="table-header__item table-header__item_date-talk">submitted date</div>
-            <div class="table-header__item table-header__item_status-talk">status</div>
-            <div class="table-header__item table-header__item_comments-talk">organizer comments</div>
-            <div class="table-header__item table-header__item_assign-talk">assigned to</div>
-            <div class="table-header__item table-header__scroll-fix"></div>
+      <div class="table-header">
+        <div class="table-header__item table-header__item_check-talk"><input type="checkbox"></div>
+        <div class="table-header__item table-header__item_speaker-talk">speaker</div>
+        <div class="table-header__item table-header__item_title-talk">title</div>
+        <div class="table-header__item table-header__item_topic-talk">topic</div>
+        <div class="table-header__item table-header__item_date-talk">submitted date</div>
+        <div class="table-header__item table-header__item_status-talk">status</div>
+        <div class="table-header__item table-header__item_comments-talk">organizer comments</div>
+        <div class="table-header__item table-header__item_assign-talk">assigned to</div>
+        <div class="table-header__item table-header__scroll-fix"></div>
+      </div>
+      <div class="data-table__inner-wrapper">
+        <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
+          <div class="data-table__column data-table__column_check-talk"><input type="checkbox"></div>
+          <div class="data-table__column data-table__column_speaker-talk">
+            <a ng-click="$ctrl.userInfo(talk.speaker_id)" class="link">{{talk.name}}</a></div>
+          <div class="data-table__column data-table__column_title-talk">
+            <a ng-click="$ctrl.review(talk)" class="link">{{talk.title}}</a>
+          </div>
+          <div class="data-table__column data-table__column_topic-talk">{{talk.topic}}</div>
+          <div class="data-table__column data-table__column_date-talk">{{talk.date | date:"dd/MM/yyyy"}}</div>
+          <div class="data-table__column data-table__column_status-talk">{{talk.status}}</div>
+          <div class="data-table__column data-table__column_comments-talk">{{talk.comment}}</div>
+          <div class="data-table__column data-table__column_assign-talk">{{talk.assigner}}</div>
         </div>
-        <div class="data-table__inner-wrapper">
-            <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
-                <div class="data-table__column data-table__column_check-talk"><input type="checkbox"></div>
-                <div class="data-table__column data-table__column_speaker-talk"><a ng-href="#" class="link">{{talk.name}}</a></div>
-                <div class="data-table__column data-table__column_title-talk">
-                    <a ng-click="( talk.status == 'In Progress' || talk.status == 'New' ) ? $ctrl.review(talk._id) : ''"
-                       ng-class="( talk.status == 'In Progress' || talk.status == 'New' ) ? 'link' : ''">
-                        {{talk.title}}
-                    </a>
-                </div>
-                <div class="data-table__column data-table__column_topic-talk">{{talk.topic}}</div>
-                <div class="data-table__column data-table__column_date-talk">{{talk.date | date:"dd/MM/yyyy"}}</div>
-                <div class="data-table__column data-table__column_status-talk">{{talk.status}}</div>
-                <div class="data-table__column data-table__column_comments-talk">{{talk.comment}}</div>
-                <div class="data-table__column data-table__column_assign-talk">{{talk.assigner}}</div>
-            </div>
-        </div>
+      </div>
     </div>
-        <div class="pagination">
-            <div class="pagination__left-side">
-                <div class="pagination__item-wrapper">
-                    <div class="pagination__item pagination__item_fast-back"></div>
-                    <div class="pagination__item pagination__item_back"></div>
-                    <div class="pagination__item pagination__item_current">1</div>
-                    <div class="pagination__item pagination__item_forward"></div>
-                    <div class="pagination__item pagination__item_fast-forward"></div>
-                </div>
-                <select class="pagination__select">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option selected value="50">50</option>
-                    <option value="100">100</option>
-                </select>
-                <div class="pagination__per-page">
-                    Items per page
-                </div>
-            </div>
-            <div class="pagination__right-side">
-                <p class="pagination__navi">1 - 4 of 4 items</p>
-            </div>
+    <div class="pagination">
+      <div class="pagination__left-side">
+        <div class="pagination__item-wrapper">
+          <div class="pagination__item pagination__item_fast-back"></div>
+          <div class="pagination__item pagination__item_back"></div>
+          <div class="pagination__item pagination__item_current">1</div>
+          <div class="pagination__item pagination__item_forward"></div>
+          <div class="pagination__item pagination__item_fast-forward"></div>
         </div>
+        <select class="pagination__select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option selected value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <div class="pagination__per-page">
+          Items per page
+        </div>
+      </div>
+      <div class="pagination__right-side">
+        <p class="pagination__navi">1 - 4 of 4 items</p>
+      </div>
     </div>
+  </div>
 </div>
 <div ng-if="$ctrl.showReviewPopup">
-  <review-talk-popup id="$ctrl.reviewTalkId" on-hide-review-popup="$ctrl.hideReviewPopup()"></review-talk-popup>
+  <review-talk-popup talk="$ctrl.reviewTalkObj" on-hide-review-popup="$ctrl.hideReviewPopup()"></review-talk-popup>
+</div>
+<div ng-if="$ctrl.showUserInfoPopup">
+  <user-info-popup user="$ctrl.userInfoObj" on-hide-user-info-popup="$ctrl.hideUserInfoPopup()"></user-info-popup>
 </div>

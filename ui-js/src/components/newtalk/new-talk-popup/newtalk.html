@@ -70,7 +70,8 @@
                 maxlength="1500"
                 ng-model="$ctrl.talk.addon">
       </textarea>
-      <button class="btn pop-up__button">Submit</button>
+      <button class="btn pop-up__button"
+              ng-disabled="$ctrl.buttonsBlocked">Submit</button>
     </form>
   </div>
 </div>
