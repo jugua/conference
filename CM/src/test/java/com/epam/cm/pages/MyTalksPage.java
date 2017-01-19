@@ -7,6 +7,8 @@ import net.serenitybdd.core.pages.WebElementFacade;
 
 import org.openqa.selenium.WebDriver;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 
 public class MyTalksPage extends AnyPage {
 
@@ -81,7 +83,7 @@ public class MyTalksPage extends AnyPage {
     // organiser
     @FindBy(xpath = "//*[@class='data-table__row ng-scope']/descendant::div[contains(.,'New')]")
     WebElementFacade tableRow;
-    @FindBy(xpath = "//*[@id=\"$ctrl.reviewTalkId\"]/div[1]/div/form/textarea[3]")
+    @FindBy(xpath = "//*[@name='comment']")
     WebElementFacade orgComments;
     @FindBy(xpath = "//input[@id='new-talk-title']")
     WebElementFacade organiserTitleField;
@@ -128,7 +130,7 @@ public class MyTalksPage extends AnyPage {
     }
 
     public void clickRejectBtn(){
-        rejectBtn.click();
+        rejectBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
     public MyTalksPage(WebDriver driver) {
@@ -264,11 +266,11 @@ public class MyTalksPage extends AnyPage {
     }
 
     public void clickInProgressBtn() {
-        inProgressBtn.click();
+        inProgressBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
     public void clickApproveBtn() {
-        approveBtn.click();
+        approveBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
     public String getNoRejectionReasonErrMessage() {
