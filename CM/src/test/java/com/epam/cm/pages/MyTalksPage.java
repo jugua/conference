@@ -81,7 +81,7 @@ public class MyTalksPage extends AnyPage {
     // organiser
     @FindBy(xpath = "//*[@class='data-table__row ng-scope']/descendant::div[contains(.,'New')]")
     WebElementFacade tableRow;
-    @FindBy(xpath = "//*[@id=\"$ctrl.reviewTalkId\"]/div[1]/div/form/textarea[3]")
+    @FindBy(xpath = "//*[@name='comment']")
     WebElementFacade orgComments;
     @FindBy(xpath = "//input[@id='new-talk-title']")
     WebElementFacade organiserTitleField;
