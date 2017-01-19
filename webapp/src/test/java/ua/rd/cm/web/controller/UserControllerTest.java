@@ -3,17 +3,21 @@ package ua.rd.cm.web.controller;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.WebApplicationContext;
+import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.ContactType;
@@ -26,22 +30,25 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.RegistrationDto;
 import ua.rd.cm.web.controller.dto.UserDto;
 
+import javax.servlet.Filter;
 import java.security.Principal;
 import java.util.*;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ua.rd.cm.web.controller.TalkControllerTest.ORGANISER_ROLE;
+import static ua.rd.cm.web.controller.TalkControllerTest.SPEAKER_ROLE;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })
 @WebAppConfiguration
 public class UserControllerTest extends TestUtil{
     public static final String API_USER_CURRENT = "/api/user/current";
@@ -49,11 +56,15 @@ public class UserControllerTest extends TestUtil{
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
     private UserDto correctUserDto;
-    private String uniqueEmail = "unique@gmail.com";
+    private String uniqueEmail = "ivanova@gmail.com";
     private String alreadyRegisteredEmail = "registered@gmail.com";
 
     @Autowired
-    private UserService userServiceMock;
+    private WebApplicationContext context;
+    @Autowired
+    private Filter springSecurityFilterChain;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserInfoService userInfoService;
@@ -69,6 +80,12 @@ public class UserControllerTest extends TestUtil{
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
         correctUserDto = setupCorrectUserInfoDto();
+        createSpeakerAndOrganiser(userService);
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .addFilter(springSecurityFilterChain)
+                .apply(springSecurity())
+                .build();
     }
 
     @Test
@@ -83,7 +100,7 @@ public class UserControllerTest extends TestUtil{
     public void alreadyRegisteredEmailTest() throws Exception{
         correctRegistrationDto.setEmail(alreadyRegisteredEmail);
 
-        when(userServiceMock.isEmailExist(alreadyRegisteredEmail)).thenReturn(true);
+        when(userService.isEmailExist(alreadyRegisteredEmail)).thenReturn(true);
 
         mockMvc.perform(post(API_USER)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -194,13 +211,14 @@ public class UserControllerTest extends TestUtil{
     }
 
     @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctPrincipalGetCurrentUserTest() throws Exception{
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
         Principal correctPrincipal = () -> user.getEmail();
 
-        when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
+        when(userService.getByEmail(user.getEmail())).thenReturn(user);
 
         mockMvc.perform(get(API_USER_CURRENT)
                 .principal(correctPrincipal)
@@ -221,13 +239,14 @@ public class UserControllerTest extends TestUtil{
     }
 
     @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctFillUserInfoTest() throws Exception{
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
         Principal correctPrincipal = () -> user.getEmail();
 
-        when(userServiceMock.getByEmail(user.getEmail())).thenReturn(user);
+        when(userService.getByEmail(user.getEmail())).thenReturn(user);
 
         mockMvc.perform(post(API_USER_CURRENT)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -313,6 +332,55 @@ public class UserControllerTest extends TestUtil{
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void getUserById() throws Exception{
+        User user=createUser();
+        when(userService.find(1L)).thenReturn(user);
+        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("fname", is(user.getFirstName())))
+                .andExpect(jsonPath("lname", is(user.getLastName())))
+                .andExpect(jsonPath("mail", is(user.getEmail())))
+                .andExpect(jsonPath("bio", is(user.getUserInfo().getShortBio())))
+                .andExpect(jsonPath("job", is(user.getUserInfo().getJobTitle())))
+                .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
+                .andExpect(jsonPath("photo", is("api/user/current/photo/" + user.getId())))
+                .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
+                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "LinkedIn")))))
+                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
+                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
+                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
+                .andExpect(jsonPath("roles[0]", is("s")));
+    }
+
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
+        return MockMvcRequestBuilders.get(uri)
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
+    }
+
+
+
+    @Test
+    public void incorrectGetUserById() throws Exception{
+        User user=createUser();
+        when(userService.find(1L)).thenReturn(user);
+        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
+                andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void notFoundUserById() throws Exception{
+
+        when(userService.find(1L)).thenReturn(null);
+        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
+                andExpect(status().isNotFound());
+    }
+
+
+
     private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
         try {
             if (method == RequestMethod.GET) {
@@ -333,10 +401,10 @@ public class UserControllerTest extends TestUtil{
 
     private RegistrationDto setupCorrectRegistrationDto(){
         RegistrationDto registrationDto = new RegistrationDto();
-        registrationDto.setPassword("666666");
-        registrationDto.setLastName("LastName");
-        registrationDto.setFirstName("FirstName");
-        registrationDto.setConfirm("666666");
+        registrationDto.setPassword("123456");
+        registrationDto.setLastName("Ivanova");
+        registrationDto.setFirstName("Olya");
+        registrationDto.setConfirm("123456");
         registrationDto.setEmail(uniqueEmail);
         return  registrationDto;
     }

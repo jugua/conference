@@ -4,9 +4,7 @@ import ua.rd.cm.domain.ContactType;
 
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
+
 public interface ContactTypeService {
 
     ContactType find(Long id);

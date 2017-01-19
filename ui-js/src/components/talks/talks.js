@@ -1,5 +1,6 @@
 import talksComponent from './talks.component';
 import reviewTalkPopupComponent from './review-talk-popup/review-talk-popup.component';
+import userInfoPopupComponent from './user-info-popup/user-info-popup.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -17,7 +18,22 @@ export default (app) => {
           this.resolved = true;
         },
         controllerAs: 'ctrl'
+      })
+      .state('header.talksReviewTalk', {
+        url: '/talks/:reviewTalkId',
+        template: '<talks review-talk-id="ctrl.reviewTalkId" ng-if="ctrl.resolved"></talks>',
+        resolve: {
+          currentUser: Current => Current.current
+        },
+        controller: function Controller(Permissions, currentUser, $stateParams) {
+          Permissions.permitted('o', currentUser);
+          this.resolved = true;
+
+          this.reviewTalkId = $stateParams.reviewTalkId;
+        },
+        controllerAs: 'ctrl',
       });
   }).component('talks', talksComponent)
-    .component('reviewTalkPopup', reviewTalkPopupComponent);
+    .component('reviewTalkPopup', reviewTalkPopupComponent)
+    .component('userInfoPopup', userInfoPopupComponent);
 };

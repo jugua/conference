@@ -1,34 +1,46 @@
 export default class TalksController {
-  constructor(Current, Talks, Menus) {
+  constructor(Current, Talks, User) {
     'ngInject';
 
     this.current = Current.current;
 
     this.talksService = Talks;
-    this.talks = Talks.getAll();
+    this.userService = User;
 
+    this.talks = Talks.getAll();
     this.filter = {};
-    this.menuService = Menus;
     this.showFilters = true;
 
-    this.reviewTalkId = null;
-    this.reviewTalkStatus = null;
-    this.showReviewPopup = false;
+    if (this.reviewTalkId) {  // review specific talk right away
+      this.reviewTalkObj = Talks.get(this.reviewTalkId);
+      this.showReviewPopup = true;
+    } else {
+      this.reviewTalkObj = {};
+      this.showReviewPopup = false;
+    }
+
+    this.userInfoObj = {};   // user object to pass to popup controller
+    this.showUserInfoPopup = false;
   }
   showSettings() {
     this.showFilters = !this.showFilters;
   }
-  review(id, status) {
-    this.reviewTalkId = id;
-    this.reviewTalkStatus = status;
+  review(talk) {  // talk object passed
+    this.reviewTalkObj = talk;
     this.showReviewPopup = true;
   }
   hideReviewPopup() {
-    this.reviewTalkId = null;
+    this.reviewTalkObj = {};
     this.showReviewPopup = false;
-    this.refresh();
   }
-  refresh() {
-    this.talks = this.talksService.getAll();
+  userInfo(id) {
+    this.userInfoObj = {};
+    this.showUserInfoPopup = false;
+    this.userInfoObj = this.userService.get(id);
+    this.showUserInfoPopup = true;
+  }
+  hideUserInfoPopup() {
+    this.userInfoId = null;
+    this.showUserInfoPopup = false;
   }
 }

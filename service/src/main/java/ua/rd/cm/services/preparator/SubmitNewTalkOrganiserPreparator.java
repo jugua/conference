@@ -24,7 +24,7 @@ public class SubmitNewTalkOrganiserPreparator extends CustomMimeMessagePreparato
         model.put("speakerLastName", currentTalk.getUser().getLastName());
         model.put("speakerFirstName", currentTalk.getUser().getFirstName());
         model.put("email", receiver.getEmail());
-        model.put("link", "link"); //TODO link generator
+        model.put("link", "http://localhost:8050/#/talks/" + currentTalk.getId());
     }
 
     @Override
