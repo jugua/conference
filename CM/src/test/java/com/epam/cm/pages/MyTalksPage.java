@@ -1,6 +1,5 @@
 package com.epam.cm.pages;
 
-import com.epam.cm.core.utils.WebDriverSupport;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -9,12 +8,12 @@ import org.openqa.selenium.WebDriver;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-
 public class MyTalksPage extends AnyPage {
 
     private final String RowByName = "//*[@class='data-table__row ng-scope']/../div[contains(.,'%s')]";
     private final String STATUS = "//*[@class='data-table__row ng-scope']/../div[contains(.,'%s')]/div[@class='data-table__column data-table__column_status-talk ng-binding']";
     private final String TITLE = "//*[@class='data-table__row ng-scope']/div[contains(.,'%s')]/a";
+    private final String SPEAKER = "//*[@class='data-table__row ng-scope']/div/a[contains(.,'View Tester')]";
 
     @FindBy(xpath = "//*[@class='my-talks__header']/a")
     WebElementFacade submitNewTalkBtn;
@@ -66,7 +65,7 @@ public class MyTalksPage extends AnyPage {
     @FindBy(xpath = "//*[@id='new-talk-add-inf']")
     WebElementFacade additionalInfoField;
 
-    //filters
+    // filters
     @FindBy(xpath = "//*[@id='my-talk-status']")
     WebElementFacade filterByStatus;
     @FindBy(xpath = "//*[@id='my-talk-topic']")
@@ -100,23 +99,50 @@ public class MyTalksPage extends AnyPage {
     @FindBy(xpath = "//textarea[@ng-model='$ctrl.talk.addon']")
     WebElementFacade organiserAdditionalInfoField;
 
-    //approve
+    // view
+    @FindBy(xpath = "//*[@id='my-info-bio']")
+    WebElementFacade shortBio;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.job']")
+    WebElementFacade jobTitle;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.company']")
+    WebElementFacade company;
+    @FindBy(xpath = "//*[@id='my-info-linkedin-past-conferences']")
+    WebElementFacade pastConferences;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.mail']")
+    WebElementFacade speakersEmail;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.linkedin']")
+    WebElementFacade speakersLinkedIn;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.twitter']")
+    WebElementFacade speakersTwitter;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.facebook']")
+    WebElementFacade speakersFacebook;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.blog']")
+    WebElementFacade speakersBlog;
+    @FindBy(xpath = "//*[@ng-model='$ctrl.user.info']")
+    WebElementFacade speakersAdditionalInfo;
+    @FindBy(xpath = "//*[@class='btn talks-user-info-popup__button']")
+    WebElementFacade viewCloseBtn;
+
+    // approve
     @FindBy(xpath = "//button[@ng-click='$ctrl.approve()']")
     WebElementFacade approveBtn;
 
-
-    //reject
+    // reject
     @FindBy(xpath = "//button[@ng-click='$ctrl.reject()']")
     WebElementFacade rejectBtn;
     @FindBy(xpath = "//span[@class='field-error']")
     WebElementFacade reviewTalk;
 
-    //inProgress
+    // inProgress
     @FindBy(xpath = "//button[@ng-click='$ctrl.progress()']")
     WebElementFacade inProgressBtn;
 
-    public WebElementFacade findRow(String name){
-        WebElementFacade row = find(By.xpath(String.format(RowByName,name)));
+    public MyTalksPage(WebDriver driver) {
+        super(driver);
+    }
+
+    public WebElementFacade findRow(String name) {
+        WebElementFacade row = find(By.xpath(String.format(RowByName, name)));
         return row;
     }
 
@@ -124,17 +150,18 @@ public class MyTalksPage extends AnyPage {
         return find(By.xpath(String.format(STATUS, name))).getText();
     }
 
-    public void clickTitle(String name){
+    public void clickSpeaker() {
+        WebElementFacade speaker = find(By.xpath(String.format(SPEAKER)));
+        speaker.click();
+    }
+
+    public void clickTitle(String name) {
         WebElementFacade titleTable = find(By.xpath(String.format(TITLE, name)));
         titleTable.click();
     }
 
-    public void clickRejectBtn(){
+    public void clickRejectBtn() {
         rejectBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
-    }
-
-    public MyTalksPage(WebDriver driver) {
-        super(driver);
     }
 
     public void clickSubmitNewTalk() {
@@ -189,7 +216,7 @@ public class MyTalksPage extends AnyPage {
         cancelInvalidDataBtn.click();
     }
 
-    public void setOrgComments(String comments){
+    public void setOrgComments(String comments) {
         orgComments.clear();
         orgComments.type(comments);
     }
@@ -199,7 +226,7 @@ public class MyTalksPage extends AnyPage {
         titleField.type(title);
     }
 
-    public int getTitleLength(){
+    public int getTitleLength() {
         return titleField.getValue().length();
     }
 
@@ -212,7 +239,7 @@ public class MyTalksPage extends AnyPage {
         descriptionField.type(description);
     }
 
-    public int getDescriptionLength(){
+    public int getDescriptionLength() {
         return descriptionField.getValue().length();
     }
 
@@ -225,7 +252,7 @@ public class MyTalksPage extends AnyPage {
         additionalInfoField.type(additionalInfo);
     }
 
-    public int getAdditionalInfoLength(){
+    public int getAdditionalInfoLength() {
         return additionalInfoField.getValue().length();
     }
 
@@ -310,43 +337,54 @@ public class MyTalksPage extends AnyPage {
         organiserAdditionalInfoField.sendKeys(string);
     }
 
-    public String getOrganiserTitleValue(){
+    public String getOrganiserTitleValue() {
         return organiserTitleField.getValue();
     }
-    public String getOrganiserDescriptionValue(){
+
+    public String getOrganiserDescriptionValue() {
         return organiserDescriptionField.getValue();
     }
-    public String getOrganiserTopicValue(){
+
+    public String getOrganiserTopicValue() {
         return organiserTopicField.getValue();
     }
-    public String getOrganiserTypeValue(){
+
+    public String getOrganiserTypeValue() {
         return organiserTypeField.getValue();
     }
-    public String getOrganiserLanguageValue(){
+
+    public String getOrganiserLanguageValue() {
         return organiserLanguageField.getValue();
     }
-    public String getOrganiserLevelValue(){
+
+    public String getOrganiserLevelValue() {
         return organiserLevelField.getValue();
     }
-    public String getOrganiserAdditionalInfoValue(){
+
+    public String getOrganiserAdditionalInfoValue() {
         return organiserAdditionalInfoField.getValue();
     }
 
     public boolean areFieldsReadOnly() {
-        if (!organiserTitleField.isEnabled() &&
-                !organiserDescriptionField.isEnabled() &&
-                !organiserTopicField.isEnabled() &&
-                !organiserTypeField.isEnabled() &&
-                !organiserLanguageField.isEnabled() &&
-                !organiserLevelField.isEnabled() &&
-                !organiserAdditionalInfoField.isEnabled()) {
+        if (!organiserTitleField.isEnabled() && !organiserDescriptionField.isEnabled()
+                && !organiserTopicField.isEnabled() && !organiserTypeField.isEnabled()
+                && !organiserLanguageField.isEnabled() && !organiserLevelField.isEnabled()
+                && !organiserAdditionalInfoField.isEnabled()) {
             return true;
         }
         return false;
 
     }
 
-    public void waitABitLol(){
+    public boolean areFieldInViewReadOnly() {
+        if (!shortBio.isEnabled() && !jobTitle.isEnabled() && !company.isEnabled() && !pastConferences.isEnabled()
+                && !speakersEmail.isEnabled() && !speakersLinkedIn.isEnabled() && !speakersTwitter.isEnabled()
+                && !speakersFacebook.isEnabled() && !speakersBlog.isEnabled() && !speakersAdditionalInfo.isEnabled())
+            return true;
+        return false;
+    }
+
+    public void waitABitLol() {
         waitABit(3000);
     }
 }

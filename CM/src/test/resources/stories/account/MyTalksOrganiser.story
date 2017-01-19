@@ -70,7 +70,7 @@ When organiser clicks new created Talk:
 |New   |
 And clicks reject button without filling comment
 Then message asking me to specify rejection reason:
-|message  |
+|message                          |
 |Please specify a rejection reason|
 
 Examples:
@@ -210,3 +210,15 @@ Examples:
 |<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
 |TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
 |TestMyTalks|10           |10              |1      |1     |1         |1      |         |
+
+
+Scenario: Organiser view speaker's info
+Given user logged as speaker accessing 'My Talks' page:
+|email            |password|
+|tester@tester.com|tester  |
+And creates new Talk:
+|title  |description  |additionalInfo  |topic  |type  |language  |level  |
+|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
+And user logged as organiser 'Talks' page:
+|email              |password |
+|organiser@gmail.com|organiser|

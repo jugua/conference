@@ -175,6 +175,12 @@ public class MyTalksPageSteps extends ScenarioSteps {
         myTalksPage.clickTitle(name);
     }
 
+    @Step
+    public void clickFoundedSpeaker(){
+        //refactor this method
+        myTalksPage.clickSpeaker();
+    }
+
     public void clickInProgressBtn() {
         myTalksPage.clickInProgressBtn();
     }
@@ -200,6 +206,10 @@ public class MyTalksPageSteps extends ScenarioSteps {
         return myTalksPage.areFieldsReadOnly();
     }
 
+    @Step
+    public boolean areViewFieldReadOnly(){
+        return myTalksPage.areFieldInViewReadOnly();
+    }
 /*    @Step
     public boolean areFieldsReadOnly(MyTalksDTO dto) {
         typeTextInFields(dto);

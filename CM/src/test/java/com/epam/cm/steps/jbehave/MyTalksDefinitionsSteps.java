@@ -97,6 +97,12 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
     }
 
+    @When("organiser clicks speaker's name")
+    public void clickSpeakersName(){
+        myTalksPageSteps.clickFoundedSpeaker();
+        myTalksPageSteps.justWait();
+    }
+
     @When("fill 'Organiser`s comments' field: $ExampleForComment")
     public void fillCommentsField(ExamplesTable table) {
         boolean replaceNamedParameters = true;
@@ -336,5 +342,10 @@ public class MyTalksDefinitionsSteps {
         Assert.assertThat(mailCatcherClient
                         .getEmailById(mailCatcherClient.getLastEmail().getId(), MailCatcherClient.ResponseType.HTML).toString(),
                 containsString(msg1));
+    }
+
+    @Then("speakers info is shown with read-only fields")
+    public void checkSpeakersViewReadOnlyFields(){
+        Assert.assertTrue(myTalksPageSteps.areViewFieldReadOnly());
     }
 }

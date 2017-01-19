@@ -64,50 +64,6 @@ public class Rest {
     @Test
     public void createTalk() {
 
-        RestAssured.baseURI = "http://10.17.132.37:8050";
-        RestAssured.basePath = "/api";
-        Map<String, String> userCookie;
-
-        //stage 1: get "XSRF-TOKEN"
-        Response resp = RestAssured.given().log().all().get();
-
-        userCookie = new LinkedHashMap<>(resp.cookies());
-        //stage 2:  get new "JSESSIONID"
-        String newJsessionId =
-                RestAssured.given().auth().preemptive().
-                        basic("speaker@speaker.com", "speaker").
-                        headers("X-XSRF-TOKEN", resp.getCookie("XSRF-TOKEN")).
-                        cookies(resp.cookies()).
-                        contentType(JSON).log().all().
-                        post("/login").
-                        then().log().all().statusCode(200).
-                        extract().cookie("JSESSIONID");
-
-        userCookie.put("JSESSIONID", newJsessionId);
-        //stage 3: update "XSRF-TOKEN" for  logged user
-/*        String newXsrfToken =
-                RestAssured.given().contentType(JSON).
-                        cookies(userCookie).log().all().
-                        get("/user/current").
-                        then().log().all().statusCode(202).
-                        extract().cookie("XSRF-TOKEN");
-
-        userCookie.put("XSRF-TOKEN", newXsrfToken);*/
-        //
-
-        userCookie.entrySet().forEach(System.out::println);
-
-        /*TalksRestDTO talksRest = new TalksRestDTO();
-        talksRest.setAddon("add info");
-        talksRest.setDescription("bbwerbe");*/
-
-
-        RestAssured.given().contentType(JSON).
-                cookies(userCookie).
-                body("{\"title\":\"asd\",\"description\":\"asd\",\"topic\":\"JVM Languages and new programming paradigms\",\"type\":\"Lighting Talk\",\"lang\":\"Ukrainian\",\"level\":\"Beginner\",\"addon\":\"as\",\"status\":\"New\",\"date\":1484661167062}").
-                log().all().post("/api/talk").then().log().all().statusCode(200);
-                //extract().cookie("XSRF-TOKEN");
-
 
     }
 

@@ -19,6 +19,7 @@ public class MyTalksDTO {
     private String status;
     private String noRejectionReasonErrMessage;
 
+
     public String getNoRejectionReasonErrMessage() {
         return noRejectionReasonErrMessage;
     }
