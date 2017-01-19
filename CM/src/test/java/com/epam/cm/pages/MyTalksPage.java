@@ -83,6 +83,20 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade tableRow;
     @FindBy(xpath = "//*[@id=\"$ctrl.reviewTalkId\"]/div[1]/div/form/textarea[3]")
     WebElementFacade orgComments;
+    @FindBy(xpath = "//input[@id='new-talk-title']")
+    WebElementFacade organiserTitleField;
+    @FindBy(xpath = "//textarea[@ng-model='$ctrl.talk.description']")
+    WebElementFacade organiserDescriptionField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.talk.topic']")
+    WebElementFacade organiserTopicField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.talk.type']")
+    WebElementFacade organiserTypeField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.talk.lang']")
+    WebElementFacade organiserLanguageField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.talk.level']")
+    WebElementFacade organiserLevelField;
+    @FindBy(xpath = "//textarea[@ng-model='$ctrl.talk.addon']")
+    WebElementFacade organiserAdditionalInfoField;
 
     //approve
     @FindBy(xpath = "//button[@ng-click='$ctrl.approve()']")
@@ -260,6 +274,74 @@ public class MyTalksPage extends AnyPage {
     public String getNoRejectionReasonErrMessage() {
         String noRejectionReasonErrMessage = reviewTalk.getText();
         return noRejectionReasonErrMessage;
+    }
+
+    public int getOrgCommentsActualLength() {
+        return orgComments.getValue().length();
+    }
+
+    public void setOrganiserTitleField(String string) {
+        organiserTitleField.sendKeys(string);
+    }
+
+    public void setOrganiserDescriptionField(String string) {
+        organiserDescriptionField.sendKeys(string);
+    }
+
+    public void setOrganiserTopic(String string) {
+        organiserTopicField.sendKeys(string);
+    }
+
+    public void setOrganiserType(String string) {
+        organiserTypeField.sendKeys(string);
+    }
+
+    public void setOrganiserLanguage(String string) {
+        organiserLanguageField.sendKeys(string);
+    }
+
+    public void setOrganiserLevel(String string) {
+        organiserLevelField.sendKeys(string);
+    }
+
+    public void setOrganiserAdditionalInfoField(String string) {
+        organiserAdditionalInfoField.sendKeys(string);
+    }
+
+    public String getOrganiserTitleValue(){
+        return organiserTitleField.getValue();
+    }
+    public String getOrganiserDescriptionValue(){
+        return organiserDescriptionField.getValue();
+    }
+    public String getOrganiserTopicValue(){
+        return organiserTopicField.getValue();
+    }
+    public String getOrganiserTypeValue(){
+        return organiserTypeField.getValue();
+    }
+    public String getOrganiserLanguageValue(){
+        return organiserLanguageField.getValue();
+    }
+    public String getOrganiserLevelValue(){
+        return organiserLevelField.getValue();
+    }
+    public String getOrganiserAdditionalInfoValue(){
+        return organiserAdditionalInfoField.getValue();
+    }
+
+    public boolean areFieldsReadOnly() {
+        if (!organiserTitleField.isEnabled() &&
+                !organiserDescriptionField.isEnabled() &&
+                !organiserTopicField.isEnabled() &&
+                !organiserTypeField.isEnabled() &&
+                !organiserLanguageField.isEnabled() &&
+                !organiserLevelField.isEnabled() &&
+                !organiserAdditionalInfoField.isEnabled()) {
+            return true;
+        }
+        return false;
+
     }
 
     public void waitABitLol(){

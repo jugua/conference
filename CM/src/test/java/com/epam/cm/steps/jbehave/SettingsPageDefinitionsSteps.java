@@ -330,7 +330,7 @@ public class SettingsPageDefinitionsSteps {
         loginPageSteps.clickSettingsOption();
     }
 
-    // запихать это говно в другое говно сверху этого говна(логинВизНьюПв)
+
     @Given("changes his password: $actTable")
     @Then("changes his password: $actTable")
     public void resetBackPw(ExamplesTable table) {
@@ -391,6 +391,5 @@ public class SettingsPageDefinitionsSteps {
         settingsSteps.typeEmail(settingsDTO.getOldEmail());
         clickEmailSaveBtn();
         createAccountPageSteps.openLinkFromEmail();
-        // Assert.assertTrue(createAccountPageSteps.isUserLoggedIn());
     }
 }

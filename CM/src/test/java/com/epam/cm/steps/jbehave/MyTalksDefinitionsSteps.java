@@ -103,6 +103,21 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
     }
 
+    @When("fill 'Organiser`s comments' field: $ExampleForComment")
+    public void fillCommentsField(ExamplesTable table) {
+        boolean replaceNamedParameters = true;
+        String comment = table.getRowAsParameters(0, replaceNamedParameters).valueAs("Organizer`s Comments", String.class);
+        myGlobalTalksDTO.setComment(comment);
+        myTalksPageSteps.typeOrgComments(myGlobalTalksDTO);
+    }
+
+
+    @Then("organiser cant type more than maximum allowed number of symbols in 'Organizer`s comments' field")
+    public void organiserCantTypeMoreThanMaxAllowedSymbols() {
+        Assert.assertTrue(myTalksPageSteps.organiserCantTypeMoreThanMaxAllowedSymbol());
+    }
+
+
     @When("clicks reject button after filling comment: $table")
     public void rejectTalk(ExamplesTable table){
         boolean replaceNamedParameters = true;
@@ -299,6 +314,11 @@ public class MyTalksDefinitionsSteps {
         String message = table.getRowAsParameters(0, replaceNamedParameters).valueAs("message", String.class);
         myGlobalTalksDTO.setNoRejectionReasonErrMessage(message);
         Assert.assertThat(myTalksPageSteps.getNoRejectionReasonErrMessage(),is(myGlobalTalksDTO.getNoRejectionReasonErrMessage()));
+    }
+
+    @Then("all fields except Organizer's Comments box are read-only")
+    public void areFieldsReadOnly() {
+        Assert.assertTrue(myTalksPageSteps.areFieldsReadOnly());
     }
 
     @Then("email was sent to users email : $table")
