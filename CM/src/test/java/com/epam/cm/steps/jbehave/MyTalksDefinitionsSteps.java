@@ -33,20 +33,14 @@ public class MyTalksDefinitionsSteps {
     @Given("user logged as speaker accessing 'My Talks' page: $loginTable")
     public void loginAsUser(ExamplesTable table) {
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
-        loginPageSteps.unsignedUserInHomePage();
-        loginPageSteps.clickOnAccountMenu();
-        loginPageSteps.typeLoginAndPassword(user);
-        loginPageSteps.clickSignInButton();
+        loginPageSteps.loginInOneStep(user);
         loginPageSteps.clickMyTalks();
     }
 
     @Given("user logged as organiser 'Talks' page: $loginTable")
     public void loginAsOrganiser(ExamplesTable table){
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
-        loginPageSteps.unsignedUserInHomePage();
-        loginPageSteps.clickOnAccountMenu();
-        loginPageSteps.typeLoginAndPassword(user);
-        loginPageSteps.clickSignInButton();
+        loginPageSteps.loginInOneStep(user);
         loginPageSteps.clickTalksBtnAsOrg();
     }
 
@@ -326,7 +320,6 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.justWait();
         user = table.getRowsAs(CredentialsDTO.class).get(0);
         System.out.println(mailCatcherClient.getLastEmail());
-        // КАКОГО ХЕРА ЭТО ЛИСТ СТРИНГОВ
         Assert.assertThat(mailCatcherClient.getLastEmail().getRecipients().get(0),
                 containsString(user.getEmail().toLowerCase()));
 

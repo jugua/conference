@@ -28,12 +28,7 @@ public class LoginPageDefinitionSteps {
     @Given("the user logged as: $credentials")
     public void unsignedUserLoginAs(ExamplesTable table) {
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
-
-        loginPageSteps.unsignedUserInHomePage();
-        loginPageSteps.clickOnAccountMenu();
-        loginPageSteps.typeLoginAndPassword(user);
-        loginPageSteps.clickSignInButton();
-
+        loginPageSteps.loginInOneStep(user);
     }
 
     @Then("user logs out")

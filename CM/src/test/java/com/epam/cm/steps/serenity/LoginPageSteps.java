@@ -30,6 +30,20 @@ public class LoginPageSteps extends ScenarioSteps {
     }
 
     @Step
+    public void loginInOneStep(CredentialsDTO user){
+        homePage.open();
+        homePage.waitForPageToLoad();
+        if (!homePage.getMenu().getAccountMenuTitle().matches("Your Account")) {
+            logout();
+        }
+        WebDriverSupport.reloadPage();
+        homePage.getMenu().clickAccountMenuButton();
+        homePage.getMenu().setLoginField(user.getEmail());
+        homePage.getMenu().setPasswordField(user.getPassword());
+        homePage.getMenu().clickSignInButton();
+    }
+
+    @Step
     public void clickOnAccountMenu() {
 
         homePage.getMenu().clickAccountMenuButton();
