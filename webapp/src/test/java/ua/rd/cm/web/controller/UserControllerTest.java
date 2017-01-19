@@ -359,25 +359,26 @@ public class UserControllerTest extends TestUtil{
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
-    /*
+
 
 
     @Test
-    public void incorrectGetTalkById() throws Exception{
-        Talk talk=createTalk(createUser());
-        when(talkService.findTalkById(1L)).thenReturn(talk);
-        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1)).
+    public void incorrectGetUserById() throws Exception{
+        User user=createUser();
+        when(userService.find(1L)).thenReturn(user);
+        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
                 andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void notFoundTalkById() throws Exception{
-        when(talkService.findTalkById(1L)).thenReturn(null);
-        mockMvc.perform(prepareGetRequest(API_TALK+"/"+1)).
+    public void notFoundUserById() throws Exception{
+
+        when(userService.find(1L)).thenReturn(null);
+        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
                 andExpect(status().isNotFound());
     }
-*/
+
 
 
     private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
