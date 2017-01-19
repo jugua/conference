@@ -34,11 +34,7 @@ public class SettingsPageDefinitionsSteps {
 
     public void goToSettingsPageAsSpeaker(ExamplesTable table) {
         user = table.getRowsAs(CredentialsDTO.class).get(0);
-
-        loginPageSteps.unsignedUserInHomePage();
-        loginPageSteps.clickOnAccountMenu();
-        loginPageSteps.typeLoginAndPassword(user);
-        loginPageSteps.clickSignInButton();
+        loginPageSteps.loginInOneStep(user);
         loginPageSteps.clickSettingsOption();
     }
 
@@ -47,10 +43,7 @@ public class SettingsPageDefinitionsSteps {
 
         user = table.getRowsAs(CredentialsDTO.class).get(0);
 
-        loginPageSteps.unsignedUserInHomePage();
-        loginPageSteps.clickOnAccountMenu();
-        loginPageSteps.typeLoginAndPassword(user);
-        loginPageSteps.clickSignInButton();
+        loginPageSteps.loginInOneStep(user);
         loginPageSteps.clickSettingsOption();
         settingsSteps.clickEditLinkNextToPw();
         settingsDTO = table.getRowsAs(SettingsDTO.class).get(0);

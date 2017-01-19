@@ -23,10 +23,7 @@ public class MyInfoPageDefinitionSteps {
     public void userLoggedAsSpeaker(ExamplesTable table) {
 
         CredentialsDTO user = table.getRowsAs(CredentialsDTO.class).get(0);
-        loginPageSteps.unsignedUserInHomePage();
-        loginPageSteps.clickOnAccountMenu();
-        loginPageSteps.typeLoginAndPassword(user);
-        loginPageSteps.clickSignInButton();
+        loginPageSteps.loginInOneStep(user);
     }
 
     @When("user clicks My Info option in account menu")
