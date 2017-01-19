@@ -186,12 +186,20 @@ public class TalkController {
             message.setResult("successfully_updated");
             responseEntity = prepareResponse(HttpStatus.OK, message);
             notifyOrganisers(talk, request);
-            mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
+            notifySpeaker(talk);
         } else {
             message.setError("wrong_status");
             responseEntity = prepareResponse(HttpStatus.CONFLICT, message);
         }
         return responseEntity;
+    }
+
+    private void notifySpeaker(Talk talk) {
+        TalkStatus status = talk.getStatus();
+        if (status.isStatusName("In Progress") && !talk.isValidComment()){
+            return;
+        }
+        mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
     }
 
     private void notifyOrganisers(Talk talk, HttpServletRequest request) {
