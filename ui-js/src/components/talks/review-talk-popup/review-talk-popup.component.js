@@ -3,9 +3,8 @@ import controller from './review-talk-popup.controller';
 
 const reviewTalkPopupComponent = {
   bindings: {
-    id: '<',
-    status: '<',
-    onHideReviewPopup: '&'
+    talk: '<',
+    onHideReviewPopup: '&',
   },
   template,
   controller
