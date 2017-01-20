@@ -1,5 +1,5 @@
 export default class SignInController {
-  constructor(signInService, $scope, Constants) {
+  constructor($scope, $state, $location, signInService, Constants, LocalStorage) {
     'ngInject';
 
     this.user = {};
@@ -7,6 +7,10 @@ export default class SignInController {
     this.service = signInService;
     this.scope = $scope;
     this.emailPattern = Constants.email;
+
+    this.state = $state;
+    this.location = $location;
+    this.localStorageService = LocalStorage;
   }
 
   login() {
@@ -43,7 +47,17 @@ export default class SignInController {
   successSignIn() {
     this.user = {};
     this.userForm.$setPristine();
-    this.service.callTheEvent();
+
+    const redirectStateName = this.localStorageService.getItem('redirectStateName');
+    const redirectStateParams = JSON.parse(this.localStorageService.getItem('redirectStateParams'));
+
+    if (redirectStateName) {
+      this.localStorageService.removeItem('redirectStateName');
+      this.localStorageService.removeItem('redirectStateParams');
+      this.state.go(redirectStateName, redirectStateParams, {reload: true});
+    } else {
+      this.service.callTheEvent();
+    }
   }
 
   emitCloseDropdown() {

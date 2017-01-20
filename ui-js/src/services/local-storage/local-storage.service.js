@@ -1,8 +1,8 @@
 /* global window */
 
-function LocalStorage() {
+function LocalStorage($window) {
   function getToken() {
-    let info = window.localStorage.userInfo;
+    let info = $window.localStorage.userInfo;
     let token;
 
     if (info) {
@@ -14,8 +14,24 @@ function LocalStorage() {
 
     return token;
   }
+
+  function getItem(key) {
+    return $window.localStorage.getItem(key);
+  }
+
+  function setItem(key, value) {
+    $window.localStorage.setItem(key, value);
+  }
+
+  function removeItem(key) {
+    $window.localStorage.removeItem(key);
+  }
+
   return {
-    getToken
+    getToken,
+    getItem,
+    setItem,
+    removeItem,
   };
 }
 
