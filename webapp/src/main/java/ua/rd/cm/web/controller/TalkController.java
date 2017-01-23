@@ -124,7 +124,7 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
     public ResponseEntity actionOnTalk(@PathVariable("id") Long talkId,
-                                       @Validated @RequestBody ActionDto dto,
+                                       @Valid @RequestBody ActionDto dto,
                                        BindingResult bindingResult,
                                        HttpServletRequest request) {
         MessageDto resultMessage = new MessageDto();
