@@ -36,7 +36,6 @@ public class TalkController {
     private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
-    private StatusService statusService;
     private TypeService typeService;
     private LanguageService languageService;
     private LevelService levelService;
@@ -48,7 +47,7 @@ public class TalkController {
 
     @Autowired
     public TalkController(ModelMapper mapper, UserService userService,
-                          TalkService talkService, StatusService statusService,
+                          TalkService talkService,
                           TypeService typeService, LanguageService languageService,
                           LevelService levelService, TopicService topicService,
                           MailService mailService, ContactTypeService contactTypeService
@@ -56,7 +55,6 @@ public class TalkController {
         this.mapper = mapper;
         this.userService = userService;
         this.talkService = talkService;
-        this.statusService = statusService;
         this.languageService = languageService;
         this.topicService = topicService;
         this.mailService = mailService;

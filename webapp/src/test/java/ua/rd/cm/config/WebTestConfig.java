@@ -40,10 +40,6 @@ public class WebTestConfig {
     public LanguageService mockLanguageService() {
         return mock(LanguageService.class);
     }
-    @Bean
-    public StatusService mockStatusService() {
-        return mock(StatusService.class);
-    }
 	@Bean
 	public PhotoService mockPhotoService() {
 		return mock(PhotoService.class);
