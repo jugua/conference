@@ -1,15 +1,17 @@
 package ua.rd.cm.config;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import javax.sql.DataSource;
 
 @Configuration
@@ -19,13 +21,13 @@ import javax.sql.DataSource;
 public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
-    public DataSource dataSource() {
+    public DataSource dataSource(Environment environment) {
         BasicDataSource ds = new BasicDataSource();
 
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/conference_management");
-        ds.setUsername("trybel_master");
-        ds.setPassword("password");
+        ds.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+        ds.setUrl(environment.getProperty("jdbc.url"));
+        ds.setUsername(environment.getProperty("jdbc.username"));
+        ds.setPassword(environment.getProperty("jdbc.password"));
         return ds;
     }
 

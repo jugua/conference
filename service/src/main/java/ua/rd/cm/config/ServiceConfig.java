@@ -1,9 +1,7 @@
 package ua.rd.cm.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -23,6 +21,7 @@ import java.util.Properties;
         "ua.rd.cm.services"
 })
 @Import(RepositoryConfig.class)
+@PropertySource("classpath:mail.properties")
 public class ServiceConfig {
 
     @Bean
@@ -34,22 +33,26 @@ public class ServiceConfig {
     }
 
     @Bean
-    public JavaMailSender getMailSender() {
+    public JavaMailSender getMailSender(Environment environment) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-        mailSender.setHost("localhost");
-        mailSender.setPort(1025);
-        mailSender.setUsername("conference_manager");
-        mailSender.setPassword("password");
+        mailSender.setHost(environment.getProperty("mail.host"));
+        mailSender.setPort(environment.getProperty("mail.port", Integer.class));
+        mailSender.setUsername(environment.getProperty("mail.username"));
+        mailSender.setPassword(environment.getProperty("mail.password"));
 
         Properties javaMailProperties = new Properties();
-        javaMailProperties.put("mail.smtp.starttls.enable", "true");
-        javaMailProperties.put("mail.smtp.auth", "true");
-        javaMailProperties.put("mail.transport.protocol", "smtp");
-        javaMailProperties.put("mail.debug", "true");
+        setProperty(javaMailProperties, environment, "mail.smtp.starttls.enable");
+        setProperty(javaMailProperties, environment, "mail.smtp.auth");
+        setProperty(javaMailProperties, environment, "mail.transport.protocol");
+        setProperty(javaMailProperties, environment, "mail.debug");
 
         mailSender.setJavaMailProperties(javaMailProperties);
         return mailSender;
+    }
+
+    private void setProperty(Properties props, Environment env, String propName) {
+        props.put(propName, env.getProperty(propName));
     }
 
     @Bean
