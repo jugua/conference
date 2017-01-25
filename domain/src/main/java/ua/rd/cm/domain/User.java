@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,7 +33,7 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique =  true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -53,8 +54,22 @@ public class User {
     @JoinTable(name = "user_role")
     private Set<Role> userRoles = new HashSet<>();
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Talk> speakerTalks;
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "organiser", fetch = FetchType.LAZY)
+    private List<Talk> assignedTalks;
+
     public boolean addRole(Role role) {
         return userRoles.add(role);
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     public enum UserStatus {
