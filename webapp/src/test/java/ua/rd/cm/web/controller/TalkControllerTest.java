@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -38,7 +39,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -89,13 +90,13 @@ public class TalkControllerTest extends TestUtil {
         speakerRole.add(new Role(2L, Role.SPEAKER));
         speakerUser = new User(1L, "Olya", "Ivanova",
                 "ivanova@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, speakerRole);
+                null, User.UserStatus.CONFIRMED, userInfo, speakerRole, null, null);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
         organiserUser = new User(1L, "Artem", "Trybel",
                 "trybel@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, organiserRole);
+                null, User.UserStatus.CONFIRMED, userInfo, organiserRole, null, null);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -372,9 +373,11 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void correctGetAllTalks() throws Exception {
-        Talk talk = createTalk(speakerUser);
+        Talk talk = createTalk(speakerUser, organiserUser);
         List<Talk> talks = new ArrayList<>();
         talks.add(talk);
+
+        when(userService.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organiserUser);
         when(talkService.findAll()).thenReturn(talks);
         mockMvc.perform(prepareGetRequest(API_TALK))
                 .andExpect(status().isOk())
@@ -390,8 +393,41 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(jsonPath("$[0].addon", is(talk.getAdditionalInfo())))
                 .andExpect(jsonPath("$[0].status", is(talk.getStatus().getName())))
                 .andExpect(jsonPath("$[0].date", is(talk.getTime().toString())))
-                .andExpect(jsonPath("$[0].comment", is(talk.getOrganiserComment())));
+                .andExpect(jsonPath("$[0].comment", is(talk.getOrganiserComment())))
+                .andExpect(jsonPath("$[0].assigner", is(talk.getOrganiser().getFullName())));
+    }
 
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void testOrganiserIsSetOnTalkReject() throws Exception {
+        testOrganiserIsSetOnStatusChange(REJECTED);
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void testOrganiserIsSetOnTalkApprove() throws Exception {
+        testOrganiserIsSetOnStatusChange(APPROVED);
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void testOrganiserIsSetOnTalkInProgress() throws Exception {
+        testOrganiserIsSetOnStatusChange(IN_PROGRESS);
+    }
+
+    private void testOrganiserIsSetOnStatusChange(String action) throws Exception {
+        Talk talk = createTalk(speakerUser);
+        when(talkService.findTalkById(talk.getId())).thenReturn(talk);
+
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + talk.getId(), "comment", action));
+
+        verify(talkService, atLeastOnce()).
+                update(argThat(new ArgumentMatcher<Talk>() {
+                    @Override
+                    public boolean matches(Object o) {
+                        return ((Talk) o).getOrganiser().equals(organiserUser);
+                    }
+                }));
     }
 
     @Test
@@ -399,12 +435,13 @@ public class TalkControllerTest extends TestUtil {
     public void getTalkById() throws Exception {
         Talk talk = createTalk(createUser());
         when(talkService.findTalkById(1L)).thenReturn(talk);
+
         mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("_id", is(Integer.parseInt(talk.getId().toString()))))
                 .andExpect(jsonPath("title", is(talk.getTitle())))
                 .andExpect(jsonPath("speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
-                .andExpect(jsonPath("name", is(talk.getUser().getFirstName() + " " + talk.getUser().getLastName())))
+                .andExpect(jsonPath("name", is(talk.getUser().getFullName())))
                 .andExpect(jsonPath("description", is(talk.getDescription())))
                 .andExpect(jsonPath("topic", is(talk.getTopic().getName())))
                 .andExpect(jsonPath("type", is(talk.getType().getName())))
@@ -414,7 +451,6 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(jsonPath("status", is(talk.getStatus().getName())))
                 .andExpect(jsonPath("date", is(talk.getTime().toString())))
                 .andExpect(jsonPath("comment", is(talk.getOrganiserComment())));
-        ;
     }
 
     @Test
@@ -515,7 +551,13 @@ public class TalkControllerTest extends TestUtil {
         Type type = new Type(1L, "Type");
         Language language = new Language(1L, "Language");
         Level level = new Level(1L, "Level");
-        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null);
+        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null, null);
+    }
+
+    private Talk createTalk(User speaker, User organiser) {
+        Talk talk = createTalk(speaker);
+        talk.setOrganiser(organiser);
+        return talk;
     }
 
     private TalkDto setupCorrectTalkDto() {
