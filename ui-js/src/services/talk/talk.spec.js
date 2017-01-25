@@ -9,7 +9,7 @@ describe('Talk Service', () => {
   beforeEach(inject((_$q_) => {
     q = _$q_;
     LocalStorage = {
-      getToken: ()=> {
+      getToken: () => {
 
       }
     };
@@ -40,14 +40,6 @@ describe('Talk Service', () => {
     expect(sut instanceof Object).toEqual(true);
   });
 
-  it('TalkService.clear is defined ', () => {
-    expect(sut.clear).toBeDefined(true);
-  });
-
-  it('TalkService.clear is Fuction ', () => {
-    expect(typeof sut.clear).toBe('function');
-  });
-
   it('TalkService.add is defined ', () => {
     expect(sut.add).toBeDefined(true);
   });
@@ -64,12 +56,6 @@ describe('Talk Service', () => {
     expect(typeof sut.getAll).toBe('function');
   });
 
-  it('TalkService method clear() clears _talks', () => {
-    sut._talks = ['test'];
-    sut.clear();
-    expect(sut._talks).toEqual(null);
-  });
-
   it('TalksService getAll() returns object if resourse returned data', () => {
     expect(sut.getAll() instanceof Object).toBe(true);
   });
@@ -79,14 +65,8 @@ describe('Talk Service', () => {
     expect(sut.talks.getAll).toHaveBeenCalled();
   });
 
-  it('TalksService getAll() didn\'t send request if talks are not empty', () => {
-    sut._talks = ['test'];
-    sut.getAll();
-    expect(sut.talks.getAll).not.toHaveBeenCalled();
-  });
-
   it('TalksService add() send a requrest to backend with talk in params', () => {
-    let talk = ['test'];
+    const talk = ['test'];
     sut.add(talk);
     expect(sut.talks.add).toHaveBeenCalledWith(talk, jasmine.any(Function), jasmine.any(Function));
   });

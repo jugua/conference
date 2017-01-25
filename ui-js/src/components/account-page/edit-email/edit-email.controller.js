@@ -73,10 +73,14 @@ export default class EditEmailController {
     this.confirm = true;
     this.confirmMessage = message;
 
+    console.log('HERE');
+
     this.timeout(() => {
+      console.log('FLUSHED');
       this.confirm = false;
       this.confirmMessage = null;
       this.closeEditEmail();
+      console.log('WAT');
     }, this.confirmTimeout);
   }
   closeEditEmail() {

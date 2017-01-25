@@ -1,10 +1,8 @@
-/* global describe, beforeEach, it, expect */
-
 import MenuService from './menus.service';
 
 describe('menuService', () => {
   let sut;
-  beforeEach(()=> {
+  beforeEach(() => {
     sut = new MenuService();
   });
 
