@@ -1,5 +1,9 @@
 <div class="talks-container">
   <div class="talks">
+
+    <p>{{$ctrl.user}}</p>
+
+
     <div class="talks__header">
       <a  class="btn talks__button">export to excel </a>
     </div>
@@ -70,7 +74,7 @@
           <div class="data-table__column data-table__column_date-talk">{{talk.date | date:"dd/MM/yyyy"}}</div>
           <div class="data-table__column data-table__column_status-talk">{{talk.status}}</div>
           <div class="data-table__column data-table__column_comments-talk">{{talk.comment}}</div>
-          <div class="data-table__column data-table__column_assign-talk">{{talk.assigner}}</div>
+          <div class="data-table__column data-table__column_assign-talk">{{talk.assignee}}</div>
         </div>
       </div>
     </div>

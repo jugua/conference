@@ -1,5 +1,5 @@
 export default class {
-  constructor(Talks) {
+  constructor(Talks, Current) {
     'ngInject';
 
     this.talksService = Talks;
@@ -10,6 +10,11 @@ export default class {
 
     this.commentRequired = false;
     this.confirmShown = false;
+
+    Current.current
+      .then((res) => {
+        this.reviewer = `${res.fname} ${res.lname}`;
+      });
   }
 
   get statusEditable() {  // getter, convenient for template inline triggers
@@ -25,6 +30,7 @@ export default class {
       () => {   // success callback
         this.talk.comment = this.comment;   // modify the obj itself, affect the view
         this.talk.status = this.talksService.TALK_STATUS_APPROVED;
+        this.talk.assignee = this.reviewer;
         this.close();
       });
   }
@@ -38,6 +44,7 @@ export default class {
       () => {
         this.talk.comment = this.comment;
         this.talk.status = this.talksService.TALK_STATUS_REJECTED;
+        this.talk.assignee = this.reviewer;
         this.close();
       });
   }
@@ -47,6 +54,7 @@ export default class {
       () => {
         this.talk.comment = this.comment;
         this.talk.status = this.talksService.TALK_STATUS_PROGRESS;
+        this.talk.assignee = this.reviewer;
         this.close();
       });
   }
