@@ -131,7 +131,7 @@ public class VerificationTokenServiceTest {
 
     private static User createUser() {
         return new User(null, "FName", "LName", "test@gmail.com", "password",
-                "testUrl3",  User.UserStatus.CONFIRMED,null, null);
+                "testUrl3",  User.UserStatus.CONFIRMED,null, null, null, null);
     }
 
     private LocalDateTime createExpiredDate(int decreasingTimeInMinutes) {

@@ -24,17 +24,17 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	private UserRepository repository;
 	
 	@PersistenceContext
-	EntityManager em; //added for explicit flushing from Hibernate cache.
+	private EntityManager em; //added for explicit flushing from Hibernate cache.
 	
 	
 	@Before
 	public void setUp() {
-		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD", 
-				"testUrl", User.UserStatus.CONFIRMED, null, null);
+		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD",
+				"testUrl", User.UserStatus.CONFIRMED, null, null, null, null);
 		saveUser(user);
 		
-		user = new User(31L, "testName2", "testSurname2", "test2@gmail.com", "tribel1234PASSWORD2", 
-				"testUrl2",  User.UserStatus.CONFIRMED,null, null);
+		user = new User(31L, "testName2", "testSurname2", "test2@gmail.com", "tribel1234PASSWORD2",
+				"testUrl2",  User.UserStatus.CONFIRMED,null, null,null, null);
 		
 		saveUser(user);
 	}
@@ -49,7 +49,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	public void testSaveUser() {
 		User user = new User(null, "testName3", "testSurname3", "test3@gmail" +
 				".com",	"tribel1234PASSWORD3",
-				"testUrl3",  User.UserStatus.CONFIRMED,null, null);
+				"testUrl3",  User.UserStatus.CONFIRMED,null, null,null, null);
 		
 		repository.saveUser(user);
 		
@@ -65,7 +65,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	public void testUpdateUser() {
 		User user = new User(null, "testName3", "testSurname3", "test3@gmail" +
 				".com", "tribel1234PASSWORD3",
-				"testUrl3",  User.UserStatus.CONFIRMED,null, null);
+				"testUrl3",  User.UserStatus.CONFIRMED,null, null,null, null);
 		
 		repository.saveUser(user);
 		user.setId(2L);
@@ -112,7 +112,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 		assertEquals(new Long(31), users.get(0).getId());
 	}
 	
-	protected void saveUser(User usr) {
+	private void saveUser(User usr) {
 		jdbcTemplate.update("INSERT INTO user (user_id, first_name, last_name, email, "
 				+ " password, photo, user_info_id) "
 				+ " values(?,?,?,?,?,?,?)",

@@ -45,7 +45,13 @@ public class ChangePasswordControllerTest {
     @Before
     public void setUp() throws Exception {
         this.mockMvc = MockMvcBuilders.standaloneSetup(settingsController).build();
-        user = new User(1L, "Olya", "Ivanova", "ivanova@gmail.com", "111111", null, null, null, null);
+        user = new User();
+        user.setId(1L);
+        user.setFirstName("Olya");
+        user.setLastName("Ivanova");
+        user.setEmail("ivanova@gmail.com");
+        user.setPassword("111111");
+
         settingsDto = setupCorrectSettingsDto();
         principal = user::getEmail;
         when(userService.getByEmail(user.getEmail())).thenReturn(user);
