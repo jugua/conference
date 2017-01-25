@@ -1,0 +1,51 @@
+export default class {
+  constructor(Menus, Talks) {
+    'ngInject';
+
+    this.talksService = Talks;
+    this.selectService = Menus;
+
+    this.obj = {};    // temp object to hold the original object's properties while editing
+    Object.assign(this.obj, this.talk);  // shallow copy object, not to modify the original obj itself yet
+
+    this.form = {};
+
+    this.confirmShown = false;
+  }
+
+  get editable() {  // getter, convenient for template inline triggers
+    if (this.talk.status === this.talksService.TALK_STATUS_NEW ||
+        this.talk.status === this.talksService.TALK_STATUS_PROGRESS) {
+      return true;
+    }
+    return false;
+  }
+
+  save() {
+    this.talksService.update(this.talk._id, this.obj,
+      () => {   // success callback
+        this.talk = this.obj;   // modify the obj itself, affect the view
+        this.close();
+      });
+  }
+
+  closeCheck() {
+    if (this.form.$dirty) {  // form modified, but attempting to leave
+      this.showConfirm();
+    } else {
+      this.close();
+    }
+  }
+
+  close() {
+    this.onHideEditPopup();
+  }
+
+  showConfirm() {
+    this.confirmShown = true;
+  }
+
+  hideConfirm() {
+    this.confirmShown = false;
+  }
+}
