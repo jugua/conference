@@ -24,10 +24,10 @@ public class RepositoryConfig {
     public DataSource dataSource(Environment environment) {
         BasicDataSource ds = new BasicDataSource();
 
-        ds.setDriverClassName(environment.getProperty("driverClassName"));
-        ds.setUrl(environment.getProperty("url"));
-        ds.setUsername(environment.getProperty("username"));
-        ds.setPassword(environment.getProperty("password"));
+        ds.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+        ds.setUrl(environment.getProperty("jdbc.url"));
+        ds.setUsername(environment.getProperty("jdbc.username"));
+        ds.setPassword(environment.getProperty("jdbc.password"));
         return ds;
     }
 
