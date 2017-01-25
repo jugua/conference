@@ -6,13 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
 import ua.rd.cm.services.preparator.ChangeTalkStatusOrganiserPreparator;
 import ua.rd.cm.services.preparator.ChangeTalkStatusSpeakerPreparator;
@@ -21,7 +16,6 @@ import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
-import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/talk")
 public class TalkController {
+    private static final String ORGANISER = "ORGANISER";
 
     private ModelMapper mapper;
     private UserService userService;
@@ -71,7 +66,7 @@ public class TalkController {
 
         if (bindingResult.hasFieldErrors()) {
             messageDto.setError("fields_error");
-            return prepareResponse(HttpStatus.BAD_REQUEST,messageDto);
+            return prepareResponse(HttpStatus.BAD_REQUEST, messageDto);
         }
 
         User currentUser = userService.getByEmail(request.getRemoteUser());
@@ -83,7 +78,6 @@ public class TalkController {
             httpStatus = HttpStatus.OK;
         }
         messageDto.setId(id);
-        //return ResponseEntity.status(httpStatus).body(messageDto);
         return new ResponseEntity<>(messageDto, httpStatus);
     }
 
@@ -91,7 +85,7 @@ public class TalkController {
     @GetMapping
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
         List<TalkDto> userTalkDtoList;
-        if (request.isUserInRole("ORGANISER")) {
+        if (request.isUserInRole(ORGANISER)) {
             userTalkDtoList = getTalksForOrganiser();
         } else {
             userTalkDtoList = getTalksForSpeaker(request.getRemoteUser());
@@ -104,7 +98,7 @@ public class TalkController {
     public ResponseEntity getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
         MessageDto resultMessage = new MessageDto();
 
-        if (!request.isUserInRole("ORGANISER")) {
+        if (!request.isUserInRole(ORGANISER)) {
             resultMessage.setError("unauthorized");
             return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
         }
@@ -132,10 +126,10 @@ public class TalkController {
             return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
         }
         if (bindingResult.hasFieldErrors()) {
-            if(isCommentToLong(bindingResult)){
+            if (isCommentToLong(bindingResult)) {
                 resultMessage.setError("comment_too_long");
                 return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
-            }else{
+            } else {
                 resultMessage.setError("fields_error");
                 return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
             }
@@ -146,24 +140,18 @@ public class TalkController {
             resultMessage.setError("talk_not_found");
             return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
         }
-        switch (dto.getStatus()) {
-            case "Rejected": {
-                if (dto.getComment()==null || dto.getComment().length() < 1) {
-                    resultMessage.setError("empty_comment");
-                    return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
-                }
-                return trySetStatus(dto, talk, request);
+        String status = dto.getStatus();
+        if ("Rejected".equals(status)) {
+            if (dto.getComment() == null || dto.getComment().length() < 1) {
+                resultMessage.setError("empty_comment");
+                return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
             }
-            case "In Progress": {
-                return trySetStatus(dto, talk, request);
-            }
-            case "Approved": {
-                return trySetStatus(dto, talk, request);
-            }
-            default: {
-                resultMessage.setError("wrong_status");
-                return prepareResponse(HttpStatus.CONFLICT, resultMessage);
-            }
+            return trySetStatus(dto, talk, request);
+        } else if ("In Progress".equals(status) || "Approved".equals(status)) {
+            return trySetStatus(dto, talk, request);
+        } else {
+            resultMessage.setError("wrong_status");
+            return prepareResponse(HttpStatus.CONFLICT, resultMessage);
         }
     }
 
@@ -179,6 +167,8 @@ public class TalkController {
         MessageDto message = new MessageDto();
         ResponseEntity responseEntity;
         if (talk.setStatus(TalkStatus.getStatusByName(dto.getStatus()))) {
+            talk.setOrganiser(userService.getByEmail(request.getRemoteUser()));
+
             talk.setOrganiserComment(dto.getComment());
             talkService.update(talk);
             message.setResult("successfully_updated");
@@ -194,7 +184,7 @@ public class TalkController {
 
     private void notifySpeaker(Talk talk) {
         TalkStatus status = talk.getStatus();
-        if (status.isStatusName("In Progress") && !talk.isValidComment()){
+        if (status.isStatusName("In Progress") && !talk.isValidComment()) {
             return;
         }
         mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
@@ -238,6 +228,11 @@ public class TalkController {
         dto.setSpeakerFullName(talk.getUser().getFirstName() + " " + talk.getUser().getLastName());
         dto.setStatusName(talk.getStatus().getName());
         dto.setDate(talk.getTime().toString());
+
+        User organiser = talk.getOrganiser();
+        if (organiser != null) {
+            dto.setAssigner(organiser.getFullName());
+        }
         return dto;
     }
 
