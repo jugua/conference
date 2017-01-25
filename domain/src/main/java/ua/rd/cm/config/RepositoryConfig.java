@@ -19,19 +19,15 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @PropertySource("classpath:jdbc.properties")
 public class RepositoryConfig {
-    private static final String DRIVER_PROP = "driver";
-    private static final String URL_PROP = "url";
-    private static final String USER_PROP = "user";
-    private static final String PASSWORD_PROP = "password";
 
     @Bean(destroyMethod = "close")
     public DataSource dataSource(Environment environment) {
         BasicDataSource ds = new BasicDataSource();
 
-        ds.setDriverClassName(environment.getProperty(DRIVER_PROP));
-        ds.setUrl(environment.getProperty(URL_PROP));
-        ds.setUsername(environment.getProperty(USER_PROP));
-        ds.setPassword(environment.getProperty(PASSWORD_PROP));
+        ds.setDriverClassName(environment.getProperty("driverClassName"));
+        ds.setUrl(environment.getProperty("url"));
+        ds.setUsername(environment.getProperty("username"));
+        ds.setPassword(environment.getProperty("password"));
         return ds;
     }
 
