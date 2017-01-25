@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import org.modelmapper.ModelMapper;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -33,17 +34,24 @@ public class SimpleUserServiceTest {
 
 	@Mock
 	private UserRepository repository;
+
 	@Mock
 	private RoleService roleService;
+
 	@Mock
 	private MailService mailService;
+
 	@Mock
 	private VerificationTokenService tokenService;
+
+	@Mock
+	private ModelMapper mapper;
+
 	private UserService service;
 	
 	@Before
 	public void initialize() {
-		service = new SimpleUserService(repository, roleService, mailService, tokenService);
+		service = new SimpleUserService(repository, roleService, mailService, tokenService, mapper);
 	}
 
 	@Test

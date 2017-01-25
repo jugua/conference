@@ -54,6 +54,7 @@ public class TalkControllerTest extends TestUtil {
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
     public static final String SPEAKER_ROLE = "SPEAKER";
     public static final String ORGANISER_ROLE = "ORGANISER";
+    public static final String ADMIN_ROLE = "ADMIN";
     public static final String APPROVED = "Approved";
     public static final String IN_PROGRESS = "In Progress";
     public static final String REJECTED = "Rejected";

@@ -27,7 +27,7 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.web.controller.dto.RegistrationDto;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.Filter;
@@ -61,8 +61,10 @@ public class UserControllerTest extends TestUtil{
 
     @Autowired
     private WebApplicationContext context;
+
     @Autowired
     private Filter springSecurityFilterChain;
+
     @Autowired
     private UserService userService;
 
@@ -106,6 +108,11 @@ public class UserControllerTest extends TestUtil{
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctRegistrationDto))
         ).andExpect(status().isConflict());
+    }
+
+    @Test
+    public void correctRegistrationByAdmin() {
+
     }
 
     @Test
@@ -332,7 +339,6 @@ public class UserControllerTest extends TestUtil{
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
-
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void getUserById() throws Exception{
@@ -355,13 +361,6 @@ public class UserControllerTest extends TestUtil{
                 .andExpect(jsonPath("roles[0]", is("s")));
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
-        return MockMvcRequestBuilders.get(uri)
-                .contentType(MediaType.APPLICATION_JSON_UTF8);
-    }
-
-
-
     @Test
     public void incorrectGetUserById() throws Exception{
         User user=createUser();
@@ -379,7 +378,10 @@ public class UserControllerTest extends TestUtil{
                 andExpect(status().isNotFound());
     }
 
-
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
+        return MockMvcRequestBuilders.get(uri)
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
+    }
 
     private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
         try {

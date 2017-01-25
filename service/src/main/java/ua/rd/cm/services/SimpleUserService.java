@@ -1,6 +1,8 @@
 package ua.rd.cm.services;
 
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +10,7 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.WhereSpecification;
@@ -24,15 +27,18 @@ public class SimpleUserService implements UserService{
 	private UserRepository userRepository;
 	private RoleService roleService;
 	private MailService mailService;
+	private ModelMapper mapper;
 	private VerificationTokenService tokenService;
 
 	@Autowired
 	public SimpleUserService(UserRepository userRepository, RoleService roleService,
-							 MailService mailService, VerificationTokenService tokenService) {
+							 MailService mailService, VerificationTokenService tokenService,
+							 ModelMapper mapper) {
 		this.userRepository = userRepository;
 		this.roleService = roleService;
 		this.mailService = mailService;
 		this.tokenService = tokenService;
+		this.mapper = mapper;
 	}
 
 	@Override
@@ -84,11 +90,18 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	@Transactional
-	public void registerNewUser(User user) {
-		save(user);
-		VerificationToken token = tokenService.createToken(user, VerificationToken.TokenType.CONFIRMATION);
-		tokenService.saveToken(token);
-		mailService.sendEmail(user, new ConfirmAccountPreparator(token));
+	public void registerNewUser(RegistrationDto dto) {
+		User newUser = mapRegistrationDtoToUser(dto);
+		if (dto.getRoleId() != null) {
+			prepareUser(newUser, roleService.find(dto.getRoleId()), User.UserStatus.CONFIRMED);
+			save(newUser);
+		} else {
+			prepareUser(newUser, roleService.getByName(Role.SPEAKER), User.UserStatus.UNCONFIRMED);
+			save(newUser);
+			VerificationToken token = tokenService.createToken(newUser, VerificationToken.TokenType.CONFIRMATION);
+			tokenService.saveToken(token);
+			mailService.sendEmail(newUser, new ConfirmAccountPreparator(token));
+		}
 	}
 
 	@Override
@@ -110,5 +123,16 @@ public class SimpleUserService implements UserService{
 						new UserExceptThisById(currentUser.getId())
 				)
 		);
+	}
+
+	private void prepareUser(User user, Role role, User.UserStatus userStatus) {
+		user.addRole(role);
+		user.setStatus(userStatus);
+	}
+
+	private User mapRegistrationDtoToUser(RegistrationDto dto) {
+		User user = mapper.map(dto, User.class);
+		user.setEmail(user.getEmail().toLowerCase());
+		return user;
 	}
 }
