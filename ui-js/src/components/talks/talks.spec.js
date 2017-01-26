@@ -32,7 +32,7 @@ describe('Talks controller', () => {
     Talks.getAll.and.returnValue(deferred.promise);
 
     User = jasmine.createSpyObj('User', ['get']);
-    User.get.and.returnValue(deferred.promise);
+    User.get.and.returnValue($q.when({ name: 'John' }));
 
     sut = $controller(controller.name, { Current, Talks, User }, {});
   }));
@@ -92,14 +92,11 @@ describe('Talks controller', () => {
   });
   describe('userInfo() method', () => {
     it('sets userInfoObj to the returned promise', () => {
-      let response;
-
+      sut.userInfoObj = {};
       sut.userInfo();
 
-      deferred.resolve({ name: 'John' });
-      $scope.$apply();
-
-      expect(sut.userInfoObj.then).toBeDefined();
+      expect(sut.userInfoObj.$$state.status).toEqual(1);
+      expect(sut.userInfoObj.$$state.value).toEqual({ name: 'John' });
     });
   });
   describe('hideUserInfoPopup() method', () => {
