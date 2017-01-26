@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
@@ -21,7 +23,7 @@ import java.util.Properties;
         "ua.rd.cm.services"
 })
 @Import(RepositoryConfig.class)
-@PropertySource("classpath:mail.properties")
+@PropertySource({"classpath:mail.properties", "classpath:fileStorage.properties"})
 public class ServiceConfig {
 
     @Bean
@@ -61,4 +63,12 @@ public class ServiceConfig {
         bean.setTemplateLoaderPath("classpath:fmtemplates/");
         return bean;
     }
+
+    @Bean
+    public FileStorageService getFileStorageService(Environment environment) {
+        FileStorageServiceImpl fileStorageService = new FileStorageServiceImpl();
+        fileStorageService.setStoragePath(environment.getProperty("fileStorage.path"));
+        return fileStorageService;
+    }
+
 }

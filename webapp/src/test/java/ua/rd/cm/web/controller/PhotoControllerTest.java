@@ -5,7 +5,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,17 +16,12 @@ import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.services.UserService;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import ua.rd.cm.domain.ContactType;
-import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.services.PhotoService;
+import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import java.io.*;
-import java.util.*;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
@@ -35,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
-public class PhotoControllerTest extends TestUtil{
-    public static final String API_PHOTO = "/api/user/current/photo";
+public class PhotoControllerTest extends TestUtil {
+    private static final String API_PHOTO = "/api/user/current/photo";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private MockMvc mockMvc;
     private PhotoDto photoDto;
@@ -49,7 +43,7 @@ public class PhotoControllerTest extends TestUtil{
     private UserService userService;
 
     @Autowired
-    private PhotoService photoService;
+    private FileStorageService fileStorageService;
 
     @Autowired
     private PhotoController photoController;
@@ -57,16 +51,16 @@ public class PhotoControllerTest extends TestUtil{
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
-        photoDto =setupCorrectPhotoDto();
-        user=createUser();
+        photoDto = setupCorrectPhotoDto();
+        user = createUser();
     }
 
-    private PhotoDto setupCorrectPhotoDto(){
-        PhotoDto photoDto=new PhotoDto();
+    private PhotoDto setupCorrectPhotoDto() {
+        PhotoDto photoDto = new PhotoDto();
         try {
-            File file= new File("src/test/resources/trybel_master.JPG");
-            FileInputStream fileInputStream=new FileInputStream(file);
-            MockMultipartFile mockFile=new MockMultipartFile("trybel_master",fileInputStream);
+            File file = new File("src/test/resources/trybel_master.JPG");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            MockMultipartFile mockFile = new MockMultipartFile("trybel_master", fileInputStream);
             photoDto.setFile(mockFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,11 +68,11 @@ public class PhotoControllerTest extends TestUtil{
         return photoDto;
     }
 
-    MockMultipartFile setupCorrectMultipartFile(){
+    private MockMultipartFile setupCorrectMultipartFile() {
         try {
-            File file= new File("src/test/resources/trybel_master.JPG");
-            FileInputStream fileInputStream=new FileInputStream(file);
-            MockMultipartFile mockFile=new MockMultipartFile("trybel_master",fileInputStream);
+            File file = new File("src/test/resources/trybel_master.JPG");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            MockMultipartFile mockFile = new MockMultipartFile("trybel_master", fileInputStream);
             return mockFile;
         } catch (IOException e) {
             e.printStackTrace();
@@ -105,7 +99,6 @@ public class PhotoControllerTest extends TestUtil{
                 //.content(convertObjectToJsonBytes(photoDto))
         ).andExpect(status().isOk());
     }
-
 
 
     @Test
