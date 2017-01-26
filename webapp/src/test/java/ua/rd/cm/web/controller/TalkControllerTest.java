@@ -42,8 +42,8 @@ import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -328,7 +328,7 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctGetMyTalksTest() throws Exception {
-        Talk talk = createTalk(speakerUser);
+        Talk talk = createTalk(speakerUser, organiserUser);
         List<Talk> talks = new ArrayList<>();
         talks.add(talk);
 
@@ -344,7 +344,8 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(jsonPath("$[0].lang", is(talk.getLanguage().getName())))
                 .andExpect(jsonPath("$[0].level", is(talk.getLevel().getName())))
                 .andExpect(jsonPath("$[0].addon", is(talk.getAdditionalInfo())))
-                .andExpect(jsonPath("$[0].status", is(talk.getStatus().getName())));
+                .andExpect(jsonPath("$[0].status", is(talk.getStatus().getName())))
+                .andExpect(jsonPath("$[0].assignee", is(talk.getOrganiser().getFullName())));
     }
 
     @Test
@@ -467,8 +468,22 @@ public class TalkControllerTest extends TestUtil {
         Talk talk = createTalk(createUser());
         when(talkService.findTalkById(1L)).thenReturn(talk);
 
-        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1))
-                .andExpect(status().isOk())
+        expectTalk(mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)), talk)
+            .andExpect(jsonPath("assignee", is(nullValue())));
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void getTalkByIdWithAssignee() throws Exception {
+        Talk talk = createTalk(createUser(), organiserUser);
+        when(talkService.findTalkById(1L)).thenReturn(talk);
+
+        expectTalk(mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)), talk)
+                .andExpect(jsonPath("assignee", is(talk.getOrganiser().getFullName())));
+    }
+
+    private ResultActions expectTalk(ResultActions ra, Talk talk) throws Exception {
+        return ra.andExpect(status().isOk())
                 .andExpect(jsonPath("_id", is(Integer.parseInt(talk.getId().toString()))))
                 .andExpect(jsonPath("title", is(talk.getTitle())))
                 .andExpect(jsonPath("speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
@@ -480,8 +495,7 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(jsonPath("level", is(talk.getLevel().getName())))
                 .andExpect(jsonPath("addon", is(talk.getAdditionalInfo())))
                 .andExpect(jsonPath("status", is(talk.getStatus().getName())))
-                .andExpect(jsonPath("date", is(talk.getTime().toString())))
-                .andExpect(jsonPath("comment", is(talk.getOrganiserComment())));
+                .andExpect(jsonPath("date", is(talk.getTime().toString())));
     }
 
     @Test
