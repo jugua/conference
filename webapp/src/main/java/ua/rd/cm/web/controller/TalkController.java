@@ -14,7 +14,6 @@ import ua.rd.cm.services.preparator.ChangeTalkStatusOrganiserPreparator;
 import ua.rd.cm.services.preparator.ChangeTalkStatusSpeakerPreparator;
 import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
 import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
-import ua.rd.cm.web.controller.annotation.OrganiserMethod;
 import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
@@ -94,7 +93,7 @@ public class TalkController {
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
     }
 
-    @OrganiserMethod
+    @PreAuthorize("hasRole('ORGANISER')")
     @GetMapping("/{talkId}")
     public ResponseEntity getTalkById(@PathVariable Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
@@ -102,7 +101,7 @@ public class TalkController {
         return new ResponseEntity<>(talkDto, HttpStatus.OK);
     }
 
-    @OrganiserMethod
+    @PreAuthorize("hasRole('ORGANISER')")
     @PatchMapping("/{id}")
     public ResponseEntity actionOnTalk(@PathVariable("id") Long talkId,
                                        @Valid @RequestBody ActionDto dto,
