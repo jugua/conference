@@ -129,10 +129,8 @@ public class TalkController {
                 }
                 return trySetStatus(dto, talk, request);
             }
+            case "Approved":
             case "In Progress": {
-                return trySetStatus(dto, talk, request);
-            }
-            case "Approved": {
                 return trySetStatus(dto, talk, request);
             }
             default: {
