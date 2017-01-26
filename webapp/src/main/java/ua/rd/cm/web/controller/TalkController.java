@@ -121,17 +121,24 @@ public class TalkController {
 
         Talk talk = talkService.findTalkById(talkId);
         String status = dto.getStatus();
-        if ("Rejected".equals(status)) {
-            if (dto.getComment() == null || dto.getComment().length() < 1) {
-                resultMessage.setError("empty_comment");
-                return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+        switch (status) {
+            case "Rejected": {
+                if (dto.getComment() == null || dto.getComment().length() < 1) {
+                    resultMessage.setError("empty_comment");
+                    return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+                }
+                return trySetStatus(dto, talk, request);
             }
-            return trySetStatus(dto, talk, request);
-        } else if ("In Progress".equals(status) || "Approved".equals(status)) {
-            return trySetStatus(dto, talk, request);
-        } else {
-            resultMessage.setError("wrong_status");
-            return prepareResponse(HttpStatus.CONFLICT, resultMessage);
+            case "In Progress": {
+                return trySetStatus(dto, talk, request);
+            }
+            case "Approved": {
+                return trySetStatus(dto, talk, request);
+            }
+            default: {
+                resultMessage.setError("wrong_status");
+                return prepareResponse(HttpStatus.CONFLICT, resultMessage);
+            }
         }
     }
 
