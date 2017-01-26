@@ -222,3 +222,7 @@ And creates new Talk:
 And user logged as organiser 'Talks' page:
 |email              |password |
 |organiser@gmail.com|organiser|
+
+Examples:
+|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
+|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
