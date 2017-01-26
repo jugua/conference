@@ -49,6 +49,8 @@ public class UserController {
                                    BindingResult bindingResult,
                                    HttpServletRequest request
     ) {
+        dto.setUserStatus(User.UserStatus.UNCONFIRMED);
+        dto.setRoleName(Role.SPEAKER);
         return processUserRegistration(dto, bindingResult, request);
     }
 
@@ -58,6 +60,7 @@ public class UserController {
                                           BindingResult bindingResult,
                                           HttpServletRequest request
     ) {
+        dto.setUserStatus(User.UserStatus.CONFIRMED);
         return processUserRegistration(dto, bindingResult, request);
     }
 

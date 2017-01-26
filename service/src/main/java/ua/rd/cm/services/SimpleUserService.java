@@ -92,12 +92,8 @@ public class SimpleUserService implements UserService{
 	@Transactional
 	public void registerNewUser(RegistrationDto dto) {
 		User newUser = mapRegistrationDtoToUser(dto);
-		if (dto.getRoleId() != null) {
-			prepareUser(newUser, roleService.find(dto.getRoleId()), User.UserStatus.CONFIRMED);
-			save(newUser);
-		} else {
-			prepareUser(newUser, roleService.getByName(Role.SPEAKER), User.UserStatus.UNCONFIRMED);
-			save(newUser);
+		save(newUser);
+		if (User.UserStatus.UNCONFIRMED.equals(dto.getUserStatus())) {
 			VerificationToken token = tokenService.createToken(newUser, VerificationToken.TokenType.CONFIRMATION);
 			tokenService.saveToken(token);
 			mailService.sendEmail(newUser, new ConfirmAccountPreparator(token));
@@ -125,14 +121,10 @@ public class SimpleUserService implements UserService{
 		);
 	}
 
-	private void prepareUser(User user, Role role, User.UserStatus userStatus) {
-		user.addRole(role);
-		user.setStatus(userStatus);
-	}
-
 	private User mapRegistrationDtoToUser(RegistrationDto dto) {
 		User user = mapper.map(dto, User.class);
 		user.setEmail(user.getEmail().toLowerCase());
+		user.addRole(roleService.getByName(dto.getRoleName()));
 		return user;
 	}
 }

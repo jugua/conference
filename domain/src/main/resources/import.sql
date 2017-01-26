@@ -52,9 +52,9 @@ UPDATE level_seq SET next_val = 5 WHERE next_val = 1;
 -- Inserting necessary data into table `status`
 --
 
-INSERT INTO `status` VALUES (1, "New");
-INSERT INTO `status` VALUES (2, "In Progress");
-UPDATE status_seq SET next_val = 3 WHERE next_val = 2;
+# INSERT INTO `status` VALUES (1, "New");
+# INSERT INTO `status` VALUES (2, "In Progress");
+# UPDATE status_seq SET next_val = 3 WHERE next_val = 2;
 
 --
 -- Inserting necessary data into table `language`

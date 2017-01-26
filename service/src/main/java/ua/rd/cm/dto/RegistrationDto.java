@@ -1,9 +1,10 @@
 package ua.rd.cm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
-
+import ua.rd.cm.domain.User;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -35,5 +36,8 @@ public class RegistrationDto {
     @Size(min = 6, max = 30)
     private String confirm;
 
-    private Long roleId;
+    private String roleName;
+
+    @JsonIgnore
+    private User.UserStatus userStatus;
 }
