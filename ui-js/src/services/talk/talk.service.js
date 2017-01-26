@@ -46,7 +46,7 @@ export default class TalkService {
     return this.talks.getAll();
   }
 
-  add(talk, successCallback) {   // talk object passeds
+  add(talk, successCallback) {   // talk object passed
     this.talks.add(talk,
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
@@ -55,6 +55,13 @@ export default class TalkService {
 
   get(id) {
     return this.talks.get({ id });
+  }
+
+  update(id, talk, successCallback) {   // talk object passed
+    this.talks.update({ id }, talk,
+      (res) => { successCallback(res); },
+      (err) => { this.log.error(err); }
+    );
   }
 
   approve(id, comment, successCallback) {
@@ -78,4 +85,3 @@ export default class TalkService {
     );
   }
 }
-

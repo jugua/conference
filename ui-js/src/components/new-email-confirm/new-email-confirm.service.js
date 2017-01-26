@@ -3,7 +3,6 @@ export default class NewEmailConfirmService {
     'ngInject';
 
     this.http = $http;
-    this.wat = 'wat';
   }
 
   emailConfirm(token) {
