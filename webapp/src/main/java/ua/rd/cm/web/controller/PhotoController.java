@@ -126,13 +126,7 @@ public class PhotoController {
     private ResponseEntity createError(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setError(message);
-        return ResponseEntity.status(status).body( messageDto);
-    }
-
-    private ResponseEntity createStatus(HttpStatus status, String message) {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setStatus(message);
-        return ResponseEntity.status(status).body( messageDto);
+        return ResponseEntity.status(status).body(messageDto);
     }
 
     private ResponseEntity createAnswer(HttpStatus status, String message) {

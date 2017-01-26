@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.TalkStatus;
@@ -21,7 +20,6 @@ import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
-import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -33,6 +31,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/talk")
 public class TalkController {
 
+
+    public static final String APPROVED = "Approved";
     private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
@@ -44,6 +44,8 @@ public class TalkController {
     private ContactTypeService contactTypeService;
 
     public static final String DEFAULT_TALK_STATUS = "New";
+    public static final String REJECTED = "Rejected";
+    public static final String IN_PROGRESS = "In Progress";
 
     @Autowired
     public TalkController(ModelMapper mapper, UserService userService,
@@ -147,17 +149,17 @@ public class TalkController {
             return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
         }
         switch (dto.getStatus()) {
-            case "Rejected": {
+            case REJECTED: {
                 if (dto.getComment()==null || dto.getComment().length() < 1) {
                     resultMessage.setError("empty_comment");
                     return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
                 }
                 return trySetStatus(dto, talk, request);
             }
-            case "In Progress": {
+            case IN_PROGRESS: {
                 return trySetStatus(dto, talk, request);
             }
-            case "Approved": {
+            case APPROVED: {
                 return trySetStatus(dto, talk, request);
             }
             default: {
@@ -165,6 +167,41 @@ public class TalkController {
                 return prepareResponse(HttpStatus.CONFLICT, resultMessage);
             }
         }
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping
+    public ResponseEntity speakerUpdateTalk(@Valid @RequestBody TalkDto dto,
+                                  BindingResult bindingResult,
+                                  HttpServletRequest request){
+
+        MessageDto resultMessage = new MessageDto();
+        if (bindingResult.hasFieldErrors()) {
+            resultMessage.setError("fields_error");
+            return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+        }
+        if (!request.isUserInRole("SPEAKER")) {
+            resultMessage.setError("unauthorized");
+            return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
+        }
+        User user=userService.getByEmail(request.getUserPrincipal().getName());
+        Talk talk = talkService.findTalkById(dto.getId());
+        if (talk == null) {
+            resultMessage.setError("talk_not_found");
+            return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
+        }
+        if(isForbiddenToChangeTalk(user, talk)){
+            resultMessage.setError("forbidden");
+            return prepareResponse(HttpStatus.FORBIDDEN, resultMessage);
+        }
+        Talk updatedTalk=dtoToEntity(dto);
+        talkService.update(updatedTalk);
+        return null;
+    }
+
+    private boolean isForbiddenToChangeTalk(User user, Talk talk) {
+        return talk.getUser()!=user || talk.getStatus().getName().equals(REJECTED) || talk.getStatus().getName().equals(APPROVED);
     }
 
     private boolean isCommentToLong(BindingResult bindingResult) {
@@ -194,7 +231,7 @@ public class TalkController {
 
     private void notifySpeaker(Talk talk) {
         TalkStatus status = talk.getStatus();
-        if (status.isStatusName("In Progress") && !talk.isValidComment()){
+        if (status.isStatusName(IN_PROGRESS) && !talk.isValidComment()){
             return;
         }
         mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
