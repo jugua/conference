@@ -41,8 +41,8 @@ public class WebTestConfig {
         return mock(LanguageService.class);
     }
 	@Bean
-	public PhotoService mockPhotoService() {
-		return mock(PhotoService.class);
+	public FileStorageService mockPhotoService() {
+		return mock(FileStorageService.class);
 	}
 	@Bean
 	public MailService mockMailService() {
