@@ -27,7 +27,7 @@ public class TestUtil {
         roles.add(role);
         User user = new User(1L,"Olya","Ivanova",
                 alreadyRegisteredEmail, "123456",
-                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), roles, null, null);
+                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), roles);
         return user;
     }
 
@@ -36,7 +36,7 @@ public class TestUtil {
         roles.add(createSpeakerRole());
         User user = new User(1L,"Olya","Ivanova",
                 alreadyRegisteredEmail, "123456",
-                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), roles, null, null);
+                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), roles);
         return user;
     }
     protected Role createSpeakerRole(){
@@ -63,13 +63,13 @@ public class TestUtil {
         speakerRole.add(new Role(2L, Role.SPEAKER));
         User speakerUser = new User(1L,"Olya","Ivanova",
                 "ivanova@gmail.com", "123456",
-                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), speakerRole, null, null);
+                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
         User organiserUser = new User(1L,"Artem","Trybel",
                 "trybel@gmail.com", "123456",
-                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), organiserRole, null, null);
+                "api/user/current/photo/", User.UserStatus.CONFIRMED, createUserInfo(), organiserRole);
         when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speakerUser);
         when(userService.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organiserUser);
     }

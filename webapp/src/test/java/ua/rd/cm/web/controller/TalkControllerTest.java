@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -28,6 +30,7 @@ import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.web.controller.dto.ActionDto;
+import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.Filter;
@@ -37,8 +40,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
@@ -50,7 +55,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class TalkControllerTest extends TestUtil {
-
     private static final String API_TALK = "/api/talk";
     private static final String API_GET_USER_BY_ID = "/api/talk/1";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
@@ -92,13 +96,13 @@ public class TalkControllerTest extends TestUtil {
         speakerRole.add(new Role(2L, Role.SPEAKER));
         speakerUser = new User(1L, "Olya", "Ivanova",
                 "ivanova@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, speakerRole, null, null);
+                null, User.UserStatus.CONFIRMED, userInfo, speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
         organiserUser = new User(1L, "Artem", "Trybel",
                 "trybel@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, organiserRole, null, null);
+                null, User.UserStatus.CONFIRMED, userInfo, organiserRole);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -550,6 +554,18 @@ public class TalkControllerTest extends TestUtil {
         mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("error", is(TalkController.TALK_NOT_FOUND)));
+    }
+
+    @Test
+    public void handleTalkNotFoundCorrectStatus() throws Exception {
+        ResponseEntity<MessageDto> response = talkController.handleTalkNotFound();
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+    }
+
+    @Test
+    public void handleTalkNotFoundCorrectMessage() throws Exception {
+        ResponseEntity<MessageDto> response = talkController.handleTalkNotFound();
+        assertThat(response.getBody().getError(), is(TalkController.TALK_NOT_FOUND));
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
