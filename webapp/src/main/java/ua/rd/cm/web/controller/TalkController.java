@@ -218,7 +218,7 @@ public class TalkController {
 
         User organiser = talk.getOrganiser();
         if (organiser != null) {
-            dto.setAssigner(organiser.getFullName());
+            dto.setAssignee(organiser.getFullName());
         }
         return dto;
     }

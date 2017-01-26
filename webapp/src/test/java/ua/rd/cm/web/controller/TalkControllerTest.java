@@ -397,7 +397,7 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(jsonPath("$[0].status", is(talk.getStatus().getName())))
                 .andExpect(jsonPath("$[0].date", is(talk.getTime().toString())))
                 .andExpect(jsonPath("$[0].comment", is(talk.getOrganiserComment())))
-                .andExpect(jsonPath("$[0].assigner", is(talk.getOrganiser().getFullName())));
+                .andExpect(jsonPath("$[0].assignee", is(talk.getOrganiser().getFullName())));
     }
 
     @Test

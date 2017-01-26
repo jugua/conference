@@ -68,7 +68,7 @@ public class TalkDto {
 	@JsonProperty("comment")
 	private String organiserComment;
 
-	@JsonProperty("assigner")
-	private String assigner;
+	@JsonProperty("assignee")
+	private String assignee;
 
 }
