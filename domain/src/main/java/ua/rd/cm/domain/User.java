@@ -54,16 +54,6 @@ public class User {
     @JoinTable(name = "user_role")
     private Set<Role> userRoles = new HashSet<>();
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Talk> speakerTalks;
-
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "organiser", fetch = FetchType.LAZY)
-    private List<Talk> assignedTalks;
-
     public boolean addRole(Role role) {
         return userRoles.add(role);
     }
