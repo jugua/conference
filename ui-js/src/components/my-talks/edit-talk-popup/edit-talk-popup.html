@@ -2,32 +2,35 @@
   <div class="pop-up pop-up_big">
     <h3 class="pop-up__title">Talk</h3>
     <button class="pop-up__close" ng-click="$ctrl.closeCheck()"></button>
-    <form class="new-talk" name="$ctrl.form" novalidate>
-      <label for="new-talk-title" class="form-label">
+    <form class="new-talk" name="$ctrl.form" novalidate ng-submit="$ctrl.save()">
+      <label for="edit-talk-title" class="form-label"
+             ng-class="$ctrl.editable ? 'form-label_required' : ''">
         title
       </label>
       <input type="text"
-             id="new-talk-title"
              class="field field_border"
              maxlength="250"
-             ng-required="true"
+             ng-required="$ctrl.editable"
              ng-disabled="!$ctrl.editable"
              ng-model="$ctrl.obj.title">
 
-      <label for="new-talk-desc" class="form-label">
+      <label for="edit-talk-desc" class="form-label"
+             ng-class="$ctrl.editable ? 'form-label_required' : ''">
         description
       </label>
-      <textarea class="textarea"
+      <textarea id="edit-talk-desc"
+                class="textarea"
                 maxlength="3000"
-                ng-required="true"
+                ng-required="$ctrl.editable"
                 ng-disabled="!$ctrl.editable"
                 ng-model="$ctrl.obj.description">
       </textarea>
 
-      <label class="form-label">
+      <label for="edit-talk-topic" class="form-label"
+             ng-class="$ctrl.editable ? 'form-label_required' : ''">
         topic
       </label>
-      <select class="new-talk__select"
+      <select name="edit-talk-topic" class="new-talk__select"
               ng-if="$ctrl.editable"
               ng-required="true"
               ng-disabled="!$ctrl.editable"
@@ -40,7 +43,8 @@
              ng-disabled="!$ctrl.editable"
              ng-model="$ctrl.obj.topic">
 
-      <label class="form-label">
+      <label class="form-label"
+             ng-class="$ctrl.editable ? 'form-label_required' : ''">
         type
       </label>
       <select class="new-talk__select"
@@ -55,7 +59,8 @@
              ng-disabled="!$ctrl.editable"
              ng-model="$ctrl.obj.type">
 
-      <label class="form-label">
+      <label class="form-label"
+             ng-class="$ctrl.editable ? 'form-label_required' : ''">
         language
       </label>
       <select class="new-talk__select"
@@ -70,7 +75,8 @@
              ng-disabled="!$ctrl.editable"
              ng-model="$ctrl.obj.lang">
 
-      <label class="form-label">
+      <label class="form-label"
+             ng-class="$ctrl.editable ? 'form-label_required' : ''">
         level
       </label>
       <select class="new-talk__select"
@@ -102,11 +108,13 @@
                 maxlength="1000">
       </textarea>
 
-      <span class="field-error" ng-show="(!$ctrl.comment && $ctrl.commentRequired)">Please specify a rejection reason</span>
+      <span class="field-error" ng-show="$ctrl.submitAttempt && $ctrl.form.$error.required">
+        Please fill in all mandatory fields
+      </span>
 
-      <div class="pop-up-button-wrapper pop-up-button-wrapper_wrap" ng-show="$ctrl.editable">
-        <button class="btn pop-up__button" type="button"
-                ng-click="$ctrl.save()">Save</button>
+      <div class="pop-up-button-wrapper pop-up-button-wrapper_wrap">
+        <button type="submit" class="btn pop-up__button" ng-if="$ctrl.editable">save</button>
+        <button type="button" class="btn pop-up__button" ng-if="!$ctrl.editable" ng-click="$ctrl.close()">close</button>
       </div>
     </form>
   </div>

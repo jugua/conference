@@ -11,6 +11,7 @@ export default class {
     this.form = {};
 
     this.confirmShown = false;
+    this.submitAttempt = false;
   }
 
   get editable() {  // getter, convenient for template inline triggers
@@ -22,7 +23,19 @@ export default class {
   }
 
   save() {
-    this.talksService.update(this.talk._id, this.obj,
+    if (this.form.$invalid) {
+      this.submitAttempt = true;
+      return;
+    }
+
+    // use separate send object, to filter out prohibited properties
+    const sendObj = {};
+    Object.assign(sendObj, this.obj);
+
+    delete sendObj.status;                // filter out
+    delete sendObj.comment;
+
+    this.talksService.update(this.talk._id, sendObj,
       () => {   // success callback
         this.talk = this.obj;   // modify the obj itself, affect the view
         this.close();

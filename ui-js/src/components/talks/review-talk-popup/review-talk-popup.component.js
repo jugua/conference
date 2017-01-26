@@ -1,7 +1,7 @@
 import template from './review-talk-popup.html';
 import controller from './review-talk-popup.controller';
 
-const reviewTalkPopupComponent = {
+const component = {
   bindings: {
     talk: '<',
     onHideReviewPopup: '&',
@@ -10,4 +10,4 @@ const reviewTalkPopupComponent = {
   controller
 };
 
-export default reviewTalkPopupComponent;
+export default component;
