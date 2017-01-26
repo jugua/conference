@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,6 +26,7 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
@@ -112,7 +114,6 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctSubmitNewTalkTest() throws Exception {
-
         mockMvc.perform(preparePostRequest(API_TALK))
                 .andExpect(status().isOk());
     }
@@ -146,8 +147,7 @@ public class TalkControllerTest extends TestUtil {
 
     @Test
     public void nullPrincipleSubmitNewTalkTest() throws Exception {
-        mockMvc.perform(preparePostRequest(API_TALK))
-                .andExpect(status().isUnauthorized());
+        expectUnauthorized(mockMvc.perform(preparePostRequest(API_TALK)));
     }
 
     @Test
@@ -351,8 +351,7 @@ public class TalkControllerTest extends TestUtil {
 
         when(talkService.findByUserId(anyLong())).thenReturn(talks);
 
-        mockMvc.perform(prepareGetRequest(API_TALK)).
-                andExpect(status().isUnauthorized());
+        expectUnauthorized(mockMvc.perform(prepareGetRequest(API_TALK)));
     }
 
     @Test
@@ -399,27 +398,55 @@ public class TalkControllerTest extends TestUtil {
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void testOrganiserIsSetOnTalkReject() throws Exception {
+    public void changeTalkStateForNonExistingTalk() throws Exception {
+        long id = 0;
+        when(talkService.findTalkById(id)).thenThrow(new TalkNotFoundException());
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + id, "comment", "some state"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("error", is(TalkController.TALK_NOT_FOUND)));
+    }
+
+    @Test
+    public void unauthorizedChangeTalkState() throws Exception {
+        expectUnauthorized(performTalkStateChange(anyString()));
+    }
+
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void speakerUnauthorizedToChangeTalkState() throws Exception {
+        expectUnauthorized(performTalkStateChange(anyString()));
+    }
+
+    private ResultActions performTalkStateChange(String newState) throws Exception {
+        Talk talk = createTalk(speakerUser);
+        when(talkService.findTalkById(talk.getId())).thenReturn(talk);
+
+        return mockMvc.perform(preparePatchRequest(API_TALK + "/" + talk.getId(), "comment", newState));
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void organiserIsSetOnTalkReject() throws Exception {
         testOrganiserIsSetOnStatusChange(REJECTED);
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void testOrganiserIsSetOnTalkApprove() throws Exception {
+    public void organiserIsSetOnTalkApprove() throws Exception {
         testOrganiserIsSetOnStatusChange(APPROVED);
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void testOrganiserIsSetOnTalkInProgress() throws Exception {
+    public void organiserIsSetOnTalkInProgress() throws Exception {
         testOrganiserIsSetOnStatusChange(IN_PROGRESS);
     }
 
-    private void testOrganiserIsSetOnStatusChange(String action) throws Exception {
+    private void testOrganiserIsSetOnStatusChange(String newState) throws Exception {
         Talk talk = createTalk(speakerUser);
         when(talkService.findTalkById(talk.getId())).thenReturn(talk);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + talk.getId(), "comment", action));
+        performTalkStateChange(newState);
 
         verify(talkService, atLeastOnce()).
                 update(argThat(new ArgumentMatcher<Talk>() {
@@ -457,14 +484,13 @@ public class TalkControllerTest extends TestUtil {
     public void incorrectGetTalkById() throws Exception {
         Talk talk = createTalk(createUser());
         when(talkService.findTalkById(1L)).thenReturn(talk);
-        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)).
-                andExpect(status().isUnauthorized());
+        expectUnauthorized(mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)));
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void notFoundTalkById() throws Exception {
-        when(talkService.findTalkById(1L)).thenReturn(null);
+        when(talkService.findTalkById(1L)).thenThrow(new TalkNotFoundException());
         mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)).
                 andExpect(status().isNotFound());
     }
@@ -504,8 +530,7 @@ public class TalkControllerTest extends TestUtil {
     @Test
     public void unauthorizedTalk() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS))
-                .andExpect(status().isUnauthorized());
+        expectUnauthorized(mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS)));
     }
 
     @Test
@@ -521,9 +546,10 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void noTalkWithSuchId() throws Exception {
-        when(talkService.findTalkById(1L)).thenReturn(null);
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS)).
-                andExpect(status().isNotFound());
+        when(talkService.findTalkById(1L)).thenThrow(new TalkNotFoundException());
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, "comment", IN_PROGRESS))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("error", is(TalkController.TALK_NOT_FOUND)));
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
@@ -532,17 +558,20 @@ public class TalkControllerTest extends TestUtil {
     }
 
     private MockHttpServletRequestBuilder preparePostRequest(String uri) throws JsonProcessingException {
-
         return MockMvcRequestBuilders.post(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctTalkDto));
     }
 
     private MockHttpServletRequestBuilder preparePatchRequest(String uri, String comment, String status) throws JsonProcessingException {
-
         return MockMvcRequestBuilders.patch(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(setupCorrectActionDto(comment, status)));
+    }
+
+    private void expectUnauthorized(ResultActions ra) throws Exception {
+        ra.andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("error", is(SecurityControllerAdvice.UNAUTHORIZED_MSG)));
     }
 
     private Talk createTalk(User user) {
