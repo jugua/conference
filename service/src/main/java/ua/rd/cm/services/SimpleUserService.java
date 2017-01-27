@@ -1,5 +1,6 @@
 package ua.rd.cm.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,7 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.AndSpecification;
-import ua.rd.cm.repository.specification.WhereSpecification;
+import ua.rd.cm.repository.specification.*;
 import ua.rd.cm.repository.specification.user.*;
 import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
@@ -111,4 +111,14 @@ public class SimpleUserService implements UserService{
 				)
 		);
 	}
+
+	@Override
+	public List<User> getByRolesExceptCurrent(User currentUser, String ... roles) {
+		List<User> users = new ArrayList<>();
+		for (String role: roles) {
+			users.addAll(getByRoleExceptCurrent(currentUser, role));
+		}
+		return users;
+	}
+
 }
