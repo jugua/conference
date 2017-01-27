@@ -2,7 +2,7 @@
 -- Inserting necessary data into table `role`
 --
 
-INSERT INTO role VALUES (1, "ROLE_SPEAKER"),(2, "ROLE_ORGANISER");
+INSERT INTO role VALUES (1, "ROLE_SPEAKER"),(2, "ROLE_ORGANISER"),(3, "ROLE_ADMIN");
 
 UPDATE role_seq SET next_val = 3 WHERE next_val = 1;
 

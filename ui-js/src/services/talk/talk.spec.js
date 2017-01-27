@@ -71,4 +71,6 @@ describe('Talk Service', () => {
     expect(sut.talks.add).toHaveBeenCalledWith(talk, jasmine.any(Function), jasmine.any(Function));
   });
 
+
+
 });

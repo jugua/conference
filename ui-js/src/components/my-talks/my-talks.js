@@ -1,4 +1,5 @@
 import myTalksComponent from './my-talks.component';
+import editTalkPopup from './edit-talk-popup/edit-talk-popup.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -18,5 +19,6 @@ export default (app) => {
         },
         controllerAs: 'ctrl'
       });
-  }).component('myTalks', myTalksComponent);
+  }).component('myTalks', myTalksComponent)
+    .component('editTalkPopup', editTalkPopup);
 };
