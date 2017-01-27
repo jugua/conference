@@ -37,7 +37,7 @@ export default class {
 
     this.talksService.update(this.talk._id, sendObj,
       () => {   // success callback
-        this.talk = this.obj;   // modify the obj itself, affect the view
+        Object.assign(this.talk, this.obj);   // modify the obj itself, affect the view
         this.close();
       });
   }
