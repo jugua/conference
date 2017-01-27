@@ -44,7 +44,7 @@ public class VerificationTokenServiceTest {
         tokenService = new VerificationTokenService(tokenRepository);
         testedToken = createTokenUsingService();
         verificationToken = new VerificationToken(1L, "TOKEN", new User(),
-                LocalDateTime.now(ZoneId.systemDefault()), VerificationToken.TokenType.CONFIRMATION, VerificationToken.TokenStatus.VALID);
+                createExpiredDate(0), VerificationToken.TokenType.CONFIRMATION, VerificationToken.TokenStatus.VALID);
     }
 
     @Test

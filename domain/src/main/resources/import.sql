@@ -48,8 +48,6 @@ INSERT INTO `level` VALUES (4, "Expert");
 
 UPDATE level_seq SET next_val = 5 WHERE next_val = 1;
 
-
-
 --
 -- Inserting necessary data into table `language`
 --
