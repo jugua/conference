@@ -61,7 +61,7 @@ public class UserController {
                                           BindingResult bindingResult,
                                           HttpServletRequest request
     ) {
-        if (!Arrays.asList("SPEAKER", "ORGANISER").contains(dto.getRoleName())){
+        if (!Arrays.asList(Role.SPEAKER, Role.ORGANISER).contains(dto.getRoleName())){
             MessageDto message = new MessageDto();
             message.setError("wrong_role_name");
             return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);

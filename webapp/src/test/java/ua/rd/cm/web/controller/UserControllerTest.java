@@ -105,41 +105,41 @@ public class UserControllerTest extends TestUtil{
     @Test
     @WithMockUser(roles = ADMIN_ROLE)
     public void correctRegistrationNewOrganiserByAdmin() throws Exception{
-        correctRegistrationDto.setRoleName(ORGANISER_ROLE);
+        correctRegistrationDto.setRoleName(Role.ORGANISER);
         performRegistration(API_USER_CREATE, HttpStatus.ACCEPTED.value());
     }
 
     @Test
     @WithMockUser(roles = ADMIN_ROLE)
     public void correctRegistrationNewSpeakerByAdmin() throws Exception{
-        correctRegistrationDto.setRoleName(SPEAKER_ROLE);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.ACCEPTED.value());
     }
 
     @Test
     @WithMockUser(roles = ADMIN_ROLE)
     public void registrationNewAdminByAdmin() throws Exception{
-        correctRegistrationDto.setRoleName(ADMIN_ROLE);
+        correctRegistrationDto.setRoleName(Role.ADMIN);
         performRegistration(API_USER_CREATE, HttpStatus.FORBIDDEN.value());
     }
 
     @Test
     @WithMockUser(roles = ORGANISER_ROLE)
     public void registrationNewUserByAdminAsOrganiser() throws Exception{
-        correctRegistrationDto.setRoleName(SPEAKER_ROLE);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.FORBIDDEN.value());
     }
 
     @Test
     @WithMockUser(roles = SPEAKER_ROLE)
     public void registrationNewUserByAdminAsSpeaker() throws Exception{
-        correctRegistrationDto.setRoleName(SPEAKER_ROLE);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.FORBIDDEN.value());
     }
 
     @Test
     public void registrationNewUserByAdminWithoutRole() throws Exception{
-        correctRegistrationDto.setRoleName(SPEAKER_ROLE);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.UNAUTHORIZED.value());
     }
 
