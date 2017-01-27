@@ -7,12 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
+import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.preparator.ChangeTalkStatusOrganiserPreparator;
 import ua.rd.cm.services.preparator.ChangeTalkStatusSpeakerPreparator;
 import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
@@ -31,6 +28,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/talk")
 public class TalkController {
+    public static final String TALK_NOT_FOUND = "talk_not_found";
+    private static final String ORGANISER = "ORGANISER";
 
 
     public static final String APPROVED = "Approved";
@@ -43,7 +42,6 @@ public class TalkController {
     private LevelService levelService;
     private TopicService topicService;
     private MailService mailService;
-    private ContactTypeService contactTypeService;
 
     public static final String DEFAULT_TALK_STATUS = "New";
     public static final String REJECTED = "Rejected";
@@ -54,7 +52,7 @@ public class TalkController {
                           TalkService talkService,
                           TypeService typeService, LanguageService languageService,
                           LevelService levelService, TopicService topicService,
-                          MailService mailService, ContactTypeService contactTypeService
+                          MailService mailService
     ) {
         this.mapper = mapper;
         this.userService = userService;
@@ -64,7 +62,13 @@ public class TalkController {
         this.mailService = mailService;
         this.typeService = typeService;
         this.levelService = levelService;
-        this.contactTypeService = contactTypeService;
+    }
+
+    @ExceptionHandler(TalkNotFoundException.class)
+    public ResponseEntity<MessageDto> handleTalkNotFound() {
+        MessageDto resultMessage = new MessageDto();
+        resultMessage.setError(TALK_NOT_FOUND);
+        return new ResponseEntity<>(resultMessage, HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -75,7 +79,7 @@ public class TalkController {
 
         if (bindingResult.hasFieldErrors()) {
             messageDto.setError("fields_error");
-            return prepareResponse(HttpStatus.BAD_REQUEST,messageDto);
+            return prepareResponse(HttpStatus.BAD_REQUEST, messageDto);
         }
 
         User currentUser = userService.getByEmail(request.getRemoteUser());
@@ -87,7 +91,6 @@ public class TalkController {
             httpStatus = HttpStatus.OK;
         }
         messageDto.setId(id);
-        //return ResponseEntity.status(httpStatus).body(messageDto);
         return new ResponseEntity<>(messageDto, httpStatus);
     }
 
@@ -95,7 +98,7 @@ public class TalkController {
     @GetMapping
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
         List<TalkDto> userTalkDtoList;
-        if (request.isUserInRole("ORGANISER")) {
+        if (request.isUserInRole(ORGANISER)) {
             userTalkDtoList = getTalksForOrganiser();
         } else {
             userTalkDtoList = getTalksForSpeaker(request.getRemoteUser());
@@ -103,25 +106,13 @@ public class TalkController {
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ORGANISER')")
     @GetMapping("/{talkId}")
-    public ResponseEntity getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
-        MessageDto resultMessage = new MessageDto();
-
-        if (!request.isUserInRole("ORGANISER")) {
-            resultMessage.setError("unauthorized");
-            return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
-        }
-
+    public ResponseEntity getTalkById(@PathVariable Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
-        if (talk == null) {
-            resultMessage.setError("no_talk_with_such_id");
-            return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
-        }
         TalkDto talkDto = entityToDto(talk);
         return new ResponseEntity<>(talkDto, HttpStatus.OK);
     }
-
 
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
@@ -136,6 +127,7 @@ public class TalkController {
             return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
 
         }
+
         Talk talk = talkService.findTalkById(talkId);
         if (talk == null) {
             resultMessage.setError("talk_not_found");
@@ -169,9 +161,7 @@ public class TalkController {
                 }
                 return trySetStatus(dto, talk, request);
             }
-            case IN_PROGRESS: {
-                return trySetStatus(dto, talk, request);
-            }
+            case IN_PROGRESS:
             case APPROVED: {
                 return trySetStatus(dto, talk, request);
             }
@@ -186,6 +176,7 @@ public class TalkController {
         MessageDto message = new MessageDto();
         ResponseEntity responseEntity;
         if (talk.setStatus(TalkStatus.getStatusByName(dto.getStatusName()))) {
+            talk.setOrganiser(userService.getByEmail(request.getRemoteUser()));
             talk.setOrganiserComment(dto.getOrganiserComment());
             talkService.update(talk);
             message.setResult("successfully_updated");
@@ -198,7 +189,6 @@ public class TalkController {
         }
         return responseEntity;
     }
-
 
     private boolean speakerActions(@RequestBody TalkDto dto, HttpServletRequest request, MessageDto resultMessage, Talk talk) {
         User user=userService.getByEmail(request.getUserPrincipal().getName());
@@ -265,9 +255,14 @@ public class TalkController {
 
     private TalkDto entityToDto(Talk talk) {
         TalkDto dto = mapper.map(talk, TalkDto.class);
-        dto.setSpeakerFullName(talk.getUser().getFirstName() + " " + talk.getUser().getLastName());
+        dto.setSpeakerFullName(talk.getUser().getFullName());
         dto.setStatusName(talk.getStatus().getName());
         dto.setDate(talk.getTime().toString());
+
+        User organiser = talk.getOrganiser();
+        if (organiser != null) {
+            dto.setAssignee(organiser.getFullName());
+        }
         return dto;
     }
 
@@ -286,7 +281,10 @@ public class TalkController {
         return talk;
     }
 
-    private boolean checkForFilledUserInfo(User currentUser) {
+
+
+
+        private boolean checkForFilledUserInfo(User currentUser) {
         UserInfo currentUserInfo = currentUser.getUserInfo();
         return !(currentUserInfo.getShortBio().isEmpty() ||
                 currentUserInfo.getJobTitle().isEmpty() ||

@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,7 +33,7 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "email", nullable = false, unique =  true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -55,6 +56,10 @@ public class User {
 
     public boolean addRole(Role role) {
         return userRoles.add(role);
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     public enum UserStatus {

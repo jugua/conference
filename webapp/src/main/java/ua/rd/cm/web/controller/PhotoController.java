@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -10,37 +11,34 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.User;
-import ua.rd.cm.services.PhotoService;
+import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.web.controller.dto.MessageDto;
-import ua.rd.cm.web.controller.dto.PhotoDto;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URLConnection;
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/current/photo")
+@Log4j
 public class PhotoController {
     private UserService userService;
-    private PhotoService photoService;
+    private FileStorageService fileStorageService;
 
-    public static final long MAX_SIZE = 2097152;
-    public static final List<String> SUPPORTED_TYPES = Arrays.asList(
+    private static final long MAX_SIZE = 2097152;
+    private static final List<String> SUPPORTED_TYPES = Arrays.asList(
             MediaType.IMAGE_GIF_VALUE,
             MediaType.IMAGE_JPEG_VALUE,
             MediaType.IMAGE_PNG_VALUE
     );
 
     @Autowired
-    public PhotoController(UserService userService, PhotoService photoService) {
+    public PhotoController(UserService userService, FileStorageService fileStorageService) {
         this.userService = userService;
-        this.photoService = photoService;
+        this.fileStorageService = fileStorageService;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -50,7 +48,7 @@ public class PhotoController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        File file = photoService.getPhoto(user.getPhoto());
+        File file = fileStorageService.getFile(user.getPhoto());
         if (file == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
@@ -70,6 +68,7 @@ public class PhotoController {
 
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
+            log.debug(e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
@@ -77,10 +76,6 @@ public class PhotoController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity upload(MultipartFile file, HttpServletRequest request) {
-        MessageDto message = new MessageDto();
-        HttpStatus status;
-
-        //MultipartFile file = photoDto.getFile();
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
         if (file == null || file.isEmpty()) {
@@ -94,26 +89,30 @@ public class PhotoController {
 
         }
 
-        String path = photoService.savePhoto(file, currentUser.getId().toString(), currentUser.getPhoto());
-
-        if (path == null) {
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        String previousPhotoPath = currentUser.getPhoto();
+        String newPhotoPath = "";
+        try {
+            newPhotoPath = fileStorageService.saveFile(file);
+            if (!"".equals(newPhotoPath)) {
+                fileStorageService.deleteFile(previousPhotoPath);
+                currentUser.setPhoto(newPhotoPath);
+                userService.updateUserProfile(currentUser);
+                return createAnswer(HttpStatus.OK, "api/user/current/photo/" + currentUser.getId());
+            }
+        } catch (IOException e) {
+            log.info(e);
         }
 
-        currentUser.setPhoto(path);
-        userService.updateUserProfile(currentUser);
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
 
-        return createAnswer(HttpStatus.OK, "api/user/current/photo/" + currentUser.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping
     public ResponseEntity delete(HttpServletRequest request) {
-        MessageDto message = new MessageDto();
-        HttpStatus status;
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-        if (!photoService.deletePhoto(currentUser.getPhoto())) {
+        if (!fileStorageService.deleteFile(currentUser.getPhoto())) {
             return createError(HttpStatus.BAD_REQUEST, "delete");
         }
 
@@ -139,6 +138,7 @@ public class PhotoController {
         try {
             return getTypeIfSupported(new FileInputStream(file));
         } catch (IOException e) {
+            log.debug(e);
             return null;
         }
     }
@@ -151,6 +151,7 @@ public class PhotoController {
         try {
             return getTypeIfSupported(file.getInputStream());
         } catch (IOException e) {
+            log.debug(e);
             return null;
         }
     }
@@ -165,6 +166,7 @@ public class PhotoController {
 
             return mimeType;
         } catch (IOException e) {
+            log.debug(e);
             return null;
         }
     }
