@@ -20,6 +20,8 @@ import ua.rd.cm.web.controller.dto.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -113,6 +115,20 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/admin")
+    public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
+        MessageDto message = new MessageDto();
+        if(!request.isUserInRole(Role.ADMIN)){
+            message.setError("unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+        }
+        String userEmail = request.getUserPrincipal().getName();
+        User currentUser = userService.getByEmail(userEmail);
+        List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
+        return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
+    }
+
     private UserInfo prepareNewUserInfo(String email, UserDto dto) {
         User currentUser = userService.getByEmail(email);
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
@@ -157,6 +173,22 @@ public class UserController {
         dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
         dto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
         return dto;
+    }
+
+    private UserBasicDto userToUserBasicDto(User user){
+        UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
+        userBasicDto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
+        return userBasicDto;
+    }
+
+    private List<UserBasicDto> userToUserBasicDto(List<User> users) {
+        List<UserBasicDto> userDtoList = new ArrayList<>();
+        if (users != null) {
+            for (User user : users) {
+                userDtoList.add(userToUserBasicDto(user));
+            }
+        }
+        return userDtoList;
     }
 
     private String[] convertRolesTypeToFirstLetters(Set<Role> roles) {
