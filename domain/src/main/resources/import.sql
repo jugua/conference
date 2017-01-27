@@ -52,9 +52,9 @@ UPDATE level_seq SET next_val = 5 WHERE next_val = 1;
 -- Inserting necessary data into table `status`
 --
 
-INSERT INTO `status` VALUES (1, "New");
-INSERT INTO `status` VALUES (2, "In Progress");
-UPDATE status_seq SET next_val = 2 WHERE next_val = 1;
+-- INSERT INTO `status` VALUES (1, "New");
+-- INSERT INTO `status` VALUES (2, "In Progress");
+-- UPDATE status_seq SET next_val = 2 WHERE next_val = 1;
 
 --
 -- Inserting necessary data into table `language`
@@ -122,3 +122,15 @@ UPDATE user_info_seq SET next_val = 5 WHERE next_val = 4;
 INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (4, "organiser2@gmail.com", "Organiser2", "Organiser2", "CONFIRMED","organiser", 4);
 UPDATE user_seq SET next_val = 5 WHERE next_val = 4;
 INSERT INTO user_role VALUES (4, 2);
+
+--
+-- Setting default user with role ADMIN
+--
+
+INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (5, "", "", "");
+UPDATE user_info_seq SET next_val = 6 WHERE next_val = 5;
+
+
+INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (5, "admin@admin.com", "Admin", "Admin", "CONFIRMED","admin", 5);
+UPDATE user_seq SET next_val = 6 WHERE next_val = 6;
+INSERT INTO user_role VALUES (5, 2);
