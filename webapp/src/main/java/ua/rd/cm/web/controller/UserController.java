@@ -21,6 +21,7 @@ import ua.rd.cm.web.controller.dto.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -60,6 +61,11 @@ public class UserController {
                                           BindingResult bindingResult,
                                           HttpServletRequest request
     ) {
+        if (!Arrays.asList("SPEAKER", "ORGANISER").contains(dto.getRoleName())){
+            MessageDto message = new MessageDto();
+            message.setError("wrong_role_name");
+            return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+        }
         dto.setUserStatus(User.UserStatus.CONFIRMED);
         return processUserRegistration(dto, bindingResult, request);
     }
