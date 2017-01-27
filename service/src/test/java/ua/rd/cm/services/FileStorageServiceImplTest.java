@@ -127,12 +127,6 @@ public class FileStorageServiceImplTest {
                 fileStorageService.saveFile(mockedFile));
     }
 
-    @Test(expected = IOException.class)
-    public void upload_incorrect() throws IOException {
-        when(mockedFile.getOriginalFilename()).thenReturn(":");
-        fileStorageService.saveFile(mockedFile);
-    }
-
     //deleteFile
 
     @Test
