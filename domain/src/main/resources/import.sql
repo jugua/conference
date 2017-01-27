@@ -2,7 +2,7 @@
 -- Inserting necessary data into table `role`
 --
 
-INSERT INTO role VALUES (1, "ROLE_SPEAKER"),(2, "ROLE_ORGANISER");
+INSERT INTO role VALUES (1, "ROLE_SPEAKER"),(2, "ROLE_ORGANISER"),(3, "ROLE_ADMIN");
 
 UPDATE role_seq SET next_val = 3 WHERE next_val = 1;
 
@@ -52,9 +52,9 @@ UPDATE level_seq SET next_val = 5 WHERE next_val = 1;
 -- Inserting necessary data into table `status`
 --
 
-INSERT INTO `status` VALUES (1, "New");
-INSERT INTO `status` VALUES (2, "In Progress");
-UPDATE status_seq SET next_val = 2 WHERE next_val = 1;
+# INSERT INTO `status` VALUES (1, "New");
+# INSERT INTO `status` VALUES (2, "In Progress");
+# UPDATE status_seq SET next_val = 3 WHERE next_val = 2;
 
 --
 -- Inserting necessary data into table `language`

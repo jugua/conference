@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,7 +28,7 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.web.controller.dto.RegistrationDto;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.Filter;
@@ -43,8 +44,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ua.rd.cm.web.controller.TalkControllerTest.ORGANISER_ROLE;
-import static ua.rd.cm.web.controller.TalkControllerTest.SPEAKER_ROLE;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,6 +52,7 @@ import static ua.rd.cm.web.controller.TalkControllerTest.SPEAKER_ROLE;
 public class UserControllerTest extends TestUtil{
     public static final String API_USER_CURRENT = "/api/user/current";
     public static final String API_USER = "/api/user";
+    public static final String API_USER_CREATE = "/api/user/create";
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
     private UserDto correctUserDto;
@@ -61,8 +61,10 @@ public class UserControllerTest extends TestUtil{
 
     @Autowired
     private WebApplicationContext context;
+
     @Autowired
     private Filter springSecurityFilterChain;
+
     @Autowired
     private UserService userService;
 
@@ -90,22 +92,55 @@ public class UserControllerTest extends TestUtil{
 
     @Test
     public void correctRegistrationTest() throws Exception{
-        mockMvc.perform(post(API_USER)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctRegistrationDto))
-        ).andExpect(status().isAccepted());
+        performRegistration(API_USER, HttpStatus.ACCEPTED.value());
     }
 
     @Test
     public void alreadyRegisteredEmailTest() throws Exception{
         correctRegistrationDto.setEmail(alreadyRegisteredEmail);
-
         when(userService.isEmailExist(alreadyRegisteredEmail)).thenReturn(true);
+        performRegistration(API_USER, HttpStatus.CONFLICT.value());
+    }
 
-        mockMvc.perform(post(API_USER)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctRegistrationDto))
-        ).andExpect(status().isConflict());
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void correctRegistrationNewOrganiserByAdmin() throws Exception{
+        correctRegistrationDto.setRoleName(Role.ORGANISER);
+        performRegistration(API_USER_CREATE, HttpStatus.ACCEPTED.value());
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void correctRegistrationNewSpeakerByAdmin() throws Exception{
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        performRegistration(API_USER_CREATE, HttpStatus.ACCEPTED.value());
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void registrationNewAdminByAdmin() throws Exception{
+        correctRegistrationDto.setRoleName(Role.ADMIN);
+        performRegistration(API_USER_CREATE, HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    @WithMockUser(roles = ORGANISER_ROLE)
+    public void registrationNewUserByAdminAsOrganiser() throws Exception{
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        performRegistration(API_USER_CREATE, HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    @WithMockUser(roles = SPEAKER_ROLE)
+    public void registrationNewUserByAdminAsSpeaker() throws Exception{
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        performRegistration(API_USER_CREATE, HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    public void registrationNewUserByAdminWithoutRole() throws Exception{
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        performRegistration(API_USER_CREATE, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
@@ -332,7 +367,6 @@ public class UserControllerTest extends TestUtil{
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
-
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void getUserById() throws Exception{
@@ -355,13 +389,6 @@ public class UserControllerTest extends TestUtil{
                 .andExpect(jsonPath("roles[0]", is("s")));
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
-        return MockMvcRequestBuilders.get(uri)
-                .contentType(MediaType.APPLICATION_JSON_UTF8);
-    }
-
-
-
     @Test
     public void incorrectGetUserById() throws Exception{
         User user=createUser();
@@ -379,7 +406,17 @@ public class UserControllerTest extends TestUtil{
                 andExpect(status().isNotFound());
     }
 
+    private void performRegistration(String api, int expectedStatus) throws Exception{
+        mockMvc.perform(post(api)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(convertObjectToJsonBytes(correctRegistrationDto))
+        ).andExpect(status().is(expectedStatus));
+    }
 
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
+        return MockMvcRequestBuilders.get(uri)
+                .contentType(MediaType.APPLICATION_JSON_UTF8);
+    }
 
     private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
         try {
