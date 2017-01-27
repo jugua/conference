@@ -15,7 +15,6 @@ import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByTy
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByUserId;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,17 +51,17 @@ public class VerificationTokenService {
     }
 
     @Transactional
-    public void setPreviousTokensExpired(VerificationToken token) {
+    public void setPreviousTokensExpired(VerificationToken newToken) {
         List<VerificationToken> tokens = tokenRepository.findBySpecification
                 (new AndSpecification<>(new AndSpecification<>(new
-                        VerificationTokenByUserId(token.getUser().getId())
+                        VerificationTokenByUserId(newToken.getUser().getId())
                         , new VerificationTokenByStatus(VerificationToken.TokenStatus.VALID))
-                        , new VerificationTokenByType(token.getType())));
+                        , new VerificationTokenByType(newToken.getType())));
 
         if (!tokens.isEmpty()) {
-            for (VerificationToken t : tokens) {
-                t.setStatus(VerificationToken.TokenStatus.EXPIRED);
-                tokenRepository.updateToken(t);
+            for (VerificationToken token : tokens) {
+                token.setStatus(VerificationToken.TokenStatus.EXPIRED);
+                updateToken(token);
             }
         }
     }
@@ -74,38 +73,32 @@ public class VerificationTokenService {
 
     public boolean isTokenExpired(VerificationToken verificationToken) {
         return (verificationToken.getStatus().equals(VerificationToken.TokenStatus.EXPIRED)) ||
-                (verificationToken.getExpiryDate().isBefore(LocalDateTime.now(ZoneId.systemDefault())));
+                isExpiredByTime(verificationToken);
+    }
+
+    public boolean isExpiredByTime(VerificationToken verificationToken) {
+        return verificationToken.calculateSecondsToExpiry() <= 0;
     }
 
     public VerificationToken getToken(String token) {
         List<VerificationToken> tokens = tokenRepository.findBySpecification(new VerificationTokenByToken(token));
-        if (tokens.isEmpty()) {
-            return null;
-        }
-        return tokens.get(0);
+        return tokens.isEmpty() ? null : tokens.get(0);
     }
 
-    public VerificationToken getValidTokenByUserIdAndType(Long userId,
-                                                          VerificationToken.TokenType tokenType) {
-        List<VerificationToken> tokens = tokenRepository.findBySpecification
-                (new AndSpecification<>(new AndSpecification<>(new VerificationTokenByUserId(userId)
-                        , new VerificationTokenByStatus(VerificationToken.TokenStatus.VALID))
-                        , new VerificationTokenByType(tokenType)));
-
-        if (tokens.isEmpty()) {
+    @Transactional
+    public VerificationToken getValidTokenByUserIdAndType(Long userId, VerificationToken.TokenType tokenType) {
+        VerificationToken token = loadFromDatabase(userId, tokenType);
+        if (token != null && isExpiredByTime(token)) {
+            token.setStatus(VerificationToken.TokenStatus.EXPIRED);
+            updateToken(token);
             return null;
         }
-        return tokens.get(0);
+        return token;
     }
 
     public String getEmail(String token) {
         int index = token.indexOf('|');
-
-        if (index == -1) {
-            return null;
-        }
-
-        return token.substring(index + 1);
+        return (index == -1) ? null : token.substring(index + 1);
     }
 
     @Transactional
@@ -116,5 +109,18 @@ public class VerificationTokenService {
     private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
         return currentTime.plusMinutes(expiryTimeInMinutes);
+    }
+
+    private VerificationToken loadFromDatabase(Long userId, VerificationToken.TokenType tokenType) {
+        List<VerificationToken> tokens = tokenRepository.findBySpecification(
+                new AndSpecification<>(
+                        new AndSpecification<>(
+                                new VerificationTokenByUserId(userId),
+                                new VerificationTokenByStatus(VerificationToken.TokenStatus.VALID)
+                        ),
+                        new VerificationTokenByType(tokenType)
+                )
+        );
+        return tokens.isEmpty() ? null : tokens.get(0);
     }
 }
