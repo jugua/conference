@@ -125,7 +125,6 @@ public class TalkController {
         if (bindingResult.hasFieldErrors()) {
             resultMessage.setError("fields_error");
             return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
-
         }
         Talk talk = talkService.findTalkById(talkId);
         if (request.isUserInRole("ORGANISER")) {
@@ -200,7 +199,6 @@ public class TalkController {
     }
 
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
-        //System.out.println(talk.getStatus().getName());
         return talk.getUser().getId() != user.getId() || talk.getStatus().getName().equals(REJECTED) || talk.getStatus().getName().equals(APPROVED);
     }
 
