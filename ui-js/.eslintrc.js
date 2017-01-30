@@ -8,5 +8,24 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-param-reassign': ['error', { props: false }],
     'max-len': ['warn', 120, 4],
+  },
+
+  globals: {
+    // Angular
+    "angular": false,
+
+    // Angular mocks
+    "module": false,
+    "inject": false,
+
+    // Jasmine
+    "jasmine": false,
+    "describe": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "it": false,
+    "expect": false,
+    "spyOn": false,
+    "xdescribe": false,
   }
 }

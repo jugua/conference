@@ -1,9 +1,10 @@
-package ua.rd.cm.web.controller.dto;
+package ua.rd.cm.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
-
+import ua.rd.cm.domain.User;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @ToString(exclude = {"password", "confirm"})
 public class RegistrationDto {
+
     @NotNull
     @Size(min = 1, max = 56)
     @JsonProperty("fname")
@@ -33,4 +35,9 @@ public class RegistrationDto {
     @NotNull
     @Size(min = 6, max = 30)
     private String confirm;
+
+    private String roleName;
+
+    @JsonIgnore
+    private User.UserStatus userStatus;
 }

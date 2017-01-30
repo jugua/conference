@@ -24,16 +24,16 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	private UserRepository repository;
 	
 	@PersistenceContext
-	EntityManager em; //added for explicit flushing from Hibernate cache.
+	private EntityManager em; //added for explicit flushing from Hibernate cache.
 	
 	
 	@Before
 	public void setUp() {
-		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD", 
+		User user = new User(30L, "testName", "testSurname", "test@gmail.com", "tribel1234PASSWORD",
 				"testUrl", User.UserStatus.CONFIRMED, null, null);
 		saveUser(user);
 		
-		user = new User(31L, "testName2", "testSurname2", "test2@gmail.com", "tribel1234PASSWORD2", 
+		user = new User(31L, "testName2", "testSurname2", "test2@gmail.com", "tribel1234PASSWORD2",
 				"testUrl2",  User.UserStatus.CONFIRMED,null, null);
 		
 		saveUser(user);
@@ -112,7 +112,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 		assertEquals(new Long(31), users.get(0).getId());
 	}
 	
-	protected void saveUser(User usr) {
+	private void saveUser(User usr) {
 		jdbcTemplate.update("INSERT INTO user (user_id, first_name, last_name, email, "
 				+ " password, photo, user_info_id) "
 				+ " values(?,?,?,?,?,?,?)",

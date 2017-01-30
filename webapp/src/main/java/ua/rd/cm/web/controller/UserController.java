@@ -12,6 +12,7 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
@@ -20,6 +21,7 @@ import ua.rd.cm.web.controller.dto.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,24 +46,28 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity register(@Valid @RequestBody RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
-        HttpStatus status;
-        MessageDto message = new MessageDto();
-        if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)) {
-            status = HttpStatus.BAD_REQUEST;
-            message.setError("empty_fields");
-            logger.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
-        } else if (userService.isEmailExist(dto.getEmail().toLowerCase())) {
-            status = HttpStatus.CONFLICT;
-            message.setError("email_already_exists");
-            logger.error("Registration failed: " + dto.toString() +
-                    ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
-        } else {
-            userService.registerNewUser(dtoToEntity(dto));
-            status = HttpStatus.ACCEPTED;
-            message.setStatus("success");
+    public ResponseEntity register(@Valid @RequestBody RegistrationDto dto,
+                                   BindingResult bindingResult,
+                                   HttpServletRequest request
+    ) {
+        dto.setUserStatus(User.UserStatus.UNCONFIRMED);
+        dto.setRoleName(Role.SPEAKER);
+        return processUserRegistration(dto, bindingResult, request);
+    }
+
+    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PostMapping("/create")
+    public ResponseEntity registerByAdmin(@Valid @RequestBody RegistrationDto dto,
+                                          BindingResult bindingResult,
+                                          HttpServletRequest request
+    ) {
+        if (!Arrays.asList(Role.SPEAKER, Role.ORGANISER).contains(dto.getRoleName())){
+            MessageDto message = new MessageDto();
+            message.setError("wrong_role_name");
+            return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
         }
-        return ResponseEntity.status(status).body(message);
+        dto.setUserStatus(User.UserStatus.CONFIRMED);
+        return processUserRegistration(dto, bindingResult, request);
     }
 
     @GetMapping("/current")
@@ -113,6 +119,30 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
+    private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
+        HttpStatus status;
+        MessageDto message = new MessageDto();
+        if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)) {
+            status = HttpStatus.BAD_REQUEST;
+            message.setError("empty_fields");
+            logger.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+        } else if (userService.isEmailExist(dto.getEmail().toLowerCase())) {
+            status = HttpStatus.CONFLICT;
+            message.setError("email_already_exists");
+            logger.error("Registration failed: " + dto.toString() +
+                    ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
+        } else {
+            userService.registerNewUser(dto);
+            status = HttpStatus.ACCEPTED;
+            message.setStatus("success");
+        }
+        return ResponseEntity.status(status).body(message);
+    }
+
+    private boolean isPasswordConfirmed(RegistrationDto dto) {
+        return dto.getPassword().equals(dto.getConfirm());
+    }
+
     private UserInfo prepareNewUserInfo(String email, UserDto dto) {
         User currentUser = userService.getByEmail(email);
         UserInfo currentUserInfo = userInfoDtoToEntity(dto);
@@ -126,14 +156,6 @@ public class UserController {
         currentUser.setLastName(dto.getLastName());
         return currentUser;
     }
-
-    private User dtoToEntity(RegistrationDto dto) {
-        User user = mapper.map(dto, User.class);
-        user.setEmail(user.getEmail().toLowerCase());
-        user.setStatus(User.UserStatus.UNCONFIRMED);
-        return user;
-    }
-
 
     private UserInfo userInfoDtoToEntity(UserDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
@@ -167,9 +189,5 @@ public class UserController {
             rolesFirstLetters[i] = role.substring(0, 1).toLowerCase();
         }
         return rolesFirstLetters;
-    }
-
-    private boolean isPasswordConfirmed(RegistrationDto dto) {
-        return dto.getPassword().equals(dto.getConfirm());
     }
 }

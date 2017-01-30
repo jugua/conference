@@ -1,5 +1,3 @@
-/* global describe, xdescribe, it, xit, expect, beforeEach, afterEach, spyOn, angular, jasmine */
-
 import component from './edit-email.component';
 import Controller from './edit-email.controller';
 import template from './edit-email.html';
@@ -46,8 +44,11 @@ describe('EditEmail', () => {
       deferred = $q.defer();
       $scope = $rootScope.$new();
 
-      EditEmailService = jasmine.createSpyObj('EditEmailService', ['updateEmail', 'getMessages']);
+      EditEmailService = jasmine.createSpyObj('EditEmailService', ['updateEmail', 'checkPendingUpdate', 'getMessages']);
       EditEmailService.updateEmail.and.returnValue(deferred.promise);
+
+      EditEmailService.checkPendingUpdate.and.returnValue($q.when({ data: { answer: '' } }));
+
       EditEmailService.getMessages.and.returnValues({
         errInvalidEmail: 'Please enter a valid email address',
         errEmailIsTheSame: 'The new e-mail address you have provided is the same as your current e-mail address',
@@ -167,16 +168,17 @@ describe('EditEmail', () => {
         sut.changeEmail();
         expect(EditEmailService.updateEmail).toHaveBeenCalledWith('new@email.com');
       });
-      it('should update current email upon resolve', () => {
+      it('should set pendingChange to true upon resolve', () => {
         sut.user.mail = 'old@email.com';
         sut.newEmail = 'new@email.com';
         sut.editEmailForm.$valid = true;
+        sut.pendingChange = false;
         sut.changeEmail();
 
         deferred.resolve();
         $scope.$apply();
 
-        expect(sut.user.mail).toEqual('new@email.com');
+        expect(sut.pendingChange).toEqual(true);
       });
       it('should call showConfirm() upon resolve', () => {
         sut.user.mail = 'old@email.com';
@@ -300,6 +302,7 @@ describe('EditEmail', () => {
     describe('showConfirm() method', () => {
       beforeEach(() => {
         sut.timeoutHandler = null;
+        sut.confirmTimeout = 1000;
         sut.showConfirm('string');
       });
       it('should set error property to false', () => {
@@ -314,24 +317,17 @@ describe('EditEmail', () => {
       it('should set confirmMessage property to argument string', () => {
         expect(sut.confirmMessage).toEqual('string');
       });
-      it('should set changed property to true', () => {
-        expect(sut.changed).toEqual(true);
-      });
       it('upon timeout should change confirm proretry to false', () => {
-        $timeout.flush(2000);
+        $timeout.flush();
         expect(sut.confirm).toEqual(false);
       });
       it('upon timeout should change confirmMessage proretry to null', () => {
-        $timeout.flush(2000);
+        $timeout.flush();
         expect(sut.confirmMessage).toEqual(null);
-      });
-      it('upon timeout should change changed proretry to false', () => {
-        $timeout.flush(2000);
-        expect(sut.changed).toEqual(false);
       });
       it('upon timeout should call the closeEditEmail() method', () => {
         spyOn(sut, 'closeEditEmail');
-        $timeout.flush(2000);
+        $timeout.flush();
         expect(sut.closeEditEmail).toHaveBeenCalled();
       });
     });

@@ -1,4 +1,3 @@
-
 function Current($resource, $q, $rootScope, LocalStorage) {
   'ngInject';
 
@@ -25,7 +24,7 @@ function Current($resource, $q, $rootScope, LocalStorage) {
       current.resolve(data);
     },
     () => {
-      window.localStorage.removeItem('userInfo');
+      LocalStorage.removeItem('userInfo');
       current.resolve(null);
     });
 
