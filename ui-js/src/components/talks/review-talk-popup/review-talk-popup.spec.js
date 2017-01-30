@@ -1,4 +1,4 @@
-import NewtalkPopupController from './newtalk.controller';
+import NewtalkPopupController from './review-talk-popup.controller';
 
 describe ('Submit New Talk popup controller test', () => {
   let sut;
