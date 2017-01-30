@@ -74,6 +74,7 @@ export default class EditEmailController {
     this.confirmMessage = message;
 
     this.timeout(() => {
+
       this.confirm = false;
       this.confirmMessage = null;
       this.closeEditEmail();

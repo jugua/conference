@@ -1,12 +1,3 @@
-/* global beforeEach */
-/* global inject */
-/* global describe */
-/* global expect */
-/* global it */
-/* global spyOn */
-/* global jasmine */
-/* global angular */
-
 import UserPhotoModule from './user-photo';
 import UserPhotoController from './user-photo.controller';
 import UserPhotoComponent from './user-photo.component';
@@ -17,6 +8,7 @@ describe('UserPhoto', () => {
   describe('Controller', () => {
     let q;
     let userPhotoService;
+    let Constants;
     const user = { photo: '' };
     let sut;
 
@@ -30,7 +22,9 @@ describe('UserPhoto', () => {
       userPhotoService.uploadPhoto.and.returnValue(q.when([]));
       userPhotoService.deleteUserPhoto.and.returnValue(q.when([]));
 
-      sut = $controller('UserPhotoController', { userPhotoService }, { user });
+      Constants = jasmine.createSpyObj('constants', ['ava']);
+
+      sut = $controller('UserPhotoController', { userPhotoService, Constants }, { user });
     }));
 
     beforeEach(() => {

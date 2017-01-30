@@ -7,9 +7,19 @@ export default class MyTalksController {
     this.filter = {};
     this.menuService = Menus;
     this.showFilters = true;
-  }
 
+    this.editTalkObj = {};
+    this.showEditPopup = false;
+  }
   showSettings() {
     this.showFilters = !this.showFilters;
+  }
+  edit(talk) {  // talk object passed
+    this.editTalkObj = talk;
+    this.showEditPopup = true;
+  }
+  hideEditPopup() {
+    this.editTalkObj = {};
+    this.showEditPopup = false;
   }
 }

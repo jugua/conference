@@ -1,5 +1,3 @@
-/* global describe, it, expect, spyOn, beforeEach, jasmine, angular */
-
 import component from './forgot-password.component';
 import Controller from './forgot-password.controller';
 import template from './forgot-password.html';

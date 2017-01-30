@@ -21,6 +21,9 @@ public class TestUtil {
     private String alreadyRegisteredEmail = "ivanova@gmail.com";
     protected static final String ORGANISER_EMAIL = "trybel@gmail.com";
     protected static final String SPEAKER_EMAIL = "ivanova@gmail.com";
+    public static final String SPEAKER_ROLE = "SPEAKER";
+    public static final String ORGANISER_ROLE = "ORGANISER";
+    public static final String ADMIN_ROLE = "ADMIN";
 
     protected User createUser(Role role, UserInfo info) {
         Set<Role> roles = new HashSet<>();

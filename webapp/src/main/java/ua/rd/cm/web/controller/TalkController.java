@@ -6,14 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
+import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.preparator.ChangeTalkStatusOrganiserPreparator;
 import ua.rd.cm.services.preparator.ChangeTalkStatusSpeakerPreparator;
 import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
@@ -21,10 +17,10 @@ import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 import ua.rd.cm.web.controller.dto.ActionDto;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
-import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +28,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/talk")
 public class TalkController {
+    public static final String TALK_NOT_FOUND = "talk_not_found";
+    private static final String ORGANISER = "ORGANISER";
 
+
+    public static final int MAX_ORG_COMMENT_LENGTH = 1000;
     private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
@@ -41,16 +41,18 @@ public class TalkController {
     private LevelService levelService;
     private TopicService topicService;
     private MailService mailService;
-    private ContactTypeService contactTypeService;
 
+    public static final String APPROVED = "Approved";
     public static final String DEFAULT_TALK_STATUS = "New";
+    public static final String REJECTED = "Rejected";
+    public static final String IN_PROGRESS = "In Progress";
 
     @Autowired
     public TalkController(ModelMapper mapper, UserService userService,
                           TalkService talkService,
                           TypeService typeService, LanguageService languageService,
                           LevelService levelService, TopicService topicService,
-                          MailService mailService, ContactTypeService contactTypeService
+                          MailService mailService
     ) {
         this.mapper = mapper;
         this.userService = userService;
@@ -60,7 +62,13 @@ public class TalkController {
         this.mailService = mailService;
         this.typeService = typeService;
         this.levelService = levelService;
-        this.contactTypeService = contactTypeService;
+    }
+
+    @ExceptionHandler(TalkNotFoundException.class)
+    public ResponseEntity<MessageDto> handleTalkNotFound() {
+        MessageDto resultMessage = new MessageDto();
+        resultMessage.setError(TALK_NOT_FOUND);
+        return new ResponseEntity<>(resultMessage, HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -71,7 +79,7 @@ public class TalkController {
 
         if (bindingResult.hasFieldErrors()) {
             messageDto.setError("fields_error");
-            return prepareResponse(HttpStatus.BAD_REQUEST,messageDto);
+            return prepareResponse(HttpStatus.BAD_REQUEST, messageDto);
         }
 
         User currentUser = userService.getByEmail(request.getRemoteUser());
@@ -83,7 +91,6 @@ public class TalkController {
             httpStatus = HttpStatus.OK;
         }
         messageDto.setId(id);
-        //return ResponseEntity.status(httpStatus).body(messageDto);
         return new ResponseEntity<>(messageDto, httpStatus);
     }
 
@@ -91,7 +98,7 @@ public class TalkController {
     @GetMapping
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
         List<TalkDto> userTalkDtoList;
-        if (request.isUserInRole("ORGANISER")) {
+        if (request.isUserInRole(ORGANISER)) {
             userTalkDtoList = getTalksForOrganiser();
         } else {
             userTalkDtoList = getTalksForSpeaker(request.getRemoteUser());
@@ -99,65 +106,59 @@ public class TalkController {
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ORGANISER')")
     @GetMapping("/{talkId}")
-    public ResponseEntity getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
-        MessageDto resultMessage = new MessageDto();
-
-        if (!request.isUserInRole("ORGANISER")) {
-            resultMessage.setError("unauthorized");
-            return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
-        }
-
+    public ResponseEntity getTalkById(@PathVariable Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
-        if (talk == null) {
-            resultMessage.setError("no_talk_with_such_id");
-            return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
-        }
         TalkDto talkDto = entityToDto(talk);
         return new ResponseEntity<>(talkDto, HttpStatus.OK);
     }
 
-
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
     public ResponseEntity actionOnTalk(@PathVariable("id") Long talkId,
-                                       @Valid @RequestBody ActionDto dto,
+                                       @RequestBody TalkDto dto,
                                        BindingResult bindingResult,
                                        HttpServletRequest request) {
         MessageDto resultMessage = new MessageDto();
 
-        if (!request.isUserInRole("ORGANISER")) {
-            resultMessage.setError("unauthorized");
-            return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
-        }
         if (bindingResult.hasFieldErrors()) {
-            if(isCommentToLong(bindingResult)){
-                resultMessage.setError("comment_too_long");
-                return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
-            }else{
-                resultMessage.setError("fields_error");
-                return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+            resultMessage.setError("fields_error");
+            return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+        }
+        Talk talk = talkService.findTalkById(talkId);
+        if (request.isUserInRole("ORGANISER")) {
+            return organiserActions(dto, request, resultMessage, talk);
+        }
+        if (request.isUserInRole("SPEAKER")) {
+            if (!speakerActions(dto, request, resultMessage, talk))
+                return prepareResponse(HttpStatus.FORBIDDEN, resultMessage);
+            else {
+                return prepareResponse(HttpStatus.OK, resultMessage);
             }
 
         }
-        Talk talk = talkService.findTalkById(talkId);
-        if (talk == null) {
-            resultMessage.setError("talk_not_found");
-            return prepareResponse(HttpStatus.NOT_FOUND, resultMessage);
+        resultMessage.setError("unauthorized");
+        return prepareResponse(HttpStatus.UNAUTHORIZED, resultMessage);
+    }
+
+    private ResponseEntity organiserActions(@RequestBody TalkDto dto, HttpServletRequest request, MessageDto resultMessage, Talk talk) {
+        if (dto.getOrganiserComment().length() > MAX_ORG_COMMENT_LENGTH) {
+            resultMessage.setError("comment_too_long");
+            return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
         }
-        switch (dto.getStatus()) {
-            case "Rejected": {
-                if (dto.getComment()==null || dto.getComment().length() < 1) {
+        switch (dto.getStatusName()) {
+            case REJECTED: {
+                if (dto.getOrganiserComment() == null || dto.getOrganiserComment().length() < 1) {
                     resultMessage.setError("empty_comment");
                     return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
                 }
                 return trySetStatus(dto, talk, request);
             }
-            case "In Progress": {
+            case IN_PROGRESS:{
                 return trySetStatus(dto, talk, request);
             }
-            case "Approved": {
+            case APPROVED: {
                 return trySetStatus(dto, talk, request);
             }
             default: {
@@ -167,19 +168,12 @@ public class TalkController {
         }
     }
 
-    private boolean isCommentToLong(BindingResult bindingResult) {
-        return bindingResult.getFieldError("comment").getDefaultMessage().equals("comment_too_long");
-    }
-
-    private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
-        return ResponseEntity.status(status).body(message);
-    }
-
-    private ResponseEntity trySetStatus(ActionDto dto, Talk talk, HttpServletRequest request) {
+    private ResponseEntity trySetStatus(TalkDto dto, Talk talk, HttpServletRequest request) {
         MessageDto message = new MessageDto();
         ResponseEntity responseEntity;
-        if (talk.setStatus(TalkStatus.getStatusByName(dto.getStatus()))) {
-            talk.setOrganiserComment(dto.getComment());
+        if (talk.setStatus(TalkStatus.getStatusByName(dto.getStatusName()))) {
+            talk.setOrganiser(userService.getByEmail(request.getRemoteUser()));
+            talk.setOrganiserComment(dto.getOrganiserComment());
             talkService.update(talk);
             message.setResult("successfully_updated");
             responseEntity = prepareResponse(HttpStatus.OK, message);
@@ -192,9 +186,30 @@ public class TalkController {
         return responseEntity;
     }
 
+    private boolean speakerActions(@RequestBody TalkDto dto, HttpServletRequest request, MessageDto resultMessage, Talk talk) {
+        User user = userService.getByEmail(request.getUserPrincipal().getName());
+        if (isForbiddenToChangeTalk(user, talk)) {
+            resultMessage.setError("forbidden");
+            return false;
+        }
+        Talk updatedTalk = dtoToEntity(dto);
+        talkService.update(updatedTalk);
+        resultMessage.setResult("successfully_updated");
+        return true;
+    }
+
+    private boolean isForbiddenToChangeTalk(User user, Talk talk) {
+        return talk.getUser().getId() != user.getId() || talk.getStatus().getName().equals(REJECTED) || talk.getStatus().getName().equals(APPROVED);
+    }
+
+    private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
+        return ResponseEntity.status(status).body(message);
+    }
+
+
     private void notifySpeaker(Talk talk) {
         TalkStatus status = talk.getStatus();
-        if (status.isStatusName("In Progress") && !talk.isValidComment()){
+        if (status.isStatusName(IN_PROGRESS) && !talk.isValidComment()) {
             return;
         }
         mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
@@ -235,16 +250,25 @@ public class TalkController {
 
     private TalkDto entityToDto(Talk talk) {
         TalkDto dto = mapper.map(talk, TalkDto.class);
-        dto.setSpeakerFullName(talk.getUser().getFirstName() + " " + talk.getUser().getLastName());
+        dto.setSpeakerFullName(talk.getUser().getFullName());
         dto.setStatusName(talk.getStatus().getName());
         dto.setDate(talk.getTime().toString());
+
+        User organiser = talk.getOrganiser();
+        if (organiser != null) {
+            dto.setAssignee(organiser.getFullName());
+        }
         return dto;
     }
 
     private Talk dtoToEntity(TalkDto dto) {
         Talk talk = mapper.map(dto, Talk.class);
         talk.setTime(LocalDateTime.now());
-        talk.setStatus(TalkStatus.getStatusByName(dto.getStatusName()));
+        if (dto.getStatusName() != null) {
+            talk.setStatus(TalkStatus.getStatusByName(dto.getStatusName()));
+        } else {
+            talk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
+        }
         talk.setLanguage(languageService.getByName(dto.getLanguageName()));
         talk.setLevel(levelService.getByName(dto.getLevelName()));
         talk.setType(typeService.getByName(dto.getTypeName()));

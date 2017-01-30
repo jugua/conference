@@ -61,6 +61,9 @@ public class Talk {
     @Column(name="organiser_comment", length=1000)
     private String organiserComment;
 
+    @ManyToOne
+    private User organiser;
+
     public boolean setStatus(TalkStatus status){
         if(this.status==null){
             this.status=status;

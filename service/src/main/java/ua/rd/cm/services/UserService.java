@@ -3,6 +3,7 @@ package ua.rd.cm.services;
 import java.util.List;
 
 import ua.rd.cm.domain.User;
+import ua.rd.cm.dto.RegistrationDto;
 
 public interface UserService {
 
@@ -22,7 +23,7 @@ public interface UserService {
 	
 	boolean isEmailExist(String email);
 
-    void registerNewUser(User user);
+    void registerNewUser(RegistrationDto dto);
 
     List<User> getByRole(String role);
 

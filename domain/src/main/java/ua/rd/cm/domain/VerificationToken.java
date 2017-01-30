@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @NoArgsConstructor
@@ -48,5 +49,9 @@ public class VerificationToken {
 
     public enum TokenStatus {
         VALID, EXPIRED
+    }
+
+    public long calculateSecondsToExpiry() {
+        return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }
 }

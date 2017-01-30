@@ -12,6 +12,7 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
