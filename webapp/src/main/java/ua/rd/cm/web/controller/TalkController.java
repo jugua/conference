@@ -143,7 +143,7 @@ public class TalkController {
     }
 
     private ResponseEntity organiserActions(@RequestBody TalkDto dto, HttpServletRequest request, MessageDto resultMessage, Talk talk) {
-        if (dto.getOrganiserComment().length() > MAX_ORG_COMMENT_LENGTH) {
+        if (dto.getOrganiserComment()!=null && dto.getOrganiserComment().length() > MAX_ORG_COMMENT_LENGTH) {
             resultMessage.setError("comment_too_long");
             return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
         }
