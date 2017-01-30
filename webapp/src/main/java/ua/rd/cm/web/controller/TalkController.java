@@ -10,18 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.TalkNotFoundException;
-import ua.rd.cm.services.preparator.ChangeTalkStatusOrganiserPreparator;
-import ua.rd.cm.services.preparator.ChangeTalkStatusSpeakerPreparator;
-import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
-import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
-import ua.rd.cm.web.controller.dto.ActionDto;
+import ua.rd.cm.services.preparator.*;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.Validator;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -143,7 +139,7 @@ public class TalkController {
     }
 
     private ResponseEntity organiserActions(@RequestBody TalkDto dto, HttpServletRequest request, MessageDto resultMessage, Talk talk) {
-        if (dto.getOrganiserComment().length() > MAX_ORG_COMMENT_LENGTH) {
+        if (dto.getOrganiserComment()!=null && dto.getOrganiserComment().length() > MAX_ORG_COMMENT_LENGTH) {
             resultMessage.setError("comment_too_long");
             return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
         }
@@ -177,7 +173,7 @@ public class TalkController {
             talkService.update(talk);
             message.setResult("successfully_updated");
             responseEntity = prepareResponse(HttpStatus.OK, message);
-            notifyOrganisers(talk, request);
+            notifyOrganisersForOrganiserAction(talk, request);
             notifySpeaker(talk);
         } else {
             message.setError("wrong_status");
@@ -192,7 +188,7 @@ public class TalkController {
         }
         mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
     }
-    private void notifyOrganisers(Talk talk, HttpServletRequest request) {
+    private void notifyOrganisersForOrganiserAction(Talk talk, HttpServletRequest request) {
         String organiserEmail = request.getUserPrincipal().getName();
         User currentOrganiser = userService.getByEmail(organiserEmail);
         List<User> receivers = userService.getByRoleExceptCurrent(currentOrganiser, Role.ORGANISER);
@@ -212,6 +208,13 @@ public class TalkController {
     }
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         return talk.getUser().getId() != user.getId() || talk.getStatus().getName().equals(REJECTED) || talk.getStatus().getName().equals(APPROVED);
+    }
+
+    private void notifyOrganiserForSpeakerAction(Talk talk){
+        if(talk.getOrganiser()!=null){
+            mailService.sendEmail(userService.getByEmail(talk.getOrganiser().getEmail()),
+                    new ChangeTalkBySpeakerPreparator(talk));
+        }
     }
 
     private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
