@@ -1,0 +1,28 @@
+<div class="tabs-layout">
+  <div class="tabs-wrapper">
+    <ul class="tabs-list">
+      <li class="tabs-list__item">
+        <a class="tabs-list__anchor tabs-list__anchor_active">
+          Manage Users
+        </a>
+      </li>
+    </ul>
+    <div class="tabs-container">
+      <div class="data-table">
+        <div class="table-header">
+          <div class="table-header__item table-header__item_speaker-talk">role</div>
+          <div class="table-header__item table-header__item_title-talk">name</div>
+          <div class="table-header__item table-header__item_topic-talk">email</div>
+          <div class="table-header__item table-header__scroll-fix"></div>
+        </div>
+        <div class="data-table__inner-wrapper">
+          <div class="data-table__row" ng-repeat="user in $ctrl.users">
+            <div class="data-table__column data-table__column_speaker-talk">{{user.role}}</div>
+            <div class="data-table__column data-table__column_title-talk">{{user.name}}</div>
+            <div class="data-table__column data-table__column_topic-talk">{{user.email}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
