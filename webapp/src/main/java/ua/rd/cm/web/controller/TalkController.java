@@ -185,6 +185,19 @@ public class TalkController {
         }
         return responseEntity;
     }
+    private void notifySpeaker(Talk talk) {
+        TalkStatus status = talk.getStatus();
+        if (status.isStatusName(IN_PROGRESS) && !talk.isValidComment()) {
+            return;
+        }
+        mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
+    }
+    private void notifyOrganisers(Talk talk, HttpServletRequest request) {
+        String organiserEmail = request.getUserPrincipal().getName();
+        User currentOrganiser = userService.getByEmail(organiserEmail);
+        List<User> receivers = userService.getByRoleExceptCurrent(currentOrganiser, Role.ORGANISER);
+        mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(currentOrganiser, talk));
+    }
 
     private boolean speakerActions(@RequestBody TalkDto dto, HttpServletRequest request, MessageDto resultMessage, Talk talk) {
         User user = userService.getByEmail(request.getUserPrincipal().getName());
@@ -197,7 +210,6 @@ public class TalkController {
         resultMessage.setResult("successfully_updated");
         return true;
     }
-
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         return talk.getUser().getId() != user.getId() || talk.getStatus().getName().equals(REJECTED) || talk.getStatus().getName().equals(APPROVED);
     }
@@ -207,20 +219,6 @@ public class TalkController {
     }
 
 
-    private void notifySpeaker(Talk talk) {
-        TalkStatus status = talk.getStatus();
-        if (status.isStatusName(IN_PROGRESS) && !talk.isValidComment()) {
-            return;
-        }
-        mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
-    }
-
-    private void notifyOrganisers(Talk talk, HttpServletRequest request) {
-        String organiserEmail = request.getUserPrincipal().getName();
-        User currentOrganiser = userService.getByEmail(organiserEmail);
-        List<User> receivers = userService.getByRoleExceptCurrent(currentOrganiser, Role.ORGANISER);
-        mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(currentOrganiser, talk));
-    }
 
     private List<TalkDto> getTalksForSpeaker(String userEmail) {
         User currentUser = userService.getByEmail(userEmail);
