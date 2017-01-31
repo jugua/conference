@@ -60,7 +60,7 @@ public class UserController {
             logger.error("Registration failed: " + dto.toString() +
                     ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
         } else {
-            userService.registerNewUser(dtoToEntity(dto));
+            userService.registerNewUser(dto);
             status = HttpStatus.ACCEPTED;
             message.setStatus("success");
         }
@@ -126,6 +126,10 @@ public class UserController {
         }
         String userEmail = request.getUserPrincipal().getName();
         User currentUser = userService.getByEmail(userEmail);
+        if ( currentUser == null ) {
+            message.setError("unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+        }
         List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
         return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
     }
