@@ -108,14 +108,14 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public List<User> getByRole(String role) {
-		return userRepository.findBySpecification(new UserByRoleJoin(role));
+		return userRepository.findBySpecification(new UserByRoleJoin( new UserByRole(role)));
 	}
 
 	@Override
 	public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
 		return userRepository.findBySpecification(
 				new AndSpecification<>(
-						new UserByRoleJoin(roleName),
+						new UserByRoleJoin(new UserByRole(roleName)),
 						new UserExceptThisById(currentUser.getId())
 				)
 		);
@@ -123,10 +123,23 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public List<User> getByRolesExceptCurrent(User currentUser, String ... roles) {
-		List<User> users = new ArrayList<>();
-		for (String role: roles) {
-			users.addAll(getByRoleExceptCurrent(currentUser, role));
-		}
+        List<User> users = new ArrayList<>();
+        if (roles.length > 0) {
+            Specification<User> current = new UserByRole(roles[0]); //new UserByRoleJoin(new UserByRole(roles[0]));
+            if (roles.length > 1) {
+                for (int i = 1; i < roles.length; i++) {
+                    current = new OrSpecification<>(current, new UserByRole(roles[i]));
+                }
+            }
+            current = new UserByRoleJoin(current);
+            users = userRepository.findBySpecification( new UserOrderByLastName(
+                    new AndSpecification<>(
+                            current,
+                            new UserExceptThisById(currentUser.getId())
+                    )
+                )
+            );
+        }
 		return users;
 	}
 
