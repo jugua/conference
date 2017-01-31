@@ -37,7 +37,7 @@
                 </property>
             </activation>
             <properties>
-                <profile.name>dev</profile.name>
+                <profile.name>local</profile.name>
             </properties>
 
             <build>
@@ -64,10 +64,16 @@
             </build>
         </profile>
         <profile>
-            <id>dev</id>
+            <id>local</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <profile.name>local</profile.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
             <properties>
                 <profile.name>dev</profile.name>
             </properties>

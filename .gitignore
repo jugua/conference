@@ -1,6 +1,7 @@
 .gitignore
 # Maven target
 /**/target
+**/profiles/local/*.properties
 
 ### Node template
 # Logs
