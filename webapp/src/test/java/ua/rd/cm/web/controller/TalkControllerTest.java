@@ -603,7 +603,6 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(status().isForbidden());
     }
 
-    @Ignore
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void tryNullStatusActionOnTalk() throws Exception {
@@ -612,7 +611,30 @@ public class TalkControllerTest extends TestUtil {
         TalkDto rejectedTalk = setupCorrectTalkDto();
         rejectedTalk.setStatusName(null);
         mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, rejectedTalk))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void tryWrongStatus() throws Exception {
+        Talk talk = createTalk(createUser());
+        when(talkService.findTalkById(3L)).thenReturn(talk);
+        TalkDto newTalk = setupCorrectTalkDto();
+        newTalk.setStatusName(TalkStatus.NEW.getName());
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 3, newTalk))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void tryChangeIntoStatusThatNotAllow() throws Exception {
+        Talk talk = createTalk(createUser());
+        talk.setStatus(TalkStatus.APPROVED);
+        when(talkService.findTalkById(4L)).thenReturn(talk);
+        TalkDto newTalk = setupCorrectTalkDto();
+        newTalk.setStatusName(TalkStatus.IN_PROGRESS.getName());
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 4, newTalk))
+                .andExpect(status().isConflict());
     }
 
 

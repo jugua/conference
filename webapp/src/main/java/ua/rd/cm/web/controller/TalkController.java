@@ -143,6 +143,10 @@ public class TalkController {
             resultMessage.setError("comment_too_long");
             return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
         }
+        if(dto.getStatusName()==null){
+            resultMessage.setError("status_is_null");
+            return prepareResponse(HttpStatus.BAD_REQUEST, resultMessage);
+        }
         switch (dto.getStatusName()) {
             case REJECTED: {
                 if (dto.getOrganiserComment() == null || dto.getOrganiserComment().length() < 1) {
@@ -241,8 +245,8 @@ public class TalkController {
     }
 
     private Long saveNewTalk(TalkDto dto, User currentUser) {
-        dto.setStatusName(DEFAULT_TALK_STATUS);
         Talk currentTalk = dtoToEntity(dto);
+        currentTalk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
         currentTalk.setUser(currentUser);
         talkService.save(currentTalk);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
