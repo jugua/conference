@@ -125,17 +125,15 @@ public class SimpleUserService implements UserService{
 	public List<User> getByRolesExceptCurrent(User currentUser, String ... roles) {
         List<User> users = new ArrayList<>();
         if (roles.length > 0) {
-            Specification<User> current = new UserByRole(roles[0]); //new UserByRoleJoin(new UserByRole(roles[0]));
-            if (roles.length > 1) {
-                for (int i = 1; i < roles.length; i++) {
-                    current = new OrSpecification<>(current, new UserByRole(roles[i]));
-                }
+            Specification<User> current = new UserByRole(roles[0]);
+            for (int i = 1; i < roles.length; i++) {
+                current = new OrSpecification<>(current, new UserByRole(roles[i]));
             }
             current = new UserByRoleJoin(current);
             users = userRepository.findBySpecification( new UserOrderByLastName(
                     new AndSpecification<>(
-                            current,
-                            new UserExceptThisById(currentUser.getId())
+                        current,
+                        new UserExceptThisById(currentUser.getId())
                     )
                 )
             );
