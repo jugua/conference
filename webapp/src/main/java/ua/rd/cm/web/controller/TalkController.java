@@ -17,7 +17,6 @@ import ua.rd.cm.web.controller.dto.TalkDto;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -205,20 +204,26 @@ public class TalkController {
             resultMessage.setError("forbidden");
             return false;
         }
-        Talk updatedTalk = dtoToEntity(dto);
-        setFieldsThatNotAllowToChange(talk, updatedTalk);
-        talkService.update(updatedTalk);
-        notifyOrganiserForSpeakerAction(updatedTalk);
+        setFieldsMappedStringIntoEntity(dto,talk);
+        setFieldsThatCanBeChange(dto, talk);
+        talkService.update(talk);
+        notifyOrganiserForSpeakerAction(talk);
         resultMessage.setResult("successfully_updated");
         return true;
     }
 
-    private void setFieldsThatNotAllowToChange(Talk talk, Talk updatedTalk) {
-        updatedTalk.setStatus(talk.getStatus());
-        updatedTalk.setOrganiser(talk.getOrganiser());
-        updatedTalk.setOrganiserComment(talk.getOrganiserComment());
-        updatedTalk.setUser(talk.getUser());
+    private void setFieldsThatCanBeChange(@RequestBody TalkDto dto, Talk talk) {
+        if(dto.getTitle()!=null){
+            talk.setTitle(dto.getTitle());
+        }
+        if(dto.getDescription()!=null){
+            talk.setDescription(dto.getDescription());
+        }
+        if(dto.getAdditionalInfo()!=null){
+            talk.setAdditionalInfo(dto.getAdditionalInfo());
+        }
     }
+
 
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         return talk.getUser().getId() != user.getId() || talk.getStatus().getName().equals(REJECTED) || talk.getStatus().getName().equals(APPROVED);
@@ -280,13 +285,14 @@ public class TalkController {
     private Talk dtoToEntity(TalkDto dto) {
         Talk talk = mapper.map(dto, Talk.class);
         talk.setTime(LocalDateTime.now());
+        setFieldsMappedStringIntoEntity(dto, talk);
+        return talk;
+    }
+    private void setFieldsMappedStringIntoEntity(TalkDto dto, Talk talk) {
         talk.setLanguage(languageService.getByName(dto.getLanguageName()));
         talk.setLevel(levelService.getByName(dto.getLevelName()));
         talk.setType(typeService.getByName(dto.getTypeName()));
         talk.setTopic(topicService.getByName(dto.getTopicName()));
-        talk.setAdditionalInfo(dto.getAdditionalInfo());
-        talk.setDescription(dto.getDescription());
-        return talk;
     }
 
     private boolean checkForFilledUserInfo(User currentUser) {
