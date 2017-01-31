@@ -34,6 +34,7 @@ export default class {
 
     delete sendObj.status;                // filter out
     delete sendObj.comment;
+    delete sendObj._id;
 
     this.talksService.update(this.talk._id, sendObj,
       () => {   // success callback
