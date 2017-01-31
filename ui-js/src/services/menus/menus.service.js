@@ -26,15 +26,24 @@ const Menus = function Menus() {
     ],
     a: [
       {
+<<<<<<< HEAD
         link: 'account',
         name: 'Settings'
+=======
+        link: 'manageUsers',
+        name: 'Manage Users'
+>>>>>>> 7645df6feb0fa4d43feaae43dcf1331faa2b2c39
       }
     ]
   };
 
   return {
     getMenu: function getMenu(role) {
+<<<<<<< HEAD
       const menuArr = [];
+=======
+      let menuArr = [];
+>>>>>>> 7645df6feb0fa4d43feaae43dcf1331faa2b2c39
 
 
       if (!role || role.length === 0) {
@@ -42,6 +51,7 @@ const Menus = function Menus() {
       }
 
       if (role.indexOf('s') !== -1) {
+<<<<<<< HEAD
         menuArr.concat(menu.s);
       }
 
@@ -51,6 +61,17 @@ const Menus = function Menus() {
 
       if (role.indexOf('a') !== -1) {
         menuArr.concat(menu.a);
+=======
+        menuArr = menuArr.concat(menu.s);
+      }
+
+      if (role.indexOf('o') !== -1) {
+        menuArr = menuArr.concat(menu.o);
+      }
+
+      if (role.indexOf('a') !== -1) {
+        menuArr = menuArr.concat(menu.a);
+>>>>>>> 7645df6feb0fa4d43feaae43dcf1331faa2b2c39
       }
 
       return menuArr;

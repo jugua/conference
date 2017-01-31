@@ -15,7 +15,7 @@ import newPasswordComponent from './new-password/new-password';
 import registrationConfirm from './registration-confirm/registration-confirm';
 import invalidLink from './invalid-link/invalid-link';
 import newEmailConfirm from './new-email-confirm/new-email-confirm';
-import adminPage from './admin-page/admin-page';
+import manageUsers from './manage-users/manage-users';
 
 
 export default (app) => {
@@ -37,6 +37,6 @@ export default (app) => {
     registrationConfirm,
     invalidLink,
     newEmailConfirm,
-    adminPage,
+    manageUsers,
   ], app);
 };
