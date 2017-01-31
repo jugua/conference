@@ -267,9 +267,6 @@ public class TalkController {
     private Talk dtoToEntity(TalkDto dto) {
         Talk talk = mapper.map(dto, Talk.class);
         talk.setTime(LocalDateTime.now());
-        if (dto.getStatusName() == null) {
-            talk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
-        }
         talk.setLanguage(languageService.getByName(dto.getLanguageName()));
         talk.setLevel(levelService.getByName(dto.getLevelName()));
         talk.setType(typeService.getByName(dto.getTypeName()));

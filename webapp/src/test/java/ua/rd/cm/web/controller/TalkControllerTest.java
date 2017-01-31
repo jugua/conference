@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -415,13 +415,13 @@ public class TalkControllerTest extends TestUtil {
     }
 
     private ResultActions performTalkStatusChange(String newState) throws Exception {
-        return mockMvc.perform(preparePatchRequest(API_TALK + "/" +1L, "comment", newState));
+        return mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1L, "comment", newState));
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void organiserIsSetOnTalkReject() throws Exception {
-        Talk talk = createTalk(speakerUser,organiserUser);
+        Talk talk = createTalk(speakerUser, organiserUser);
         when(talkService.findTalkById(talk.getId())).thenReturn(talk);
         testOrganiserIsSetOnStatusChange(REJECTED);
     }
@@ -429,7 +429,7 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void organiserIsSetOnTalkInProgress() throws Exception {
-        Talk talk = createTalk(speakerUser,organiserUser);
+        Talk talk = createTalk(speakerUser, organiserUser);
         when(talkService.findTalkById(talk.getId())).thenReturn(talk);
         testOrganiserIsSetOnStatusChange(IN_PROGRESS);
     }
@@ -437,14 +437,14 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void organiserIsSetOnTalkApprove() throws Exception {
-        Talk talk = createTalk(speakerUser,organiserUser);
+        Talk talk = createTalk(speakerUser, organiserUser);
         when(talkService.findTalkById(1L)).thenReturn(talk);
         testOrganiserIsSetOnStatusChange(APPROVED);
     }
 
 
     private void testOrganiserIsSetOnStatusChange(String newState) throws Exception {
-        Talk talk = createTalk(speakerUser,organiserUser);
+        Talk talk = createTalk(speakerUser, organiserUser);
         when(talkService.findTalkById(1L)).thenReturn(talk);
         performTalkStatusChange(newState);
         verify(talkService, atLeastOnce()).update(eq(talk));
@@ -457,7 +457,7 @@ public class TalkControllerTest extends TestUtil {
         when(talkService.findTalkById(1L)).thenReturn(talk);
 
         expectTalk(mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)), talk)
-            .andExpect(jsonPath("assignee", is(nullValue())));
+                .andExpect(jsonPath("assignee", is(nullValue())));
     }
 
     @Test
@@ -575,19 +575,46 @@ public class TalkControllerTest extends TestUtil {
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctChangeTalkBySpeaker() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(createUser()));
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1 ,correctTalkDto))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, correctTalkDto))
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-//    public void tryChangeRejectedTalkBySpeaker() throws Exception {
-//        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(createUser()));
-//        TalkDto rejectedTalk=setupCorrectTalkDto();
-//        rejectedTalk.setStatusName(REJECTED);
-//        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1 ,rejectedTalk))
-//                .andExpect(status().isForbidden());
-//    }
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void tryChangeRejectedTalkBySpeaker() throws Exception {
+        Talk talk = createTalk(createUser());
+        talk.setStatus(TalkStatus.REJECTED);
+        when(talkService.findTalkById(1L)).thenReturn(talk);
+        TalkDto rejectedTalk = setupCorrectTalkDto();
+        rejectedTalk.setStatusName(REJECTED);
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" +1, rejectedTalk))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void tryChangeApprovedTalkBySpeaker() throws Exception {
+        Talk talk = createTalk(createUser());
+        talk.setStatus(TalkStatus.APPROVED);
+        when(talkService.findTalkById(2L)).thenReturn(talk);
+        TalkDto approvedTalk = setupCorrectTalkDto();
+        approvedTalk.setStatusName(APPROVED);
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 2, approvedTalk))
+                .andExpect(status().isForbidden());
+    }
+
+    @Ignore
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void tryNullStatusActionOnTalk() throws Exception {
+        Talk talk = createTalk(createUser());
+        when(talkService.findTalkById(anyLong())).thenReturn(talk);
+        TalkDto rejectedTalk = setupCorrectTalkDto();
+        rejectedTalk.setStatusName(null);
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, rejectedTalk))
+                .andExpect(status().isForbidden());
+    }
+
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
         return MockMvcRequestBuilders.get(uri)
@@ -603,7 +630,7 @@ public class TalkControllerTest extends TestUtil {
     private MockHttpServletRequestBuilder preparePatchRequest(String uri, String comment, String status) throws JsonProcessingException {
         return MockMvcRequestBuilders.patch(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(setupCorrectDtoForSpeakerChangeStatus(comment, status)));
+                .content(convertObjectToJsonBytes(setupCorrectDtoForOrganiserChangeStatus(comment, status)));
     }
 
     private MockHttpServletRequestBuilder preparePatchRequest(String uri, TalkDto dto) throws JsonProcessingException {
@@ -648,7 +675,7 @@ public class TalkControllerTest extends TestUtil {
         return correctTalkDto;
     }
 
-    private TalkDto setupCorrectDtoForSpeakerChangeStatus(String comment, String status) {
+    private TalkDto setupCorrectDtoForOrganiserChangeStatus(String comment, String status) {
         TalkDto talkDto = new TalkDto();
         talkDto.setOrganiserComment(comment);
         talkDto.setStatusName(status);
