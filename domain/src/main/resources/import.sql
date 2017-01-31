@@ -119,7 +119,6 @@ INSERT INTO user_role VALUES (4, 2);
 --
 
 INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (5, "admin@gmail.com", "I'm super", "Admin", "CONFIRMED","java1love", 5);
->>>>>>> 9e4bd3d08584afc3e9e48d341a63f2ff672f7331
 UPDATE user_seq SET next_val = 6 WHERE next_val = 6;
 INSERT INTO user_role VALUES (5, 2);
 INSERT INTO user_role VALUES (5, 3);
