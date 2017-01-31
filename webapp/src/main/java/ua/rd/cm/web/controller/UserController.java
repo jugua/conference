@@ -127,8 +127,8 @@ public class UserController {
         String userEmail = request.getUserPrincipal().getName();
         User currentUser = userService.getByEmail(userEmail);
         if ( currentUser == null ) {
-            message.setError("unauthorized");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+            message.setError("not_found_user");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
         List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
         return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
