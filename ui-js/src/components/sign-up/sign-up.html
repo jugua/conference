@@ -39,7 +39,8 @@
           ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.mail.$error.required">
                 All fields are mandatory. Please make sure all required fields are filled out</span>
     <span class="field-error"
-          ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.mail.$error.pattern">
+          ng-show="$ctrl.userForm.$submitted && ( $ctrl.userForm.mail.$error.pattern ||
+                                                  $ctrl.userForm.mail.$error.email )">
                 Please enter a valid email address</span>
     <span class="field-error"
           ng-show="$ctrl.userForm.mail.$error.email_already_exists">
@@ -88,7 +89,7 @@
           ng-show="$ctrl.userForm.confirm.$error.passwords_match">
                 Passwords do not match</span>
 
-    <input type="submit" class="sign-up__button btn" value="submit" ng-disabled="$ctrl.formSented">
+    <input type="submit" class="sign-up__button btn" value="submit" ng-disabled="$ctrl.formSent">
   </form>
 </div>
 
