@@ -133,10 +133,7 @@ public class UserController {
         boolean inRole = request.isUserInRole(Role.ADMIN);
         if (inRole) {
             String userEmail = request.getUserPrincipal().getName();
-            User user = userService.getByEmail(userEmail);
-            if (user.getEmail() != null) {
-                return user;
-            }
+            return userService.getByEmail(userEmail);
         }
         return null;
     }
