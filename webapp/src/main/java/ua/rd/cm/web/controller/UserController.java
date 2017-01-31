@@ -134,9 +134,7 @@ public class UserController {
         if (inRole) {
             String userEmail = request.getUserPrincipal().getName();
             User user = userService.getByEmail(userEmail);
-            if (user.getEmail() != null) {
-                return user;
-            }
+            return user;
         }
         return null;
     }
