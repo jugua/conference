@@ -23,8 +23,8 @@ public class ChangeTalkBySpeakerPreparator extends CustomMimeMessagePreparator{
         model = new HashMap<>();
         model.put("receiverName",currentTalk.getOrganiser().getFirstName());
         model.put("speakerFullName",currentTalk.getUser().getFullName());
-        model.put("talkTitle", currentTalk.getTitle());
         model.put("link", "http://localhost:8050/#/talks/" + currentTalk.getId());
+        model.put("email",currentTalk.getOrganiser().getEmail());
     }
 
     @Override

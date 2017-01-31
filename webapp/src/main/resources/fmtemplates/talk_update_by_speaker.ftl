@@ -1425,8 +1425,8 @@
                 <table class="spacer"><tbody><tr><td height="20px" style="font-size:20px;line-height:20px;">&#xA0;</td></tr></tbody></table> 
                 <table class="row"><tbody><tr>
                     <th class="small-12 large-12 columns first last"><table><tr><th>
-                        <p>Dear  ${receiverName},</p>
-                        <p>The ${talkTitle} has been updated by ${speakerFullName}. To review it click the button or paste the following link into your browser:</p>
+                        <p>Dear ${receiverName},</p>
+                        <p>The talk has been updated by ${speakerFullName}. To review it click the button or paste the following link into your browser:</p>
                         <p><a href="${link}">${link}</a></p>
                         <table class="spacer"><tbody><tr><td height="10px" style="font-size:10px;line-height:10px;">&#xA0;</td></tr></tbody></table>
                         <center data-parsed="">

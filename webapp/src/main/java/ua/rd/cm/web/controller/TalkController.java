@@ -206,17 +206,26 @@ public class TalkController {
             return false;
         }
         Talk updatedTalk = dtoToEntity(dto);
-        updatedTalk.setStatus(talk.getStatus());
+        setFieldsThatNotAllowToChange(talk, updatedTalk);
         talkService.update(updatedTalk);
         notifyOrganiserForSpeakerAction(updatedTalk);
         resultMessage.setResult("successfully_updated");
         return true;
     }
+
+    private void setFieldsThatNotAllowToChange(Talk talk, Talk updatedTalk) {
+        updatedTalk.setStatus(talk.getStatus());
+        updatedTalk.setOrganiser(talk.getOrganiser());
+        updatedTalk.setOrganiserComment(talk.getOrganiserComment());
+        updatedTalk.setUser(talk.getUser());
+    }
+
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         return talk.getUser().getId() != user.getId() || talk.getStatus().getName().equals(REJECTED) || talk.getStatus().getName().equals(APPROVED);
     }
 
     private void notifyOrganiserForSpeakerAction(Talk talk){
+        System.out.println(talk);
         if(talk.getOrganiser()!=null){
             mailService.sendEmail(userService.getByEmail(talk.getOrganiser().getEmail()),
                     new ChangeTalkBySpeakerPreparator(talk));
@@ -275,6 +284,8 @@ public class TalkController {
         talk.setLevel(levelService.getByName(dto.getLevelName()));
         talk.setType(typeService.getByName(dto.getTypeName()));
         talk.setTopic(topicService.getByName(dto.getTopicName()));
+        talk.setAdditionalInfo(dto.getAdditionalInfo());
+        talk.setDescription(dto.getDescription());
         return talk;
     }
 
