@@ -202,7 +202,9 @@ public class TalkController {
             return false;
         }
         Talk updatedTalk = dtoToEntity(dto);
+        updatedTalk.setStatus(talk.getStatus());
         talkService.update(updatedTalk);
+        notifyOrganiserForSpeakerAction(updatedTalk);
         resultMessage.setResult("successfully_updated");
         return true;
     }
@@ -265,9 +267,7 @@ public class TalkController {
     private Talk dtoToEntity(TalkDto dto) {
         Talk talk = mapper.map(dto, Talk.class);
         talk.setTime(LocalDateTime.now());
-        if (dto.getStatusName() != null) {
-            talk.setStatus(TalkStatus.getStatusByName(dto.getStatusName()));
-        } else {
+        if (dto.getStatusName() == null) {
             talk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
         }
         talk.setLanguage(languageService.getByName(dto.getLanguageName()));
