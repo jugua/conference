@@ -34,8 +34,8 @@ const Menus = function Menus() {
 
   return {
     getMenu: function getMenu(role) {
-      let menuArr = [];
 
+      let menuArr = [];
 
       if (!role || role.length === 0) {
         return false;

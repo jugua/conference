@@ -28,4 +28,6 @@ public interface UserService {
     List<User> getByRole(String role);
 
     List<User> getByRoleExceptCurrent(User currentUser, String roleName);
+
+	List<User> getByRolesExceptCurrent(User currentUser, String ... roles);
 }
