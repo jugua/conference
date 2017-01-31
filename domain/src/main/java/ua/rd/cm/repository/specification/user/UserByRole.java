@@ -1,15 +1,16 @@
 package ua.rd.cm.repository.specification.user;
 
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.repository.specification.Specification;
 
 /**
- * Created by click on 1/30/2017.
+ * Created by click on 1/31/2017.
  */
-public class UserAddRoleToQuery implements Specification<User> {
+public class UserByRole implements Specification<User> {
     private String roleName;
 
-    public UserAddRoleToQuery(String roleName) {
+    public UserByRole(String roleName) {
         this.roleName = roleName;
     }
 
@@ -20,6 +21,11 @@ public class UserAddRoleToQuery implements Specification<User> {
 
     @Override
     public boolean test(User user) {
+        for (Role currentRole : user.getUserRoles()) {
+            if (currentRole.getName().equals(roleName)) {
+                return true;
+            }
+        }
         return false;
     }
 }
