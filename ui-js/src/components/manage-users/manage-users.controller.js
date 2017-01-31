@@ -1,9 +1,9 @@
 export default class ManageUsersController {
   constructor() {
     this.users = [{
-      name: 'name',
-      email: 'name',
-      role: 'organizer',
+      name: 'adolf',
+      email: 'speaker@speaker.com',
+      role: 'speaker',
     }]
   }
 }
