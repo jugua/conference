@@ -118,7 +118,6 @@ INSERT INTO user_role VALUES (4, 2);
 -- Insert organiser-admin
 --
 
-
 INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (5, "", "", "");
 UPDATE user_info_seq SET next_val = 6 WHERE next_val = 5;
 
