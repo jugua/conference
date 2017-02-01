@@ -117,7 +117,7 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     @GetMapping(value = "/admin")
     public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
         MessageDto message = new MessageDto();
