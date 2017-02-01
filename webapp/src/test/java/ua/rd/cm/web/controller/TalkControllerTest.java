@@ -551,6 +551,19 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void additionalInfoTooLong() throws Exception {
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        char[] array = new char[1501];
+        String tooLongAdditionalInfo = new String(array);
+
+        TalkDto talkDto = setupCorrectTalkDto();
+        talkDto.setAdditionalInfo(tooLongAdditionalInfo);
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, talkDto))
+                .andExpect(status().isPayloadTooLarge());
+    }
+
+    @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void noTalkWithSuchId() throws Exception {
         when(talkService.findTalkById(1L)).thenThrow(new TalkNotFoundException());
