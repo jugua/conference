@@ -21,9 +21,7 @@ import ua.rd.cm.web.controller.dto.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -117,6 +115,47 @@ public class UserController {
         UserDto userDto = userToDto(user);
        // userDto.setContactTypeService(contactTypeService);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/admin")
+    public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
+        MessageDto message = new MessageDto();
+        User currentUser = getAuthorizedUser(request);
+        if(currentUser == null){
+            message.setError("unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+        }
+        List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
+        return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
+    }
+
+    private User getAuthorizedUser(HttpServletRequest request) {
+        boolean inRole = request.isUserInRole(Role.ADMIN);
+        if (inRole) {
+            String userEmail = request.getUserPrincipal().getName();
+            User user  = userService.getByEmail(userEmail);
+            if ((user != null) && (user.getEmail() != null)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    private UserBasicDto userToUserBasicDto(User user){
+        UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
+        userBasicDto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
+        return userBasicDto;
+    }
+
+    private List<UserBasicDto> userToUserBasicDto(List<User> users) {
+        List<UserBasicDto> userDtoList = new ArrayList<>();
+        if (users != null) {
+            for (User user : users) {
+                userDtoList.add(userToUserBasicDto(user));
+            }
+        }
+        return userDtoList;
     }
 
     private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {

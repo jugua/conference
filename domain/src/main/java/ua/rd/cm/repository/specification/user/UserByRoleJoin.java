@@ -6,24 +6,19 @@ import ua.rd.cm.repository.specification.Specification;
 
 public class UserByRoleJoin implements Specification<User> {
 
-    private String roleName;
+    private Specification specification;
 
-    public UserByRoleJoin(String roleName) {
-        this.roleName = roleName;
+    public UserByRoleJoin(Specification specification) {
+        this.specification = specification;
     }
 
     @Override
     public String toSqlClauses() {
-        return String.format(" JOIN u.userRoles r WHERE r.name = '%s' ", roleName);
+        return String.format(" JOIN u.userRoles r WHERE (%s) ", specification.toSqlClauses());
     }
 
     @Override
     public boolean test(User user) {
-        for (Role currentRole : user.getUserRoles()) {
-            if (currentRole.getName().equals(roleName)) {
-                return true;
-            }
-        }
         return false;
     }
 }
