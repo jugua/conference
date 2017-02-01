@@ -1,10 +1,12 @@
 export default class ManageUsersController {
-  constructor() {
-    this.users = [{
-      lname: 'hitler',
-      fname: 'adolf',
-      email: 'hitler@reich.de',
-      role: 'fuhrer'
-    }];
+  constructor(Current, ManageUsers, User) {
+    'ngInject';
+
+    this.current = Current.current;
+
+    this.manageUsersService = ManageUsers;
+    this.userService = User;
+
+    this.users = ManageUsers.getAll();
   }
 }

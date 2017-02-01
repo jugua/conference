@@ -8,7 +8,16 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class UserDto extends UserBasicDto {
+public class UserDto {
+
+    @JsonProperty("mail")
+    private String email;
+
+    @JsonProperty("fname")
+    private String firstName;
+
+    @JsonProperty("lname")
+    private String lastName;
 
     @NotNull
     @JsonProperty("bio")
@@ -47,4 +56,6 @@ public class UserDto extends UserBasicDto {
     @JsonProperty("info")
     @Size(max = 1000)
     private String userInfoAdditionalInfo;
+
+    private String[] roles;
 }
