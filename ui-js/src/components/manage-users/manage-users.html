@@ -1,0 +1,32 @@
+<div class="tabs-layout">
+  <div class="tabs-wrapper">
+    <ul class="tabs-list">
+      <li class="tabs-list__item">
+        <a class="tabs-list__anchor tabs-list__anchor_active">
+          Manage Users
+        </a>
+      </li>
+    </ul>
+    <div class="tabs-container">
+      <div class="my-talks__header">
+        <a ui-sref="#" type="button" class="btn my-talks__button">add new user</a>
+        <div ui-view></div>
+      </div>
+      <div class="data-table">
+        <div class="table-header">
+          <div class="table-header__item table-header__item_role">role</div>
+          <div class="table-header__item table-header__item_name">name</div>
+          <div class="table-header__item table-header__item_email">email</div>
+          <div class="table-header__item table-header__scroll-fix"></div>
+        </div>
+        <div class="data-table__inner-wrapper">
+          <div class="data-table__row" ng-repeat="user in $ctrl.users">
+            <div class="data-table__column data-table__column_role">{{user.role}}</div>
+            <div class="data-table__column data-table__column_name">{{user.lname + " " + user.fname}}</div>
+            <div class="data-table__column data-table__column_email">{{user.email}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

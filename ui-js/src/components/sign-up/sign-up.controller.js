@@ -2,13 +2,16 @@ export default class SignUpController {
   constructor(SignUpService, Constants) {
     'ngInject';
 
-    this.user = {};
-    this.userForm = {};
     this.service = SignUpService;
-    this.showPopup = false;
+
     this.emailPattern = Constants.email;
     this.passwordPattern = Constants.password;
-    this.formSented = false;
+
+    this.user = {};
+    this.userForm = {};
+
+    this.showPopup = false;
+    this.formSent = false;
   }
 
   signUp() {
@@ -18,7 +21,7 @@ export default class SignUpController {
         return;
       }
 
-      this.formSented = true;
+      this.formSent = true;
 
       this.service.signUp(this.user,
         () => {  // success callback
@@ -28,7 +31,7 @@ export default class SignUpController {
         (error) => {  // error callback
           if (error.data.error === 'email_already_exists') {
             this.userForm.mail.$setValidity('email_already_exists', false);
-            this.formSented = false;
+            this.formSent = false;
           }
         });
     }

@@ -8,8 +8,6 @@ export default class {
         params: { id: '@id' },
       }
     });
-
-    this.const = 'serviceConst';
   }
 
   get(id) {

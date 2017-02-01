@@ -64,6 +64,9 @@ public class Talk {
     @ManyToOne
     private User organiser;
 
+    @Column(name = "attached_file")
+    private String pathToAttachedFile;
+
     public boolean setStatus(TalkStatus status){
         if(this.status==null){
             this.status=status;
