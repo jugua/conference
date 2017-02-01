@@ -299,7 +299,7 @@ public class TalkController {
     }
 
     private boolean validateStringMaxLength(String message, int maxSize) {
-        return message == null || message.length() < maxSize;
+        return message == null || message.length() <= maxSize;
     }
 
     private boolean checkForFilledUserInfo(User currentUser) {
