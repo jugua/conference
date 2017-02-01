@@ -1,0 +1,73 @@
+.table-header__item
+  &_role
+    width: 32%
+    padding-left: 15px
+    box-sizing: border-box
+    position: relative
+    text-transform: capitalize
+
+  &_name
+    width: 33%
+    box-sizing: border-box
+    position: relative
+    text-transform: capitalize
+    &:before
+      +filter-icon
+
+  &_email
+    width: 35%
+    position: relative
+    padding-left: 15px
+    border-right: 1px solid transparent
+    text-transform: capitalize
+
+.data-table__column
+  &_role
+    width: 32%
+    box-sizing: border-box
+    padding: 5px 5px 5px 15px
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    text-transform: capitalize
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
+      width: 100%
+      padding: 5px
+      &:before
+        content: 'role'
+        text-transform: capitalize
+        +my-talk-before-title
+
+  &_name
+    width: 33%
+    box-sizing: border-box
+    padding: 5px 5px 5px 15px
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    text-transform: capitalize
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
+      width: 100%
+      padding: 5px
+      &:before
+        content: 'name'
+        text-transform: capitalize
+        +my-talk-before-title
+
+  &_email
+    width: 35%
+    position: relative
+    box-sizing: border-box
+    padding: 5px 5px 5px 15px
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    border-right: 1px solid transparent
+    text-transform: none
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
+      width: 100%
+      padding: 5px
+      &:before
+        content: 'email'
+        text-transform: capitalize
+        +my-talk-before-title
