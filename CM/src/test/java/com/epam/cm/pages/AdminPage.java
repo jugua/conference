@@ -21,7 +21,7 @@ public class AdminPage {
     /***
      * organiser accesses admin page
      */
-    @FindBy(xpath = "")
+    @FindBy(xpath = "//*[@class='btn my-talks__button']")
     WebElementFacade addNewUserBtn;
     @FindBy(xpath = "")
     WebElementFacade roleColumn;

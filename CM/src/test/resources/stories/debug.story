@@ -1,16 +1,19 @@
-Scenario: Organiser view speaker's info
-Given user logged as speaker accessing 'My Talks' page:
-|email            |password|
-|tester@tester.com|tester  |
-And creates new Talk:
-|title  |description  |additionalInfo  |topic  |type  |language  |level  |
-|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
-And user logged as organiser 'Talks' page:
-|email              |password |
-|organiser@gmail.com|organiser|
-When organiser clicks speaker's name
-Then speakers info is shown with read-only fields
 
-Examples:
-|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
-|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
+Scenario: Being signed in as an admin manage My Account page, My Info page and My Talks
+Meta:
+@regression @smoke
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email          |password |
+|admin@gmail.com|java1love|
+When user clicks SignIn button on login form
+Then "Your Account" replaced by "Admin's Account"
+Then there are My account and  My Talks links in the given order
+|btnName     |link           |
+|Talks       |/#/talks       |
+|Settings    |/#/account     |
+|Manage Users|/#/manage-users|
+|Sign Out    |/#/            |
+Then user logs out
