@@ -2,6 +2,8 @@ import manageUsersComponent from './manage-users.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
+    'ngInject';
+
     $stateProvider
       .state('header.manageUsers', {
         url: '/manage-users',
