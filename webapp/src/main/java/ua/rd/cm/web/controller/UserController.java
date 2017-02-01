@@ -121,11 +121,13 @@ public class UserController {
     @GetMapping(value = "/admin")
     public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
         MessageDto message = new MessageDto();
-        User currentUser = getAuthorizedUser(request);
-        if(currentUser == null){
-            message.setError("unauthorized");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
-        }
+        String userEmail = request.getUserPrincipal().getName();
+        User currentUser  = userService.getByEmail(userEmail);
+       // User currentUser = getAuthorizedUser(request);
+//        if(currentUser == null){
+//            message.setError("unauthorized");
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+//        }
         List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
         return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
     }
