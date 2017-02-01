@@ -10,9 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,9 +23,11 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.WhereSpecification;
-import ua.rd.cm.repository.specification.user.*;
+import ua.rd.cm.repository.specification.user.UserByEmail;
+import ua.rd.cm.repository.specification.user.UserByFirstName;
+import ua.rd.cm.repository.specification.user.UserById;
+import ua.rd.cm.repository.specification.user.UserByLastName;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserServiceTest {
@@ -134,36 +134,5 @@ public class SimpleUserServiceTest {
 		assertTrue(service.isEmailExist("email"));
 		assertFalse(service.isEmailExist("email"));
 		verify(repository,times(2)).findBySpecification(new UserByEmail(anyString()));
-	}
-
-	@Test
-	public void testGetUserByRolesExceptCurrent() {
-//		List<User> list = new ArrayList<>();
-//		Set roles = new HashSet();
-//		roles.add(new Role(1L, Role.ORGANISER));
-//		list.add(new User(1L, "test", "Acv", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(), roles));
-//		list.add(new User(2L, "test2", "Abv", "email2", "pass2", "url2", User.UserStatus.CONFIRMED, new UserInfo(), roles));
-//		when(
-//				repository.findBySpecification(
-//					new AndSpecification<>(
-//						new UserByRoleJoin(Role.ORGANISER),
-//						new UserExceptThisById(anyLong())
-//					)
-//				)
-//		).thenReturn(list);
-//
-//		User u = new User();
-//		u.setId(1L);
-//		list = service.getByRolesExceptCurrent(u, Role.ORGANISER);
-//		boolean result = true;
-//		User current = list.get(0);
-//		for (User user: list){
-//			if (user.getLastName().compareToIgnoreCase(current.getLastName()) < 0 ) {
-//				result = false;
-//				break;
-//			}
-//			current = user;
-//		}
-//		assertTrue(result);
 	}
 }

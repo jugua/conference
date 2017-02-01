@@ -1,6 +1,5 @@
 package ua.rd.cm.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -13,7 +12,8 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.*;
+import ua.rd.cm.repository.specification.AndSpecification;
+import ua.rd.cm.repository.specification.WhereSpecification;
 import ua.rd.cm.repository.specification.user.*;
 import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
@@ -108,39 +108,17 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public List<User> getByRole(String role) {
-		return userRepository.findBySpecification(new UserByRoleJoin( new UserByRole(role)));
+		return userRepository.findBySpecification(new UserByRoleJoin(role));
 	}
 
 	@Override
 	public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
 		return userRepository.findBySpecification(
 				new AndSpecification<>(
-						new UserByRoleJoin(new UserByRole(roleName)),
+						new UserByRoleJoin(roleName),
 						new UserExceptThisById(currentUser.getId())
 				)
 		);
-	}
-
-	@Override
-	public List<User> getByRolesExceptCurrent(User currentUser, String ... roles) {
-        List<User> users = new ArrayList<>();
-        if (roles.length > 0) {
-            Specification<User> current = new UserByRole(roles[0]); //new UserByRoleJoin(new UserByRole(roles[0]));
-            if (roles.length > 1) {
-                for (int i = 1; i < roles.length; i++) {
-                    current = new OrSpecification<>(current, new UserByRole(roles[i]));
-                }
-            }
-            current = new UserByRoleJoin(current);
-            users = userRepository.findBySpecification( new UserOrderByLastName(
-                    new AndSpecification<>(
-                            current,
-                            new UserExceptThisById(currentUser.getId())
-                    )
-                )
-            );
-        }
-		return users;
 	}
 
 	private User mapRegistrationDtoToUser(RegistrationDto dto) {
