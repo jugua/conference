@@ -1,6 +1,7 @@
 package ua.rd.cm.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -73,7 +74,7 @@ public class SimpleUserService implements UserService{
 	public User getByEmail(String email) {
 		List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserByEmail(email)));
 		if (users.isEmpty()){
-			return null;
+			return new User();
 		}
 		return users.get(0);
 	}
@@ -123,7 +124,7 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public List<User> getByRolesExceptCurrent(User currentUser, String ... roles) {
-        List<User> users = new ArrayList<>();
+        List<User> users = Collections.emptyList();
         if (roles.length > 0) {
             Specification<User> current = new UserByRole(roles[0]);
             for (int i = 1; i < roles.length; i++) {
