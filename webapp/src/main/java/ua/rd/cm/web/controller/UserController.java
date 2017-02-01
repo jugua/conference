@@ -117,17 +117,15 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/admin")
     public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
         MessageDto message = new MessageDto();
-        String userEmail = request.getUserPrincipal().getName();
-        User currentUser  = userService.getByEmail(userEmail);
-       // User currentUser = getAuthorizedUser(request);
-//        if(currentUser == null){
-//            message.setError("unauthorized");
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
-//        }
+        User currentUser = getAuthorizedUser(request);
+        if(currentUser == null){
+            message.setError("unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+        }
         List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
         return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
     }
