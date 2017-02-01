@@ -7,9 +7,10 @@ export default (app) => {
     $stateProvider
       .state('header.manageUsers', {
         url: '/manage-users',
-        template: '<manage-users ng-if="ctrl.resolved"></manage-users>',
+        template: '<manage-users ng-if="ctrl.resolved" users="ctrl.users"></manage-users>',
         resolve: {
-          currentUser: Current => Current.current
+          currentUser: Current => Current.current,
+          users: ManageUsers => ManageUsers.getAll()
         },
         controller: function Controller(Permissions, currentUser) {
           Permissions.permitted('a', currentUser);
