@@ -554,7 +554,7 @@ public class TalkControllerTest extends TestUtil {
     public void emptyAdditionalInfoOnSpeakerTalkUpdate() throws Exception {
         User user = new User();
         user.setId(1L);
-        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(user));
+        when(talkService.findTalkById(1L)).thenReturn(createTalk(user));
         String empty = "";
 
         TalkDto talkDto = setupCorrectTalkDto();
@@ -568,7 +568,7 @@ public class TalkControllerTest extends TestUtil {
     public void maxLengthAdditionalInfoOnSpeakerTalkUpdate() throws Exception {
         User user = new User();
         user.setId(1L);
-        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(user));
+        when(talkService.findTalkById(1L)).thenReturn(createTalk(user));
         char[] array = new char[1500];
         String maxLength = new String(array);
 
@@ -581,7 +581,7 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void additionalInfoTooLongOnSpeakerTalkUpdate() throws Exception {
-        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        when(talkService.findTalkById(1L)).thenReturn(createTalk(new User()));
         char[] array = new char[1501];
         String tooLongAdditionalInfo = new String(array);
 
