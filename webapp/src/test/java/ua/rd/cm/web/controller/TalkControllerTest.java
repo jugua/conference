@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -552,7 +551,34 @@ public class TalkControllerTest extends TestUtil {
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void additionalInfoTooLong() throws Exception {
+    public void emptyAdditionalInfoOnSpeakerUpdateTalk() throws Exception {
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        String empty = "";
+
+        TalkDto talkDto = setupCorrectTalkDto();
+        talkDto.setAdditionalInfo(empty);
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, talkDto))
+                .andExpect(status().isPayloadTooLarge());
+    }
+
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void maxLengthAdditionalInfoOnSpeakerUpdateTalk() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(user));
+        char[] array = new char[1500];
+        String maxLength = new String(array);
+
+        TalkDto talkDto = setupCorrectTalkDto();
+        talkDto.setAdditionalInfo(maxLength);
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, talkDto))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void additionalInfoTooLongOnSpeakerUpdateTalk() throws Exception {
         when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
         char[] array = new char[1501];
         String tooLongAdditionalInfo = new String(array);
