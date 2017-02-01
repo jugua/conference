@@ -28,6 +28,7 @@ public class TalkController {
 
 
     public static final int MAX_ORG_COMMENT_LENGTH = 1000;
+    public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
     private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
@@ -126,6 +127,10 @@ public class TalkController {
             return organiserUpdateTalk(dto, request, resultMessage, talk);
         }
         if (request.isUserInRole("SPEAKER")) {
+            if (!validateStringMaxLength(dto.getAdditionalInfo(), MAX_ADDITIONAL_INFO_LENGTH)) {
+                resultMessage.setError("additional_info_too_long");
+                return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
+            }
             if (!speakerUpdateTalk(dto, request, resultMessage, talk))
                 return prepareResponse(HttpStatus.FORBIDDEN, resultMessage);
             else {
@@ -138,7 +143,7 @@ public class TalkController {
     }
 
     private ResponseEntity organiserUpdateTalk(TalkDto dto, HttpServletRequest request, MessageDto resultMessage, Talk talk) {
-        if (dto.getOrganiserComment() != null && dto.getOrganiserComment().length() > MAX_ORG_COMMENT_LENGTH) {
+        if (!validateStringMaxLength(dto.getOrganiserComment(), MAX_ORG_COMMENT_LENGTH)) {
             resultMessage.setError("comment_too_long");
             return prepareResponse(HttpStatus.PAYLOAD_TOO_LARGE, resultMessage);
         }
@@ -291,6 +296,10 @@ public class TalkController {
         talk.setLevel(levelService.getByName(dto.getLevelName()));
         talk.setType(typeService.getByName(dto.getTypeName()));
         talk.setTopic(topicService.getByName(dto.getTopicName()));
+    }
+
+    private boolean validateStringMaxLength(String message, int maxSize) {
+        return message == null || message.length() < maxSize;
     }
 
     private boolean checkForFilledUserInfo(User currentUser) {
