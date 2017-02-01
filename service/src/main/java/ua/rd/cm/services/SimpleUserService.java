@@ -1,5 +1,6 @@
 package ua.rd.cm.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -13,6 +14,8 @@ import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
+import ua.rd.cm.repository.specification.OrSpecification;
+import ua.rd.cm.repository.specification.Specification;
 import ua.rd.cm.repository.specification.WhereSpecification;
 import ua.rd.cm.repository.specification.user.*;
 import ua.rd.cm.repository.specification.user.UserByEmail;
@@ -108,18 +111,38 @@ public class SimpleUserService implements UserService{
 
 	@Override
 	public List<User> getByRole(String role) {
-		return userRepository.findBySpecification(new UserByRoleJoin(role));
+        return userRepository.findBySpecification(new UserByRoleJoin( new UserByRole(role)));
 	}
 
 	@Override
 	public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
 		return userRepository.findBySpecification(
 				new AndSpecification<>(
-						new UserByRoleJoin(roleName),
+                        new UserByRoleJoin(new UserByRole(roleName)),
 						new UserExceptThisById(currentUser.getId())
 				)
 		);
 	}
+
+    @Override
+    public List<User> getByRolesExceptCurrent(User currentUser, String ... roles) {
+        List<User> users = Collections.emptyList();
+        if (roles.length > 0) {
+            Specification<User> current = new UserByRole(roles[0]);
+            for (int i = 1; i < roles.length; i++) {
+                current = new OrSpecification<>(current, new UserByRole(roles[i]));
+            }
+            current = new UserByRoleJoin(current);
+            users = userRepository.findBySpecification( new UserOrderByLastName(
+                            new AndSpecification<>(
+                                    current,
+                                    new UserExceptThisById(currentUser.getId())
+                            )
+                    )
+            );
+        }
+        return users;
+    }
 
 	private User mapRegistrationDtoToUser(RegistrationDto dto) {
 		User user = mapper.map(dto, User.class);
