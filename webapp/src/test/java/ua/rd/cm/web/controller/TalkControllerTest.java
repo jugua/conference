@@ -552,13 +552,15 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyAdditionalInfoOnSpeakerUpdateTalk() throws Exception {
-        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(new User()));
+        User user = new User();
+        user.setId(1L);
+        when(talkService.findTalkById(anyLong())).thenReturn(createTalk(user));
         String empty = "";
 
         TalkDto talkDto = setupCorrectTalkDto();
         talkDto.setAdditionalInfo(empty);
         mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, talkDto))
-                .andExpect(status().isPayloadTooLarge());
+                .andExpect(status().isOk());
     }
 
     @Test
