@@ -222,6 +222,8 @@ And creates new Talk:
 And user logged as organiser 'Talks' page:
 |email              |password |
 |organiser@gmail.com|organiser|
+When organiser clicks speaker's name
+Then speakers info is shown with read-only fields
 
 Examples:
 |<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|

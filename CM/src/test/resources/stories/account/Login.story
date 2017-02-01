@@ -52,23 +52,23 @@ Then user still in login form
 And login error message is displayed: "We can not find an account with that email address"
 
 Examples:
-|<email>            |<password>|
-|'-'                |'-'       |
-|' '                |' '       |
-|'&'                |'&'       |
-|'^'                |'^'       |
-|'*'                |'*'       |
-|' or ''-'          |' or ''-' |
-|' or '' '          |' or '' ' |
-|' or ''&'          |' or ''&' |
-|' or ''^'          |' or ''^' |
-|' or ''*'          |' or ''*' |
-|"-"                |"-"       |
-|" "                |" "       |
-|"&"                |"&"       |
-|"^"                |"^"       |
-|"*"                |"*"       |
-|" or ""-"          |" or ""-" |
+|<email>  |<password>|
+|'-'      |'-'       |
+|' '      |' '       |
+|'&'      |'&'       |
+|'^'      |'^'       |
+|'*'      |'*'       |
+|' or ''-'|' or ''-' |
+|' or '' '|' or '' ' |
+|' or ''&'|' or ''&' |
+|' or ''^'|' or ''^' |
+|' or ''*'|' or ''*' |
+|"-"      |"-"       |
+|" "      |" "       |
+|"&"      |"&"       |
+|"^"      |"^"       |
+|"*"      |"*"       |
+|" or ""-"|" or ""-" |
 
 
 Scenario: User logs in with login that does not comply with validation rules
@@ -156,3 +156,21 @@ Then there are My account and  My Talks links in the given order
 |Sign Out|/#/       |
 Then user logs out
 
+Scenario: Being signed in as an admin manage My Account page, My Info page and My Talks
+Meta:
+@regression @smoke @ignore
+
+Given the unsigned user accesses home page
+And user clicks 'Your Account' menu option
+And user filled in login form:
+|email                  |password |
+|organizer@organizer.com|organizer|
+When user clicks SignIn button on login form
+Then "Your Account" replaced by "Organizer's Account"
+Then there are My account and  My Talks links in the given order
+|btnName     |link      |
+|Talks       |/#/talks  |
+|Settings    |/#/account|
+|Manage Users|/#/       |
+|Sign Out    |/#/       |
+Then user logs out
