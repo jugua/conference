@@ -117,9 +117,6 @@ INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, us
 UPDATE user_seq SET next_val = 5 WHERE next_val = 4;
 INSERT INTO user_role VALUES (4, 2);
 
-INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (5, "", "", "");
-UPDATE user_info_seq SET next_val = 6 WHERE next_val = 5;
-
 --
 -- Insert organiser-admin
 --
