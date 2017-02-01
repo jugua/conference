@@ -23,27 +23,37 @@ const Menus = function Menus() {
         link: 'account',
         name: 'Settings'
       }
+    ],
+    a: [
+      {
+        link: 'manageUsers',
+        name: 'Manage Users'
+      }
     ]
   };
 
   return {
     getMenu: function getMenu(role) {
-      let menuRole;
 
+      let menuArr = [];
 
       if (!role || role.length === 0) {
         return false;
       }
 
       if (role.indexOf('s') !== -1) {
-        menuRole = 's';
+        menuArr = menuArr.concat(menu.s);
       }
 
       if (role.indexOf('o') !== -1) {
-        menuRole = 'o';
+        menuArr = menuArr.concat(menu.o);
       }
 
-      return menu[menuRole];
+      if (role.indexOf('a') !== -1) {
+        menuArr = menuArr.concat(menu.a);
+      }
+
+      return menuArr;
     },
     getTopics: () => ['JVM Languages and new programming paradigms',
       'Web development and Java Enterprise technologies',

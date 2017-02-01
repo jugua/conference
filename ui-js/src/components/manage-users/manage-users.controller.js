@@ -1,10 +1,12 @@
 export default class ManageUsersController {
-  constructor() {
-    this.users = [{
-      name: 'adolf',
-      email: 'speaker@speaker.com',
-      role: 'speaker',
-    }]
+  constructor(Current, ManageUsers, User) {
+    'ngInject';
+
+    this.current = Current.current;
+
+    this.manageUsersService = ManageUsers;
+    this.userService = User;
+
+    this.users = ManageUsers.getAll();
   }
 }
-

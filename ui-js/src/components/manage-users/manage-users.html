@@ -22,7 +22,7 @@
         <div class="data-table__inner-wrapper">
           <div class="data-table__row" ng-repeat="user in $ctrl.users">
             <div class="data-table__column data-table__column_role">{{user.role}}</div>
-            <div class="data-table__column data-table__column_name">{{user.name}}</div>
+            <div class="data-table__column data-table__column_name">{{user.lname + " " + user.fname}}</div>
             <div class="data-table__column data-table__column_email">{{user.email}}</div>
           </div>
         </div>
