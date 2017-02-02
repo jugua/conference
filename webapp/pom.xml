@@ -82,6 +82,12 @@
             </properties>
         </profile>
         <profile>
+            <id>test</id>
+            <properties>
+                <profile.name>test</profile.name>
+            </properties>
+        </profile>
+        <profile>
             <id>stable</id>
             <properties>
                 <profile.name>stable</profile.name>
