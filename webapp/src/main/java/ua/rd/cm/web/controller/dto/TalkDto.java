@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,32 +29,32 @@ public class TalkDto {
 
 	@JsonProperty("name")
 	private String speakerFullName;
-	
+
 	@NotNull
 	@Size(min = 1, max = 3000)
-	@JsonProperty("description")	
+	@JsonProperty("description")
 	private String description;
-	
+
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("topic")
 	private String topicName;
-	
+
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("type")
 	private String typeName;
-	
+
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("lang")
 	private String languageName;
-	
+
 	@NotNull
 	@Size(min = 1, max = 255)
 	@JsonProperty("level")
 	private String levelName;
-	
+
 	@Size(max = 1500)
 	@JsonProperty("addon")
 	private String additionalInfo;
@@ -71,4 +72,6 @@ public class TalkDto {
 	@JsonProperty("assignee")
 	private String assignee;
 
+	@JsonProperty("file")
+	private MultipartFile multipartFile;
 }

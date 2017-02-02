@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.TalkNotFoundException;
@@ -16,10 +18,16 @@ import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j
 @RestController
 @RequestMapping("/api/talk")
 public class TalkController {
@@ -27,7 +35,17 @@ public class TalkController {
     private static final String ORGANISER = "ORGANISER";
 
 
-    public static final int MAX_ORG_COMMENT_LENGTH = 1000;
+    private static final long MAX_SIZE = 314_572_800;
+    private static final List<String> LIST_TYPE = Arrays.asList(
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.oasis.opendocument.presentation"
+    );
+
+
+    private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
@@ -36,6 +54,7 @@ public class TalkController {
     private LevelService levelService;
     private TopicService topicService;
     private MailService mailService;
+    private FileStorageService storageService;
 
     public static final String APPROVED = "Approved";
     public static final String DEFAULT_TALK_STATUS = "New";
@@ -47,7 +66,8 @@ public class TalkController {
                           TalkService talkService,
                           TypeService typeService, LanguageService languageService,
                           LevelService levelService, TopicService topicService,
-                          MailService mailService
+                          MailService mailService,
+                          FileStorageService storageService
     ) {
         this.mapper = mapper;
         this.userService = userService;
@@ -57,6 +77,7 @@ public class TalkController {
         this.mailService = mailService;
         this.typeService = typeService;
         this.levelService = levelService;
+        this.storageService = storageService;
     }
 
     @ExceptionHandler(TalkNotFoundException.class)
@@ -79,8 +100,15 @@ public class TalkController {
 
         User currentUser = userService.getByEmail(request.getRemoteUser());
         Long id = null;
+
         if (!checkForFilledUserInfo(currentUser)) {
             httpStatus = HttpStatus.FORBIDDEN;
+        } else if (isAttachedFileSizeError(dto.getMultipartFile())) {
+            messageDto.setError("maxSize");
+            httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
+        } else if (isAttachedFileTypeError(dto.getMultipartFile())) {
+            messageDto.setError("pattern");
+            httpStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
             id = saveNewTalk(dto, currentUser);
             httpStatus = HttpStatus.OK;
@@ -259,6 +287,7 @@ public class TalkController {
         Talk currentTalk = dtoToEntity(dto);
         currentTalk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
         currentTalk.setUser(currentUser);
+        currentTalk.setPathToAttachedFile(saveNewAttachedFile(dto.getMultipartFile()));
         talkService.save(currentTalk);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
         mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
@@ -298,5 +327,47 @@ public class TalkController {
         return !(currentUserInfo.getShortBio().isEmpty() ||
                 currentUserInfo.getJobTitle().isEmpty() ||
                 currentUserInfo.getCompany().isEmpty());
+    }
+
+    private boolean isAttachedFileTypeError(MultipartFile multipartFile) {
+        return getTypeIfSupported(multipartFile)==null;
+    }
+
+    private boolean isAttachedFileSizeError(MultipartFile multipartFile) {
+        return multipartFile.getSize()>MAX_SIZE;
+    }
+
+    private String saveNewAttachedFile(MultipartFile multipartFile) {
+        try {
+            return storageService.saveFile(multipartFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String getTypeIfSupported(MultipartFile file) {
+        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
+            return null;
+        }
+        try {
+            return getTypeIfSupported(file.getInputStream());
+        } catch (IOException e) {
+            log.debug(e);
+            return null;
+        }
+    }
+
+    private String getTypeIfSupported(InputStream stream) {
+        try (InputStream inputStream = new BufferedInputStream(stream)) {
+            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
+            if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
+                return null;
+            }
+            return mimeType;
+        } catch (IOException e) {
+            log.debug(e);
+            return null;
+        }
     }
 }
