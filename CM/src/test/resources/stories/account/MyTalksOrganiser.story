@@ -228,3 +228,53 @@ Then speakers info is shown with read-only fields
 Examples:
 |<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
 |TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
+
+Scenario: organiser can view approved talk
+Given user logged as speaker accessing 'My Talks' page:
+|email              |password|
+|speaker@speaker.com|speaker |
+And creates new Talk:
+|title  |description  |additionalInfo  |topic  |type  |language  |level  |
+|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
+And user logged as organiser 'Talks' page:
+|email              |password |
+|organiser@gmail.com|organiser|
+When organiser clicks new created Talk:
+|status|
+|New   |
+And clicks approve button after filling comment:
+|comment  |
+|<comment>|
+And organiser clicks new created Talk:
+|status  |
+|Approved|
+Then all fields are read-only for organiser
+
+Examples:
+|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
+|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
+
+Scenario: organiser can view rejected talk
+Given user logged as speaker accessing 'My Talks' page:
+|email              |password|
+|speaker@speaker.com|speaker |
+And creates new Talk:
+|title  |description  |additionalInfo  |topic  |type  |language  |level  |
+|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
+And user logged as organiser 'Talks' page:
+|email              |password |
+|organiser@gmail.com|organiser|
+When organiser clicks new created Talk:
+|status|
+|New   |
+And clicks reject button after filling comment:
+|comment  |
+|<comment>|
+And organiser clicks new created Talk:
+|status  |
+|Rejected|
+Then all fields are read-only for organiser
+
+Examples:
+|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
+|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |

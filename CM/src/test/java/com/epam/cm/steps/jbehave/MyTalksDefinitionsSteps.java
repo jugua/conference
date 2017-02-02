@@ -97,6 +97,22 @@ public class MyTalksDefinitionsSteps {
         myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
     }
 
+    @When("user log in as speaker accessing 'My Talks' page: $loginTable")
+    public void loginAsSpeaker(ExamplesTable table) {
+        loginAsUser(table);
+    }
+
+    @When("speaker clicks new created Talk: $table")
+    public void speakerCheckStatus(ExamplesTable table){
+        WebDriverSupport.reloadPage();
+        boolean replaceNamedParameters = true;
+        String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
+        myGlobalTalksDTO.setStatus(status);
+        //Assert.assertThat(
+        //        myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
+        myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
+    }
+
     @When("organiser clicks speaker's name")
     public void clickSpeakersName(){
         myTalksPageSteps.clickFoundedSpeaker();
@@ -266,6 +282,16 @@ public class MyTalksDefinitionsSteps {
 
     }
 
+    @Then("all fields are read-only for speaker")
+    public void areFieldsReadOnlyForSpeaker() {
+        Assert.assertTrue(myTalksPageSteps.areFieldsReadOnlyForSpeaker());
+    }
+
+    @Then("all fields are read-only for organiser")
+    public void areFieldsReadOnlyForOrganiser() {
+        Assert.assertTrue(myTalksPageSteps.areFieldsReadOnlyForOrganiser());
+    }
+
     @Then("info msg is shown saying '$firstMsg', '$secondMsg', '$thirdMsg'")
     public void checkInfoMsgs(String firstMsg, String secondMsg, String thirdMsg) {
         Assert.assertThat(firstMsg, is(myTalksPageSteps.getFirstInfoMsg()));
@@ -318,7 +344,7 @@ public class MyTalksDefinitionsSteps {
 
     @Then("all fields except Organizer's Comments box are read-only")
     public void areFieldsReadOnly() {
-        Assert.assertTrue(myTalksPageSteps.areFieldsReadOnly());
+        Assert.assertTrue(myTalksPageSteps.areFieldsExceptCommentReadOnly());
     }
 
     @Then("email was sent to users email : $table")

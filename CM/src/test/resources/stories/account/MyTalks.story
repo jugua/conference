@@ -97,3 +97,60 @@ And click 'Yes' button
 Examples:
 |<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
 |10     |10           |10              |1      |1     |1         |1      |
+
+Scenario: speaker can view approved talk
+Given user logged as speaker accessing 'My Talks' page:
+|email              |password|
+|speaker@speaker.com|speaker |
+And creates new Talk:
+|title  |description  |additionalInfo  |topic  |type  |language  |level  |
+|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
+And user logged as organiser 'Talks' page:
+|email              |password |
+|organiser@gmail.com|organiser|
+When organiser clicks new created Talk:
+|status|
+|New   |
+And clicks approve button after filling comment:
+|comment  |
+|<comment>|
+And user log in as speaker accessing 'My Talks' page:
+|email              |password|
+|speaker@speaker.com|speaker |
+And speaker clicks new created Talk:
+|status  |
+|Approved|
+Then all fields are read-only for speaker
+
+Examples:
+|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
+|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
+
+Scenario: speaker can view rejected talk
+Given user logged as speaker accessing 'My Talks' page:
+|email              |password|
+|speaker@speaker.com|speaker |
+And creates new Talk:
+|title  |description  |additionalInfo  |topic  |type  |language  |level  |
+|<title>|<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|
+And user logged as organiser 'Talks' page:
+|email              |password |
+|organiser@gmail.com|organiser|
+When organiser clicks new created Talk:
+|status|
+|New   |
+And clicks reject button after filling comment:
+|comment  |
+|<comment>|
+And user log in as speaker accessing 'My Talks' page:
+|email              |password|
+|speaker@speaker.com|speaker |
+And speaker clicks new created Talk:
+|status  |
+|Rejected|
+Then all fields are read-only for speaker
+
+Examples:
+|<title>    |<description>|<additionalInfo>|<topic>|<type>|<language>|<level>|<comment>|
+|TestMyTalks|10           |10              |1      |1     |1         |1      |comment  |
+

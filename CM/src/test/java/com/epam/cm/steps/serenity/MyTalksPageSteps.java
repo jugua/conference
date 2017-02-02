@@ -202,14 +202,29 @@ public class MyTalksPageSteps extends ScenarioSteps {
     }
 
     @Step
-    public boolean areFieldsReadOnly() {
-        return myTalksPage.areFieldsReadOnly();
+    public boolean areFieldsExceptCommentReadOnly() {
+        return myTalksPage.areFieldsExceptCommentReadOnly();
     }
 
     @Step
     public boolean areViewFieldReadOnly(){
         return myTalksPage.areFieldInViewReadOnly();
     }
+
+    public void justWait(){
+        myTalksPage.waitABitLol();
+    }
+
+    @Step
+    public boolean areFieldsReadOnlyForSpeaker() {
+        return myTalksPage.areFieldsReadOnlyForSpeaker();
+    }
+
+    @Step
+    public boolean areFieldsReadOnlyForOrganiser() {
+        return myTalksPage.areFieldsReadOnlyForOrganiser();
+    }
+
 /*    @Step
     public boolean areFieldsReadOnly(MyTalksDTO dto) {
         typeTextInFields(dto);
@@ -234,8 +249,6 @@ public class MyTalksPageSteps extends ScenarioSteps {
         myTalksPage.setOrganiserLevel(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
         myTalksPage.setOrganiserAdditionalInfoField(Randomizer.generateRandomAlphaString(RAND_STR_LENGTH));
     }*/
-    public void justWait(){
-        myTalksPage.waitABitLol();
-    }
+
 }
 
