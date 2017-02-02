@@ -68,12 +68,12 @@ UPDATE user_seq SET next_val = 2 WHERE next_val = 1;
 INSERT INTO user_role VALUES (1, 1);
 
 
-INSERT INTO talk VALUES (1, "Additional info", "Description","","NEW", "2016-12-31 23:51:00", "talk #1", 1, 1, null, 1, 1, 1);
-INSERT INTO talk VALUES (2, "Additional info", "Description","","NEW", "2016-12-31 23:52:00", "talk #2", 2, 1, null, 1, 1, 1);
-INSERT INTO talk VALUES (3, "Additional info", "Description","","NEW", "2016-12-31 23:53:00", "talk #3", 3, 1, null, 1, 1, 1);
-INSERT INTO talk VALUES (4, "Additional info", "Description","","NEW", "2016-12-31 23:54:00", "talk #4", 1, 1, null, 2, 1, 1);
-INSERT INTO talk VALUES (5, "Additional info", "Description","","NEW", "2016-12-31 23:55:00", "talk #5", 1, 1, null, 3, 1, 1);
-INSERT INTO talk VALUES (6, "Additional info", "Description","","NEW", "2016-12-31 23:56:00", "talk #6", 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (1, "Additional info", "Description","",null,"NEW", "2016-12-31 23:51:00", "talk #1", 1, 1, null, 1, 1, 1);
+INSERT INTO talk VALUES (2, "Additional info", "Description","",null,"NEW", "2016-12-31 23:52:00", "talk #2", 2, 1, null, 1, 1, 1);
+INSERT INTO talk VALUES (3, "Additional info", "Description","",null,"NEW", "2016-12-31 23:53:00", "talk #3", 3, 1, null, 1, 1, 1);
+INSERT INTO talk VALUES (4, "Additional info", "Description","",null,"NEW", "2016-12-31 23:54:00", "talk #4", 1, 1, null, 2, 1, 1);
+INSERT INTO talk VALUES (5, "Additional info", "Description","",null,"NEW", "2016-12-31 23:55:00", "talk #5", 1, 1, null, 3, 1, 1);
+INSERT INTO talk VALUES (6, "Additional info", "Description","",null,"NEW", "2016-12-31 23:56:00", "talk #6", 1, 1, null, 4, 1, 1);
 
 UPDATE talk_seq SET next_val = 7 WHERE next_val = 1;
 INSERT INTO user_info_contact VALUES (1, "twitter.com", 2);
@@ -117,14 +117,15 @@ INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, us
 UPDATE user_seq SET next_val = 5 WHERE next_val = 4;
 INSERT INTO user_role VALUES (4, 2);
 
-INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (5, "", "", "");
-UPDATE user_info_seq SET next_val = 6 WHERE next_val = 5;
-
 --
 -- Insert organiser-admin
 --
 
+INSERT INTO user_info (user_info_id, company, job_title, short_bio)  VALUES (5, "", "", "");
+UPDATE user_info_seq SET next_val = 6 WHERE next_val = 5;
+
 INSERT INTO `user`  (user_id, email, first_name, last_name, status, password, user_info_id) VALUES (5, "admin@gmail.com", "I'm super", "Admin", "CONFIRMED","java1love", 5);
-UPDATE user_seq SET next_val = 6 WHERE next_val = 6;
+UPDATE user_seq SET next_val = 6 WHERE next_val = 5;
 INSERT INTO user_role VALUES (5, 2);
 INSERT INTO user_role VALUES (5, 3);
+

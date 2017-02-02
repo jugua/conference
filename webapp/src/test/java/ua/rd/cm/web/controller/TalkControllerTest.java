@@ -671,7 +671,7 @@ public class TalkControllerTest extends TestUtil {
         Type type = new Type(1L, "Type");
         Language language = new Language(1L, "Language");
         Level level = new Level(1L, "Level");
-        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null, null);
+        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null, null,null);
     }
 
     private Talk createTalk(User speaker, User organiser) {
