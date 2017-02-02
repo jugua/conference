@@ -12,9 +12,10 @@ export default (app) => {
           currentUser: Current => Current.current,
           users: ManageUsers => ManageUsers.getAll()
         },
-        controller: function Controller(Permissions, currentUser) {
+        controller: function Controller(Permissions, currentUser, users) {
           Permissions.permitted('a', currentUser);
           this.resolved = true;
+          this.users = users;
         },
         controllerAs: 'ctrl'
       });

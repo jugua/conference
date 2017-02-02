@@ -5,6 +5,7 @@
 import appComponents from './components/components';
 //  import commonComponents from './common/components.js';
 import appServices from './services/services';
+import appFilters from './filters/filters';
 import appConfiguration from './app.config';
 
 // Single Style Entry Point
@@ -20,6 +21,10 @@ appComponents(app);
 
 //  App Services Entrypoint
 appServices(app);
+
+
+// App Filters Entrypoint
+appFilters(app);
 
 
 // Router Configuration
