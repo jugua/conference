@@ -103,10 +103,10 @@ public class TalkController {
 
         if (!checkForFilledUserInfo(currentUser)) {
             httpStatus = HttpStatus.FORBIDDEN;
-        } else if (isAttachedFileSizeError(dto.getMultipartFile())) {
+        } else if (dto.getMultipartFile()!=null&&isAttachedFileSizeError(dto.getMultipartFile())) {
             messageDto.setError("maxSize");
             httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
-        } else if (isAttachedFileTypeError(dto.getMultipartFile())) {
+        } else if (dto.getMultipartFile()!=null&&isAttachedFileTypeError(dto.getMultipartFile())) {
             messageDto.setError("pattern");
             httpStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
@@ -287,7 +287,9 @@ public class TalkController {
         Talk currentTalk = dtoToEntity(dto);
         currentTalk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
         currentTalk.setUser(currentUser);
-        currentTalk.setPathToAttachedFile(saveNewAttachedFile(dto.getMultipartFile()));
+        if (dto.getMultipartFile() != null) {
+            currentTalk.setPathToAttachedFile(saveNewAttachedFile(dto.getMultipartFile()));
+        }
         talkService.save(currentTalk);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
         mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
