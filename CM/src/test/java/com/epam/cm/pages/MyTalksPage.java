@@ -79,6 +79,22 @@ public class MyTalksPage extends AnyPage {
     @FindBy(xpath = "//*[@class='my-talk-settings__button-wrapper']/input[@value='reset']")
     WebElementFacade myTalksResetBtn;
 
+    // speaker
+    @FindBy(xpath = "//input[@ng-model='$ctrl.obj.title']")
+    WebElementFacade speakerTitleField;
+    @FindBy(xpath = "//textarea[@ng-model='$ctrl.obj.description']")
+    WebElementFacade speakerDescriptionField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.obj.topic']")
+    WebElementFacade speakerTopicField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.obj.type']")
+    WebElementFacade speakerTypeField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.obj.lang']")
+    WebElementFacade speakerLanguageField;
+    @FindBy(xpath = "//input[@ng-model='$ctrl.obj.level']")
+    WebElementFacade speakerLevelField;
+    @FindBy(xpath = "//textarea[@ng-model='$ctrl.obj.addon']")
+    WebElementFacade speakerAdditionalInfoField;
+
     // organiser
     @FindBy(xpath = "//*[@class='data-table__row ng-scope']/descendant::div[contains(.,'New')]")
     WebElementFacade tableRow;
@@ -365,7 +381,7 @@ public class MyTalksPage extends AnyPage {
         return organiserAdditionalInfoField.getValue();
     }
 
-    public boolean areFieldsReadOnly() {
+    public boolean areFieldsExceptCommentReadOnly() {
         if (!organiserTitleField.isEnabled() && !organiserDescriptionField.isEnabled()
                 && !organiserTopicField.isEnabled() && !organiserTypeField.isEnabled()
                 && !organiserLanguageField.isEnabled() && !organiserLevelField.isEnabled()
@@ -373,7 +389,6 @@ public class MyTalksPage extends AnyPage {
             return true;
         }
         return false;
-
     }
 
     public boolean areFieldInViewReadOnly() {
@@ -386,5 +401,23 @@ public class MyTalksPage extends AnyPage {
 
     public void waitABitLol() {
         waitABit(3000);
+    }
+
+    public boolean areFieldsReadOnlyForOrganiser() {
+        if(areFieldsExceptCommentReadOnly() &&
+                !orgComments.isEnabled()){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean areFieldsReadOnlyForSpeaker() {
+        if (!speakerTitleField.isEnabled() && !speakerDescriptionField.isEnabled()
+                && !speakerTopicField.isEnabled() && !speakerTypeField.isEnabled()
+                && !speakerLanguageField.isEnabled() && !speakerLevelField.isEnabled()
+                && !speakerAdditionalInfoField.isEnabled() && !orgComments.isEnabled()) {
+            return true;
+        }
+        return false;
     }
 }
