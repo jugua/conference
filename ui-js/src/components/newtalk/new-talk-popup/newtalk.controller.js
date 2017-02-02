@@ -10,6 +10,7 @@ export default class NewtalkController {
     this.talk = {};
     this.isShownPopup = false;
     this.buttonsBlocked = false;
+
   }
 
   close() {
@@ -50,5 +51,13 @@ export default class NewtalkController {
     this.talksService.add(this.talk,
       () => { this.state.go('header.tabs.myTalks', {}, { reload: true }); }
     );
+  }
+
+
+  get fileLabelClass() {
+    if (this.talkForm.$error.pattern || this.talkForm.$error.maxSize) {
+      return 'file-upload file-upload__label_named file-upload__label_error';
+    }
+    return 'file-upload file-upload__label_named';
   }
 }
