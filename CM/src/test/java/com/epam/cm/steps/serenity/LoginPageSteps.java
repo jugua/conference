@@ -130,6 +130,16 @@ public class LoginPageSteps extends ScenarioSteps {
     }
 
     @Step
+    public void clickManageUser(){
+        homePage.waitForPageToLoad();
+
+        if (!homePage.getMenu().isAccountMenuUnfolded()) {
+            homePage.getMenu().clickAccountMenuButton();
+        }
+        homePage.getMenu().clickManageUserBtn();
+    }
+
+    @Step
     public void clickTalksBtnAsOrg(){
         homePage.waitForPageToLoad();
 

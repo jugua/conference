@@ -44,6 +44,8 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     private WebElementFacade myTalksOrganiser;
     @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/my-info']")
     private WebElementFacade myInfoBtn;
+    @FindBy(xpath = "//*[@class='menu-list__title ng-binding'] [@href='#/manage-users']")
+    private WebElementFacade manageUserBtn;
     @FindBy(xpath = "//*[@class='sign-in__password-cont']/a")
     private WebElementFacade forgotPasswordLink;
     @FindBy(xpath = "//*[@class='pop-up-wrapper']/div")
@@ -85,6 +87,10 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
 
     public AccountMenuFragmentImpl(PageObject page, ElementLocator locator, long timeoutInMilliseconds) {
         super(page, locator, timeoutInMilliseconds);
+    }
+
+    public void clickManageUserBtn(){
+        manageUserBtn.click();
     }
 
     public void clickMyTalksBtn() {

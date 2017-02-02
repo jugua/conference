@@ -52,4 +52,16 @@ public class AdminPageSteps {
         adminPage.clickSaveNewUserBtn();
     }
 
+    @Step
+    public boolean areAllElementsDisplayed(){
+        if(adminPage.addNewUserBtnIsVisible() &&
+                adminPage.isEmailColumnDisplayed() &&
+                adminPage.isNameColumnDisplayed() &&
+                adminPage.isRoleColumnDisplayed()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
