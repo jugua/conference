@@ -1,4 +1,6 @@
 import manageUsersComponent from './manage-users.component';
+import addUserPopupComponent from './add-user-popup/add-user-popup.component';
+import AddUserService from './add-user-popup/add-user.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -19,5 +21,20 @@ export default (app) => {
         },
         controllerAs: 'ctrl'
       });
-  }).component('manageUsers', manageUsersComponent);
+      // .state('header.addUserPopup', {
+      //   url: '/user/creat',
+      //   template: '<manage-users ng-if="ctrl.resolved"></manage-users>',
+      //   resolve: {
+      //     currentUser: Current => Current.current,
+      //   },
+      //   controller: function Controller(Permissions, currentUser, users) {
+      //     Permissions.permitted('a', currentUser);
+      //     this.resolved = true;
+      //     this.users = users;
+      //   },
+      //   controllerAs: 'ctrl'
+      // });
+  }).component('manageUsers', manageUsersComponent)
+    .component('addUserPopup', addUserPopupComponent)
+    .service('AddUserService', AddUserService);
 };
