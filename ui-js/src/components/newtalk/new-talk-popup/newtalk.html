@@ -74,11 +74,11 @@
 
       <label ng-class="$ctrl.fileLabelClass">
         <span class="btn file-upload__button file-upload__button_named"></span>
-        <span class="file-upload__filename">{{ $ctrl.file.name }}</span>
+        <span class="file-upload__filename">{{ $ctrl.talk.file.name }}</span>
 
         <input type="file"
                class="file-upload__uploading"
-               ng-model="$ctrl.file"
+               ng-model="$ctrl.talk.file"
                ngf-select
                ngf-max-size="300MB"
                ngf-min-size="1"

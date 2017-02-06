@@ -10,20 +10,16 @@ export default class NewtalkController {
     this.talk = {};
     this.isShownPopup = false;
     this.buttonsBlocked = false;
-
   }
 
   close() {
     function isEmptyForm(form) {
-      let isEmpty = true;
-      for (const field in form) {
-        if (form[field] && form[field].length) {
-          isEmpty = false;
-          break;
+      for (const value of Object.values(form)) {
+        if (value && value.length) {
+          return false;
         }
       }
-
-      return isEmpty;
+      return true;
     }
 
     if (this.talkForm.$pristine || this.talkForm.$submitted || isEmptyForm(this.talk)) {
