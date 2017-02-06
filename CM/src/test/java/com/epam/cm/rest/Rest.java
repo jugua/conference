@@ -10,6 +10,8 @@ import com.jayway.restassured.response.Response;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,6 +24,8 @@ public class Rest {
 
     @Test
     public void loginAsUser() {
+
+        HttpResponse req;
         RestAssured.baseURI = "http://10.17.132.37:8050";
         RestAssured.basePath = "/api";
         Map<String, String> userCookie;
