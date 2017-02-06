@@ -31,5 +31,5 @@
   </div>
 </div>
 <div ng-if="$ctrl.addUserPopup">
-  <add-user-popup update-users="$ctrl.updateUsers()" on-hide-add-popup="$ctrl.hideAddUserPopup()"></add-user-popup>
+  <add-user-popup on-update-users="$ctrl.updateUsers(newUser)" on-hide-add-popup="$ctrl.hideAddUserPopup()"></add-user-popup>
 </div>

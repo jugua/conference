@@ -2,20 +2,21 @@
   <div class="pop-up pop-up_big">
     <h3 class="pop-up__title">add new user</h3>
     <button class="pop-up__close" ng-click="$ctrl.close()"></button>
-    <form class="new-talk" name="$ctrl.addUser"
+    <form class="new-talk" name="$ctrl.userForm"
           novalidate
-          ng-submit="$ctrl.submit()">
-      <label for="new-talk-title" class="form-label form-label_required">
+          ng-submit="$ctrl.addUser()">
+      <label class="form-label form-label_required">
         role
       </label>
-      <input type="text" id="new-talk-title" class="field field_border"
-             maxlength="250"
-             ng-required="true"
-             ng-model="$ctrl.talk.title"
-      >
+      <select class="new-talk__select"
+              name="role-name"
+              ng-required="true"
+              ng-model="$ctrl.user.roleName"
+              ng-options="role.roleBE as role.role for role in $ctrl.roles">
+      </select>
 
-      <label for="name" class="form-label form-label_required">first name:</label>
-      <input type="text" id="name" name="fname"
+      <label for="add-user-name" class="form-label form-label_required">first name:</label>
+      <input type="text" id="add-user-name" name="fname"
              class="field field_border"
              required
              maxlength="56"
@@ -27,8 +28,8 @@
             ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.fname.$error.maxlength">
                 Your First Name should not be longer than 56 characters. Please try another</span>
 
-      <label for="surname" class="form-label form-label_required">last name:</label>
-      <input type="text" id="surname" name="lname"
+      <label for="add-user-surname" class="form-label form-label_required">last name:</label>
+      <input type="text" id="add-user-surname" name="lname"
              class="field field_border"
              required
              maxlength="56"
@@ -40,8 +41,8 @@
             ng-show="$ctrl.userForm.$submitted && $ctrl.userForm.fname.$error.maxlength">
                 Your Last Name should not be longer than 56 characters. Please try another</span>
 
-      <label for="mail" class="form-label form-label_required">Email:</label>
-      <input type="email" id="mail" name="mail"
+      <label for="add-user-mail" class="form-label form-label_required">Email:</label>
+      <input type="email" id="add-user-mail" name="mail"
              class="field field_border"
              required
              ng-model="$ctrl.user.mail"
@@ -58,8 +59,8 @@
             ng-show="$ctrl.userForm.mail.$error.email_already_exists">
                 There is an existing account associated with {{$ctrl.user.mail}}</span>
 
-      <label for="password" class="form-label form-label_required">password:</label>
-      <input type="password" id="password" name="password"
+      <label for="add-user-password" class="form-label form-label_required">password:</label>
+      <input type="password" id="add-user-password" name="password"
              class="field field_border"
              required
              minlength="6"

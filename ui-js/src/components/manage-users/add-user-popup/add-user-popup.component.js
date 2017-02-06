@@ -4,7 +4,7 @@ import controller from './add-user-popup.controller';
 const component = {
   bindings: {
     onHideAddPopup: '&',
-    updateUsers: '='
+    onUpdateUsers: '&'
   },
   template,
   controller

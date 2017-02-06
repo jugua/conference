@@ -1,9 +1,8 @@
 class AddUserService {
-  constructor($http, $resource) {
+  constructor($resource) {
     'ngInject';
-    this.$resource = $resource;
-    this.$http = $http;
-    this.Userz = this.$resource('/api/user/create', {}, {
+
+    this.resource = $resource('/api/user/create', {}, {
       add: {
         method: 'POST',
         headers: {
@@ -14,8 +13,16 @@ class AddUserService {
     });
   }
 
-  addUser() {
-    return this.Userz;
+  addUser(user, successCallback, errorCallback) {
+    // POST
+    this.resource.save(user,
+      (result) => {
+        successCallback(result);
+      },
+      (error) => {
+        errorCallback(error);
+      }
+    );
   }
 }
 
