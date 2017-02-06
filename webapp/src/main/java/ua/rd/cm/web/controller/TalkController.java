@@ -91,8 +91,12 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto,
+                                     @RequestPart("file") MultipartFile multipartFile,
+                                     BindingResult bindingResult,
+                                     HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
+        dto.setMultipartFile(multipartFile);
         HttpStatus httpStatus;
 
         if (bindingResult.hasFieldErrors()) {
