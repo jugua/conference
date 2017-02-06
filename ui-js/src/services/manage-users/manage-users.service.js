@@ -3,7 +3,13 @@ export default class ManageUsersService {
   constructor($resource) {
     'ngInject';
 
-    this.users = $resource('/api/user/admin', {}, {
+    this.$resource = $resource;
+    this.getUsers();
+  }
+
+  getUsers(){
+
+    this.users = this.$resource('/api/user/admin', {}, {
       getAll: {
         method: 'GET',
         isArray: true,
