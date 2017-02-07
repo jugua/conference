@@ -82,9 +82,9 @@
             </properties>
         </profile>
         <profile>
-            <id>test</id>
+            <id>testing</id>
             <properties>
-                <profile.name>test</profile.name>
+                <profile.name>testing</profile.name>
             </properties>
         </profile>
         <profile>
