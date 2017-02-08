@@ -5,7 +5,7 @@ import ua.rd.cm.repository.specification.Specification;
 
 import java.time.LocalDate;
 
-public class CallForPaperConferenceFilter implements Specification<Conference> {
+public class UpcomingConferenceFilter implements Specification<Conference> {
 
     @Override
     public String toSqlClauses() {

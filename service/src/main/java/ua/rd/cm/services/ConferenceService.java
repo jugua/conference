@@ -18,7 +18,5 @@ public interface ConferenceService {
 
     List<Conference> findPast();
 
-    List<Conference> findOpenCallForPaper();
-
-    List<Conference> findOngoing();
+    List<Conference> findUpcoming();
 }

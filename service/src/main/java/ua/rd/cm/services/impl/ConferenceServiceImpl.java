@@ -4,9 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.repository.ConferenceRepository;
-import ua.rd.cm.repository.specification.conference.CallForPaperConferenceFilter;
+import ua.rd.cm.repository.specification.conference.UpcomingConferenceFilter;
 import ua.rd.cm.repository.specification.conference.ConferenceById;
-import ua.rd.cm.repository.specification.conference.OngoingConferenceFilter;
 import ua.rd.cm.repository.specification.conference.PastConferenceFilter;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
@@ -57,12 +56,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public List<Conference> findOpenCallForPaper() {
-        return conferenceRepository.findBySpecification(new CallForPaperConferenceFilter());
-    }
-
-    @Override
-    public List<Conference> findOngoing() {
-        return conferenceRepository.findBySpecification(new OngoingConferenceFilter());
+    public List<Conference> findUpcoming() {
+        return conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
     }
 }
