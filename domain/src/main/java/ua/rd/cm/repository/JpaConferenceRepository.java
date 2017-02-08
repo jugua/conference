@@ -1,0 +1,43 @@
+package ua.rd.cm.repository;
+
+import org.springframework.stereotype.Repository;
+import ua.rd.cm.domain.Conference;
+import ua.rd.cm.repository.specification.Specification;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
+
+@Repository
+public class JpaConferenceRepository implements ConferenceRepository {
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @Override
+    public void save(Conference conference) {
+        em.persist(conference);
+    }
+
+    @Override
+    public void update(Conference conference) {
+        em.merge(conference);
+    }
+
+    @Override
+    public void remove(Conference conference) {
+        em.remove(conference);
+    }
+
+    @Override
+    public List<Conference> findAll() {
+        return em.createQuery("SELECT c FROM Conference c", Conference.class).
+                getResultList();
+    }
+
+    @Override
+    public List<Conference> findBySpecification(Specification<Conference> spec) {
+        return em.createQuery("SELECT c FROM Conference c WHERE " + spec.toSqlClauses(), Conference.class).
+                getResultList();
+    }
+}
