@@ -45,8 +45,8 @@ public class HttpRequest {
         return addHeader("X-XSRF-TOKEN", value);
     }
 
-    public HttpRequest addContentType(final String enumer) {
-        return addHeader("Content-Type", enumer);
+    public HttpRequest addContentType(final String value) {
+        return addHeader("Content-Type", value);
     }
 
     public HttpRequest addHeader(final String key, final String value) {
