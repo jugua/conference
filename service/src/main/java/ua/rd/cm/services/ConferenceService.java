@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface ConferenceService {
 
+    Conference findById(Long id);
+
     void save(Conference conference);
 
     void update(Conference conference);
@@ -19,6 +21,4 @@ public interface ConferenceService {
     List<Conference> findOpen();
 
     List<Conference> findOngoing();
-
-    List<Conference> findUntagged();
 }
