@@ -1,5 +1,7 @@
 package com.epam.cm.rest;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -22,10 +24,10 @@ import static com.jayway.restassured.http.ContentType.JSON;
 public class Rest {
 
     Map<String, String> userCookie;
-
+/*
     @Test
     public void loginAsUser() {
-/*
+
         HttpResponse req;
         RestAssured.baseURI = "http://10.17.132.37:8050";
         RestAssured.basePath = "/api";
@@ -49,11 +51,11 @@ public class Rest {
         //
 
         userCookie.entrySet().forEach(System.out::println);
-*/
-    }
+
+    }*/
 
     @Test
-    public void loginRest(){
+    public void loginRest() throws IOException, NoSuchAlgorithmException {
 
         ConfManagRestClient rest = new ConfManagRestClient();
         rest.postRequest();
