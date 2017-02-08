@@ -13,7 +13,7 @@ public class MyTalksPage extends AnyPage {
     private final String RowByName = "//*[@class='data-table__row ng-scope']/../div[contains(.,'%s')]";
     private final String STATUS = "//*[@class='data-table__row ng-scope']/../div[contains(.,'%s')]/div[@class='data-table__column data-table__column_status-talk ng-binding']";
     private final String TITLE = "//*[@class='data-table__row ng-scope']/div[contains(.,'%s')]/a";
-    private final String SPEAKER = "//*[@class='data-table__row ng-scope']/div/a[contains(.,'Tester Tester')]";
+    private final String SPEAKER = "//*[@class='data-table__row ng-scope']/div/a[contains(.,'Tester Tester  ')]";
 
     @FindBy(xpath = "//*[@class='my-talks__header']/a")
     WebElementFacade submitNewTalkBtn;

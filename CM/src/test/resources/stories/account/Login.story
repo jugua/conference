@@ -12,6 +12,7 @@ I have the following dropdown options available under *'First Name' Account* :
 Manage My Account page and Talks
 
 
+
 Scenario: User unsuccessfully logs in to the site with invalid credentials
 Meta:
 @regression @smoke
