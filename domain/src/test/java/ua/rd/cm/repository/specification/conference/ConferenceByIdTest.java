@@ -1,17 +1,12 @@
 package ua.rd.cm.repository.specification.conference;
 
 import org.junit.Test;
-import org.springframework.test.context.TestPropertySource;
 import ua.rd.cm.domain.Conference;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ConferenceByIdTest {
-
-    @Test(expected = NullPointerException.class)
-    public void constructorWithNullIdShouldThrow() {
-        new ConferenceById(null);
-    }
 
     @Test
     public void testMethodShouldReturnFalseOnMismatch() {
