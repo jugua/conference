@@ -1,4 +1,6 @@
 import manageUsersComponent from './manage-users.component';
+import addUserPopupComponent from './add-user-popup/add-user-popup.component';
+import AddUserService from './add-user-popup/add-user.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -19,5 +21,7 @@ export default (app) => {
         },
         controllerAs: 'ctrl'
       });
-  }).component('manageUsers', manageUsersComponent);
+  }).component('manageUsers', manageUsersComponent)
+    .component('addUserPopup', addUserPopupComponent)
+    .service('AddUserService', AddUserService);
 };
