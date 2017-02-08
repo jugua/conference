@@ -2,6 +2,8 @@ package ua.rd.cm.repository;
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import lombok.Data;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.config.InMemoRepositoryConfig;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.repository.specification.conference.ConferenceById;
+import ua.rd.cm.repository.specification.conference.UpcomingConferenceFilter;
 
 import java.util.List;
 
@@ -69,6 +72,14 @@ public class JpaConferenceRepositoryIT {
         conferenceRepository.remove(byId);
 
         assertNull(getById(id));
+    }
+
+    @Test
+    @Ignore
+    @DatabaseSetup("/ds/conference-ds.xml")
+    public void findUpcomingShouldContainConferenceWithNoDateSpecified() {
+        List<Conference> upcoming = conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
+        assertFalse(upcoming.isEmpty());
     }
 
     private Conference getById(long id) {

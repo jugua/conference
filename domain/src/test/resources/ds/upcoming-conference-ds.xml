@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <conference conference_id="-100" title="JavaDay" description="Some" location="Kiev"/>
+    <conference conference_id="-200" title="JSDay" description="Some" location="Kiev" endDate="2999"/>
+    <conference conference_id="-300" title="JavaDay" description="Some" location="Kiev" endDate="1961"/>
+</dataset>
