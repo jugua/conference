@@ -3,6 +3,7 @@ package ua.rd.cm.repository;
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.repository.specification.Specification;
+import ua.rd.cm.repository.specification.conference.ConferenceById;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,6 +14,11 @@ public class JpaConferenceRepository implements ConferenceRepository {
 
     @PersistenceContext
     private EntityManager em;
+
+    @Override
+    public Conference findById(Long id) {
+        return findBySpecification(new ConferenceById(id)).stream().findFirst().orElse(null);
+    }
 
     @Override
     public void save(Conference conference) {

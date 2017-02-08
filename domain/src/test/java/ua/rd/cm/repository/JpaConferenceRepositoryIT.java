@@ -19,6 +19,7 @@ import ua.rd.cm.repository.specification.conference.UpcomingConferenceFilter;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
@@ -35,20 +36,23 @@ public class JpaConferenceRepositoryIT {
     private ConferenceRepository conferenceRepository;
 
     @Test
-    public void saveShouldPersistInDatabase() {
-        Conference test = createWithName("test");
-        conferenceRepository.save(test);
-
-        List<Conference> bySpecification = conferenceRepository.findBySpecification(new ConferenceById(test.getId()));
-        assertFalse(bySpecification.isEmpty());
+    public void getByIdShouldReturnNullIfDatabaseEmpty() {
+        assertNull(conferenceRepository.findById(-100L));
     }
 
     @Test
     @DatabaseSetup("/ds/conference-ds.xml")
     public void getByIdShouldReturnPersisted() {
-        List<Conference> bySpecification = conferenceRepository.findBySpecification(new ConferenceById(-100L));
-        assertNotNull(bySpecification);
-        assertFalse(bySpecification.isEmpty());
+        assertNotNull(conferenceRepository.findById(-100L));
+    }
+
+    @Test
+    public void saveShouldPersistInDatabase() {
+        Conference expected = createWithName("expected");
+        conferenceRepository.save(expected);
+
+        Conference actual = conferenceRepository.findById(expected.getId());
+        assertThat(actual, equalTo(expected));
     }
 
     @Test
@@ -56,22 +60,22 @@ public class JpaConferenceRepositoryIT {
     public void updateShouldUpdateCorrectly() {
         String newTitle = "test 1122";
 
-        Conference conference = getById(-100);
+        Conference conference = conferenceRepository.findById(-100L);
         conference.setTitle(newTitle);
 
         conferenceRepository.update(conference);
 
-        assertThat(conference, is(getById(-100)));
+        assertThat(conference, is(conferenceRepository.findById(-100L)));
     }
 
     @Test
     @DatabaseSetup("/ds/conference-ds.xml")
     public void removeShouldRemoveFromDatabase() {
         long id = -100;
-        Conference byId = getById(id);
+        Conference byId = conferenceRepository.findById(id);
         conferenceRepository.remove(byId);
 
-        assertNull(getById(id));
+        assertNull(conferenceRepository.findById(id));
     }
 
     @Test
@@ -80,10 +84,6 @@ public class JpaConferenceRepositoryIT {
     public void findUpcomingShouldContainConferenceWithNoDateSpecified() {
         List<Conference> upcoming = conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
         assertFalse(upcoming.isEmpty());
-    }
-
-    private Conference getById(long id) {
-        return conferenceRepository.findBySpecification(new ConferenceById(id)).stream().findFirst().orElse(null);
     }
 
     private static Conference createWithName(String title) {

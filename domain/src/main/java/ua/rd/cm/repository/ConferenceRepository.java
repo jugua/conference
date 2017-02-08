@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ConferenceRepository {
 
+    Conference findById(Long id);
+
     void save(Conference conference);
 
     void update(Conference conference);
