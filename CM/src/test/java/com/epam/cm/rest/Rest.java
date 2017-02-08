@@ -3,6 +3,7 @@ package com.epam.cm.rest;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.epam.cm.core.restclient.ConfManagRestClient;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Cookies;
 import com.jayway.restassured.response.Header;
@@ -10,6 +11,8 @@ import com.jayway.restassured.response.Response;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,6 +25,8 @@ public class Rest {
 
     @Test
     public void loginAsUser() {
+/*
+        HttpResponse req;
         RestAssured.baseURI = "http://10.17.132.37:8050";
         RestAssured.basePath = "/api";
         Map<String, String> userCookie;
@@ -44,48 +49,16 @@ public class Rest {
         //
 
         userCookie.entrySet().forEach(System.out::println);
-
+*/
     }
 
     @Test
-    public void createTalk() {
+    public void loginRest(){
 
-        RestAssured.baseURI = "http://10.17.132.37:8050";
-        RestAssured.basePath = "/api";
-        Map<String, String> userCookie;
-
-        // stage 1: get "XSRF-TOKEN"
-        Response resp = RestAssured.given().log().all().get();
-
-        Cookies cookies = resp.getDetailedCookies();
-
-        userCookie = new LinkedHashMap<>(resp.cookies());
-        // stage 2: get new "JSESSIONID"
-        Response response2 = RestAssured.given().auth().preemptive().basic("tester@tester.com", "tester")
-                .headers("X-XSRF-TOKEN", cookies.get("XSRF-TOKEN")).cookies(cookies)
-                .contentType("application/json;charset=UTF-8").log().all().post("/login").then().log().all()
-                .statusCode(200).extract().response();
-
-        userCookie.putAll(response2.cookies());
-
-        // stage 3: update "XSRF-TOKEN" for logged user
-        Response response3 = RestAssured.given()
-                .contentType("application/json;charset=UTF-8")
-                .header(new Header("X-XSRF-TOKEN", cookies.get("X-XSRF-TOKEN").getValue()))
-                .cookies(cookies)
-                .log()
-                .all().get("/user/current").then().log().all().statusCode(202).extract().response();
-
-        userCookie.putAll(response3.cookies());
-
-        // Response resp2 = RestAssured.given().log().all().get();
-
-        // stage 3: update "XSRF-TOKEN" for logged user
-
-        Response response4 = RestAssured.given().contentType("application/json;charset=UTF-8").header(new Header("X-XSRF-TOKEN", response3.getCookie("X-XSRF-TOKEN"))).cookies(response3.getDetailedCookies()).log()
-                .all().post("/logout").then().statusCode(204).log().all().extract().response();
-
-        userCookie.entrySet().forEach(System.out::println);
+        ConfManagRestClient rest = new ConfManagRestClient();
+        rest.postRequest();
     }
+
+
 
 }

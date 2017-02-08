@@ -6,16 +6,16 @@ I want to perform an action
 So that I can achieve a business goal
 
 Scenario: Admin accesses admin page
-Given user logged as organiser 'Admin' page:
-|email              |password |
-|organiser@gmail.com|organiser|
-When is on the Admin page
+Given user logged as admin:
+|email          |password |
+|admin@gmail.com|java1love|
+When admin accesses the Admin page
 Then user can see all created user in the table
 
 Scenario: Admin creates new User
-Given user logged as organiser 'Admin' page:
-|email              |password |
-|organiser@gmail.com|organiser|
+Given user logged as admin:
+|email          |password |
+|admin@gmail.com|java1love|
 And admin clicks 'Add New User' button
 When admin fills valid data in in the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
 |role  |firstName  |lastName  |email  |password  |confirmPassword  |
@@ -28,9 +28,9 @@ And new user appears in the user table
 |1     |27         |34        |4,13,6 |16        |16               |
 
 Scenario: Admin unsuccessfully create new account with empty fields
-Given user logged as organiser 'Admin' page:
-|email              |password |
-|organiser@gmail.com|organiser|
+Given user logged as admin:
+|email          |password |
+|admin@gmail.com|java1love|
 And admin clicks 'Add New User' button
 When admin leaves some of the fields empty:
 |role  |firstName  |lastName  |email  |password  |confirmPassword  |

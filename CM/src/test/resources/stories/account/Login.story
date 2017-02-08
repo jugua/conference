@@ -12,6 +12,7 @@ I have the following dropdown options available under *'First Name' Account* :
 Manage My Account page and Talks
 
 
+
 Scenario: User unsuccessfully logs in to the site with invalid credentials
 Meta:
 @regression @smoke
@@ -156,6 +157,7 @@ Then there are My account and  My Talks links in the given order
 |Sign Out|/#/       |
 Then user logs out
 
+
 Scenario: Being signed in as an admin manage My Account page, My Info page and My Talks
 Meta:
 @regression @smoke
@@ -166,11 +168,11 @@ And user filled in login form:
 |email          |password |
 |admin@gmail.com|java1love|
 When user clicks SignIn button on login form
-Then "Your Account" replaced by "Organizer's Account"
+Then "Your Account" replaced by "Admin's Account"
 Then there are My account and  My Talks links in the given order
-|btnName     |link          |
-|Talks       |/#/talks      |
-|Settings    |/#/account    |
-|Manage Users|/#/           |
-|Sign Out    |#/manage-users|
+|btnName     |link           |
+|Talks       |/#/talks       |
+|Settings    |/#/account     |
+|Manage Users|/#/manage-users|
+|Sign Out    |/#/            |
 Then user logs out

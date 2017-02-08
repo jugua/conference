@@ -5,6 +5,7 @@ import com.gargoylesoftware.htmlunit.HttpMethod;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import java.io.IOException;
@@ -25,10 +26,17 @@ public class HttpRequest {
         if (method.equals(HttpMethod.GET)) {
             rawRequest = new HttpGet(uri);
         }
+        if (method.equals(HttpMethod.POST)){
+            rawRequest = new HttpPost(uri);
+        }
     }
 
     public static HttpRequest get(final String uri) {
         return new HttpRequest(HttpMethod.GET, uri);
+    }
+
+    public static HttpRequest post(final String uri){
+        return new HttpRequest(HttpMethod.POST,uri);
     }
 
 
@@ -37,7 +45,7 @@ public class HttpRequest {
         this.login = login;
         this.password = password;
         String encodedAuthorization = "Basic " + Base64.encodeBase64String((login + ":" + password).getBytes());
-        addHeader("Authorization", encodedAuthorization);
+        addHeader("authorization", encodedAuthorization);
         return this;
     }
 
@@ -51,11 +59,6 @@ public class HttpRequest {
 
     public HttpRequest addHeader(final String key, final String value) {
         rawRequest.addHeader(key, value);
-        return this;
-    }
-
-    public HttpRequest addBody(final String key, final String value) {
-
         return this;
     }
 
