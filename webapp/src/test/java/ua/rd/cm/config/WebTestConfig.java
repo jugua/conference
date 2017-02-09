@@ -9,6 +9,8 @@ import static org.mockito.Mockito.mock;
 @Configuration
 public class WebTestConfig {
     @Bean
+    public ConferenceService mockConferenceService(){ return mock(ConferenceService.class); }
+    @Bean
     public UserService mockUserService(){
         return mock(UserService.class);
     }
