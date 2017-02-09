@@ -28,7 +28,7 @@ export default class EditEmailController {
   checkPendingUpdate() {
     this.editEmailService.checkPendingUpdate()
       .then((res) => {
-        if (res.data.answer === 'pending_email_change_found') {
+        if (res.data.result === 'pending_email_change_found') {
           this.pendingChange = true;
           this.confirmTimeout = res.data.secondsToExpiry * 1000;
           this.showConfirm(this.messages.confirmationSent);
