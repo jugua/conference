@@ -41,7 +41,7 @@ public class ConferenceController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upcoming")
-    public ResponseEntity getUpcomingConferences() {
+    public ResponseEntity getUpcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
         List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
         return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
@@ -50,7 +50,7 @@ public class ConferenceController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/past")
-    public ResponseEntity getPastConferences() {
+    public ResponseEntity getPastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
         List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
         return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
@@ -58,7 +58,8 @@ public class ConferenceController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/new")
-    public ResponseEntity newConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity newConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult,
+                                        HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
         Conference conference = conferenceDtoToConference(dto);
         // TODO: check conferenceDto
