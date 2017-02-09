@@ -27,5 +27,8 @@ module.exports = {
     "expect": false,
     "spyOn": false,
     "xdescribe": false,
+
+    // FormData Web API
+    "FormData": false,
   }
 }
