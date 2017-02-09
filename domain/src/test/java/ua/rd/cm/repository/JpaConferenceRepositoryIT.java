@@ -2,8 +2,6 @@ package ua.rd.cm.repository;
 
 import com.github.springtestdbunit.TransactionDbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import lombok.Data;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +12,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.config.InMemoRepositoryConfig;
 import ua.rd.cm.domain.Conference;
-import ua.rd.cm.repository.specification.conference.ConferenceById;
+import ua.rd.cm.repository.specification.conference.PastConferenceFilter;
 import ua.rd.cm.repository.specification.conference.UpcomingConferenceFilter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -79,11 +78,60 @@ public class JpaConferenceRepositoryIT {
     }
 
     @Test
-    @Ignore
     @DatabaseSetup("/ds/conference-ds.xml")
     public void findUpcomingShouldContainConferenceWithNoDateSpecified() {
         List<Conference> upcoming = conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
         assertFalse(upcoming.isEmpty());
+    }
+
+    @Test
+    @DatabaseSetup("/ds/upcoming-conference-ds.xml")
+    public void findUpcomingShouldContainConferenceWhichEndsInFuture() {
+        List<Conference> upcoming = conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
+        assertFalse(upcoming.isEmpty());
+    }
+
+    @Test
+    @DatabaseSetup("/ds/past-conference-ds.xml")
+    public void findUpcomingShouldNotContainConferenceThatHasAlreadyStarted() {
+        List<Conference> upcoming = conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
+        assertTrue(upcoming.isEmpty());
+    }
+
+    @Test
+    public void findUpcomingShouldContainConferenceThatEndsToday() {
+        Conference conference = createWithName("someName");
+        conference.setEndDate(LocalDate.now());
+
+        conferenceRepository.save(conference);
+
+        List<Conference> upcoming = conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
+        assertFalse(upcoming.isEmpty());
+    }
+
+    @Test
+    public void findPastShouldNotContainConferenceThatEndsToday() {
+        Conference conference = createWithName("someName");
+        conference.setEndDate(LocalDate.now());
+
+        conferenceRepository.save(conference);
+
+        List<Conference> upcoming = conferenceRepository.findBySpecification(new PastConferenceFilter());
+        assertTrue(upcoming.isEmpty());
+    }
+
+    @Test
+    @DatabaseSetup("/ds/past-conference-ds.xml")
+    public void findPastShouldContainPastConferences() {
+        List<Conference> past = conferenceRepository.findBySpecification(new PastConferenceFilter());
+        assertFalse(past.isEmpty());
+    }
+
+    @Test
+    @DatabaseSetup("/ds/upcoming-conference-ds.xml")
+    public void findPastShouldReturnEmptyIfThereIsNoPastConferences() {
+        List<Conference> past = conferenceRepository.findBySpecification(new PastConferenceFilter());
+        assertTrue(past.isEmpty());
     }
 
     private static Conference createWithName(String title) {
