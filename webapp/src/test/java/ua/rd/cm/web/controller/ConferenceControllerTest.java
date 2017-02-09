@@ -74,7 +74,7 @@ public class ConferenceControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ADMIN_ROLE)
     public void getUpcomingConferencesWithNoTalks() throws Exception {
         List<Conference> conferences = new ArrayList<>();
         conferences.add(new Conference());
