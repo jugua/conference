@@ -173,7 +173,7 @@ public class UserController {
         } else {
             userService.registerNewUser(dto);
             status = HttpStatus.ACCEPTED;
-            message.setStatus("success");
+            message.setResult("success");
         }
         return ResponseEntity.status(status).body(message);
     }

@@ -69,7 +69,7 @@ public class EmailController {
 				tokenService.saveToken(token);
 				mailService.sendEmail(currentUser, new ForgotMessagePreparator(token));
 				httpStatus = HttpStatus.OK;
-				responseMessage.setStatus("success");
+				responseMessage.setResult("success");
 			}
 		} else {
 			httpStatus = HttpStatus.BAD_REQUEST;
