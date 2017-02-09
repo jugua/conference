@@ -8,7 +8,9 @@ export default class TalkService {
     this.talks = $resource('api/talk/:id', {}, {
       add: {
         method: 'POST',
+        transformRequest: angular.identity,
         headers: {
+          'Content-Type': undefined,
           'Cache-Control': 'no-cache, no-store',
           Pragma: 'no-cache'
         }
