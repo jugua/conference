@@ -29,6 +29,13 @@ public class ConfManagRestClient {
 
         HttpRequest.get("http://localhost:8050/api/user/current")
                 .addHeader("Accept", "application/json;charset=UTF-8")
+                .addContentType("application/json;charset=UTF-8")
+                .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
+                        getCookieStore().getCookies()
+                        .stream()
+                        .filter(c -> c.getName().contains("XSRF-TOKEN"))
+                        .findFirst()
+                        .get().getValue())
                 .sendAndGetResponse(202);
         return HttpRequest.post("http://localhost:8050/api/logout")
                 .addContentType("application/json;charset=UTF-8")
