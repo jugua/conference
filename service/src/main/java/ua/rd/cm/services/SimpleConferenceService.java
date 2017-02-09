@@ -1,5 +1,6 @@
 package ua.rd.cm.services;
 
+import org.springframework.stereotype.Service;
 import ua.rd.cm.domain.Conference;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 /**
  * Created by Anastasiia_Milinchuk on 2/8/2017.
  */
+@Service
 public class SimpleConferenceService implements ConferenceService {
     @Override
     public void save(Conference conference) {
