@@ -4,10 +4,10 @@ import ua.rd.cm.domain.Conference;
 
 import java.util.List;
 
-/**
- * Created by Anastasiia_Milinchuk on 2/8/2017.
- */
 public interface ConferenceService {
+
+    Conference findById(Long id);
+
     void save(Conference conference);
 
     void update(Conference conference);

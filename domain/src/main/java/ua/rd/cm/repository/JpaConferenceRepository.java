@@ -7,6 +7,7 @@ import ua.rd.cm.repository.specification.conference.ConferenceById;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -43,7 +44,10 @@ public class JpaConferenceRepository implements ConferenceRepository {
 
     @Override
     public List<Conference> findBySpecification(Specification<Conference> spec) {
-        return em.createQuery("SELECT c FROM Conference c WHERE " + spec.toSqlClauses(), Conference.class).
-                getResultList();
+        TypedQuery<Conference> query =
+                em.createQuery("SELECT c FROM Conference c WHERE " + spec.toSqlClauses(), Conference.class);
+        spec.setParameters(query);
+
+        return query.getResultList();
     }
 }
