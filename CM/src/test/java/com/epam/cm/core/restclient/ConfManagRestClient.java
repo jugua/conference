@@ -5,15 +5,19 @@ import com.epam.cm.core.httpclient.HttpRequest;
 
 import org.apache.http.HttpResponse;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by Lev_Serba on 2/2/2017.
  */
 public class ConfManagRestClient {
-    public HttpResponse performGetRequest() {
+
+    public HttpResponse performGetRequest() throws NoSuchAlgorithmException {
         return HttpRequest.get("http://10.17.132.37:8050").sendAndGetResponse(200);
     }
 
-    public HttpResponse postRequest() {
+    public HttpResponse postRequest() throws NoSuchAlgorithmException, IOException {
         HttpRequest.get("http://localhost:8050").sendAndGetResponse(200);
         HttpRequest.post("http://localhost:8050/api/login/")
                 .addBasicAuth("speaker@speaker.com", "speaker")
@@ -26,10 +30,12 @@ public class ConfManagRestClient {
                         .findFirst()
                         .get().getValue())
                 .sendAndGetResponse(200);
-
-        HttpRequest.get("http://localhost:8050/api/user/current")
-                .addHeader("Accept", "application/json;charset=UTF-8")
+         HttpRequest.get("http://localhost:8050/api/user/current")
                 .addContentType("application/json;charset=UTF-8")
+                .addHeader("Accept", "application/json;charset=UTF-8")
+
+                .addContentType("application/json;charset=UTF-8")
+
                 .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
                         getCookieStore().getCookies()
                         .stream()
@@ -37,7 +43,8 @@ public class ConfManagRestClient {
                         .findFirst()
                         .get().getValue())
                 .sendAndGetResponse(202);
-        return HttpRequest.post("http://localhost:8050/api/logout")
+
+       return HttpRequest.post("http://localhost:8050/api/logout")
                 .addContentType("application/json;charset=UTF-8")
                 .addHeader("Accept", "application/json;charset=UTF-8")
                 .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
@@ -48,4 +55,5 @@ public class ConfManagRestClient {
                         .get().getValue())
                 .sendAndGetResponse(204);
     }
+
 }

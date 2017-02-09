@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Lev_Serba on 2/2/2017.
@@ -53,8 +54,8 @@ public class HttpRequest {
         return addHeader("X-XSRF-TOKEN", value);
     }
 
-    public HttpRequest addContentType(final String enumer) {
-        return addHeader("Content-Type", enumer);
+    public HttpRequest addContentType(final String value) {
+        return addHeader("Content-Type", value);
     }
 
     public HttpRequest addHeader(final String key, final String value) {
@@ -62,10 +63,10 @@ public class HttpRequest {
         return this;
     }
 
-    public HttpResponse sendAndGetResponse(int expectedStatusCode) {
+    public HttpResponse sendAndGetResponse(int expectedStatusCode) throws NoSuchAlgorithmException {
         HttpResponse response = null;
         try {
-            response = DefaultSecureHttpClientSingleton.getInstance().execute(rawRequest);
+            response = getHttpClient().execute(rawRequest, getHttpClient().getLocalContext());
             if (expectedStatusCode != response.getStatusLine().getStatusCode()) {
                 throw new RuntimeException("Incorrect status code. Actual:"
                         + response.getStatusLine().getStatusCode() + " Expected:" + expectedStatusCode);
@@ -74,5 +75,9 @@ public class HttpRequest {
             throw new RuntimeException("Exception in sendAndGet", e);
         }
         return response;
+    }
+
+    private DefaultSecureHttpClient getHttpClient() throws IOException, NoSuchAlgorithmException {
+        return DefaultSecureHttpClientSingleton.getInstance();
     }
 }

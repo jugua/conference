@@ -17,7 +17,18 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.io.IOException;
+import java.net.Socket;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 /**
  * Created by Lev_Serba on 2/2/2017.
@@ -27,11 +38,11 @@ public class DefaultSecureHttpClient extends DefaultHttpClient {
     private HttpContext localContext;
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(DefaultSecureHttpClient.class);
 
-    public DefaultSecureHttpClient() {
+    public DefaultSecureHttpClient() throws IOException, NoSuchAlgorithmException {
         this(buildHttpParams());
     }
 
-    public DefaultSecureHttpClient(final HttpParams params) {
+    public DefaultSecureHttpClient(final HttpParams params) throws IOException, NoSuchAlgorithmException {
         super(buildConnectionManager(params), params);
         localContext = new BasicHttpContext();
         localContext.setAttribute(HttpClientContext.COOKIE_STORE, getCookieStore());
@@ -44,14 +55,14 @@ public class DefaultSecureHttpClient extends DefaultHttpClient {
         return params;
     }
 
-    private static ClientConnectionManager buildConnectionManager(final HttpParams params) {
+    private static ClientConnectionManager buildConnectionManager(final HttpParams params) throws IOException, NoSuchAlgorithmException {
         ClientConnectionManager ccm = null;
 
         try {
             KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
             trustStore.load(null, null);
 
-            SSLSocketFactory sslSocketFactory = new SSLSocketFactory(trustStore);
+            SSLSocketFactory sslSocketFactory = new DefaultSSLSocketFactory(trustStore);
             sslSocketFactory.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
             SchemeRegistry registry = new SchemeRegistry();
@@ -62,10 +73,53 @@ public class DefaultSecureHttpClient extends DefaultHttpClient {
 
             LOG.info("Secure client was initialized successfully");
 
-        } catch (Exception e) {
+        } catch (CertificateException | UnrecoverableKeyException | KeyStoreException | NoSuchAlgorithmException
+                | IOException | KeyManagementException e) {
             throw new RuntimeException("Cannot initialize client!", e);
         }
 
         return ccm;
     }
+
+    public HttpContext getLocalContext() {
+        return localContext;
+    }
+
+    private static class DefaultSSLSocketFactory extends SSLSocketFactory {
+
+        private SSLContext sslContext = SSLContext.getInstance("TLS");
+
+        public DefaultSSLSocketFactory(final KeyStore trustStore)
+                throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, UnrecoverableKeyException {
+            super(trustStore);
+
+            TrustManager trustManager = new X509TrustManager() {
+                public void checkClientTrusted(final X509Certificate[] chain, final String authType)
+                        throws CertificateException {
+                }
+
+                public void checkServerTrusted(final X509Certificate[] chain, final String authType)
+                        throws CertificateException {
+                }
+
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+            };
+
+            sslContext.init(null, new TrustManager[] { trustManager }, null);
+        }
+
+        @Override
+        public Socket createSocket(final Socket socket, final String host, final int port, final boolean autoClose)
+                throws IOException {
+            return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
+        }
+
+        @Override
+        public Socket createSocket() throws IOException {
+            return sslContext.getSocketFactory().createSocket();
+        }
+    }
+
 }
