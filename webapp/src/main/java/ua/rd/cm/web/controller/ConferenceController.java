@@ -9,10 +9,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
+import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
 import ua.rd.cm.web.controller.dto.MessageDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,8 +45,7 @@ public class ConferenceController {
     @GetMapping("/upcoming")
     public ResponseEntity getUpcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
-        List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
-        return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
+        return getResponseEntityConferencesByRole(request, conferences);
     }
 
 
@@ -52,8 +53,7 @@ public class ConferenceController {
     @GetMapping("/past")
     public ResponseEntity getPastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
-        List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
-        return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
+        return getResponseEntityConferencesByRole(request, conferences);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -75,6 +75,32 @@ public class ConferenceController {
         // TODO: check conferenceDto
         conferenceService.update(conference);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
+    }
+
+
+    private ResponseEntity getResponseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
+        if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
+            List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
+            return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
+        }
+        List<ConferenceDtoBasic> conferenceDtoBasics = conferenceListToDtoBasic(conferences);
+        return new ResponseEntity<>(conferenceDtoBasics, HttpStatus.OK);
+    }
+
+    private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
+        ConferenceDtoBasic conferenceDtoBasic = mapper.map(conference, ConferenceDtoBasic.class);
+        conferenceDtoBasic.setConferenceInPast(isConferenceInPast(conference));
+        return conferenceDtoBasic;
+    }
+
+    private List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences) {
+        List<ConferenceDtoBasic> conferenceDtoBasics = new ArrayList<>();
+        if (conferences != null) {
+            for (Conference conf : conferences) {
+                conferenceDtoBasics.add(conferenceToDtoBasic(conf));
+            }
+        }
+        return conferenceDtoBasics;
     }
 
     private ConferenceDto conferenceToDto(Conference conference) {
