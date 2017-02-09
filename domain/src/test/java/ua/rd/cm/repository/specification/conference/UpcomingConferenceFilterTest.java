@@ -3,11 +3,13 @@ package ua.rd.cm.repository.specification.conference;
 import org.junit.Before;
 import org.junit.Test;
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.repository.specification.OrSpecification;
 import ua.rd.cm.repository.specification.Specification;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class UpcomingConferenceFilterTest {
 
@@ -15,7 +17,10 @@ public class UpcomingConferenceFilterTest {
 
     @Before
     public void setUp() {
-        upcomingFilter = new UpcomingConferenceFilter();
+        upcomingFilter = new OrSpecification<>(
+                new ConferenceEndDateIsNull(true),
+                new ConferenceEndDateLaterOrEqualToNow()
+        );
     }
 
     @Test
@@ -26,7 +31,7 @@ public class UpcomingConferenceFilterTest {
     }
 
     @Test
-    public void testShouldReturnTrueIfConferenceHasNoSpecifiedEndDate() throws Exception {
+    public void testShouldReturnTrueIfConferenceHasNoEndDateSpecified() throws Exception {
         Conference conference = new Conference();
         assertTrue(upcomingFilter.test(conference));
     }

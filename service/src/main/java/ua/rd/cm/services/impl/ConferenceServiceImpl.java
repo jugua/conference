@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.repository.ConferenceRepository;
-import ua.rd.cm.repository.specification.conference.UpcomingConferenceFilter;
+import ua.rd.cm.repository.specification.AndSpecification;
+import ua.rd.cm.repository.specification.OrSpecification;
 import ua.rd.cm.repository.specification.conference.ConferenceById;
-import ua.rd.cm.repository.specification.conference.PastConferenceFilter;
+import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
+import ua.rd.cm.repository.specification.conference.ConferenceEndDateEarlierThanNow;
+import ua.rd.cm.repository.specification.conference.ConferenceEndDateLaterOrEqualToNow;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
 
@@ -52,11 +55,21 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public List<Conference> findPast() {
-        return conferenceRepository.findBySpecification(new PastConferenceFilter());
+        return conferenceRepository.findBySpecification(
+                new AndSpecification<>(
+                        new ConferenceEndDateIsNull(false),
+                        new ConferenceEndDateEarlierThanNow()
+                )
+        );
     }
 
     @Override
     public List<Conference> findUpcoming() {
-        return conferenceRepository.findBySpecification(new UpcomingConferenceFilter());
+        return conferenceRepository.findBySpecification(
+                new OrSpecification<>(
+                        new ConferenceEndDateIsNull(true),
+                        new ConferenceEndDateLaterOrEqualToNow()
+                )
+        );
     }
 }

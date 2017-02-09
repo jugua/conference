@@ -6,11 +6,11 @@ import ua.rd.cm.repository.specification.Specification;
 import javax.persistence.Query;
 import java.time.LocalDate;
 
-public class PastConferenceFilter implements Specification<Conference> {
+public class ConferenceEndDateEarlierThanNow implements Specification<Conference> {
 
     @Override
     public String toSqlClauses() {
-        return " c.endDate IS NOT NULL AND c.endDate < :now ";
+        return " c.endDate < :now ";
     }
 
     @Override
@@ -20,7 +20,6 @@ public class PastConferenceFilter implements Specification<Conference> {
 
     @Override
     public boolean test(Conference conference) {
-        LocalDate endDate = conference.getEndDate();
-        return endDate != null && LocalDate.now().isAfter(endDate);
+        return LocalDate.now().isAfter(conference.getEndDate());
     }
 }
