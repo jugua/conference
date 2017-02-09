@@ -18,10 +18,8 @@ import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.BufferedInputStream;
+import javax.validation.constraints.Size;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -91,34 +89,40 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto,
-                                     @RequestPart("file") MultipartFile multipartFile,
-                                     BindingResult bindingResult,
-                                     HttpServletRequest request) {
+    public ResponseEntity submitTalk(
+            @RequestParam("title")@Size(min = 1, max = 250) String title,
+            @RequestParam("description")@Size(min = 1, max = 3000) String description,
+            @RequestParam("topic")@Size(min = 1, max = 255) String topicName,
+            @RequestParam("type")@Size(min = 1, max = 255) String typeName,
+            @RequestParam("lang")@Size(min = 1, max = 255) String languageName,
+            @RequestParam("level")@Size(min = 1, max = 255) String levelName,
+            @RequestParam(value = "addon",required = false)@Size(max = 1500) String additionalInfo,
+            @RequestParam(value = "status",required = false) String statusName,
+            @RequestParam(value = "date",required = false) String date,
+            @RequestPart(value = "file",required = false)@Valid MultipartFile multipartFile,
+            HttpServletRequest request) {
+
+        TalkDto dto = new TalkDto(null,title,null,null,description,topicName,typeName,
+                languageName, levelName,additionalInfo,statusName,null,null,null,multipartFile);
+
         MessageDto messageDto = new MessageDto();
-        dto.setMultipartFile(multipartFile);
         HttpStatus httpStatus;
-
-        if (bindingResult.hasFieldErrors()) {
-            messageDto.setError("fields_error");
-            return prepareResponse(HttpStatus.BAD_REQUEST, messageDto);
-        }
-
         User currentUser = userService.getByEmail(request.getRemoteUser());
         Long id = null;
 
         if (!checkForFilledUserInfo(currentUser)) {
             httpStatus = HttpStatus.FORBIDDEN;
-        } else if (dto.getMultipartFile()!=null&&isAttachedFileSizeError(dto.getMultipartFile())) {
+        } else if (multipartFile != null && isAttachedFileSizeError(multipartFile)) {
             messageDto.setError("maxSize");
             httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
-        } else if (dto.getMultipartFile()!=null&&isAttachedFileTypeError(dto.getMultipartFile())) {
+        } else if (multipartFile != null && isAttachedFileTypeError(multipartFile)) {
             messageDto.setError("pattern");
             httpStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
             id = saveNewTalk(dto, currentUser);
             httpStatus = HttpStatus.OK;
         }
+
         messageDto.setId(id);
         return new ResponseEntity<>(messageDto, httpStatus);
     }
@@ -366,24 +370,11 @@ public class TalkController {
         if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
             return null;
         }
-        try {
-            return getTypeIfSupported(file.getInputStream());
-        } catch (IOException e) {
-            log.debug(e);
+        String mimeType = file.getContentType();
+        if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
             return null;
         }
+        return mimeType;
     }
 
-    private String getTypeIfSupported(InputStream stream) {
-        try (InputStream inputStream = new BufferedInputStream(stream)) {
-            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
-            if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
-                return null;
-            }
-            return mimeType;
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
-    }
 }
