@@ -44,6 +44,11 @@ public class ConferenceController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upcoming")
     public ResponseEntity getUpcomingConferences(HttpServletRequest request) {
+        if(request.getUserPrincipal() == null){
+            MessageDto message = new MessageDto();
+            message.setError("unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+        }
         List<Conference> conferences = conferenceService.findUpcoming();
         return getResponseEntityConferencesByRole(request, conferences);
     }
@@ -52,6 +57,11 @@ public class ConferenceController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/past")
     public ResponseEntity getPastConferences(HttpServletRequest request) {
+        if(request.getUserPrincipal() == null){
+            MessageDto message = new MessageDto();
+            message.setError("unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+        }
         List<Conference> conferences = conferenceService.findPast();
         return getResponseEntityConferencesByRole(request, conferences);
     }
