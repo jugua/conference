@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -21,6 +22,7 @@ import java.io.IOException;
  */
 @EnableWebMvc
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 @ComponentScan(basePackages = "ua.rd.cm.web", excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class) })
 public class WebMvcConfig  extends WebMvcConfigurerAdapter {
