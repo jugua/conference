@@ -78,7 +78,7 @@ public class HttpRequest {
         EntityUtils.consumeQuietly(response.getEntity());
         return response;
     }
- // hellloooooooooooooooooooooo
+
     private DefaultSecureHttpClient getHttpClient() throws IOException, NoSuchAlgorithmException {
         return DefaultSecureHttpClientSingleton.getInstance();
     }
