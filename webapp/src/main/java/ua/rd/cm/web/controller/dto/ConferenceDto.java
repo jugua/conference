@@ -13,37 +13,13 @@ import java.time.LocalDate;
  */
 //@Data
 @NoArgsConstructor
-public class ConferenceDto {
-    private Long id;
-
-    @NotNull
-    @JsonProperty("title")
-    @Size(max = 2000)
-    private String title;
-
-    @JsonProperty("description")
-    @Size(max = 2000)
-    private String description;
-
-    @NotNull
-    @JsonProperty("location")
-    @Size(max = 2000)
-    private String location;
-
-    @JsonProperty("start_date")
-    private LocalDate startDate;
-
-    @JsonProperty("end_date")
-    private LocalDate endDate;
+public class ConferenceDto extends ConferenceDtoBasic{
 
     @JsonProperty("call_for_paper_start_date")
     private LocalDate callForPaperStartDate;
 
     @JsonProperty("call_for_paper_end_date")
     private LocalDate callForPaperEndDate;
-
-    @JsonProperty("in_past")
-    private Boolean isConferenceInPast;
 
     @JsonProperty(value = "new", defaultValue = "0")
     private Integer newTalkCount = 0;
@@ -56,54 +32,6 @@ public class ConferenceDto {
 
     @JsonProperty(value = "rejected", defaultValue = "0")
     private Integer rejectedTalkCount = 0;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
 
     public LocalDate getCallForPaperStartDate() {
         return callForPaperStartDate;
@@ -119,14 +47,6 @@ public class ConferenceDto {
 
     public void setCallForPaperEndDate(LocalDate callForPaperEndDate) {
         this.callForPaperEndDate = callForPaperEndDate;
-    }
-
-    public Boolean getConferenceInPast() {
-        return isConferenceInPast;
-    }
-
-    public void setConferenceInPast(Boolean conferenceInPast) {
-        isConferenceInPast = conferenceInPast;
     }
 
     public Integer getNewTalkCount() {

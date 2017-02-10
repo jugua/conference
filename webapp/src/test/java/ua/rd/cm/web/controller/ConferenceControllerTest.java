@@ -74,7 +74,7 @@ public class ConferenceControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ADMIN_ROLE)
     public void getUpcomingConferencesWithNoTalks() throws Exception {
         List<Conference> conferences = new ArrayList<>();
         conferences.add(new Conference());
@@ -97,7 +97,7 @@ public class ConferenceControllerTest extends TestUtil {
         when(conferenceService.findUpcoming()).thenReturn(conferences);
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
                 andExpect(status().isOk()).
-                andExpect(jsonPath("$[0].in_past", is(false)));
+                andExpect(jsonPath("$[0].cfp_passed", is(false)));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ConferenceControllerTest extends TestUtil {
         when(conferenceService.findPast()).thenReturn(conferences);
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
                 andExpect(status().isOk()).
-                andExpect(jsonPath("$[0].in_past", is(true)));
+                andExpect(jsonPath("$[0].cfp_passed", is(true)));
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
