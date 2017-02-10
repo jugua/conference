@@ -51,7 +51,7 @@ public class AccountMenuFragmentImpl extends WidgetObjectImpl implements Account
     @FindBy(xpath = "//*[@class='pop-up-wrapper']/div")
     private WebElementFacade popUp;
 
-    // forgotPw
+    // forgotPwEmptyMail
     @FindBy(xpath = "//*[@class='pop-up__notification']")
     private WebElementFacade forgotLbl;
     @FindBy(xpath = "//*[@class='pop-up-button-wrapper']/input[@value='cancel']")

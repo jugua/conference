@@ -94,7 +94,7 @@ public class UserRegistrationInfoDTO {
     }
 
     public String getConfirmPassword() {
-        return password;
+        return confirmPassword;
     }
 
     public String getConfirmPasswordNegativeTest() {

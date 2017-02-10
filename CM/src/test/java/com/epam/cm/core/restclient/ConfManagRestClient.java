@@ -17,12 +17,41 @@ public class ConfManagRestClient {
         return HttpRequest.get("http://10.17.132.37:8050").sendAndGetResponse(200);
     }
 
-    public HttpResponse postRequest() throws NoSuchAlgorithmException, IOException {
-        HttpRequest.get("http://localhost:8050").sendAndGetResponse(200);
-        HttpRequest.post("http://localhost:8050/api/login/")
+    public HttpResponse forgotPwEmptyMail() throws NoSuchAlgorithmException, IOException {
+        HttpResponse response1 = HttpRequest.get("http://10.17.132.37:8050").sendAndGetResponse(200);
+        return HttpRequest.post("http://10.17.132.37:8050/api/forgot-password")
+                .addContentType("application/json;charset=utf-8")
+                .addHeader("Accept", "application/json;charset=utf-8")
+                .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
+                        getCookieStore().getCookies()
+                        .stream()
+                        .filter(c -> c.getName().contains("XSRF-TOKEN"))
+                        .findFirst()
+                        .get().getValue())
+                .sendAndGetResponse(400);
+    }
+
+    public HttpResponse forgotPw() throws NoSuchAlgorithmException, IOException {
+        HttpResponse response1 = HttpRequest.get("http://10.17.132.37:8050").sendAndGetResponse(200);
+        return HttpRequest.post("http://10.17.132.37:8050/api/forgot-password")
+                .addContentType("application/json;charset=utf-8")
+                .addHeader("Accept", "application/json;charset=utf-8")
+                .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
+                        getCookieStore().getCookies()
+                        .stream()
+                        .filter(c -> c.getName().contains("XSRF-TOKEN"))
+                        .findFirst()
+                        .get().getValue())
+
+                .sendAndGetResponse(400);
+    }
+
+    public HttpResponse loginAndLogout() throws NoSuchAlgorithmException, IOException {
+        HttpResponse response1 = HttpRequest.get("http://10.17.132.37:8050").sendAndGetResponse(200);
+        HttpResponse response2 = HttpRequest.post("http://10.17.132.37:8050/api/login")
                 .addBasicAuth("speaker@speaker.com", "speaker")
-                .addContentType("application/json;charset=UTF-8")
-                .addHeader("Accept", "application/json;charset=UTF-8")
+                .addContentType("application/json;charset=utf-8")
+                .addHeader("Accept", "application/json;charset=utf-8")
                 .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
                         getCookieStore().getCookies()
                         .stream()
@@ -30,23 +59,21 @@ public class ConfManagRestClient {
                         .findFirst()
                         .get().getValue())
                 .sendAndGetResponse(200);
-         HttpRequest.get("http://localhost:8050/api/user/current")
-                .addContentType("application/json;charset=UTF-8")
-                .addHeader("Accept", "application/json;charset=UTF-8")
-
-                .addContentType("application/json;charset=UTF-8")
-
+        HttpResponse response3 = HttpRequest.get("http://10.17.132.37:8050/api/user/current")
+                .addContentType("application/json;charset=utf-8")
+                .addHeader("Accept", "application/json;charset=utf-8")
                 .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
                         getCookieStore().getCookies()
                         .stream()
                         .filter(c -> c.getName().contains("XSRF-TOKEN"))
                         .findFirst()
                         .get().getValue())
+
                 .sendAndGetResponse(202);
 
-       return HttpRequest.post("http://localhost:8050/api/logout")
-                .addContentType("application/json;charset=UTF-8")
-                .addHeader("Accept", "application/json;charset=UTF-8")
+       return HttpRequest.post("http://10.17.132.37:8050/api/logout")
+                .addContentType("application/json;charset=utf-8")
+                .addHeader("Accept", "application/json;charset=utf-8")
                 .addTokenHeader(DefaultSecureHttpClientSingleton.getInstance().
                         getCookieStore().getCookies()
                         .stream()
