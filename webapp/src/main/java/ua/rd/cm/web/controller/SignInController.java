@@ -14,6 +14,7 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.OldEmailMessagePreparator;
 import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.web.security.AuthenticationFactory;
 import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 @RestController
@@ -94,11 +95,10 @@ public class SignInController {
     }
 
     private void authenticateUser(User user) {
-    	String username = user.getEmail();
         String credentials = user.getPassword();
 
-        Authentication auth = authenticationProvider
-        		.authenticate(new UsernamePasswordAuthenticationToken(username, credentials));
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        SecurityContextHolder.getContext().setAuthentication(
+                AuthenticationFactory.createAuthentication(credentials, user)
+        );
     }
 }
