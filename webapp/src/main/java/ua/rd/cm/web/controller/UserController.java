@@ -144,7 +144,7 @@ public class UserController {
 
     private UserBasicDto userToUserBasicDto(User user){
         UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
-        userBasicDto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
+        userBasicDto.setRoles(user.getRoleNames());
         return userBasicDto;
     }
 
@@ -216,17 +216,7 @@ public class UserController {
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
         dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
         dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
-        dto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
+        dto.setRoles(user.getRoleNames());
         return dto;
-    }
-
-    private String[] convertRolesTypeToFirstLetters(Set<Role> roles) {
-        String[] rolesFirstLetters = new String[roles.size()];
-        Role[] rolesFullNames = roles.toArray(new Role[roles.size()]);
-        for (int i = 0; i < roles.size(); i++) {
-            String role = rolesFullNames[i].getName().split("_")[1];
-            rolesFirstLetters[i] = role.substring(0, 1).toLowerCase();
-        }
-        return rolesFirstLetters;
     }
 }

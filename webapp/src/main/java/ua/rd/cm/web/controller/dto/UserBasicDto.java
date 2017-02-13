@@ -3,10 +3,8 @@ package ua.rd.cm.web.controller.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
-/**
- * Created by Anastasiia_Milinchuk on 1/30/2017.
- */
 @Data
 @NoArgsConstructor
 public class UserBasicDto {
@@ -19,5 +17,5 @@ public class UserBasicDto {
     @JsonProperty("lname")
     private String lastName;
 
-    private String[] roles;
+    private List<String> roles;
 }
