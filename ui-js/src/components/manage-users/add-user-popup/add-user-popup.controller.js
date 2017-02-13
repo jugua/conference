@@ -2,18 +2,7 @@ export default class AddUserPopupContropller {
   constructor(AddUserService, Constants) {
     'ngInject';
 
-    this.roles = [
-      {
-        roleShort: 's',
-        role: 'Speaker',
-        roleBE: 'ROLE_SPEAKER'
-      },
-      {
-        roleShort: 'o',
-        role: 'Organiser',
-        roleBE: 'ROLE_ORGANISER'
-      },
-    ];
+    this.roles = ['ROLE_SPEAKER', 'ROLE_ORGANISER'];
 
     this.service = AddUserService;
     this.user = {};
