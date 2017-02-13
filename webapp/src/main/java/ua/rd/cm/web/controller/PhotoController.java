@@ -144,7 +144,7 @@ public class PhotoController {
     }
 
     private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
+        if (!file.getOriginalFilename().matches("^.+\\.(?i)(jp(e)?g|gif|png)$")) {
             return null;
         }
 

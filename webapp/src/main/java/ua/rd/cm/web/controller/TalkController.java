@@ -367,7 +367,7 @@ public class TalkController {
     }
 
     private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
+        if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
             return null;
         }
         String mimeType = file.getContentType();
