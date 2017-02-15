@@ -18,6 +18,7 @@ require('./tasks/component');
 
 var gulp = require('gulp');
 gulp.task('default', ['build-min']);  // default alias
+gulp.task('build-dev', ['build']);    // legacy build-dev alias
 
 
 // if (!process.env.PORT){
