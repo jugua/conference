@@ -9,16 +9,6 @@ gulp.task('build', function () {
 
   myConfig.devtool = 'sourcemap';
   myConfig.debug = true;
-  /*
-  myConfig.output = {
-    publicPath: '/',
-    path: __dirname + '/../target/dist',
-    filename: '[name].js'
-  };
-  */
-  myConfig.plugins.push(new webpack.DefinePlugin({
-    localRunFE : false
-  }));
 
   webpack(myConfig).run(function (err, stats) {
     if (err) throw new gutil.PluginError('build', err);

@@ -9,10 +9,8 @@ import LiveReloadPlugin from 'webpack-livereload-plugin';
 
 gulp.task('proxy-vm', () => {
   let myConfig = Object.create(webpackConfig);
+
   myConfig.debug = true;
-  myConfig.plugins.push(new webpack.DefinePlugin({
-    localRunFE : true
-  }));
   myConfig.plugins.push( new LiveReloadPlugin({
     port:3011,
     appendScriptTag:true

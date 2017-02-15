@@ -13,10 +13,8 @@ var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 gulp.task('serve-src-java-local', function () {
   const myConfig = Object.create(webpackConfig);
+
   myConfig.debug = true;
-  myConfig.plugins.push(new webpack.DefinePlugin({
-    localRunFE: false
-  }));
   myConfig.plugins.push(new LiveReloadPlugin({
     port: 3011,
     appendScriptTag: true
