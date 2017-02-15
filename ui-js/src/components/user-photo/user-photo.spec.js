@@ -208,7 +208,7 @@ describe('UserPhoto', () => {
         spyOn(sut, 'toggleAnimation');
         spyOn(sut, 'getCurrentPhotoStatus');
         sut.file = 'file';
-        sut.successUpload({ data: { answer: 'link' } });
+        sut.successUpload({ data: { result: 'link' } });
       });
 
       it('should call function togglePreview', () => {

@@ -58,13 +58,16 @@ describe('menuService', () => {
       expect(sut.getMenu('')).toBeFalsy();
     });
     it('should return speaker-specific menu for speaker', () => {
-      expect(sut.getMenu('s')).toContain({ link: 'tabs.myInfo', name: 'My Info' });
-      expect(sut.getMenu('s')).toContain({ link: 'tabs.myTalks', name: 'My Talks' });
-      expect(sut.getMenu('s')).toContain({ link: 'account', name: 'Settings' });
+      expect(sut.getMenu('ROLE_SPEAKER')).toContain({ link: 'tabs.myInfo', name: 'My Info' });
+      expect(sut.getMenu('ROLE_SPEAKER')).toContain({ link: 'tabs.myTalks', name: 'My Talks' });
+      expect(sut.getMenu('ROLE_SPEAKER')).toContain({ link: 'account', name: 'Settings' });
     });
-    it('should return organizer-specific menu for oranizer', () => {
-      expect(sut.getMenu('o')).toContain({ link: 'talks', name: 'Talks' });
-      expect(sut.getMenu('o')).toContain({ link: 'account', name: 'Settings' });
+    it('should return organizer-specific menu for oraniser', () => {
+      expect(sut.getMenu('ROLE_ORGANISER')).toContain({ link: 'talks', name: 'Talks' });
+      expect(sut.getMenu('ROLE_ORGANISER')).toContain({ link: 'account', name: 'Settings' });
+    });
+    it('should return admin-specific menu for admin', () => {
+      expect(sut.getMenu('ROLE_ADMIN')).toContain({ link: 'manageUsers', name: 'Manage Users' });
     });
   });
 });

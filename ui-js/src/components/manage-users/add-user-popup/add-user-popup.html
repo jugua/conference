@@ -12,7 +12,7 @@
               name="role-name"
               ng-required="true"
               ng-model="$ctrl.user.roleName"
-              ng-options="role.roleBE as role.role for role in $ctrl.roles">
+              ng-options="role as (role | roleFilter) for role in $ctrl.roles">
       </select>
 
       <label for="add-user-name" class="form-label form-label_required">first name:</label>

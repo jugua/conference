@@ -47,7 +47,7 @@ describe('EditEmail', () => {
       EditEmailService = jasmine.createSpyObj('EditEmailService', ['updateEmail', 'checkPendingUpdate', 'getMessages']);
       EditEmailService.updateEmail.and.returnValue(deferred.promise);
 
-      EditEmailService.checkPendingUpdate.and.returnValue($q.when({ data: { answer: '' } }));
+      EditEmailService.checkPendingUpdate.and.returnValue($q.when({ data: { result: '' } }));
 
       EditEmailService.getMessages.and.returnValues({
         errInvalidEmail: 'Please enter a valid email address',

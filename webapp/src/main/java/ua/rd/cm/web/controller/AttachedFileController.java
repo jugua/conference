@@ -101,7 +101,7 @@ public class AttachedFileController {
                 storageService.deleteFile(prevFilePath);
                 talk.setPathToAttachedFile("");
                 talkService.update(talk);
-                return createAnswer(HttpStatus.OK, "/talks/"+talkId+"/file");
+                return createResult(HttpStatus.OK, "/talks/"+talkId+"/file");
             }
         } catch (IOException e) {
             log.info(e);
@@ -131,9 +131,9 @@ public class AttachedFileController {
         return ResponseEntity.status(status).body(messageDto);
     }
 
-    private ResponseEntity createAnswer(HttpStatus status, String message) {
+    private ResponseEntity createResult(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
-        messageDto.setAnswer(message);
+        messageDto.setResult(message);
         return ResponseEntity.status(status).body(messageDto);
     }
 

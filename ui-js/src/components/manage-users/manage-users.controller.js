@@ -11,7 +11,7 @@ export default class ManageUsersController {
 
   updateUsers(newUser) { // obj
     this.newUser = newUser;
-    this.newUser.roles = this.newUser.roleName.substr(5, 1).toLowerCase();
+    this.newUser.roles = this.newUser.roleName;
     this.users.push(newUser);
     this.users.sort((userA, userB) => userA.lname.localeCompare(userB.lname));
   }

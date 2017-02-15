@@ -15,7 +15,7 @@ export default (app) => {
           users: ManageUsers => ManageUsers.getAll()
         },
         controller: function Controller(Permissions, currentUser, users) {
-          Permissions.permitted('a', currentUser);
+          Permissions.permitted('ROLE_ADMIN', currentUser);
           this.resolved = true;
           this.users = users;
         },

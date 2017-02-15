@@ -270,7 +270,7 @@ public class UserControllerTest extends TestUtil{
                 .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
                 .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
                 .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-                .andExpect(jsonPath("roles[0]", is("s")));
+                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
     }
 
     @Test
@@ -386,7 +386,7 @@ public class UserControllerTest extends TestUtil{
                 .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
                 .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
                 .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-                .andExpect(jsonPath("roles[0]", is("s")));
+                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
     }
 
     @Test

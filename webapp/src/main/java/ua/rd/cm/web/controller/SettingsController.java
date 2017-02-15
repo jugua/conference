@@ -68,7 +68,7 @@ public class SettingsController {
         }
         if (!checkPasswordConfirmed(dto)) {
             logger.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " + request.toString() + "]");
-            messageDto.setAnswer("password_math");
+            messageDto.setResult("password_math");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDto);
         }
         if (bindingResult.hasFieldErrors()) {
@@ -128,11 +128,11 @@ public class SettingsController {
         MessageDto messageDto = new MessageDto();
 
         if (token == null) {
-            messageDto.setAnswer("no_pending_email_changes");
+            messageDto.setResult("no_pending_email_changes");
             return ResponseEntity.ok(messageDto);
         }
 
-        messageDto.setAnswer("pending_email_change_found");
+        messageDto.setResult("pending_email_change_found");
         messageDto.setSecondsToExpiry(String.valueOf(token.calculateSecondsToExpiry()));
         return ResponseEntity.ok(messageDto);
     }
