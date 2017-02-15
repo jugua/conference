@@ -31,7 +31,6 @@ public class SubmitNewTalkOrganiserPreparator extends CustomMimeMessagePreparato
     public void prepare(MimeMessage mimeMessage) throws Exception {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
         helper.setSubject("A new talk has been submitted");
-        helper.setFrom("support@conference.com");
         helper.setTo((String)model.get("email"));
         helper.setText(getFreeMarkerTemplateContent(model), true);
     }

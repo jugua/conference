@@ -32,7 +32,6 @@ public class OldEmailMessagePreparator extends CustomMimeMessagePreparator {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
         helper.setSubject("Email address has been changed");
-        helper.setFrom("support@conference.com");
         helper.setTo((String)model.get("oldEmail"));
         helper.setText(getFreeMarkerTemplateContent(model), true);
     }

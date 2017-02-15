@@ -51,6 +51,7 @@ public class ServiceConfig {
         Properties javaMailProperties = new Properties();
         setProperty(javaMailProperties, environment, "mail.smtp.starttls.enable");
         setProperty(javaMailProperties, environment, "mail.smtp.auth");
+        setProperty(javaMailProperties, environment, "mail.smtp.from");
         setProperty(javaMailProperties, environment, "mail.transport.protocol");
         setProperty(javaMailProperties, environment, "mail.debug");
 

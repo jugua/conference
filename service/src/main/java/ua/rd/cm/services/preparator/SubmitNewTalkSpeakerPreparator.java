@@ -23,7 +23,6 @@ public class SubmitNewTalkSpeakerPreparator extends CustomMimeMessagePreparator{
     public void prepare(MimeMessage mimeMessage) throws Exception {
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
         helper.setSubject("Your talk's status has been updated");
-        helper.setFrom("support@conference.com");
         helper.setTo((String)model.get("email"));
         helper.setText(getFreeMarkerTemplateContent(model), true);
     }
