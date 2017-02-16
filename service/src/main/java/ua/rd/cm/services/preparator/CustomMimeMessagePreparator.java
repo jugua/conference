@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import freemarker.template.TemplateException;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -16,11 +17,14 @@ import ua.rd.cm.domain.User;
 @Setter
 @Log4j
 public abstract class CustomMimeMessagePreparator implements MimeMessagePreparator {
-
     protected Map<String, Object> model;
     private Configuration freemarkerConfiguration;
 
     public abstract String getTemplateName();
+
+    public void setSender(String sender) {
+        model.put("from", sender);
+    }
 
     public abstract void prepareModel(User receiver);
 

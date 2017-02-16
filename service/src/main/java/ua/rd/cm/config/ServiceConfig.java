@@ -13,6 +13,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.persistence.EntityManagerFactory;
@@ -81,5 +82,13 @@ public class ServiceConfig {
         fileStorageService.setStoragePath(environment.getProperty("fileStorage.path"));
         return fileStorageService;
     }
+
+    @Bean
+    public MailService getMailService(JavaMailSender javaMailSender, freemarker.template.Configuration freemarkerConfiguration,
+                                      Environment environment) {
+         return new MailService(javaMailSender, freemarkerConfiguration, environment.getProperty("mail.url"), environment.getProperty("mail.username"));
+    }
+
+
 
 }
