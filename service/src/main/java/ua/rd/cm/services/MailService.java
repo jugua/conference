@@ -35,8 +35,8 @@ public class MailService {
     public void sendEmail(User receiver, CustomMimeMessagePreparator preparator) {
         preparator.prepareModel(receiver);
         preparator.setFreemarkerConfiguration(freemarkerConfiguration);
+        preparator.setSender(senderName);
         try {
-            preparator.setSender(senderName);
             mailSender.send(preparator);
         } catch (MailException e) {
             log.error("Exception occurred while send email ", e);

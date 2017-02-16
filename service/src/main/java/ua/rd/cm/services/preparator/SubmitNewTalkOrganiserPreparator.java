@@ -26,13 +26,7 @@ public class SubmitNewTalkOrganiserPreparator extends CustomMimeMessagePreparato
         model.put("speakerFirstName", currentTalk.getUser().getFirstName());
         model.put("email", receiver.getEmail());
         model.put("link", url + "/#/talks/" + currentTalk.getId());
+        model.put("subject", "A new talk has been submitted");
     }
 
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setSubject("A new talk has been submitted");
-        helper.setTo((String) model.get("email"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
-    }
 }

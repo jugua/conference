@@ -47,13 +47,7 @@ public class ChangeTalkStatusOrganiserPreparator extends CustomMimeMessagePrepar
         model.put("talkTitle", currentTalk.getTitle());
         model.put("currentOrganiserLastName", currentOrganiser.getLastName());
         model.put("currentOrganiserFirstName", currentOrganiser.getFirstName());
+        model.put("subject", "A talk's status has been updated");
     }
 
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setSubject("A talk's status has been updated");
-        helper.setTo((String)model.get("email"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
-    }
 }

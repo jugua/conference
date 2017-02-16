@@ -24,13 +24,7 @@ public class NewEmailMessagePreparator extends CustomMimeMessagePreparator {
         model.put("name", receiver.getFirstName());
         model.put("email", receiver.getEmail());
         model.put("link", url + "/#/newEmailConfirm/" + token.getToken());
+        model.put("subject", "Email Verification");
     }
 
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setSubject("Email Verification");
-        helper.setTo((String) model.get("email"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
-    }
 }

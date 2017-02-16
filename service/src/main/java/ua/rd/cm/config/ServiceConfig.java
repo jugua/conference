@@ -86,9 +86,10 @@ public class ServiceConfig {
     @Bean
     public MailService getMailService(JavaMailSender javaMailSender, freemarker.template.Configuration freemarkerConfiguration,
                                       Environment environment) {
-         return new MailService(javaMailSender, freemarkerConfiguration, environment.getProperty("mail.url"), environment.getProperty("mail.username"));
+        return new MailService(javaMailSender, freemarkerConfiguration,
+                environment.getProperty("mail.url"),
+                environment.getProperty("mail.sender") + " <" + environment.getProperty("mail.smtp.from") + ">");
     }
-
 
 
 }

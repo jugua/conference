@@ -25,14 +25,7 @@ public class ForgotMessagePreparator extends CustomMimeMessagePreparator {
         model.put("email", receiver.getEmail());
         model.put("name", receiver.getFirstName());
         model.put("link", url + "/#/forgotPassword/" + token.getToken());
+        model.put("subject", "Password assistance");
     }
 
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setSubject("Password assistance");
-        helper.setFrom((String) model.get("from"));
-        helper.setTo((String) model.get("email"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
-    }
 }

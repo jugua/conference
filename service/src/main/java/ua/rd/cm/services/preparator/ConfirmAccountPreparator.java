@@ -24,13 +24,7 @@ public class ConfirmAccountPreparator extends CustomMimeMessagePreparator {
         model.put("name", receiver.getFirstName());
         model.put("email", receiver.getEmail());
         model.put("link", url + "/#/registrationConfirm/" + token.getToken());
+        model.put("subject", "Confirm Your Account");
     }
 
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setSubject("Confirm Your Account");
-        helper.setTo((String) model.get("email"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
-    }
 }
