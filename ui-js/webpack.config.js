@@ -22,7 +22,7 @@ module.exports = {
   devtool: 'source-map',
   output: {
     publicPath: '/',
-    path: path.resolve(`${__dirname}/dist`),
+    path: path.resolve(`${__dirname}/target/dist`),
     filename: '[name].js'
   },
   devServer: {

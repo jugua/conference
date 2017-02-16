@@ -1,4 +1,4 @@
-'use strict';
+/* Serve FE sources from src with Node.js BE running at localhost - not currently used */
 
 import gulp from 'gulp';
 import gutil from 'gulp-util';
