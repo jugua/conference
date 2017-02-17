@@ -1,8 +1,9 @@
 export default class {
-  constructor(Talks, Current) {
+  constructor(Talks, Current, TalkFile) {
     'ngInject';
 
     this.talksService = Talks;
+    this.talkFileService = TalkFile;
 
     this.comment = this.talk.comment;   // copy prop aside, not to modify the obj itself yet
 
@@ -81,5 +82,9 @@ export default class {
 
   hideConfirm() {
     this.confirmShown = false;
+  }
+
+  get fileUrl() {
+    return this.talkFileService.get(this.talk._id);
   }
 }

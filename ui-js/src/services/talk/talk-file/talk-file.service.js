@@ -8,7 +8,7 @@ export default class {
     this.res = $resource('api/talk/:id/file', {}, {
       get: {
         method: 'GET',
-        params: { id: '@id' },    // talk id
+        params: { id: '@id' },    // talk id identifying the file
       },
       save: {
         method: 'POST',
@@ -24,42 +24,22 @@ export default class {
     });
   }
 
-  get(talk_id) {   // talk id passed
-    return this.res.get({ id });
+  get(talkId) {   // talk id
+    return this.res.get({ talkId });
   }
 
-  save(talk, successCallback) {   // talk object passed
-      this.res.add(talk,
-        (res) => { successCallback(res); },
-        (err) => { this.log.error(err); }
-      );
-    }
-
-  update(id, talk, successCallback) {   // talk object passed
-    this.talks.update({ id }, talk,
+  save(talkId, formData, successCallback) {   // talk id, multipart form data with file
+    this.res.save(talkId, multipartFormData,
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
   }
 
-  approve(id, comment, successCallback) {
-    this.talks.update({ id }, { status: this.TALK_STATUS_APPROVED, comment },
+  delete(talkId) {
+    this.res.delete(talkId, successCallback,
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
   }
 
-  reject(id, comment, successCallback) {
-    this.talks.update({ id }, { status: this.TALK_STATUS_REJECTED, comment },
-      (res) => { successCallback(res); },
-      (err) => { this.log.error(err); }
-    );
-  }
-
-  progress(id, comment, successCallback) {
-    this.talks.update({ id }, { status: this.TALK_STATUS_PROGRESS, comment },
-      (res) => { successCallback(res); },
-      (err) => { this.log.error(err); }
-    );
-  }
 }
