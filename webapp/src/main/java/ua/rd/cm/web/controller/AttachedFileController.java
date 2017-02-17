@@ -15,6 +15,7 @@ import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLConnection;
@@ -45,8 +46,24 @@ public class AttachedFileController {
         this.storageService = storageService;
     }
 
-    @RequestMapping(value = "/talks/{talk_id}/file", method = RequestMethod.GET)
-    public ResponseEntity get(@PathVariable("talk_id") Long talkId) {
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/api/talk/{talk_id}/filename", method = RequestMethod.GET)
+    public ResponseEntity takeFileName(@PathVariable("talk_id") Long talkId) {
+        Talk talk = talkService.findTalkById(talkId);
+        if (talk == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        File file = storageService.getFile(talk.getPathToAttachedFile());
+        if (file == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(file.getName(),HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = "/api/talk/{talk_id}/file", method = RequestMethod.GET)
+    public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
         if (talk == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -77,7 +94,7 @@ public class AttachedFileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/talks/{talk_id}/file")
+    @PostMapping("/api/talk/{talk_id}/file")
     public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
                                  @RequestPart(value = "file") MultipartFile file,
                                  HttpServletRequest request) {
@@ -110,7 +127,7 @@ public class AttachedFileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/talks/{talk_id}/file")
+    @DeleteMapping("/api/talk/{talk_id}/file")
     public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
 
@@ -139,16 +156,12 @@ public class AttachedFileController {
 
 
     private String getTypeIfSupported(File file) {
-        try {
-            return getTypeIfSupported(new FileInputStream(file));
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
+            String mimeType = new MimetypesFileTypeMap().getContentType(file);
+            return mimeType;
     }
 
     private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
+        if (!file.getOriginalFilename().matches("(^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
             return null;
         }
 
