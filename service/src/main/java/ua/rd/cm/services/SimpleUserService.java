@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Role;
@@ -32,16 +33,18 @@ public class SimpleUserService implements UserService{
 	private MailService mailService;
 	private ModelMapper mapper;
 	private VerificationTokenService tokenService;
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public SimpleUserService(UserRepository userRepository, RoleService roleService,
 							 MailService mailService, VerificationTokenService tokenService,
-							 ModelMapper mapper) {
+							 ModelMapper mapper, PasswordEncoder passwordEncode) {
 		this.userRepository = userRepository;
 		this.roleService = roleService;
 		this.mailService = mailService;
 		this.tokenService = tokenService;
 		this.mapper = mapper;
+		this.passwordEncoder = passwordEncode;
 	}
 
 	@Override
@@ -143,6 +146,12 @@ public class SimpleUserService implements UserService{
         }
         return users;
     }
+
+	@Override
+	public boolean isAuthenticated(User user, String password) {
+		String hashedPassword = user.getPassword();
+		return passwordEncoder.matches(password, hashedPassword);
+	}
 
 	private User mapRegistrationDtoToUser(RegistrationDto dto) {
 		User user = mapper.map(dto, User.class);
