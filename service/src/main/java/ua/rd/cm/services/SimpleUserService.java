@@ -157,7 +157,6 @@ public class SimpleUserService implements UserService{
 		User user = mapper.map(dto, User.class);
 		user.setEmail(user.getEmail().toLowerCase());
 		user.addRole(roleService.getByName(dto.getRoleName()));
-		user.setPassword(passwordEncoder.encode(dto.getPassword()));
 		return user;
 	}
 }

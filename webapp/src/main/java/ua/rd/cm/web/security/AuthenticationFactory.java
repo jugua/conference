@@ -8,11 +8,15 @@ import ua.rd.cm.domain.User;
 
 import java.util.Collection;
 
-public class AuthenticationFactory {
-    public static Authentication createAuthentication(String password, User user) {
+public final class AuthenticationFactory {
+
+    private AuthenticationFactory() {
+    }
+
+    public static Authentication createAuthentication(User user) {
         UserDetails userDetails = createUserDetails(user);
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        return new UsernamePasswordAuthenticationToken(user.getEmail(), password, authorities);
+        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), authorities);
     }
 
     private static UserDetails createUserDetails(User user) {

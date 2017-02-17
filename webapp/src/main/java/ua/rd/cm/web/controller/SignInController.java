@@ -95,10 +95,8 @@ public class SignInController {
     }
 
     private void authenticateUser(User user) {
-        String credentials = user.getPassword();
-
         SecurityContextHolder.getContext().setAuthentication(
-                AuthenticationFactory.createAuthentication(credentials, user)
+                AuthenticationFactory.createAuthentication(user)
         );
     }
 }
