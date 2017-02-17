@@ -3,7 +3,6 @@ export default class {
     'ngInject';
 
     this.talksService = Talks;
-    this.talkFileService = TalkFile;
 
     this.comment = this.talk.comment;   // copy prop aside, not to modify the obj itself yet
 
@@ -16,6 +15,9 @@ export default class {
       .then((res) => {
         this.reviewer = `${res.fname} ${res.lname}`;
       });
+
+    this.talkFileService = TalkFile;
+    this.fileUrl = this.talkFileService.get(this.talk._id);
   }
 
   get statusEditable() {  // getter, convenient for template inline triggers
@@ -82,9 +84,5 @@ export default class {
 
   hideConfirm() {
     this.confirmShown = false;
-  }
-
-  get fileUrl() {
-    return this.talkFileService.get(this.talk._id);
   }
 }
