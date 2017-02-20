@@ -1,9 +1,10 @@
 export default class {
-  constructor(Menus, Talks) {
+  constructor(Menus, Talks, TalkFile) {
     'ngInject';
 
     this.talksService = Talks;
     this.selectService = Menus;
+    this.talkFileService = TalkFile;
 
     this.obj = {};    // temp object to hold the original object's properties while editing
     Object.assign(this.obj, this.talk);  // shallow copy object, not to modify the original obj itself yet
@@ -12,6 +13,8 @@ export default class {
 
     this.confirmShown = false;
     this.submitAttempt = false;
+
+    this.fileNameObj = this.talkFileService.getName(this.talk.id);
   }
 
   get editable() {  // getter, convenient for template inline triggers
@@ -27,6 +30,14 @@ export default class {
       this.submitAttempt = true;
       return;
     }
+
+    // upload file first
+    const formData = new FormData();
+    formData.append('file', this.file);
+
+    this.talkFileService.save(this.talk.id, formData, () => {
+      this.fileNameObj = this.talkFileService.getName(this.talk.id);
+    });
 
     // use separate send object, to filter out prohibited properties
     const sendObj = {};
@@ -61,5 +72,18 @@ export default class {
 
   hideConfirm() {
     this.confirmShown = false;
+  }
+
+  deleteFile() {
+    this.talkFileService.delete(this.talk.id, () => {
+      this.fileNameObj = {};
+    });
+  }
+
+  get fileLabelClass() {
+    if (this.form.$error.pattern || this.form.$error.maxSize) {
+      return 'file-upload file-upload__label_named file-upload__label_error';
+    }
+    return 'file-upload file-upload__label_named';
   }
 }

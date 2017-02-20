@@ -17,7 +17,7 @@ export default class {
       });
 
     this.talkFileService = TalkFile;
-    this.filename = this.talkFileService.getName(this.talk.id);
+    this.fileNameObj = this.talkFileService.getName(this.talk.id);
   }
 
   get statusEditable() {  // getter, convenient for template inline triggers
