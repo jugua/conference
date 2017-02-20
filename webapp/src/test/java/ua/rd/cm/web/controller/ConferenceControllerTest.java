@@ -96,8 +96,7 @@ public class ConferenceControllerTest extends TestUtil {
         conferences.add(conference);
         when(conferenceService.findUpcoming()).thenReturn(conferences);
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
-                andExpect(status().isOk()).
-                andExpect(jsonPath("$[0].cfp_passed", is(false)));
+                andExpect(status().isOk());
     }
 
     @Test
@@ -113,8 +112,7 @@ public class ConferenceControllerTest extends TestUtil {
         conferences.add(createConference());
         when(conferenceService.findPast()).thenReturn(conferences);
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
-                andExpect(status().isOk()).
-                andExpect(jsonPath("$[0].cfp_passed", is(true)));
+                andExpect(status().isOk());
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
