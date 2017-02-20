@@ -1412,8 +1412,8 @@
 <table class="body">
     <tr>
         <td class="center" align="center" valign="top">
+            <div align="center">
             <center data-parsed="">
-
                 <table align="center" class="container float-center"><tbody><tr><td>
                     <table class="row"><tbody><tr>
                         <th class="header small-12 large-12 columns first last"><table><tr><th>
@@ -1439,6 +1439,7 @@
                     </tr></tbody></table>
                 </td></tr></tbody></table>
             </center>
+            </div>
         </td>
     </tr>
 </table>
