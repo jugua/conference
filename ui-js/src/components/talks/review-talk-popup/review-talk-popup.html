@@ -1,6 +1,6 @@
 <div class="pop-up-wrapper">
   <div class="pop-up pop-up_big">
-    <h3 class="pop-up__title">Review talks {{ $ctrl.fileUrl }}
+    <h3 class="pop-up__title">Review talks {{ $ctrl.filename.fileName }}
       <button class="pop-up__close" ng-click="$ctrl.closeCheck()"></button>
     </h3>
     <form class="new-talk" name="$ctrl.form" novalidate>
@@ -62,7 +62,14 @@
                 ng-model="$ctrl.talk.addon">
       </textarea>
 
-      <label for="new-talk-add-inf" class="form-label">
+      <div ng-if="$ctrl.filename.fileName">
+        <label class="form-label">
+          file
+        </label>
+        <div><a ng-href="/api/talk/{{ $ctrl.talk.id }}/file">{{ $ctrl.filename.fileName }}</a></div>
+      </div>
+
+      <label for="comment" class="form-label">
         organizer's comments
       </label>
       <textarea class="textarea" name="comment"

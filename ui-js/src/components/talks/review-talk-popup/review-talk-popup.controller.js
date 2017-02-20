@@ -17,7 +17,7 @@ export default class {
       });
 
     this.talkFileService = TalkFile;
-    this.fileUrl = this.talkFileService.get(this.talk._id);
+    this.filename = this.talkFileService.getName(this.talk.id);
   }
 
   get statusEditable() {  // getter, convenient for template inline triggers
@@ -29,7 +29,7 @@ export default class {
   }
 
   approve() {
-    this.talksService.approve(this.talk._id, this.comment,
+    this.talksService.approve(this.talk.id, this.comment,
       () => {   // success callback
         this.talk.comment = this.comment;   // modify the obj itself, affect the view
         this.talk.status = this.talksService.TALK_STATUS_APPROVED;
@@ -43,7 +43,7 @@ export default class {
       this.commentRequired = true;
       return;
     }
-    this.talksService.reject(this.talk._id, this.comment,
+    this.talksService.reject(this.talk.id, this.comment,
       () => {
         this.talk.comment = this.comment;
         this.talk.status = this.talksService.TALK_STATUS_REJECTED;
@@ -53,7 +53,7 @@ export default class {
   }
 
   progress() {
-    this.talksService.progress(this.talk._id, this.comment,
+    this.talksService.progress(this.talk.id, this.comment,
       () => {
         this.talk.comment = this.comment;
         this.talk.status = this.talksService.TALK_STATUS_PROGRESS;

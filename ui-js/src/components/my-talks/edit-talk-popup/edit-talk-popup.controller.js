@@ -34,9 +34,9 @@ export default class {
 
     delete sendObj.status;                // filter out
     delete sendObj.comment;
-    delete sendObj._id;
+    delete sendObj.id;
 
-    this.talksService.update(this.talk._id, sendObj,
+    this.talksService.update(this.talk.id, sendObj,
       () => {   // success callback
         Object.assign(this.talk, this.obj);   // modify the obj itself, affect the view
         this.close();

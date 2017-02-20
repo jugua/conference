@@ -63,7 +63,7 @@ public class AttachedFileController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         Map<String, String> map = new HashMap<>();
-        map.put("file_name", file.getName());
+        map.put("fileName", file.getName());
         return new ResponseEntity(map, HttpStatus.OK);
     }
 

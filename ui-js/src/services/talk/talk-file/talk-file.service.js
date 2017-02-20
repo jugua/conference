@@ -24,6 +24,8 @@ export default class {
         method: 'DELETE',
       }
     });
+
+    this.resName = $resource('api/talk/:talkId/filename');
   }
 
   get(talkId) {   // talk id
@@ -44,4 +46,7 @@ export default class {
     );
   }
 
+  getName(talkId) {   // talk id
+    return this.resName.get({ talkId });
+  }
 }
