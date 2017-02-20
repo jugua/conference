@@ -8,13 +8,10 @@ export default class {
     this.res = $resource('api/talk/:talkId/file', {}, {
       get: {
         method: 'GET',
-        //params: { id: '@id' },    // talk id identifying the file
-
-
       },
       save: {
         method: 'POST',
-        params: { id: '@id' },
+        params: { talkId: '@talkId' },
         transformRequest: angular.identity,   // multipart
         headers: {
           'Content-Type': undefined,          // multipart
@@ -22,6 +19,7 @@ export default class {
       },
       delete: {
         method: 'DELETE',
+        params: { talkId: '@talkId' },
       }
     });
 
@@ -33,14 +31,14 @@ export default class {
   }
 
   save(talkId, formData, successCallback) {   // talk id, multipart form data with file
-    this.res.save(talkId, formData,
+    this.res.save({ talkId }, formData,
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
   }
 
   delete(talkId, successCallback) {
-    this.res.delete(talkId, successCallback,
+    this.res.delete({ talkId }, successCallback,
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
