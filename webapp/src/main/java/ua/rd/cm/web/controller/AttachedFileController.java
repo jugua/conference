@@ -20,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Volodymyr_Kara on 1/30/2017.
@@ -47,7 +49,9 @@ public class AttachedFileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/api/talk/{talk_id}/filename", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/talk/{talk_id}/filename",
+            method = RequestMethod.GET,
+            produces = "application/json")
     public ResponseEntity takeFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
         if (talk == null) {
@@ -58,7 +62,9 @@ public class AttachedFileController {
         if (file == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(file.getName(),HttpStatus.OK);
+        Map<String, String> map = new HashMap<>();
+        map.put("file_name", file.getName());
+        return new ResponseEntity(map, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
