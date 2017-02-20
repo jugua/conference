@@ -91,6 +91,7 @@ public class AttachedFileController {
             HttpHeaders header = new HttpHeaders();
             header.setContentType(new MediaType(mimeType.split("/")[0], mimeType.split("/")[1]));
             header.setContentLength(file.length());
+            header.set("Content-Disposition","attachment; filename=" + file.getName());
 
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
