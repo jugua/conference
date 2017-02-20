@@ -5,10 +5,12 @@ export default class {
 
     this.log = $log;
 
-    this.res = $resource('api/talk/:id/file', {}, {
+    this.res = $resource('api/talk/:talkId/file', {}, {
       get: {
         method: 'GET',
-        params: { id: '@id' },    // talk id identifying the file
+        //params: { id: '@id' },    // talk id identifying the file
+
+
       },
       save: {
         method: 'POST',
@@ -29,13 +31,13 @@ export default class {
   }
 
   save(talkId, formData, successCallback) {   // talk id, multipart form data with file
-    this.res.save(talkId, multipartFormData,
+    this.res.save(talkId, formData,
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
     );
   }
 
-  delete(talkId) {
+  delete(talkId, successCallback) {
     this.res.delete(talkId, successCallback,
       (res) => { successCallback(res); },
       (err) => { this.log.error(err); }
