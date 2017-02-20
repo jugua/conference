@@ -87,12 +87,10 @@ public class AttachedFileController {
 
         try {
             InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
-
             HttpHeaders header = new HttpHeaders();
             header.setContentType(new MediaType(mimeType.split("/")[0], mimeType.split("/")[1]));
             header.setContentLength(file.length());
             header.set("Content-Disposition","attachment; filename=" + file.getName());
-
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
             log.debug(e);
@@ -168,30 +166,14 @@ public class AttachedFileController {
     }
 
     private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("(^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
+        if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
             return null;
         }
-
-        try {
-            return getTypeIfSupported(file.getInputStream());
-        } catch (IOException e) {
-            log.debug(e);
+        String mimeType = file.getContentType();
+        if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
             return null;
         }
-    }
-
-    private String getTypeIfSupported(InputStream stream) {
-        try (InputStream inputStream = new BufferedInputStream(stream)) {
-            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
-
-            if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
-                return null;
-            }
-            return mimeType;
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
+        return mimeType;
     }
 
 }
