@@ -168,7 +168,7 @@ And user filled in login form:
 |email          |password |
 |admin@gmail.com|java1love|
 When user clicks SignIn button on login form
-Then "Your Account" replaced by "Admin's Account"
+Then "Your Account" replaced by "I'm super's Account"
 Then there are My account and  My Talks links in the given order
 |btnName     |link           |
 |Talks       |/#/talks       |

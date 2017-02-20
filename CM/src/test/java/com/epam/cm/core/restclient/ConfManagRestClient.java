@@ -15,6 +15,7 @@ public class ConfManagRestClient {
 
     public HttpResponse performGetRequest() throws NoSuchAlgorithmException {
         return HttpRequest.get("http://10.17.132.37:8050").sendAndGetResponse(200);
+
     }
 
     public HttpResponse forgotPwEmptyMail() throws NoSuchAlgorithmException, IOException {
@@ -43,7 +44,7 @@ public class ConfManagRestClient {
                         .findFirst()
                         .get().getValue())
 
-                .sendAndGetResponse(400);
+                .sendAndGetResponse(200);
     }
 
     public HttpResponse loginAndLogout() throws NoSuchAlgorithmException, IOException {

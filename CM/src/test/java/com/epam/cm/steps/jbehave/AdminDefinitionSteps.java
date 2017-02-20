@@ -70,6 +70,7 @@ public class AdminDefinitionSteps {
                 String.class);
         String userPassword = registrationTable.getRowAsParameters(0, replaceNamedParameters).valueAs("password",
                 String.class);
+        String userConfPassword = registrationTable.getRowAsParameters(0, replaceNamedParameters).valueAs("confirmPassword", String.class);
 
          user = new AdminPageDTO() {
             {
@@ -78,7 +79,7 @@ public class AdminDefinitionSteps {
                 setLastName(userLastName);
                 setEmail(userEmail);
                 setPassword(userPassword);
-                setConfirmPassword(getPassword());
+                setConfirmPassword(userConfPassword);
             }
         };
 

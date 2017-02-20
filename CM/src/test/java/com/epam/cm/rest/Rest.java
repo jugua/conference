@@ -25,5 +25,10 @@ public class Rest {
         rest.forgotPwEmptyMail();
     }
 
+    @Test
+    public void forgotPwValidData()throws NoSuchAlgorithmException, IOException{
+        rest.forgotPw();
+    }
+
 
 }
