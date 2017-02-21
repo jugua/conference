@@ -14,6 +14,7 @@ import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.preparator.*;
 import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.web.controller.dto.SubmitTalkDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -90,20 +91,12 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity submitTalk(
-            @RequestParam("title")@Size(min = 1, max = 250) String title,
-            @RequestParam("description")@Size(min = 1, max = 3000) String description,
-            @RequestParam("topic")@Size(min = 1, max = 255) String topicName,
-            @RequestParam("type")@Size(min = 1, max = 255) String typeName,
-            @RequestParam("lang")@Size(min = 1, max = 255) String languageName,
-            @RequestParam("level")@Size(min = 1, max = 255) String levelName,
-            @RequestParam(value = "addon",required = false)@Size(max = 1500) String additionalInfo,
-            @RequestParam(value = "status",required = false) String statusName,
-            @RequestParam(value = "date",required = false) String date,
-            @RequestPart(value = "file",required = false)@Valid MultipartFile multipartFile,
+            @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null,title,null,null,description,topicName,typeName,
-                languageName, levelName,additionalInfo,statusName,null,null,null,multipartFile);
+        TalkDto dto = new TalkDto(null,submitTalkDto.getTitle(),null,null,submitTalkDto.getDescription(),submitTalkDto.getTopic(),
+                submitTalkDto.getType(),submitTalkDto.getLang(), submitTalkDto.getLevel(),submitTalkDto.getAddon(),
+                submitTalkDto.getStatus(),null,null,null,submitTalkDto.getFile());
 
         MessageDto messageDto = new MessageDto();
         HttpStatus httpStatus;
@@ -112,10 +105,10 @@ public class TalkController {
 
         if (!checkForFilledUserInfo(currentUser)) {
             httpStatus = HttpStatus.FORBIDDEN;
-        } else if (multipartFile != null && isAttachedFileSizeError(multipartFile)) {
+        } else if (dto.getMultipartFile() != null && isAttachedFileSizeError(dto.getMultipartFile())) {
             messageDto.setError("maxSize");
             httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
-        } else if (multipartFile != null && isAttachedFileTypeError(multipartFile)) {
+        } else if (dto.getMultipartFile() != null && isAttachedFileTypeError(dto.getMultipartFile())) {
             messageDto.setError("pattern");
             httpStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
