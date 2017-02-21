@@ -2,11 +2,15 @@ package com.epam.cm.steps.serenity;
 
 import com.epam.cm.core.utils.Randomizer;
 import com.epam.cm.core.utils.WebDriverSupport;
+import com.epam.cm.dto.AttachFileDTO;
 import com.epam.cm.dto.MyTalksDTO;
 import com.epam.cm.pages.MyTalksPage;
 
 import net.thucydides.core.annotations.Step;
+import net.thucydides.core.annotations.Steps;
 import net.thucydides.core.steps.ScenarioSteps;
+
+import java.awt.*;
 
 
 public class MyTalksPageSteps extends ScenarioSteps {
@@ -223,6 +227,31 @@ public class MyTalksPageSteps extends ScenarioSteps {
     @Step
     public boolean areFieldsReadOnlyForOrganiser() {
         return myTalksPage.areFieldsReadOnlyForOrganiser();
+    }
+
+    @Step
+    public void hoverAttachIcon() {
+        myTalksPage.hoverAttachIcon();
+    }
+
+    @Step
+    public String getAttachHintText() {
+        return myTalksPage.getAttachHintText();
+    }
+
+    @Step
+    public boolean isFullTextVisible() {
+        return myTalksPage.isFullTextVisible();
+    }
+
+    @Step
+    public void typeFullPathIntoAttachField(String pathToFile) throws AWTException {
+        myTalksPage.typeFullPathIntoAttachField(pathToFile);
+    }
+
+    @Step
+    public boolean isFileAttached(AttachFileDTO attachFileDTO) {
+        return myTalksPage.isFileAttached(attachFileDTO);
     }
 
 /*    @Step

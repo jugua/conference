@@ -115,6 +115,7 @@ public class MyTalksDTO {
 
     public void setAdditionalInfo(String additionalInfo) {
         String digits = additionalInfo.replaceAll(NOT_NUMERIC, EMPTY);
+
         if (digits.length() == 0)
             this.additionalInfo = additionalInfo;
         else {

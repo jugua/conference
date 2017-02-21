@@ -2,6 +2,7 @@ package com.epam.cm.steps.jbehave;
 
 import com.epam.cm.core.mail.MailCatcherClient;
 import com.epam.cm.core.utils.WebDriverSupport;
+import com.epam.cm.dto.AttachFileDTO;
 import com.epam.cm.dto.CredentialsDTO;
 import com.epam.cm.dto.MyTalksDTO;
 import com.epam.cm.steps.serenity.LoginPageSteps;
@@ -9,11 +10,14 @@ import com.epam.cm.steps.serenity.MyTalksPageSteps;
 
 import net.thucydides.core.annotations.Steps;
 
+import org.codehaus.jackson.annotate.JsonTypeInfo;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.jbehave.core.model.ExamplesTable;
 import org.junit.Assert;
+
+import java.awt.*;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -27,6 +31,7 @@ public class MyTalksDefinitionsSteps {
 
     MyTalksDTO myGlobalTalksDTO;
     CredentialsDTO user;
+    AttachFileDTO attachFileDTO;
     MailCatcherClient mailCatcherClient = new MailCatcherClient();
 
 
@@ -108,8 +113,6 @@ public class MyTalksDefinitionsSteps {
         boolean replaceNamedParameters = true;
         String status = table.getRowAsParameters(0, replaceNamedParameters).valueAs("status", String.class);
         myGlobalTalksDTO.setStatus(status);
-        //Assert.assertThat(
-        //        myTalksPageSteps.findRowWithStatus(myGlobalTalksDTO.getTitle()), is(myGlobalTalksDTO.getStatus()));
         myTalksPageSteps.clickFoundedTitle(myGlobalTalksDTO.getTitle());
     }
 
@@ -169,6 +172,22 @@ public class MyTalksDefinitionsSteps {
     @When("user clicks on 'Submit New Talk' button")
     public void clickSubmitNewTalkBtn() {
         myTalksPageSteps.clickSubmitNewTalkBtn();
+    }
+
+    @When("clicks on the pencil icon and choose file: $table")
+    public void userChooseFileForAttachment(ExamplesTable table) throws AWTException {
+        boolean replaceNamedParameters = true;
+        String pathToFile = table.getRowAsParameters(0, replaceNamedParameters).valueAs("filePath", String.class);
+        attachFileDTO = new AttachFileDTO();
+        attachFileDTO.setFilePath(pathToFile);
+        attachFileDTO.setFileNameFromPath(pathToFile);
+        myTalksPageSteps.typeFullPathIntoAttachField(pathToFile);
+
+    }
+
+    @When("user hovers attachment icon over")
+    public void userHoverAttachmentIconOver(){
+        myTalksPageSteps.hoverAttachIcon();
     }
 
     @When("clicks 'Submit' button")
@@ -248,6 +267,12 @@ public class MyTalksDefinitionsSteps {
         Assert.assertTrue(myTalksPageSteps.isTypeHighL());
         Assert.assertTrue(myTalksPageSteps.isLanguageHighL());
         Assert.assertTrue(myTalksPageSteps.isLevelHighL());
+    }
+
+    @Then("hint is displayed: \"$msg\"")
+    public void areAttachHintDisplayed(String msg){
+        Assert.assertThat(myTalksPageSteps.getAttachHintText().replaceAll("(\r\n|\n\r|\r|\n\\s+)", " "), is(msg.replaceAll("(\r\n|\n\r|\r|\n\\s+)", " ")));
+        Assert.assertTrue(myTalksPageSteps.isFullTextVisible());
     }
 
     @Then("pop-up window '$msg' is shown")
@@ -373,5 +398,10 @@ public class MyTalksDefinitionsSteps {
     @Then("speakers info is shown with read-only fields")
     public void checkSpeakersViewReadOnlyFields(){
         Assert.assertTrue(myTalksPageSteps.areViewFieldReadOnly());
+    }
+
+    @Then("file is attached")
+    public void isFileAttached(){
+       Assert.assertTrue(myTalksPageSteps.isFileAttached(attachFileDTO));
     }
 }

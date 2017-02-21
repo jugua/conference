@@ -66,12 +66,14 @@ public class HttpRequest {
     public HttpResponse sendAndGetResponse(int expectedStatusCode) throws NoSuchAlgorithmException {
         HttpResponse response = null;
         try {
-            response = getHttpClient().execute(rawRequest, getHttpClient().getLocalContext());
+                response = getHttpClient()
+                        .execute(rawRequest, getHttpClient()
+                                .getLocalContext());
             if (expectedStatusCode != response.getStatusLine().getStatusCode()) {
                 throw new RuntimeException("Incorrect status code. Actual:"
                         + response.getStatusLine().getStatusCode() + " Expected:" + expectedStatusCode);
             }
-        } catch (IOException e) {
+        }catch (IOException e) {
             throw new RuntimeException("Exception in sendAndGet", e);
         }
         return response;

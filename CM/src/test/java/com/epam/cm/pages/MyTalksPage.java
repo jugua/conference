@@ -1,5 +1,11 @@
 package com.epam.cm.pages;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.datatransfer.StringSelection;
+import java.sql.Driver;
+
+import com.epam.cm.dto.AttachFileDTO;
 import net.serenitybdd.core.annotations.findby.By;
 import net.serenitybdd.core.annotations.findby.FindBy;
 import net.serenitybdd.core.pages.WebElementFacade;
@@ -28,6 +34,7 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade okMyInfoNotFieldBtn;
     @FindBy(xpath = "//*[@class='pop-up-wrapper']/div/button[@class='pop-up__close']")
     WebElementFacade cancelMyInfoBtn;
+
     // big pop up invalid
     @FindBy(xpath = "//*[@class='btn pop-up__button']")
     WebElementFacade newTalkBigPopUpSubmitBtn;
@@ -49,6 +56,7 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade cancelInvalidDataBtn;
     @FindBy(xpath = "//*[@class='pop-up-wrapper']/div/button")
     WebElementFacade cancelBigPopUpBtn;
+
     // big pop-up fields
     @FindBy(xpath = "//*[@id='new-talk-title']")
     WebElementFacade titleField;
@@ -64,6 +72,10 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade levelDropDown;
     @FindBy(xpath = "//*[@id='new-talk-add-inf']")
     WebElementFacade additionalInfoField;
+    @FindBy(xpath = "//md-icon[@class = 'icon icon_info material-icons']")
+    WebElementFacade attachIcon;
+    @FindBy(xpath = "//label[@ng-class = '$ctrl.fileLabelClass']")
+    WebElementFacade pencilIcon;
 
     // filters
     @FindBy(xpath = "//*[@id='my-talk-status']")
@@ -94,6 +106,10 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade speakerLevelField;
     @FindBy(xpath = "//textarea[@ng-model='$ctrl.obj.addon']")
     WebElementFacade speakerAdditionalInfoField;
+    @FindBy(xpath = "//input[@type = 'file']")
+    WebElementFacade attachFileField;
+    @FindBy(xpath = "//span[@class = 'file-upload__filename ng-binding']")
+    WebElementFacade filePathInAttachInput;
 
     // organiser
     @FindBy(xpath = "//*[@class='data-table__row ng-scope']/descendant::div[contains(.,'New')]")
@@ -193,7 +209,9 @@ public class MyTalksPage extends AnyPage {
     }
 
     public void clickBigPopUpSbmBtn() {
-        newTalkBigPopUpSubmitBtn.click();
+        //waitABit(5000);
+       // newTalkBigPopUpSubmitBtn.waitUntilClickable();
+        newTalkBigPopUpSubmitBtn.withTimeoutOf(5, SECONDS).waitUntilClickable().click();
     }
 
     public void clickErrorMyInfoOkBtn() {
@@ -419,5 +437,47 @@ public class MyTalksPage extends AnyPage {
             return true;
         }
         return false;
+    }
+
+    public void hoverAttachIcon() {
+        moveToElementAction(attachIcon);
+    }
+
+    public String getAttachHintText() {
+        return attachIcon.getAttribute("aria-label");
+
+    }
+
+    public boolean isFullTextVisible() {
+        return attachIcon.isCurrentlyVisible();
+    }
+
+    public void typeFullPathIntoAttachField(String pathToFile) throws AWTException {
+        pencilIcon.click();
+        setClipboardData(pathToFile);
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_V);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+        robot.delay(1000);
+       // waitForFileUpload(pathToFile);
+       // filePathInAttachInput.waitForCondition((pathToFile.contains(filePathInAttachInput.getValue()));
+       // waitFor(pathToFile.contains(filePathInAttachInput.getValue()));
+    }
+
+    public boolean isFileAttached(AttachFileDTO attachFileDTO) {
+        String fileName = attachFileDTO.getFileName();
+            if(filePathInAttachInput.withTimeoutOf(5,SECONDS).getText().equals(fileName)){
+                return true;
+            }
+        return false;
+    }
+
+    public static void setClipboardData(String string) {
+        StringSelection stringSelection = new StringSelection(string);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
     }
 }

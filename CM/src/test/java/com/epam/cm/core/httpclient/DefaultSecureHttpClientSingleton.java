@@ -18,6 +18,4 @@ public class DefaultSecureHttpClientSingleton {
             defaultSecureHttpClientInstance = new DefaultSecureHttpClient();
         return defaultSecureHttpClientInstance;
     }
-
-
 }
