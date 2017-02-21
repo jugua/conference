@@ -91,7 +91,7 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity submitTalk(
-            SubmitTalkDto submitTalkDto,
+            @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
         TalkDto dto = new TalkDto(null,submitTalkDto.getTitle(),null,null,submitTalkDto.getDescription(),submitTalkDto.getTopic(),
