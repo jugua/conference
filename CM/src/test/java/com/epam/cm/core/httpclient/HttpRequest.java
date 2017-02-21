@@ -7,6 +7,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +28,7 @@ public class HttpRequest {
         if (method.equals(HttpMethod.GET)) {
             rawRequest = new HttpGet(uri);
         }
-        if (method.equals(HttpMethod.POST)){
+        else if (method.equals(HttpMethod.POST)){
             rawRequest = new HttpPost(uri);
         }
     }
@@ -40,15 +41,15 @@ public class HttpRequest {
         return new HttpRequest(HttpMethod.POST,uri);
     }
 
-
     public HttpRequest addBasicAuth(final String login, final String password) {
         withAuth = true;
         this.login = login;
         this.password = password;
         String encodedAuthorization = "Basic " + Base64.encodeBase64String((login + ":" + password).getBytes());
-        addHeader("authorization", encodedAuthorization);
+        addHeader("Authorization", encodedAuthorization);
         return this;
     }
+
 
     public HttpRequest addTokenHeader(final String value) {
         return addHeader("X-XSRF-TOKEN", value);
@@ -76,6 +77,7 @@ public class HttpRequest {
         }catch (IOException e) {
             throw new RuntimeException("Exception in sendAndGet", e);
         }
+        EntityUtils.consumeQuietly(response.getEntity());
         return response;
     }
 

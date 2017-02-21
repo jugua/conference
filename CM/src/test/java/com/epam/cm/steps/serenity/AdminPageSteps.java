@@ -1,5 +1,6 @@
 package com.epam.cm.steps.serenity;
 
+import com.epam.cm.dto.AdminPageDTO;
 import com.epam.cm.pages.AdminPage;
 import com.epam.cm.core.utils.WebDriverSupport;
 
@@ -11,6 +12,21 @@ import net.thucydides.core.steps.ScenarioSteps;
 public class AdminPageSteps {
 
     AdminPage adminPage;
+
+    @Step
+    public void fillNewUserInfo(AdminPageDTO adminPageDTO){
+        adminPage.fillNewUserInfo(adminPageDTO);
+    }
+
+    @Step
+    public String findNewAddedUser(String name){
+        return adminPage.checkUserInTheGridByName(name);
+    }
+
+    @Step
+    public String getTextFromEmptyFields(String emptyFieldsTemplate, String expectedText){
+        return adminPage.getTextFromEmptyFields(emptyFieldsTemplate,expectedText);
+    }
 
     @Step
     public void clickAddNewUser(){
@@ -63,5 +79,10 @@ public class AdminPageSteps {
         else {
             return false;
         }
+    }
+    @Step
+    public String getHighlightedTextInIncorrectFields(String incorrectFields, String firstExpectedText,
+                                                      String secondExpectedText) {
+        return adminPage.getHighlightedTextIncorrectFields(incorrectFields,firstExpectedText,secondExpectedText);
     }
 }
