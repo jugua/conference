@@ -23,6 +23,7 @@
                     <include>*.xml</include>
                     <include>*.properties</include>
                 </includes>
+                <filtering>true</filtering>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
@@ -41,6 +42,7 @@
             </activation>
             <properties>
                 <profile.name>local</profile.name>
+                <maven.tomcat.port>8081</maven.tomcat.port>
             </properties>
 
             <build>
@@ -50,20 +52,45 @@
                         <artifactId>tomcat7-maven-plugin</artifactId>
                         <version>2.2</version>
                         <configuration>
-                            <port>8081</port>
                             <path>/</path>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>tomcat-run</id>
+                                <id>start-tomcat</id>
                                 <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>run-war-only</goal>
                                 </goals>
                             </execution>
+                            <execution>
+                                <id>stop-tomcat</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>shutdown</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <configuration>
+                            <includes>
+                                <include>**/*IntegrationTest*</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>
+
             </build>
         </profile>
         <profile>
@@ -84,7 +111,9 @@
         <profile>
             <id>testing</id>
             <properties>
+                <buildID>-test</buildID>
                 <profile.name>testing</profile.name>
+                <db.connectionURL>jdbc:mysql://localhost:3306/cm${buildID}</db.connectionURL>
             </properties>
         </profile>
         <profile>
@@ -171,6 +200,11 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.3.4</version>
         </dependency>
 
         <dependency>
