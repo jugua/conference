@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class FileStorageServiceImplTest {
+public class FileStorageServiceTest {
     private static final String PARENTFOLDER = System.getProperty("java.io.tmpdir");
     private static final String FOLDER = PARENTFOLDER + (PARENTFOLDER.endsWith(File.separator) ? "" : File.separator) + "fs";
     private static FileStorageService fileStorageService;

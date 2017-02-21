@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeById;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeByName;
+import ua.rd.cm.services.ContactTypeService;
 
 import java.util.List;
 
@@ -14,12 +15,12 @@ import java.util.List;
  * @author Olha_Melnyk
  */
 @Service
-public class SimpleContactTypeService implements ContactTypeService {
+public class ContactTypeServiceImpl implements ContactTypeService {
 
     private ContactTypeRepository contactTypeRepository;
 
     @Autowired
-    public SimpleContactTypeService(ContactTypeRepository contactTypeRepository) {
+    public ContactTypeServiceImpl(ContactTypeRepository contactTypeRepository) {
         this.contactTypeRepository = contactTypeRepository;
     }
 

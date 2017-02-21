@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import ua.rd.cm.domain.Level;
 import ua.rd.cm.repository.LevelRepository;
 import ua.rd.cm.repository.specification.level.LevelById;
 import ua.rd.cm.repository.specification.level.LevelByName;
+import ua.rd.cm.services.LevelService;
 
 import java.util.List;
 
@@ -13,12 +14,12 @@ import java.util.List;
  * @author Olha_Melnyk
  */
 @Service
-public class SimpleLevelService implements LevelService {
+public class LevelServiceImpl implements LevelService {
 
     private LevelRepository levelRepository;
 
     @Autowired
-    public SimpleLevelService(LevelRepository levelRepository) {
+    public LevelServiceImpl(LevelRepository levelRepository) {
         this.levelRepository = levelRepository;
     }
 
