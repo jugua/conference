@@ -115,20 +115,15 @@ public class AttachedFileController {
             return createError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "pattern");
         }
 
-        String prevFilePath = talk.getPathToAttachedFile();
-        String newFilePath = "";
+        String filePath = "";
         try {
-            newFilePath = storageService.saveFile(file);
-            if (!"".equals(newFilePath)) {
-                storageService.deleteFile(prevFilePath);
-                talk.setPathToAttachedFile("");
-                talkService.update(talk);
-                return createResult(HttpStatus.OK, "/talks/"+talkId+"/file");
-            }
+            filePath = storageService.saveFile(file);
         } catch (IOException e) {
-            log.info(e);
+            e.printStackTrace();
         }
-        return new ResponseEntity(HttpStatus.FORBIDDEN);
+        talk.setPathToAttachedFile(filePath);
+        talkService.update(talk);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
