@@ -1,13 +1,3 @@
-/* global inject */
-/* global describe */
-/* global xdescribe */
-/* global expect */
-/* global it */
-/* global spyOn */
-/* global jasmine */
-/* global angular */
-/* global beforeEach */
-
 import EditPasswordController from './edit-password.controller';
 
 describe('EditPassword', () => {

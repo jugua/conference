@@ -30,4 +30,6 @@ public interface UserService {
     List<User> getByRoleExceptCurrent(User currentUser, String roleName);
 
     List<User> getByRolesExceptCurrent(User currentUser, String... roles);
+
+    boolean isAuthenticated(User user, String password);
 }

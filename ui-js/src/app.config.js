@@ -1,11 +1,6 @@
-/* global localRunFE*/
 export default (app) => {
   app.run(($rootScope, $http) => {
     'ngInject';
-
-    if (localRunFE) {
-      $http.get('/api/login');
-    }
 
     $rootScope.$on('$stateChangeSuccess', () => {
       $rootScope.$broadcast('closeDropdown');

@@ -66,7 +66,7 @@
         <div class="data-table__row" ng-repeat="talk in $ctrl.talks">
           <div class="data-table__column data-table__column_check-talk"><input type="checkbox"></div>
           <div class="data-table__column data-table__column_speaker-talk">
-            <a ng-click="$ctrl.userInfo(talk.speaker_id)" class="link">{{talk.name}}</a></div>
+            <a ng-click="$ctrl.userInfo(talk.speakerId)" class="link">{{talk.name}}</a></div>
           <div class="data-table__column data-table__column_title-talk">
             <a ng-click="$ctrl.review(talk)" class="link">{{talk.title}}</a>
           </div>
