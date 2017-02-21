@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FileStorageServiceImplTest {
     private static final String PARENTFOLDER = System.getProperty("java.io.tmpdir");
-    private static final String FOLDER = PARENTFOLDER + (PARENTFOLDER.endsWith(File.separator)?"":File.separator) + "fs" + File.separator;
+    private static final String FOLDER = PARENTFOLDER + (PARENTFOLDER.endsWith(File.separator) ? "" : File.separator) + "fs";
     private static FileStorageService fileStorageService;
     private MockMultipartFile mockedFile = mock(MockMultipartFile.class);
 
@@ -47,7 +47,7 @@ public class FileStorageServiceImplTest {
     public void uploadAttachment() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
         final String EXPECTED_FILENAME = "SomeAttachment.pdf";
-        final String EXPECTED_RELATED_PATH = (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
+        final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
@@ -59,7 +59,7 @@ public class FileStorageServiceImplTest {
     public void uploadTwiceAttachment() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
         final String EXPECTED_FILENAME = "SomeAttachment v1.pdf";
-        final String EXPECTED_RELATED_PATH = (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
+        final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
@@ -80,7 +80,7 @@ public class FileStorageServiceImplTest {
     public void uploadFile_1jpg() throws IOException {
         final String FILENAME = "1.jpg";
         final String EXPECTED_FILENAME = "1.jpg";
-        final String EXPECTED_RELATED_PATH = (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
+        final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
@@ -92,7 +92,7 @@ public class FileStorageServiceImplTest {
     public void uploadFileTwice_1jpg() throws IOException {
         final String FILENAME = "1.jpg";
         final String EXPECTED_FILENAME = "1 v1.jpg";
-        final String EXPECTED_RELATED_PATH = (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
+        final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
@@ -105,7 +105,7 @@ public class FileStorageServiceImplTest {
     public void uploadFileThird_1jpg() throws IOException {
         final String FILENAME = "1.jpg";
         final String EXPECTED_FILENAME = "1 v2.jpg";
-        final String EXPECTED_RELATED_PATH = (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
+        final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
         fileStorageService.saveFile(mockedFile);
@@ -115,10 +115,22 @@ public class FileStorageServiceImplTest {
     }
 
     @Test
+    public void uploadVersioned() throws IOException {
+        final String FILENAME = "1 v1.jpg";
+        final String EXPECTED_FILENAME = "1 v2.jpg";
+        final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
+        when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+
+        fileStorageService.saveFile(mockedFile);
+        assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
+                fileStorageService.saveFile(mockedFile));
+    }
+
+    @Test
     public void uploadFileTwice_v1s() throws IOException {
         final String FILENAME = "file v1s.jpg";
         final String EXPECTED_FILENAME = "file v1s v1.jpg";
-        final String EXPECTED_RELATED_PATH = (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
+        final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
