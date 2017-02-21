@@ -43,17 +43,17 @@ public class ConferenceController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upcoming")
-    public ResponseEntity getUpcomingConferences(HttpServletRequest request) {
+    public ResponseEntity upcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
-        return getResponseEntityConferencesByRole(request, conferences);
+        return responseEntityConferencesByRole(request, conferences);
     }
 
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/past")
-    public ResponseEntity getPastConferences(HttpServletRequest request) {
+    public ResponseEntity pastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
-        return getResponseEntityConferencesByRole(request, conferences);
+        return responseEntityConferencesByRole(request, conferences);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -78,7 +78,7 @@ public class ConferenceController {
     }
 
 
-    private ResponseEntity getResponseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
+    private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
             List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
             return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
@@ -89,7 +89,6 @@ public class ConferenceController {
 
     private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
         ConferenceDtoBasic conferenceDtoBasic = mapper.map(conference, ConferenceDtoBasic.class);
-        conferenceDtoBasic.setConferenceInPast(isConferenceInPast(conference));
         return conferenceDtoBasic;
     }
 
@@ -105,7 +104,6 @@ public class ConferenceController {
 
     private ConferenceDto conferenceToDto(Conference conference) {
         ConferenceDto conferenceDto = mapper.map(conference, ConferenceDto.class);
-        conferenceDto.setConferenceInPast(isConferenceInPast(conference));
         if (conference.getTalks() != null) {
             Map<String, Integer> talks = new HashMap<>();
             for (Talk talk : conference.getTalks()) {
@@ -137,10 +135,5 @@ public class ConferenceController {
     private Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
         Conference conference = mapper.map(conferenceDto, Conference.class);
         return conference;
-    }
-
-    private boolean isConferenceInPast(Conference  conference){
-        return conference.getCallForPaperEndDate() != null &&
-            conference.getCallForPaperEndDate().isBefore(LocalDate.now());
     }
 }

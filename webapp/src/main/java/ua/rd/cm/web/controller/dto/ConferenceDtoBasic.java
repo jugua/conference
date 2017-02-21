@@ -36,6 +36,12 @@ public class ConferenceDtoBasic {
     @JsonProperty("end_date")
     private LocalDate endDate;
 
-    @JsonProperty("cfp_passed")
-    private Boolean conferenceInPast;
+    @JsonProperty("call_for_paper_start_date")
+    private LocalDate callForPaperStartDate;
+
+    @JsonProperty("call_for_paper_end_date")
+    private LocalDate callForPaperEndDate;
+
+    @JsonProperty("cfp_active")
+    private Boolean callForPaperActive;
 }

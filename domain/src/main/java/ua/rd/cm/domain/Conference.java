@@ -3,6 +3,7 @@ package ua.rd.cm.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.swing.text.StyledEditorKit;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -45,6 +46,8 @@ public class Conference {
 
     @Column(name = "path_to_logo")
     private String pathToLogo;
+
+    private Boolean callForPaperActive;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Talk> talks;
