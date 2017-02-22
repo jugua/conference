@@ -82,8 +82,8 @@ public class ConferenceServiceImpl implements ConferenceService {
                 LocalDate now = LocalDate.now();
                 boolean isActive;
                 if (conference.getCallForPaperEndDate() != null && conference.getCallForPaperStartDate() != null) {
-                    isActive = (conference.getCallForPaperEndDate().isBefore(now))
-                            && (conference.getCallForPaperStartDate().isAfter(now));
+                    isActive = (conference.getCallForPaperEndDate().isAfter(now))
+                            && (conference.getCallForPaperStartDate().isBefore(now));
                 } else {
                     isActive = true;
                 }
