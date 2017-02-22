@@ -34,7 +34,6 @@ public class TalkController {
     private static final String ORGANISER = "ORGANISER";
 
 
-
     private static final long MAX_SIZE = 314_572_800;
     private static final List<String> LIST_TYPE = Arrays.asList(
             "application/pdf",
@@ -58,7 +57,6 @@ public class TalkController {
     private FileStorageService storageService;
 
     public static final String APPROVED = "Approved";
-    public static final String DEFAULT_TALK_STATUS = "New";
     public static final String REJECTED = "Rejected";
     public static final String IN_PROGRESS = "In Progress";
 
@@ -94,9 +92,9 @@ public class TalkController {
             @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null,submitTalkDto.getTitle(),null,null,submitTalkDto.getDescription(),submitTalkDto.getTopic(),
-                submitTalkDto.getType(),submitTalkDto.getLang(), submitTalkDto.getLevel(),submitTalkDto.getAddon(),
-                submitTalkDto.getStatus(),null,null,null,submitTalkDto.getFile());
+        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
+                submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
+                submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 
         MessageDto messageDto = new MessageDto();
         HttpStatus httpStatus;
@@ -292,12 +290,10 @@ public class TalkController {
 
     private Long saveNewTalk(TalkDto dto, User currentUser) {
         Talk currentTalk = dtoToEntity(dto);
-        currentTalk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
-        currentTalk.setUser(currentUser);
         if (dto.getMultipartFile() != null) {
             currentTalk.setPathToAttachedFile(saveNewAttachedFile(dto.getMultipartFile()));
         }
-        talkService.save(currentTalk);
+        talkService.save(currentTalk, currentUser);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
         mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
         mailService.sendEmail(currentUser, new SubmitNewTalkSpeakerPreparator());
@@ -343,11 +339,11 @@ public class TalkController {
     }
 
     private boolean isAttachedFileTypeError(MultipartFile multipartFile) {
-        return getTypeIfSupported(multipartFile)==null;
+        return getTypeIfSupported(multipartFile) == null;
     }
 
     private boolean isAttachedFileSizeError(MultipartFile multipartFile) {
-        return multipartFile.getSize()>MAX_SIZE;
+        return multipartFile.getSize() > MAX_SIZE;
     }
 
     private String saveNewAttachedFile(MultipartFile multipartFile) {

@@ -25,9 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Anastasiia_Milinchuk on 2/8/2017.
- */
+
 @Log4j
 @RestController
 @RequestMapping("/api/conference")

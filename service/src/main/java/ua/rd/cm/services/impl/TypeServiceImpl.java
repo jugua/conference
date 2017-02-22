@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,17 +7,18 @@ import ua.rd.cm.domain.Type;
 import ua.rd.cm.repository.TypeRepository;
 import ua.rd.cm.repository.specification.type.TypeById;
 import ua.rd.cm.repository.specification.type.TypeByName;
+import ua.rd.cm.services.TypeService;
 
 import java.util.List;
 
 
 @Service
-public class SimpleTypeService implements TypeService {
+public class TypeServiceImpl implements TypeService {
 
     private TypeRepository typeRepository;
 
     @Autowired
-    public SimpleTypeService(TypeRepository typeRepository) {
+    public TypeServiceImpl(TypeRepository typeRepository) {
         this.typeRepository = typeRepository;
     }
 
