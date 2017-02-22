@@ -15,12 +15,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ConferenceDto extends ConferenceDtoBasic{
 
-    @JsonProperty("call_for_paper_start_date")
-    private LocalDate callForPaperStartDate;
-
-    @JsonProperty("call_for_paper_end_date")
-    private LocalDate callForPaperEndDate;
-
     @JsonProperty(value = "new", defaultValue = "0")
     private Integer newTalkCount = 0;
 
@@ -32,22 +26,6 @@ public class ConferenceDto extends ConferenceDtoBasic{
 
     @JsonProperty(value = "rejected", defaultValue = "0")
     private Integer rejectedTalkCount = 0;
-
-    public LocalDate getCallForPaperStartDate() {
-        return callForPaperStartDate;
-    }
-
-    public void setCallForPaperStartDate(LocalDate callForPaperStartDate) {
-        this.callForPaperStartDate = callForPaperStartDate;
-    }
-
-    public LocalDate getCallForPaperEndDate() {
-        return callForPaperEndDate;
-    }
-
-    public void setCallForPaperEndDate(LocalDate callForPaperEndDate) {
-        this.callForPaperEndDate = callForPaperEndDate;
-    }
 
     public Integer getNewTalkCount() {
         return newTalkCount;

@@ -31,16 +31,16 @@ public class ConferenceDtoBasic {
     private String location;
 
     @JsonProperty("start_date")
-    private LocalDate startDate;
+    private String startDate;
 
     @JsonProperty("end_date")
-    private LocalDate endDate;
+    private String endDate;
 
     @JsonProperty("call_for_paper_start_date")
-    private LocalDate callForPaperStartDate;
+    private String callForPaperStartDate;
 
     @JsonProperty("call_for_paper_end_date")
-    private LocalDate callForPaperEndDate;
+    private String callForPaperEndDate;
 
     @JsonProperty("cfp_active")
     private Boolean callForPaperActive;
