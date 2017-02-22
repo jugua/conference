@@ -254,6 +254,16 @@ public class MyTalksPageSteps extends ScenarioSteps {
         return myTalksPage.isFileAttached(attachFileDTO);
     }
 
+    @Step
+    public boolean isMaxSizeErrorMsgDisplayed(String msg) {
+       return myTalksPage.isMaxSizeErrorMsgDisplayed(msg);
+    }
+
+    @Step
+    public boolean isFormatErrorMsgDisplayed(String msg) {
+        return myTalksPage.isFormatErrorMsgDisplayed(msg);
+    }
+
 /*    @Step
     public boolean areFieldsReadOnly(MyTalksDTO dto) {
         typeTextInFields(dto);

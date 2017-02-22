@@ -404,4 +404,14 @@ public class MyTalksDefinitionsSteps {
     public void isFileAttached(){
        Assert.assertTrue(myTalksPageSteps.isFileAttached(attachFileDTO));
     }
+
+    @Then("max size error message is displayed: \"$msg\"")
+    public void isMaxSizeErrorMsgDisplayed(String msg){
+        Assert.assertTrue(myTalksPageSteps.isMaxSizeErrorMsgDisplayed(msg));
+    }
+
+    @Then("format error message is displayed: \"$msg\"")
+    public void isFormatErrorMsgDisplayed(String msg){
+        Assert.assertTrue(myTalksPageSteps.isFormatErrorMsgDisplayed(msg));
+    }
 }

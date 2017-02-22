@@ -110,6 +110,10 @@ public class MyTalksPage extends AnyPage {
     WebElementFacade attachFileField;
     @FindBy(xpath = "//span[@class = 'file-upload__filename ng-binding']")
     WebElementFacade filePathInAttachInput;
+    @FindBy(xpath = "//span[@ng-show='$ctrl.talkForm.$error.maxSize']")
+    WebElementFacade sizeErrorField;
+    @FindBy(xpath = "//span[@ng-show='$ctrl.talkForm.$error.pattern']")
+    WebElementFacade formatErrorField;
 
     // organiser
     @FindBy(xpath = "//*[@class='data-table__row ng-scope']/descendant::div[contains(.,'New')]")
@@ -458,8 +462,10 @@ public class MyTalksPage extends AnyPage {
         Robot robot = new Robot();
         robot.keyPress(KeyEvent.VK_CONTROL);
         robot.keyPress(KeyEvent.VK_V);
+        robot.delay(1000);
         robot.keyRelease(KeyEvent.VK_V);
         robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.delay(1000);
         robot.keyPress(KeyEvent.VK_ENTER);
         robot.keyRelease(KeyEvent.VK_ENTER);
         robot.delay(1000);
@@ -479,5 +485,21 @@ public class MyTalksPage extends AnyPage {
     public static void setClipboardData(String string) {
         StringSelection stringSelection = new StringSelection(string);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+    }
+
+    public boolean isMaxSizeErrorMsgDisplayed(String msg) {
+        if(sizeErrorField.getText().equals(msg)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean isFormatErrorMsgDisplayed(String msg) {
+        if(formatErrorField.getText().equals(msg)){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
