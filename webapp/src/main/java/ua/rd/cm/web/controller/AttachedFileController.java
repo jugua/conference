@@ -19,6 +19,7 @@ import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +91,7 @@ public class AttachedFileController {
             HttpHeaders header = new HttpHeaders();
             header.setContentType(new MediaType(mimeType.split("/")[0], mimeType.split("/")[1]));
             header.setContentLength(file.length());
-            header.set("Content-Disposition","attachment; filename=" + file.getName());
+            header.set("Content-Disposition","attachment; filename=" + new String(file.getName().getBytes(), StandardCharsets.ISO_8859_1));
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
             log.debug(e);
