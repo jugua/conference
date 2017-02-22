@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,10 +23,14 @@ import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
 import ua.rd.cm.repository.specification.user.UserById;
 import ua.rd.cm.repository.specification.user.UserByLastName;
+import ua.rd.cm.services.MailService;
+import ua.rd.cm.services.RoleService;
+import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
 @Service
-public class SimpleUserService implements UserService{
+public class UserServiceImpl implements UserService {
 	
 	private UserRepository userRepository;
 	private RoleService roleService;
@@ -36,9 +40,9 @@ public class SimpleUserService implements UserService{
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public SimpleUserService(UserRepository userRepository, RoleService roleService,
-							 MailService mailService, VerificationTokenService tokenService,
-							 ModelMapper mapper, PasswordEncoder passwordEncode) {
+	public UserServiceImpl(UserRepository userRepository, RoleService roleService,
+                           MailService mailService, VerificationTokenService tokenService,
+                           ModelMapper mapper, PasswordEncoder passwordEncode) {
 		this.userRepository = userRepository;
 		this.roleService = roleService;
 		this.mailService = mailService;

@@ -24,9 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Volodymyr_Kara on 1/30/2017.
- */
 @Log4j
 @RestController
 public class AttachedFileController {
@@ -49,8 +46,7 @@ public class AttachedFileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/api/talk/{talk_id}/filename",
-            method = RequestMethod.GET,
+    @GetMapping(value = "/api/talk/{talk_id}/filename",
             produces = "application/json")
     public ResponseEntity takeFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
@@ -68,7 +64,7 @@ public class AttachedFileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/api/talk/{talk_id}/file", method = RequestMethod.GET)
+    @GetMapping(value = "/api/talk/{talk_id}/file")
     public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
         if (talk == null) {

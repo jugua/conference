@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,16 +7,17 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.specification.role.RoleById;
 import ua.rd.cm.repository.specification.role.RoleByName;
+import ua.rd.cm.services.RoleService;
 
 import java.util.List;
 
 @Service
-public class SimpleRoleService implements RoleService {
+public class RoleServiceImpl implements RoleService {
 
     private RoleRepository roleRepository;
 
     @Autowired
-    public SimpleRoleService(RoleRepository roleRepository) {
+    public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
 

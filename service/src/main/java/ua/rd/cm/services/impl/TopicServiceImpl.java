@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import ua.rd.cm.domain.Topic;
 import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.repository.specification.topic.TopicById;
 import ua.rd.cm.repository.specification.topic.TopicByName;
+import ua.rd.cm.services.TopicService;
 
 import java.util.List;
 
@@ -14,12 +15,12 @@ import java.util.List;
  * @author Mariia Lapovska
  */
 @Service
-public class SimpleTopicService implements TopicService {
+public class TopicServiceImpl implements TopicService {
 
     private TopicRepository topicRepository;
 
     @Autowired
-    public SimpleTopicService(TopicRepository topicRepository) {
+    public TopicServiceImpl(TopicRepository topicRepository) {
         this.topicRepository = topicRepository;
     }
 

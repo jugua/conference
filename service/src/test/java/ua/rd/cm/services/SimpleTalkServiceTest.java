@@ -11,6 +11,7 @@ import ua.rd.cm.repository.TalkRepository;
 import ua.rd.cm.repository.specification.Specification;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
 import ua.rd.cm.services.exception.TalkNotFoundException;
+import ua.rd.cm.services.impl.TalkServiceimpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +32,7 @@ public class SimpleTalkServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        talkService = new SimpleTalkService(talkRepository);
+        talkService = new TalkServiceimpl(talkRepository);
     }
 
     @Test

@@ -20,14 +20,13 @@ import ua.rd.cm.web.controller.dto.MessageDto;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Anastasiia_Milinchuk on 2/8/2017.
- */
+
 @Log4j
 @RestController
 @RequestMapping("/api/conference")
@@ -104,6 +103,11 @@ public class ConferenceController {
 
     private ConferenceDto conferenceToDto(Conference conference) {
         ConferenceDto conferenceDto = mapper.map(conference, ConferenceDto.class);
+        // set dates
+        conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
+        conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
+        conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
+        conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
         if (conference.getTalks() != null) {
             Map<String, Integer> talks = new HashMap<>();
             for (Talk talk : conference.getTalks()) {
@@ -120,6 +124,14 @@ public class ConferenceController {
             conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.IN_PROGRESS.getName()));
         }
         return conferenceDto;
+    }
+
+    private String convertDateToString(LocalDate localDate) {
+        if (localDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return localDate.format(formatter);
+        }
+        return null;
     }
 
     private List<ConferenceDto> conferenceListToDto(List<Conference> conferences) {
