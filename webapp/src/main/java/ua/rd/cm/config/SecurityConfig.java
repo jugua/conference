@@ -11,15 +11,20 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
+import ua.rd.cm.web.security.AccessDeniedHandlerImpl;
+import ua.rd.cm.web.security.AuthenticationEntryPointImpl;
 import ua.rd.cm.web.security.CustomAuthenticationProvider;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = "ua.rd.cm.web.security")
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
 
@@ -45,6 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .and()
                 .httpBasic()
                     .and()
+                .exceptionHandling()
+                    .accessDeniedHandler(accessDeniedHandler())
+                    .authenticationEntryPoint(new AuthenticationEntryPointImpl())
+                    .and()
                 .logout()
                     .logoutUrl("/api/logout")
                     .logoutSuccessUrl("/")
@@ -58,6 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    private AccessDeniedHandler accessDeniedHandler() {
+        AccessDeniedHandlerImpl accessDeniedHandler = new AccessDeniedHandlerImpl();
+        accessDeniedHandler.setErrorCode(HttpServletResponse.SC_UNAUTHORIZED);
+        accessDeniedHandler.setForbiddenMsg(AuthenticationEntryPointImpl.DEFAULT_UNAUTHORIZED_MSG);
+        return accessDeniedHandler;
     }
 
     private CsrfTokenRepository csrfTokenRepository() {
