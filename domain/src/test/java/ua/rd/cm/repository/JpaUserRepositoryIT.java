@@ -78,15 +78,12 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 		
 	}
 
-	@Ignore
 	@Test
 	public void testFindAll() {
 		List<User> users = repository.findAll();
 		assertEquals(2, users.size());
-
 	}
 
-	@Ignore
 	@Test
 	public void testFindByEmail() {
 		List<User> users = repository.findBySpecification(new UserByEmail("test2@gmail.com"));
@@ -94,7 +91,6 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 		assertEquals("test2@gmail.com", users.get(0).getEmail());
 	}
 
-	@Ignore
 	@Test
 	public void testByFirstName() {
 		List<User> users = repository.findBySpecification(new UserByFirstName("testName"));
@@ -102,7 +98,6 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 		assertEquals(new Long(30), users.get(0).getId());
 	}
 
-	@Ignore
 	@Test
 	public void findById() {
 		List<User> users = repository.findBySpecification(new UserById(30L));
@@ -122,7 +117,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 				+ " password, photo, user_info_id, status) "
 				+ " values(?,?,?,?,?,?,?,?)",
 				usr.getId(), usr.getFirstName(), usr.getLastName(), usr.getEmail(),
-				usr.getPassword(), usr.getPhoto(), null, usr.getStatus());
+				usr.getPassword(), usr.getPhoto(), null, usr.getStatus().toString());
 	}
 
 }
