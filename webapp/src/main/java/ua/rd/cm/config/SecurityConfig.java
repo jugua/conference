@@ -20,7 +20,6 @@ import ua.rd.cm.web.security.CustomAuthenticationProvider;
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 @ComponentScan(basePackages = "ua.rd.cm.web.security")
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
 
@@ -30,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Override
-    public void configure (HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
