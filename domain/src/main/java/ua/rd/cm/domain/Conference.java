@@ -47,6 +47,7 @@ public class Conference {
     @Column(name = "path_to_logo")
     private String pathToLogo;
 
+    @Transient
     private Boolean callForPaperActive;
 
     @OneToMany(fetch = FetchType.LAZY)
