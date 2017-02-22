@@ -15,11 +15,45 @@
 
 	<properties>
 		<dir.dist>target/dist</dir.dist>
-		<build-task>build-dev</build-task>
 	</properties>
 
-	<build>
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<build-task>build</build-task>
+			</properties>
+		</profile>
+		<profile>
+			<id>testing</id>
+			<properties>
+				<build-task>build-min</build-task>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<build-task>build-min</build-task>
+			</properties>
+		</profile>
+		<profile>
+			<id>stable</id>
+			<properties>
+				<build-task>build-min</build-task>
+			</properties>
+		</profile>
+		<profile>
+			<id>master</id>
+			<properties>
+				<build-task>build-min</build-task>
+			</properties>
+		</profile>
+	</profiles>
 
+	<build>
 			<plugins>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -60,6 +94,24 @@
 					<artifactId>maven-war-plugin</artifactId>
 					<configuration>
 						<warSourceDirectory>${dir.dist}</warSourceDirectory>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.kelveden</groupId>
+					<artifactId>maven-karma-plugin</artifactId>
+					<version>1.8</version>
+					<executions>
+						<execution>
+							<phase>test</phase>
+							<goals>
+								<goal>start</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<karmaExecutable>${basedir}/node_modules/.bin/karma</karmaExecutable>
+						<browsers>PhantomJS</browsers>
+						<reporters>dots</reporters>
 					</configuration>
 				</plugin>
 			</plugins>

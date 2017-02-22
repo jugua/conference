@@ -1,11 +1,13 @@
 package ua.rd.cm.web.controller;
 
-import org.apache.log4j.Logger;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.ContactType;
@@ -16,32 +18,25 @@ import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.web.controller.dto.*;
+import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.web.controller.dto.UserBasicDto;
+import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.*;
 
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
 @RequestMapping("/api/user")
+@Log4j
 public class UserController {
-
-    private ModelMapper mapper;
-    private UserService userService;
-    private UserInfoService userInfoService;
-    private ContactTypeService contactTypeService;
-    private Logger logger = Logger.getLogger(UserController.class);
-
-    @Autowired
-    public UserController(ModelMapper mapper, UserService userService,
-                          UserInfoService userInfoService,
-                          ContactTypeService contactTypeService) {
-        this.mapper = mapper;
-        this.userService = userService;
-        this.userInfoService = userInfoService;
-        this.contactTypeService = contactTypeService;
-    }
+    private final ModelMapper mapper;
+    private final UserService userService;
+    private final UserInfoService userInfoService;
+    private final ContactTypeService contactTypeService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity register(@Valid @RequestBody RegistrationDto dto,
@@ -59,7 +54,7 @@ public class UserController {
                                           BindingResult bindingResult,
                                           HttpServletRequest request
     ) {
-        if (!Arrays.asList(Role.SPEAKER, Role.ORGANISER).contains(dto.getRoleName())){
+        if (!Arrays.asList(Role.SPEAKER, Role.ORGANISER).contains(dto.getRoleName())) {
             MessageDto message = new MessageDto();
             message.setError("wrong_role_name");
             return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
@@ -75,7 +70,7 @@ public class UserController {
         }
         User currentUser = userService.getByEmail(principal.getName());
         if (currentUser == null) {
-            logger.error("Request for [api/user/current] is failed: User entity for current principal is not found");
+            log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
@@ -102,7 +97,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
         MessageDto message = new MessageDto();
-        if(!request.isUserInRole("ORGANISER")){
+        if (!request.isUserInRole("ORGANISER")) {
             message.setError("unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
@@ -113,7 +108,7 @@ public class UserController {
         }
 
         UserDto userDto = userToDto(user);
-       // userDto.setContactTypeService(contactTypeService);
+        // userDto.setContactTypeService(contactTypeService);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
@@ -122,7 +117,7 @@ public class UserController {
     public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
         MessageDto message = new MessageDto();
         User currentUser = getAuthorizedUser(request);
-        if(currentUser == null){
+        if (currentUser == null) {
             message.setError("unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
@@ -134,7 +129,7 @@ public class UserController {
         boolean inRole = request.isUserInRole(Role.ADMIN);
         if (inRole) {
             String userEmail = request.getUserPrincipal().getName();
-            User user  = userService.getByEmail(userEmail);
+            User user = userService.getByEmail(userEmail);
             if ((user != null) && (user.getEmail() != null)) {
                 return user;
             }
@@ -142,9 +137,9 @@ public class UserController {
         return null;
     }
 
-    private UserBasicDto userToUserBasicDto(User user){
+    private UserBasicDto userToUserBasicDto(User user) {
         UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
-        userBasicDto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
+        userBasicDto.setRoles(user.getRoleNames());
         return userBasicDto;
     }
 
@@ -164,18 +159,23 @@ public class UserController {
         if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)) {
             status = HttpStatus.BAD_REQUEST;
             message.setError("empty_fields");
-            logger.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
         } else if (userService.isEmailExist(dto.getEmail().toLowerCase())) {
             status = HttpStatus.CONFLICT;
             message.setError("email_already_exists");
-            logger.error("Registration failed: " + dto.toString() +
+            log.error("Registration failed: " + dto.toString() +
                     ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
         } else {
+            encodePassword(dto);
             userService.registerNewUser(dto);
             status = HttpStatus.ACCEPTED;
-            message.setStatus("success");
+            message.setResult("success");
         }
         return ResponseEntity.status(status).body(message);
+    }
+
+    private void encodePassword(RegistrationDto dto) {
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
     }
 
     private boolean isPasswordConfirmed(RegistrationDto dto) {
@@ -216,17 +216,7 @@ public class UserController {
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
         dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
         dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
-        dto.setRoles(convertRolesTypeToFirstLetters(user.getUserRoles()));
+        dto.setRoles(user.getRoleNames());
         return dto;
-    }
-
-    private String[] convertRolesTypeToFirstLetters(Set<Role> roles) {
-        String[] rolesFirstLetters = new String[roles.size()];
-        Role[] rolesFullNames = roles.toArray(new Role[roles.size()]);
-        for (int i = 0; i < roles.size(); i++) {
-            String role = rolesFullNames[i].getName().split("_")[1];
-            rolesFirstLetters[i] = role.substring(0, 1).toLowerCase();
-        }
-        return rolesFirstLetters;
     }
 }

@@ -51,7 +51,7 @@ export default class UserPhotoController {
     this.toggleSlide();
     this.togglePreview();
     this.toggleAnimation();
-    this.user.photo = data.answer;
+    this.user.photo = data.result;
     this.currentPhotoStatus = this.getCurrentPhotoStatus();
   }
 

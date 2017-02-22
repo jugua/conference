@@ -1,6 +1,6 @@
 const Menus = function Menus() {
   const menu = {
-    s: [
+    speaker: [
       {
         link: 'tabs.myInfo',
         name: 'My Info'
@@ -14,7 +14,7 @@ const Menus = function Menus() {
         name: 'Settings'
       }
     ],
-    o: [
+    organiser: [
       {
         link: 'talks',
         name: 'Talks'
@@ -24,7 +24,7 @@ const Menus = function Menus() {
         name: 'Settings'
       }
     ],
-    a: [
+    admin: [
       {
         link: 'manageUsers',
         name: 'Manage Users'
@@ -41,16 +41,16 @@ const Menus = function Menus() {
         return false;
       }
 
-      if (role.indexOf('s') !== -1) {
-        menuArr = menuArr.concat(menu.s);
+      if (role.indexOf('ROLE_SPEAKER') !== -1) {
+        menuArr = menuArr.concat(menu.speaker);
       }
 
-      if (role.indexOf('o') !== -1) {
-        menuArr = menuArr.concat(menu.o);
+      if (role.indexOf('ROLE_ORGANISER') !== -1) {
+        menuArr = menuArr.concat(menu.organiser);
       }
 
-      if (role.indexOf('a') !== -1) {
-        menuArr = menuArr.concat(menu.a);
+      if (role.indexOf('ROLE_ADMIN') !== -1) {
+        menuArr = menuArr.concat(menu.admin);
       }
 
       return menuArr;

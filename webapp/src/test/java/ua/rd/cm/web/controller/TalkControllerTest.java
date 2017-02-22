@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -83,10 +85,19 @@ public class TalkControllerTest extends TestUtil {
     private User organiserUser;
     private UserInfo userInfo;
     private TalkDto correctTalkDto;
+    MockHttpServletRequestBuilder requestBuilder;
 
     @Before
     public void setUp() {
         correctTalkDto = setupCorrectTalkDto();
+
+        requestBuilder = MockMvcRequestBuilders.fileUpload(API_TALK).
+                param("title", "title name").
+                param("description", "desc").
+                param("topic", "topic").
+                param("type", "type").
+                param("lang", "English").
+                param("level", "Beginner");
 
         userInfo = new UserInfo(1L, "bio", "job", "pastConference", "EPAM", null, "addInfo");
 
@@ -120,7 +131,7 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctSubmitNewTalkTest() throws Exception {
-        mockMvc.perform(preparePostRequest(API_TALK))
+        mockMvc.perform(requestBuilder)//preparePostRequest(API_TALK))
                 .andExpect(status().isOk());
     }
 
@@ -129,7 +140,7 @@ public class TalkControllerTest extends TestUtil {
     public void emptyCompanyMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setCompany("");
 
-        mockMvc.perform(preparePostRequest(API_TALK))
+        mockMvc.perform(requestBuilder)
                 .andExpect(status().isForbidden());
     }
 
@@ -138,22 +149,23 @@ public class TalkControllerTest extends TestUtil {
     public void emptyJobMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setJobTitle("");
 
-        mockMvc.perform(preparePostRequest(API_TALK))
+        mockMvc.perform(requestBuilder)
                 .andExpect(status().isForbidden());
     }
+
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void emptyBioMyInfoSubmitNewTalkTest() throws Exception {
         userInfo.setShortBio("");
 
-        mockMvc.perform(preparePostRequest(API_TALK))
+        mockMvc.perform(requestBuilder)
                 .andExpect(status().isForbidden());
     }
 
     @Test
     public void nullPrincipleSubmitNewTalkTest() throws Exception {
-        expectUnauthorized(mockMvc.perform(preparePostRequest(API_TALK)));
+        expectUnauthorized(mockMvc.perform(requestBuilder));
     }
 
     @Test
@@ -390,7 +402,7 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title", is(talk.getTitle())))
-                .andExpect(jsonPath("$[0].speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
+                .andExpect(jsonPath("$[0].speakerId", is(Integer.parseInt(talk.getUser().getId().toString()))))
                 .andExpect(jsonPath("$[0].name", is(talk.getUser().getFirstName() + " " + talk.getUser().getLastName())))
                 .andExpect(jsonPath("$[0].description", is(talk.getDescription())))
                 .andExpect(jsonPath("$[0].topic", is(talk.getTopic().getName())))
@@ -476,9 +488,9 @@ public class TalkControllerTest extends TestUtil {
 
     private ResultActions expectTalk(ResultActions ra, Talk talk) throws Exception {
         return ra.andExpect(status().isOk())
-                .andExpect(jsonPath("_id", is(Integer.parseInt(talk.getId().toString()))))
+                .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))))
                 .andExpect(jsonPath("title", is(talk.getTitle())))
-                .andExpect(jsonPath("speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
+                .andExpect(jsonPath("speakerId", is(Integer.parseInt(talk.getUser().getId().toString()))))
                 .andExpect(jsonPath("name", is(talk.getUser().getFullName())))
                 .andExpect(jsonPath("description", is(talk.getDescription())))
                 .andExpect(jsonPath("topic", is(talk.getTopic().getName())))

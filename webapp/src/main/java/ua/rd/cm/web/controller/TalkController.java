@@ -14,14 +14,13 @@ import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.preparator.*;
 import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.web.controller.dto.SubmitTalkDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.BufferedInputStream;
+import javax.validation.constraints.Size;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 public class TalkController {
     public static final String TALK_NOT_FOUND = "talk_not_found";
     private static final String ORGANISER = "ORGANISER";
-
 
 
     private static final long MAX_SIZE = 314_572_800;
@@ -48,6 +46,7 @@ public class TalkController {
 
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
+    public static final String DEFAULT_TALK_STATUS = "New";
     private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
@@ -59,7 +58,6 @@ public class TalkController {
     private FileStorageService storageService;
 
     public static final String APPROVED = "Approved";
-    public static final String DEFAULT_TALK_STATUS = "New";
     public static final String REJECTED = "Rejected";
     public static final String IN_PROGRESS = "In Progress";
 
@@ -91,30 +89,32 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity submitTalk(@Valid @RequestBody TalkDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity submitTalk(
+            @Valid SubmitTalkDto submitTalkDto,
+            HttpServletRequest request) {
+
+        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
+                submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
+                submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
+
         MessageDto messageDto = new MessageDto();
         HttpStatus httpStatus;
-
-        if (bindingResult.hasFieldErrors()) {
-            messageDto.setError("fields_error");
-            return prepareResponse(HttpStatus.BAD_REQUEST, messageDto);
-        }
-
         User currentUser = userService.getByEmail(request.getRemoteUser());
         Long id = null;
 
         if (!checkForFilledUserInfo(currentUser)) {
             httpStatus = HttpStatus.FORBIDDEN;
-        } else if (dto.getMultipartFile()!=null&&isAttachedFileSizeError(dto.getMultipartFile())) {
+        } else if (dto.getMultipartFile() != null && isAttachedFileSizeError(dto.getMultipartFile())) {
             messageDto.setError("maxSize");
             httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
-        } else if (dto.getMultipartFile()!=null&&isAttachedFileTypeError(dto.getMultipartFile())) {
+        } else if (dto.getMultipartFile() != null && isAttachedFileTypeError(dto.getMultipartFile())) {
             messageDto.setError("pattern");
             httpStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
             id = saveNewTalk(dto, currentUser);
             httpStatus = HttpStatus.OK;
         }
+
         messageDto.setId(id);
         return new ResponseEntity<>(messageDto, httpStatus);
     }
@@ -291,12 +291,10 @@ public class TalkController {
 
     private Long saveNewTalk(TalkDto dto, User currentUser) {
         Talk currentTalk = dtoToEntity(dto);
-        currentTalk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
-        currentTalk.setUser(currentUser);
         if (dto.getMultipartFile() != null) {
             currentTalk.setPathToAttachedFile(saveNewAttachedFile(dto.getMultipartFile()));
         }
-        talkService.save(currentTalk);
+        talkService.save(currentTalk, currentUser);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
         mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
         mailService.sendEmail(currentUser, new SubmitNewTalkSpeakerPreparator());
@@ -342,11 +340,11 @@ public class TalkController {
     }
 
     private boolean isAttachedFileTypeError(MultipartFile multipartFile) {
-        return getTypeIfSupported(multipartFile)==null;
+        return getTypeIfSupported(multipartFile) == null;
     }
 
     private boolean isAttachedFileSizeError(MultipartFile multipartFile) {
-        return multipartFile.getSize()>MAX_SIZE;
+        return multipartFile.getSize() > MAX_SIZE;
     }
 
     private String saveNewAttachedFile(MultipartFile multipartFile) {
@@ -359,27 +357,14 @@ public class TalkController {
     }
 
     private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
+        if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
             return null;
         }
-        try {
-            return getTypeIfSupported(file.getInputStream());
-        } catch (IOException e) {
-            log.debug(e);
+        String mimeType = file.getContentType();
+        if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
             return null;
         }
+        return mimeType;
     }
 
-    private String getTypeIfSupported(InputStream stream) {
-        try (InputStream inputStream = new BufferedInputStream(stream)) {
-            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
-            if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
-                return null;
-            }
-            return mimeType;
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
-    }
 }

@@ -8,6 +8,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-param-reassign': ['error', { props: false }],
     'max-len': ['warn', 120, 4],
+    'import/no-extraneous-dependencies': ['error', {'devDependencies': true}],
   },
 
   globals: {
@@ -27,5 +28,8 @@ module.exports = {
     "expect": false,
     "spyOn": false,
     "xdescribe": false,
+
+    // FormData Web API
+    "FormData": false,
   }
 }

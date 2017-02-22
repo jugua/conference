@@ -7,7 +7,6 @@ const <%= camelName %>Component = {
   },
   template,
   controller,
-  controllerAs: '<%= camelName %>Ctrl'
 };
 
 export default <%= camelName %>Component;

@@ -1,6 +1,8 @@
 /* global window */
 
 function LocalStorage($window) {
+  'ngInject';
+
   function getToken() {
     let info = $window.localStorage.userInfo;
     let token;

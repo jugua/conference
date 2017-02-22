@@ -97,7 +97,7 @@ public class PhotoController {
                 fileStorageService.deleteFile(previousPhotoPath);
                 currentUser.setPhoto(newPhotoPath);
                 userService.updateUserProfile(currentUser);
-                return createAnswer(HttpStatus.OK, "api/user/current/photo/" + currentUser.getId());
+                return createResult(HttpStatus.OK, "api/user/current/photo/" + currentUser.getId());
             }
         } catch (IOException e) {
             log.info(e);
@@ -128,9 +128,9 @@ public class PhotoController {
         return ResponseEntity.status(status).body(messageDto);
     }
 
-    private ResponseEntity createAnswer(HttpStatus status, String message) {
+    private ResponseEntity createResult(HttpStatus status, String message) {
         MessageDto messageDto = new MessageDto();
-        messageDto.setAnswer(message);
+        messageDto.setResult(message);
         return ResponseEntity.status(status).body(messageDto);
     }
 
@@ -144,7 +144,7 @@ public class PhotoController {
     }
 
     private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(jp(e)?g|gif|png))$)")) {
+        if (!file.getOriginalFilename().matches("^.+\\.(?i)(jp(e)?g|gif|png)$")) {
             return null;
         }
 

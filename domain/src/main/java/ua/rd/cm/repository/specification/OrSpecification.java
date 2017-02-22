@@ -1,29 +1,30 @@
 package ua.rd.cm.repository.specification;
 
-public class OrSpecification<T> extends CompositeSpecification<T>{
-	
-	private Specification<T> left;
-	private Specification<T> right;
-	
-	public OrSpecification(Specification<T> left, Specification<T> right) {
-		super();
-		this.left = left;
-		this.right = right;
-	}
+import javax.persistence.Query;
 
-	@Override
-	public String toSqlClauses() {
-		return left.toSqlClauses() + " OR " + right.toSqlClauses();
-	}
+public class OrSpecification<T> extends CompositeSpecification<T> {
 
-	@Override
-	public boolean test(T t) {
-		return true;
-	}
+    private Specification<T> left;
+    private Specification<T> right;
 
+    public OrSpecification(Specification<T> left, Specification<T> right) {
+        super();
+        this.left = left;
+        this.right = right;
+    }
 
+    @Override
+    public String toSqlClauses() {
+        return left.toSqlClauses() + " OR " + right.toSqlClauses();
+    }
 
+    @Override
+    public Query setParameters(Query query) {
+        return right.setParameters(left.setParameters(query));
+    }
 
-
-	
+    @Override
+    public boolean test(T t) {
+        return left.test(t) || right.test(t);
+    }
 }

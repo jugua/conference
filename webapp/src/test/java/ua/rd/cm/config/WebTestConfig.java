@@ -2,12 +2,15 @@ package ua.rd.cm.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.services.*;
 
 import static org.mockito.Mockito.mock;
 
 @Configuration
 public class WebTestConfig {
+    @Bean
+    public ConferenceService mockConferenceService(){ return mock(ConferenceService.class); }
     @Bean
     public UserService mockUserService(){
         return mock(UserService.class);
@@ -48,6 +51,11 @@ public class WebTestConfig {
 	public MailService mockMailService() {
 		return mock(MailService.class);
 	}
+
+	@Bean
+    public PasswordEncoder mockPasswordEncoder() {
+        return mock(PasswordEncoder.class);
+    }
 	
 	@Bean
 	public VerificationTokenService mockVerificationTokenService() {

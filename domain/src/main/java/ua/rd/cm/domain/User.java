@@ -3,6 +3,7 @@ package ua.rd.cm.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,5 +65,11 @@ public class User {
 
     public enum UserStatus {
         CONFIRMED, UNCONFIRMED;
+    }
+
+    public List<String> getRoleNames() {
+        List<String> roleNames = new ArrayList<>();
+        userRoles.forEach(role -> roleNames.add(role.getName()));
+        return roleNames;
     }
 }

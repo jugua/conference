@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -28,6 +29,7 @@ import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
 import ua.rd.cm.repository.specification.user.UserById;
 import ua.rd.cm.repository.specification.user.UserByLastName;
+import ua.rd.cm.services.impl.UserServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserServiceTest {
@@ -47,11 +49,14 @@ public class SimpleUserServiceTest {
 	@Mock
 	private ModelMapper mapper;
 
+	@Mock
+	private PasswordEncoder passwordEncoder;
+
 	private UserService service;
-	
+
 	@Before
 	public void initialize() {
-		service = new SimpleUserService(repository, roleService, mailService, tokenService, mapper);
+		service = new UserServiceImpl(repository, roleService, mailService, tokenService, mapper, passwordEncoder);
 	}
 
 	@Test
@@ -61,14 +66,14 @@ public class SimpleUserServiceTest {
 		service.save(user);
 		verify(repository, times(1)).saveUser(user);
 	}
-	
+
 	@Test
 	public void testUpdateUserProfile() {
 		User user = mock(User.class);
 		service.updateUserProfile(user);
 		verify(repository, times(1)).updateUser(user);
 	}
-	
+
 	@Test
 	public void testFind() {
 		List<User> list = new ArrayList<>();
@@ -85,7 +90,7 @@ public class SimpleUserServiceTest {
 		List<User> list = spy(new ArrayList<>());
 		when(list.size()).thenReturn(5);
 		when(repository.findAll()).thenReturn(list);
-		
+
 		assertEquals(5, service.findAll().size());
 		verify(repository, times(1)).findAll();
 	}
@@ -95,7 +100,7 @@ public class SimpleUserServiceTest {
 		List<User> list = new ArrayList<>();
 		list.add(new User(1L, "test", "testLast", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(), null));
 		when(repository.findBySpecification(new WhereSpecification<>(new UserByFirstName(anyString())))).thenReturn(list);
-		
+
 		List<User> user = service.getByFirstName("test");
 		assertEquals("test", user.get(0).getFirstName());
 		verify(repository,times(1)).findBySpecification(new UserByFirstName(anyString()));
@@ -107,7 +112,7 @@ public class SimpleUserServiceTest {
 		List<User> list = new ArrayList<>();
 		list.add(new User(1L, "test", "testLast", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(), null));
 		when(repository.findBySpecification(new WhereSpecification<>(new UserByEmail(anyString())))).thenReturn(list);
-		
+
 		user = service.getByEmail("email");
 		assertEquals("email", user.getEmail());
 		assertEquals(new Long(1), user.getId());
@@ -120,7 +125,7 @@ public class SimpleUserServiceTest {
 		list.add(new User(1L, "test", "testLast", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(),null));
 		list.add(new User(1L, "test2", "testLas2t", "email2", "pass2", "url2", User.UserStatus.CONFIRMED, new UserInfo(), null));
 		when(repository.findBySpecification(new WhereSpecification<>(new UserByLastName(anyString())))).thenReturn(list);
-		
+
 		List<User> serviceList = service.getByLastName("testLas");
 		assertEquals(2, serviceList.size());
 	}
@@ -130,7 +135,7 @@ public class SimpleUserServiceTest {
 		List<User> list = spy(new ArrayList<>());
 		when(list.isEmpty()).thenReturn(false).thenReturn(true);
 		when(repository.findBySpecification(new WhereSpecification<>(new UserByEmail(anyString())))).thenReturn(list);
-		
+
 		assertTrue(service.isEmailExist("email"));
 		assertFalse(service.isEmailExist("email"));
 		verify(repository,times(2)).findBySpecification(new UserByEmail(anyString()));

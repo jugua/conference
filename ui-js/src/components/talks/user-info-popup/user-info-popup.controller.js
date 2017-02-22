@@ -1,5 +1,7 @@
 export default class {
   constructor(Constants) {
+    'ngInject';
+
     this.defaultAva = Constants.ava;   // default ava path constant
   }
   get fullName() {

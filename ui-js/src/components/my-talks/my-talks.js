@@ -13,7 +13,7 @@ export default (app) => {
           currentUser: Current => Current.current
         },
         controller: function myTalkPreController(currentUser, Permissions) {
-          Permissions.permitted('s', currentUser);
+          Permissions.permitted('ROLE_SPEAKER', currentUser);
           this.resolved = true;
           this.currentUser = currentUser;
         },

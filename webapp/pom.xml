@@ -82,9 +82,9 @@
             </properties>
         </profile>
         <profile>
-            <id>test</id>
+            <id>testing</id>
             <properties>
-                <profile.name>test</profile.name>
+                <profile.name>testing</profile.name>
             </properties>
         </profile>
         <profile>
@@ -145,6 +145,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <version>4.1.3.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring-version}</version>
         </dependency>
 
         <dependency>

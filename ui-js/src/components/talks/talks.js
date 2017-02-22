@@ -14,7 +14,7 @@ export default (app) => {
           currentUser: Current => Current.current
         },
         controller: function Controller(Permissions, currentUser) {
-          Permissions.permitted('o', currentUser);
+          Permissions.permitted('ROLE_ORGANISER', currentUser);
           this.resolved = true;
         },
         controllerAs: 'ctrl'
@@ -26,7 +26,7 @@ export default (app) => {
           currentUser: Current => Current.current
         },
         controller: function Controller(Permissions, currentUser, $stateParams) {
-          Permissions.permitted('o', currentUser);
+          Permissions.permitted('ROLE_ORGANISER', currentUser);
           this.resolved = true;
 
           this.reviewTalkId = $stateParams.reviewTalkId;

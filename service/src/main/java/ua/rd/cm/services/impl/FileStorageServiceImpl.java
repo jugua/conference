@@ -14,12 +14,6 @@ public class FileStorageServiceImpl implements FileStorageService {
     private static final int MAX_FILE_VERSION_TO_CREATE = 100;
     private static final int MAX_LENGTH_OF_VERSION_SUBSTR = 3;
 
-    private static class FolderCreationException extends IOException {
-    }
-
-    private static class FileCreationException extends IOException {
-    }
-
     @Setter
     @Getter
     private String storagePath;
@@ -67,19 +61,19 @@ public class FileStorageServiceImpl implements FileStorageService {
         return fileName.substring(index);
     }
 
-    private String getSuitableVersionedFilename(String fileName) throws FileCreationException {
+    private String getSuitableVersionedFilename(String fileName) throws IOException {
         String extension = getExtension(fileName);
         String fileNameWithoutExtension = fileName.substring(0, fileName.length() - extension.length());
         int version = 0;
         int lastIndexOfV = fileNameWithoutExtension.lastIndexOf('v');
         if (lastIndexOfV > 0) {
             String potentialVersion = fileNameWithoutExtension.substring(lastIndexOfV + 1, fileNameWithoutExtension.length());
-            if (potentialVersion.length() > MAX_LENGTH_OF_VERSION_SUBSTR && Pattern.matches("^\\d*$", potentialVersion)) {
+            if (potentialVersion.length() < MAX_LENGTH_OF_VERSION_SUBSTR && Pattern.matches("^\\d*$", potentialVersion)) {
                 version = Integer.parseInt(potentialVersion);
             }
         }
         if (version > 0) {
-            fileNameWithoutExtension = fileNameWithoutExtension.substring(0, lastIndexOfV);
+            fileNameWithoutExtension = fileNameWithoutExtension.substring(0, lastIndexOfV - 1);
         }
 
         String proposedFullPath = "";
@@ -91,27 +85,26 @@ public class FileStorageServiceImpl implements FileStorageService {
                 proposedFile = new File(proposedFullPath);
                 if (!proposedFile.exists())
                     break;
-            } catch (FolderCreationException e) {
+            } catch (IOException e) {
                 log.warn(e);
             }
         }
         if (version > MAX_FILE_VERSION_TO_CREATE || "".equals(proposedFullPath))
-            throw new FileCreationException();
+            throw new IOException("Couldn't choose versioned filename. File couldn't be created");
         return proposedFullPath;
     }
 
-    private String getFolderForFile(String filename) throws FolderCreationException {
+    private String getFolderForFile(String filename) throws IOException {
         String folderPath = getStoragePath() + File.separator + Integer.toString(filename.hashCode() % 32) + File.separator;
         File folder = new File(folderPath);
 
-        if (folder.exists()) {
-            if (folder.isFile())
-                throw new FolderCreationException();
-        } else {
-            if (!folder.mkdirs())
-                throw new FolderCreationException();
+        if (folder.exists() && folder.isFile()) {
+            throw new IOException("Couldn't create new folder, because exist file with such name:" + folderPath);
         }
-        return folderPath ;
+        if (!folder.exists() && !folder.mkdirs()) {
+            throw new IOException("Couldn't create new folder:" + folderPath);
+        }
+        return folderPath;
     }
 
 }

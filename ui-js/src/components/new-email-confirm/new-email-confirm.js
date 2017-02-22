@@ -2,6 +2,8 @@ import service from './new-email-confirm.service';
 
 export default (app) => {
   app.config(($stateProvider) => {
+    'ngInject';
+
     $stateProvider
       .state('header.emailConfirm', {
         url: '/newEmailConfirm/:token',

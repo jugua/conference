@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -77,6 +80,9 @@ public class UserControllerTest extends TestUtil{
     @Autowired
     private UserController userController;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
@@ -88,6 +94,14 @@ public class UserControllerTest extends TestUtil{
                 .addFilter(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
+
+        when(passwordEncoder.encode(anyString())).then(new Answer<String>() {
+            @Override
+            public String answer(InvocationOnMock invocation) throws Throwable {
+                Object[] args = invocation.getArguments();
+                return (String) args[0];
+            }
+        });
     }
 
     @Test
@@ -270,7 +284,7 @@ public class UserControllerTest extends TestUtil{
                 .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
                 .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
                 .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-                .andExpect(jsonPath("roles[0]", is("s")));
+                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
     }
 
     @Test
@@ -386,7 +400,7 @@ public class UserControllerTest extends TestUtil{
                 .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
                 .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
                 .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-                .andExpect(jsonPath("roles[0]", is("s")));
+                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
     }
 
     @Test
