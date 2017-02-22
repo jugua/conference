@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,19 +6,17 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.specification.userinfo.UserInfoById;
+import ua.rd.cm.services.UserInfoService;
 
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
 @Service
-public class SimpleUserInfoService implements UserInfoService {
+public class UserInfoServiceImpl implements UserInfoService {
 
     private UserInfoRepository userInfoRepository;
 
     @Autowired
-    public SimpleUserInfoService(UserInfoRepository userInfoRepository) {
+    public UserInfoServiceImpl(UserInfoRepository userInfoRepository) {
         this.userInfoRepository = userInfoRepository;
     }
 

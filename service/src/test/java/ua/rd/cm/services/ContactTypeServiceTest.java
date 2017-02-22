@@ -9,6 +9,7 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeById;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeByName;
+import ua.rd.cm.services.impl.ContactTypeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
  * @author Olha_Melnyk
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleContactTypeServiceTest {
+public class ContactTypeServiceTest {
 
     @Mock
     private ContactTypeRepository contactTypeRepository;
@@ -34,7 +35,7 @@ public class SimpleContactTypeServiceTest {
 
     @Before
     public void setUp() {
-        contactTypeService = new SimpleContactTypeService(contactTypeRepository);
+        contactTypeService = new ContactTypeServiceImpl(contactTypeRepository);
         contactType = new ContactType(1L, "VK");
     }
 

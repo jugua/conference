@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.specification.userinfo.UserInfoById;
+import ua.rd.cm.services.impl.UserInfoServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class SimpleUserInfoServiceTest {
 
     @Before
     public void setUp() {
-        userInfoService = new SimpleUserInfoService(userInfoRepository);
+        userInfoService = new UserInfoServiceImpl(userInfoRepository);
         userInfo = mock(UserInfo.class);
     }
 

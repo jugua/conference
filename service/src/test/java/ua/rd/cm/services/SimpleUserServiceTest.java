@@ -19,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
@@ -30,6 +29,7 @@ import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
 import ua.rd.cm.repository.specification.user.UserById;
 import ua.rd.cm.repository.specification.user.UserByLastName;
+import ua.rd.cm.services.impl.UserServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserServiceTest {
@@ -56,7 +56,7 @@ public class SimpleUserServiceTest {
 
 	@Before
 	public void initialize() {
-		service = new SimpleUserService(repository, roleService, mailService, tokenService, mapper, passwordEncoder);
+		service = new UserServiceImpl(repository, roleService, mailService, tokenService, mapper, passwordEncoder);
 	}
 
 	@Test

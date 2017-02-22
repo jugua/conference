@@ -14,6 +14,7 @@ import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.preparator.*;
 import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.web.controller.dto.SubmitTalkDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,6 @@ public class TalkController {
     private static final String ORGANISER = "ORGANISER";
 
 
-
     private static final long MAX_SIZE = 314_572_800;
     private static final List<String> LIST_TYPE = Arrays.asList(
             "application/pdf",
@@ -46,6 +46,7 @@ public class TalkController {
 
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
+    public static final String DEFAULT_TALK_STATUS = "New";
     private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
@@ -57,7 +58,6 @@ public class TalkController {
     private FileStorageService storageService;
 
     public static final String APPROVED = "Approved";
-    public static final String DEFAULT_TALK_STATUS = "New";
     public static final String REJECTED = "Rejected";
     public static final String IN_PROGRESS = "In Progress";
 
@@ -90,20 +90,12 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity submitTalk(
-            @RequestParam("title")@Size(min = 1, max = 250) String title,
-            @RequestParam("description")@Size(min = 1, max = 3000) String description,
-            @RequestParam("topic")@Size(min = 1, max = 255) String topicName,
-            @RequestParam("type")@Size(min = 1, max = 255) String typeName,
-            @RequestParam("lang")@Size(min = 1, max = 255) String languageName,
-            @RequestParam("level")@Size(min = 1, max = 255) String levelName,
-            @RequestParam(value = "addon",required = false)@Size(max = 1500) String additionalInfo,
-            @RequestParam(value = "status",required = false) String statusName,
-            @RequestParam(value = "date",required = false) String date,
-            @RequestPart(value = "file",required = false)@Valid MultipartFile multipartFile,
+            @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null,title,null,null,description,topicName,typeName,
-                languageName, levelName,additionalInfo,statusName,null,null,null,multipartFile);
+        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
+                submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
+                submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 
         MessageDto messageDto = new MessageDto();
         HttpStatus httpStatus;
@@ -112,10 +104,10 @@ public class TalkController {
 
         if (!checkForFilledUserInfo(currentUser)) {
             httpStatus = HttpStatus.FORBIDDEN;
-        } else if (multipartFile != null && isAttachedFileSizeError(multipartFile)) {
+        } else if (dto.getMultipartFile() != null && isAttachedFileSizeError(dto.getMultipartFile())) {
             messageDto.setError("maxSize");
             httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
-        } else if (multipartFile != null && isAttachedFileTypeError(multipartFile)) {
+        } else if (dto.getMultipartFile() != null && isAttachedFileTypeError(dto.getMultipartFile())) {
             messageDto.setError("pattern");
             httpStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
@@ -299,12 +291,10 @@ public class TalkController {
 
     private Long saveNewTalk(TalkDto dto, User currentUser) {
         Talk currentTalk = dtoToEntity(dto);
-        currentTalk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
-        currentTalk.setUser(currentUser);
         if (dto.getMultipartFile() != null) {
             currentTalk.setPathToAttachedFile(saveNewAttachedFile(dto.getMultipartFile()));
         }
-        talkService.save(currentTalk);
+        talkService.save(currentTalk, currentUser);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
         mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
         mailService.sendEmail(currentUser, new SubmitNewTalkSpeakerPreparator());
@@ -350,11 +340,11 @@ public class TalkController {
     }
 
     private boolean isAttachedFileTypeError(MultipartFile multipartFile) {
-        return getTypeIfSupported(multipartFile)==null;
+        return getTypeIfSupported(multipartFile) == null;
     }
 
     private boolean isAttachedFileSizeError(MultipartFile multipartFile) {
-        return multipartFile.getSize()>MAX_SIZE;
+        return multipartFile.getSize() > MAX_SIZE;
     }
 
     private String saveNewAttachedFile(MultipartFile multipartFile) {
