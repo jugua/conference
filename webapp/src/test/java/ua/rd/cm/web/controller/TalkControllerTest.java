@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -13,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -34,6 +33,8 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
+import ua.rd.cm.web.security.AccessDeniedHandlerImpl;
+import ua.rd.cm.web.security.AuthenticationEntryPointImpl;
 
 import javax.servlet.Filter;
 import java.time.LocalDateTime;
@@ -721,7 +722,7 @@ public class TalkControllerTest extends TestUtil {
 
     private void expectUnauthorized(ResultActions ra) throws Exception {
         ra.andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(SecurityControllerAdvice.UNAUTHORIZED_MSG)));
+                .andExpect(jsonPath("error", is(AuthenticationEntryPointImpl.DEFAULT_UNAUTHORIZED_MSG)));
     }
 
     private Talk createTalk(User user) {
