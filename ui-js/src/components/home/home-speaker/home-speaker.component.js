@@ -1,0 +1,13 @@
+import template from './home-speaker.html';
+import controller from './home-speaker.controller';
+
+const component = {
+  template,
+  controller,
+};
+
+export default component;
+
+
+
+
