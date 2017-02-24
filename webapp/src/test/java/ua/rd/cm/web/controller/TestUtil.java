@@ -5,14 +5,10 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.services.ContactTypeService;
-import ua.rd.cm.services.SimpleContactTypeService;
 import ua.rd.cm.services.UserService;
 
 import java.util.*;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;

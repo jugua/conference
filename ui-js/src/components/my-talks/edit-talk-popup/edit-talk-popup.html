@@ -91,6 +91,48 @@
              ng-disabled="!$ctrl.editable"
              ng-model="$ctrl.obj.level">
 
+      <div ng-if="$ctrl.fileNameObj.fileName">
+        <span class="icon icon_attach"></span>
+        <a class="form-link link" ng-href="/api/talk/{{ $ctrl.talk.id }}/file">{{ $ctrl.fileNameObj.fileName }}</a>
+        <a class="form-link link"
+           ng-if="$ctrl.editable"
+           ng-click="$ctrl.confirmDeleteFile()">
+          <span class="icon icon_delete icon-small icon-small-margin-left"></span>
+        </a>
+      </div>
+      <div ng-if="!$ctrl.fileNameObj.fileName">
+        <label class="form-label">
+          file upload
+          <md-icon class="icon icon_info">
+            <md-tooltip md-direction="right" class="tooltip">
+              You can add an attachment of your talk here and insert a link to it in the Additional Info field.<br>
+              Allowed formats are docx, pdf, pptx, ppt, odp and maximum size is 300 Mb.
+            </md-tooltip>
+          </md-icon>
+        </label>
+
+        <label ng-class="$ctrl.fileLabelClass">
+          <span class="btn file-upload__button file-upload__button_named"></span>
+          <span class="file-upload__filename">{{ $ctrl.file.name }}</span>
+
+          <input type="file"
+                 class="file-upload__uploading"
+                 ng-model="$ctrl.file"
+                 ngf-select
+                 ngf-max-size="300MB"
+                 ngf-min-size="1"
+                 ngf-pattern="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/mspowerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf,application/vnd.oasis.opendocument.presentation,application/x-vnd.oasis.opendocument.presentation"
+                 accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/mspowerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf,application/vnd.oasis.opendocument.presentation,application/x-vnd.oasis.opendocument.presentation"
+                 name="file">
+        </label>
+        <span class="field-error" ng-show="$ctrl.form.$error.pattern">
+          We could not understand the contents of your file. Make sure it is docx, pdf, pptx, ppt or odp.
+        </span>
+        <span class="field-error" ng-show="$ctrl.form.$error.maxSize">
+          You exceeded the maximum allowed size of 300 MB. Please make another choice.
+        </span>
+      </div>
+
       <label for="new-talk-add-inf" class="form-label">
         additional info
       </label>
@@ -100,13 +142,14 @@
                 ng-model="$ctrl.obj.addon">
       </textarea>
 
-      <label for="new-talk-add-inf" class="form-label">
+      <label for="new-talk-add-inf" class="form-label" ng-if="!$ctrl.new">
         organizer's comments
       </label>
       <textarea class="textarea" name="comment"
                 disabled
                 ng-model="$ctrl.obj.comment"
-                maxlength="1000">
+                maxlength="1000"
+                ng-if="!$ctrl.new">
       </textarea>
 
       <span class="field-error" ng-show="$ctrl.submitAttempt && $ctrl.form.$error.required">
@@ -131,6 +174,18 @@
     <div class="pop-up-button-wrapper">
       <button class="btn pop-up__button" ng-click="$ctrl.close()">Yes</button>
       <button class="btn btn__cancel pop-up__button" ng-click="$ctrl.hideConfirm()">No</button>
+    </div>
+  </div>
+</div>
+
+<div class="pop-up-wrapper" ng-show="$ctrl.confirmDeleteFileShown">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Confirm</h3>
+    <button class="pop-up__close" ng-click="$ctrl.hideConfirmDeleteFile()"></button>
+    <p class="pop-up__notification">Are you sure you want to delete this file?</p>
+    <div class="pop-up-button-wrapper">
+      <button class="btn pop-up__button" ng-click="$ctrl.deleteFile()">Yes</button>
+      <button class="btn btn__cancel pop-up__button" ng-click="$ctrl.hideConfirmDeleteFile()">No</button>
     </div>
   </div>
 </div>

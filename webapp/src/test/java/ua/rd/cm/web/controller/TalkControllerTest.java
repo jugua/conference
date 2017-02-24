@@ -402,7 +402,7 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title", is(talk.getTitle())))
-                .andExpect(jsonPath("$[0].speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
+                .andExpect(jsonPath("$[0].speakerId", is(Integer.parseInt(talk.getUser().getId().toString()))))
                 .andExpect(jsonPath("$[0].name", is(talk.getUser().getFirstName() + " " + talk.getUser().getLastName())))
                 .andExpect(jsonPath("$[0].description", is(talk.getDescription())))
                 .andExpect(jsonPath("$[0].topic", is(talk.getTopic().getName())))
@@ -488,9 +488,9 @@ public class TalkControllerTest extends TestUtil {
 
     private ResultActions expectTalk(ResultActions ra, Talk talk) throws Exception {
         return ra.andExpect(status().isOk())
-                .andExpect(jsonPath("_id", is(Integer.parseInt(talk.getId().toString()))))
+                .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))))
                 .andExpect(jsonPath("title", is(talk.getTitle())))
-                .andExpect(jsonPath("speaker_id", is(Integer.parseInt(talk.getUser().getId().toString()))))
+                .andExpect(jsonPath("speakerId", is(Integer.parseInt(talk.getUser().getId().toString()))))
                 .andExpect(jsonPath("name", is(talk.getUser().getFullName())))
                 .andExpect(jsonPath("description", is(talk.getDescription())))
                 .andExpect(jsonPath("topic", is(talk.getTopic().getName())))

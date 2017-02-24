@@ -20,14 +20,13 @@ import ua.rd.cm.web.controller.dto.MessageDto;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Anastasiia_Milinchuk on 2/8/2017.
- */
+
 @Log4j
 @RestController
 @RequestMapping("/api/conference")
@@ -43,17 +42,17 @@ public class ConferenceController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upcoming")
-    public ResponseEntity getUpcomingConferences(HttpServletRequest request) {
+    public ResponseEntity upcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
-        return getResponseEntityConferencesByRole(request, conferences);
+        return responseEntityConferencesByRole(request, conferences);
     }
 
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/past")
-    public ResponseEntity getPastConferences(HttpServletRequest request) {
+    public ResponseEntity pastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
-        return getResponseEntityConferencesByRole(request, conferences);
+        return responseEntityConferencesByRole(request, conferences);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -78,7 +77,7 @@ public class ConferenceController {
     }
 
 
-    private ResponseEntity getResponseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
+    private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
             List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
             return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
@@ -89,7 +88,6 @@ public class ConferenceController {
 
     private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
         ConferenceDtoBasic conferenceDtoBasic = mapper.map(conference, ConferenceDtoBasic.class);
-        conferenceDtoBasic.setConferenceInPast(isConferenceInPast(conference));
         return conferenceDtoBasic;
     }
 
@@ -105,7 +103,11 @@ public class ConferenceController {
 
     private ConferenceDto conferenceToDto(Conference conference) {
         ConferenceDto conferenceDto = mapper.map(conference, ConferenceDto.class);
-        conferenceDto.setConferenceInPast(isConferenceInPast(conference));
+        // set dates
+        conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
+        conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
+        conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
+        conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
         if (conference.getTalks() != null) {
             Map<String, Integer> talks = new HashMap<>();
             for (Talk talk : conference.getTalks()) {
@@ -124,6 +126,14 @@ public class ConferenceController {
         return conferenceDto;
     }
 
+    private String convertDateToString(LocalDate localDate) {
+        if (localDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return localDate.format(formatter);
+        }
+        return null;
+    }
+
     private List<ConferenceDto> conferenceListToDto(List<Conference> conferences) {
         List<ConferenceDto> conferenceDtos = new ArrayList<>();
         if (conferences != null) {
@@ -137,10 +147,5 @@ public class ConferenceController {
     private Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
         Conference conference = mapper.map(conferenceDto, Conference.class);
         return conference;
-    }
-
-    private boolean isConferenceInPast(Conference  conference){
-        return conference.getCallForPaperEndDate() != null &&
-            conference.getCallForPaperEndDate().isBefore(LocalDate.now());
     }
 }

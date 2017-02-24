@@ -15,15 +15,15 @@ import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Created by Volodymyr_Kara on 1/30/2017.
- */
 @Log4j
 @RestController
 public class AttachedFileController {
@@ -45,8 +45,27 @@ public class AttachedFileController {
         this.storageService = storageService;
     }
 
-    @RequestMapping(value = "/talks/{talk_id}/file", method = RequestMethod.GET)
-    public ResponseEntity get(@PathVariable("talk_id") Long talkId) {
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/api/talk/{talk_id}/filename",
+            produces = "application/json")
+    public ResponseEntity takeFileName(@PathVariable("talk_id") Long talkId) {
+        Talk talk = talkService.findTalkById(talkId);
+        if (talk == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        File file = storageService.getFile(talk.getPathToAttachedFile());
+        if (file == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("fileName", file.getName());
+        return new ResponseEntity(map, HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/api/talk/{talk_id}/file")
+    public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
         if (talk == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -64,11 +83,10 @@ public class AttachedFileController {
 
         try {
             InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
-
             HttpHeaders header = new HttpHeaders();
             header.setContentType(new MediaType(mimeType.split("/")[0], mimeType.split("/")[1]));
             header.setContentLength(file.length());
-
+            header.set("Content-Disposition","attachment; filename=" + file.getName());
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
             log.debug(e);
@@ -77,7 +95,7 @@ public class AttachedFileController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/talks/{talk_id}/file")
+    @PostMapping("/api/talk/{talk_id}/file")
     public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
                                  @RequestPart(value = "file") MultipartFile file,
                                  HttpServletRequest request) {
@@ -93,24 +111,19 @@ public class AttachedFileController {
             return createError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "pattern");
         }
 
-        String prevFilePath = talk.getPathToAttachedFile();
-        String newFilePath = "";
+        String filePath = "";
         try {
-            newFilePath = storageService.saveFile(file);
-            if (!"".equals(newFilePath)) {
-                storageService.deleteFile(prevFilePath);
-                talk.setPathToAttachedFile("");
-                talkService.update(talk);
-                return createResult(HttpStatus.OK, "/talks/"+talkId+"/file");
-            }
+            filePath = storageService.saveFile(file);
         } catch (IOException e) {
-            log.info(e);
+            e.printStackTrace();
         }
-        return new ResponseEntity(HttpStatus.FORBIDDEN);
+        talk.setPathToAttachedFile(filePath);
+        talkService.update(talk);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/talks/{talk_id}/file")
+    @DeleteMapping("/api/talk/{talk_id}/file")
     public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
 
@@ -139,39 +152,19 @@ public class AttachedFileController {
 
 
     private String getTypeIfSupported(File file) {
-        try {
-            return getTypeIfSupported(new FileInputStream(file));
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
+            String mimeType = new MimetypesFileTypeMap().getContentType(file);
+            return mimeType;
     }
 
     private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("([^\\s]+(\\.(?i)(docx|ppt|pptx|pdf|odp))$)")) {
+        if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
             return null;
         }
-
-        try {
-            return getTypeIfSupported(file.getInputStream());
-        } catch (IOException e) {
-            log.debug(e);
+        String mimeType = file.getContentType();
+        if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
             return null;
         }
-    }
-
-    private String getTypeIfSupported(InputStream stream) {
-        try (InputStream inputStream = new BufferedInputStream(stream)) {
-            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
-
-            if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
-                return null;
-            }
-            return mimeType;
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
+        return mimeType;
     }
 
 }

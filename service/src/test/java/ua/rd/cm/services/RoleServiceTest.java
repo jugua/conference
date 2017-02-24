@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class SimpleRoleServiceTest {
+public class RoleServiceTest {
 
 	@Test
 	public void testSimpleRoleService() {

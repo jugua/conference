@@ -129,3 +129,11 @@ UPDATE user_seq SET next_val = 6 WHERE next_val = 5;
 INSERT INTO user_role VALUES (5, 2);
 INSERT INTO user_role VALUES (5, 3);
 
+INSERT INTO `conference` (conference_id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (1, 'JavaDay 1', 'The Very First JavaDay', 'Kiev', '2016-09-15', '2016-09-25', '2016-08-04', '2016-08-22', 'nologo');
+INSERT INTO `conference` (conference_id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (2, 'JavaDay 2', 'Second JavaDay', 'Boston', '2016-11-23', '2016-11-30', '2016-11-01', '2016-11-01', 'nologo');
+INSERT INTO `conference` (conference_id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (3, 'JavaDay 3', 'Third JavaDay', 'New York', '2016-12-04', '2016-12-10', '2016-12-04', '2016-12-10', 'nologo');
+INSERT INTO `conference` (conference_id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (5, 'JavaDay 5', 'Second JavaDay', 'London', '2017-08-22', '2017-08-30', '2017-07-10', '2017-07-25', 'nologo');
+INSERT INTO `conference` (conference_id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (6, 'JavaDay 6', 'Third JavaDay', 'Beijin', '2017-03-25', '2017-04-10', '2017-02-22', '2017-03-15', 'nologo');
+INSERT INTO `conference` (conference_id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (7, 'JavaDay 7', 'Third JavaDay', 'Tel Aviv', '2017-02-15', '2017-02-25', '2017-02-04', '2017-03-27', 'nologo');
+INSERT INTO `conference` (conference_id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (8, 'JavaDay 8', 'Very First JavaDay', 'Beirut', null, null, null, null, 'nologo');
+UPDATE conf_seq SET next_val = 9 WHERE next_val = 1;
