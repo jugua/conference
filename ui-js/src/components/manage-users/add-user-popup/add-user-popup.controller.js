@@ -2,8 +2,6 @@ export default class AddUserPopupContropller {
   constructor(AddUserService, Constants) {
     'ngInject';
 
-    this.roles = ['ROLE_SPEAKER', 'ROLE_ORGANISER'];
-
     this.service = AddUserService;
     this.user = {};
     this.userForm = {};
@@ -11,6 +9,9 @@ export default class AddUserPopupContropller {
     this.passwordPattern = Constants.password;
     this.emailPattern = Constants.email;
     this.passwordPattern = Constants.password;
+
+    this.roles = ['ROLE_SPEAKER', 'ROLE_ORGANISER'];
+    this.user.roleName = this.roles[0];   // pre-selected option
   }
 
   close() {

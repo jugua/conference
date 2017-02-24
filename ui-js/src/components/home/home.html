@@ -1,5 +1,7 @@
 <div class="Container home">
-  <div class="home-layout">
-    <ui-view></ui-view>
+  <home-speaker ng-if="$ctrl.landingType('ROLE_SPEAKER')"></home-speaker>
+  <home-admin ng-if="$ctrl.landingType('ROLE_ADMIN')"></home-admin>
+  <div class="home-layout" ng-if="$ctrl.defaultLanding">
+    <ui-view ></ui-view>
   </div>
 </div>

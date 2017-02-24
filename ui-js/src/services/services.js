@@ -8,6 +8,7 @@ import permissionsService from './permissions/permissions';
 import tokenInjector from './node-intercepter/node-intercepter';
 import userService from './user/user';
 import manageUsers from './manage-users/manage-users';
+import conference from './conference/conference';
 
 export default (app) => {
   include_all_modules([
@@ -19,6 +20,7 @@ export default (app) => {
     permissionsService,
     tokenInjector,
     userService,
-    manageUsers
+    manageUsers,
+    conference
   ], app);
 };
