@@ -9,9 +9,9 @@ import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 
 @AllArgsConstructor
-public class ChangeTalkBySpeakerPreparator extends CustomMimeMessagePreparator{
-
+public class ChangeTalkBySpeakerPreparator extends CustomMimeMessagePreparator {
     private Talk currentTalk;
+    private String url;
 
     @Override
     public String getTemplateName() {
@@ -21,18 +21,11 @@ public class ChangeTalkBySpeakerPreparator extends CustomMimeMessagePreparator{
     @Override
     public void prepareModel(User receiver) {
         model = new HashMap<>();
-        model.put("receiverName",currentTalk.getOrganiser().getFirstName());
-        model.put("speakerFullName",currentTalk.getUser().getFullName());
-        model.put("link", "http://localhost:8050/#/talks/" + currentTalk.getId());
-        model.put("email",currentTalk.getOrganiser().getEmail());
+        model.put("receiverName", currentTalk.getOrganiser().getFirstName());
+        model.put("speakerFullName", currentTalk.getUser().getFullName());
+        model.put("link", url + "/#/talks/" + currentTalk.getId());
+        model.put("email", currentTalk.getOrganiser().getEmail());
+        model.put("subject", "A talk has been updated");
     }
 
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setSubject("A talk has been updated");
-        helper.setFrom("support@conference.com");
-        helper.setTo((String)model.get("email"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
-    }
 }

@@ -108,7 +108,7 @@ public class SettingsController {
         );
         tokenService.setPreviousTokensExpired(token);
         tokenService.saveToken(token);
-        mailService.sendEmail(user, new NewEmailMessagePreparator(token));
+        mailService.sendEmail(user, new NewEmailMessagePreparator(token, mailService.getUrl()));
         return ResponseEntity.ok().build();
     }
 

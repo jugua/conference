@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 @AllArgsConstructor
 public class OldEmailMessagePreparator extends CustomMimeMessagePreparator {
-
     private String oldEmail;
 
     @Override
@@ -21,19 +20,12 @@ public class OldEmailMessagePreparator extends CustomMimeMessagePreparator {
     @Override
     public void prepareModel(User receiver) {
         model = new HashMap<>();
-        model.put("name" , receiver.getFirstName());
+        model.put("name", receiver.getFirstName());
         model.put("oldEmail", oldEmail);
+        model.put("email", oldEmail);
         model.put("newEmail", receiver.getEmail());
         model.put("dateTime", LocalDateTime.now().toString());
+        model.put("subject", "Email address has been changed");
     }
 
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-
-        helper.setSubject("Email address has been changed");
-        helper.setFrom("support@conference.com");
-        helper.setTo((String)model.get("oldEmail"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
-    }
 }
