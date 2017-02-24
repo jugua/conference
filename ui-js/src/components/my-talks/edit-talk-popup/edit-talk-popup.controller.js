@@ -12,6 +12,7 @@ export default class {
     this.form = {};
 
     this.confirmShown = false;
+    this.confirmDeleteFileShown = false;
     this.submitAttempt = false;
 
     this.fileNameObj = this.talkFileService.getName(this.talk.id);
@@ -20,6 +21,13 @@ export default class {
   get editable() {  // getter, convenient for template inline triggers
     if (this.talk.status === this.talksService.TALK_STATUS_NEW ||
         this.talk.status === this.talksService.TALK_STATUS_PROGRESS) {
+      return true;
+    }
+    return false;
+  }
+
+  get new() {   // getter to check if talk is new
+    if (this.talk.status === this.talksService.TALK_STATUS_NEW) {
       return true;
     }
     return false;
@@ -77,7 +85,16 @@ export default class {
   deleteFile() {
     this.talkFileService.delete(this.talk.id, () => {
       this.fileNameObj = {};
+      this.hideConfirmDeleteFile();
     });
+  }
+
+  confirmDeleteFile() {
+    this.confirmDeleteFileShown = true;
+  }
+
+  hideConfirmDeleteFile() {
+    this.confirmDeleteFileShown = false;
   }
 
   get fileLabelClass() {

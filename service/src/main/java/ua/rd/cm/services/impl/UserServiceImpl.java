@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 		if (User.UserStatus.UNCONFIRMED.equals(dto.getUserStatus())) {
 			VerificationToken token = tokenService.createToken(newUser, VerificationToken.TokenType.CONFIRMATION);
 			tokenService.saveToken(token);
-			mailService.sendEmail(newUser, new ConfirmAccountPreparator(token));
+			mailService.sendEmail(newUser, new ConfirmAccountPreparator(token, mailService.getUrl()));
 		}
 	}
 

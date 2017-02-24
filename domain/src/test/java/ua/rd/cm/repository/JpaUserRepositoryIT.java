@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -81,7 +82,6 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	public void testFindAll() {
 		List<User> users = repository.findAll();
 		assertEquals(2, users.size());
-
 	}
 
 	@Test
@@ -90,21 +90,21 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 		assertEquals(1, users.size());
 		assertEquals("test2@gmail.com", users.get(0).getEmail());
 	}
-	
+
 	@Test
 	public void testByFirstName() {
 		List<User> users = repository.findBySpecification(new UserByFirstName("testName"));
 		assertEquals(1, users.size());
 		assertEquals(new Long(30), users.get(0).getId());
 	}
-	
+
 	@Test
 	public void findById() {
 		List<User> users = repository.findBySpecification(new UserById(30L));
 		assertEquals(1, users.size());
 		assertEquals(new Long(30), users.get(0).getId());
 	}
-	
+
 	@Test
 	public void findByLastName() {
 		List<User> users = repository.findBySpecification(new UserByLastName("testSurname2"));
@@ -114,10 +114,10 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	
 	private void saveUser(User usr) {
 		jdbcTemplate.update("INSERT INTO user (user_id, first_name, last_name, email, "
-				+ " password, photo, user_info_id) "
-				+ " values(?,?,?,?,?,?,?)",
+				+ " password, photo, user_info_id, status) "
+				+ " values(?,?,?,?,?,?,?,?)",
 				usr.getId(), usr.getFirstName(), usr.getLastName(), usr.getEmail(),
-				usr.getPassword(), usr.getPhoto(), null);
+				usr.getPassword(), usr.getPhoto(), null, usr.getStatus().toString());
 	}
 
 }

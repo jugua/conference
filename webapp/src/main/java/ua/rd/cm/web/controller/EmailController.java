@@ -1,6 +1,7 @@
 package ua.rd.cm.web.controller;
 
 import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class EmailController {
 	}
 	
 	@PostMapping("/forgot-password")
-	public ResponseEntity forgotPassword(@RequestBody String mail) throws  IOException {
+	public ResponseEntity forgotPassword(@RequestBody String mail, HttpServletRequest request) throws  IOException {
 		HttpStatus httpStatus;
 		MessageDto responseMessage = new MessageDto();
 		ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
@@ -67,7 +68,7 @@ public class EmailController {
 				VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
 				tokenService.setPreviousTokensExpired(token);
 				tokenService.saveToken(token);
-				mailService.sendEmail(currentUser, new ForgotMessagePreparator(token));
+				mailService.sendEmail(currentUser, new ForgotMessagePreparator(token, mailService.getUrl()));
 				httpStatus = HttpStatus.OK;
 				responseMessage.setResult("success");
 			}

@@ -18,7 +18,7 @@
         <finalName>conference</finalName>
         <resources>
             <resource>
-                <directory>src/main/profiles/${profile.name}</directory>
+                <directory>src/main/profiles/${profile.folder}</directory>
                 <includes>
                     <include>*.xml</include>
                     <include>*.properties</include>
@@ -40,7 +40,8 @@
                 </property>
             </activation>
             <properties>
-                <profile.name>local</profile.name>
+                <profile.folder>local</profile.folder>
+                <maven.tomcat.port>8081</maven.tomcat.port>
             </properties>
 
             <build>
@@ -50,13 +51,11 @@
                         <artifactId>tomcat7-maven-plugin</artifactId>
                         <version>2.2</version>
                         <configuration>
-                            <port>8081</port>
                             <path>/</path>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>tomcat-run</id>
-                                <phase>pre-integration-test</phase>
+                                <id>start-tomcat</id>
                                 <goals>
                                     <goal>run-war-only</goal>
                                 </goals>
@@ -72,32 +71,83 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <profile.name>local</profile.name>
+                <profile.folder>local</profile.folder>
             </properties>
         </profile>
         <profile>
             <id>dev</id>
             <properties>
-                <profile.name>dev</profile.name>
+                <profile.folder>dev</profile.folder>
             </properties>
         </profile>
         <profile>
             <id>testing</id>
             <properties>
-                <profile.name>testing</profile.name>
+                <profile.folder>testing</profile.folder>
             </properties>
         </profile>
         <profile>
             <id>stable</id>
             <properties>
-                <profile.name>stable</profile.name>
+                <profile.folder>stable</profile.folder>
             </properties>
         </profile>
         <profile>
             <id>master</id>
             <properties>
-                <profile.name>master</profile.name>
+                <profile.folder>master</profile.folder>
             </properties>
+        </profile>
+        <profile>
+            <id>integration-tests</id>
+            <properties>
+                <profile.folder>testing</profile.folder>
+            </properties>
+            <build>
+                <plugins>
+                    <!--<plugin>-->
+                        <!--<groupId>org.apache.tomcat.maven</groupId>-->
+                        <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
+                        <!--<version>2.2</version>-->
+                        <!--<configuration>-->
+                            <!--<path>/</path>-->
+                            <!--<fork>true</fork>-->
+                            <!--<port>9876</port>-->
+                        <!--</configuration>-->
+                        <!--<executions>-->
+                            <!--<execution>-->
+                                <!--<id>start-tomcat</id>-->
+                                <!--<phase>pre-integration-test</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>run-war-only</goal>-->
+                                <!--</goals>-->
+                            <!--</execution>-->
+                            <!--<execution>-->
+                                <!--<id>stop-tomcat</id>-->
+                                <!--<phase>post-integration-test</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>shutdown</goal>-->
+                                <!--</goals>-->
+                            <!--</execution>-->
+                        <!--</executions>-->
+                    <!--</plugin>-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
