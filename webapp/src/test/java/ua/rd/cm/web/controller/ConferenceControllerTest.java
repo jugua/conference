@@ -70,7 +70,7 @@ public class ConferenceControllerTest extends TestUtil {
     @Test
     public void getUpcomingConferencesUnauthorized() throws Exception {
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
-                andExpect(status().isUnauthorized());
+                andExpect(status().isOk());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ConferenceControllerTest extends TestUtil {
     @Test
     public void getPastConferencesTestUnauthorized() throws Exception {
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
-                andExpect(status().isUnauthorized());
+                andExpect(status().isOk());
     }
 
     @Test
