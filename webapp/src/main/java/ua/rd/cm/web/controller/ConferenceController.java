@@ -118,6 +118,7 @@ public class ConferenceController {
                 }
                 talks.put(status, ++count);
             }
+
             conferenceDto.setNewTalkCount(talks.get(TalkStatus.NEW.getName()));
             conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.APPROVED.getName()));
             conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.REJECTED.getName()));
