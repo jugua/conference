@@ -103,7 +103,6 @@ public class ConferenceController {
 
     private ConferenceDto conferenceToDto(Conference conference) {
         ConferenceDto conferenceDto = mapper.map(conference, ConferenceDto.class);
-        // set dates
         conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
         conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
         conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
