@@ -41,7 +41,6 @@
             </activation>
             <properties>
                 <profile.folder>local</profile.folder>
-                <maven.tomcat.port>8081</maven.tomcat.port>
             </properties>
 
             <build>
@@ -51,11 +50,13 @@
                         <artifactId>tomcat7-maven-plugin</artifactId>
                         <version>2.2</version>
                         <configuration>
+                            <port>8081</port>
                             <path>/</path>
                         </configuration>
                         <executions>
                             <execution>
-                                <id>start-tomcat</id>
+                                <id>tomcat-run</id>
+                                <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>run-war-only</goal>
                                 </goals>
