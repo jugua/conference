@@ -40,15 +40,12 @@ public class ConferenceController {
         this.mapper = mapper;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
         return responseEntityConferencesByRole(request, conferences);
     }
 
-
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/past")
     public ResponseEntity pastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
