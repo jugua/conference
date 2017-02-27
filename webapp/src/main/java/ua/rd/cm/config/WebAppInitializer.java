@@ -33,7 +33,8 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         return new Class[] {
                 SecurityConfig.class,
                 ServiceConfig.class,
-                RepositoryConfig.class
+                RepositoryConfig.class,
+                AsyncConfig.class
         };
     }
 

@@ -9,6 +9,7 @@ import lombok.Value;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -32,6 +33,7 @@ public class MailService {
         this.senderName = senderName;
     }
 
+    @Async
     public void sendEmail(User receiver, CustomMimeMessagePreparator preparator) {
         preparator.prepareModel(receiver);
         preparator.setFreemarkerConfiguration(freemarkerConfiguration);
