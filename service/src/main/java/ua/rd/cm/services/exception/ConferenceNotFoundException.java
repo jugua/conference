@@ -1,6 +1,8 @@
 package ua.rd.cm.services.exception;
 
-import javax.persistence.EntityManager;
-
 public class ConferenceNotFoundException extends EntityNotFoundException {
+
+    public ConferenceNotFoundException() {
+        super("conference_not_found");
+    }
 }
