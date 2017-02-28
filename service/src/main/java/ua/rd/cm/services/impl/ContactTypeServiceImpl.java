@@ -8,12 +8,10 @@ import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeById;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeByName;
 import ua.rd.cm.services.ContactTypeService;
+import ua.rd.cm.services.exception.EntityNotFoundException;
 
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
 @Service
 public class ContactTypeServiceImpl implements ContactTypeService {
 
@@ -26,9 +24,12 @@ public class ContactTypeServiceImpl implements ContactTypeService {
 
     @Override
     public ContactType find(Long id) {
-        return contactTypeRepository.findBySpecification(new ContactTypeById(id)).get(0);
+        List<ContactType> contatcTypes = contactTypeRepository.findBySpecification(new ContactTypeById(id));
+        if (contatcTypes.isEmpty()) {
+            throw new EntityNotFoundException("contact_type_not_found");
+        }
+        return contatcTypes.get(0);
     }
-
 
     @Override
     public List<ContactType> findByName(String name) {
@@ -51,5 +52,4 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     public List<ContactType> findAll() {
         return contactTypeRepository.findAll();
     }
-
 }
