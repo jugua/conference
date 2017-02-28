@@ -8,12 +8,11 @@ import ua.rd.cm.repository.LanguageRepository;
 import ua.rd.cm.repository.specification.language.LanguageById;
 import ua.rd.cm.repository.specification.language.LanguageByName;
 import ua.rd.cm.services.LanguageService;
+import ua.rd.cm.services.exception.EntityNotFoundException;
+import ua.rd.cm.services.exception.LanguageNotFoundException;
 
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
 @Service
 public class LanguageServiceImpl implements LanguageService {
 
@@ -26,7 +25,11 @@ public class LanguageServiceImpl implements LanguageService {
 
     @Override
     public Language find(Long id) {
-        return languageRepository.findBySpecification(new LanguageById(id)).get(0);
+        List<Language> languages = languageRepository.findBySpecification(new LanguageById(id));
+        if (languages.isEmpty()) {
+            throw new LanguageNotFoundException();
+        }
+        return languages.get(0);
     }
 
     @Override
@@ -37,9 +40,11 @@ public class LanguageServiceImpl implements LanguageService {
 
     @Override
     public Language getByName(String name) {
-        List<Language> list = languageRepository.findBySpecification(new LanguageByName(name));
-        if (list.isEmpty()) return null;
-        else return list.get(0);
+        List<Language> languages = languageRepository.findBySpecification(new LanguageByName(name));
+        if (languages.isEmpty()) {
+            throw new LanguageNotFoundException();
+        }
+        return languages.get(0);
     }
 
     @Override
