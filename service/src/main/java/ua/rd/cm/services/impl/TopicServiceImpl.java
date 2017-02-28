@@ -8,12 +8,11 @@ import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.repository.specification.topic.TopicById;
 import ua.rd.cm.repository.specification.topic.TopicByName;
 import ua.rd.cm.services.TopicService;
+import ua.rd.cm.services.exception.EntityNotFoundException;
+import ua.rd.cm.services.exception.TopicNotFoundException;
 
 import java.util.List;
 
-/**
- * @author Mariia Lapovska
- */
 @Service
 public class TopicServiceImpl implements TopicService {
 
@@ -26,7 +25,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public Topic find(Long id) {
-        return topicRepository.findBySpecification(new TopicById(id)).get(0);
+        List<Topic> topics = topicRepository.findBySpecification(new TopicById(id));
+        if (topics.isEmpty()) {
+            throw new TopicNotFoundException();
+        }
+        return topics.get(0);
     }
 
     @Override
@@ -43,7 +46,9 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic getByName(String name) {
         List<Topic> list = topicRepository.findBySpecification(new TopicByName(name));
-        if (list.isEmpty()) return null;
-        else return list.get(0);
+        if (list.isEmpty()) {
+            throw new TopicNotFoundException();
+        }
+        return list.get(0);
     }
 }
