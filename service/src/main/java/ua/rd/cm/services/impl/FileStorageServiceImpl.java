@@ -6,7 +6,10 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.services.FileStorageService;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 @Log4j

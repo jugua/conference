@@ -68,9 +68,6 @@ public class AttachedFileController {
     @GetMapping(value = "/api/talk/{talk_id}/file")
     public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
-        if (talk == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         File file = storageService.getFile(talk.getPathToAttachedFile());
         if (file == null) {
