@@ -3,7 +3,6 @@ package ua.rd.cm.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.domain.User;
@@ -12,8 +11,6 @@ import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
-import ua.rd.cm.services.preparator.SubmitNewTalkOrganiserPreparator;
-import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class TalkServiceimpl implements TalkService {
 
     @Override
     @Transactional
-    public void save(Talk talk,User user) {
+    public void save(Talk talk, User user) {
         talk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
         talk.setUser(user);
         talkRepository.saveTalk(talk);
@@ -46,7 +43,6 @@ public class TalkServiceimpl implements TalkService {
     public void update(Talk talk) {
         talkRepository.updateTalk(talk);
     }
-
 
     @Override
     @Transactional
