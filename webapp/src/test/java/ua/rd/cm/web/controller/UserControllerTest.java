@@ -2,6 +2,7 @@ package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })
 @WebAppConfiguration
+@Log4j
 public class UserControllerTest extends TestUtil{
     public static final String API_USER_CURRENT = "/api/user/current";
     public static final String API_USER = "/api/user";
@@ -446,7 +448,7 @@ public class UserControllerTest extends TestUtil{
                 ).andExpect(status().isBadRequest());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info(e);
         }
     }
 

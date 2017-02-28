@@ -351,7 +351,7 @@ public class TalkController {
         try {
             return storageService.saveFile(multipartFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn(e);
         }
         return null;
     }

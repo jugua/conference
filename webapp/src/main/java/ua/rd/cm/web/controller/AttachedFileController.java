@@ -115,7 +115,7 @@ public class AttachedFileController {
         try {
             filePath = storageService.saveFile(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e);
         }
         talk.setPathToAttachedFile(filePath);
         talkService.update(talk);
