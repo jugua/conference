@@ -8,7 +8,6 @@ import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.repository.specification.topic.TopicById;
 import ua.rd.cm.repository.specification.topic.TopicByName;
 import ua.rd.cm.services.TopicService;
-import ua.rd.cm.services.exception.EntityNotFoundException;
 import ua.rd.cm.services.exception.TopicNotFoundException;
 
 import java.util.List;

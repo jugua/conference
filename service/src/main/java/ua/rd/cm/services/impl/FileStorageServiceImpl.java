@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -33,10 +34,13 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public File getFile(String fileAbsolutePath) {
         if (fileAbsolutePath == null) {
-            return null;
+            throw new ResourceNotFoundException("file_not_found");
         }
         File searchFile = new File(fileAbsolutePath);
-        return searchFile.isFile() ? searchFile : null;
+        if (!searchFile.isFile()) {
+            throw new ResourceNotFoundException("file_not_found");
+        }
+        return searchFile;
     }
 
     @Override

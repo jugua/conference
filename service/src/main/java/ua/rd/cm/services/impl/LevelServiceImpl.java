@@ -7,7 +7,6 @@ import ua.rd.cm.repository.LevelRepository;
 import ua.rd.cm.repository.specification.level.LevelById;
 import ua.rd.cm.repository.specification.level.LevelByName;
 import ua.rd.cm.services.LevelService;
-import ua.rd.cm.services.exception.EntityNotFoundException;
 import ua.rd.cm.services.exception.LevelNotFoundException;
 
 import java.util.List;

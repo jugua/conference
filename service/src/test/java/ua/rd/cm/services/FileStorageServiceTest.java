@@ -4,6 +4,7 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import java.io.File;
@@ -164,16 +165,20 @@ public class FileStorageServiceTest {
 
     //getFile
 
-    @Test
-    public void getNullFile() {
-        assertEquals(null, fileStorageService.getFile(null));
-        assertEquals(null, fileStorageService.getFile(""));
+    @Test(expected = ResourceNotFoundException.class)
+    public void getFileByNullThrowsException() {
+        fileStorageService.getFile(null);
+    }
+
+    @Test(expected = ResourceNotFoundException.class)
+    public void getFileByEmptyStringThrowsException() {
+        fileStorageService.getFile("");
     }
 
 
-    @Test
+    @Test(expected = ResourceNotFoundException.class)
     public void getFile_WrongPath() {
-        assertEquals(null, fileStorageService.getFile("AnyWrongPath"));
+        fileStorageService.getFile("AnyWrongPath");
     }
 
     @Test

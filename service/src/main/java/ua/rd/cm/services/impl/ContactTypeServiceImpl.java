@@ -8,7 +8,7 @@ import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeById;
 import ua.rd.cm.repository.specification.contacttype.ContactTypeByName;
 import ua.rd.cm.services.ContactTypeService;
-import ua.rd.cm.services.exception.EntityNotFoundException;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     public ContactType find(Long id) {
         List<ContactType> contatcTypes = contactTypeRepository.findBySpecification(new ContactTypeById(id));
         if (contatcTypes.isEmpty()) {
-            throw new EntityNotFoundException("contact_type_not_found");
+            throw new ResourceNotFoundException("contact_type_not_found");
         }
         return contatcTypes.get(0);
     }

@@ -20,7 +20,7 @@ import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.RoleService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
-import ua.rd.cm.services.exception.EntityNotFoundException;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
 import java.util.Collections;
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public User find(Long id) {
         List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserById(id)));
         if (users.isEmpty()) {
-            throw new EntityNotFoundException("user_not_found");
+            throw new ResourceNotFoundException("user_not_found");
         }
         return users.get(0);
     }
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     public User getByEmail(String email) {
         List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserByEmail(email)));
         if (users.isEmpty()) {
-            throw new EntityNotFoundException("user_not_found");
+            throw new ResourceNotFoundException("user_not_found");
         }
         return users.get(0);
     }

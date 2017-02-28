@@ -8,7 +8,6 @@ import ua.rd.cm.repository.TypeRepository;
 import ua.rd.cm.repository.specification.type.TypeById;
 import ua.rd.cm.repository.specification.type.TypeByName;
 import ua.rd.cm.services.TypeService;
-import ua.rd.cm.services.exception.EntityNotFoundException;
 import ua.rd.cm.services.exception.TypeNotFoundException;
 
 import java.util.List;

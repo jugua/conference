@@ -8,7 +8,6 @@ import ua.rd.cm.repository.LanguageRepository;
 import ua.rd.cm.repository.specification.language.LanguageById;
 import ua.rd.cm.repository.specification.language.LanguageByName;
 import ua.rd.cm.services.LanguageService;
-import ua.rd.cm.services.exception.EntityNotFoundException;
 import ua.rd.cm.services.exception.LanguageNotFoundException;
 
 import java.util.List;

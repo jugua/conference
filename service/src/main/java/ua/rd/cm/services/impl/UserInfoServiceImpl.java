@@ -7,7 +7,7 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.specification.userinfo.UserInfoById;
 import ua.rd.cm.services.UserInfoService;
-import ua.rd.cm.services.exception.EntityNotFoundException;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo find(Long id) {
         List<UserInfo> usersInfo = userInfoRepository.findBySpecification(new UserInfoById(id));
         if (usersInfo.isEmpty()) {
-            throw new EntityNotFoundException("user_info_not_found");
+            throw new ResourceNotFoundException("user_info_not_found");
         }
         return usersInfo.get(0);
     }

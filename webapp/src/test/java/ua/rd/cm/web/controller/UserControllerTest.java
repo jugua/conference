@@ -34,7 +34,7 @@ import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.services.exception.EntityNotFoundException;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.Filter;
@@ -423,7 +423,7 @@ public class UserControllerTest extends TestUtil{
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void notFoundUserById() throws Exception{
 
-        when(userService.find(1L)).thenThrow(EntityNotFoundException.class);
+        when(userService.find(1L)).thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
                 andExpect(status().isNotFound());
     }
