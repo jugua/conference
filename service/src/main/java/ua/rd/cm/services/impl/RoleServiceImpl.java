@@ -8,6 +8,7 @@ import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.specification.role.RoleById;
 import ua.rd.cm.repository.specification.role.RoleByName;
 import ua.rd.cm.services.RoleService;
+import ua.rd.cm.services.exception.EntityNotFoundException;
 
 import java.util.List;
 
@@ -23,7 +24,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role find(Long id) {
-        return roleRepository.findBySpecification(new RoleById(id)).get(0);
+        List<Role> roles = roleRepository.findBySpecification(new RoleById(id));
+        if (roles.isEmpty()) {
+            throw new EntityNotFoundException("role_not_found");
+        }
+        return roles.get(0);
     }
 
     @Override
