@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -720,7 +719,7 @@ public class TalkControllerTest extends TestUtil {
 
     private void expectUnauthorized(ResultActions ra) throws Exception {
         ra.andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is("unauthorized")));
+                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
     }
 
     private Talk createTalk(User user) {
