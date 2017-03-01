@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
+@Log4j
 public class PhotoControllerTest extends TestUtil {
     private static final String API_PHOTO = "/api/user/current/photo";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
@@ -63,7 +65,7 @@ public class PhotoControllerTest extends TestUtil {
             MockMultipartFile mockFile = new MockMultipartFile("trybel_master", fileInputStream);
             photoDto.setFile(mockFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e);
         }
         return photoDto;
     }
@@ -75,7 +77,7 @@ public class PhotoControllerTest extends TestUtil {
             MockMultipartFile mockFile = new MockMultipartFile("trybel_master", fileInputStream);
             return mockFile;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e);
         }
         return null;
     }
@@ -86,7 +88,7 @@ public class PhotoControllerTest extends TestUtil {
     public void correctUploadPhoto() throws Exception {
         when(userService.getByEmail(user.getEmail())).thenReturn(user);
 
-        System.out.println(photoDto.getFile().getName());
+        log.debug(photoDto.getFile().getName());
 //        mockMvc.perform(post(API_PHOTO)
 //                .contentType(MediaType.APPLICATION_JSON_UTF8)
 //                .content(convertObjectToJsonBytes(photoDto))

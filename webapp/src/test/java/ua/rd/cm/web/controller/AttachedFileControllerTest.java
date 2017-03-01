@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import java.io.IOException;
 /**
  * Created by Volodymyr_Kara on 1/31/2017.
  */
+@Log4j
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
@@ -71,7 +73,7 @@ public class AttachedFileControllerTest {
             MockMultipartFile multipartFile = new MockMultipartFile("file","true.docx","application/pdf", new FileInputStream(file));
             return multipartFile;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.info(e);
             return null;
         }
     }
