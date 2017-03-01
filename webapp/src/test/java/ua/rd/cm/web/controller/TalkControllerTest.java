@@ -719,7 +719,7 @@ public class TalkControllerTest extends TestUtil {
 
     private void expectUnauthorized(ResultActions ra) throws Exception {
         ra.andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(SecurityControllerAdvice.UNAUTHORIZED_MSG)));
+                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
     }
 
     private Talk createTalk(User user) {
