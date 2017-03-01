@@ -33,8 +33,6 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.TalkDto;
-import ua.rd.cm.web.security.AccessDeniedHandlerImpl;
-import ua.rd.cm.web.security.AuthenticationEntryPointImpl;
 
 import javax.servlet.Filter;
 import java.time.LocalDateTime;
@@ -722,7 +720,7 @@ public class TalkControllerTest extends TestUtil {
 
     private void expectUnauthorized(ResultActions ra) throws Exception {
         ra.andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(AuthenticationEntryPointImpl.DEFAULT_UNAUTHORIZED_MSG)));
+                .andExpect(jsonPath("error", is("unauthorized")));
     }
 
     private Talk createTalk(User user) {
