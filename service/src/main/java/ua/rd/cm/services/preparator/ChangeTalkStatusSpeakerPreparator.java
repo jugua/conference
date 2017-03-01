@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 @AllArgsConstructor
 public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparator {
-
     private Talk talk;
 
     @Override
@@ -45,15 +44,7 @@ public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparat
         if (isThereComment()) {
             model.put("comment", talk.getOrganiserComment());
         }
-    }
-
-    @Override
-    public void prepare(MimeMessage mimeMessage) throws Exception {
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-        helper.setSubject("Your talk's status has been updated");
-        helper.setFrom("support@conference.com");
-        helper.setTo((String) model.get("email"));
-        helper.setText(getFreeMarkerTemplateContent(model), true);
+        model.put("subject", "Your talk's status has been updated");
     }
 
     private String defineApprovedTemplate() {

@@ -9,10 +9,12 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ua.rd.cm.domain.User;
+import ua.rd.cm.repository.specification.WhereSpecification;
 import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByFirstName;
 import ua.rd.cm.repository.specification.user.UserById;
@@ -81,43 +83,42 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 	public void testFindAll() {
 		List<User> users = repository.findAll();
 		assertEquals(2, users.size());
-
 	}
 
 	@Test
 	public void testFindByEmail() {
-		List<User> users = repository.findBySpecification(new UserByEmail("test2@gmail.com"));
+		List<User> users = repository.findBySpecification(new WhereSpecification<>(new UserByEmail("test2@gmail.com")));
 		assertEquals(1, users.size());
 		assertEquals("test2@gmail.com", users.get(0).getEmail());
 	}
-	
+
 	@Test
 	public void testByFirstName() {
-		List<User> users = repository.findBySpecification(new UserByFirstName("testName"));
+		List<User> users = repository.findBySpecification(new WhereSpecification<>(new UserByFirstName("testName")));
 		assertEquals(1, users.size());
 		assertEquals(new Long(30), users.get(0).getId());
 	}
-	
+
 	@Test
 	public void findById() {
-		List<User> users = repository.findBySpecification(new UserById(30L));
+		List<User> users = repository.findBySpecification(new WhereSpecification<>(new UserById(30L)));
 		assertEquals(1, users.size());
 		assertEquals(new Long(30), users.get(0).getId());
 	}
-	
+
 	@Test
 	public void findByLastName() {
-		List<User> users = repository.findBySpecification(new UserByLastName("testSurname2"));
+		List<User> users = repository.findBySpecification(new WhereSpecification<>(new UserByLastName("testSurname2")));
 		assertEquals(1, users.size());
 		assertEquals(new Long(31), users.get(0).getId());
 	}
 	
 	private void saveUser(User usr) {
 		jdbcTemplate.update("INSERT INTO user (user_id, first_name, last_name, email, "
-				+ " password, photo, user_info_id) "
-				+ " values(?,?,?,?,?,?,?)",
+				+ " password, photo, user_info_id, status) "
+				+ " values(?,?,?,?,?,?,?,?)",
 				usr.getId(), usr.getFirstName(), usr.getLastName(), usr.getEmail(),
-				usr.getPassword(), usr.getPhoto(), null);
+				usr.getPassword(), usr.getPhoto(), null, usr.getStatus().toString());
 	}
 
 }

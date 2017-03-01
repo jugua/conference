@@ -266,7 +266,7 @@ public class TalkController {
 
     private void notifyOrganiserForSpeakerAction(Talk talk) {
         if (talk.getOrganiser() != null) {
-            mailService.sendEmail(talk.getOrganiser(), new ChangeTalkBySpeakerPreparator(talk));
+            mailService.sendEmail(talk.getOrganiser(), new ChangeTalkBySpeakerPreparator(talk, mailService.getUrl()));
         }
     }
 
@@ -296,7 +296,7 @@ public class TalkController {
         }
         talkService.save(currentTalk, currentUser);
         List<User> receivers = userService.getByRole(Role.ORGANISER);
-        mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk));
+        mailService.notifyUsers(receivers, new SubmitNewTalkOrganiserPreparator(currentTalk, mailService.getUrl()));
         mailService.sendEmail(currentUser, new SubmitNewTalkSpeakerPreparator());
         return currentTalk.getId();
     }

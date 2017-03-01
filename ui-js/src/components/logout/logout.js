@@ -6,7 +6,7 @@ export default (app) => {
     'ngInject';
 
     $stateProvider
-      .state('header.home.logout', {
+      .state('header.logout', {
         controller: logoutController
       });
   }).service('Logout', logoutService);

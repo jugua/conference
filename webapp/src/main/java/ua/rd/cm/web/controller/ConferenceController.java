@@ -40,15 +40,12 @@ public class ConferenceController {
         this.mapper = mapper;
     }
 
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
         return responseEntityConferencesByRole(request, conferences);
     }
 
-
-    @PreAuthorize("isAuthenticated()")
     @GetMapping("/past")
     public ResponseEntity pastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
@@ -103,7 +100,6 @@ public class ConferenceController {
 
     private ConferenceDto conferenceToDto(Conference conference) {
         ConferenceDto conferenceDto = mapper.map(conference, ConferenceDto.class);
-        // set dates
         conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
         conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
         conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
@@ -118,6 +114,7 @@ public class ConferenceController {
                 }
                 talks.put(status, ++count);
             }
+
             conferenceDto.setNewTalkCount(talks.get(TalkStatus.NEW.getName()));
             conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.APPROVED.getName()));
             conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.REJECTED.getName()));

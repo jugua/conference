@@ -14,7 +14,7 @@
     <span class="field-error" ng-if="$ctrl.userForm.mail.$error.confirm_reg">You have to go to your email and confirm your account</span>
     <div class="sign-in__password-cont">
       <label for="sign-in-password" class="form-label">password:</label>
-      <a href="#" ui-sref="header.home.forgotPassword" class="sign-in__forgot" tabindex="3">forgot password?</a>
+      <a href="#" ui-sref="header.home.forgotPassword" class="sign-in__forgot" tabindex="4">forgot password?</a>
     </div>
     <input type="password"
            name="password"
@@ -26,10 +26,11 @@
 
     <input type="submit"
            value="Sign In"
-           class="btn sign-in__submit">
+           class="btn sign-in__submit"
+           tabindex="3">
   </form>
   
   <div class="sign-in__separator"></div>
 
-  <a ui-sref="header.sign-up" class="btn sign-in__create">create new account</a>
+  <a ui-sref="header.sign-up" class="btn sign-in__create" tabindex="5">create new account</a>
 </div>
