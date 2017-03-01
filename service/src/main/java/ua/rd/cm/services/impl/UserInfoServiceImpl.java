@@ -11,6 +11,8 @@ import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import java.util.List;
 
+import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_INFO_NOT_FOUND;
+
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
 
@@ -25,7 +27,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public UserInfo find(Long id) {
         List<UserInfo> usersInfo = userInfoRepository.findBySpecification(new UserInfoById(id));
         if (usersInfo.isEmpty()) {
-            throw new ResourceNotFoundException("user_info_not_found");
+            throw new ResourceNotFoundException(USER_INFO_NOT_FOUND);
         }
         return usersInfo.get(0);
     }

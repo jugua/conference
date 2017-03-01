@@ -12,6 +12,8 @@ import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import java.util.List;
 
+import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE_NOT_FOUND;
+
 @Service
 public class ContactTypeServiceImpl implements ContactTypeService {
 
@@ -26,7 +28,7 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     public ContactType find(Long id) {
         List<ContactType> contatcTypes = contactTypeRepository.findBySpecification(new ContactTypeById(id));
         if (contatcTypes.isEmpty()) {
-            throw new ResourceNotFoundException("contact_type_not_found");
+            throw new ResourceNotFoundException(CONTACT_TYPE_NOT_FOUND);
         }
         return contatcTypes.get(0);
     }

@@ -13,6 +13,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOUND;
+
 @Log4j
 public class FileStorageServiceImpl implements FileStorageService {
     private static final int MAX_FILE_VERSION_TO_CREATE = 100;
@@ -34,11 +36,11 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public File getFile(String fileAbsolutePath) {
         if (fileAbsolutePath == null) {
-            throw new ResourceNotFoundException("file_not_found");
+            throw new ResourceNotFoundException(FILE_NOT_FOUND);
         }
         File searchFile = new File(fileAbsolutePath);
         if (!searchFile.isFile()) {
-            throw new ResourceNotFoundException("file_not_found");
+            throw new ResourceNotFoundException(FILE_NOT_FOUND);
         }
         return searchFile;
     }

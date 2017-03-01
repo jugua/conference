@@ -26,6 +26,8 @@ import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 import java.util.Collections;
 import java.util.List;
 
+import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_NOT_FOUND;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -52,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public User find(Long id) {
         List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserById(id)));
         if (users.isEmpty()) {
-            throw new ResourceNotFoundException("user_not_found");
+            throw new ResourceNotFoundException(USER_NOT_FOUND);
         }
         return users.get(0);
     }
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public User getByEmail(String email) {
         List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserByEmail(email)));
         if (users.isEmpty()) {
-            throw new ResourceNotFoundException("user_not_found");
+            throw new ResourceNotFoundException(USER_NOT_FOUND);
         }
         return users.get(0);
     }

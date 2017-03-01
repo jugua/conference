@@ -12,6 +12,8 @@ import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import java.util.List;
 
+import static ua.rd.cm.services.exception.ResourceNotFoundException.ROLE_NOT_FOUND;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -26,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     public Role find(Long id) {
         List<Role> roles = roleRepository.findBySpecification(new RoleById(id));
         if (roles.isEmpty()) {
-            throw new ResourceNotFoundException("role_not_found");
+            throw new ResourceNotFoundException(ROLE_NOT_FOUND);
         }
         return roles.get(0);
     }
