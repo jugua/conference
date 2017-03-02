@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Conference;
-import ua.rd.cm.domain.Topic;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.repository.ConferenceRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
@@ -19,7 +18,6 @@ import ua.rd.cm.services.exception.ConferenceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -46,11 +44,6 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     public void save(CreateConferenceDto dto) {
         Conference conference = modelMapper.map(dto, Conference.class);
-        conference.setTopics(dto.getTopicIds().stream().map(i -> {
-            Topic topic = new Topic();
-            topic.setId(i);
-            return topic;
-        }).collect(Collectors.toList()));
         conferenceRepository.save(conference);
     }
 
