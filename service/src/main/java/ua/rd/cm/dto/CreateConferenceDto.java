@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -41,13 +42,13 @@ public class CreateConferenceDto {
     private boolean noCallForPaperDates;
 
     @JsonProperty("topics")
-    private List<Long> topicIds;
+    private List<Long> topicIds = new ArrayList<>();
     @JsonProperty("types")
-    private List<Long> typeIds;
+    private List<Long> typeIds = new ArrayList<>();
     @JsonProperty("languages")
-    private List<Long> languageIds;
+    private List<Long> languageIds = new ArrayList<>();
     @JsonProperty("levels")
-    private List<Long> levelIds;
+    private List<Long> levelIds = new ArrayList<>();
     @JsonProperty("organisers")
-    private List<Long> organiserIds;
+    private List<Long> organiserIds = new ArrayList<>();
 }
