@@ -40,10 +40,14 @@ public class CreateConferenceDto {
     @JsonProperty("cfp_no_dates")
     private boolean noCallForPaperDates;
 
-    @JsonProperty("types")
-    private List<Long> typeIds;
-    @JsonProperty("organisers")
-    private List<Long> organiserIds;
     @JsonProperty("topics")
     private List<Long> topicIds;
+    @JsonProperty("types")
+    private List<Long> typeIds;
+    @JsonProperty("languages")
+    private List<Long> languageIds;
+    @JsonProperty("levels")
+    private List<Long> levelIds;
+    @JsonProperty("organisers")
+    private List<Long> organiserIds;
 }
