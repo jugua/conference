@@ -7,8 +7,8 @@ import ua.rd.cm.repository.ConferenceRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.OrSpecification;
 import ua.rd.cm.repository.specification.conference.ConferenceById;
-import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateEarlierThanNow;
+import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateLaterOrEqualToNow;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
@@ -27,11 +27,11 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public Conference findById(Long id) {
-        List<Conference> results = conferenceRepository.findBySpecification(new ConferenceById(id));
-        if (results.isEmpty()) {
+        List<Conference> conferences = conferenceRepository.findBySpecification(new ConferenceById(id));
+        if (conferences.isEmpty()) {
             throw new ConferenceNotFoundException();
         }
-        return results.get(0);
+        return conferences.get(0);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ConferenceServiceImpl implements ConferenceService {
                         new ConferenceEndDateIsNull(true),
                         new ConferenceEndDateLaterOrEqualToNow()
                 )
-            );
+        );
         fillCallForPaperDatesActive(conferences);
         return conferences;
     }

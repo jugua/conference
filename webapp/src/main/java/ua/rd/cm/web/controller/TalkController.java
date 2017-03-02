@@ -19,7 +19,6 @@ import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;

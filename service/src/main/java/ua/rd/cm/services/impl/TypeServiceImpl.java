@@ -8,9 +8,9 @@ import ua.rd.cm.repository.TypeRepository;
 import ua.rd.cm.repository.specification.type.TypeById;
 import ua.rd.cm.repository.specification.type.TypeByName;
 import ua.rd.cm.services.TypeService;
+import ua.rd.cm.services.exception.TypeNotFoundException;
 
 import java.util.List;
-
 
 @Service
 public class TypeServiceImpl implements TypeService {
@@ -24,7 +24,11 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public Type find(Long id) {
-        return typeRepository.findBySpecification(new TypeById(id)).get(0);
+        List<Type> types = typeRepository.findBySpecification(new TypeById(id));
+        if (types.isEmpty()) {
+            throw new TypeNotFoundException();
+        }
+        return types.get(0);
     }
 
     @Override
@@ -41,7 +45,9 @@ public class TypeServiceImpl implements TypeService {
     @Override
     public Type getByName(String name) {
         List<Type> list = typeRepository.findBySpecification(new TypeByName(name));
-        if (list.isEmpty()) return null;
-        else return list.get(0);
+        if (list.isEmpty()) {
+            throw new TypeNotFoundException();
+        }
+        return list.get(0);
     }
 }

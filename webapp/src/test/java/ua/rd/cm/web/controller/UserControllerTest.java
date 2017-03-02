@@ -2,10 +2,12 @@ package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
 import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.web.controller.dto.UserDto;
 
 import javax.servlet.Filter;
@@ -104,6 +107,11 @@ public class UserControllerTest extends TestUtil{
                 return (String) args[0];
             }
         });
+    }
+
+    @After
+    public void after() {
+        Mockito.reset(userService, userInfoService, contactTypeService);
     }
 
     @Test
@@ -387,7 +395,7 @@ public class UserControllerTest extends TestUtil{
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void getUserById() throws Exception{
         User user=createUser();
-        when(userService.find(1L)).thenReturn(user);
+        when(userService.find(anyLong())).thenReturn(user);
         mockMvc.perform(prepareGetRequest(API_USER+"/"+1)
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("fname", is(user.getFirstName())))
@@ -417,7 +425,7 @@ public class UserControllerTest extends TestUtil{
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void notFoundUserById() throws Exception{
 
-        when(userService.find(1L)).thenReturn(null);
+        when(userService.find(1L)).thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
                 andExpect(status().isNotFound());
     }
