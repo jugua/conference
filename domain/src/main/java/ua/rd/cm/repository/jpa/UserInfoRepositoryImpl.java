@@ -13,12 +13,12 @@ import java.util.List;
  * @author Olha_Melnyk
  */
 @Repository
-public class JpaUserInfoRepository implements UserInfoRepository {
+public class UserInfoRepositoryImpl implements UserInfoRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    private Logger logger = Logger.getLogger(JpaUserInfoRepository.class);
+    private Logger logger = Logger.getLogger(UserInfoRepositoryImpl.class);
 
     @Override
     public void saveUserInfo(UserInfo userInfo) {

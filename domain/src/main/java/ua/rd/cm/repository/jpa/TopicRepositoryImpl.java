@@ -13,7 +13,7 @@ import java.util.List;
  * @author Mariia Lapovska
  */
 @Repository
-public class JpaTopicRepository implements TopicRepository {
+public class TopicRepositoryImpl implements TopicRepository {
 
     @PersistenceContext
     private EntityManager em;

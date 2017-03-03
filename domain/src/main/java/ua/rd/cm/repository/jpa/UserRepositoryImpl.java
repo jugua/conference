@@ -10,12 +10,12 @@ import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.Specification;
 
 @Repository
-public class JpaUserRepository implements UserRepository {
+public class UserRepositoryImpl implements UserRepository {
 
 	@PersistenceContext
 	private EntityManager em;
 
-	private Logger logger = Logger.getLogger(JpaUserRepository.class);
+	private Logger logger = Logger.getLogger(UserRepositoryImpl.class);
 
 	@Override
 	public void saveUser(User user) {

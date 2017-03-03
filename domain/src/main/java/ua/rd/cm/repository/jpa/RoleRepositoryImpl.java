@@ -13,12 +13,12 @@ import java.util.List;
  * @author Mariia Lapovska
  */
 @Repository
-public class JpaRoleRepository implements RoleRepository {
+public class RoleRepositoryImpl implements RoleRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    private Logger logger = Logger.getLogger(JpaRoleRepository.class);
+    private Logger logger = Logger.getLogger(RoleRepositoryImpl.class);
 
     @Override
     public void saveRole(Role role) {

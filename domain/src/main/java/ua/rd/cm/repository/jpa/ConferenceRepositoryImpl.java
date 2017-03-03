@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
-public class JpaConferenceRepository implements ConferenceRepository {
+public class ConferenceRepositoryImpl implements ConferenceRepository {
 
     @PersistenceContext
     private EntityManager em;

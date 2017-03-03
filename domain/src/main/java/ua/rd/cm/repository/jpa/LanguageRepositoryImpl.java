@@ -12,7 +12,7 @@ import java.util.List;
  * @author Olha_Melnyk
  */
 @Repository
-public class JpaLanguageRepository implements LanguageRepository {
+public class LanguageRepositoryImpl implements LanguageRepository {
 
     @PersistenceContext
     private EntityManager em;

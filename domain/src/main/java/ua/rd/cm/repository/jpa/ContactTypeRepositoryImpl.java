@@ -14,12 +14,12 @@ import java.util.List;
  * @author Olha_Melnyk
  */
 @Repository
-public class JpaContactTypeRepository implements ContactTypeRepository {
+public class ContactTypeRepositoryImpl implements ContactTypeRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    private Logger logger = Logger.getLogger(JpaContactTypeRepository.class);
+    private Logger logger = Logger.getLogger(ContactTypeRepositoryImpl.class);
 
     @Override
     public void saveContactType(ContactType contactType) {

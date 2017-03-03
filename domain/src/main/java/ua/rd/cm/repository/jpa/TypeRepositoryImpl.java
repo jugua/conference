@@ -13,7 +13,7 @@ import java.util.List;
  * @author Mariia Lapovska
  */
 @Repository
-public class JpaTypeRepository implements TypeRepository {
+public class TypeRepositoryImpl implements TypeRepository {
 
     @PersistenceContext
     private EntityManager em;

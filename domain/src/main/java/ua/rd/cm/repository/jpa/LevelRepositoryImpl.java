@@ -12,7 +12,7 @@ import java.util.List;
  * @author Olha_Melnyk
  */
 @Repository
-public class JpaLevelRepository implements LevelRepository {
+public class LevelRepositoryImpl implements LevelRepository {
 
     @PersistenceContext
     private EntityManager em;

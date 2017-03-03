@@ -12,7 +12,7 @@ import ua.rd.cm.repository.TalkRepository;
 import ua.rd.cm.repository.specification.Specification;
 
 @Repository
-public class JpaTalkRepository implements TalkRepository {
+public class TalkRepositoryImpl implements TalkRepository {
 
 	@PersistenceContext
 	private EntityManager em;

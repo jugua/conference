@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class JpaVerificationTokenRepository implements VerificationTokenRepository {
+public class VerificationTokenRepositoryImpl implements VerificationTokenRepository {
 
     @PersistenceContext
     private EntityManager em;
