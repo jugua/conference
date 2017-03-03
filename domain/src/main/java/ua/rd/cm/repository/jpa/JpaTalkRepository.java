@@ -1,4 +1,4 @@
-package ua.rd.cm.repository;
+package ua.rd.cm.repository.jpa;
 
 import java.util.List;
 
@@ -8,10 +8,11 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import ua.rd.cm.domain.Talk;
+import ua.rd.cm.repository.TalkRepository;
 import ua.rd.cm.repository.specification.Specification;
 
 @Repository
-public class JpaTalkRepository implements TalkRepository{
+public class JpaTalkRepository implements TalkRepository {
 
 	@PersistenceContext
 	private EntityManager em;

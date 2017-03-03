@@ -1,7 +1,8 @@
-package ua.rd.cm.repository;
+package ua.rd.cm.repository.jpa;
 
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.repository.ConferenceRepository;
 import ua.rd.cm.repository.specification.Specification;
 import ua.rd.cm.repository.specification.conference.ConferenceById;
 

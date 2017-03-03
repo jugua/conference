@@ -1,7 +1,8 @@
-package ua.rd.cm.repository;
+package ua.rd.cm.repository.jpa;
 
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.VerificationToken;
+import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.repository.specification.Specification;
 
 import javax.persistence.EntityManager;
@@ -9,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class JpaVerificationTokenRepository implements VerificationTokenRepository{
+public class JpaVerificationTokenRepository implements VerificationTokenRepository {
 
     @PersistenceContext
     private EntityManager em;

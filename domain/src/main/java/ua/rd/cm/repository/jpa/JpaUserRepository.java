@@ -1,4 +1,4 @@
-package ua.rd.cm.repository;
+package ua.rd.cm.repository.jpa;
 
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -6,10 +6,11 @@ import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.Specification;
 
 @Repository
-public class JpaUserRepository implements UserRepository{
+public class JpaUserRepository implements UserRepository {
 
 	@PersistenceContext
 	private EntityManager em;

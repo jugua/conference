@@ -1,7 +1,8 @@
-package ua.rd.cm.repository;
+package ua.rd.cm.repository.jpa;
 
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Language;
+import ua.rd.cm.repository.LanguageRepository;
 import ua.rd.cm.repository.specification.Specification;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

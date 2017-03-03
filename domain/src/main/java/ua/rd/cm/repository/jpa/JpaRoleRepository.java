@@ -1,8 +1,9 @@
-package ua.rd.cm.repository;
+package ua.rd.cm.repository.jpa;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Role;
+import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.specification.Specification;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
