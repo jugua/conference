@@ -12,14 +12,19 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.config.InMemoRepositoryConfig;
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.domain.Language;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.OrSpecification;
 import ua.rd.cm.repository.specification.Specification;
-import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateEarlierThanNow;
+import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateLaterOrEqualToNow;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -31,7 +36,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = InMemoRepositoryConfig.class)
 @TestExecutionListeners(listeners = {
         DependencyInjectionTestExecutionListener.class,
-        TransactionDbUnitTestExecutionListener.class
+        TransactionDbUnitTestExecutionListener.class,
 })
 public class JpaConferenceRepositoryIT {
     private static final Specification<Conference> UPCOMING = new OrSpecification<>(
@@ -45,6 +50,8 @@ public class JpaConferenceRepositoryIT {
 
     @Autowired
     private ConferenceRepository conferenceRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Test
     public void getByIdShouldReturnNullIfDatabaseEmpty() {
@@ -146,10 +153,16 @@ public class JpaConferenceRepositoryIT {
         assertTrue(past.isEmpty());
     }
 
-    @Test
-    @DatabaseSetup("ds/insert-conference.xml")
-    public void saveShouldInsertCorrectlyLinkedEntities() {
+    @Test(expected = PersistenceException.class)
+    @DatabaseSetup("/ds/insert-conference.xml")
+    public void saveShouldThrowExceptionIfTryingToInsertNonExisting() {
+        Conference expected = createWithName("expected");
+        Language language = new Language();
+        language.setId(-1L);
+        expected.setLanguages(Arrays.asList(language));
 
+        conferenceRepository.save(expected);
+        entityManager.flush();
     }
 
     private static Conference createWithName(String title) {
