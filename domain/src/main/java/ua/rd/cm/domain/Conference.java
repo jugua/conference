@@ -16,8 +16,7 @@ import java.util.Collection;
         "topics", "types", "languages", "levels", "talks", "organisers"
 })
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1,
-        sequenceName = "conf_seq")
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "conf_seq")
 @Table(name = "conference")
 @AttributeOverride(name = "id", column = @Column(name = "conference_id"))
 public class Conference extends AbstractEntity {
