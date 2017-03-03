@@ -19,6 +19,7 @@ import java.util.Collection;
 @SequenceGenerator(name = "seq", allocationSize = 1,
         sequenceName = "conf_seq")
 @Table(name = "conference")
+@AttributeOverride(name = "id", column = @Column(name = "conference_id"))
 public class Conference extends AbstractEntity {
 
     @Column(name = "title", nullable = false)
