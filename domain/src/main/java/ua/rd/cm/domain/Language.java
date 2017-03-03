@@ -1,32 +1,24 @@
 package ua.rd.cm.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-/**
- * @author Artem_Pryzhkov
- */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "language")
-@SequenceGenerator(name = "seqLanguageGen", allocationSize = 1,
-        sequenceName = "language_seq")
-public class Language {
-
-    @Id
-    @Column(name = "language_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqLanguageGen")
-    private Long id;
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "language_seq")
+@AttributeOverride(name = "id", column = @Column(name = "language_id"))
+public class Language extends AbstractEntity {
 
     @Column(name = "language_name", nullable = false, unique = true)
     private String name;
+
+    public Language(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
