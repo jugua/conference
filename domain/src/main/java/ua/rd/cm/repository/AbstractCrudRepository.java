@@ -8,26 +8,35 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class AbstractCrudRepository<T> implements CrudRepository<T> {
-    private final Class<T> type;
+    private static final String DEFAULT_PREFIX = "e";
+    private static final String SELECT_QUERY = "SELECT %s FROM %s %s";
+
+    protected final String prefix;
+    protected final Class<T> type;
+    protected final String selectJpql;
 
     @PersistenceContext
     protected EntityManager entityManager;
 
     public AbstractCrudRepository(Class<T> type) {
+        this(DEFAULT_PREFIX, type);
+    }
+
+    public AbstractCrudRepository(String prefix, Class<T> type) {
+        this.prefix = prefix;
         this.type = type;
+        this.selectJpql = String.format(SELECT_QUERY, prefix, type.getSimpleName(), prefix);
     }
 
     @Override
     public List<T> findAll() {
-        return entityManager.createQuery(
-                String.format("SELECT e FROM %s e", type.getSimpleName()), type
-        ).getResultList();
+        return entityManager.createQuery(selectJpql, type).getResultList();
     }
 
     @Override
     public List<T> findBySpecification(Specification<T> spec) {
         TypedQuery<T> query = entityManager.createQuery(
-                String.format("SELECT e FROM %s e WHERE %s", type.getSimpleName(), spec.toSqlClauses()),
+                selectJpql + " WHERE " + spec.toSqlClauses(),
                 type
         );
         spec.setParameters(query);
