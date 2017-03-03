@@ -7,7 +7,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
 @MappedSuperclass
 public abstract class AbstractEntity {
 
