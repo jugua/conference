@@ -52,7 +52,7 @@ public class JpaConferenceRepositoryIT {
     }
 
     @Test
-    @DatabaseSetup("/ds/conference-ds.xml")
+    @DatabaseSetup("/ds/conference.xml")
     public void getByIdShouldReturnPersisted() {
         assertNotNull(conferenceRepository.findById(-100L));
     }
@@ -67,7 +67,7 @@ public class JpaConferenceRepositoryIT {
     }
 
     @Test
-    @DatabaseSetup("/ds/conference-ds.xml")
+    @DatabaseSetup("/ds/conference.xml")
     public void updateShouldUpdateCorrectly() {
         String newTitle = "test 1122";
 
@@ -80,7 +80,7 @@ public class JpaConferenceRepositoryIT {
     }
 
     @Test
-    @DatabaseSetup("/ds/conference-ds.xml")
+    @DatabaseSetup("/ds/conference.xml")
     public void removeShouldRemoveFromDatabase() {
         long id = -100;
         Conference byId = conferenceRepository.findById(id);
@@ -90,21 +90,21 @@ public class JpaConferenceRepositoryIT {
     }
 
     @Test
-    @DatabaseSetup("/ds/conference-ds.xml")
+    @DatabaseSetup("/ds/conference.xml")
     public void findUpcomingShouldContainConferenceWithNoDateSpecified() {
         List<Conference> upcoming = conferenceRepository.findBySpecification(UPCOMING);
         assertFalse(upcoming.isEmpty());
     }
 
     @Test
-    @DatabaseSetup("/ds/upcoming-conference-ds.xml")
+    @DatabaseSetup("/ds/upcoming-conference.xml")
     public void findUpcomingShouldContainConferenceWhichEndsInFuture() {
         List<Conference> upcoming = conferenceRepository.findBySpecification(UPCOMING);
         assertFalse(upcoming.isEmpty());
     }
 
     @Test
-    @DatabaseSetup("/ds/past-conference-ds.xml")
+    @DatabaseSetup("/ds/past-conference.xml")
     public void findUpcomingShouldNotContainConferenceThatHasAlreadyStarted() {
         List<Conference> upcoming = conferenceRepository.findBySpecification(UPCOMING);
         assertTrue(upcoming.isEmpty());
@@ -133,17 +133,23 @@ public class JpaConferenceRepositoryIT {
     }
 
     @Test
-    @DatabaseSetup("/ds/past-conference-ds.xml")
+    @DatabaseSetup("/ds/past-conference.xml")
     public void findPastShouldContainPastConferences() {
         List<Conference> past = conferenceRepository.findBySpecification(PAST);
         assertFalse(past.isEmpty());
     }
 
     @Test
-    @DatabaseSetup("/ds/upcoming-conference-ds.xml")
+    @DatabaseSetup("/ds/upcoming-conference.xml")
     public void findPastShouldReturnEmptyIfThereIsNoPastConferences() {
         List<Conference> past = conferenceRepository.findBySpecification(PAST);
         assertTrue(past.isEmpty());
+    }
+
+    @Test
+    @DatabaseSetup("ds/insert-conference.xml")
+    public void saveShouldInsertCorrectlyLinkedEntities() {
+
     }
 
     private static Conference createWithName(String title) {
