@@ -9,18 +9,17 @@ import java.util.Collection;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
+@EqualsAndHashCode(callSuper = false, exclude = {
+        "topics", "types", "languages", "levels", "talks", "organisers"
+})
+@ToString(exclude = {
+        "topics", "types", "languages", "levels", "talks", "organisers"
+})
 @Entity
-@SequenceGenerator(name = "seqConfGen", allocationSize = 1,
+@SequenceGenerator(name = "seq", allocationSize = 1,
         sequenceName = "conf_seq")
 @Table(name = "conference")
-public class Conference {
-
-    @Id
-    @Column(name = "conference_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqConfGen")
-    private Long id;
+public class Conference extends AbstractEntity {
 
     @Column(name = "title", nullable = false)
     private String title;
