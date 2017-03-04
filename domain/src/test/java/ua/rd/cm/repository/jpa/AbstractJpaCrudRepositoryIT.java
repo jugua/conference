@@ -44,10 +44,6 @@ public abstract class AbstractJpaCrudRepositoryIT<T> {
     }
 
     @Test
-    public void saveShouldGenerateId() throws Exception {
-    }
-
-    @Test
     public void save() throws Exception {
     }
 
