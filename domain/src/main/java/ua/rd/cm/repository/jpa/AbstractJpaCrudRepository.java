@@ -1,5 +1,6 @@
-package ua.rd.cm.repository;
+package ua.rd.cm.repository.jpa;
 
+import ua.rd.cm.repository.CrudRepository;
 import ua.rd.cm.repository.specification.Specification;
 
 import javax.persistence.EntityManager;
@@ -7,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class AbstractCrudRepository<T> implements CrudRepository<T> {
+public class AbstractJpaCrudRepository<T> implements CrudRepository<T> {
     private static final String DEFAULT_PREFIX = "e";
     private static final String SELECT_QUERY = "SELECT %s FROM %s %s";
 
@@ -18,11 +19,11 @@ public class AbstractCrudRepository<T> implements CrudRepository<T> {
     @PersistenceContext
     protected EntityManager entityManager;
 
-    public AbstractCrudRepository(Class<T> type) {
+    public AbstractJpaCrudRepository(Class<T> type) {
         this(DEFAULT_PREFIX, type);
     }
 
-    public AbstractCrudRepository(String prefix, Class<T> type) {
+    public AbstractJpaCrudRepository(String prefix, Class<T> type) {
         this.prefix = prefix;
         this.type = type;
         this.selectJpql = String.format(SELECT_QUERY, prefix, type.getSimpleName(), prefix);
