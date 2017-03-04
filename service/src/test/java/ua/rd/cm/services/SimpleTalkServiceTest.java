@@ -46,14 +46,14 @@ public class SimpleTalkServiceTest {
     public void testUpdate() throws Exception {
         Talk talk = new Talk();
         talkService.update(talk);
-        verify(talkRepository).updateTalk(refEq(talk));
+        verify(talkRepository).update(refEq(talk));
     }
 
     @Test
     public void testRemove() throws Exception {
         Talk talk = new Talk();
         talkService.remove(talk);
-        verify(talkRepository).removeTalk(refEq(talk));
+        verify(talkRepository).remove(refEq(talk));
     }
 
     @Test

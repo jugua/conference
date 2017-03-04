@@ -5,4 +5,11 @@
     <language language_id="-1" language_name="ua"/>
     <level level_id="-1" level_name="beginner"/>
     <role role_id="-1" role_name="user"/>
+    <user user_id="-1" first_name="Dread" last_name="Musk" email="Elon_Musk@"
+          password="ctrhtnbr" status="CONFIRMED"/>
+    <user_info user_info_id="-1" company="test" job_title="junior" short_bio="pfitk gjccfnm"/>
+    <topic topic_id="-1" topic_name="RNN"/>
+    <type type_id="-1" type_name="name"/>
+    <talk talk_id="-1" title="Joker" user_id="-1" topic_id="-1" type_id="-1" language_id="-1" level_id="-1"
+          description="some descr" time="1996-10-04 22:57:48.00"/>
 </dataset>
