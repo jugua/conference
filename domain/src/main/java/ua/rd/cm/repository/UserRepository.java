@@ -1,6 +1,9 @@
 package ua.rd.cm.repository;
 
 import ua.rd.cm.domain.User;
+import ua.rd.cm.repository.specification.Specification;
+
+import java.util.List;
 
 /**
  * Repository
@@ -8,4 +11,6 @@ import ua.rd.cm.domain.User;
  * @see User
  */
 public interface UserRepository extends CrudRepository<User> {
+
+    List<User> findAllWithRoles(Specification<User> spec);
 }

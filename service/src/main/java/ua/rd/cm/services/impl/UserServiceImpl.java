@@ -113,14 +113,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getByRole(String role) {
-        return userRepository.findBySpecification(new UserByRoleJoin(new UserByRole(role)));
+        return userRepository.findAllWithRoles(new UserByRole(role));
     }
 
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
-        return userRepository.findBySpecification(
+        return userRepository.findAllWithRoles(
                 new AndSpecification<>(
-                        new UserByRoleJoin(new UserByRole(roleName)),
+                        new UserByRole(roleName),
                         new UserExceptThisById(currentUser.getId())
                 )
         );
@@ -134,8 +134,7 @@ public class UserServiceImpl implements UserService {
             for (int i = 1; i < roles.length; i++) {
                 current = new OrSpecification<>(current, new UserByRole(roles[i]));
             }
-            current = new UserByRoleJoin(current);
-            users = userRepository.findBySpecification(new UserOrderByLastName(
+            users = userRepository.findAllWithRoles(new UserOrderByLastName(
                             new AndSpecification<>(
                                     current,
                                     new UserExceptThisById(currentUser.getId())
