@@ -2,4 +2,5 @@
 <dataset>
     <conference conference_id="-1" title="JavaDay" description="Some" location="Kiev"/>
     <contact_type contact_type_id="-1" contact_type_name="twitter"/>
+    <language language_id="-1" language_name="ua"/>
 </dataset>
