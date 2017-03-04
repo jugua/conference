@@ -22,13 +22,10 @@ import net.sf.log4jdbc.tools.LoggingType;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-/**
- * @author Mariia Lapovska
- */
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
-public class InMemoRepositoryConfig {
+public class InMemoryRepositoryConfig {
 
     @Bean
     public DataSource dataSourceSpied() {
