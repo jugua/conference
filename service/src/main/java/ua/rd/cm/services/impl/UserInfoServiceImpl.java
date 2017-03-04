@@ -29,12 +29,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     @Transactional
     public void save(UserInfo userInfo) {
-        userInfoRepository.saveUserInfo(userInfo);
+        userInfoRepository.save(userInfo);
     }
 
     @Override
     @Transactional
     public void update(UserInfo userInfo) {
-        userInfoRepository.updateUserInfo(userInfo);
+        userInfoRepository.update(userInfo);
     }
 }
