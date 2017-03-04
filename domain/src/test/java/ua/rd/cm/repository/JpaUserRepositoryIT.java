@@ -9,7 +9,6 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,7 +52,7 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 				".com",	"tribel1234PASSWORD3",
 				"testUrl3",  User.UserStatus.CONFIRMED,null, null);
 		
-		repository.saveUser(user);
+		repository.save(user);
 		
 		em.flush();
  		String queryUserName = jdbcTemplate.queryForObject("SELECT u.first_name FROM user u WHERE u.user_id = 1"
@@ -69,10 +68,10 @@ public class JpaUserRepositoryIT extends RepositoryTestConfig{
 				".com", "tribel1234PASSWORD3",
 				"testUrl3",  User.UserStatus.CONFIRMED,null, null);
 		
-		repository.saveUser(user);
+		repository.save(user);
 		user.setId(2L);
 		user.setEmail("newemail@emai.com");
-		repository.updateUser(user);
+		repository.update(user);
 		em.flush();
 		String email = jdbcTemplate.queryForObject("SELECT u.email FROM user u WHERE u.user_id = 2", String.class);
 		assertEquals("newemail@emai.com", email);

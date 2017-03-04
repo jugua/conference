@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 		if (user.getUserInfo() == null) {
 		    user.setUserInfo(new UserInfo());
 		}
-		userRepository.saveUser(user);
+		userRepository.save(user);
 	}
 	
 	@Override
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void updateUserProfile(User user) {
-		userRepository.updateUser(user);
+		userRepository.update(user);
 	}
 
 	@Override
