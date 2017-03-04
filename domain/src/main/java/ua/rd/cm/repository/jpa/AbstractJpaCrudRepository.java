@@ -50,9 +50,8 @@ public class AbstractJpaCrudRepository<T> implements CrudRepository<T> {
     }
 
     @Override
-    public T save(T entity) {
+    public void save(T entity) {
         entityManager.persist(entity);
-        return entity;
     }
 
     @Override
