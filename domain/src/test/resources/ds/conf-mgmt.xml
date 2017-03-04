@@ -4,4 +4,5 @@
     <contact_type contact_type_id="-1" contact_type_name="twitter"/>
     <language language_id="-1" language_name="ua"/>
     <level level_id="-1" level_name="beginner"/>
+    <role role_id="-1" role_name="user"/>
 </dataset>
