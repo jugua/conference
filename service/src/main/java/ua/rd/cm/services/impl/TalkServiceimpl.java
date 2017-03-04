@@ -26,8 +26,8 @@ public class TalkServiceimpl implements TalkService {
 
     @Override
     @Transactional
-    public void save(Talk talk) {
-        talkRepository.saveTalk(talk);
+    public void save(Talk talk){
+        talkRepository.save(talk);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TalkServiceimpl implements TalkService {
     public void save(Talk talk,User user) {
         talk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
         talk.setUser(user);
-        talkRepository.saveTalk(talk);
+        talkRepository.save(talk);
     }
 
     @Override

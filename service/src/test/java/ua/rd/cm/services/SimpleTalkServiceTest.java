@@ -39,7 +39,7 @@ public class SimpleTalkServiceTest {
     public void testSave() throws Exception {
         Talk talk = new Talk();
         talkService.save(talk);
-        verify(talkRepository).saveTalk(refEq(talk));
+        verify(talkRepository).save(refEq(talk));
     }
 
     @Test
