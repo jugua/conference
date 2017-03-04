@@ -30,7 +30,7 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public void save(Level level) {
-        levelRepository.saveLevel(level);
+        levelRepository.save(level);
     }
 
     @Override
