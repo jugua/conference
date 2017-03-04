@@ -54,7 +54,7 @@ public class JpaContactTypeRepositoryIT extends RepositoryTestConfig {
     public void testSaveContactType() {
         ContactType contactType = new ContactType();
         contactType.setName("YouTube");
-        contactTypeRepository.saveContactType(contactType);
+        contactTypeRepository.save(contactType);
         em.flush();
 
         String actualName = jdbcTemplate.queryForObject("SELECT n.contact_type_name FROM contact_type n WHERE n.contact_type_id= 2", String.class);
@@ -66,9 +66,9 @@ public class JpaContactTypeRepositoryIT extends RepositoryTestConfig {
     public void testUpdateContactType() {
         ContactType contactType = new ContactType();
         contactType.setName("YouTube");
-        contactTypeRepository.saveContactType(contactType);
+        contactTypeRepository.save(contactType);
         contactType.setName("RuTube");
-        contactTypeRepository.updateContactType(contactType);
+        contactTypeRepository.update(contactType);
         em.flush();
         String actualName = jdbcTemplate.queryForObject("SELECT n.contact_type_name FROM contact_type n WHERE n.contact_type_id= 1", String.class);
         assertEquals(contactType.getName(), actualName);

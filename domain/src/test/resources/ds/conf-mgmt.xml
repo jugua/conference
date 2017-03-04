@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataset>
     <conference conference_id="-1" title="JavaDay" description="Some" location="Kiev"/>
+    <contact_type contact_type_id="-1" contact_type_name="twitter"/>
 </dataset>
