@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 @Entity
 @SequenceGenerator(name = "seqTokenGen", allocationSize = 1,
         sequenceName = "token_seq")
+@Table(name = "verification_token")
 public class VerificationToken {
 
     public static final int EXPIRATION_IN_MINUTES = 60;
@@ -32,7 +33,7 @@ public class VerificationToken {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(name="expiry_date", nullable = false)
     private LocalDateTime expiryDate;
 
     @Enumerated(EnumType.STRING)
