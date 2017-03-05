@@ -9,7 +9,8 @@ class EditEmailService {
       errInvalidEmail: 'Please enter a valid email address',
       errEmailIsTheSame: 'The new e-mail address you have provided is the same as your current e-mail address',
       errEmailAlreadyExists: 'There is an existing account associated with {{email}}',
-      confirmationSent: 'We\'ve sent a confirmation link to your new email address, please check your inbox and confirm your changes'
+      confirmationSent: `We've sent a confirmation link to your new email address,
+                         please check your inbox and confirm your changes`
     };
   }
 

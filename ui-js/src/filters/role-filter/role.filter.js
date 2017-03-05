@@ -11,6 +11,8 @@ export default () => {
     if (input.indexOf('ROLE_ORGANISER') !== -1) {
       return 'Organiser';
     }
+
+    return false;   // consistent return
   }
 
   return roleFilter;
