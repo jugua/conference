@@ -31,5 +31,8 @@ module.exports = {
 
     // FormData Web API
     "FormData": false,
+
+    // Own global Angular app bootstrapping function
+    "include_all_modules": false,
   }
 }

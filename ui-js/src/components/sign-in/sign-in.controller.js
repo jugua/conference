@@ -54,7 +54,7 @@ export default class SignInController {
     if (redirectStateName) {
       this.localStorageService.removeItem('redirectStateName');
       this.localStorageService.removeItem('redirectStateParams');
-      this.state.go(redirectStateName, redirectStateParams, {reload: true});
+      this.state.go(redirectStateName, redirectStateParams, { reload: true });
     } else {
       this.service.callTheEvent();
     }

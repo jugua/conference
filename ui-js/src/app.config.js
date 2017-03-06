@@ -1,5 +1,5 @@
 export default (app) => {
-  app.run(($rootScope, $http) => {
+  app.run(($rootScope) => {
     'ngInject';
 
     $rootScope.$on('$stateChangeSuccess', () => {
@@ -16,7 +16,7 @@ export default (app) => {
         if (!date) {
           return '';
         }
-        return date.toLocaleString('es', {day: '2-digit', month: '2-digit', year: 'numeric'});
+        return date.toLocaleString('es', { day: '2-digit', month: '2-digit', year: 'numeric' });
       };
     });
 };

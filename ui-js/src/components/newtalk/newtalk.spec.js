@@ -2,7 +2,8 @@ import NewtalkController from './newtalk.controller';
 
 
 describe('NewTalk state', () => {
-  let sut, userServiceMock;
+  let sut;
+  let userServiceMock;
 
   beforeEach(() => {
     userServiceMock = {
@@ -23,8 +24,4 @@ describe('NewTalk state', () => {
       expect(sut.isEmptyBio).toEqual(true);
     }
   });
-
 });
-
-
-

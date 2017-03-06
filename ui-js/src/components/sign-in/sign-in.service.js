@@ -1,12 +1,13 @@
 class SignIn {
-  constructor($http, $q, $window, $rootScope) {
-    'ngInject'
+  constructor($http, $q, $window, $rootScope, $document) {
+    'ngInject';
 
     this.userInfo = null;
     this.http = $http;
     this.q = $q;
     this.window = $window;
     this.rootScope = $rootScope;
+    this.document = $document[0];     // $document is a jqLite collection
   }
 
   utf8ToB64(str) {
@@ -18,11 +19,11 @@ class SignIn {
     let headers;
     let body;
 
-    if (document.cookie.indexOf('XSRF') === -1) {
+    if (this.document.cookie.indexOf('XSRF') === -1) {
       headers = {};
       body = user;
     } else {
-      headers = user ? { authorization: 'Basic '+ this.utf8ToB64(user.mail + ':' + user.password) } : { };
+      headers = user ? { authorization: `Basic ${this.utf8ToB64(`${user.mail}:${user.password}`)}` } : { };
       body = {};
     }
 

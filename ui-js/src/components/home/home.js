@@ -23,6 +23,4 @@ export default (app) => {
     .component('homeSpeaker', homeSpeakerComponent)
     .component('homeAdmin', homeAdminComponent)
     .component('conferenceCard', conferenceCardComponent);
-
-
 };

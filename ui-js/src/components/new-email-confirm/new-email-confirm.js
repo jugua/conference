@@ -11,13 +11,11 @@ export default (app) => {
           'ngInject';
 
           NewEmailConfirmService.emailConfirm($stateParams.token)
-            .then((res) => {
-              console.log(res);
+            .then(() => {
               Current.getInfo();
               $state.go('header.home', {}, { reload: true });
             })
-            .catch((err) => {
-              console.log(err);
+            .catch(() => {
               $state.go('header.invalidLink', {}, { reload: true });
             });
         }
