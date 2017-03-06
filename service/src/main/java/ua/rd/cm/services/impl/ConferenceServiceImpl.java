@@ -42,9 +42,10 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void save(CreateConferenceDto dto) {
+    public Long save(CreateConferenceDto dto) {
         Conference conference = modelMapper.map(dto, Conference.class);
         conferenceRepository.save(conference);
+        return conference.getId();
     }
 
     @Override

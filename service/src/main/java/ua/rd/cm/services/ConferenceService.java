@@ -9,7 +9,7 @@ public interface ConferenceService {
 
     Conference findById(Long id);
 
-    void save(CreateConferenceDto conference);
+    Long save(CreateConferenceDto conference);
 
     void update(Conference conference);
 

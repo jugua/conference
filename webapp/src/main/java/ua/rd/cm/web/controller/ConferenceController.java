@@ -56,8 +56,10 @@ public class ConferenceController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/new")
     public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
-        conferenceService.save(dto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Long id = conferenceService.save(dto);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setId(id);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -69,7 +71,6 @@ public class ConferenceController {
         conferenceService.update(conference);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
-
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
