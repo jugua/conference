@@ -97,19 +97,37 @@ public class TalkControllerTest extends TestUtil {
                 param("lang", "English").
                 param("level", "Beginner");
 
-        userInfo = new UserInfo(1L, "bio", "job", "pastConference", "EPAM", null, "addInfo");
+        userInfo = new UserInfo();
+        userInfo.setId(1L);
+        userInfo.setShortBio("bio");
+        userInfo.setJobTitle("job");
+        userInfo.setPastConference("pastConference");
+        userInfo.setCompany("EPAM");
+        userInfo.setAdditionalInfo("addInfo");
 
         Set<Role> speakerRole = new HashSet<>();
         speakerRole.add(new Role(2L, Role.SPEAKER));
-        speakerUser = new User(1L, "Olya", "Ivanova",
-                "ivanova@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, speakerRole);
+        speakerUser = new User();
+        speakerUser.setId(1L);
+        speakerUser.setFirstName("Olya");
+        speakerUser.setLastName("Ivanova");
+        speakerUser.setEmail("ivanova@gmail.com");
+        speakerUser.setPassword("123456");
+        speakerUser.setStatus(User.UserStatus.CONFIRMED);
+        speakerUser.setUserInfo(userInfo);
+        speakerUser.setUserRoles(speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
-        organiserUser = new User(1L, "Artem", "Trybel",
-                "trybel@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, organiserRole);
+        organiserUser = new User();
+        organiserUser.setId(1L);
+        organiserUser.setFirstName("Artem");
+        organiserUser.setLastName("Trybel");
+        organiserUser.setEmail("trybel@gmail.com");
+        organiserUser.setPassword("123456");
+        organiserUser.setStatus(User.UserStatus.CONFIRMED);
+        organiserUser.setUserInfo(userInfo);
+        organiserUser.setUserRoles(organiserRole);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -643,7 +661,7 @@ public class TalkControllerTest extends TestUtil {
         when(talkService.findTalkById(anyLong())).thenReturn(talk);
         TalkDto rejectedTalk = setupCorrectTalkDto();
         rejectedTalk.setStatusName(REJECTED);
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" +1, rejectedTalk))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, rejectedTalk))
                 .andExpect(status().isForbidden());
     }
 
@@ -693,7 +711,6 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(status().isConflict());
     }
 
-
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
@@ -727,7 +744,20 @@ public class TalkControllerTest extends TestUtil {
         Type type = new Type(1L, "Type");
         Language language = new Language(1L, "Language");
         Level level = new Level(1L, "Level");
-        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null, null,null);
+        Talk talk = new Talk();
+        talk.setId(1L);
+        talk.setUser(user);
+        talk.setStatus(TalkStatus.NEW);
+        talk.setTopic(topic);
+        talk.setType(type);
+        talk.setLanguage(language);
+        talk.setLevel(level);
+        talk.setTime(LocalDateTime.now());
+        talk.setTitle("Title");
+        talk.setDescription("Descr");
+        talk.setAdditionalInfo("Add Info");
+        return talk;
+//        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null, null, null);
     }
 
     private Talk createTalk(User speaker, User organiser) {

@@ -2,30 +2,30 @@ package ua.rd.cm.domain;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
+@ToString
 @Entity
 @Table(name = "role")
-@SequenceGenerator(name = "seqRoleGen", allocationSize = 1,
-        sequenceName = "role_seq")
-public class Role implements GrantedAuthority {
-
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "role_seq")
+@AttributeOverride(name = "id", column = @Column(name = "role_id"))
+public class Role extends AbstractEntity implements GrantedAuthority {
     public static final String ORGANISER = "ROLE_ORGANISER";
     public static final String SPEAKER = "ROLE_SPEAKER";
     public static final String ADMIN = "ROLE_ADMIN";
 
-    @Id
-    @Column(name = "role_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqRoleGen")
-    private Long id;
-
     @Column(name = "role_name", nullable = false, unique = true)
     private String name;
+
+    public Role(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     @Override
     public String getAuthority() {

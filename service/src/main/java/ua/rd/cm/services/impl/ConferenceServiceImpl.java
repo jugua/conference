@@ -1,14 +1,17 @@
 package ua.rd.cm.services.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.repository.ConferenceRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.OrSpecification;
 import ua.rd.cm.repository.specification.conference.ConferenceById;
-import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateEarlierThanNow;
+import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateLaterOrEqualToNow;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
@@ -17,25 +20,30 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Transactional
 public class ConferenceServiceImpl implements ConferenceService {
+    private final ModelMapper modelMapper;
     private final ConferenceRepository conferenceRepository;
 
     @Autowired
-    public ConferenceServiceImpl(ConferenceRepository conferenceRepository) {
+    public ConferenceServiceImpl(ModelMapper modelMapper, ConferenceRepository conferenceRepository) {
+        this.modelMapper = modelMapper;
         this.conferenceRepository = conferenceRepository;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Conference findById(Long id) {
-        List<Conference> results = conferenceRepository.findBySpecification(new ConferenceById(id));
-        if (results.isEmpty()) {
+        List<Conference> conferences = conferenceRepository.findBySpecification(new ConferenceById(id));
+        if (conferences.isEmpty()) {
             throw new ConferenceNotFoundException();
         }
-        return results.get(0);
+        return conferences.get(0);
     }
 
     @Override
-    public void save(Conference conference) {
+    public void save(CreateConferenceDto dto) {
+        Conference conference = modelMapper.map(dto, Conference.class);
         conferenceRepository.save(conference);
     }
 
@@ -50,11 +58,13 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Conference> findAll() {
         return conferenceRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Conference> findPast() {
         return conferenceRepository.findBySpecification(
                 new AndSpecification<>(
@@ -65,13 +75,14 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Conference> findUpcoming() {
         List<Conference> conferences = conferenceRepository.findBySpecification(
                 new OrSpecification<>(
                         new ConferenceEndDateIsNull(true),
                         new ConferenceEndDateLaterOrEqualToNow()
                 )
-            );
+        );
         fillCallForPaperDatesActive(conferences);
         return conferences;
     }

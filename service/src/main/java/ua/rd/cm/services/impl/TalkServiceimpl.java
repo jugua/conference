@@ -32,7 +32,7 @@ public class TalkServiceimpl implements TalkService {
 
     @Override
     @Transactional
-    public void save(Talk talk,User user) {
+    public void save(Talk talk, User user) {
         talk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
         talk.setUser(user);
         talkRepository.save(talk);
@@ -43,7 +43,6 @@ public class TalkServiceimpl implements TalkService {
     public void update(Talk talk) {
         talkRepository.update(talk);
     }
-
 
     @Override
     @Transactional

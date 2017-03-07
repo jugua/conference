@@ -53,11 +53,6 @@ public class SettingsController {
         }
         User user = userService.getByEmail(principal.getName());
 
-        if (user == null) {
-            logger.error("Request for [api/user/current/password] is failed: User entity for current principal is not found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         if (!checkCurrentPasswordMatches(dto, user)) {
             logger.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest: " + request.toString() + "]");
             messageDto.setError("wrong_password");
@@ -88,9 +83,6 @@ public class SettingsController {
         }
 
         User user = userService.getByEmail(principal.getName());
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         String email = parseMail(mail);
         if (email == null || !email.matches("(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")) {
@@ -119,9 +111,6 @@ public class SettingsController {
         }
 
         User user = userService.getByEmail(principal.getName());
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         VerificationToken token = tokenService.getValidTokenByUserIdAndType
                 (user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);

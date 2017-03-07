@@ -19,10 +19,14 @@ import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.RoleService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
 import java.util.Collections;
 import java.util.List;
+
+import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_NOT_FOUND;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -49,7 +53,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User find(Long id) {
         List<User> users = userRepository.findBySpecification(new UserById(id));
-        return users.isEmpty() ? null : users.get(0);
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException(USER_NOT_FOUND);
+        }
+        return users.get(0);
     }
 
     @Override
@@ -78,7 +85,7 @@ public class UserServiceImpl implements UserService {
     public User getByEmail(String email) {
         List<User> users = userRepository.findBySpecification(new UserByEmail(email));
         if (users.isEmpty()) {
-            return null;
+            throw new ResourceNotFoundException(USER_NOT_FOUND);
         }
         return users.get(0);
     }

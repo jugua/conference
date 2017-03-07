@@ -8,20 +8,15 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
+@ToString
 @Entity
-@SequenceGenerator(name = "seqTalkGen", allocationSize = 1,
-        sequenceName = "talk_seq")
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "talk_seq")
 @Table(name = "talk", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "time"})
 })
-public class Talk {
-
-    @Id
-    @Column(name = "talk_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTalkGen")
-    private Long id;
+@AttributeOverride(name = "id", column = @Column(name = "talk_id"))
+public class Talk extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

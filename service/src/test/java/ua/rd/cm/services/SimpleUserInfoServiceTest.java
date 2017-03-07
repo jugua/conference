@@ -19,9 +19,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-/**
- * @author Olha_Melnyk
- */
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserInfoServiceTest {
     @Mock
@@ -51,7 +48,14 @@ public class SimpleUserInfoServiceTest {
     @Test
     public void testFindByIdUserInfo() {
         List<UserInfo> list = new ArrayList<UserInfo>(){{
-            add(new UserInfo(1L, "bio", "job", "pastConf", "company", null, "info"));
+            UserInfo userInfo = new UserInfo();
+            userInfo.setId(1L);
+            userInfo.setShortBio("bio");
+            userInfo.setJobTitle("job");
+            userInfo.setPastConference("pastConf");
+            userInfo.setCompany("company");
+            userInfo.setAdditionalInfo("info");
+            add(userInfo);
         }};
         when(userInfoRepository.findBySpecification(new UserInfoById(anyLong()))).thenReturn(list);
         UserInfo userInfo = userInfoService.find(1L);

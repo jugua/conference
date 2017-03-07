@@ -12,6 +12,7 @@ import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
+import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
 import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
@@ -21,10 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Log4j
@@ -54,13 +52,9 @@ public class ConferenceController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/new")
-    public ResponseEntity newConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult,
-                                        HttpServletRequest request) {
-        MessageDto messageDto = new MessageDto();
-        Conference conference = conferenceDtoToConference(dto);
-        // TODO: check conferenceDto
-        conferenceService.save(conference);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+    public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
+        conferenceService.save(dto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

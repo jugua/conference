@@ -9,24 +9,15 @@ import javax.persistence.*;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Artem_Pryzhkov
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "id")
+@ToString
 @Entity
 @Table(name = "user_info")
-@SequenceGenerator(name = "seqUserInfoGen", allocationSize = 1,
-        sequenceName = "user_info_seq")
-public class UserInfo {
-
-    @Id
-    @Column(name = "user_info_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUserInfoGen")
-    private Long id;
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "user_info_seq")
+@AttributeOverride(name = "id", column = @Column(name = "user_info_id"))
+public class UserInfo extends AbstractEntity {
 
     @Column(name = "short_bio", nullable = false, length = 2000)
     private String shortBio = "";
@@ -51,5 +42,4 @@ public class UserInfo {
 
     @Column(name = "additional_info", length = 1000)
     private String additionalInfo;
-
 }

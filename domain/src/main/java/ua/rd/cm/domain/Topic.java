@@ -6,27 +6,22 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-/**
- * @author Artem_Pryzhkov
- */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "topic")
-@SequenceGenerator(name = "seqTopicGen", allocationSize = 1,
-        sequenceName = "topic_seq")
-public class Topic {
-
-    @Id
-    @Column(name = "topic_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTopicGen")
-    private Long id;
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "topic_seq")
+@AttributeOverride(name = "id", column = @Column(name = "topic_id"))
+public class Topic extends AbstractEntity {
 
     @Column(name = "topic_name", nullable = false, unique = true)
     private String name;
+
+    public Topic(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
