@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,18 +31,16 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by Anastasiia_Milinchuk on 2/9/2017.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class ConferenceControllerTest extends TestUtil {
-
     public static final String API_CONFERENCE = "/api/conference";
+    public static final String API_NEW_CONFERENCE = "/api/conference/new";
 
     private MockMvc mockMvc;
 
@@ -59,7 +58,6 @@ public class ConferenceControllerTest extends TestUtil {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(conferenceController).build();
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
@@ -115,13 +113,55 @@ public class ConferenceControllerTest extends TestUtil {
                 andExpect(status().isOk());
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void newConferenceShouldNotWorkForSpeaker() throws Exception {
+        mockMvc.perform(post(API_NEW_CONFERENCE)
+                .content(new ObjectMapper().writeValueAsBytes(createConference()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("error", is("unauthorized")));
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void newConferenceShouldNotWorkForUnauthorized() throws Exception {
+        mockMvc.perform(post(API_NEW_CONFERENCE)
+                .content(new ObjectMapper().writeValueAsBytes(createConference()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("error", is("unauthorized")));
+    }
+
+    @Test
+    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    public void newConferenceShouldNotWorkForOrganiser() throws Exception {
+        mockMvc.perform(post(API_NEW_CONFERENCE)
+                .content(new ObjectMapper().writeValueAsBytes(createConference()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        )
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("error", is("unauthorized")));
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void newConferenceShouldWorkOkForAdmin() throws Exception {
+        mockMvc.perform(post(API_NEW_CONFERENCE).content(new ObjectMapper().writeValueAsBytes(createConference()))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        ).andExpect(status().isOk());
+    }
+
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
 
-    private Conference createConference(){
+    private Conference createConference() {
         Conference conference = new Conference();
+        conference.setTitle("JUG UA");
         conference.setLocation("Location");
         conference.setDescription("Description");
         conference.setCallForPaperEndDate(LocalDate.MIN);

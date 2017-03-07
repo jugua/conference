@@ -12,6 +12,7 @@ import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
+import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
 import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
@@ -54,12 +55,10 @@ public class ConferenceController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/new")
-    public ResponseEntity newConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult,
-                                        HttpServletRequest request) {
+    public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
+        Long id = conferenceService.save(dto);
         MessageDto messageDto = new MessageDto();
-        Conference conference = conferenceDtoToConference(dto);
-        // TODO: check conferenceDto
-        conferenceService.save(conference);
+        messageDto.setId(id);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
@@ -72,7 +71,6 @@ public class ConferenceController {
         conferenceService.update(conference);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
-
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
