@@ -42,13 +42,13 @@ public class ContactTypeServiceTest {
     @Test
     public void testSaveContactType() {
         contactTypeService.save(contactType);
-        verify(contactTypeRepository).saveContactType(contactType);
+        verify(contactTypeRepository).save(contactType);
     }
 
     @Test
     public void testUpdateContactType() {
         contactTypeService.update(contactType);
-        verify(contactTypeRepository).updateContactType(contactType);
+        verify(contactTypeRepository).update(contactType);
     }
 
     @Test

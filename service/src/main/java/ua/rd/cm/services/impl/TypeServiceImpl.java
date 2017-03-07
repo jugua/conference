@@ -34,7 +34,7 @@ public class TypeServiceImpl implements TypeService {
     @Override
     @Transactional
     public void save(Type type) {
-        typeRepository.saveType(type);
+        typeRepository.save(type);
     }
 
     @Override

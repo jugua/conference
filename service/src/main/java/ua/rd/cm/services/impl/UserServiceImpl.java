@@ -14,7 +14,6 @@ import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.OrSpecification;
 import ua.rd.cm.repository.specification.Specification;
-import ua.rd.cm.repository.specification.WhereSpecification;
 import ua.rd.cm.repository.specification.user.*;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.RoleService;
@@ -52,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User find(Long id) {
-        List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserById(id)));
+        List<User> users = userRepository.findBySpecification(new UserById(id));
         if (users.isEmpty()) {
             throw new ResourceNotFoundException(USER_NOT_FOUND);
         }
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
         if (user.getUserInfo() == null) {
             user.setUserInfo(new UserInfo());
         }
-        userRepository.saveUser(user);
+        userRepository.save(user);
     }
 
     @Override
@@ -83,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByEmail(String email) {
-        List<User> users = userRepository.findBySpecification(new WhereSpecification<>(new UserByEmail(email)));
+        List<User> users = userRepository.findBySpecification(new UserByEmail(email));
         if (users.isEmpty()) {
             throw new ResourceNotFoundException(USER_NOT_FOUND);
         }
@@ -92,12 +91,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getByLastName(String lastName) {
-        return userRepository.findBySpecification(new WhereSpecification<>(new UserByLastName(lastName)));
+        return userRepository.findBySpecification(new UserByLastName(lastName));
     }
 
     @Override
     public boolean isEmailExist(String email) {
-        return !userRepository.findBySpecification(new WhereSpecification<>(new UserByEmail(email))).isEmpty();
+        return !userRepository.findBySpecification(new UserByEmail(email)).isEmpty();
     }
 
     @Override
@@ -115,19 +114,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUserProfile(User user) {
-        userRepository.updateUser(user);
+        userRepository.update(user);
     }
 
     @Override
     public List<User> getByRole(String role) {
-        return userRepository.findBySpecification(new UserByRoleJoin(new UserByRole(role)));
+        return userRepository.findAllWithRoles(new UserByRole(role));
     }
 
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
-        return userRepository.findBySpecification(
+        return userRepository.findAllWithRoles(
                 new AndSpecification<>(
-                        new UserByRoleJoin(new UserByRole(roleName)),
+                        new UserByRole(roleName),
                         new UserExceptThisById(currentUser.getId())
                 )
         );
@@ -141,8 +140,7 @@ public class UserServiceImpl implements UserService {
             for (int i = 1; i < roles.length; i++) {
                 current = new OrSpecification<>(current, new UserByRole(roles[i]));
             }
-            current = new UserByRoleJoin(current);
-            users = userRepository.findBySpecification(new UserOrderByLastName(
+            users = userRepository.findAllWithRoles(new UserOrderByLastName(
                             new AndSpecification<>(
                                     current,
                                     new UserExceptThisById(currentUser.getId())

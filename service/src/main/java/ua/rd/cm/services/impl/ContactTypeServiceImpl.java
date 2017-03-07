@@ -41,13 +41,13 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     @Override
     @Transactional
     public void save(ContactType contactType) {
-        contactTypeRepository.saveContactType(contactType);
+        contactTypeRepository.save(contactType);
     }
 
     @Override
     @Transactional
     public void update(ContactType contactType) {
-        contactTypeRepository.updateContactType(contactType);
+        contactTypeRepository.update(contactType);
     }
 
     @Override

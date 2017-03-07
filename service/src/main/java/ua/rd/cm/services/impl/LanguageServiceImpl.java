@@ -34,7 +34,7 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     @Transactional
     public void save(Language language) {
-        languageRepository.saveLanguage(language);
+        languageRepository.save(language);
     }
 
     @Override

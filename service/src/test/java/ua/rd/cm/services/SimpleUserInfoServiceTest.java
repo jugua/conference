@@ -36,13 +36,13 @@ public class SimpleUserInfoServiceTest {
     @Test
     public void testSaveUserInfo() {
         userInfoService.save(userInfo);
-        verify(userInfoRepository).saveUserInfo(userInfo);
+        verify(userInfoRepository).save(userInfo);
     }
 
     @Test
     public void testUpdateUserInfo() {
         userInfoService.update(userInfo);
-        verify(userInfoRepository).updateUserInfo(userInfo);
+        verify(userInfoRepository).update(userInfo);
     }
 
     @Test

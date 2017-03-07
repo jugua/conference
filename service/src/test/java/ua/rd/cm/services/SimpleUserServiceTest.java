@@ -59,14 +59,14 @@ public class SimpleUserServiceTest {
 		User user = mock(User.class);
 		when(roleService.getByName("SPEAKER")).thenReturn(new Role(1L, "SPEAKER"));
 		service.save(user);
-		verify(repository, times(1)).saveUser(user);
+		verify(repository, times(1)).save(user);
 	}
 
 	@Test
 	public void testUpdateUserProfile() {
 		User user = mock(User.class);
 		service.updateUserProfile(user);
-		verify(repository, times(1)).updateUser(user);
+		verify(repository, times(1)).update(user);
 	}
 
 	@Test
