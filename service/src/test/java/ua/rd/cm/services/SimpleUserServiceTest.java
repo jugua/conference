@@ -72,11 +72,13 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testFind() {
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(), null));
+		User expected = createDefaultUser();
+
+		list.add(expected);
 		when(repository.findBySpecification(new WhereSpecification<>(new UserById(anyLong())))).thenReturn(list);
 
-		User user = service.find(1L);
-		assertEquals(new Long(1), user.getId());
+		User user = service.find(30L);
+		assertEquals(new Long(30), user.getId());
 		assertEquals("test", user.getFirstName());
 	}
 
@@ -93,7 +95,7 @@ public class SimpleUserServiceTest {
 	@Test
 	public void testGetByFirstName() {
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(), null));
+		list.add(createDefaultUser());
 		when(repository.findBySpecification(new WhereSpecification<>(new UserByFirstName(anyString())))).thenReturn(list);
 
 		List<User> user = service.getByFirstName("test");
@@ -103,22 +105,22 @@ public class SimpleUserServiceTest {
 
 	@Test
 	public void testGetByEmail() {
-		User user = null;
+		User user = createDefaultUser();
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(), null));
+		list.add(user);
 		when(repository.findBySpecification(new WhereSpecification<>(new UserByEmail(anyString())))).thenReturn(list);
 
 		user = service.getByEmail("email");
 		assertEquals("email", user.getEmail());
-		assertEquals(new Long(1), user.getId());
+		assertEquals(new Long(30), user.getId());
 		verify(repository, times(1)).findBySpecification(new UserByEmail(anyString()));
 	}
 
 	@Test
 	public void testGetByLastName() {
 		List<User> list = new ArrayList<>();
-		list.add(new User(1L, "test", "testLast", "email", "pass", "url", User.UserStatus.CONFIRMED, new UserInfo(),null));
-		list.add(new User(1L, "test2", "testLas2t", "email2", "pass2", "url2", User.UserStatus.CONFIRMED, new UserInfo(), null));
+		list.add(createDefaultUser());
+		list.add(createDefaultUser());
 		when(repository.findBySpecification(new WhereSpecification<>(new UserByLastName(anyString())))).thenReturn(list);
 
 		List<User> serviceList = service.getByLastName("testLas");
@@ -134,5 +136,18 @@ public class SimpleUserServiceTest {
 		assertTrue(service.isEmailExist("email"));
 		assertFalse(service.isEmailExist("email"));
 		verify(repository,times(2)).findBySpecification(new UserByEmail(anyString()));
+	}
+
+	public User createDefaultUser() {
+		User result = new User();
+		result.setId(30L);
+		result.setFirstName("test");
+		result.setLastName("testLast");
+		result.setEmail("email");
+		result.setPassword("pass");
+		result.setPhoto("url");
+		result.setStatus(User.UserStatus.CONFIRMED);
+		result.setUserInfo(new UserInfo());
+		return result;
 	}
 }

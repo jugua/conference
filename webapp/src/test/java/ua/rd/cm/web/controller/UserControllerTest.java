@@ -509,6 +509,15 @@ public class UserControllerTest extends TestUtil{
             put(contactType3, "FaceBook");
             put(contactType4, "Blog");
         }};
-        return new UserInfo(1L, "bio", "job", "pastConference", "EPAM", contacts, "addInfo");
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(1L);
+        userInfo.setShortBio("bio");
+        userInfo.setJobTitle("job");
+        userInfo.setPastConference("pastConference");
+        userInfo.setCompany("EPAM");
+        userInfo.setContacts(contacts);
+        userInfo.setAdditionalInfo("addInfo");
+        return userInfo;
     }
 }

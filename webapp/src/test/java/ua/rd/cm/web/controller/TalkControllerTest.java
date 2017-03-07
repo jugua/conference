@@ -97,19 +97,37 @@ public class TalkControllerTest extends TestUtil {
                 param("lang", "English").
                 param("level", "Beginner");
 
-        userInfo = new UserInfo(1L, "bio", "job", "pastConference", "EPAM", null, "addInfo");
+        userInfo = new UserInfo();
+        userInfo.setId(1L);
+        userInfo.setShortBio("bio");
+        userInfo.setJobTitle("job");
+        userInfo.setPastConference("pastConference");
+        userInfo.setCompany("EPAM");
+        userInfo.setAdditionalInfo("addInfo");
 
         Set<Role> speakerRole = new HashSet<>();
         speakerRole.add(new Role(2L, Role.SPEAKER));
-        speakerUser = new User(1L, "Olya", "Ivanova",
-                "ivanova@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, speakerRole);
+        speakerUser = new User();
+        speakerUser.setId(1L);
+        speakerUser.setFirstName("Olya");
+        speakerUser.setLastName("Ivanova");
+        speakerUser.setEmail("ivanova@gmail.com");
+        speakerUser.setPassword("123456");
+        speakerUser.setStatus(User.UserStatus.CONFIRMED);
+        speakerUser.setUserInfo(userInfo);
+        speakerUser.setUserRoles(speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
-        organiserUser = new User(1L, "Artem", "Trybel",
-                "trybel@gmail.com", "123456",
-                null, User.UserStatus.CONFIRMED, userInfo, organiserRole);
+        organiserUser = new User();
+        organiserUser.setId(1L);
+        organiserUser.setFirstName("Artem");
+        organiserUser.setLastName("Trybel");
+        organiserUser.setEmail("trybel@gmail.com");
+        organiserUser.setPassword("123456");
+        organiserUser.setStatus(User.UserStatus.CONFIRMED);
+        organiserUser.setUserInfo(userInfo);
+        organiserUser.setUserRoles(organiserRole);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)

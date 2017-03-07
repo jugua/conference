@@ -75,7 +75,7 @@ public class ServiceConfig {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getTypeMap(CreateConferenceDto.class, Conference.class).
+        modelMapper.createTypeMap(CreateConferenceDto.class, Conference.class).
                 setPostConverter(new CreateConferenceToConference());
 
         return modelMapper;
