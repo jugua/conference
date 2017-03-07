@@ -8,25 +8,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Mariia Lapovska
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = {"id", "password", "photo", "userInfo"})
+@EqualsAndHashCode(callSuper = false)
+@ToString(exclude = {"password", "photo", "userInfo"})
 @Entity
 @Table(name = "user")
-@SequenceGenerator(name = "seqUserGen", allocationSize = 1,
-        sequenceName = "user_seq")
-public class User {
-
-    @Id
-    @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqUserGen")
-    private Long id;
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "user_seq")
+@AttributeOverride(name = "id", column = @Column(name = "user_id"))
+public class User extends AbstractEntity {
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -63,13 +54,13 @@ public class User {
         return firstName + " " + lastName;
     }
 
-    public enum UserStatus {
-        CONFIRMED, UNCONFIRMED;
-    }
-
     public List<String> getRoleNames() {
         List<String> roleNames = new ArrayList<>();
         userRoles.forEach(role -> roleNames.add(role.getName()));
         return roleNames;
+    }
+
+    public enum UserStatus {
+        CONFIRMED, UNCONFIRMED;
     }
 }

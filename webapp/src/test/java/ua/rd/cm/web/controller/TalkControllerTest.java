@@ -643,7 +643,7 @@ public class TalkControllerTest extends TestUtil {
         when(talkService.findTalkById(anyLong())).thenReturn(talk);
         TalkDto rejectedTalk = setupCorrectTalkDto();
         rejectedTalk.setStatusName(REJECTED);
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" +1, rejectedTalk))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, rejectedTalk))
                 .andExpect(status().isForbidden());
     }
 
@@ -693,7 +693,6 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(status().isConflict());
     }
 
-
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
@@ -727,7 +726,20 @@ public class TalkControllerTest extends TestUtil {
         Type type = new Type(1L, "Type");
         Language language = new Language(1L, "Language");
         Level level = new Level(1L, "Level");
-        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null, null,null);
+        Talk talk = new Talk();
+        talk.setId(1L);
+        talk.setUser(user);
+        talk.setStatus(TalkStatus.NEW);
+        talk.setTopic(topic);
+        talk.setType(type);
+        talk.setLanguage(language);
+        talk.setLevel(level);
+        talk.setTime(LocalDateTime.now());
+        talk.setTitle("Title");
+        talk.setDescription("Descr");
+        talk.setAdditionalInfo("Add Info");
+        return talk;
+//        return new Talk(1L, user, TalkStatus.NEW, topic, type, language, level, LocalDateTime.now(), "Title", "Descr", "Add Info", null, null, null);
     }
 
     private Talk createTalk(User speaker, User organiser) {

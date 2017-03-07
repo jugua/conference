@@ -15,9 +15,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author Olha_Melnyk
- */
 public class JpaContactTypeRepositoryIT extends RepositoryTestConfig {
 
     @Autowired

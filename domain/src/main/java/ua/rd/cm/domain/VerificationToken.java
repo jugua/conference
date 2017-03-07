@@ -12,18 +12,12 @@ import java.time.temporal.ChronoUnit;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
 @Entity
-@SequenceGenerator(name = "seqTokenGen", allocationSize = 1,
-        sequenceName = "token_seq")
-public class VerificationToken {
-
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "token_seq")
+@AttributeOverride(name = "id", column = @Column(name = "token_id"))
+public class VerificationToken extends AbstractEntity {
     public static final int EXPIRATION_IN_MINUTES = 60;
-
-    @Id
-    @Column(name = "token_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTokenGen")
-    private Long id;
 
     @Column(nullable = false)
     private String token;
@@ -43,15 +37,15 @@ public class VerificationToken {
     @Column(nullable = false)
     private TokenStatus status;
 
+    public long calculateSecondsToExpiry() {
+        return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
+    }
+
     public enum TokenType {
         CONFIRMATION, FORGOT_PASS, CHANGING_EMAIL
     }
 
     public enum TokenStatus {
         VALID, EXPIRED
-    }
-
-    public long calculateSecondsToExpiry() {
-        return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }
 }
