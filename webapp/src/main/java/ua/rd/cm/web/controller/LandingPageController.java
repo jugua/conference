@@ -14,6 +14,7 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.CreateConferenceDto;
+import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.TypeService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
@@ -74,6 +75,15 @@ public class LandingPageController {
     @GetMapping("type")
     public ResponseEntity getTypes() {
         return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("type/new")
+    public ResponseEntity createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
+        Long id = typeService.save(typeDto);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setId(id);
+        return new ResponseEntity(messageDto, HttpStatus.OK);
     }
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {

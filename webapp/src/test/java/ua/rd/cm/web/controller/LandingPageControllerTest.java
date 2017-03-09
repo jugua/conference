@@ -1,6 +1,7 @@
 package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,7 @@ import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
+import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.TypeService;
@@ -30,9 +32,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -168,6 +172,48 @@ public class LandingPageControllerTest extends TestUtil {
                 andExpect(status().isOk()).
                 andExpect(jsonPath("[0].id", is(typeDto.getId().intValue()))).
                 andExpect(jsonPath("[0].name", is(typeDto.getName())));
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void createNewTypeShouldWorkForAdmin() throws Exception {
+        CreateTypeDto dto = new CreateTypeDto("schweine");
+        when(typeService.save(dto)).thenReturn(1L);
+        mockMvc.perform(post("/api/type/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id", is(1)));
+    }
+
+    @Test
+    public void createNewTypeShouldNotWorkForUnauthorized() throws Exception {
+        CreateTypeDto dto = new CreateTypeDto("schweine");
+        mockMvc.perform(post("/api/type/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ORGANISER_ROLE)
+    public void createNewTypeShouldNotWorkForOrganiser() throws Exception {
+        CreateTypeDto dto = new CreateTypeDto("schweine");
+        mockMvc.perform(post("/api/type/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = SPEAKER_ROLE)
+    public void createNewTypeShouldNotWorkForSpeaker() throws Exception {
+        CreateTypeDto dto = new CreateTypeDto("schweine");
+        mockMvc.perform(post("/api/type/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        ).andExpect(status().isUnauthorized());
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
