@@ -15,6 +15,7 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.TypeService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
 import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
 import ua.rd.cm.web.controller.dto.MessageDto;
@@ -35,6 +36,7 @@ import java.util.Map;
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class LandingPageController {
     private final ModelMapper mapper;
+    private final TypeService typeService;
     private final ConferenceService conferenceService;
 
     @GetMapping("conference/upcoming")
@@ -66,6 +68,12 @@ public class LandingPageController {
         // TODO: check conferenceDto
         conferenceService.update(conference);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("type")
+    public ResponseEntity getTypes() {
+        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
     }
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
@@ -140,3 +148,4 @@ public class LandingPageController {
         return conference;
     }
 }
+

@@ -118,6 +118,58 @@ public class LandingPageControllerTest extends TestUtil {
                 andExpect(status().isOk());
     }
 
+    @Test
+    public void getTypesShouldNotWorkForUnauthorized() throws Exception {
+        List<TypeDto> types = new ArrayList<>();
+        when(typeService.findAll()).thenReturn(types);
+        mockMvc.perform(prepareGetRequest("/api/type")).
+                andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ORGANISER_ROLE)
+    public void getTypesShouldNotWorkForOrganiser() throws Exception {
+        List<TypeDto> types = new ArrayList<>();
+        when(typeService.findAll()).thenReturn(types);
+        mockMvc.perform(prepareGetRequest("/api/type")).
+                andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = SPEAKER_ROLE)
+    public void getTypesShouldNotWorkForSpeaker() throws Exception {
+        List<TypeDto> types = new ArrayList<>();
+        when(typeService.findAll()).thenReturn(types);
+        mockMvc.perform(prepareGetRequest("/api/type")).
+                andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void getTypesShouldWorkForAdmin() throws Exception {
+        List<TypeDto> types = new ArrayList<>();
+        when(typeService.findAll()).thenReturn(types);
+        mockMvc.perform(prepareGetRequest("/api/type")).
+                andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void getTypesShouldHaveRightValues() throws Exception {
+        TypeDto typeDto = new TypeDto();
+        typeDto.setId(1L);
+        typeDto.setName("SomeName");
+        List<TypeDto> types = new ArrayList<TypeDto>() {{
+            add(typeDto);
+        }};
+
+        when(typeService.findAll()).thenReturn(types);
+        mockMvc.perform(prepareGetRequest("/api/type")).
+                andExpect(status().isOk()).
+                andExpect(jsonPath("[0].id", is(typeDto.getId().intValue()))).
+                andExpect(jsonPath("[0].name", is(typeDto.getName())));
+    }
+
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
