@@ -21,7 +21,9 @@ import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
+import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.TypeService;
 
 import javax.servlet.Filter;
 import java.time.LocalDate;
@@ -38,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-public class ConferenceControllerTest extends TestUtil {
+public class LandingPageControllerTest extends TestUtil {
     public static final String API_CONFERENCE = "/api/conference";
     public static final String API_NEW_CONFERENCE = "/api/conference/new";
 
@@ -51,10 +53,13 @@ public class ConferenceControllerTest extends TestUtil {
     private ConferenceService conferenceService;
 
     @Autowired
+    private TypeService typeService;
+
+    @Autowired
     private Filter springSecurityFilterChain;
 
     @Autowired
-    private ConferenceController conferenceController;
+    private LandingPageController landingPageController;
 
     @Before
     public void setup() {
@@ -111,47 +116,6 @@ public class ConferenceControllerTest extends TestUtil {
         when(conferenceService.findPast()).thenReturn(conferences);
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
                 andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void newConferenceShouldNotWorkForSpeaker() throws Exception {
-        mockMvc.perform(post(API_NEW_CONFERENCE)
-                .content(new ObjectMapper().writeValueAsBytes(createConference()))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-        )
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is("unauthorized")));
-    }
-
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void newConferenceShouldNotWorkForUnauthorized() throws Exception {
-        mockMvc.perform(post(API_NEW_CONFERENCE)
-                .content(new ObjectMapper().writeValueAsBytes(createConference()))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-        )
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is("unauthorized")));
-    }
-
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void newConferenceShouldNotWorkForOrganiser() throws Exception {
-        mockMvc.perform(post(API_NEW_CONFERENCE)
-                .content(new ObjectMapper().writeValueAsBytes(createConference()))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-        )
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is("unauthorized")));
-    }
-
-    @Test
-    @WithMockUser(roles = ADMIN_ROLE)
-    public void newConferenceShouldWorkOkForAdmin() throws Exception {
-        mockMvc.perform(post(API_NEW_CONFERENCE).content(new ObjectMapper().writeValueAsBytes(createConference()))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-        ).andExpect(status().isOk());
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {

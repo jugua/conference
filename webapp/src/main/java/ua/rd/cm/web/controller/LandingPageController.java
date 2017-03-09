@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,36 +23,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Log4j
 @RestController
-@RequestMapping("/api/conference")
-public class ConferenceController {
-    private ConferenceService conferenceService;
-    private ModelMapper mapper;
+@RequestMapping("/api/")
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
+public class LandingPageController {
+    private final ModelMapper mapper;
+    private final ConferenceService conferenceService;
 
-    @Autowired
-    public ConferenceController(ConferenceService conferenceService, ModelMapper mapper) {
-        this.conferenceService = conferenceService;
-        this.mapper = mapper;
-    }
-
-    @GetMapping("/upcoming")
+    @GetMapping("conference/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
         return responseEntityConferencesByRole(request, conferences);
     }
 
-    @GetMapping("/past")
+    @GetMapping("conference/past")
     public ResponseEntity pastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
         return responseEntityConferencesByRole(request, conferences);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/new")
+    @PostMapping("conference/new")
     public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
         Long id = conferenceService.save(dto);
         MessageDto messageDto = new MessageDto();
@@ -60,7 +59,7 @@ public class ConferenceController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/update/{id}")
+    @PatchMapping("conference/update/{id}")
     public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult, HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
         Conference conference = conferenceDtoToConference(dto);
