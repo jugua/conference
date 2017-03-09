@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.CreateConferenceDto;
+import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.TypeService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
 import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
 import ua.rd.cm.web.controller.dto.MessageDto;
@@ -22,36 +25,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Log4j
 @RestController
-@RequestMapping("/api/conference")
-public class ConferenceController {
-    private ConferenceService conferenceService;
-    private ModelMapper mapper;
+@RequestMapping("/api/")
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
+public class LandingPageController {
+    private final ModelMapper mapper;
+    private final TypeService typeService;
+    private final ConferenceService conferenceService;
 
-    @Autowired
-    public ConferenceController(ConferenceService conferenceService, ModelMapper mapper) {
-        this.conferenceService = conferenceService;
-        this.mapper = mapper;
-    }
-
-    @GetMapping("/upcoming")
+    @GetMapping("conference/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findUpcoming();
         return responseEntityConferencesByRole(request, conferences);
     }
 
-    @GetMapping("/past")
+    @GetMapping("conference/past")
     public ResponseEntity pastConferences(HttpServletRequest request) {
         List<Conference> conferences = conferenceService.findPast();
         return responseEntityConferencesByRole(request, conferences);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/new")
+    @PostMapping("conference/new")
     public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
         Long id = conferenceService.save(dto);
         MessageDto messageDto = new MessageDto();
@@ -60,13 +62,28 @@ public class ConferenceController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/update/{id}")
+    @PatchMapping("conference/update/{id}")
     public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult, HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
         Conference conference = conferenceDtoToConference(dto);
         // TODO: check conferenceDto
         conferenceService.update(conference);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("type")
+    public ResponseEntity getTypes() {
+        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("type/new")
+    public ResponseEntity createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
+        Long id = typeService.save(typeDto);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setId(id);
+        return new ResponseEntity(messageDto, HttpStatus.OK);
     }
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
@@ -141,3 +158,4 @@ public class ConferenceController {
         return conference;
     }
 }
+

@@ -1,6 +1,8 @@
 package ua.rd.cm.services;
 
 import ua.rd.cm.domain.Type;
+import ua.rd.cm.dto.CreateTypeDto;
+import ua.rd.cm.dto.TypeDto;
 
 import java.util.List;
 
@@ -11,9 +13,9 @@ public interface TypeService {
 
     Type find(Long id);
 
-    void save(Type type);
+    Long save(CreateTypeDto type);
 
-    List<Type> findAll();
+    List<TypeDto> findAll();
 
     Type getByName(String name);
 }
