@@ -47,7 +47,7 @@ public class VerificationTokenService {
 
     @Transactional
     public void saveToken(VerificationToken token) {
-        tokenRepository.saveToken(token);
+        tokenRepository.save(token);
     }
 
     @Transactional
@@ -103,7 +103,7 @@ public class VerificationTokenService {
 
     @Transactional
     public void updateToken(VerificationToken token) {
-        tokenRepository.updateToken(token);
+        tokenRepository.update(token);
     }
 
     private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {

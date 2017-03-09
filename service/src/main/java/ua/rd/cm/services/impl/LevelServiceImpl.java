@@ -7,12 +7,10 @@ import ua.rd.cm.repository.LevelRepository;
 import ua.rd.cm.repository.specification.level.LevelById;
 import ua.rd.cm.repository.specification.level.LevelByName;
 import ua.rd.cm.services.LevelService;
+import ua.rd.cm.services.exception.LevelNotFoundException;
 
 import java.util.List;
 
-/**
- * @author Olha_Melnyk
- */
 @Service
 public class LevelServiceImpl implements LevelService {
 
@@ -25,19 +23,25 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public Level find(Long id) {
-        return levelRepository.findBySpecification(new LevelById(id)).get(0);
+        List<Level> levels = levelRepository.findBySpecification(new LevelById(id));
+        if (levels.isEmpty()) {
+            throw new LevelNotFoundException();
+        }
+        return levels.get(0);
     }
 
     @Override
     public void save(Level level) {
-        levelRepository.saveLevel(level);
+        levelRepository.save(level);
     }
 
     @Override
     public Level getByName(String name) {
-        List<Level> list = levelRepository.findBySpecification(new LevelByName(name));
-        if (list.isEmpty()) return null;
-        else return list.get(0);
+        List<Level> levels = levelRepository.findBySpecification(new LevelByName(name));
+        if (levels.isEmpty()) {
+            throw new LevelNotFoundException();
+        }
+        return levels.get(0);
     }
 
     @Override

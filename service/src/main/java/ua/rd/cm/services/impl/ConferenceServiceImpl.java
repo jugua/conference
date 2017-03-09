@@ -34,11 +34,11 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional(readOnly = true)
     public Conference findById(Long id) {
-        List<Conference> results = conferenceRepository.findBySpecification(new ConferenceById(id));
-        if (results.isEmpty()) {
+        List<Conference> conferences = conferenceRepository.findBySpecification(new ConferenceById(id));
+        if (conferences.isEmpty()) {
             throw new ConferenceNotFoundException();
         }
-        return results.get(0);
+        return conferences.get(0);
     }
 
     @Override
