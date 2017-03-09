@@ -1,7 +1,6 @@
 package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,9 +21,12 @@ import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
+import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.CreateTypeDto;
+import ua.rd.cm.dto.TopicDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.TopicService;
 import ua.rd.cm.services.TypeService;
 
 import javax.servlet.Filter;
@@ -32,7 +34,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -58,6 +59,8 @@ public class LandingPageControllerTest extends TestUtil {
 
     @Autowired
     private TypeService typeService;
+    @Autowired
+    private TopicService topicService;
 
     @Autowired
     private Filter springSecurityFilterChain;
@@ -211,6 +214,84 @@ public class LandingPageControllerTest extends TestUtil {
     public void createNewTypeShouldNotWorkForSpeaker() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
         mockMvc.perform(post("/api/type/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void getTopicsShouldNotWorkForUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/topic"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = SPEAKER_ROLE)
+    public void getTopicsShouldNotWorkForSpeaker() throws Exception {
+        mockMvc.perform(get("/api/topic"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ORGANISER_ROLE)
+    public void getTopicsShouldNotWorkForOrganiser() throws Exception {
+        mockMvc.perform(get("/api/topic"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void getTopicsShouldWorkFroAdmin() throws Exception {
+        TopicDto topicDto = new TopicDto();
+        topicDto.setId(1L);
+        topicDto.setName("SomeName");
+        List<TopicDto> topics = new ArrayList<TopicDto>() {{
+            add(topicDto);
+        }};
+        when(topicService.findAll()).thenReturn(topics);
+        mockMvc.perform(get("/api/topic"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("[0].id", is(topicDto.getId().intValue())))
+                .andExpect(jsonPath("[0].name", is(topicDto.getName())));
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void createNewTopicShouldWorkForAdmin() throws Exception {
+        CreateTopicDto dto = new CreateTopicDto("schweine");
+        when(topicService.save(dto)).thenReturn(1L);
+        mockMvc.perform(post("/api/topic/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id", is(1)));
+    }
+
+    @Test
+    public void createNewTopicShouldNotWorkForUnauthorized() throws Exception {
+        CreateTopicDto dto = new CreateTopicDto("schweine");
+        mockMvc.perform(post("/api/topic/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ORGANISER_ROLE)
+    public void createNewTopicShouldNotWorkForOrganiser() throws Exception {
+        CreateTopicDto dto = new CreateTopicDto("schweine");
+        mockMvc.perform(post("/api/topic/new")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(new ObjectMapper().writeValueAsBytes(dto))
+        ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = SPEAKER_ROLE)
+    public void createNewTopicShouldNotWorkForSpeaker() throws Exception {
+        CreateTopicDto dto = new CreateTopicDto("schweine");
+        mockMvc.perform(post("/api/topic/new")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
