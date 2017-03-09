@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Type;
+import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.repository.TypeRepository;
 import ua.rd.cm.repository.specification.type.TypeById;
@@ -38,8 +39,14 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     @Transactional
-    public void save(Type type) {
-        typeRepository.save(type);
+    public Long save(CreateTypeDto type) {
+        List<Type> bySpecification = typeRepository.findBySpecification(new TypeByName(type.getName()));
+        if (!bySpecification.isEmpty()) {
+            return bySpecification.get(0).getId();
+        }
+        Type map = modelMapper.map(type, Type.class);
+        typeRepository.save(map);
+        return map.getId();
     }
 
     @Override
