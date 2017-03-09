@@ -14,8 +14,10 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.CreateConferenceDto;
+import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.TopicService;
 import ua.rd.cm.services.TypeService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
 import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
@@ -38,6 +40,7 @@ import java.util.Map;
 public class LandingPageController {
     private final ModelMapper mapper;
     private final TypeService typeService;
+    private final TopicService topicService;
     private final ConferenceService conferenceService;
 
     @GetMapping("conference/upcoming")
@@ -83,7 +86,22 @@ public class LandingPageController {
         Long id = typeService.save(typeDto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
-        return new ResponseEntity(messageDto, HttpStatus.OK);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("topic")
+    public ResponseEntity getTopics() {
+        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("topic/new")
+    public ResponseEntity createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
+        Long id = topicService.save(topicDto);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setId(id);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
