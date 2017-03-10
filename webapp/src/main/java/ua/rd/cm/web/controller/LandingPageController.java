@@ -17,6 +17,7 @@ import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.LevelService;
 import ua.rd.cm.services.TopicService;
 import ua.rd.cm.services.TypeService;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
@@ -41,6 +42,7 @@ public class LandingPageController {
     private final ModelMapper mapper;
     private final TypeService typeService;
     private final TopicService topicService;
+    private final LevelService levelService;
     private final ConferenceService conferenceService;
 
     @GetMapping("conference/upcoming")
@@ -104,6 +106,12 @@ public class LandingPageController {
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("level")
+    public ResponseEntity getLevels() {
+        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
+    }
+
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
             List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
@@ -114,8 +122,7 @@ public class LandingPageController {
     }
 
     private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
-        ConferenceDtoBasic conferenceDtoBasic = mapper.map(conference, ConferenceDtoBasic.class);
-        return conferenceDtoBasic;
+        return mapper.map(conference, ConferenceDtoBasic.class);
     }
 
     private List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences) {
@@ -172,8 +179,7 @@ public class LandingPageController {
     }
 
     private Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
-        Conference conference = mapper.map(conferenceDto, Conference.class);
-        return conference;
+        return mapper.map(conferenceDto, Conference.class);
     }
 }
 
