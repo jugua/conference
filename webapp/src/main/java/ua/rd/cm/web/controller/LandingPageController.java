@@ -16,10 +16,7 @@ import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.CreateTypeDto;
-import ua.rd.cm.services.ConferenceService;
-import ua.rd.cm.services.LevelService;
-import ua.rd.cm.services.TopicService;
-import ua.rd.cm.services.TypeService;
+import ua.rd.cm.services.*;
 import ua.rd.cm.web.controller.dto.ConferenceDto;
 import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
 import ua.rd.cm.web.controller.dto.MessageDto;
@@ -44,6 +41,7 @@ public class LandingPageController {
     private final TopicService topicService;
     private final LevelService levelService;
     private final ConferenceService conferenceService;
+    private final LanguageService languageService;
 
     @GetMapping("conference/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
@@ -110,6 +108,12 @@ public class LandingPageController {
     @GetMapping("level")
     public ResponseEntity getLevels() {
         return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("lang")
+    public ResponseEntity getLanguages() {
+        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
     }
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
