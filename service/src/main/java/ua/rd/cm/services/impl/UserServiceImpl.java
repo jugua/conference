@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     public User getByEmail(String email) {
         List<User> users = userRepository.findBySpecification(new UserByEmail(email));
         if (users.isEmpty()) {
-            throw new ResourceNotFoundException(USER_NOT_FOUND);
+            return null;
         }
         return users.get(0);
     }

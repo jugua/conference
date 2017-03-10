@@ -11,9 +11,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import ua.rd.cm.web.security.CustomAuthenticationProvider;
+import ua.rd.cm.web.security.BasicAuthFilterImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +24,8 @@ import ua.rd.cm.web.security.CustomAuthenticationProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
+    @Autowired
+    private BasicAuthFilterImpl basicAuthFilterImpl;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -51,7 +55,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .invalidateHttpSession(true)
                     .clearAuthentication(true)
                     .deleteCookies("JSESSIONID")
-                    .permitAll();
+                    .permitAll()
+                    .and()
+                .addFilterBefore(basicAuthFilterImpl, BasicAuthenticationFilter.class);
+    }
+
+    @Bean
+    public BasicAuthFilterImpl authenticationFilter(AuthenticationManager authenticationManager) {
+        return new BasicAuthFilterImpl(authenticationManager);
     }
 
     @Bean(name = "authManager")

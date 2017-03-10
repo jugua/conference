@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomBasicAuthFilter extends BasicAuthenticationFilter {
+public class BasicAuthFilterImpl extends BasicAuthenticationFilter {
 
-    public CustomBasicAuthFilter(AuthenticationManager authenticationManager) {
+    public BasicAuthFilterImpl(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
 
