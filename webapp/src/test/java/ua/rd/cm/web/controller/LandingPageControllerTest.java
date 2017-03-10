@@ -21,11 +21,9 @@ import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.dto.CreateTopicDto;
-import ua.rd.cm.dto.CreateTypeDto;
-import ua.rd.cm.dto.TopicDto;
-import ua.rd.cm.dto.TypeDto;
+import ua.rd.cm.dto.*;
 import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.LevelService;
 import ua.rd.cm.services.TopicService;
 import ua.rd.cm.services.TypeService;
 
@@ -61,7 +59,8 @@ public class LandingPageControllerTest extends TestUtil {
     private TypeService typeService;
     @Autowired
     private TopicService topicService;
-
+    @Autowired
+    private LevelService levelService;
     @Autowired
     private Filter springSecurityFilterChain;
 
@@ -295,6 +294,42 @@ public class LandingPageControllerTest extends TestUtil {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void getLevelsShouldNotWorkForUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/level"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = SPEAKER_ROLE)
+    public void getLevelsShouldNotWorkForSpeaker() throws Exception {
+        mockMvc.perform(get("/api/level"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ORGANISER_ROLE)
+    public void getLevelsShouldNotWorkForOrganiser() throws Exception {
+        mockMvc.perform(get("/api/level"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(roles = ADMIN_ROLE)
+    public void getLevelsShouldWorkFroAdmin() throws Exception {
+        LevelDto levelDto = new LevelDto();
+        levelDto.setId(1L);
+        levelDto.setName("SomeName");
+        List<LevelDto> levels = new ArrayList<LevelDto>() {{
+            add(levelDto);
+        }};
+        when(levelService.findAll()).thenReturn(levels);
+        mockMvc.perform(get("/api/level"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("[0].id", is(levelDto.getId().intValue())))
+                .andExpect(jsonPath("[0].name", is(levelDto.getName())));
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
