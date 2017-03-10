@@ -6,6 +6,7 @@ const component = {
     showCounters: '<',    // boolean
     showSubmit: '<',      // boolean
     data: '<',            // object
+    onClick: '&',         // callback
   },
   template,
   controller,

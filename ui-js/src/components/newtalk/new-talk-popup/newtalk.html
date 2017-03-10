@@ -101,6 +101,7 @@
                 maxlength="1500"
                 ng-model="$ctrl.talk.addon">
       </textarea>
+
       <button class="btn pop-up__button"
               ng-disabled="$ctrl.buttonsBlocked">Submit</button>
     </form>
@@ -115,7 +116,7 @@
     <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'Yes' to leave and all your changes will lost.</p>
     <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'No' to return and Submit/Update your changes</p>
     <div class="pop-up-button-wrapper">
-      <button class="btn pop-up__button" ui-sref="header.tabs.myTalks">Yes</button>
+      <button class="btn pop-up__button" ng-click="$ctrl.onClose()">Yes</button>
       <button class="btn btn__cancel pop-up__button" ng-click="$ctrl.isShownPopup = false">No</button>
     </div>
   </div>

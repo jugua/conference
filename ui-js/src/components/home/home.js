@@ -1,5 +1,6 @@
 import homeComponent from './home.component';
 import homeSpeakerComponent from './home-speaker/home-speaker.component';
+import homeOrganiserComponent from './home-organiser/home-organiser.component';
 import homeAdminComponent from './home-admin/home-admin.component';
 import conferenceCardComponent from './conference-card/conference-card.component';
 
@@ -21,6 +22,7 @@ export default (app) => {
       });
   }).component('home', homeComponent)
     .component('homeSpeaker', homeSpeakerComponent)
+    .component('homeOrganiser', homeOrganiserComponent)
     .component('homeAdmin', homeAdminComponent)
     .component('conferenceCard', conferenceCardComponent);
 };

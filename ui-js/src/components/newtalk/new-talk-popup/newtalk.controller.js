@@ -23,7 +23,7 @@ export default class NewtalkController {
     }
 
     if (this.talkForm.$pristine || this.talkForm.$submitted || isEmptyForm(this.talk)) {
-      this.state.go('header.tabs.myTalks');
+      this.onClose();
       return;
     }
 
@@ -44,6 +44,10 @@ export default class NewtalkController {
     this.talk.status = 'New';
     this.talk.date = Date.now();
 
+    if (this.conferenceId) {    // if defined
+      this.talk.conferenceId = this.conferenceId;
+    }
+
     const formData = new FormData();
 
     for (const [key, value] of Object.entries(this.talk)) {
@@ -51,7 +55,9 @@ export default class NewtalkController {
     }
 
     this.talksService.add(formData,
-      () => { this.state.go('header.tabs.myTalks', {}, { reload: true }); }
+      () => {
+        this.onSubmit();
+      }
     );
   }
 
