@@ -2,5 +2,5 @@
   <control-popup></control-popup>
 </div>
 <div ng-if="!vm.isEmptyBio">
-  <newtalk></newtalk>
+  <newtalk on-close="vm.popupCloseCallback()" on-submit="vm.popupSubmitCallback()"></newtalk>
 </div>

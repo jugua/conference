@@ -1,9 +1,10 @@
 export default class NewtalkController {
-  constructor(currentUser) {
+  constructor(currentUser, $state) {
     'ngInject';
 
     const mandatory = ['bio', 'job', 'company'];
     this.current = currentUser;
+    this.state = $state;
 
     this.isEmptyBio = mandatory.every((el) => {
       if (this.current[el]) {
@@ -12,6 +13,14 @@ export default class NewtalkController {
 
       return true;
     });
+  }
+
+  popupCloseCallback() {
+    this.state.go('header.tabs.myTalks');
+  }
+
+  popupSubmitCallback() {
+    this.state.go('header.tabs.myTalks', {}, { reload: true });
   }
 }
 
