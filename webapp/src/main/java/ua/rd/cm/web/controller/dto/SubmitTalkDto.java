@@ -46,6 +46,8 @@ public class SubmitTalkDto {
     @Size(max = 1500)
     private String addon;
 
+    private Long conferenceId;
+
     private String status;
     private String date;
     private MultipartFile file;

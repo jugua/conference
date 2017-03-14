@@ -59,6 +59,9 @@ public class Talk extends AbstractEntity {
     @ManyToOne
     private User organiser;
 
+    @ManyToOne
+    private Conference conference;
+
     @Column(name = "attached_file")
     private String pathToAttachedFile;
 
