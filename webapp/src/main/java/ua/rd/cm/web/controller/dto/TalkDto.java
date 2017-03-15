@@ -27,6 +27,9 @@ public class TalkDto {
 	@JsonProperty("speakerId")
 	private Long userId;
 
+	@JsonProperty("conferenceId")
+	private Long conferenceId;
+
 	@JsonProperty("name")
 	private String speakerFullName;
 

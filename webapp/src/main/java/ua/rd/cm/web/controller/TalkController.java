@@ -92,7 +92,7 @@ public class TalkController {
             @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
+        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
                 submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
                 submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 
@@ -315,6 +315,13 @@ public class TalkController {
 
     private Talk dtoToEntity(TalkDto dto) {
         Talk talk = mapper.map(dto, Talk.class);
+
+        Long conferenceId = dto.getConferenceId();
+        if (conferenceId != null) {
+            Conference conference = new Conference();
+            conference.setId(conferenceId);
+            talk.setConference(conference);
+        }
         talk.setTime(LocalDateTime.now());
         setFieldsMappedStringIntoEntity(dto, talk);
         return talk;

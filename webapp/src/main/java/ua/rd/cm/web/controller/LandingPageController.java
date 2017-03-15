@@ -56,7 +56,7 @@ public class LandingPageController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("conference/new")
+    @PostMapping("conference")
     public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
         Long id = conferenceService.save(dto);
         MessageDto messageDto = new MessageDto();
@@ -81,7 +81,7 @@ public class LandingPageController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("type/new")
+    @PostMapping("type")
     public ResponseEntity createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
         Long id = typeService.save(typeDto);
         MessageDto messageDto = new MessageDto();
@@ -96,7 +96,7 @@ public class LandingPageController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("topic/new")
+    @PostMapping("topic")
     public ResponseEntity createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
         Long id = topicService.save(topicDto);
         MessageDto messageDto = new MessageDto();

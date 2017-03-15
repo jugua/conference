@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class LandingPageControllerTest extends TestUtil {
     public static final String API_CONFERENCE = "/api/conference";
-    public static final String API_NEW_CONFERENCE = "/api/conference/new";
+    public static final String API_NEW_CONFERENCE = "/api/conference";
 
     private MockMvc mockMvc;
 
@@ -181,7 +181,7 @@ public class LandingPageControllerTest extends TestUtil {
     public void createNewTypeShouldWorkForAdmin() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
         when(typeService.save(dto)).thenReturn(1L);
-        mockMvc.perform(post("/api/type/new")
+        mockMvc.perform(post("/api/type")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         )
@@ -192,7 +192,7 @@ public class LandingPageControllerTest extends TestUtil {
     @Test
     public void createNewTypeShouldNotWorkForUnauthorized() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
-        mockMvc.perform(post("/api/type/new")
+        mockMvc.perform(post("/api/type")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
@@ -202,7 +202,7 @@ public class LandingPageControllerTest extends TestUtil {
     @WithMockUser(roles = ORGANISER_ROLE)
     public void createNewTypeShouldNotWorkForOrganiser() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
-        mockMvc.perform(post("/api/type/new")
+        mockMvc.perform(post("/api/type")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
@@ -212,7 +212,7 @@ public class LandingPageControllerTest extends TestUtil {
     @WithMockUser(roles = SPEAKER_ROLE)
     public void createNewTypeShouldNotWorkForSpeaker() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
-        mockMvc.perform(post("/api/type/new")
+        mockMvc.perform(post("/api/type")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
@@ -259,7 +259,7 @@ public class LandingPageControllerTest extends TestUtil {
     public void createNewTopicShouldWorkForAdmin() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
         when(topicService.save(dto)).thenReturn(1L);
-        mockMvc.perform(post("/api/topic/new")
+        mockMvc.perform(post("/api/topic")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         )
@@ -270,7 +270,7 @@ public class LandingPageControllerTest extends TestUtil {
     @Test
     public void createNewTopicShouldNotWorkForUnauthorized() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
-        mockMvc.perform(post("/api/topic/new")
+        mockMvc.perform(post("/api/topic")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
@@ -280,7 +280,7 @@ public class LandingPageControllerTest extends TestUtil {
     @WithMockUser(roles = ORGANISER_ROLE)
     public void createNewTopicShouldNotWorkForOrganiser() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
-        mockMvc.perform(post("/api/topic/new")
+        mockMvc.perform(post("/api/topic")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
@@ -290,7 +290,7 @@ public class LandingPageControllerTest extends TestUtil {
     @WithMockUser(roles = SPEAKER_ROLE)
     public void createNewTopicShouldNotWorkForSpeaker() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
-        mockMvc.perform(post("/api/topic/new")
+        mockMvc.perform(post("/api/topic")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
