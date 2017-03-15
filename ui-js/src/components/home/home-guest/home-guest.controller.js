@@ -37,29 +37,7 @@ export default class {
     }
   }
 
-  showPopup(conferenceId) {
-    if (this.userInfoFilled()) {
-      this.conferenceId = conferenceId;
-      this.popupOpen = true;
-    } else {
-      this.fillInfoPopupOpen = true;
-    }
-  }
-
-  popupCloseCallback() {
-    this.popupOpen = false;
-  }
-
-  popupSubmitCallback() {
-    this.popupOpen = false;
-  }
-
-  userInfoFilled() {
-    const mandatory = ['bio', 'job', 'company'];
-    return mandatory.every(el => this.user[el] !== '');
-  }
-
-  fillInfoPopupCloseCallback() {
-    this.fillInfoPopupOpen = false;
+  signIn() {
+    this.state.go('header.sign-in');
   }
 }

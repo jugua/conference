@@ -1,5 +1,7 @@
-import newtalkComponent from './new-talk-popup/newtalk.component';
-import controlPopupComponent from './control-popup/control-popup.component';
+import newtalkComponent from './newtalk.component';
+import newtalkPopupComponent from './newtalk-popup/newtalk-popup.component';
+import fillInfoPopupComponent from './fill-info-popup/fill-info-popup.component';
+
 import controller from './newtalk.controller';
 import template from './newtalk.html';
 
@@ -11,11 +13,13 @@ export default (app) => {
       .state('header.tabs.myTalks.newtalk', {
         template,
         controller,
-        controllerAs: 'vm',
+        controllerAs: '$ctrl',
         resolve: {
           currentUser: Current => Current.current
         },
+        params: { fwdState: null },
       });
   }).component('newtalk', newtalkComponent)
-     .component('controlPopup', controlPopupComponent);
+    .component('newtalkPopup', newtalkPopupComponent)
+    .component('fillInfoPopup', fillInfoPopupComponent);
 };

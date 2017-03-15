@@ -1,5 +1,5 @@
-import template from './home-speaker.html';
-import controller from './home-speaker.controller';
+import template from './home-guest.html';
+import controller from './home-guest.controller';
 
 const component = {
   bindings: {

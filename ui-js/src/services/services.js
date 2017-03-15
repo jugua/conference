@@ -9,6 +9,10 @@ import tokenInjector from './node-intercepter/node-intercepter';
 import userService from './user/user';
 import manageUsers from './manage-users/manage-users';
 import conference from './conference/conference';
+import topic from './topic/topic';
+import type from './type/type';
+import level from './level/level';
+import language from './language/language';
 
 export default (app) => {
   include_all_modules([
@@ -21,6 +25,10 @@ export default (app) => {
     tokenInjector,
     userService,
     manageUsers,
-    conference
+    conference,
+    topic,
+    type,
+    level,
+    language,
   ], app);
 };

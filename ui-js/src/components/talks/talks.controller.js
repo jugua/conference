@@ -1,11 +1,12 @@
 export default class TalksController {
-  constructor(Current, Talks, User) {
+  constructor(Current, Talks, User, Topic) {
     'ngInject';
 
     this.current = Current.current;
 
     this.talksService = Talks;
     this.userService = User;
+    this.topicService = Topic;
 
     this.talks = Talks.getAll();
     this.filter = {};
@@ -21,6 +22,8 @@ export default class TalksController {
 
     this.userInfoObj = {};   // user object to pass to popup controller
     this.showUserInfoPopup = false;
+
+    this.topics = Topic.query();
   }
   showSettings() {
     this.showFilters = !this.showFilters;
@@ -42,5 +45,9 @@ export default class TalksController {
   hideUserInfoPopup() {
     this.userInfoId = null;
     this.showUserInfoPopup = false;
+  }
+
+  get topicNames() {
+    return this.topics.map(el => el.name);
   }
 }

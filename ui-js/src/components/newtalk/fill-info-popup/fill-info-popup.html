@@ -4,7 +4,7 @@
     <p class="pop-up__notification">
       Please fill out all required info on the My Info page before submitting a talk.
     </p>
-    <button class="btn pop-up__button" ui-sref="header.tabs.myTalks">OK</button>
-    <button class="pop-up__close" ui-sref="header.tabs.myTalks"></button>
+    <button class="btn pop-up__button" ng-click="$ctrl.submit()">OK</button>
+    <button class="pop-up__close" ng-click="$ctrl.onClose()"></button>
   </div>
 </div>

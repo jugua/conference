@@ -6,7 +6,8 @@ export default (app) => {
     'ngInject';
 
     $stateProvider
-      .state('header.home.forgotPassword', {
+      .state('header.forgotPassword', {
+        url: '/forgot-password',
         template: '<forgot-password></forgot-password>'
       });
   }).component('forgotPassword', forgotPasswordComponent)

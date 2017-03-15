@@ -1,4 +1,5 @@
 import homeComponent from './home.component';
+import homeGuestComponent from './home-guest/home-guest.component';
 import homeSpeakerComponent from './home-speaker/home-speaker.component';
 import homeOrganiserComponent from './home-organiser/home-organiser.component';
 import homeAdminComponent from './home-admin/home-admin.component';
@@ -21,6 +22,7 @@ export default (app) => {
         controllerAs: 'ctrl',
       });
   }).component('home', homeComponent)
+    .component('homeGuest', homeGuestComponent)
     .component('homeSpeaker', homeSpeakerComponent)
     .component('homeOrganiser', homeOrganiserComponent)
     .component('homeAdmin', homeAdminComponent)

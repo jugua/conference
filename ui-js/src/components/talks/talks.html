@@ -24,7 +24,7 @@
           <label for="my-talk-topic" class="form-label my-talk-settings__label ">Topic</label>
           <select id="my-talk-topic" class="my-talk-settings__select my-talk-settings__select_topic"
                   ng-model="$ctrl.filter.topic"
-                  ng-options="topic for topic in $ctrl.menuService.getTopics()">
+                  ng-options="topic for topic in $ctrl.topicNames">
           </select>
         </div>
         <div class="my-talk-settings__date-wrapper">
