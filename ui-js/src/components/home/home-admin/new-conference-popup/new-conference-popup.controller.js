@@ -31,7 +31,7 @@ export default class {
     }
 
     function formatDate(date) {
-      return `${date.getFullYear()}/${dd(date.getMonth() + 1)}/${dd(date.getDate())}`;
+      return `${date.getFullYear()}-${dd(date.getMonth() + 1)}-${dd(date.getDate())}`;
     }
 
     const sendObj = {
