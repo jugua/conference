@@ -131,7 +131,6 @@
       </label>
       <select class="new-talk__select"
               multiple ng-attr-size="{{ $ctrl.multiSelectSize('orgs') }}"
-              ng-required="true"
               ng-model="$ctrl.conf.orgs"
               ng-options="org.id as org.name for org in $ctrl.orgs">
       </select>
