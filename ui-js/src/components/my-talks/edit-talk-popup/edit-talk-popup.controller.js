@@ -1,9 +1,8 @@
 export default class {
-  constructor(Menus, Talks, TalkFile) {
+  constructor(Talks, TalkFile, Topic, Type, Language, Level) {
     'ngInject';
 
     this.talksService = Talks;
-    this.selectService = Menus;
     this.talkFileService = TalkFile;
 
     this.obj = {};    // temp object to hold the original object's properties while editing
@@ -16,6 +15,11 @@ export default class {
     this.submitAttempt = false;
 
     this.fileNameObj = this.talkFileService.getName(this.talk.id);
+
+    this.topics = Topic.query();
+    this.types = Type.query();
+    this.langs = Language.query();
+    this.levels = Level.query();
   }
 
   get editable() {  // getter, convenient for template inline triggers

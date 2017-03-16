@@ -2,7 +2,7 @@ export default class {
   constructor($resource) {
     'ngInject';
 
-    this.res = $resource('/api/language', {}, {});
+    this.res = $resource('/api/lang');
   }
 
   query() {

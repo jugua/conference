@@ -32,7 +32,7 @@
       <select class="new-talk__select"
               ng-required="true"
               ng-model="$ctrl.talk.topic"
-              ng-options="topic for topic in $ctrl.selectService.getTopics()">
+              ng-options="topic.name as topic.name for topic in $ctrl.topics | orderBy: 'name'">
       </select>
 
       <label class="form-label form-label_required">
@@ -41,7 +41,7 @@
       <select class="new-talk__select"
               ng-required="true"
               ng-model="$ctrl.talk.type"
-              ng-options="type for type in $ctrl.selectService.getTypes()">
+              ng-options="type.name as type.name for type in $ctrl.types | orderBy: 'id'">
       </select>
 
       <label class="form-label form-label_required">
@@ -50,7 +50,7 @@
       <select class="new-talk__select"
               ng-required="true"
               ng-model="$ctrl.talk.lang"
-              ng-options="lang for lang in $ctrl.selectService.getLang()">
+              ng-options="lang.name as lang.name for lang in $ctrl.langs | orderBy: 'id'">
       </select>
 
       <label class="form-label form-label_required">
@@ -59,7 +59,7 @@
       <select class="new-talk__select"
               ng-required="true"
               ng-model="$ctrl.talk.level"
-              ng-options="level for level in $ctrl.selectService.getTalksLevels()">
+              ng-options="level.name as level.name for level in $ctrl.levels | orderBy: 'id'">
       </select>
 
       <label class="form-label">

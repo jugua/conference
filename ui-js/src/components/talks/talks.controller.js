@@ -6,6 +6,7 @@ export default class TalksController {
 
     this.talksService = Talks;
     this.userService = User;
+
     this.topicService = Topic;
 
     this.talks = Talks.getAll();
@@ -23,6 +24,7 @@ export default class TalksController {
     this.userInfoObj = {};   // user object to pass to popup controller
     this.showUserInfoPopup = false;
 
+    this.statuses = Talks.statusStrings;
     this.topics = Topic.query();
   }
   showSettings() {
@@ -45,9 +47,5 @@ export default class TalksController {
   hideUserInfoPopup() {
     this.userInfoId = null;
     this.showUserInfoPopup = false;
-  }
-
-  get topicNames() {
-    return this.topics.map(el => el.name);
   }
 }

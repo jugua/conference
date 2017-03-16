@@ -7,6 +7,8 @@ export default class {
     this.view = 'upcoming';    // default view
     this.conferences = [];
     this.getConferences();     // get initial conferences collection
+
+    this.showNewConferencePopup = false;
   }
 
   conditionalClass(condition) {
@@ -29,5 +31,13 @@ export default class {
       default:
         this.conferences = [];
     }
+  }
+
+  openNewConferencePopup() {
+    this.showNewConferencePopup = true;
+  }
+
+  closeNewConferencePopup() {
+    this.showNewConferencePopup = false;
   }
 }

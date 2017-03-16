@@ -12,6 +12,7 @@ describe('Talks controller', () => {
   let Current;
   let Talks;
   let User;
+  let Topic;
 
   beforeEach(angular.mock.module(($controllerProvider) => {
     $controllerProvider.register(controller.name, controller);
@@ -34,7 +35,9 @@ describe('Talks controller', () => {
     User = jasmine.createSpyObj('User', ['get']);
     User.get.and.returnValue($q.when({ name: 'John' }));
 
-    sut = $controller(controller.name, { Current, Talks, User }, {});
+    Topic = jasmine.createSpyObj('Topic', ['query']);
+
+    sut = $controller(controller.name, { Current, Talks, User, Topic }, {});
   }));
 
   describe('has necessary methods defined', () => {

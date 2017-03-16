@@ -86,4 +86,13 @@ export default class TalkService {
       (err) => { this.log.error(err); }
     );
   }
+
+  get statusStrings() {   // return an array of constant status strings
+    return [
+      this.TALK_STATUS_NEW,
+      this.TALK_STATUS_PROGRESS,
+      this.TALK_STATUS_APPROVED,
+      this.TALK_STATUS_REJECTED,
+    ];
+  }
 }

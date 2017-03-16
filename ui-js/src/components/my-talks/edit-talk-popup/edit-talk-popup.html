@@ -35,7 +35,7 @@
               ng-required="true"
               ng-disabled="!$ctrl.editable"
               ng-model="$ctrl.obj.topic"
-              ng-options="topic for topic in $ctrl.selectService.getTopics()">
+              ng-options="topic.name as topic.name for topic in $ctrl.topics | orderBy: 'name'">
       </select>
       <input type="text"
              class="field field_border"
@@ -51,7 +51,7 @@
               ng-if="$ctrl.editable"
               ng-required="true"
               ng-model="$ctrl.obj.type"
-              ng-options="type for type in $ctrl.selectService.getTypes()">
+              ng-options="type.name as type.name for type in $ctrl.types | orderBy: 'id'">
       </select>
       <input type="text"
              class="field field_border"
@@ -67,7 +67,7 @@
               ng-if="$ctrl.editable"
               ng-required="true"
               ng-model="$ctrl.obj.lang"
-              ng-options="lang for lang in $ctrl.selectService.getLang()">
+              ng-options="lang.name as lang.name for lang in $ctrl.langs | orderBy: 'id'">
       </select>
       <input type="text"
              class="field field_border"
@@ -83,7 +83,7 @@
               ng-if="$ctrl.editable"
               ng-required="true"
               ng-model="$ctrl.obj.level"
-              ng-options="level for level in $ctrl.selectService.getTalksLevels()">
+              ng-options="level.name as level.name for level in $ctrl.levels | orderBy: 'id'">
       </select>
       <input type="text"
              class="field field_border"

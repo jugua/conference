@@ -1,15 +1,18 @@
 export default class NewtalkController {
-  constructor(Menus, Talks, $state, $scope) {
+  constructor(Talks, Topic, Type, Language, Level) {
     'ngInject';
 
     this.talksService = Talks;
-    this.scope = $scope;
-    this.selectService = Menus;
-    this.state = $state;
+
     this.talkForm = {};
     this.talk = {};
     this.isShownPopup = false;
     this.buttonsBlocked = false;
+
+    this.topics = Topic.query();
+    this.types = Type.query();
+    this.langs = Language.query();
+    this.levels = Level.query();
   }
 
   close() {
