@@ -4,8 +4,6 @@ describe('Submit New Talk popup controller test', () => {
   let sut;
 
   let Talks;
-  let $state;
-  let $scope;
   let Topic;
   let Type;
   let Language;

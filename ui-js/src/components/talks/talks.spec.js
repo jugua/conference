@@ -2,8 +2,6 @@ import controller from './talks.controller';
 
 describe('Talks controller', () => {
   let $q;
-  let $rootScope;
-  let $scope;
 
   let deferred;
 
@@ -20,10 +18,8 @@ describe('Talks controller', () => {
 
   beforeEach(angular.mock.inject(($injector, $controller) => {
     $q = $injector.get('$q');
-    $rootScope = $injector.get('$rootScope');
 
     deferred = $q.defer();
-    $scope = $rootScope.$new();
 
     Current = jasmine.createSpyObj('Current', ['current']);
     Current.current.and.returnValue(deferred.promise);
@@ -73,7 +69,7 @@ describe('Talks controller', () => {
     it('sets reviewTalkObj to argument object', () => {
       sut.reviewTalkObj = {};
       sut.review({ a: 1 });
-      expect(sut.reviewTalkObj).toEqual({a: 1});
+      expect(sut.reviewTalkObj).toEqual({ a: 1 });
     });
     it('sets showReviewPopup to true', () => {
       sut.showReviewPopup = false;
