@@ -2,6 +2,7 @@ package ua.rd.cm.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,15 +29,19 @@ public class CreateConferenceDto {
     private String location;
 
     @JsonProperty("start_date")
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private LocalDate startDate;
     @JsonProperty("end_date")
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private LocalDate endDate;
     @JsonProperty("no_dates")
     private boolean noDates;
 
     @JsonProperty("cfp_start_date")
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private LocalDate callForPaperStartDate;
     @JsonProperty("cfp_end_date")
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private LocalDate callForPaperEndDate;
     @JsonProperty("cfp_no_dates")
     private boolean noCallForPaperDates;

@@ -74,7 +74,7 @@ public class LandingPageController {
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("type")
     public ResponseEntity getTypes() {
         return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
@@ -89,7 +89,7 @@ public class LandingPageController {
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("topic")
     public ResponseEntity getTopics() {
         return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
@@ -104,13 +104,13 @@ public class LandingPageController {
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("level")
     public ResponseEntity getLevels() {
         return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("lang")
     public ResponseEntity getLanguages() {
         return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);

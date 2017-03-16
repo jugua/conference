@@ -16,7 +16,8 @@ export default (app) => {
           this.resolved = true;
           this.currentUser = currentUser;
         },
-        controllerAs: 'ctrl'
+        controllerAs: 'ctrl',
+        params: { fwdState: 'header.tabs.myInfo' },
       });
   }).component('myInfo', myInfoComponent);
 };

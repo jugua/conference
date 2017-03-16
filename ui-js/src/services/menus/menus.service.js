@@ -53,32 +53,7 @@ const Menus = function Menus() {
       }
 
       return menuArr;
-    },
-    getTopics: () => ['JVM Languages and new programming paradigms',
-      'Web development and Java Enterprise technologies',
-      'Software engineering practices',
-      'Architecture & Cloud',
-      'BigData & NoSQL'
-    ],
-    getTypes: () => ['Regular Talk',
-      'Lighting Talk',
-      'Online Talk',
-      'Hands-On-Lab'
-    ],
-    getLang: () => ['English',
-      'Ukrainian',
-      'Russian'
-    ],
-    getTalksLevels: () => ['Beginner',
-      'Intermediate',
-      'Advanced',
-      'Expert'
-    ],
-    getStatus: () => ['New',
-      'In Progress',
-      'Approved',
-      'Rejected'
-    ]
+    }
   };
 };
 

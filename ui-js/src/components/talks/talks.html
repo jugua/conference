@@ -17,14 +17,14 @@
           <label for="my-talk-status" class="form-label my-talk-settings__label my-talk-settings__label_status">Status</label>
           <select id="my-talk-status" class="my-talk-settings__select"
                   ng-model="$ctrl.filter.status"
-                  ng-options="status for status in $ctrl.menuService.getStatus()">
+                  ng-options="status for status in $ctrl.statuses">
           </select>
         </div>
         <div class="my-talk-settings__select-wrapper my-talk-settings__select-wrapper_topic">
           <label for="my-talk-topic" class="form-label my-talk-settings__label ">Topic</label>
           <select id="my-talk-topic" class="my-talk-settings__select my-talk-settings__select_topic"
                   ng-model="$ctrl.filter.topic"
-                  ng-options="topic for topic in $ctrl.menuService.getTopics()">
+                  ng-options="topic.id as topic.name for topic in $ctrl.topics">
           </select>
         </div>
         <div class="my-talk-settings__date-wrapper">

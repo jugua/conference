@@ -1,7 +1,8 @@
 <div class="tabs-layout">
   <div class="tabs-wrapper">
     <div class="home__header">
-      <a  class="btn home__button">new conference</a>
+      <a class="btn home__button"
+         ng-click="$ctrl.openNewConferencePopup()">new conference</a>
     </div>
     <div class="tabs-wrapper_embedded">
       <ul class="tabs-list">
@@ -25,3 +26,7 @@
     </div>
   </div>
 </div>
+
+<new-conference-popup ng-if="$ctrl.showNewConferencePopup"
+                      on-submit="$ctrl.closeNewConferencePopup(); $ctrl.getConferences()"
+                      on-close="$ctrl.closeNewConferencePopup()"></new-conference-popup>

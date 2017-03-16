@@ -1,5 +1,5 @@
-import template from './newtalk.html';
-import controller from './newtalk.controller';
+import template from './newtalk-popup.html';
+import controller from './newtalk-popup.controller';
 
 const newtalkComponent = {
   bindings: {

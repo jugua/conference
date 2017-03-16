@@ -2,8 +2,6 @@ import controller from './talks.controller';
 
 describe('Talks controller', () => {
   let $q;
-  let $rootScope;
-  let $scope;
 
   let deferred;
 
@@ -12,6 +10,7 @@ describe('Talks controller', () => {
   let Current;
   let Talks;
   let User;
+  let Topic;
 
   beforeEach(angular.mock.module(($controllerProvider) => {
     $controllerProvider.register(controller.name, controller);
@@ -19,10 +18,8 @@ describe('Talks controller', () => {
 
   beforeEach(angular.mock.inject(($injector, $controller) => {
     $q = $injector.get('$q');
-    $rootScope = $injector.get('$rootScope');
 
     deferred = $q.defer();
-    $scope = $rootScope.$new();
 
     Current = jasmine.createSpyObj('Current', ['current']);
     Current.current.and.returnValue(deferred.promise);
@@ -34,7 +31,9 @@ describe('Talks controller', () => {
     User = jasmine.createSpyObj('User', ['get']);
     User.get.and.returnValue($q.when({ name: 'John' }));
 
-    sut = $controller(controller.name, { Current, Talks, User }, {});
+    Topic = jasmine.createSpyObj('Topic', ['query']);
+
+    sut = $controller(controller.name, { Current, Talks, User, Topic }, {});
   }));
 
   describe('has necessary methods defined', () => {
@@ -70,7 +69,7 @@ describe('Talks controller', () => {
     it('sets reviewTalkObj to argument object', () => {
       sut.reviewTalkObj = {};
       sut.review({ a: 1 });
-      expect(sut.reviewTalkObj).toEqual({a: 1});
+      expect(sut.reviewTalkObj).toEqual({ a: 1 });
     });
     it('sets showReviewPopup to true', () => {
       sut.showReviewPopup = false;

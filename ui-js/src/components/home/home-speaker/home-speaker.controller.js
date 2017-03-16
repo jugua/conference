@@ -1,14 +1,18 @@
 export default class {
-  constructor(Conference) {
+  constructor(Conference, $state) {
     'ngInject';
 
     this.conferenceService = Conference;
+    this.state = $state;
 
     this.view = 'upcoming';    // default view
     this.conferences = [];
     this.getConferences();     // get initial conferences collection
 
     this.popupOpen = false;
+    this.fillInfoPopupOpen = false;
+
+    this.fillInfoPopupFwdState = 'header.home';
   }
 
   conditionalClass(condition) {
@@ -34,8 +38,12 @@ export default class {
   }
 
   showPopup(conferenceId) {
-    this.conferenceId = conferenceId;
-    this.popupOpen = true;
+    if (this.userInfoFilled()) {
+      this.conferenceId = conferenceId;
+      this.popupOpen = true;
+    } else {
+      this.fillInfoPopupOpen = true;
+    }
   }
 
   popupCloseCallback() {
@@ -44,5 +52,14 @@ export default class {
 
   popupSubmitCallback() {
     this.popupOpen = false;
+  }
+
+  userInfoFilled() {
+    const mandatory = ['bio', 'job', 'company'];
+    return mandatory.every(el => this.user[el] !== '');
+  }
+
+  fillInfoPopupCloseCallback() {
+    this.fillInfoPopupOpen = false;
   }
 }

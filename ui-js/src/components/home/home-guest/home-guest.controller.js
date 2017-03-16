@@ -1,14 +1,18 @@
 export default class {
-  constructor(Conference) {
+  constructor(Conference, $state) {
     'ngInject';
 
     this.conferenceService = Conference;
+    this.state = $state;
 
     this.view = 'upcoming';    // default view
     this.conferences = [];
     this.getConferences();     // get initial conferences collection
 
-    this.showNewConferencePopup = false;
+    this.popupOpen = false;
+    this.fillInfoPopupOpen = false;
+
+    this.fillInfoPopupFwdState = 'header.home';
   }
 
   conditionalClass(condition) {
@@ -33,11 +37,7 @@ export default class {
     }
   }
 
-  openNewConferencePopup() {
-    this.showNewConferencePopup = true;
-  }
-
-  closeNewConferencePopup() {
-    this.showNewConferencePopup = false;
+  signIn() {
+    this.state.go('header.sign-in');
   }
 }

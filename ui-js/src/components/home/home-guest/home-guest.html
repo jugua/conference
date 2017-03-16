@@ -1,8 +1,7 @@
 <div class="tabs-layout">
-
   <div class="tabs-wrapper">
     <div class="home__header">
-        <a ng-click="$ctrl.showPopup()" class="btn home__button">propose new talk</a>
+        <a ng-click="$ctrl.signIn()" class="btn home__button">propose new talk</a>
     </div>
 
     <div class="tabs-wrapper_embedded">
@@ -23,20 +22,9 @@
                         data="conference"
                         show-counters="false"
                         show-submit="true"
-                        on-click="$ctrl.showPopup(conferenceId)">
+                        on-click="$ctrl.signIn()">
         </conference-card>
       </div>
     </div>
   </div>
 </div>
-
-<newtalk-popup ng-if="$ctrl.popupOpen"
-         on-close="$ctrl.popupCloseCallback()"
-         on-submit="$ctrl.popupSubmitCallback()"
-         conference-id="$ctrl.conferenceId">
-</newtalk-popup>
-
-<fill-info-popup ng-if="$ctrl.fillInfoPopupOpen"
-               on-close="$ctrl.fillInfoPopupCloseCallback()"
-               fwd-state="$ctrl.fillInfoPopupFwdState">
-</fill-info-popup>
