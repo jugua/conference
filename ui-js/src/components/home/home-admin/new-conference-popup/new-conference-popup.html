@@ -133,7 +133,7 @@
               multiple ng-attr-size="{{ $ctrl.multiSelectSize('orgs') }}"
               ng-required="true"
               ng-model="$ctrl.conf.orgs"
-              ng-options="org.mail as org.name for org in $ctrl.orgs">
+              ng-options="org.id as org.name for org in $ctrl.orgs">
       </select>
 
       <span class="field-error" ng-show="$ctrl.submitAttempt && $ctrl.form.$error.required">
