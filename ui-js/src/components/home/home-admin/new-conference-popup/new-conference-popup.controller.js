@@ -92,4 +92,8 @@ export default class {
       });
     }
   }
+
+  multiSelectSize(arrName) {
+    return (this[arrName].length > 7) ? 7 : this[arrName].length;
+  }
 }

@@ -88,7 +88,7 @@
       <input type="text" ng-model="$ctrl.newTopic"></input>
       <button type="button" ng-click="$ctrl.addTopic()">Add Topic</button>
       <select class="new-talk__select"
-              multiple ng-attr-size="{{$ctrl.topics.length}}"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('topics') }}"
               ng-required="true"
               ng-model="$ctrl.conf.topics"
               ng-options="topic.id as topic.name for topic in $ctrl.topics | orderBy: 'name'">
@@ -100,7 +100,7 @@
       <input type="text" ng-model="$ctrl.newType"></input>
       <button type="button" ng-click="$ctrl.addType()">Add Type</button>
       <select class="new-talk__select"
-              multiple ng-attr-size="{{$ctrl.types.length}}"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('types') }}"
               ng-required="true"
               ng-model="$ctrl.conf.types"
               ng-options="type.id as type.name for type in $ctrl.types | orderBy: 'id'">
@@ -110,7 +110,7 @@
         languages
       </label>
       <select class="new-talk__select"
-              multiple ng-attr-size="{{$ctrl.langs.length}}"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('langs') }}"
               ng-required="true"
               ng-model="$ctrl.conf.langs"
               ng-options="lang.id as lang.name for lang in $ctrl.langs | orderBy: 'id'">
@@ -120,7 +120,7 @@
         levels
       </label>
       <select class="new-talk__select"
-              multiple ng-attr-size="{{$ctrl.levels.length}}"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('levels') }}"
               ng-required="true"
               ng-model="$ctrl.conf.levels"
               ng-options="level.id as level.name for level in $ctrl.levels | orderBy: 'id'">
