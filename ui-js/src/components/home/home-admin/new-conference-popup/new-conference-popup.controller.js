@@ -1,5 +1,5 @@
 export default class {
-  constructor(Conference, Topic, Type, Language, Level) {
+  constructor(Conference, Topic, Type, Language, Level, ManageUsers) {
     'ngInject';
 
     this.conferenceService = Conference;
@@ -7,11 +7,14 @@ export default class {
     this.typeService = Type;
     this.langService = Language;
     this.levelService = Level;
+    this.manageUsersService = ManageUsers;
 
     this.topics = Topic.query();
     this.types = Type.query();
     this.langs = Language.query();
     this.levels = Level.query();
+
+    this.users = ManageUsers.getAll();
 
     this.conf = {};
   }
@@ -44,7 +47,7 @@ export default class {
       types: this.conf.types,
       levels: this.conf.levels,
       languages: this.conf.langs,
-      organisers: []
+      organisers: this.conf.orgs,
     };
 
     if (this.conf.startDate) { // if is set - format
@@ -95,5 +98,16 @@ export default class {
 
   multiSelectSize(arrName) {
     return (this[arrName].length > 7) ? 7 : this[arrName].length;
+  }
+
+  get orgs() {
+    const orgs = this.users.filter(el => (el.roles.indexOf('ROLE_ORGANISER') > -1) &&
+                                         (el.roles.indexOf('ROLE_ADMIN') === -1));
+    orgs.map((el) => {
+      el.name = `${el.fname} ${el.lname}`;
+      return el;
+    });
+
+    return orgs;
   }
 }
