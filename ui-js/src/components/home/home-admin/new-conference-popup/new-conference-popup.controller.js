@@ -47,7 +47,7 @@ export default class {
       types: this.conf.types,
       levels: this.conf.levels,
       languages: this.conf.langs,
-      organisers: [],
+      organisers: this.conf.orgs,
     };
 
     if (this.conf.startDate) { // if is set - format
