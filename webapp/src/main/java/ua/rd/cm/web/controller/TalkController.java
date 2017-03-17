@@ -92,7 +92,7 @@ public class TalkController {
             @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
+        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
                 submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
                 submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 
@@ -305,6 +305,11 @@ public class TalkController {
         dto.setSpeakerFullName(talk.getUser().getFullName());
         dto.setStatusName(talk.getStatus().getName());
         dto.setDate(talk.getTime().toString());
+        if (talk.getConference() != null) {
+            Conference conference = talk.getConference();
+            dto.setConferenceId(conference.getId());
+            dto.setConferenceName(conference.getTitle());
+        }
 
         User organiser = talk.getOrganiser();
         if (organiser != null) {
