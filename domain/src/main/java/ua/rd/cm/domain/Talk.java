@@ -61,6 +61,7 @@ public class Talk extends AbstractEntity {
     private User organiser;
 
     @ManyToOne
+    @JoinColumn(name = "conference_id")
     private Conference conference;
 
     @Column(name = "attached_file")
