@@ -49,20 +49,40 @@ public class Conference extends AbstractEntity {
     private Boolean callForPaperActive;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "conference_topic",
+            joinColumns = @JoinColumn(name = "conference_id"),
+            inverseJoinColumns = @JoinColumn(name = "topic_id")
+    )
     private Collection<Topic> topics;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "conference_type",
+            joinColumns = @JoinColumn(name = "conference_id"),
+            inverseJoinColumns = @JoinColumn(name = "type_id")
+    )
     private Collection<Type> types;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "conference_language",
+            joinColumns = @JoinColumn(name = "conference_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
     private Collection<Language> languages;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "conference_level",
+            joinColumns = @JoinColumn(name = "conference_id"),
+            inverseJoinColumns = @JoinColumn(name = "level_id")
+    )
     private Collection<Level> levels;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "conference")
     private Collection<Talk> talks;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "conference_organiser",
+            joinColumns = @JoinColumn(name = "conference_id"),
+            inverseJoinColumns = @JoinColumn(name = "organiser_id")
+    )
     private Collection<User> organisers;
 }
