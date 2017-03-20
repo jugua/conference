@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -21,6 +22,8 @@ import ua.rd.cm.web.controller.dto.SettingsDto;
 import java.security.Principal;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,6 +62,8 @@ public class ChangePasswordControllerTest {
 
     @Test
     public void correctChangePasswordTest() throws Exception {
+        when(userService.isAuthenticated(any(User.class), anyString())).
+                thenReturn(true);
         mockMvc.perform(post(API_USER_CURRENT_PASSWORD)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(settingsDto))
@@ -87,18 +92,6 @@ public class ChangePasswordControllerTest {
     @Test
     public void nullCurrentPasswordTest() throws Exception {
         settingsDto.setCurrentPassword(null);
-        checkForBadRequest(principal);
-    }
-
-    @Test
-    public void tooSmallCurrentPasswordTest() throws Exception {
-        settingsDto.setCurrentPassword(createStringWithLength(5));
-        checkForBadRequest(principal);
-    }
-
-    @Test
-    public void tooLongCurrentPasswordTest() throws Exception {
-        settingsDto.setCurrentPassword(createStringWithLength(31));
         checkForBadRequest(principal);
     }
 
