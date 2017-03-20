@@ -53,30 +53,32 @@ public class Talk extends AbstractEntity {
     @Column(name = "additional_info", length = 1500)
     private String additionalInfo;
 
-    @Column(name="organiser_comment", length=1000)
+    @Column(name = "organiser_comment", length = 1000)
     private String organiserComment;
 
     @ManyToOne
+    @JoinColumn(name = "organiser_id")
     private User organiser;
 
     @ManyToOne
+    @JoinColumn(name = "conference_id")
     private Conference conference;
 
     @Column(name = "attached_file")
     private String pathToAttachedFile;
 
-    public boolean setStatus(TalkStatus status){
-        if(this.status==null){
-            this.status=status;
+    public boolean setStatus(TalkStatus status) {
+        if (this.status == null) {
+            this.status = status;
         }
-        if(this.status.canChangeTo(status)){
-            this.status=status;
+        if (this.status.canChangeTo(status)) {
+            this.status = status;
             return true;
         }
         return false;
     }
 
-    public boolean isValidComment(){
+    public boolean isValidComment() {
         return organiserComment != null && organiserComment.length() > 0;
     }
 

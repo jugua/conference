@@ -67,7 +67,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional(readOnly = true)
     public List<Conference> findPast() {
-        return conferenceRepository.findBySpecification(
+        return conferenceRepository.getAllWithTalks(
                 new AndSpecification<>(
                         new ConferenceEndDateIsNull(false),
                         new ConferenceEndDateEarlierThanNow()
@@ -78,7 +78,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional(readOnly = true)
     public List<Conference> findUpcoming() {
-        List<Conference> conferences = conferenceRepository.findBySpecification(
+        List<Conference> conferences = conferenceRepository.getAllWithTalks(
                 new OrSpecification<>(
                         new ConferenceEndDateIsNull(true),
                         new ConferenceEndDateLaterOrEqualToNow()

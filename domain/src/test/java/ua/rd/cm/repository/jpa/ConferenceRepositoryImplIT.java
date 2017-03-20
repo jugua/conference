@@ -13,9 +13,11 @@ import ua.rd.cm.repository.specification.conference.ConferenceEndDateEarlierThan
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
 import ua.rd.cm.repository.specification.conference.ConferenceEndDateLaterOrEqualToNow;
 
+import javax.persistence.FlushModeType;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -46,21 +48,60 @@ public class ConferenceRepositoryImplIT extends AbstractJpaCrudRepositoryIT<Conf
     }
 
     @Test
-    @DatabaseSetup("/ds/conference-ds.xml")
+    @DatabaseSetup("/ds/conference.xml")
+    public void getAllWithTalks() {
+        List<Conference> allWithTalks = repository.getAllWithTalks(new Specification<Conference>() {
+            @Override
+            public String toSqlClauses() {
+                return " c.id is not null ";
+            }
+
+            @Override
+            public boolean test(Conference conference) {
+                return true;
+            }
+        });
+        assertEquals(1, allWithTalks.size());
+    }
+
+    @Test
+    @DatabaseSetup("/ds/admin-upcoming-conference.xml")
+    public void getAllWithTalksShouldFetchTalks() {
+        List<Conference> allWithTalks = repository.getAllWithTalks(new Specification<Conference>() {
+            @Override
+            public String toSqlClauses() {
+                return " c.id is not null ";
+            }
+
+            @Override
+            public boolean test(Conference conference) {
+                return true;
+            }
+        });
+        entityManager.flush();
+        entityManager.setFlushMode(FlushModeType.COMMIT);
+
+        for (Conference allWithTalk : allWithTalks) {
+            assertFalse(allWithTalk.getTalks().isEmpty());
+        }
+    }
+
+    @Test
+    @DatabaseSetup("/ds/conference.xml")
     public void findUpcomingShouldContainConferenceWithNoDateSpecified() {
         List<Conference> upcoming = repository.findBySpecification(UPCOMING);
         assertFalse(upcoming.isEmpty());
     }
 
     @Test
-    @DatabaseSetup("/ds/upcoming-conference-ds.xml")
+    @DatabaseSetup("/ds/upcoming-conference.xml")
     public void findUpcomingShouldContainConferenceWhichEndsInFuture() {
         List<Conference> upcoming = repository.findBySpecification(UPCOMING);
         assertFalse(upcoming.isEmpty());
     }
 
     @Test
-    @DatabaseSetup("/ds/past-conference-ds.xml")
+    @DatabaseSetup("/ds/past-conference.xml")
     public void findUpcomingShouldNotContainConferenceThatHasAlreadyStarted() {
         List<Conference> upcoming = repository.findBySpecification(UPCOMING);
         assertTrue(upcoming.isEmpty());
@@ -91,14 +132,14 @@ public class ConferenceRepositoryImplIT extends AbstractJpaCrudRepositoryIT<Conf
     }
 
     @Test
-    @DatabaseSetup("/ds/past-conference-ds.xml")
+    @DatabaseSetup("/ds/past-conference.xml")
     public void findPastShouldContainPastConferences() {
         List<Conference> past = repository.findBySpecification(PAST);
         assertFalse(past.isEmpty());
     }
 
     @Test
-    @DatabaseSetup("/ds/upcoming-conference-ds.xml")
+    @DatabaseSetup("/ds/upcoming-conference.xml")
     public void findPastShouldReturnEmptyIfThereIsNoPastConferences() {
         List<Conference> past = repository.findBySpecification(PAST);
         assertTrue(past.isEmpty());
