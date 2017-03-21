@@ -2,6 +2,10 @@ const Menus = function Menus() {
   const menu = {
     speaker: [
       {
+        link: 'home',
+        name: 'Conferences'
+      },
+      {
         link: 'tabs.myInfo',
         name: 'My Info'
       },
@@ -15,6 +19,10 @@ const Menus = function Menus() {
       }
     ],
     organiser: [
+      {
+        link: 'home',
+        name: 'Conferences'
+      },
       {
         link: 'talks',
         name: 'Talks'

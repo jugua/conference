@@ -1,5 +1,7 @@
 export default class {
   constructor($state) {
+    'ngInject';
+
     this.state = $state;
   }
 

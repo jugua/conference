@@ -284,7 +284,23 @@
           +my-talk-before-title
 
     &_comments
-      width: 35%
+      width: 20%
+      position: relative
+      box-sizing: border-box
+      padding: 5px 5px 5px 15px
+      overflow: hidden
+      text-overflow: ellipsis
+      white-space: nowrap
+
+      @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
+        width: 100%
+        padding: 5px
+        &:before
+          content: 'Comments'
+          +my-talk-before-title
+
+    &_conference
+      width: 15%
       position: relative
       box-sizing: border-box
       padding: 5px 5px 5px 15px
@@ -292,9 +308,6 @@
       text-overflow: ellipsis
       white-space: nowrap
       border-right: 1px solid transparent
-
-      &:hover
-        cursor: pointer
 
       @media ($mnw: $xsdmn) and ($mxw: $xmdmx)
         width: 100%
@@ -438,7 +451,12 @@
         +filter-icon
 
     &_comments
-      width: 35%
+      width: 20%
+      position: relative
+      padding-left: 15px
+    
+    &_conference
+      width: 15%
       position: relative
       padding-left: 15px
       border-right: 1px solid transparent
