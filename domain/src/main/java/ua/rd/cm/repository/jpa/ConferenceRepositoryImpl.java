@@ -19,7 +19,7 @@ public class ConferenceRepositoryImpl
     @Override
     public List<Conference> getAllWithTalks(Specification<Conference> spec) {
         TypedQuery<Conference> query = entityManager.createQuery(
-                "select c from Conference c left join fetch c.talks t where " + spec.toSqlClauses(), Conference.class
+                "select distinct c from Conference c left join fetch c.talks t where " + spec.toSqlClauses(), Conference.class
         );
         spec.setParameters(query);
         return query.getResultList();

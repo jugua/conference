@@ -55,6 +55,7 @@ public class TalkController {
     private TopicService topicService;
     private MailService mailService;
     private FileStorageService storageService;
+    private ConferenceService conferenceService;
 
     public static final String APPROVED = "Approved";
     public static final String REJECTED = "Rejected";
@@ -66,7 +67,8 @@ public class TalkController {
                           TypeService typeService, LanguageService languageService,
                           LevelService levelService, TopicService topicService,
                           MailService mailService,
-                          FileStorageService storageService
+                          FileStorageService storageService,
+                          ConferenceService conferenceService
     ) {
         this.mapper = mapper;
         this.userService = userService;
@@ -77,6 +79,7 @@ public class TalkController {
         this.typeService = typeService;
         this.levelService = levelService;
         this.storageService = storageService;
+        this.conferenceService = conferenceService;
     }
 
     @ExceptionHandler(TalkNotFoundException.class)
@@ -323,8 +326,7 @@ public class TalkController {
 
         Long conferenceId = dto.getConferenceId();
         if (conferenceId != null) {
-            Conference conference = new Conference();
-            conference.setId(conferenceId);
+            Conference conference = conferenceService.findById(conferenceId);
             talk.setConference(conference);
         }
         talk.setTime(LocalDateTime.now());
