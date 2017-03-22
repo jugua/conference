@@ -1,4 +1,4 @@
-<div class="sign-in-wrapper  js-dropdown">
+<div ng-class="$ctrl.conditionalWrapperClass">
   <form class="sign-in" name="$ctrl.userForm" novalidate ng-submit="$ctrl.login()">
     <h2 class="form-title sign-in__title">sign in</h2>
     <label for="sign-in-email" class="sign-in__label form-label">email:</label>
@@ -14,7 +14,7 @@
     <span class="field-error" ng-if="$ctrl.userForm.mail.$error.confirm_reg">You have to go to your email and confirm your account</span>
     <div class="sign-in__password-cont">
       <label for="sign-in-password" class="form-label">password:</label>
-      <a href="#" ui-sref="header.home.forgotPassword" class="sign-in__forgot" tabindex="4">forgot password?</a>
+      <a href="#" ui-sref="header.forgotPassword" class="sign-in__forgot" tabindex="4">forgot password?</a>
     </div>
     <input type="password"
            name="password"

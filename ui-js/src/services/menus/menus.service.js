@@ -2,6 +2,10 @@ const Menus = function Menus() {
   const menu = {
     speaker: [
       {
+        link: 'home',
+        name: 'Conferences'
+      },
+      {
         link: 'tabs.myInfo',
         name: 'My Info'
       },
@@ -15,6 +19,10 @@ const Menus = function Menus() {
       }
     ],
     organiser: [
+      {
+        link: 'home',
+        name: 'Conferences'
+      },
       {
         link: 'talks',
         name: 'Talks'
@@ -34,7 +42,6 @@ const Menus = function Menus() {
 
   return {
     getMenu: function getMenu(role) {
-
       let menuArr = [];
 
       if (!role || role.length === 0) {
@@ -54,32 +61,7 @@ const Menus = function Menus() {
       }
 
       return menuArr;
-    },
-    getTopics: () => ['JVM Languages and new programming paradigms',
-      'Web development and Java Enterprise technologies',
-      'Software engineering practices',
-      'Architecture & Cloud',
-      'BigData & NoSQL'
-    ],
-    getTypes: () => ['Regular Talk',
-      'Lighting Talk',
-      'Online Talk',
-      'Hands-On-Lab'
-    ],
-    getLang: () => ['English',
-      'Ukrainian',
-      'Russian'
-    ],
-    getTalksLevels: () => ['Beginner',
-      'Intermediate',
-      'Advanced',
-      'Expert'
-    ],
-    getStatus: () => ['New',
-      'In Progress',
-      'Approved',
-      'Rejected'
-    ]
+    }
   };
 };
 

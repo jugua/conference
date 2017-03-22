@@ -44,14 +44,8 @@ public class PhotoController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable("id") Long userId) {
         User user = userService.find(userId);
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         File file = fileStorageService.getFile(user.getPhoto());
-        if (file == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         String mimeType = getTypeIfSupported(file);
         if (mimeType == null) {

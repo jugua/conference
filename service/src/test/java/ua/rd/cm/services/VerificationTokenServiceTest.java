@@ -43,8 +43,13 @@ public class VerificationTokenServiceTest {
     public void setUp() {
         tokenService = new VerificationTokenService(tokenRepository);
         testedToken = createTokenUsingService();
-        verificationToken = new VerificationToken(1L, "TOKEN", new User(),
-                createExpiredDate(0), VerificationToken.TokenType.CONFIRMATION, VerificationToken.TokenStatus.VALID);
+        verificationToken = new VerificationToken();
+        verificationToken.setId(1L);
+        verificationToken.setToken("TOKEN");
+        verificationToken.setUser(new User());
+        verificationToken.setExpiryDate(createExpiredDate(0));
+        verificationToken.setStatus(VerificationToken.TokenStatus.VALID);
+        verificationToken.setType(VerificationToken.TokenType.CONFIRMATION);
     }
 
     @Test
@@ -130,8 +135,14 @@ public class VerificationTokenServiceTest {
     }
 
     private static User createUser() {
-        return new User(null, "FName", "LName", "test@gmail.com", "password",
-                "testUrl3",  User.UserStatus.CONFIRMED,null, null);
+        User result = new User();
+        result.setFirstName("FName");
+        result.setLastName("LName");
+        result.setEmail("test@gmail.com");
+        result.setPassword("password");
+        result.setPhoto("testUrl3");
+        result.setStatus(User.UserStatus.CONFIRMED);
+        return result;
     }
 
     private LocalDateTime createExpiredDate(int decreasingTimeInMinutes) {

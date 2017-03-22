@@ -1,6 +1,5 @@
 package ua.rd.cm.domain;
 
-
 import java.util.*;
 
 public enum TalkStatus {
@@ -11,10 +10,11 @@ public enum TalkStatus {
     }
 
     private String name;
+
     private enum Transition {
 
-        FROM_NEW(NEW, IN_PROGRESS, APPROVED,REJECTED),
-        FROM_IN_PROGRESS(IN_PROGRESS,IN_PROGRESS, APPROVED, REJECTED),
+        FROM_NEW(NEW, IN_PROGRESS, APPROVED, REJECTED),
+        FROM_IN_PROGRESS(IN_PROGRESS, IN_PROGRESS, APPROVED, REJECTED),
         FROM_APPROVED(APPROVED),
         FROM_REJECTED(REJECTED);
 
@@ -40,7 +40,7 @@ public enum TalkStatus {
         return name;
     }
 
-    public boolean isStatusName(String name){
+    public boolean isStatusName(String name) {
         return this.name.equals(name);
     }
 
@@ -48,9 +48,9 @@ public enum TalkStatus {
         return Transition.transitions.get(this).contains(status);
     }
 
-    public static TalkStatus getStatusByName(String statusName){
-        for(TalkStatus status: TalkStatus.values()){
-            if(status.getName().equals(statusName)){
+    public static TalkStatus getStatusByName(String statusName) {
+        for (TalkStatus status : TalkStatus.values()) {
+            if (status.getName().equals(statusName)) {
                 return status;
             }
         }

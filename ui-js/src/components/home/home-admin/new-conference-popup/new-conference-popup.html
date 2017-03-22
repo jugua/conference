@@ -1,0 +1,160 @@
+<div class="pop-up-wrapper">
+  <div class="pop-up pop-up_big">
+    <h3 class="pop-up__title">create new conference</h3>
+    <button class="pop-up__close" ng-click="$ctrl.close()"></button>
+    <form class="new-talk" name="$ctrl.form"
+          novalidate
+          ng-submit="$ctrl.submit()">
+
+      <label for="new-conf-title" class="form-label form-label_required">
+        title
+      </label>
+      <input type="text" id="new-conf-title" class="field field_border"
+             maxlength="1000"
+             ng-required="true"
+             ng-model="$ctrl.conf.title">
+
+      <label for="new-conf-desc" class="form-label form-label_required">
+        description
+      </label>
+      <textarea id="new-conf-desc"
+                class="textarea"
+                maxlength="3000"
+                ng-required="true"
+                ng-model="$ctrl.conf.description">
+
+      </textarea>
+
+      <label for="new-conf-location" class="form-label form-label_required">
+        location
+      </label>
+      <input type="text" id="new-conf-location" class="field field_border"
+             maxlength="256"
+             ng-required="true"
+             ng-model="$ctrl.conf.location">
+
+      <div class="form-date-block">
+        <div>
+          <label class="form-label form-label_inline form-label_required">
+            dates
+          </label>
+          <md-datepicker ng-model="$ctrl.conf.startDate"
+                        md-placeholder="Select date"
+                        class="my-talk-settings__date"
+                        md-hide-icons="triangle"
+                        md-max-date="$ctrl.conf.endDate"
+                        ng-required="!$ctrl.conf.noDates">
+          </md-datepicker>
+          <md-datepicker ng-model="$ctrl.conf.endDate"
+                        md-placeholder="Select date"
+                        class="my-talk-settings__date"
+                        md-hide-icons="triangle"
+                        md-min-date="$ctrl.conf.startDate"
+                        ng-required="!$ctrl.conf.noDates">
+          </md-datepicker>
+          <input type="checkbox"
+                ng-model="$ctrl.conf.noDates"
+                ng-click="$ctrl.noDatesToggle()"> no dates
+        </div>
+
+        <div>
+          <label class="form-label form-label_inline form-label_required">
+            call for papers
+          </label>
+          <md-datepicker ng-model="$ctrl.conf.cfpStartDate"
+                        md-placeholder="Select date"
+                        class="my-talk-settings__date"
+                        md-hide-icons="triangle"
+                        md-max-date="$ctrl.conf.cfpEndDate"
+                        ng-required="!$ctrl.conf.cfpNoDates">
+          </md-datepicker>
+          <md-datepicker ng-model="$ctrl.conf.cfpEndDate"
+                        md-placeholder="Select date"
+                        class="my-talk-settings__date"
+                        md-hide-icons="triangle"
+                        md-min-date="$ctrl.conf.cfpStartDate"
+                        md-max-date="$ctrl.conf.startDate"
+                        ng-required="!$ctrl.conf.cfpNoDates">
+          </md-datepicker>
+          <input type="checkbox"
+                ng-model="$ctrl.conf.cfpNoDates"
+                ng-click="$ctrl.cfpNoDatesToggle()"> no dates
+        </div>
+      </div>
+
+      <label class="form-label form-label_inline form-label_required">
+        topics
+      </label>
+      <input type="text" ng-model="$ctrl.newTopic"></input>
+      <button type="button" ng-click="$ctrl.addTopic()">Add Topic</button>
+      <select class="new-talk__select"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('topics') }}"
+              ng-required="true"
+              ng-model="$ctrl.conf.topics"
+              ng-options="topic.id as topic.name for topic in $ctrl.topics | orderBy: 'name'">
+      </select>
+
+      <label class="form-label  form-label_inline form-label_required">
+        types
+      </label>
+      <input type="text" ng-model="$ctrl.newType"></input>
+      <button type="button" ng-click="$ctrl.addType()">Add Type</button>
+      <select class="new-talk__select"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('types') }}"
+              ng-required="true"
+              ng-model="$ctrl.conf.types"
+              ng-options="type.id as type.name for type in $ctrl.types | orderBy: 'id'">
+      </select>
+
+      <label class="form-label form-label_required">
+        languages
+      </label>
+      <select class="new-talk__select"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('langs') }}"
+              ng-required="true"
+              ng-model="$ctrl.conf.langs"
+              ng-options="lang.id as lang.name for lang in $ctrl.langs | orderBy: 'id'">
+      </select>
+
+      <label class="form-label form-label_required">
+        levels
+      </label>
+      <select class="new-talk__select"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('levels') }}"
+              ng-required="true"
+              ng-model="$ctrl.conf.levels"
+              ng-options="level.id as level.name for level in $ctrl.levels | orderBy: 'id'">
+      </select>
+
+      <label class="form-label form-label_required">
+        organisers
+      </label>
+      <select class="new-talk__select"
+              multiple ng-attr-size="{{ $ctrl.multiSelectSize('orgs') }}"
+              ng-model="$ctrl.conf.orgs"
+              ng-options="org.id as org.name for org in $ctrl.orgs">
+      </select>
+
+      <span class="field-error" ng-show="$ctrl.submitAttempt && $ctrl.form.$error.required">
+        Please fill in all mandatory fields
+      </span>
+
+      <button class="btn pop-up__button"
+              ng-disabled="$ctrl.buttonsBlocked">Submit</button>
+    </form>
+  </div>
+</div>
+
+<div class="pop-up-wrapper" ng-show="$ctrl.isShownPopup">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Info</h3>
+    <button class="pop-up__close" ng-click="$ctrl.isShownPopup = false"></button>
+    <p class="pop-up__notification">Are you sure you want to leave the window?</p>
+    <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'Yes' to leave and all your changes will lost.</p>
+    <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'No' to return and Submit/Update your changes</p>
+    <div class="pop-up-button-wrapper">
+      <button class="btn pop-up__button" ng-click="$ctrl.onClose()">Yes</button>
+      <button class="btn btn__cancel pop-up__button" ng-click="$ctrl.isShownPopup = false">No</button>
+    </div>
+  </div>
+</div>

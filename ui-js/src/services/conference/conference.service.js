@@ -2,6 +2,8 @@ export default class {
   constructor($resource) {
     'ngInject';
 
+    this.res = $resource('/api/conference');
+
     this.resUpcoming = $resource('/api/conference/upcoming', {}, {
       getAll: {
         method: 'GET',
@@ -31,5 +33,10 @@ export default class {
 
   getPast() {
     return this.resPast.getAll();
+  }
+
+  save(confObj, successCallback) {
+    this.res.save(confObj,
+      (result) => { successCallback(result); });
   }
 }

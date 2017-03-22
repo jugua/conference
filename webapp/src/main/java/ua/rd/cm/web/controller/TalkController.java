@@ -19,7 +19,6 @@ import ua.rd.cm.web.controller.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -93,7 +92,7 @@ public class TalkController {
             @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
+        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
                 submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
                 submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 
@@ -306,6 +305,11 @@ public class TalkController {
         dto.setSpeakerFullName(talk.getUser().getFullName());
         dto.setStatusName(talk.getStatus().getName());
         dto.setDate(talk.getTime().toString());
+        if (talk.getConference() != null) {
+            Conference conference = talk.getConference();
+            dto.setConferenceId(conference.getId());
+            dto.setConferenceName(conference.getTitle());
+        }
 
         User organiser = talk.getOrganiser();
         if (organiser != null) {
@@ -316,6 +320,13 @@ public class TalkController {
 
     private Talk dtoToEntity(TalkDto dto) {
         Talk talk = mapper.map(dto, Talk.class);
+
+        Long conferenceId = dto.getConferenceId();
+        if (conferenceId != null) {
+            Conference conference = new Conference();
+            conference.setId(conferenceId);
+            talk.setConference(conference);
+        }
         talk.setTime(LocalDateTime.now());
         setFieldsMappedStringIntoEntity(dto, talk);
         return talk;
@@ -351,7 +362,7 @@ public class TalkController {
         try {
             return storageService.saveFile(multipartFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warn(e);
         }
         return null;
     }

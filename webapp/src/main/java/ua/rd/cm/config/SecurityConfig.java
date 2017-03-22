@@ -11,37 +11,21 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import ua.rd.cm.web.security.CustomAuthenticationProvider;
-import ua.rd.cm.web.security.CsrfHeaderFilter;
-import ua.rd.cm.web.security.CustomBasicAuthFilter;
-
-/**
- * @author Yaroslav_Revin
- */
+import ua.rd.cm.web.security.BasicAuthFilterImpl;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = "ua.rd.cm.web.security")
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationProvider authenticationProvider;
-
     @Autowired
-    private AuthenticationManager authManager;
-
-    @Autowired
-    private CustomBasicAuthFilter basicAuthFilter;
-
-    @Autowired
-    private CsrfHeaderFilter csrfHeaderFilter;
+    private BasicAuthFilterImpl basicAuthFilterImpl;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -49,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
     @Override
-    public void configure (HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                     .antMatchers("/").permitAll()
@@ -73,8 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .deleteCookies("JSESSIONID")
                     .permitAll()
                     .and()
-                .addFilterBefore(basicAuthFilter, BasicAuthenticationFilter.class)
-                .addFilterAfter(csrfHeaderFilter, CsrfFilter.class);
+                .addFilterBefore(basicAuthFilterImpl, BasicAuthenticationFilter.class);
+    }
+
+    @Bean
+    public BasicAuthFilterImpl authenticationFilter(AuthenticationManager authenticationManager) {
+        return new BasicAuthFilterImpl(authenticationManager);
     }
 
     @Bean(name = "authManager")
@@ -83,21 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public CustomBasicAuthFilter basicAuthFilter() throws Exception {
-        return new CustomBasicAuthFilter(authManager);
-    }
-
-    @Bean
-    public CsrfHeaderFilter csrfHeaderFilter(){
-        return new CsrfHeaderFilter();
-    }
-
     private CsrfTokenRepository csrfTokenRepository() {
-        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-        repository.setHeaderName("X-XSRF-TOKEN");
-        return repository;
+        return CookieCsrfTokenRepository.withHttpOnlyFalse();
     }
-
-
 }

@@ -1,10 +1,19 @@
-/* comment */
+.home
 
-.home-layout
-  width: 100%
-  height: calc(100vh - 72px)
-  background: url(assets/img/bg.jpg)
-  background-size: cover
-  @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
-    background: url(assets/img/bg_mobile.jpg)
+  &-layout
+    width: 100%
+    height: calc(100vh - 72px)
+    background: url(assets/img/bg.jpg)
     background-size: cover
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx)
+      background: url(assets/img/bg_mobile.jpg)
+      background-size: cover
+
+  &__header
+    height: 45px
+
+  &__button
+    width: 180px
+    margin: 0 10px 10px 0
+    @media ($mnw: $xsdmn) and ($mxw: $mdmx)
+      margin: 10px auto

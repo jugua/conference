@@ -3,28 +3,23 @@ package ua.rd.cm.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-/**
- * @author Mariia_Lapovska
- */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
+@ToString
 @Entity
 @Table(name = "contact_type")
-@SequenceGenerator(name = "seqContactTypeGen", allocationSize = 1,
-        sequenceName = "contact_type_seq")
-public class ContactType {
-
-    @Id
-    @Column(name = "contact_type_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqContactTypeGen")
-    private Long id;
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "contact_type_seq")
+@AttributeOverride(name = "id", column = @Column(name = "contact_type_id"))
+public class ContactType extends AbstractEntity {
 
     @Column(name = "contact_type_name", nullable = false, unique = true)
     private String name;
+
+    public ContactType(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

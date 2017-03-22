@@ -1,6 +1,8 @@
-<div ng-if="vm.isEmptyBio">
-  <control-popup></control-popup>
+<div ng-if="!$ctrl.userInfoFilled()">
+  <fill-info-popup on-close="$ctrl.fillInfoPopupCloseCallback()"
+                   fwd-state="$ctrl.stateParams.fwdState"></fill-info-popup>
 </div>
-<div ng-if="!vm.isEmptyBio">
-  <newtalk></newtalk>
+<div ng-if="$ctrl.userInfoFilled()">
+  <newtalk-popup on-close="$ctrl.popupCloseCallback()"
+                 on-submit="$ctrl.popupSubmitCallback()"></newtalk>
 </div>

@@ -54,7 +54,7 @@ export default class SignInController {
     if (redirectStateName) {
       this.localStorageService.removeItem('redirectStateName');
       this.localStorageService.removeItem('redirectStateParams');
-      this.state.go(redirectStateName, redirectStateParams, {reload: true});
+      this.state.go(redirectStateName, redirectStateParams, { reload: true });
     } else {
       this.service.callTheEvent();
     }
@@ -62,6 +62,13 @@ export default class SignInController {
 
   emitCloseDropdown() {
     this.scope.$emit('closeDropdown');
+  }
+
+  get conditionalWrapperClass() {
+    if (this.display === 'full') {
+      return 'sign-in-wrapper sign-in-wrapper_full js-dropdown';         // fullscreen
+    }
+    return 'sign-in-wrapper js-dropdown';    // dropdown, default
   }
 }
 // no_info_auth_err

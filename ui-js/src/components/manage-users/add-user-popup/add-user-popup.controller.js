@@ -30,7 +30,7 @@ export default class AddUserPopupContropller {
       this.service.addUser(this.user,
         () => {  // success callback
           this.userForm.$setPristine();
-          this.onUpdateUsers({newUser: this.user});
+          this.onUpdateUsers({ newUser: this.user });
           this.onHideAddPopup();
         },
         (error) => {  // error callback

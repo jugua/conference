@@ -1,0 +1,133 @@
+<div class="pop-up-wrapper">
+  <div class="pop-up pop-up_big">
+    <h3 class="pop-up__title">Submit new talk</h3>
+    <button class="pop-up__close" ng-click="$ctrl.close()"></button>
+    <form class="new-talk" name="$ctrl.talkForm"
+          novalidate
+          ng-submit="$ctrl.submit()">
+      <label for="new-talk-title" class="form-label form-label_required">
+        title
+      </label>
+      <input type="text" id="new-talk-title" class="field field_border"
+             maxlength="250"
+             ng-required="true"
+             ng-model="$ctrl.talk.title"
+      >
+
+      <label for="new-talk-desc" class="form-label form-label_required">
+        description
+      </label>
+      <textarea id="new-talk-desc"
+                class="textarea"
+                maxlength="3000"
+                ng-required="true"
+                ng-model="$ctrl.talk.description"
+      >
+
+      </textarea>
+
+      <label class="form-label form-label_required">
+        topic
+      </label>
+      <select class="new-talk__select"
+              ng-required="true"
+              ng-model="$ctrl.talk.topic"
+              ng-options="topic.name as topic.name for topic in $ctrl.topics | orderBy: 'name'">
+      </select>
+
+      <label class="form-label form-label_required">
+        type
+      </label>
+      <select class="new-talk__select"
+              ng-required="true"
+              ng-model="$ctrl.talk.type"
+              ng-options="type.name as type.name for type in $ctrl.types | orderBy: 'id'">
+      </select>
+
+      <label class="form-label form-label_required">
+        language
+      </label>
+      <select class="new-talk__select"
+              ng-required="true"
+              ng-model="$ctrl.talk.lang"
+              ng-options="lang.name as lang.name for lang in $ctrl.langs | orderBy: 'id'">
+      </select>
+
+      <label class="form-label form-label_required">
+        level
+      </label>
+      <select class="new-talk__select"
+              ng-required="true"
+              ng-model="$ctrl.talk.level"
+              ng-options="level.name as level.name for level in $ctrl.levels | orderBy: 'id'">
+      </select>
+
+      <label class="form-label">
+        file upload
+        <md-icon class="icon icon_info">
+          <md-tooltip md-direction="right" class="tooltip">
+            You can add an attachment of your talk here and insert a link to it in the Additional Info field.<br>
+            Allowed formats are docx, pdf, pptx, ppt, odp and maximum size is 300 Mb.
+          </md-tooltip>
+        </md-icon>
+      </label>
+
+      <label ng-class="$ctrl.fileLabelClass">
+        <span class="btn file-upload__button file-upload__button_named"></span>
+        <span class="file-upload__filename">{{ $ctrl.talk.file.name }}</span>
+
+        <input type="file"
+               class="file-upload__uploading"
+               ng-model="$ctrl.talk.file"
+               ngf-select
+               ngf-max-size="300MB"
+               ngf-min-size="1"
+               ngf-pattern="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/mspowerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf,application/vnd.oasis.opendocument.presentation,application/x-vnd.oasis.opendocument.presentation"
+               accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/mspowerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/pdf,application/vnd.oasis.opendocument.presentation,application/x-vnd.oasis.opendocument.presentation"
+               name="file">
+      </label>
+      <span class="field-error" ng-show="$ctrl.talkForm.$error.pattern">
+        We could not understand the contents of your file. Make sure it is docx, pdf, pptx, ppt or odp.
+      </span>
+      <span class="field-error" ng-show="$ctrl.talkForm.$error.maxSize">
+        You exceeded the maximum allowed size of 300 MB. Please make another choice.
+      </span>
+
+      <label for="new-talk-add-inf" class="form-label">
+        additional info
+      </label>
+      <textarea id="new-talk-add-inf"
+                class="textarea"
+                maxlength="1500"
+                ng-model="$ctrl.talk.addon">
+      </textarea>
+
+      <button class="btn pop-up__button"
+              ng-disabled="$ctrl.buttonsBlocked">Submit</button>
+    </form>
+  </div>
+</div>
+
+<div class="pop-up-wrapper" ng-show="$ctrl.isShownPopup">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Info</h3>
+    <button class="pop-up__close" ng-click="$ctrl.isShownPopup = false"></button>
+    <p class="pop-up__notification">Are you sure you want to leave the window?</p>
+    <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'Yes' to leave and all your changes will lost.</p>
+    <p class="pop-up__notification pop-up__notification_light pop-up__notification_not-margin">Click 'No' to return and Submit/Update your changes</p>
+    <div class="pop-up-button-wrapper">
+      <button class="btn pop-up__button" ng-click="$ctrl.onClose()">Yes</button>
+      <button class="btn btn__cancel pop-up__button" ng-click="$ctrl.isShownPopup = false">No</button>
+    </div>
+  </div>
+</div>
+
+<div class="pop-up-wrapper" ng-show="$ctrl.isShownMandatoryAlert">
+  <div class="pop-up">
+    <h3 class="pop-up__title">Alert</h3>
+    <button class="pop-up__close" ng-click="$ctrl.isShownMandatoryAlert = false"></button>
+    <p class="pop-up__notification">Please fill in all mandatory fields.</p>
+    <input type="button" value="ok" class="btn btn_right btn_small"
+           ng-click="$ctrl.isShownMandatoryAlert = false">
+  </div>
+</div>

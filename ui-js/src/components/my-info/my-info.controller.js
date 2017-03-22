@@ -1,9 +1,11 @@
 export default class MyInfoController {
-  constructor(Current, $scope, $state) {
+  constructor(Current, $scope, $state, $stateParams) {
     'ngInject';
 
     this.state = $state;
+    this.stateParams = $stateParams;
     this.currentUserService = Current;
+
     this.alertVisible = false;
     this.confirmVisible = false;
     this.message = {};
@@ -45,6 +47,7 @@ export default class MyInfoController {
       this.currentUserService.updateInfo(this.user);
       this.showAlert('success');
       this.userInfoForm.$setPristine();
+      this.state.go(this.stateParams.fwdState);
     }
   }
 

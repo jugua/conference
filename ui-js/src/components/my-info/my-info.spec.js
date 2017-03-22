@@ -24,6 +24,7 @@ describe('MyInfo', () => {
     let $rootScope;
     let $scope;
     let $state;
+    let $stateParams;
 
     let Current;
 
@@ -36,10 +37,11 @@ describe('MyInfo', () => {
       $scope = $rootScope.$new();
 
       $state = jasmine.createSpyObj('state', ['go', 'reload', '$stateProvider']);
+      $stateParams = jasmine.createSpyObj('stateParams', ['fwdState']);
       Current = jasmine.createSpyObj('Current', ['updateInfo']);
 
       sut = $controller(Controller.name,
-        { Current, $scope, $state },
+        { Current, $scope, $state, $stateParams },
         { }
       );
       sut.currentUserService = Current;

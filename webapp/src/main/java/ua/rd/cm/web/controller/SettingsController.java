@@ -3,10 +3,13 @@ package ua.rd.cm.web.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.User;
@@ -26,24 +29,16 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+@Log4j
 @RestController
 @RequestMapping("/api/user/current")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SettingsController {
     private ObjectMapper mapper;
     private UserService userService;
     private MailService mailService;
+    private PasswordEncoder passwordEncoder;
     private VerificationTokenService tokenService;
-    private Logger logger = Logger.getLogger(SettingsController.class);
-
-    @Autowired
-    public SettingsController(ObjectMapper mapper, UserService userService,
-                              MailService mailService,
-                              VerificationTokenService tokenService) {
-        this.mapper = mapper;
-        this.userService = userService;
-        this.mailService = mailService;
-        this.tokenService = tokenService;
-    }
 
     @PostMapping("/password")
     public ResponseEntity changePassword(@Valid @RequestBody SettingsDto dto, Principal principal, BindingResult bindingResult, HttpServletRequest request) {
@@ -53,13 +48,8 @@ public class SettingsController {
         }
         User user = userService.getByEmail(principal.getName());
 
-        if (user == null) {
-            logger.error("Request for [api/user/current/password] is failed: User entity for current principal is not found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        if (!checkCurrentPasswordMatches(dto, user)) {
-            logger.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest: " + request.toString() + "]");
+        if (!userService.isAuthenticated(user, dto.getCurrentPassword())) {
+            log.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest: " + request.toString() + "]");
             messageDto.setError("wrong_password");
             messageDto.setFields(new ArrayList<String>() {{
                 add("currentPassword");
@@ -67,15 +57,15 @@ public class SettingsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
         }
         if (!checkPasswordConfirmed(dto)) {
-            logger.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " + request.toString() + "]");
             messageDto.setResult("password_math");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDto);
         }
         if (bindingResult.hasFieldErrors()) {
-            logger.error("Request for [api/user/current/password] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Request for [api/user/current/password] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
         }
-        user.setPassword(dto.getNewPassword());
+        user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userService.updateUserProfile(user);
         mailService.sendEmail(user, new ChangePasswordPreparator());
         return new ResponseEntity(HttpStatus.OK);
@@ -88,9 +78,6 @@ public class SettingsController {
         }
 
         User user = userService.getByEmail(principal.getName());
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         String email = parseMail(mail);
         if (email == null || !email.matches("(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")) {
@@ -119,9 +106,6 @@ public class SettingsController {
         }
 
         User user = userService.getByEmail(principal.getName());
-        if (user == null) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         VerificationToken token = tokenService.getValidTokenByUserIdAndType
                 (user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);
@@ -148,10 +132,6 @@ public class SettingsController {
         } catch (IOException e) {
             return null;
         }
-    }
-
-    private boolean checkCurrentPasswordMatches(SettingsDto dto, User user) {
-        return dto.getCurrentPassword().equals(user.getPassword());
     }
 
     private boolean checkPasswordConfirmed(SettingsDto dto) {

@@ -6,27 +6,22 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
-/**
- * @author Artem_Pryzhkov
- */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "level")
-@SequenceGenerator(name = "seqLevelGen", allocationSize = 1,
-        sequenceName = "level_seq")
-public class Level {
-
-    @Id
-    @Column(name = "level_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqLevelGen")
-    private Long id;
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "level_seq")
+@AttributeOverride(name = "id", column = @Column(name = "level_id"))
+public class Level extends AbstractEntity {
 
     @Column(name = "level_name", nullable = false, unique = true)
     private String name;
+
+    public Level(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

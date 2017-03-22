@@ -2,7 +2,10 @@ import NewtalkController from './newtalk.controller';
 
 
 describe('NewTalk state', () => {
-  let sut, userServiceMock;
+  let sut;
+  let userServiceMock;
+  let $state;
+  let $stateParams;
 
   beforeEach(() => {
     userServiceMock = {
@@ -10,7 +13,11 @@ describe('NewTalk state', () => {
       job: 'aaaa',
       past: 'a'
     };
-    sut = new NewtalkController(userServiceMock);
+
+    $state = jasmine.createSpyObj('$state', ['go']);
+    $stateParams = jasmine.createSpyObj('$stateParams', ['fwdState']);
+
+    sut = new NewtalkController(userServiceMock, $state, $stateParams);
   });
   it('check if currentUser object exists', () => {
     expect(sut.current).toBeDefined();
@@ -23,8 +30,4 @@ describe('NewTalk state', () => {
       expect(sut.isEmptyBio).toEqual(true);
     }
   });
-
 });
-
-
-

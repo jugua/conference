@@ -8,6 +8,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class UserBasicDto {
+
+    private Long id;
+
     @JsonProperty("mail")
     private String email;
 

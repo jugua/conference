@@ -1,10 +1,6 @@
 package ua.rd.cm.config;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -14,16 +10,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+import ua.rd.cm.domain.Conference;
+import ua.rd.cm.dto.CreateConferenceDto;
+import ua.rd.cm.dto.converter.CreateConferenceToConference;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
-
-/**
- * @author Yaroslav_Revin
- */
 
 @Configuration
 @ComponentScan(basePackages = {
@@ -75,7 +70,10 @@ public class ServiceConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.createTypeMap(CreateConferenceDto.class, Conference.class).
+                setPostConverter(new CreateConferenceToConference());
+        return modelMapper;
     }
 
     @Bean
@@ -97,6 +95,4 @@ public class ServiceConfig {
                 environment.getProperty("mail.url"),
                 environment.getProperty("mail.sender") + " <" + environment.getProperty("mail.smtp.from") + ">");
     }
-
-
 }

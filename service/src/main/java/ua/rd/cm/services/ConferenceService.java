@@ -1,6 +1,7 @@
 package ua.rd.cm.services;
 
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.dto.CreateConferenceDto;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface ConferenceService {
 
     Conference findById(Long id);
 
-    void save(Conference conference);
+    Long save(CreateConferenceDto conference);
 
     void update(Conference conference);
 

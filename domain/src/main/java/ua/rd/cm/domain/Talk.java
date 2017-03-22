@@ -8,20 +8,15 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
-@ToString(exclude = "id")
+@EqualsAndHashCode(callSuper = false)
+@ToString
 @Entity
-@SequenceGenerator(name = "seqTalkGen", allocationSize = 1,
-        sequenceName = "talk_seq")
+@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "talk_seq")
 @Table(name = "talk", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "time"})
 })
-public class Talk {
-
-    @Id
-    @Column(name = "talk_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqTalkGen")
-    private Long id;
+@AttributeOverride(name = "id", column = @Column(name = "talk_id"))
+public class Talk extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -58,27 +53,32 @@ public class Talk {
     @Column(name = "additional_info", length = 1500)
     private String additionalInfo;
 
-    @Column(name="organiser_comment", length=1000)
+    @Column(name = "organiser_comment", length = 1000)
     private String organiserComment;
 
     @ManyToOne
+    @JoinColumn(name = "organiser_id")
     private User organiser;
+
+    @ManyToOne
+    @JoinColumn(name = "conference_id")
+    private Conference conference;
 
     @Column(name = "attached_file")
     private String pathToAttachedFile;
 
-    public boolean setStatus(TalkStatus status){
-        if(this.status==null){
-            this.status=status;
+    public boolean setStatus(TalkStatus status) {
+        if (this.status == null) {
+            this.status = status;
         }
-        if(this.status.canChangeTo(status)){
-            this.status=status;
+        if (this.status.canChangeTo(status)) {
+            this.status = status;
             return true;
         }
         return false;
     }
 
-    public boolean isValidComment(){
+    public boolean isValidComment() {
         return organiserComment != null && organiserComment.length() > 0;
     }
 
