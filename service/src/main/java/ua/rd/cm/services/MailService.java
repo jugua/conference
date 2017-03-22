@@ -45,6 +45,7 @@ public class MailService {
         }
     }
 
+    @Async
     public void notifyUsers(List<User> receivers, CustomMimeMessagePreparator preparator) {
         receivers.forEach(receiver -> sendEmail(receiver, preparator));
     }
