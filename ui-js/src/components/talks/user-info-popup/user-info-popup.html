@@ -6,7 +6,7 @@
     <div class="talks-user-info-popup__form-wrapper">
 
       <!--<user-photo user="$ctrl.user"></user-photo>-->
-      <div class="my-info__ava" ng-style="{'background-image':'url('+$ctrl.ava+')'}"></div>
+      <img class="my-info__ava" src="{{$ctrl.ava}}"/>
       <form class="my-info" name="$ctrl.userInfoForm">
         <label for="my-info-bio" class="form-label my-info__label my-info__label_bio">Short Bio</label>
         <textarea name="bio" id="my-info-bio" class="textarea my-info__bio" maxlength="2000"
