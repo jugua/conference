@@ -27,6 +27,7 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.NewPasswordDto;
+import ua.rd.cm.web.security.AuthenticationFactory;
 import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 @RestController
@@ -92,7 +93,7 @@ public class EmailController {
             User user = verificationToken.getUser();
 
             setTokenStatusExpired(verificationToken);
-            //authenticateUser(verificationToken.getUser());
+            authenticateUser(verificationToken.getUser());
 
             return ResponseEntity.ok().build();
         }
@@ -124,12 +125,9 @@ public class EmailController {
     }
 	
 	private void authenticateUser(User user) {
-		String username = user.getEmail();
-        String credentials = user.getPassword();
-
-        Authentication auth = authenticationProvider
-        		.authenticate(new UsernamePasswordAuthenticationToken(username, credentials));
-        SecurityContextHolder.getContext().setAuthentication(auth);
+        SecurityContextHolder.getContext().setAuthentication(
+                AuthenticationFactory.createAuthentication(user)
+        );
     }
 	
 	
