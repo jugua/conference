@@ -92,7 +92,7 @@ public class EmailController {
             User user = verificationToken.getUser();
 
             setTokenStatusExpired(verificationToken);
-            authenticateUser(verificationToken.getUser());
+            //authenticateUser(verificationToken.getUser());
 
             return ResponseEntity.ok().build();
         }
