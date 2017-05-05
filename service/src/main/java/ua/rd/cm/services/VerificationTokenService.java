@@ -14,7 +14,6 @@ import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByTo
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByType;
 import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByUserId;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 
@@ -107,7 +106,7 @@ public class VerificationTokenService {
     }
 
     private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
-        LocalDateTime currentTime = LocalDateTime.now(ZoneId.systemDefault());
+        LocalDateTime currentTime = LocalDateTime.now();
         return currentTime.plusMinutes(expiryTimeInMinutes);
     }
 
