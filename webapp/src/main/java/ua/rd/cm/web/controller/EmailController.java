@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,19 +40,19 @@ public class EmailController {
 	private ObjectMapper objectMapper;
 	private ModelMapper modelMapper;
 	private VerificationTokenService tokenService;
-	
-	@Autowired
-	CustomAuthenticationProvider authenticationProvider;
-	
+    private final PasswordEncoder passwordEncoder;
+
 	@Autowired
 	public EmailController(MailService mailService, UserService userService,
 						   ModelMapper modelMapper, ObjectMapper objectMapper,
-						   VerificationTokenService tokenService) {
+						   VerificationTokenService tokenService,
+                           PasswordEncoder passwordEncoder) {
 		this.mailService = mailService;
 		this.userService = userService;
 		this.modelMapper = modelMapper;
 		this.objectMapper = objectMapper;
 		this.tokenService = tokenService;
+		this.passwordEncoder = passwordEncoder;
 	}
 	
 	@PostMapping("/forgot-password")
@@ -106,7 +107,7 @@ public class EmailController {
 			return ResponseEntity.badRequest().build();
 		
 		User currentuser = verificationToken.getUser();
-		currentuser.setPassword(dto.getPassword());
+		currentuser.setPassword(passwordEncoder.encode(dto.getPassword()));
 		userService.updateUserProfile(currentuser);
 			
 		return ResponseEntity.ok().build();
