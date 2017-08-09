@@ -3,6 +3,7 @@ package ua.rd.cm.services.impl;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
@@ -11,6 +12,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOUND;
@@ -19,7 +22,16 @@ import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOU
 public class FileStorageServiceImpl implements FileStorageService {
     private static final int MAX_FILE_VERSION_TO_CREATE = 100;
     private static final int MAX_LENGTH_OF_VERSION_SUBSTR = 3;
+    private static final long MAX_SIZE = 314_572_800;
 
+
+    private static final List<String> LIST_TYPE = Arrays.asList(
+            "application/pdf",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+            "application/vnd.ms-powerpoint",
+            "application/vnd.oasis.opendocument.presentation"
+    );
     @Setter
     @Getter
     private String storagePath;
@@ -116,4 +128,16 @@ public class FileStorageServiceImpl implements FileStorageService {
         return folderPath;
     }
 
+    public boolean isFileTypeSupported(MultipartFile file) {
+        if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
+            return false;
+        }
+        String mimeType = file.getContentType();
+
+        return mimeType != null && !LIST_TYPE.contains(mimeType);
+    }
+
+    public boolean isFileSizeMoreThanMaxSize(MultipartFile multipartFile) {
+        return multipartFile.getSize() > MAX_SIZE;
+    }
 }

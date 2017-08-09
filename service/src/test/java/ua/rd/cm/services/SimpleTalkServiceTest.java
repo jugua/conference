@@ -29,11 +29,11 @@ public class SimpleTalkServiceTest {
     private TalkRepository talkRepository;
 
     private TalkService talkService;
-
-    @Before
-    public void setUp() throws Exception {
-        talkService = new TalkServiceimpl(talkRepository);
-    }
+//
+//    @Before
+//    public void setUp() throws Exception {
+//        talkService = new TalkServiceimpl(talkRepository);
+//    }
 
     @Test
     public void testSave() throws Exception {
