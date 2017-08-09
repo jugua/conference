@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user/current/photo")
 @Log4j
-public class PhotoController {
+public class MyInfoController {
     private UserService userService;
     private FileStorageService fileStorageService;
 
@@ -36,7 +36,7 @@ public class PhotoController {
     );
 
     @Autowired
-    public PhotoController(UserService userService, FileStorageService fileStorageService) {
+    public MyInfoController(UserService userService, FileStorageService fileStorageService) {
         this.userService = userService;
         this.fileStorageService = fileStorageService;
     }
@@ -114,6 +114,15 @@ public class PhotoController {
         userService.updateUserProfile(currentUser);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    public void fillForm(){
+
+    }
+
+    public void showForm(){
+
     }
 
     private ResponseEntity createError(HttpStatus status, String message) {
