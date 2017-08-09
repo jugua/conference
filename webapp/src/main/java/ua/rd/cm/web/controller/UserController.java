@@ -18,9 +18,9 @@ import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.web.controller.dto.MessageDto;
-import ua.rd.cm.web.controller.dto.UserBasicDto;
-import ua.rd.cm.web.controller.dto.UserDto;
+import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.dto.UserBasicDto;
+import ua.rd.cm.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

@@ -1,12 +1,7 @@
-package ua.rd.cm.web.controller.dto;
+package ua.rd.cm.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 /**
  * Created by Anastasiia_Milinchuk on 2/8/2017.

@@ -30,8 +30,8 @@ import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
-import ua.rd.cm.web.controller.dto.MessageDto;
-import ua.rd.cm.web.controller.dto.TalkDto;
+import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.dto.TalkDto;
 
 import javax.servlet.Filter;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package ua.rd.cm.web.controller.dto;
+package ua.rd.cm.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Pattern;

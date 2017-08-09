@@ -1,4 +1,4 @@
-package ua.rd.cm.web.controller.dto;
+package ua.rd.cm.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
