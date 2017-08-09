@@ -36,7 +36,7 @@ import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
-import ua.rd.cm.web.controller.dto.UserDto;
+import ua.rd.cm.dto.UserDto;
 
 import javax.servlet.Filter;
 import java.security.Principal;
