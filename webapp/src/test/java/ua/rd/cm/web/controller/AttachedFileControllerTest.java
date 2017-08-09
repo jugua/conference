@@ -20,11 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.TalkService;
-import ua.rd.cm.services.UserService;
-import ua.rd.cm.web.controller.dto.PhotoDto;
 
 import java.io.File;
 import java.io.FileInputStream;

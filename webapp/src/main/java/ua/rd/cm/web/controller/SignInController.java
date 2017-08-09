@@ -3,8 +3,6 @@ package ua.rd.cm.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.User;
@@ -13,7 +11,7 @@ import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.OldEmailMessagePreparator;
-import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.web.security.AuthenticationFactory;
 import ua.rd.cm.web.security.CustomAuthenticationProvider;
 

@@ -17,9 +17,9 @@ import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.services.*;
-import ua.rd.cm.web.controller.dto.ConferenceDto;
-import ua.rd.cm.web.controller.dto.ConferenceDtoBasic;
-import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.dto.ConferenceDto;
+import ua.rd.cm.dto.ConferenceDtoBasic;
+import ua.rd.cm.dto.MessageDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

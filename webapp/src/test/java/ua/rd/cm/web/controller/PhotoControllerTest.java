@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import ua.rd.cm.domain.User;
 import ua.rd.cm.services.FileStorageService;
-import ua.rd.cm.web.controller.dto.PhotoDto;
+import ua.rd.cm.dto.PhotoDto;
 
 import java.io.*;
 

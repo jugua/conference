@@ -1,4 +1,4 @@
-package ua.rd.cm.web.controller.dto;
+package ua.rd.cm.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
