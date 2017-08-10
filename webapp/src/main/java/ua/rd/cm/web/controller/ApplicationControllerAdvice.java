@@ -10,7 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.dto.MessageDto;
 
 @Log4j
 @RestControllerAdvice

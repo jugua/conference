@@ -14,8 +14,8 @@ import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.preparator.*;
-import ua.rd.cm.web.controller.dto.MessageDto;
-import ua.rd.cm.web.controller.dto.SubmitTalkDto;
+import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
