@@ -14,7 +14,9 @@ public interface FileStorageService {
 
     File getFile(String fileAbsolutePath);
 
-    boolean isFileTypeSupported(MultipartFile file);
+    boolean getTypeIfSupported(MultipartFile file);
+
+    String getTypeIfSupported(File file);
 
     boolean isFileSizeGreaterThanMaxSize(MultipartFile multipartFile);
 }
