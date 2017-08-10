@@ -47,6 +47,13 @@ public class TalkController {
         return new ResponseEntity<>(resultMessage, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(TalkValidationException.class)
+    public ResponseEntity<MessageDto> handleTalkValidationException(TalkValidationException ex) {
+        MessageDto message = new MessageDto();
+        message.setError(ex.getMessage());
+        return new ResponseEntity<>(message, ex.getHttpStatus());
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity submitTalk(
@@ -76,7 +83,6 @@ public class TalkController {
             id = currentTalk.getId();
             httpStatus = HttpStatus.OK;
         }
-
         messageDto.setId(id);
         return new ResponseEntity<>(messageDto, httpStatus);
     }
@@ -112,19 +118,15 @@ public class TalkController {
             message.setError("fields_error");
             return prepareResponse(HttpStatus.BAD_REQUEST, message);
         }
-        try {
-            if (request.isUserInRole("ORGANISER")) {
-                talkService.updateAsOrganiser(dto, userService.getByEmail(request.getRemoteUser()));
-            }else if (request.isUserInRole("SPEAKER")) {
-                talkService.updateAsSpeaker(dto, userService.getByEmail(request.getRemoteUser()));
-            } else {
-                message.setError("unauthorized");
-                return prepareResponse(HttpStatus.UNAUTHORIZED, message);
-            }
-        } catch (TalkValidationException ex) {
-            message.setError(ex.getMessage());
-            return prepareResponse(ex.getHttpStatus(), message);
+        if (request.isUserInRole("ORGANISER")) {
+            talkService.updateAsOrganiser(dto, userService.getByEmail(request.getRemoteUser()));
+        } else if (request.isUserInRole("SPEAKER")) {
+            talkService.updateAsSpeaker(dto, userService.getByEmail(request.getRemoteUser()));
+        } else {
+            message.setError("unauthorized");
+            return prepareResponse(HttpStatus.UNAUTHORIZED, message);
         }
+
         message.setResult("successfully_updated");
         return prepareResponse(HttpStatus.OK, message);
     }
