@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import static ua.rd.cm.services.exception.TalkValidationException.*;
 
 @Service
-public class TalkServiceimpl implements TalkService {
+public class TalkServiceImpl implements TalkService {
     public static final String DEFAULT_TALK_STATUS = "New";
     private TalkRepository talkRepository;
     private ModelMapper modelMapper;
@@ -43,7 +43,7 @@ public class TalkServiceimpl implements TalkService {
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
 
-    public TalkServiceimpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService) {
+    public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService) {
         this.talkRepository = talkRepository;
         this.modelMapper = modelMapper;
         this.levelRepository = levelRepository;

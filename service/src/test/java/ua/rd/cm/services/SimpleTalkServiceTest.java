@@ -1,7 +1,6 @@
 package ua.rd.cm.services;
 
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -11,7 +10,6 @@ import ua.rd.cm.repository.TalkRepository;
 import ua.rd.cm.repository.specification.Specification;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
 import ua.rd.cm.services.exception.TalkNotFoundException;
-import ua.rd.cm.services.impl.TalkServiceimpl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,11 +27,6 @@ public class SimpleTalkServiceTest {
     private TalkRepository talkRepository;
 
     private TalkService talkService;
-//
-//    @Before
-//    public void setUp() throws Exception {
-//        talkService = new TalkServiceimpl(talkRepository);
-//    }
 
     @Test
     public void testSave() throws Exception {
