@@ -11,7 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.CreateConferenceDto;
+import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.dto.converter.CreateConferenceToConference;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.MailService;
@@ -73,6 +75,8 @@ public class ServiceConfig {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.createTypeMap(CreateConferenceDto.class, Conference.class).
                 setPostConverter(new CreateConferenceToConference());
+        modelMapper.createTypeMap(TalkDto.class, Talk.class);
+        modelMapper.createTypeMap(Talk.class, TalkDto.class);
         return modelMapper;
     }
 
