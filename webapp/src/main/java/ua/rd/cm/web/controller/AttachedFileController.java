@@ -13,12 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.TalkService;
-import ua.rd.cm.web.controller.dto.MessageDto;
+import ua.rd.cm.dto.MessageDto;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;

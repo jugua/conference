@@ -7,8 +7,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
@@ -26,10 +24,9 @@ import ua.rd.cm.services.preparator.ForgotMessagePreparator;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
-import ua.rd.cm.web.controller.dto.MessageDto;
-import ua.rd.cm.web.controller.dto.NewPasswordDto;
+import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.dto.NewPasswordDto;
 import ua.rd.cm.web.security.AuthenticationFactory;
-import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 @RestController
 @RequestMapping("/api")
