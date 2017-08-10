@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -145,6 +146,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
+    @Ignore
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
     public void correctSubmitNewTalkTest() throws Exception {
         mockMvc.perform(requestBuilder)//preparePostRequest(API_TALK))
