@@ -84,6 +84,7 @@ public class TalkControllerTest extends TestUtil {
     private User organiserUser;
     private UserInfo userInfo;
 
+    private Talk talk;
     private TalkDto correctTalkDto;
 
     MockHttpServletRequestBuilder requestBuilder;
@@ -91,7 +92,6 @@ public class TalkControllerTest extends TestUtil {
     @Before
     public void setUp() {
         correctTalkDto = setupCorrectTalkDto();
-
         requestBuilder = MockMvcRequestBuilders.fileUpload(API_TALK).
                 param("title", "title name").
                 param("description", "desc").
@@ -132,6 +132,8 @@ public class TalkControllerTest extends TestUtil {
         organiserUser.setUserInfo(userInfo);
         organiserUser.setUserRoles(organiserRole);
 
+        talk = createTalk(speakerUser);
+
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
@@ -147,12 +149,12 @@ public class TalkControllerTest extends TestUtil {
         Mockito.reset(talkService, userService);
     }
 
-//    @Test
-//    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-//    public void correctSubmitNewTalkTest() throws Exception {
-//        mockMvc.perform(requestBuilder)//preparePostRequest(API_TALK))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void correctSubmitNewTalkTest() throws Exception {
+        mockMvc.perform(requestBuilder)//preparePostRequest(API_TALK))
+                .andExpect(status().isOk());
+    }
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)

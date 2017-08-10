@@ -1,7 +1,6 @@
 package ua.rd.cm.web.controller;
 
 import lombok.extern.log4j.Log4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,6 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.preparator.*;
 import ua.rd.cm.web.controller.dto.MessageDto;
 import ua.rd.cm.web.controller.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
@@ -31,40 +29,15 @@ public class TalkController {
     private static final String ORGANISER = "ORGANISER";
 
     public static final String DEFAULT_TALK_STATUS = "New";
-    private ModelMapper mapper;
     private UserService userService;
     private TalkService talkService;
-    private TypeService typeService;
-    private LanguageService languageService;
-    private LevelService levelService;
-    private TopicService topicService;
-    private MailService mailService;
     private FileStorageService storageService;
-    private ConferenceService conferenceService;
-
-    public static final String APPROVED = "Approved";
-    public static final String REJECTED = "Rejected";
-    public static final String IN_PROGRESS = "In Progress";
 
     @Autowired
-    public TalkController(ModelMapper mapper, UserService userService,
-                          TalkService talkService,
-                          TypeService typeService, LanguageService languageService,
-                          LevelService levelService, TopicService topicService,
-                          MailService mailService,
-                          FileStorageService storageService,
-                          ConferenceService conferenceService
-    ) {
-        this.mapper = mapper;
+    public TalkController(UserService userService, TalkService talkService, FileStorageService storageService) {
         this.userService = userService;
         this.talkService = talkService;
-        this.languageService = languageService;
-        this.topicService = topicService;
-        this.mailService = mailService;
-        this.typeService = typeService;
-        this.levelService = levelService;
         this.storageService = storageService;
-        this.conferenceService = conferenceService;
     }
 
     @ExceptionHandler(TalkNotFoundException.class)
@@ -91,7 +64,7 @@ public class TalkController {
 
         if (!checkForFilledUserInfo(currentUser)) {
             httpStatus = HttpStatus.FORBIDDEN;
-        } else if (dto.getMultipartFile() != null && storageService.isFileSizeMoreThanMaxSize(dto.getMultipartFile())) {
+        } else if (dto.getMultipartFile() != null && storageService.isFileSizeGreaterThanMaxSize(dto.getMultipartFile())) {
             messageDto.setError("maxSize");
             httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
         } else if (dto.getMultipartFile() != null && storageService.isFileTypeSupported(dto.getMultipartFile())) {

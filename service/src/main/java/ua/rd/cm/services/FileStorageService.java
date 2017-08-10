@@ -16,5 +16,5 @@ public interface FileStorageService {
 
     boolean isFileTypeSupported(MultipartFile file);
 
-    boolean isFileSizeMoreThanMaxSize(MultipartFile multipartFile);
+    boolean isFileSizeGreaterThanMaxSize(MultipartFile multipartFile);
 }

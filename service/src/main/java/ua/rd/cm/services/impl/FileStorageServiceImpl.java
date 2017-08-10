@@ -137,7 +137,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         return mimeType != null && !LIST_TYPE.contains(mimeType);
     }
 
-    public boolean isFileSizeMoreThanMaxSize(MultipartFile multipartFile) {
+    public boolean isFileSizeGreaterThanMaxSize(MultipartFile multipartFile) {
         return multipartFile.getSize() > MAX_SIZE;
     }
 }
