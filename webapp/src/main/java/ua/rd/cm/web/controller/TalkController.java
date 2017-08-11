@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.preparator.*;
 import ua.rd.cm.dto.MessageDto;
@@ -29,7 +30,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/talk")
 public class TalkController {
-    public static final String TALK_NOT_FOUND = "talk_not_found";
     private static final String ORGANISER = "ORGANISER";
 
 
@@ -82,11 +82,11 @@ public class TalkController {
         this.conferenceService = conferenceService;
     }
 
-    @ExceptionHandler(TalkNotFoundException.class)
-    public ResponseEntity<MessageDto> handleTalkNotFound() {
-        MessageDto resultMessage = new MessageDto();
-        resultMessage.setError(TALK_NOT_FOUND);
-        return new ResponseEntity<>(resultMessage, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex){
+        MessageDto message = new MessageDto();
+        message.setError(ex.getMessage());
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("isAuthenticated()")
