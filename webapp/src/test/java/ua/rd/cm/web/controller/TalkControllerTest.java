@@ -28,6 +28,7 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
@@ -294,7 +295,7 @@ public class TalkControllerTest extends TestUtil {
         when(talkService.findById(anyLong())).thenThrow(new TalkNotFoundException());
         mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)).
                 andExpect(status().isNotFound())
-                .andExpect(jsonPath("error", is(TalkController.TALK_NOT_FOUND)));
+                .andExpect(jsonPath("error", is(ResourceNotFoundException.TALK_NOT_FOUND)));
     }
 
     /**
@@ -376,19 +377,19 @@ public class TalkControllerTest extends TestUtil {
 
         mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, correctTalkDto))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("error", is(TalkController.TALK_NOT_FOUND)));
+                .andExpect(jsonPath("error", is(ResourceNotFoundException.TALK_NOT_FOUND)));
     }
 
     @Test
     public void handleTalkNotFoundCorrectStatus() throws Exception {
-        ResponseEntity<MessageDto> response = talkController.handleTalkNotFound();
+        ResponseEntity<MessageDto> response = talkController.handleResourceNotFound(new TalkNotFoundException());
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 
     @Test
     public void handleTalkNotFoundCorrectMessage() throws Exception {
-        ResponseEntity<MessageDto> response = talkController.handleTalkNotFound();
-        assertThat(response.getBody().getError(), is(TalkController.TALK_NOT_FOUND));
+        ResponseEntity<MessageDto> response = talkController.handleResourceNotFound(new TalkNotFoundException());
+        assertThat(response.getBody().getError(), is(ResourceNotFoundException.TALK_NOT_FOUND));
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
