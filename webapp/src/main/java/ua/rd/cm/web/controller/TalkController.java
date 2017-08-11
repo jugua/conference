@@ -1,8 +1,12 @@
 package ua.rd.cm.web.controller;
 
+import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -19,8 +23,13 @@ import ua.rd.cm.dto.TalkDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j
 @RestController
@@ -74,7 +83,7 @@ public class TalkController {
         } else if (dto.getMultipartFile() != null && storageService.isFileSizeGreaterThanMaxSize(dto.getMultipartFile())) {
             messageDto.setError("maxSize");
             httpStatus = HttpStatus.PAYLOAD_TOO_LARGE;
-        } else if (dto.getMultipartFile() != null && storageService.isFileTypeSupported(dto.getMultipartFile())) {
+        } else if (dto.getMultipartFile() != null && storageService.getTypeIfSupported(dto.getMultipartFile())) {
             messageDto.setError("pattern");
             httpStatus = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
         } else {
@@ -126,9 +135,104 @@ public class TalkController {
             message.setError("unauthorized");
             return prepareResponse(HttpStatus.UNAUTHORIZED, message);
         }
-
         message.setResult("successfully_updated");
         return prepareResponse(HttpStatus.OK, message);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/{talk_id}/filename",
+            produces = "application/json")
+    public ResponseEntity takeFileName(@PathVariable("talk_id") Long talkId) {
+        Talk talk = talkService.findTalkById(talkId);
+        if (talk == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        File file = storageService.getFile(talk.getPathToAttachedFile());
+        if (file == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("fileName", file.getName());
+        return new ResponseEntity(map, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(value = "/{talk_id}/file")
+    public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
+        Talk talk = talkService.findTalkById(talkId);
+
+        File file = storageService.getFile(talk.getPathToAttachedFile());
+        if (file == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        String mimeType = storageService.getTypeIfSupported(file);
+        if (mimeType == null) {
+            return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }
+
+        try {
+            InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
+            HttpHeaders header = new HttpHeaders();
+            header.setContentType(new MediaType(mimeType.split("/")[0], mimeType.split("/")[1]));
+            header.setContentLength(file.length());
+            header.set("Content-Disposition","attachment; filename=" + new String(file.getName().getBytes(), StandardCharsets.ISO_8859_1));
+            return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
+        } catch (IOException e) {
+            log.debug(e);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{talk_id}/file")
+    public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
+                                 @RequestPart(value = "file") MultipartFile file,
+                                 HttpServletRequest request) {
+        Talk talk = talkService.findTalkById(talkId);
+
+        if (file == null || file.isEmpty()) {
+            return createError(HttpStatus.BAD_REQUEST, "save");
+        }
+        if (storageService.isFileSizeGreaterThanMaxSize(file)) {
+            return createError(HttpStatus.PAYLOAD_TOO_LARGE, "maxSize");
+        }
+        if (!storageService.getTypeIfSupported(file)) {
+            return createError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "pattern");
+        }
+
+        String filePath = "";
+        try {
+            filePath = storageService.saveFile(file);
+        } catch (IOException e) {
+            log.info(e);
+        }
+        talk.setPathToAttachedFile(filePath);
+        talkService.update(talk);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/api/talk/{talk_id}/file")
+    public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
+        Talk talk = talkService.findTalkById(talkId);
+
+        if (!storageService.deleteFile(talk.getPathToAttachedFile())) {
+            return createError(HttpStatus.BAD_REQUEST, "delete");
+        }
+
+        talk.setPathToAttachedFile(null);
+        talkService.update(talk);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private ResponseEntity createError(HttpStatus status, String message) {
+        MessageDto messageDto = new MessageDto();
+        messageDto.setError(message);
+        return ResponseEntity.status(status).body(messageDto);
     }
 
     private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {

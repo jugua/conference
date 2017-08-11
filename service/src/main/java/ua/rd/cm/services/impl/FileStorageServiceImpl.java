@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -128,13 +129,19 @@ public class FileStorageServiceImpl implements FileStorageService {
         return folderPath;
     }
 
-    public boolean isFileTypeSupported(MultipartFile file) {
+    public boolean getTypeIfSupported(MultipartFile file) {
         if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
             return false;
         }
         String mimeType = file.getContentType();
 
-        return mimeType != null && !LIST_TYPE.contains(mimeType);
+        return mimeType != null && LIST_TYPE.contains(mimeType);
+    }
+
+    @Override
+    public String getTypeIfSupported(File file) {
+        return new MimetypesFileTypeMap().getContentType(file);
+
     }
 
     public boolean isFileSizeGreaterThanMaxSize(MultipartFile multipartFile) {
