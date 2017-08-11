@@ -7,19 +7,15 @@ import ua.rd.cm.dto.TalkDto;
 
 public interface TalkService {
 
-	void save(Talk talk);
-
-	void save(Talk talk,User user);
-
 	Talk save(TalkDto talkDto, User user, String multipartFilePath);
 
-	void update(Talk talk);
+	void addFile(TalkDto talkDto, String multipartFilePath);
+
+	void deleteFile(TalkDto talkDto, boolean deleteFile);
 
     void updateAsOrganiser(TalkDto talkDto, User user);
 
     void updateAsSpeaker(TalkDto talkDto, User user);
-	
-	void remove(Talk talk);
 	
 	List<Talk> findAll();
 	
@@ -32,4 +28,6 @@ public interface TalkService {
 	List<TalkDto> getTalksForSpeaker(String userEmail);
 
 	List<TalkDto> getTalksForOrganiser();
+
+	String getFilePath(TalkDto talkDto);
 }
