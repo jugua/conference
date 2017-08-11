@@ -1,9 +1,11 @@
 package ua.rd.cm.services;
 
 import org.junit.*;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockMultipartFile;
+import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
@@ -15,6 +17,7 @@ import static org.junit.Assert.*;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static ua.rd.cm.services.exception.FileValidationException.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -23,11 +26,14 @@ public class FileStorageServiceTest {
     private static final String FOLDER = PARENTFOLDER + (PARENTFOLDER.endsWith(File.separator) ? "" : File.separator) + "fs";
     private static FileStorageService fileStorageService;
     private MockMultipartFile mockedFile = mock(MockMultipartFile.class);
-
+    private MockMultipartFile mockMultipartFile = new MockMultipartFile(
+            "fileData.docx",
+            "file.docx",
+            "application/pdf", new byte[] { 1, 2, 3 });
 
     @Before
     public void set() throws IOException {
-        recurentDeleteIfExist(new File(FOLDER));
+        recurrentDeleteIfExist(new File(FOLDER));
         new File(FOLDER).mkdir();
 
         FileStorageServiceImpl fileStorageServiceImpl = new FileStorageServiceImpl();
@@ -39,8 +45,11 @@ public class FileStorageServiceTest {
 
     @After
     public void clean() throws IOException {
-        recurentDeleteIfExist(new File(FOLDER));
+        recurrentDeleteIfExist(new File(FOLDER));
     }
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     //saveFile
 
@@ -142,10 +151,14 @@ public class FileStorageServiceTest {
 
     //deleteFile
 
-    @Test
+    @Test(expected = FileValidationException.class)
     public void deleteNullFile() {
-        assertEquals(false, fileStorageService.deleteFile(null));
-        assertEquals(false, fileStorageService.deleteFile(""));
+        fileStorageService.deleteFile(null);
+    }
+
+    @Test(expected = FileValidationException.class)
+    public void deleteEmptyPathFile() {
+        fileStorageService.deleteFile("");
     }
 
     @Test
@@ -154,35 +167,46 @@ public class FileStorageServiceTest {
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
         String filePath = fileStorageService.saveFile(mockedFile);
-        assertEquals(true, fileStorageService.deleteFile(filePath));
+         fileStorageService.deleteFile(filePath);
         assertEquals(false, new File(filePath).exists());
     }
 
-    @Test
+    @Test(expected = FileValidationException.class)
     public void deleteNotExistentFile() {
-        assertEquals(false, fileStorageService.deleteFile(FOLDER + "fileNameId.jpg"));
+        fileStorageService.deleteFile(FOLDER + "fileNameId.jpg");
     }
 
     //getFile
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test
     public void getFileByNullThrowsException() {
+        exception.expect(ResourceNotFoundException.class);
+        exception.expectMessage(ResourceNotFoundException.FILE_NOT_FOUND);
         fileStorageService.getFile(null);
     }
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test
     public void getFileByEmptyStringThrowsException() {
+        exception.expect(ResourceNotFoundException.class);
+        exception.expectMessage(ResourceNotFoundException.FILE_NOT_FOUND);
         fileStorageService.getFile("");
     }
 
 
-    @Test(expected = ResourceNotFoundException.class)
+    @Test
     public void getFile_WrongPath() {
+        exception.expect(ResourceNotFoundException.class);
+        exception.expectMessage(ResourceNotFoundException.FILE_NOT_FOUND);
         fileStorageService.getFile("AnyWrongPath");
     }
 
     @Test
-    public void verifyFilenameNotChanged() throws IOException {
+    public void testFileValidationSuccess(){
+        fileStorageService.checkFileValidation(mockMultipartFile);
+    }
+
+    @Test
+    public void verifyFileNameNotChanged() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
@@ -193,7 +217,7 @@ public class FileStorageServiceTest {
     }
 
     @Test
-    public void verifyFiledataNotChanged() throws IOException {
+    public void verifyFileDataNotChanged() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
         final byte[] fileData = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
@@ -207,11 +231,11 @@ public class FileStorageServiceTest {
     }
 
 
-    private void recurentDeleteIfExist(File f) throws IOException {
+    private void recurrentDeleteIfExist(File f) throws IOException {
         if (f.exists()) {
             if (f.isDirectory()) {
                 for (File c : f.listFiles())
-                    recurentDeleteIfExist(c);
+                    recurrentDeleteIfExist(c);
             }
             if (!f.delete())
                 throw new IOException("Couldn't delete " + f);

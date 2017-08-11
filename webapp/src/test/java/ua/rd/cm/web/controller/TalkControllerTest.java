@@ -32,6 +32,7 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 
 import javax.servlet.Filter;
