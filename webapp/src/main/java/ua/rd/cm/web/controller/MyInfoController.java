@@ -106,9 +106,7 @@ public class MyInfoController {
     public ResponseEntity delete(HttpServletRequest request) {
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-        if (!fileStorageService.deleteFile(currentUser.getPhoto())) {
-            return createError(HttpStatus.BAD_REQUEST, "delete");
-        }
+        fileStorageService.deleteFile(currentUser.getPhoto());
 
         currentUser.setPhoto(null);
         userService.updateUserProfile(currentUser);

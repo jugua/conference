@@ -1,6 +1,7 @@
 package ua.rd.cm.services.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.*;
@@ -43,6 +44,7 @@ public class TalkServiceImpl implements TalkService {
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
 
+    @Autowired
     public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService) {
         this.talkRepository = talkRepository;
         this.modelMapper = modelMapper;
@@ -57,28 +59,22 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     @Transactional
-    public void save(Talk talk) {
-        talkRepository.save(talk);
-    }
-
-    @Override
-    @Transactional
-    public void save(Talk talk, User user) {
-        talk.setStatus(TalkStatus.getStatusByName(DEFAULT_TALK_STATUS));
-        talk.setUser(user);
-        talkRepository.save(talk);
-    }
-
-    @Override
-    @Transactional
     public Talk save(TalkDto talkDto, User user, String multipartFilePath) {
         Talk talk = modelMapper.map(talkDto, Talk.class);
+
+        if(talkDto.getStatusName() != null){
+            talk.setStatus(TalkStatus.getStatusByName(talkDto.getStatusName()));
+        }
+        if(talkDto.getDate() != null){
+            talk.setTime(LocalDateTime.parse(talkDto.getDate()));
+        }else {
+            talk.setTime(LocalDateTime.now());
+        }
 
         Long conferenceId = talkDto.getId();
         if (conferenceId != null) {
             talk.setConference(conferenceRepository.findById(conferenceId));
         }
-        talk.setTime(LocalDateTime.now());
 
         talk.setUser(user);
         if (multipartFilePath != null) {
@@ -99,10 +95,27 @@ public class TalkServiceImpl implements TalkService {
         return talk;
     }
 
+
     @Override
-    @Transactional
-    public void update(Talk talk) {
+    public void addFile(TalkDto talkDto, String multipartFilePath) {
+        Talk talk = findTalkById(talkDto.getId());
+        if(multipartFilePath != null) {
+            talk.setPathToAttachedFile(multipartFilePath);
+        }
         talkRepository.update(talk);
+    }
+
+    @Override
+    public void deleteFile(TalkDto talkDto, boolean deleteFile) {
+        Talk talk = findTalkById(talkDto.getId());
+        talk.setPathToAttachedFile(null);
+        talkRepository.update(talk);
+    }
+
+    @Override
+    public String getFilePath(TalkDto talkDto) {
+        Talk talk = findTalkById(talkDto.getId());
+        return talk.getPathToAttachedFile();
     }
 
     @Override
@@ -151,19 +164,17 @@ public class TalkServiceImpl implements TalkService {
     }
 
     @Override
-    @Transactional
-    public void remove(Talk talk) {
-        talkRepository.remove(talk);
-    }
-
-    @Override
     public List<Talk> findAll() {
         return talkRepository.findAll();
     }
 
     @Override
     public List<Talk> findByUserId(Long id) {
-        return talkRepository.findBySpecification(new TalkByUserId(id));
+        List<Talk> talks = talkRepository.findBySpecification(new TalkByUserId(id));;
+        if (talks.isEmpty()) {
+            throw new TalkNotFoundException();
+        }
+        return talks;
     }
 
     @Override
@@ -330,13 +341,15 @@ public class TalkServiceImpl implements TalkService {
     }
 
     private void checkIfAllowedToChangeStatus(Talk talk, String status) {
-        if (!talk.setStatus(TalkStatus.getStatusByName(status))) {
+        TalkStatus talkStatus = TalkStatus.getStatusByName(status);
+        if (talk.getStatus() != talkStatus && !talk.setStatus(talkStatus)) {
             throw new TalkValidationException(STATUS_IS_WRONG);
         }
     }
 
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
-        return talk.getUser().getId() != user.getId() || talk.getStatus() == TalkStatus.REJECTED || talk.getStatus()== TalkStatus.APPROVED;
+        boolean isUsersTalk = talk.getUser().getId() != user.getId();
+        return isUsersTalk|| talk.getStatus() == TalkStatus.REJECTED || talk.getStatus()== TalkStatus.APPROVED;
     }
 
 }

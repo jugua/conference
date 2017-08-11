@@ -10,13 +10,15 @@ public interface FileStorageService {
 
     String saveFile(MultipartFile file) throws IOException;
 
-    boolean deleteFile(String fileAbsolutePath);
+    void deleteFile(String fileAbsolutePath);
 
     File getFile(String fileAbsolutePath);
 
-    boolean getTypeIfSupported(MultipartFile file);
-
     String getTypeIfSupported(File file);
 
+    String getTypeIfSupported(MultipartFile file);
+
     boolean isFileSizeGreaterThanMaxSize(MultipartFile multipartFile);
+
+    void checkFileValidation(MultipartFile file);
 }
