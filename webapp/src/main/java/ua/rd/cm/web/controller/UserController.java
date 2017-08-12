@@ -100,8 +100,8 @@ public class UserController {
             status = HttpStatus.UNAUTHORIZED;
         } else {
             String userEmail = principal.getName();
-            userInfoService.update(prepareNewUserInfo(userEmail, dto));
-            userService.updateUserProfile(prepareNewUser(userEmail, dto));
+            userInfoService.update(userService.prepareNewUserInfoForUpdate(userEmail, dto));
+            userService.updateUserProfile(userService.prepareNewUserForUpdate(userEmail, dto));
             status = HttpStatus.OK;
         }
         return new ResponseEntity(status);
@@ -130,8 +130,8 @@ public class UserController {
             message.setError("unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
-        List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
-        return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
+        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRoleExpectCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
     private User getAuthorizedUser(HttpServletRequest request) {
@@ -146,23 +146,6 @@ public class UserController {
         return null;
     }
 
-    private
-
-    private UserBasicDto userToUserBasicDto(User user) {
-        UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
-        userBasicDto.setRoles(user.getRoleNames());
-        return userBasicDto;
-    }
-
-    private List<UserBasicDto> userToUserBasicDto(List<User> users) {
-        List<UserBasicDto> userDtoList = new ArrayList<>();
-        if (users != null) {
-            for (User user : users) {
-                userDtoList.add(userToUserBasicDto(user));
-            }
-        }
-        return userDtoList;
-    }
 
     private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
@@ -208,14 +191,6 @@ public class UserController {
         }
 
         return ResponseEntity.status(status).body(message);
-    }
-
-    private void encodePassword(RegistrationDto dto) {
-        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-    }
-
-    private boolean isPasswordConfirmed(RegistrationDto dto) {
-        return dto.getPassword().equals(dto.getConfirm());
     }
 
     private UserInfo prepareNewUserInfo(String email, UserDto dto) {

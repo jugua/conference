@@ -5,12 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.domain.VerificationToken;
-import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
@@ -21,8 +18,10 @@ import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_NOT_FOUND;
 
@@ -205,6 +204,35 @@ public class UserServiceImpl implements UserService {
         return userToDto(user);
     }
 
+    @Override
+    public List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles) {
+        List<User> users = getByRolesExceptCurrent(currentUser, roles);
+        List<UserBasicDto> userDtoList = new ArrayList<>();
+        if (users != null) {
+            for (User user : users) {
+                userDtoList.add(userToUserBasicDto(user));
+            }
+        }
+
+        return userDtoList;
+    }
+
+    @Override
+    public UserInfo prepareNewUserInfoForUpdate(String email, UserDto dto) {
+        User currentUser = getByEmail(email);
+        UserInfo currentUserInfo = userInfoDtoToEntity(dto);
+        currentUserInfo.setId(currentUser.getUserInfo().getId());
+        return currentUserInfo;
+    }
+
+    @Override
+    public User prepareNewUserForUpdate(String email, UserDto dto) {
+        User currentUser = getByEmail(email);
+        currentUser.setFirstName(dto.getFirstName());
+        currentUser.setLastName(dto.getLastName());
+        return currentUser;
+    }
+
     private User mapRegistrationDtoToUser(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
@@ -231,6 +259,23 @@ public class UserServiceImpl implements UserService {
         dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
         dto.setRoles(user.getRoleNames());
         return dto;
+    }
+
+    private UserBasicDto userToUserBasicDto(User user) {
+        UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
+        userBasicDto.setRoles(user.getRoleNames());
+        return userBasicDto;
+    }
+
+    private UserInfo userInfoDtoToEntity(UserDto dto) {
+        UserInfo userInfo = mapper.map(dto, UserInfo.class);
+        Map<ContactType, String> contacts = userInfo.getContacts();
+        contacts.put(contactTypeService.findByName("LinkedIn").get(0), dto.getLinkedIn());
+        contacts.put(contactTypeService.findByName("Twitter").get(0), dto.getTwitter());
+        contacts.put(contactTypeService.findByName("FaceBook").get(0), dto.getFacebook());
+        contacts.put(contactTypeService.findByName("Blog").get(0), dto.getBlog());
+        userInfo.setContacts(contacts);
+        return userInfo;
     }
 
 }
