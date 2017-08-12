@@ -4,6 +4,7 @@ import java.util.List;
 
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.dto.UserDto;
 
 public interface UserService {
 
@@ -34,4 +35,10 @@ public interface UserService {
     boolean isAuthenticated(User user, String password);
 
 	void checkUserRegistration(RegistrationDto dto);
+
+	void checkUserRegistrationByAdmin(RegistrationDto dto);
+
+	UserDto getUserDtoByEmail(String email);
+
+	UserDto getUserDtoById(Long userId);
 }

@@ -11,18 +11,14 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.OrSpecification;
 import ua.rd.cm.repository.specification.Specification;
 import ua.rd.cm.repository.specification.user.*;
-import ua.rd.cm.services.MailService;
-import ua.rd.cm.services.RoleService;
-import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.VerificationTokenService;
-import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.EmptyPasswordException;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
+import ua.rd.cm.services.*;
+import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
 import java.util.Collections;
@@ -39,8 +35,9 @@ public class UserServiceImpl implements UserService {
     private ModelMapper mapper;
     private VerificationTokenService tokenService;
     private PasswordEncoder passwordEncoder;
+    private ContactTypeService contactTypeService;
 
-    @Autowired
+    /*@Autowired
     public UserServiceImpl(UserRepository userRepository, RoleService roleService,
                            MailService mailService, VerificationTokenService tokenService,
                            ModelMapper mapper, PasswordEncoder passwordEncode) {
@@ -50,6 +47,18 @@ public class UserServiceImpl implements UserService {
         this.tokenService = tokenService;
         this.mapper = mapper;
         this.passwordEncoder = passwordEncode;
+    }*/
+
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, MailService mailService, ModelMapper mapper, VerificationTokenService tokenService, PasswordEncoder passwordEncoder, ContactTypeService contactTypeService) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+        this.mailService = mailService;
+        this.mapper = mapper;
+        this.tokenService = tokenService;
+        this.passwordEncoder = passwordEncoder;
+        this.contactTypeService = contactTypeService;
     }
 
     @Override
@@ -168,8 +177,32 @@ public class UserServiceImpl implements UserService {
             throw new EmailAlreadyExistsException("email_already_exists");
         } else {
             encodePassword(dto);
-            registerNewUser(dto);
         }
+    }
+
+    @Override
+    public void checkUserRegistrationByAdmin(RegistrationDto dto) {
+        if(dto.getRoleName().equals(Role.ADMIN)) {
+            throw new WrongRoleException("wrong_role_name");
+        }
+
+    }
+
+    @Override
+    public UserDto getUserDtoByEmail(String email) {
+        User user = getByEmail(email);
+
+        if(user == null) {
+            throw new NoSuchUserException("No such user exists");
+        }
+
+        return userToDto(user);
+    }
+
+    @Override
+    public UserDto getUserDtoById(Long userId) {
+        User user = find(userId);
+        return userToDto(user);
     }
 
     private User mapRegistrationDtoToUser(RegistrationDto dto) {
@@ -185,6 +218,19 @@ public class UserServiceImpl implements UserService {
 
     private void encodePassword(RegistrationDto dto) {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+    }
+
+    private UserDto userToDto(User user) {
+        UserDto dto = mapper.map(user, UserDto.class);
+        if (user.getPhoto() != null) {
+            dto.setPhoto("api/user/current/photo/" + user.getId());
+        }
+        dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
+        dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
+        dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
+        dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
+        dto.setRoles(user.getRoleNames());
+        return dto;
     }
 
 }

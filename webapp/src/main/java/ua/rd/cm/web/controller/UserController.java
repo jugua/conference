@@ -23,6 +23,8 @@ import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.EmptyPasswordException;
+import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.WrongRoleException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -56,13 +58,15 @@ public class UserController {
                                           BindingResult bindingResult,
                                           HttpServletRequest request
     ) {
-        if (!Arrays.asList(Role.SPEAKER, Role.ORGANISER).contains(dto.getRoleName())) {
+        try {
+            userService.checkUserRegistrationByAdmin(dto);
+            dto.setUserStatus(User.UserStatus.CONFIRMED);
+            return processUserRegistration(dto, bindingResult, request);
+        } catch (WrongRoleException ex) {
             MessageDto message = new MessageDto();
-            message.setError("wrong_role_name");
+            message.setError(ex.getMessage());
             return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
         }
-        dto.setUserStatus(User.UserStatus.CONFIRMED);
-        return processUserRegistration(dto, bindingResult, request);
     }
 
     @GetMapping("/current")
@@ -70,12 +74,20 @@ public class UserController {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        User currentUser = userService.getByEmail(principal.getName());
+        /*User currentUser = userService.getByEmail(principal.getName());
         if (currentUser == null) {
             log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
+        }*/
+
+        try{
+            UserDto userDto = userService.getUserDtoByEmail(principal.getName());
+            return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
+        } catch (NoSuchUserException ex) {
+            log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -103,9 +115,8 @@ public class UserController {
             message.setError("unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
-        User user = userService.find(userId);
 
-        UserDto userDto = userToDto(user);
+        UserDto userDto = userService.getUserDtoById(userId);
         // userDto.setContactTypeService(contactTypeService);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
@@ -134,6 +145,8 @@ public class UserController {
         }
         return null;
     }
+
+    private
 
     private UserBasicDto userToUserBasicDto(User user) {
         UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
@@ -179,6 +192,7 @@ public class UserController {
                 log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
             } else {
                 userService.checkUserRegistration(dto);
+                userService.registerNewUser(dto);
                 status = HttpStatus.ACCEPTED;
                 message.setResult("success");
             }
@@ -227,18 +241,5 @@ public class UserController {
         contacts.put(contactTypeService.findByName("Blog").get(0), dto.getBlog());
         userInfo.setContacts(contacts);
         return userInfo;
-    }
-
-    private UserDto userToDto(User user) {
-        UserDto dto = mapper.map(user, UserDto.class);
-        if (user.getPhoto() != null) {
-            dto.setPhoto("api/user/current/photo/" + user.getId());
-        }
-        dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
-        dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
-        dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
-        dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
-        dto.setRoles(user.getRoleNames());
-        return dto;
     }
 }
