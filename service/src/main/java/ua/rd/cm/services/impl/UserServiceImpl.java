@@ -36,19 +36,6 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     private ContactTypeService contactTypeService;
 
-    /*@Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService,
-                           MailService mailService, VerificationTokenService tokenService,
-                           ModelMapper mapper, PasswordEncoder passwordEncode) {
-        this.userRepository = userRepository;
-        this.roleService = roleService;
-        this.mailService = mailService;
-        this.tokenService = tokenService;
-        this.mapper = mapper;
-        this.passwordEncoder = passwordEncode;
-    }*/
-
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleService roleService, MailService mailService, ModelMapper mapper, VerificationTokenService tokenService, PasswordEncoder passwordEncoder, ContactTypeService contactTypeService) {
         this.userRepository = userRepository;
