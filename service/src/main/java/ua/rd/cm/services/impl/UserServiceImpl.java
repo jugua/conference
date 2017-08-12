@@ -9,6 +9,7 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
+import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.repository.specification.AndSpecification;
@@ -19,6 +20,8 @@ import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.RoleService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.EmptyPasswordException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
@@ -157,10 +160,31 @@ public class UserServiceImpl implements UserService {
         return passwordEncoder.matches(password, hashedPassword);
     }
 
+    @Override
+    public void checkUserRegistration(RegistrationDto dto) {
+        if(!isPasswordConfirmed(dto)) {
+            throw new EmptyPasswordException("empty_fields");
+        } else if (isEmailExist(dto.getEmail().toLowerCase())) {
+            throw new EmailAlreadyExistsException("email_already_exists");
+        } else {
+            encodePassword(dto);
+            registerNewUser(dto);
+        }
+    }
+
     private User mapRegistrationDtoToUser(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
         user.addRole(roleService.getByName(dto.getRoleName()));
         return user;
     }
+
+    private boolean isPasswordConfirmed(RegistrationDto dto) {
+        return dto.getPassword().equals(dto.getConfirm());
+    }
+
+    private void encodePassword(RegistrationDto dto) {
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+    }
+
 }

@@ -35,6 +35,8 @@ import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.EmptyPasswordException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.dto.UserDto;
 
@@ -44,6 +46,7 @@ import java.util.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -122,7 +125,10 @@ public class UserControllerTest extends TestUtil{
     @Test
     public void alreadyRegisteredEmailTest() throws Exception{
         correctRegistrationDto.setEmail(alreadyRegisteredEmail);
-        when(userService.isEmailExist(alreadyRegisteredEmail)).thenReturn(true);
+        correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        doThrow(new EmailAlreadyExistsException("email_already_exists")).
+                when(userService).checkUserRegistration(correctRegistrationDto);
         performRegistration(API_USER, HttpStatus.CONFLICT.value());
     }
 
@@ -170,6 +176,10 @@ public class UserControllerTest extends TestUtil{
     @Test
     public void unconfirmedPasswordTest(){
         correctRegistrationDto.setConfirm("777777");
+        correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        doThrow(new EmptyPasswordException("email_already_exists")).
+                when(userService).checkUserRegistration(correctRegistrationDto);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 

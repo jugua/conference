@@ -21,6 +21,8 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.EmptyPasswordException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -152,7 +154,8 @@ public class UserController {
     private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
         MessageDto message = new MessageDto();
-        if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)) {
+
+        /*if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)) {
             status = HttpStatus.BAD_REQUEST;
             message.setError("empty_fields");
             log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
@@ -166,7 +169,30 @@ public class UserController {
             userService.registerNewUser(dto);
             status = HttpStatus.ACCEPTED;
             message.setResult("success");
+        }*/
+
+        try{
+
+            if (bindingResult.hasFieldErrors()) {
+                status = HttpStatus.BAD_REQUEST;
+                message.setError("empty_fields");
+                log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            } else {
+                userService.checkUserRegistration(dto);
+                status = HttpStatus.ACCEPTED;
+                message.setResult("success");
+            }
+        } catch (EmptyPasswordException ex) {
+            status = HttpStatus.BAD_REQUEST;
+            message.setError(ex.getMessage());
+            log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+        } catch (EmailAlreadyExistsException ex) {
+            status = HttpStatus.CONFLICT;
+            message.setError(ex.getMessage());
+            log.error("Registration failed: " + dto.toString() +
+                    ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
         }
+
         return ResponseEntity.status(status).body(message);
     }
 
