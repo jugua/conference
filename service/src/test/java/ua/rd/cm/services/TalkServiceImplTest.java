@@ -12,14 +12,10 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
 import ua.rd.cm.repository.specification.language.LanguageByName;
-import ua.rd.cm.repository.specification.level.LevelByName;
 import ua.rd.cm.repository.specification.talk.TalkById;
-import ua.rd.cm.repository.specification.topic.TopicByName;
-import ua.rd.cm.repository.specification.type.TypeByName;
 import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.impl.TalkServiceImpl;
 import ua.rd.cm.services.preparator.ChangeTalkBySpeakerPreparator;
-import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -68,9 +64,6 @@ public class TalkServiceImplTest {
     private Type type;
     private Level level;
     private List<Language> languages = new ArrayList<>();
-    private List<Topic> topics = new ArrayList<>();
-    private List<Type> types = new ArrayList<>();
-    private List<Level> levels = new ArrayList<>();
     private List<Talk> talks = new ArrayList<>();
 
     @Before
@@ -115,9 +108,6 @@ public class TalkServiceImplTest {
         topic = new Topic("JVM Languages and new programming paradigms");
 
         languages.add(language);
-        levels.add(level);
-        types.add(type);
-        topics.add(topic);
 
         setupCorrectTalkDto();
 
@@ -130,7 +120,7 @@ public class TalkServiceImplTest {
     @Test
     public void testSuccessSaveAsDto() throws Exception {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
+        when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName(anyString())).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talk.setOrganiser(null);
@@ -146,15 +136,6 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(new ArrayList<>());
         talkService.save(talkDto, speakerUser, null);
     }
-
-    @Test
-    public void testLevelNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(LevelNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
-    }
-
 
     @Test
     public void testAddFileSuccessful() throws Exception {
@@ -253,7 +234,7 @@ public class TalkServiceImplTest {
     public void testUpdateAsSpeakerWithNotifySuccessful() throws Exception {
         when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
+        when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
@@ -267,7 +248,7 @@ public class TalkServiceImplTest {
         talk.setOrganiser(null);
         when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
+        when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
