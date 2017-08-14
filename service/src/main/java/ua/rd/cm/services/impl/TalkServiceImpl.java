@@ -8,7 +8,6 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
 import ua.rd.cm.repository.specification.AndSpecification;
-import ua.rd.cm.repository.specification.language.LanguageByName;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
 import ua.rd.cm.repository.specification.user.UserByEmail;
@@ -76,7 +75,7 @@ public class TalkServiceImpl implements TalkService {
         if (multipartFilePath != null) {
             talk.setPathToAttachedFile(multipartFilePath);
         }
-        talk.setLanguage(getByNameLanguage(talkDto.getLanguageName()));
+        talk.setLanguage(languageRepository.findByName(talkDto.getLanguageName()));
         talk.setLevel(levelRepository.findByName(talkDto.getLevelName()));
         talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
         talk.setType(getByNameType(talkDto.getTypeName()));
@@ -138,7 +137,7 @@ public class TalkServiceImpl implements TalkService {
         if(isForbiddenToChangeTalk(user, talk)){
             throw new TalkValidationException(NOT_ALLOWED_TO_UPDATE);
         }
-        talk.setLanguage(getByNameLanguage(talkDto.getLanguageName()));
+        talk.setLanguage(languageRepository.findByName(talkDto.getLanguageName()));
         talk.setLevel(levelRepository.findByName(talkDto.getLevelName()));
         talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
         talk.setType(getByNameType(talkDto.getTypeName()));
@@ -202,19 +201,6 @@ public class TalkServiceImpl implements TalkService {
                 .stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Moved method from LanguageService
-     * @param name
-     * @return
-     */
-    private Language getByNameLanguage(String name) {
-        List<Language> languages = languageRepository.findBySpecification(new LanguageByName(name));
-        if (languages.isEmpty()) {
-            throw new LanguageNotFoundException();
-        }
-        return languages.get(0);
     }
 
     /**

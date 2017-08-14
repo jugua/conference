@@ -8,12 +8,6 @@ import java.util.List;
  */
 public interface LanguageService {
 
-    Language find(Long id);
-
-    void save(Language language);
-
-    Language getByName(String name);
-
     List<Language> findAll();
 
 }
