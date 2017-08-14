@@ -82,7 +82,7 @@ public class TalkServiceImpl implements TalkService {
         }
         talk.setLanguage(getByNameLanguage(talkDto.getLanguageName()));
         talk.setLevel(getByNameLevel(talkDto.getLevelName()));
-        talk.setTopic(getByNameTopic(talkDto.getTopicName()));
+        talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
         talk.setType(getByNameType(talkDto.getTypeName()));
 
         talkRepository.save(talk);
@@ -144,7 +144,7 @@ public class TalkServiceImpl implements TalkService {
         }
         talk.setLanguage(getByNameLanguage(talkDto.getLanguageName()));
         talk.setLevel(getByNameLevel(talkDto.getLevelName()));
-        talk.setTopic(getByNameTopic(talkDto.getTopicName()));
+        talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
         talk.setType(getByNameType(talkDto.getTypeName()));
 
         if (talkDto.getTitle() != null) {
@@ -232,19 +232,6 @@ public class TalkServiceImpl implements TalkService {
             throw new LevelNotFoundException();
         }
         return levels.get(0);
-    }
-
-    /**
-     * Moved method from TopicService
-     * @param name
-     * @return
-     */
-    private Topic getByNameTopic(String name) {
-        List<Topic> list = topicRepository.findBySpecification(new TopicByName(name));
-        if (list.isEmpty()) {
-            throw new TopicNotFoundException();
-        }
-        return list.get(0);
     }
 
     /**
