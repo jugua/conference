@@ -132,7 +132,7 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
         when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
         when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talk.setOrganiser(null);
         talkService.save(talkDto, speakerUser, null);
         verify(talkRepository, times(1)).save(talk);
@@ -161,16 +161,6 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
         when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
         when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
-    }
-
-    @Test
-    public void testTypeNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(TypeNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
-        when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(new ArrayList<>());
         talkService.save(talkDto, speakerUser, null);
     }
 
@@ -273,7 +263,8 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
         when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
         when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
+
 
 
         talkService.updateAsSpeaker(talkDto, speakerUser);
@@ -289,7 +280,8 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
         when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
         when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
+
 
 
         talkService.updateAsSpeaker(talkDto, speakerUser);
