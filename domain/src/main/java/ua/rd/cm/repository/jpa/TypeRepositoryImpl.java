@@ -6,7 +6,7 @@ import ua.rd.cm.repository.TypeRepository;
 
 @Repository
 public class TypeRepositoryImpl
-        extends AbstractJpaCrudRepository<Type> implements TypeRepository {
+        extends AbstractJpaCrudRepository<Type> {
 
     public TypeRepositoryImpl() {
         super("t", Type.class);
