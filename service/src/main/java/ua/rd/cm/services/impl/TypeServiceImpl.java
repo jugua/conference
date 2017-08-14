@@ -30,21 +30,21 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public Type find(Long id) {
-        List<Type> types = typeRepository.findBySpecification(new TypeById(id));
-        if (types.isEmpty()) {
+        Type type = typeRepository.findById(id);
+        if (type == null) {
             throw new TypeNotFoundException();
         }
-        return types.get(0);
+        return type;
     }
 
     @Override
     @Transactional
-    public Long save(CreateTypeDto type) {
-        List<Type> bySpecification = typeRepository.findBySpecification(new TypeByName(type.getName()));
-        if (!bySpecification.isEmpty()) {
-            return bySpecification.get(0).getId();
+    public Long save(CreateTypeDto createTypeDto) {
+        Type type = typeRepository.findByName(createTypeDto.getName());
+        if (type != null) {
+            return type.getId();
         }
-        Type map = modelMapper.map(type, Type.class);
+        Type map = modelMapper.map(createTypeDto, Type.class);
         typeRepository.save(map);
         return map.getId();
     }
@@ -58,10 +58,10 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public Type getByName(String name) {
-        List<Type> list = typeRepository.findBySpecification(new TypeByName(name));
-        if (list.isEmpty()) {
+        Type type = typeRepository.findByName(name);
+        if (type == null) {
             throw new TypeNotFoundException();
         }
-        return list.get(0);
+        return type;
     }
 }
