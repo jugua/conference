@@ -10,12 +10,6 @@ import java.util.List;
  */
 public interface LevelService {
 
-    Level find(Long id);
-
-    void save(Level level);
-
-    Level getByName(String name);
-
     List<LevelDto> findAll();
 
 }

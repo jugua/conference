@@ -9,11 +9,8 @@ import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
 import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.language.LanguageByName;
-import ua.rd.cm.repository.specification.level.LevelByName;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
-import ua.rd.cm.repository.specification.topic.TopicByName;
-import ua.rd.cm.repository.specification.type.TypeByName;
 import ua.rd.cm.repository.specification.user.UserByEmail;
 import ua.rd.cm.repository.specification.user.UserByRole;
 import ua.rd.cm.repository.specification.user.UserExceptThisById;
@@ -30,7 +27,6 @@ import static ua.rd.cm.services.exception.TalkValidationException.*;
 
 @Service
 public class TalkServiceImpl implements TalkService {
-    public static final String DEFAULT_TALK_STATUS = "New";
     private TalkRepository talkRepository;
     private ModelMapper modelMapper;
     private LevelRepository levelRepository;
@@ -81,7 +77,7 @@ public class TalkServiceImpl implements TalkService {
             talk.setPathToAttachedFile(multipartFilePath);
         }
         talk.setLanguage(getByNameLanguage(talkDto.getLanguageName()));
-        talk.setLevel(getByNameLevel(talkDto.getLevelName()));
+        talk.setLevel(levelRepository.findByName(talkDto.getLevelName()));
         talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
         talk.setType(getByNameType(talkDto.getTypeName()));
 
@@ -143,7 +139,7 @@ public class TalkServiceImpl implements TalkService {
             throw new TalkValidationException(NOT_ALLOWED_TO_UPDATE);
         }
         talk.setLanguage(getByNameLanguage(talkDto.getLanguageName()));
-        talk.setLevel(getByNameLevel(talkDto.getLevelName()));
+        talk.setLevel(levelRepository.findByName(talkDto.getLevelName()));
         talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
         talk.setType(getByNameType(talkDto.getTypeName()));
 
@@ -219,19 +215,6 @@ public class TalkServiceImpl implements TalkService {
             throw new LanguageNotFoundException();
         }
         return languages.get(0);
-    }
-
-    /**
-     * Moved method from LevelService
-     * @param name
-     * @return
-     */
-    private Level getByNameLevel(String name) {
-        List<Level> levels = levelRepository.findBySpecification(new LevelByName(name));
-        if (levels.isEmpty()) {
-            throw new LevelNotFoundException();
-        }
-        return levels.get(0);
     }
 
     /**
