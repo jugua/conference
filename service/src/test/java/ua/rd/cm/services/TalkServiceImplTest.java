@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
-import ua.rd.cm.repository.specification.language.LanguageByName;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.impl.TalkServiceImpl;
@@ -119,7 +118,7 @@ public class TalkServiceImplTest {
 
     @Test
     public void testSuccessSaveAsDto() throws Exception {
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
+        when(languageRepository.findByName("English")).thenReturn(language);
         when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName(anyString())).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
@@ -128,13 +127,6 @@ public class TalkServiceImplTest {
         verify(talkRepository, times(1)).save(talk);
         verify(mailService, times(1)).notifyUsers(anyList(), any());
         verify(mailService, times(1)).sendEmail(any(), any());
-    }
-
-    @Test
-    public void testLanguageNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(LanguageNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
     }
 
     @Test
@@ -233,7 +225,7 @@ public class TalkServiceImplTest {
     @Test
     public void testUpdateAsSpeakerWithNotifySuccessful() throws Exception {
         when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
+        when(languageRepository.findByName("English")).thenReturn(language);
         when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
@@ -247,7 +239,7 @@ public class TalkServiceImplTest {
     public void testUpdateAsSpeakerWithOutNotifySuccessful() throws Exception {
         talk.setOrganiser(null);
         when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
+        when(languageRepository.findByName("English")).thenReturn(language);
         when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
