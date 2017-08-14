@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -18,6 +19,7 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
 @PropertySource("classpath:jdbc.properties")
+@EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
 public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
