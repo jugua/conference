@@ -7,12 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.repository.ConferenceRepository;
-import ua.rd.cm.repository.specification.AndSpecification;
-import ua.rd.cm.repository.specification.OrSpecification;
-import ua.rd.cm.repository.specification.conference.ConferenceById;
-import ua.rd.cm.repository.specification.conference.ConferenceEndDateEarlierThanNow;
-import ua.rd.cm.repository.specification.conference.ConferenceEndDateIsNull;
-import ua.rd.cm.repository.specification.conference.ConferenceEndDateLaterOrEqualToNow;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
 
@@ -22,6 +16,7 @@ import java.util.List;
 @Service
 @Transactional
 public class ConferenceServiceImpl implements ConferenceService {
+
     private final ModelMapper modelMapper;
     private final ConferenceRepository conferenceRepository;
 
@@ -34,11 +29,11 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional(readOnly = true)
     public Conference findById(Long id) {
-        List<Conference> conferences = conferenceRepository.findBySpecification(new ConferenceById(id));
-        if (conferences.isEmpty()) {
+        Conference conference = conferenceRepository.findById(id);
+        if (conference==null) {
             throw new ConferenceNotFoundException();
         }
-        return conferences.get(0);
+        return conference;
     }
 
     @Override
@@ -50,12 +45,12 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public void update(Conference conference) {
-        conferenceRepository.update(conference);
+        conferenceRepository.save(conference);
     }
 
     @Override
     public void remove(Conference conference) {
-        conferenceRepository.remove(conference);
+        conferenceRepository.delete(conference);
     }
 
     @Override
@@ -67,23 +62,14 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional(readOnly = true)
     public List<Conference> findPast() {
-        return conferenceRepository.getAllWithTalks(
-                new AndSpecification<>(
-                        new ConferenceEndDateIsNull(false),
-                        new ConferenceEndDateEarlierThanNow()
-                )
-        );
+        return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now());
+
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Conference> findUpcoming() {
-        List<Conference> conferences = conferenceRepository.getAllWithTalks(
-                new OrSpecification<>(
-                        new ConferenceEndDateIsNull(true),
-                        new ConferenceEndDateLaterOrEqualToNow()
-                )
-        );
+        List<Conference> conferences = conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now());
         fillCallForPaperDatesActive(conferences);
         return conferences;
     }
