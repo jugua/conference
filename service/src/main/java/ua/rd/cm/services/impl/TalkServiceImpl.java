@@ -240,11 +240,11 @@ public class TalkServiceImpl implements TalkService {
      * @return
      */
     private Type getByNameType(String name) {
-        List<Type> list = typeRepository.findBySpecification(new TypeByName(name));
-        if (list.isEmpty()) {
+        Type type = typeRepository.findByName(name);
+        if (type == null) {
             throw new TypeNotFoundException();
         }
-        return list.get(0);
+        return type;
     }
 
     /**

@@ -132,7 +132,7 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
         when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
         when(topicRepository.findTopicByName(anyString())).thenReturn(topic);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talk.setOrganiser(null);
         talkService.save(talkDto, speakerUser, null);
         verify(talkRepository, times(1)).save(talk);
@@ -155,15 +155,6 @@ public class TalkServiceImplTest {
         talkService.save(talkDto, speakerUser, null);
     }
 
-    @Test
-    public void testTypeNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(TypeNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
-        when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
-    }
 
     @Test
     public void testAddFileSuccessful() throws Exception {
@@ -264,9 +255,7 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
         when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
-
-
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
 
         verify(talkRepository, times(1)).update(talk);
@@ -280,9 +269,7 @@ public class TalkServiceImplTest {
         when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
         when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
-
-
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
 
         verify(talkRepository, times(1)).update(talk);

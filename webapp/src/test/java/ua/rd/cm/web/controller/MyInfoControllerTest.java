@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
 @Log4j
-public class PhotoControllerTest extends TestUtil {
+public class MyInfoControllerTest extends TestUtil {
     private static final String API_PHOTO = "/api/user/current/photo";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private MockMvc mockMvc;
@@ -48,11 +48,11 @@ public class PhotoControllerTest extends TestUtil {
     private FileStorageService fileStorageService;
 
     @Autowired
-    private PhotoController photoController;
+    private MyInfoController myInfoController;
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(photoController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(myInfoController).build();
         photoDto = setupCorrectPhotoDto();
         user = createUser();
     }
