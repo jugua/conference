@@ -56,7 +56,7 @@ public class ContactTypeServiceTest {
         List<ContactType> list = new ArrayList<ContactType>() {{
             add(contactType);
         }};
-        when(contactTypeRepository.findBySpecification(new ContactTypeById(anyLong()))).thenReturn(list);
+        when(contactTypeRepository.findById(anyLong())).thenReturn(list.get(0));
         ContactType contactType = contactTypeService.find(1L);
         assertEquals(new Long(1L), contactType.getId());
     }
@@ -66,7 +66,7 @@ public class ContactTypeServiceTest {
         List<ContactType> list = new ArrayList<ContactType>() {{
             add(contactType);
         }};
-        when(contactTypeRepository.findBySpecification(new ContactTypeByName(anyString()))).thenReturn(list);
+        when(contactTypeRepository.findByName(anyString())).thenReturn(list);
         List<ContactType> contactTypes = contactTypeService.findByName("VK");
         assertEquals(list, contactTypes);
     }
