@@ -11,14 +11,10 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.WhereSpecification;
-import ua.rd.cm.repository.specification.user.UserByEmail;
-import ua.rd.cm.repository.specification.user.UserByFirstName;
-import ua.rd.cm.repository.specification.user.UserById;
-import ua.rd.cm.repository.specification.user.UserByLastName;
 import ua.rd.cm.services.impl.UserServiceImpl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -29,125 +25,182 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserServiceTest {
 
-	@Mock
-	private UserRepository repository;
+    @Mock
+    private UserRepository userRepository;
 
-	@Mock
-	private RoleService roleService;
+    @Mock
+    private RoleService roleService;
 
-	@Mock
-	private MailService mailService;
+    @Mock
+    private MailService mailService;
 
-	@Mock
-	private VerificationTokenService tokenService;
+    @Mock
+    private VerificationTokenService tokenService;
 
-	@Mock
-	private ModelMapper mapper;
+    @Mock
+    private ModelMapper mapper;
 
-	@Mock
-	private PasswordEncoder passwordEncoder;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
-	private UserService service;
+    private UserService userService;
 
-	@Before
-	public void initialize() {
-		service = new UserServiceImpl(repository, roleService, mailService, tokenService, mapper, passwordEncoder);
-	}
+    @Before
+    public void initialize() {
+        userService = new UserServiceImpl(userRepository, roleService, mailService, tokenService, mapper, passwordEncoder);
+    }
 
-	@Test
-	public void testSave() {
-		User user = mock(User.class);
-		when(roleService.getByName("SPEAKER")).thenReturn(new Role(1L, "SPEAKER"));
-		service.save(user);
-		verify(repository, times(1)).save(user);
-	}
+    @Test
+    public void testGetByRoleExceptCurrent() throws Exception {
+        User user1 = createDefaultUser();
+        user1.setFirstName("Test1");
 
-	@Test
-	public void testUpdateUserProfile() {
-		User user = mock(User.class);
-		service.updateUserProfile(user);
-		verify(repository, times(1)).update(user);
-	}
+        User user2 = createDefaultUser();
+        user2.setFirstName("Test2");
 
-	@Test
-	public void testFind() {
-		List<User> list = new ArrayList<>();
-		User expected = createDefaultUser();
+        User user3 = createDefaultUser();
+        user3.setFirstName("Test3");
 
-		list.add(expected);
-		when(repository.findBySpecification(new WhereSpecification<>(new UserById(anyLong())))).thenReturn(list);
+        List<User> users = new ArrayList<User>() {{
+            add(user1);
+            add(user2);
+            add(user3);
+        }};
+        Role role = new Role(Role.ORGANISER);
 
-		User user = service.find(30L);
-		assertEquals(new Long(30), user.getId());
-		assertEquals("test", user.getFirstName());
-	}
+        when(roleService.getByName(Role.ORGANISER)).thenReturn(role);
+        when(userRepository.findAllByUserRoles(role)).thenReturn(users);
 
-	@Test
-	public void testFindAll() {
-		List<User> list = spy(new ArrayList<>());
-		when(list.size()).thenReturn(5);
-		when(repository.findAll()).thenReturn(list);
+        List<User> resultUsersList = userService.getByRoleExceptCurrent(user1, Role.ORGANISER);
+        assertTrue(resultUsersList.contains(user2));
+        assertTrue(resultUsersList.contains(user3));
+        assertFalse(resultUsersList.contains(user1));
 
-		assertEquals(5, service.findAll().size());
-		verify(repository, times(1)).findAll();
-	}
+    }
 
-	@Test
-	public void testGetByFirstName() {
-		List<User> list = new ArrayList<>();
-		list.add(createDefaultUser());
-		when(repository.findBySpecification(new WhereSpecification<>(new UserByFirstName(anyString())))).thenReturn(list);
+    @Test
+    public void testGetByRoleExceptCurrentWithRoleList() throws Exception {
+        User user1 = createDefaultUser();
+        user1.setFirstName("Test1");
 
-		List<User> user = service.getByFirstName("test");
-		assertEquals("test", user.get(0).getFirstName());
-		verify(repository,times(1)).findBySpecification(new UserByFirstName(anyString()));
-	}
+        User user2 = createDefaultUser();
+        user2.setFirstName("Test2");
 
-	@Test
-	public void testGetByEmail() {
-		User user = createDefaultUser();
-		List<User> list = new ArrayList<>();
-		list.add(user);
-		when(repository.findBySpecification(new WhereSpecification<>(new UserByEmail(anyString())))).thenReturn(list);
+        User user3 = createDefaultUser();
+        user3.setFirstName("Test3");
 
-		user = service.getByEmail("email");
-		assertEquals("email", user.getEmail());
-		assertEquals(new Long(30), user.getId());
-		verify(repository, times(1)).findBySpecification(new UserByEmail(anyString()));
-	}
+        List<User> users = new ArrayList<User>() {{
+            add(user1);
+            add(user2);
+            add(user3);
+        }};
 
-	@Test
-	public void testGetByLastName() {
-		List<User> list = new ArrayList<>();
-		list.add(createDefaultUser());
-		list.add(createDefaultUser());
-		when(repository.findBySpecification(new WhereSpecification<>(new UserByLastName(anyString())))).thenReturn(list);
+        Role roleOrganiser = new Role(Role.ORGANISER);
+        Role roleSpeaker = new Role(Role.SPEAKER);
 
-		List<User> serviceList = service.getByLastName("testLas");
-		assertEquals(2, serviceList.size());
-	}
+        when(roleService.getByName(Role.ORGANISER)).thenReturn(roleOrganiser);
+        when(roleService.getByName(Role.SPEAKER)).thenReturn(roleSpeaker);
 
-	@Test
-	public void testIsEmailExit() {
-		List<User> list = spy(new ArrayList<>());
-		when(list.isEmpty()).thenReturn(false).thenReturn(true);
-		when(repository.findBySpecification(new WhereSpecification<>(new UserByEmail(anyString())))).thenReturn(list);
+        when(userRepository.findAllByUserRoles(new ArrayList<Role>() {{
+            add(roleOrganiser);
+            add(roleSpeaker);
+        }})).thenReturn(users);
 
-		assertTrue(service.isEmailExist("email"));
-		assertFalse(service.isEmailExist("email"));
-		verify(repository,times(2)).findBySpecification(new UserByEmail(anyString()));
-	}
+        List<User> resultUsersList = userService.getByRolesExceptCurrent(user1, Role.ORGANISER, Role.SPEAKER);
+        assertTrue(resultUsersList.contains(user2));
+        assertTrue(resultUsersList.contains(user3));
+        assertFalse(resultUsersList.contains(user1));
 
-	public User createDefaultUser() {
-		User result = new User();
-		result.setId(30L);
-		result.setFirstName("test");
-		result.setLastName("testLast");
-		result.setEmail("email");
-		result.setPassword("pass");
-		result.setPhoto("url");
-		result.setStatus(User.UserStatus.CONFIRMED);
-		result.setUserInfo(new UserInfo());
-		return result;
-	}
+    }
+
+    @Test
+    public void testSave() {
+        User user = mock(User.class);
+        when(roleService.getByName("SPEAKER")).thenReturn(new Role(1L, "SPEAKER"));
+        userService.save(user);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void testUpdateUserProfile() {
+        User user = mock(User.class);
+        userService.updateUserProfile(user);
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void testFind() {
+        User expected = createDefaultUser();
+
+        when(userRepository.findOne(anyLong())).thenReturn(expected);
+
+        User user = userService.find(30L);
+        assertEquals(new Long(30), user.getId());
+        assertEquals("test", user.getFirstName());
+    }
+
+    @Test
+    public void testFindAll() {
+        List<User> list = spy(new ArrayList<>());
+        when(list.size()).thenReturn(5);
+        when(userRepository.findAll()).thenReturn(list);
+
+        assertEquals(5, userService.findAll().size());
+        verify(userRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testGetByFirstName() {
+        List<User> users = new ArrayList<>();
+        User user = createDefaultUser();
+        users.add(user);
+        when(userRepository.findAllByFirstName((anyString()))).thenReturn(users);
+
+        List<User> usersResult = userService.getByFirstName("test");
+        assertEquals("test", usersResult.get(0).getFirstName());
+        verify(userRepository, times(1)).findAllByFirstName(anyString());
+    }
+
+    @Test
+    public void testGetByEmail() {
+        User user = createDefaultUser();
+        when(userRepository.findByEmail(anyString())).thenReturn(user);
+
+        user = userService.getByEmail("email");
+        assertEquals("email", user.getEmail());
+        assertEquals(new Long(30), user.getId());
+        verify(userRepository, times(1)).findByEmail(anyString());
+    }
+
+    @Test
+    public void testGetByLastName() {
+        List<User> list = new ArrayList<>();
+        list.add(createDefaultUser());
+        list.add(createDefaultUser());
+        when(userRepository.findAllByLastName(anyString())).thenReturn(list);
+
+        List<User> serviceList = userService.getByLastName("testLas");
+        assertEquals(2, serviceList.size());
+    }
+
+    @Test
+    public void testIsEmailExit() {
+        when(userRepository.findByEmail(anyString())).thenReturn(null);
+
+        assertFalse(userService.isEmailExist("email"));
+        verify(userRepository, times(1)).findByEmail(anyString());
+    }
+
+    public User createDefaultUser() {
+        User result = new User();
+        result.setId(30L);
+        result.setFirstName("test");
+        result.setLastName("testLast");
+        result.setEmail("email");
+        result.setPassword("pass");
+        result.setPhoto("url");
+        result.setStatus(User.UserStatus.CONFIRMED);
+        result.setUserInfo(new UserInfo());
+        return result;
+    }
 }

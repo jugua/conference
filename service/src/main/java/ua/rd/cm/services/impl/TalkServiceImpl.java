@@ -7,13 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
-import ua.rd.cm.repository.specification.AndSpecification;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
-import ua.rd.cm.repository.specification.user.UserByEmail;
-import ua.rd.cm.repository.specification.user.UserByRole;
-import ua.rd.cm.repository.specification.user.UserExceptThisById;
 import ua.rd.cm.services.MailService;
+import ua.rd.cm.services.RoleService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.preparator.*;
@@ -35,12 +32,13 @@ public class TalkServiceImpl implements TalkService {
     private ConferenceRepository conferenceRepository;
     private UserRepository userRepository;
     private MailService mailService;
+    private RoleService roleService;
 
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
 
     @Autowired
-    public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService) {
+    public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService, RoleService roleService) {
         this.talkRepository = talkRepository;
         this.modelMapper = modelMapper;
         this.levelRepository = levelRepository;
@@ -50,7 +48,9 @@ public class TalkServiceImpl implements TalkService {
         this.conferenceRepository = conferenceRepository;
         this.userRepository = userRepository;
         this.mailService = mailService;
+        this.roleService = roleService;
     }
+
 
     @Override
     @Transactional
@@ -82,7 +82,7 @@ public class TalkServiceImpl implements TalkService {
 
         talkRepository.save(talk);
 
-        List<User> organisersUsers = userRepository.findAllWithRoles(new UserByRole(Role.ORGANISER));
+        List<User> organisersUsers = userRepository.findAllByUserRoles(roleService.getByName(Role.ORGANISER));
 
         mailService.notifyUsers(organisersUsers, new SubmitNewTalkOrganiserPreparator(talk, mailService.getUrl()));
         mailService.sendEmail(user, new SubmitNewTalkSpeakerPreparator());
@@ -122,7 +122,7 @@ public class TalkServiceImpl implements TalkService {
         talk.setOrganiser(user);
         talk.setOrganiserComment(talkDto.getOrganiserComment());
         talkRepository.update(talk);
-        List<User> receivers = getByRoleExceptCurrent(user, Role.ORGANISER);
+        List<User> receivers = userRepository.findAllByUserRoles(roleService.getByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
         if(!(talk.getStatus()==TalkStatus.IN_PROGRESS && talk.isValidComment())){
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
@@ -188,7 +188,7 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public List<TalkDto> getTalksForSpeaker(String userEmail) {
-        User currentUser = getByEmail(userEmail);
+        User currentUser = userRepository.findByEmail(userEmail);
         return findByUserId(currentUser.getId())
                 .stream()
                 .map(this::entityToDto)
@@ -214,34 +214,6 @@ public class TalkServiceImpl implements TalkService {
             throw new TypeNotFoundException();
         }
         return type;
-    }
-
-    /**
-     * Moved method from UserService to find User by email
-     * @param email
-     * @return
-     */
-    private User getByEmail(String email) {
-        List<User> users = userRepository.findBySpecification(new UserByEmail(email));
-        if (users.isEmpty()) {
-            return null;
-        }
-        return users.get(0);
-    }
-
-    /**
-     * Moved method
-     * @param currentUser
-     * @param roleName
-     * @return
-     */
-    private List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
-        return userRepository.findAllWithRoles(
-                new AndSpecification<>(
-                        new UserByRole(roleName),
-                        new UserExceptThisById(currentUser.getId())
-                )
-        );
     }
 
     /**

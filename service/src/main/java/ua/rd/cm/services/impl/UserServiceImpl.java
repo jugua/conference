@@ -11,21 +11,14 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.repository.specification.AndSpecification;
-import ua.rd.cm.repository.specification.OrSpecification;
-import ua.rd.cm.repository.specification.Specification;
-import ua.rd.cm.repository.specification.user.*;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.RoleService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
-import java.util.Collections;
-import java.util.List;
-
-import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_NOT_FOUND;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -51,11 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User find(Long id) {
-        List<User> users = userRepository.findBySpecification(new UserById(id));
-        if (users.isEmpty()) {
-            throw new ResourceNotFoundException(USER_NOT_FOUND);
-        }
-        return users.get(0);
+        return userRepository.findOne(id);
     }
 
     @Override
@@ -77,26 +66,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getByFirstName(String name) {
-        return userRepository.findBySpecification(new UserByFirstName(name));
+        return userRepository.findAllByFirstName(name);
     }
 
     @Override
     public User getByEmail(String email) {
-        List<User> users = userRepository.findBySpecification(new UserByEmail(email));
-        if (users.isEmpty()) {
-            return null;
-        }
-        return users.get(0);
+       return userRepository.findByEmail(email);
     }
 
     @Override
     public List<User> getByLastName(String lastName) {
-        return userRepository.findBySpecification(new UserByLastName(lastName));
+        return userRepository.findAllByLastName(lastName);
     }
 
     @Override
     public boolean isEmailExist(String email) {
-        return !userRepository.findBySpecification(new UserByEmail(email)).isEmpty();
+        return userRepository.findByEmail(email) != null;
     }
 
     @Override
@@ -114,41 +99,25 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUserProfile(User user) {
-        userRepository.update(user);
-    }
-
-    @Override
-    public List<User> getByRole(String role) {
-        return userRepository.findAllWithRoles(new UserByRole(role));
+        userRepository.save(user);
     }
 
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
-        return userRepository.findAllWithRoles(
-                new AndSpecification<>(
-                        new UserByRole(roleName),
-                        new UserExceptThisById(currentUser.getId())
-                )
-        );
+        Role role = roleService.getByName(roleName);
+        return  userRepository.findAllByUserRoles(role).stream().filter(user -> user != currentUser).collect(Collectors.toList());
     }
 
     @Override
-    public List<User> getByRolesExceptCurrent(User currentUser, String... roles) {
-        List<User> users = Collections.emptyList();
-        if (roles.length > 0) {
-            Specification<User> current = new UserByRole(roles[0]);
-            for (int i = 1; i < roles.length; i++) {
-                current = new OrSpecification<>(current, new UserByRole(roles[i]));
+    public List<User> getByRolesExceptCurrent(User currentUser, String... roleNames) {
+        List<Role> roles = new ArrayList<>();
+        for(String roleName : roleNames){
+            Role role = roleService.getByName(roleName);
+            if (role != null){
+                roles.add(role);
             }
-            users = userRepository.findAllWithRoles(new UserOrderByLastName(
-                            new AndSpecification<>(
-                                    current,
-                                    new UserExceptThisById(currentUser.getId())
-                            )
-                    )
-            );
         }
-        return users;
+        return  userRepository.findAllByUserRoles(roles).stream().filter(user -> user != currentUser).collect(Collectors.toList());
     }
 
     @Override
