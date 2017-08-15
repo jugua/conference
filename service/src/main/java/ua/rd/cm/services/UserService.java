@@ -25,11 +25,9 @@ public interface UserService {
 
     void registerNewUser(RegistrationDto dto);
 
-    List<User> getByRole(String role);
-
     List<User> getByRoleExceptCurrent(User currentUser, String roleName);
 
-    List<User> getByRolesExceptCurrent(User currentUser, String... roles);
+    List<User> getByRolesExceptCurrent(User currentUser, String... rolesNames);
 
     boolean isAuthenticated(User user, String password);
 

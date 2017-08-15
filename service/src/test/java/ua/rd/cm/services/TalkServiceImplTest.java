@@ -47,6 +47,8 @@ public class TalkServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private MailService mailService;
+    @Mock
+    private RoleService roleService;
 
     private TalkService talkService;
 
@@ -68,7 +70,7 @@ public class TalkServiceImplTest {
     @Before
     public void setUp() throws Exception {
         modelMapper = new ModelMapper();
-        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, mailService);
+        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, mailService, roleService);
         userInfo = new UserInfo();
         userInfo.setId(1L);
         userInfo.setShortBio("bio");
