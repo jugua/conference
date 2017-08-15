@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.impl.UserServiceImpl;
 
@@ -28,7 +29,7 @@ public class SimpleUserServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private RoleService roleService;
+    private RoleRepository roleRepository;
 
     @Mock
     private MailService mailService;
@@ -46,7 +47,7 @@ public class SimpleUserServiceTest {
 
     @Before
     public void initialize() {
-        userService = new UserServiceImpl(userRepository, roleService, mailService, tokenService, mapper, passwordEncoder);
+        userService = new UserServiceImpl(userRepository, roleRepository, mailService, tokenService, mapper, passwordEncoder);
     }
 
     @Test
@@ -67,7 +68,7 @@ public class SimpleUserServiceTest {
         }};
         Role role = new Role(Role.ORGANISER);
 
-        when(roleService.getByName(Role.ORGANISER)).thenReturn(role);
+        when(roleRepository.findByName(Role.ORGANISER)).thenReturn(role);
         when(userRepository.findAllByUserRolesIsIn(role)).thenReturn(users);
 
         List<User> resultUsersList = userService.getByRoleExceptCurrent(user1, Role.ORGANISER);
@@ -97,8 +98,8 @@ public class SimpleUserServiceTest {
         Role roleOrganiser = new Role(Role.ORGANISER);
         Role roleSpeaker = new Role(Role.SPEAKER);
 
-        when(roleService.getByName(Role.ORGANISER)).thenReturn(roleOrganiser);
-        when(roleService.getByName(Role.SPEAKER)).thenReturn(roleSpeaker);
+        when(roleRepository.findByName(Role.ORGANISER)).thenReturn(roleOrganiser);
+        when(roleRepository.findByName(Role.SPEAKER)).thenReturn(roleSpeaker);
 
         when(userRepository.findAllByUserRolesIsIn(new ArrayList<Role>() {{
             add(roleOrganiser);
@@ -115,7 +116,7 @@ public class SimpleUserServiceTest {
     @Test
     public void testSave() {
         User user = mock(User.class);
-        when(roleService.getByName("SPEAKER")).thenReturn(new Role(1L, "SPEAKER"));
+        when(roleRepository.findByName("SPEAKER")).thenReturn(new Role(1L, "SPEAKER"));
         userService.save(user);
         verify(userRepository, times(1)).save(user);
     }
