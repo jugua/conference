@@ -14,7 +14,6 @@ import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.impl.UserServiceImpl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -69,7 +68,7 @@ public class SimpleUserServiceTest {
         Role role = new Role(Role.ORGANISER);
 
         when(roleService.getByName(Role.ORGANISER)).thenReturn(role);
-        when(userRepository.findAllByUserRoles(role)).thenReturn(users);
+        when(userRepository.findAllByUserRolesIsIn(role)).thenReturn(users);
 
         List<User> resultUsersList = userService.getByRoleExceptCurrent(user1, Role.ORGANISER);
         assertTrue(resultUsersList.contains(user2));
@@ -101,7 +100,7 @@ public class SimpleUserServiceTest {
         when(roleService.getByName(Role.ORGANISER)).thenReturn(roleOrganiser);
         when(roleService.getByName(Role.SPEAKER)).thenReturn(roleSpeaker);
 
-        when(userRepository.findAllByUserRoles(new ArrayList<Role>() {{
+        when(userRepository.findAllByUserRolesIsIn(new ArrayList<Role>() {{
             add(roleOrganiser);
             add(roleSpeaker);
         }})).thenReturn(users);

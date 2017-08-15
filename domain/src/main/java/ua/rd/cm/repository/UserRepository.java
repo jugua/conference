@@ -25,13 +25,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAllByLastName(String lastName);
 
-    List<User> findAllByUserRoles(Role name);
+    List<User> findAllByUserRolesIsIn(Role name);
 
-    List<User> findAllByUserRoles(List<Role> name);
-
-//    @Query("select distinct u from User u JOIN u.userRoles r WHERE r.name = ?1")
-//    List<User> findAllByRoleNames(String roleNames);
-
-    @Query("select distinct u from User u  JOIN u.userRoles r WHERE r.name= ?1 or r.name = ?2")
-    List<User> findAllByRoleNames(String roleName1, String roleName2);
+    List<User> findAllByUserRolesIsIn(List<Role> name);
 }

@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
         Role role = roleService.getByName(roleName);
-        return  userRepository.findAllByUserRoles(role).stream().filter(user -> user != currentUser).collect(Collectors.toList());
+        return  userRepository.findAllByUserRolesIsIn(role).stream().filter(user -> user != currentUser).collect(Collectors.toList());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
                 roles.add(role);
             }
         }
-        return  userRepository.findAllByUserRoles(roles).stream().filter(user -> user != currentUser).collect(Collectors.toList());
+        return  userRepository.findAllByUserRolesIsIn(roles).stream().filter(user -> user != currentUser).collect(Collectors.toList());
     }
 
     @Override

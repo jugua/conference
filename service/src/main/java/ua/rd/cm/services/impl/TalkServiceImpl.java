@@ -82,7 +82,7 @@ public class TalkServiceImpl implements TalkService {
 
         talkRepository.save(talk);
 
-        List<User> organisersUsers = userRepository.findAllByUserRoles(roleService.getByName(Role.ORGANISER));
+        List<User> organisersUsers = userRepository.findAllByUserRolesIsIn(roleService.getByName(Role.ORGANISER));
 
         mailService.notifyUsers(organisersUsers, new SubmitNewTalkOrganiserPreparator(talk, mailService.getUrl()));
         mailService.sendEmail(user, new SubmitNewTalkSpeakerPreparator());
@@ -122,7 +122,7 @@ public class TalkServiceImpl implements TalkService {
         talk.setOrganiser(user);
         talk.setOrganiserComment(talkDto.getOrganiserComment());
         talkRepository.update(talk);
-        List<User> receivers = userRepository.findAllByUserRoles(roleService.getByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
+        List<User> receivers = userRepository.findAllByUserRolesIsIn(roleService.getByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
         if(!(talk.getStatus()==TalkStatus.IN_PROGRESS && talk.isValidComment())){
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
