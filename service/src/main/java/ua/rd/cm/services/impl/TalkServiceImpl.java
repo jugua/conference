@@ -10,7 +10,6 @@ import ua.rd.cm.repository.*;
 import ua.rd.cm.repository.specification.talk.TalkById;
 import ua.rd.cm.repository.specification.talk.TalkByUserId;
 import ua.rd.cm.services.MailService;
-import ua.rd.cm.services.RoleService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.preparator.*;
@@ -31,14 +30,14 @@ public class TalkServiceImpl implements TalkService {
     private TypeRepository typeRepository;
     private ConferenceRepository conferenceRepository;
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
     private MailService mailService;
-    private RoleService roleService;
 
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
 
     @Autowired
-    public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService, RoleService roleService) {
+    public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService, RoleRepository roleRepository) {
         this.talkRepository = talkRepository;
         this.modelMapper = modelMapper;
         this.levelRepository = levelRepository;
@@ -48,7 +47,7 @@ public class TalkServiceImpl implements TalkService {
         this.conferenceRepository = conferenceRepository;
         this.userRepository = userRepository;
         this.mailService = mailService;
-        this.roleService = roleService;
+        this.roleRepository = roleRepository;
     }
 
 
@@ -82,7 +81,7 @@ public class TalkServiceImpl implements TalkService {
 
         talkRepository.save(talk);
 
-        List<User> organisersUsers = userRepository.findAllByUserRolesIsIn(roleService.getByName(Role.ORGANISER));
+        List<User> organisersUsers = userRepository.findAllByUserRolesIsIn(roleRepository.findByName(Role.ORGANISER));
 
         mailService.notifyUsers(organisersUsers, new SubmitNewTalkOrganiserPreparator(talk, mailService.getUrl()));
         mailService.sendEmail(user, new SubmitNewTalkSpeakerPreparator());
@@ -122,7 +121,7 @@ public class TalkServiceImpl implements TalkService {
         talk.setOrganiser(user);
         talk.setOrganiserComment(talkDto.getOrganiserComment());
         talkRepository.update(talk);
-        List<User> receivers = userRepository.findAllByUserRolesIsIn(roleService.getByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
+        List<User> receivers = userRepository.findAllByUserRolesIsIn(roleRepository.findByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
         if(!(talk.getStatus()==TalkStatus.IN_PROGRESS && talk.isValidComment())){
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));

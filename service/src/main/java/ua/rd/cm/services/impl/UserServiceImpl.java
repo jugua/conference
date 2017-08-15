@@ -10,9 +10,9 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.MailService;
-import ua.rd.cm.services.RoleService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
@@ -24,18 +24,18 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private RoleService roleService;
+    private RoleRepository roleRepository;
     private MailService mailService;
     private ModelMapper mapper;
     private VerificationTokenService tokenService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService,
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
                            MailService mailService, VerificationTokenService tokenService,
                            ModelMapper mapper, PasswordEncoder passwordEncode) {
         this.userRepository = userRepository;
-        this.roleService = roleService;
+        this.roleRepository = roleRepository;
         this.mailService = mailService;
         this.tokenService = tokenService;
         this.mapper = mapper;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void save(User user) {
         if (user.getUserRoles().size() == 0) {
-            user.addRole(roleService.getByName(Role.SPEAKER));
+            user.addRole(roleRepository.findByName(Role.SPEAKER));
         }
         if (user.getUserInfo() == null) {
             user.setUserInfo(new UserInfo());
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
-        Role role = roleService.getByName(roleName);
+        Role role = roleRepository.findByName(roleName);
         return  userRepository.findAllByUserRolesIsIn(role).stream().filter(user -> user != currentUser).collect(Collectors.toList());
     }
 
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getByRolesExceptCurrent(User currentUser, String... roleNames) {
         List<Role> roles = new ArrayList<>();
         for(String roleName : roleNames){
-            Role role = roleService.getByName(roleName);
+            Role role = roleRepository.findByName(roleName);
             if (role != null){
                 roles.add(role);
             }
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
     private User mapRegistrationDtoToUser(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
-        user.addRole(roleService.getByName(dto.getRoleName()));
+        user.addRole(roleRepository.findByName(dto.getRoleName()));
         return user;
     }
 }
