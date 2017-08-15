@@ -96,14 +96,14 @@ public class TalkServiceImpl implements TalkService {
         if(multipartFilePath != null) {
             talk.setPathToAttachedFile(multipartFilePath);
         }
-        talkRepository.update(talk);
+        talkRepository.save(talk);
     }
 
     @Override
     public void deleteFile(TalkDto talkDto, boolean deleteFile) {
         Talk talk = findTalkById(talkDto.getId());
         talk.setPathToAttachedFile(null);
-        talkRepository.update(talk);
+        talkRepository.save(talk);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class TalkServiceImpl implements TalkService {
         checkIfAllowedToChangeStatus(talk, talkDto.getStatusName());
         talk.setOrganiser(user);
         talk.setOrganiserComment(talkDto.getOrganiserComment());
-        talkRepository.update(talk);
+        talkRepository.save(talk);
         List<User> receivers = userRepository.findAllByUserRolesIsIn(roleRepository.findByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
         if(!(talk.getStatus()==TalkStatus.IN_PROGRESS && talk.isValidComment())){
@@ -151,7 +151,7 @@ public class TalkServiceImpl implements TalkService {
             talk.setAdditionalInfo(talkDto.getAdditionalInfo());
         }
 
-        talkRepository.update(talk);
+        talkRepository.save(talk);
         if(talk.getOrganiser() != null){
             mailService.sendEmail(talk.getOrganiser(), new ChangeTalkBySpeakerPreparator(talk, mailService.getUrl()));
         }
@@ -164,7 +164,7 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public List<Talk> findByUserId(Long id) {
-        List<Talk> talks = talkRepository.findBySpecification(new TalkByUserId(id));;
+        List<Talk> talks = talkRepository.findByUserId(id);;
         if (talks.isEmpty()) {
             throw new TalkNotFoundException();
         }
@@ -173,11 +173,11 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public Talk findTalkById(Long id) {
-        List<Talk> talks = talkRepository.findBySpecification(new TalkById(id));
-        if (talks.isEmpty()) {
+        Talk talk = talkRepository.findById(id);
+        if (talk==null) {
             throw new TalkNotFoundException();
         }
-        return talks.get(0);
+        return talk;
     }
 
     @Override
