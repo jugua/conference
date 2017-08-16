@@ -3,7 +3,6 @@ package ua.rd.cm.config;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -30,7 +29,6 @@ import java.util.Properties;
 })
 @Import(RepositoryConfig.class)
 @PropertySource({"classpath:mail.properties", "classpath:fileStorage.properties"})
-@EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
 public class ServiceConfig {
     
     @Bean

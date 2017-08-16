@@ -22,6 +22,7 @@ import javax.sql.DataSource;
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
 @PropertySource("classpath:jdbc.properties")
+@EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
 public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
