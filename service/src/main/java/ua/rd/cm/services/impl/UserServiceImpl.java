@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.RegistrationDto;
-
 import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.services.*;
-import ua.rd.cm.services.exception.*;
+import ua.rd.cm.services.ContactTypeService;
+import ua.rd.cm.services.MailService;
+import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.EmptyPasswordException;
+import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
 import java.util.ArrayList;
@@ -74,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByEmail(String email) {
-       return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -108,19 +113,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
         Role role = roleRepository.findByName(roleName);
-        return  userRepository.findAllByUserRolesIsIn(role).stream().filter(user -> user != currentUser).collect(Collectors.toList());
+        return userRepository.findAllByUserRolesIsIn(role).stream().filter(user -> user != currentUser).collect(Collectors.toList());
     }
 
     @Override
     public List<User> getByRolesExceptCurrent(User currentUser, String... roleNames) {
         List<Role> roles = new ArrayList<>();
-        for(String roleName : roleNames){
+        for (String roleName : roleNames) {
             Role role = roleRepository.findByName(roleName);
-            if (role != null){
+            if (role != null) {
                 roles.add(role);
             }
         }
-        return  userRepository.findAllByUserRolesIsIn(roles).stream().filter(user -> user != currentUser).collect(Collectors.toList());
+        return userRepository.findAllByUserRolesIsIn(roles).stream().filter(user -> user != currentUser).collect(Collectors.toList());
     }
 
     @Override
@@ -131,7 +136,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void checkUserRegistration(RegistrationDto dto) {
-        if(!isPasswordConfirmed(dto)) {
+        if (!isPasswordConfirmed(dto)) {
             throw new EmptyPasswordException("empty_fields");
         } else if (isEmailExist(dto.getEmail().toLowerCase())) {
             throw new EmailAlreadyExistsException("email_already_exists");
@@ -142,7 +147,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void checkUserRegistrationByAdmin(RegistrationDto dto) {
-        if(dto.getRoleName().equals(Role.ADMIN)) {
+        if (dto.getRoleName().equals(Role.ADMIN)) {
             throw new WrongRoleException("wrong_role_name");
         }
 
@@ -152,7 +157,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserDtoByEmail(String email) {
         User user = getByEmail(email);
 
-        if(user == null) {
+        if (user == null) {
             throw new NoSuchUserException("No such user exists");
         }
 

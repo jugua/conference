@@ -1,9 +1,6 @@
 package ua.rd.cm.services.preparator;
 
-import javax.mail.internet.MimeMessage;
-
 import lombok.AllArgsConstructor;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 

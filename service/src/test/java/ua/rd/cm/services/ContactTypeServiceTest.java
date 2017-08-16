@@ -7,8 +7,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
-import ua.rd.cm.repository.specification.contacttype.ContactTypeById;
-import ua.rd.cm.repository.specification.contacttype.ContactTypeByName;
 import ua.rd.cm.services.impl.ContactTypeServiceImpl;
 
 import java.util.ArrayList;
@@ -48,7 +46,7 @@ public class ContactTypeServiceTest {
     @Test
     public void testUpdateContactType() {
         contactTypeService.update(contactType);
-        verify(contactTypeRepository).update(contactType);
+        verify(contactTypeRepository).save(contactType);
     }
 
     @Test

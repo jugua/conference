@@ -18,38 +18,38 @@
     <!-- log4jdbc sql & jdbc logging -->
 
     <logger name="log4jdbc.debug" additivity="false">
-        <level value="DEBUG" />
-        <appender-ref ref="STDOUT" />
+        <level value="DEBUG"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="jdbc.sqlonly" additivity="false">
-        <level value="INFO" />
-        <appender-ref ref="STDOUT" />
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="jdbc.resultsettable" additivity="false">
-        <level value="INFO" />
-        <appender-ref ref="STDOUT" />
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 
     <logger name="jdbc.sqltiming" additivity="false">
-        <level value="OFF" />
+        <level value="OFF"/>
     </logger>
 
     <logger name="jdbc.audit" additivity="false">
-        <level value="OFF" />
+        <level value="OFF"/>
     </logger>
 
     <logger name="jdbc.resultset" additivity="false">
-        <level value="OFF" />
+        <level value="OFF"/>
     </logger>
 
     <logger name="jdbc.connection" additivity="false">
-        <level value="INFO" />
+        <level value="INFO"/>
     </logger>
 
     <root level="debug">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>

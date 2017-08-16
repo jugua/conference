@@ -1,11 +1,9 @@
 package ua.rd.cm.services.preparator;
 
 import lombok.AllArgsConstructor;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 
-import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 
 @AllArgsConstructor

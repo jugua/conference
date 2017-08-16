@@ -7,17 +7,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
-import ua.rd.cm.repository.specification.userinfo.UserInfoById;
 import ua.rd.cm.services.impl.UserInfoServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserInfoServiceTest {

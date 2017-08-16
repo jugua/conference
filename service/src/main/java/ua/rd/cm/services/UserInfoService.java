@@ -7,6 +7,8 @@ import ua.rd.cm.domain.UserInfo;
  */
 public interface UserInfoService {
     UserInfo find(Long id);
+
     void save(UserInfo userInfo);
+
     void update(UserInfo userInfo);
 }

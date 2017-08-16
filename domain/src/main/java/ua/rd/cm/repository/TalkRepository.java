@@ -1,20 +1,13 @@
 package ua.rd.cm.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Talk;
-import ua.rd.cm.repository.specification.Specification;
 
 import java.util.List;
 
-/**
- * Interface Talk repository declare
- * CRUD operations with {@link Talk} entity via repository pattern.
- *
- * @see Talk
- * @see Specification
- */
-public interface TalkRepository extends CrudRepository<Talk,Long> {
-
+@Repository
+public interface TalkRepository extends CrudRepository<Talk, Long> {
 
     @Override
     List<Talk> findAll();
@@ -22,6 +15,5 @@ public interface TalkRepository extends CrudRepository<Talk,Long> {
     Talk findById(Long id);
 
     List<Talk> findByUserId(Long userId);
-
 
 }

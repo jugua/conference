@@ -7,11 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
-import ua.rd.cm.repository.specification.talk.TalkById;
-import ua.rd.cm.repository.specification.talk.TalkByUserId;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.TalkService;
-import ua.rd.cm.services.exception.*;
+import ua.rd.cm.services.exception.TalkNotFoundException;
+import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.preparator.*;
 
 import java.time.LocalDateTime;
@@ -22,6 +21,8 @@ import static ua.rd.cm.services.exception.TalkValidationException.*;
 
 @Service
 public class TalkServiceImpl implements TalkService {
+    private static final int MAX_ORG_COMMENT_LENGTH = 1000;
+    private static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
     private TalkRepository talkRepository;
     private ModelMapper modelMapper;
     private LevelRepository levelRepository;
@@ -32,9 +33,6 @@ public class TalkServiceImpl implements TalkService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private MailService mailService;
-
-    private static final int MAX_ORG_COMMENT_LENGTH = 1000;
-    public static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
 
     @Autowired
     public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService, RoleRepository roleRepository) {
@@ -50,18 +48,17 @@ public class TalkServiceImpl implements TalkService {
         this.roleRepository = roleRepository;
     }
 
-
     @Override
     @Transactional
     public Talk save(TalkDto talkDto, User user, String multipartFilePath) {
         Talk talk = modelMapper.map(talkDto, Talk.class);
 
-        if(talkDto.getStatusName() != null){
+        if (talkDto.getStatusName() != null) {
             talk.setStatus(TalkStatus.getStatusByName(talkDto.getStatusName()));
         }
-        if(talkDto.getDate() != null){
+        if (talkDto.getDate() != null) {
             talk.setTime(LocalDateTime.parse(talkDto.getDate()));
-        }else {
+        } else {
             talk.setTime(LocalDateTime.now());
         }
 
@@ -77,7 +74,7 @@ public class TalkServiceImpl implements TalkService {
         talk.setLanguage(languageRepository.findByName(talkDto.getLanguageName()));
         talk.setLevel(levelRepository.findByName(talkDto.getLevelName()));
         talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
-        talk.setType(getByNameType(talkDto.getTypeName()));
+        talk.setType(typeRepository.findByName(talkDto.getTypeName()));
 
         talkRepository.save(talk);
 
@@ -93,7 +90,7 @@ public class TalkServiceImpl implements TalkService {
     @Override
     public void addFile(TalkDto talkDto, String multipartFilePath) {
         Talk talk = findTalkById(talkDto.getId());
-        if(multipartFilePath != null) {
+        if (multipartFilePath != null) {
             talk.setPathToAttachedFile(multipartFilePath);
         }
         talkRepository.save(talk);
@@ -123,7 +120,7 @@ public class TalkServiceImpl implements TalkService {
         talkRepository.save(talk);
         List<User> receivers = userRepository.findAllByUserRolesIsIn(roleRepository.findByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
-        if(!(talk.getStatus()==TalkStatus.IN_PROGRESS && talk.isValidComment())){
+        if (!(talk.getStatus() == TalkStatus.IN_PROGRESS && talk.isValidComment())) {
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
         }
     }
@@ -133,13 +130,13 @@ public class TalkServiceImpl implements TalkService {
     public void updateAsSpeaker(TalkDto talkDto, User user) {
         checkDtoBeforeUpdateAsSpeaker(talkDto);
         Talk talk = findTalkById(talkDto.getId());
-        if(isForbiddenToChangeTalk(user, talk)){
+        if (isForbiddenToChangeTalk(user, talk)) {
             throw new TalkValidationException(NOT_ALLOWED_TO_UPDATE);
         }
         talk.setLanguage(languageRepository.findByName(talkDto.getLanguageName()));
         talk.setLevel(levelRepository.findByName(talkDto.getLevelName()));
         talk.setTopic(topicRepository.findTopicByName(talkDto.getTopicName()));
-        talk.setType(getByNameType(talkDto.getTypeName()));
+        talk.setType(typeRepository.findByName(talkDto.getTypeName()));
 
         if (talkDto.getTitle() != null) {
             talk.setTitle(talkDto.getTitle());
@@ -152,7 +149,7 @@ public class TalkServiceImpl implements TalkService {
         }
 
         talkRepository.save(talk);
-        if(talk.getOrganiser() != null){
+        if (talk.getOrganiser() != null) {
             mailService.sendEmail(talk.getOrganiser(), new ChangeTalkBySpeakerPreparator(talk, mailService.getUrl()));
         }
     }
@@ -164,7 +161,8 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public List<Talk> findByUserId(Long id) {
-        List<Talk> talks = talkRepository.findByUserId(id);;
+        List<Talk> talks = talkRepository.findByUserId(id);
+        ;
         if (talks.isEmpty()) {
             throw new TalkNotFoundException();
         }
@@ -174,7 +172,7 @@ public class TalkServiceImpl implements TalkService {
     @Override
     public Talk findTalkById(Long id) {
         Talk talk = talkRepository.findById(id);
-        if (talk==null) {
+        if (talk == null) {
             throw new TalkNotFoundException();
         }
         return talk;
@@ -203,20 +201,6 @@ public class TalkServiceImpl implements TalkService {
     }
 
     /**
-     * Moved method from TypeService
-     * @param name
-     * @return
-     */
-    private Type getByNameType(String name) {
-        Type type = typeRepository.findByName(name);
-        if (type == null) {
-            throw new TypeNotFoundException();
-        }
-        return type;
-    }
-
-    /**
-     * TODO:
      * @param talk
      * @return
      */
@@ -240,6 +224,7 @@ public class TalkServiceImpl implements TalkService {
 
     /**
      * Validate method TODO: move to new Validation class
+     *
      * @param message
      * @param maxSize
      * @return
@@ -261,8 +246,8 @@ public class TalkServiceImpl implements TalkService {
 
     }
 
-    private void checkDtoBeforeUpdateAsSpeaker(TalkDto talkDto){
-        if (!validateStringMaxLength(talkDto.getAdditionalInfo(), MAX_ADDITIONAL_INFO_LENGTH)){
+    private void checkDtoBeforeUpdateAsSpeaker(TalkDto talkDto) {
+        if (!validateStringMaxLength(talkDto.getAdditionalInfo(), MAX_ADDITIONAL_INFO_LENGTH)) {
             throw new TalkValidationException(ADDITIONAL_COMMENT_TOO_LONG);
         }
     }
@@ -276,7 +261,7 @@ public class TalkServiceImpl implements TalkService {
 
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         boolean isUsersTalk = talk.getUser().getId() != user.getId();
-        return isUsersTalk|| talk.getStatus() == TalkStatus.REJECTED || talk.getStatus()== TalkStatus.APPROVED;
+        return isUsersTalk || talk.getStatus() == TalkStatus.REJECTED || talk.getStatus() == TalkStatus.APPROVED;
     }
 
 }

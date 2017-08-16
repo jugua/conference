@@ -30,7 +30,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Transactional(readOnly = true)
     public Conference findById(Long id) {
         Conference conference = conferenceRepository.findById(id);
-        if (conference==null) {
+        if (conference == null) {
             throw new ConferenceNotFoundException();
         }
         return conference;

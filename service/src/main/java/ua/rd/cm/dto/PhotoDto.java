@@ -1,8 +1,6 @@
 package ua.rd.cm.dto;
 
 import org.springframework.web.multipart.MultipartFile;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 public class PhotoDto {
 

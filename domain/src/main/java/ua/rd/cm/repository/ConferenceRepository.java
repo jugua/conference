@@ -3,8 +3,8 @@ package ua.rd.cm.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Conference;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
