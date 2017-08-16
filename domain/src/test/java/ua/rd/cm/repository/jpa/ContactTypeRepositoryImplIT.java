@@ -11,7 +11,7 @@ public class ContactTypeRepositoryImplIT extends AbstractJpaCrudRepositoryIT<Con
 
     @Override
     protected CrudRepository<ContactType> createRepository() {
-        return repository;
+        return (CrudRepository) repository;
     }
 
     @Override
