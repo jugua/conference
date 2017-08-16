@@ -7,7 +7,7 @@ import ua.rd.cm.repository.VerificationTokenRepository;
 @Repository
 public class VerificationTokenRepositoryImpl
         extends AbstractJpaCrudRepository<VerificationToken>
-        implements VerificationTokenRepository {
+         {
 
     public VerificationTokenRepositoryImpl() {
         super("v", VerificationToken.class);

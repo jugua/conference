@@ -15,7 +15,7 @@ public class VerificationTokenRepositoryImplIT
 
     @Override
     protected CrudRepository<VerificationToken> createRepository() {
-        return repository;
+        return (CrudRepository)repository;
     }
 
     @Override
