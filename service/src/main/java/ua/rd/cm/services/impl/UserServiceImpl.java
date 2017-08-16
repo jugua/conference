@@ -5,20 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.domain.VerificationToken;
+import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.RegistrationDto;
+
+import ua.rd.cm.dto.UserBasicDto;
+import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.services.MailService;
-import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.*;
+import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,17 +31,18 @@ public class UserServiceImpl implements UserService {
     private ModelMapper mapper;
     private VerificationTokenService tokenService;
     private PasswordEncoder passwordEncoder;
+    private ContactTypeService contactTypeService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           MailService mailService, VerificationTokenService tokenService,
-                           ModelMapper mapper, PasswordEncoder passwordEncode) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, MailService mailService, ModelMapper mapper, VerificationTokenService tokenService, PasswordEncoder passwordEncoder, ContactTypeService contactTypeService) {
+
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.mailService = mailService;
-        this.tokenService = tokenService;
         this.mapper = mapper;
-        this.passwordEncoder = passwordEncode;
+        this.tokenService = tokenService;
+        this.passwordEncoder = passwordEncoder;
+        this.contactTypeService = contactTypeService;
     }
 
     @Override
@@ -126,10 +129,114 @@ public class UserServiceImpl implements UserService {
         return passwordEncoder.matches(password, hashedPassword);
     }
 
+    @Override
+    public void checkUserRegistration(RegistrationDto dto) {
+        if(!isPasswordConfirmed(dto)) {
+            throw new EmptyPasswordException("empty_fields");
+        } else if (isEmailExist(dto.getEmail().toLowerCase())) {
+            throw new EmailAlreadyExistsException("email_already_exists");
+        } else {
+            encodePassword(dto);
+        }
+    }
+
+    @Override
+    public void checkUserRegistrationByAdmin(RegistrationDto dto) {
+        if(dto.getRoleName().equals(Role.ADMIN)) {
+            throw new WrongRoleException("wrong_role_name");
+        }
+
+    }
+
+    @Override
+    public UserDto getUserDtoByEmail(String email) {
+        User user = getByEmail(email);
+
+        if(user == null) {
+            throw new NoSuchUserException("No such user exists");
+        }
+
+        return userToDto(user);
+    }
+
+    @Override
+    public UserDto getUserDtoById(Long userId) {
+        User user = find(userId);
+        return userToDto(user);
+    }
+
+    @Override
+    public List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles) {
+        List<User> users = getByRolesExceptCurrent(currentUser, roles);
+        List<UserBasicDto> userDtoList = new ArrayList<>();
+        if (users != null) {
+            for (User user : users) {
+                userDtoList.add(userToUserBasicDto(user));
+            }
+        }
+
+        return userDtoList;
+    }
+
+    @Override
+    public UserInfo prepareNewUserInfoForUpdate(String email, UserDto dto) {
+        User currentUser = getByEmail(email);
+        UserInfo currentUserInfo = userInfoDtoToEntity(dto);
+        currentUserInfo.setId(currentUser.getUserInfo().getId());
+        return currentUserInfo;
+    }
+
+    @Override
+    public User prepareNewUserForUpdate(String email, UserDto dto) {
+        User currentUser = getByEmail(email);
+        currentUser.setFirstName(dto.getFirstName());
+        currentUser.setLastName(dto.getLastName());
+        return currentUser;
+    }
+
     private User mapRegistrationDtoToUser(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
         user.addRole(roleRepository.findByName(dto.getRoleName()));
         return user;
     }
+
+    private boolean isPasswordConfirmed(RegistrationDto dto) {
+        return dto.getPassword().equals(dto.getConfirm());
+    }
+
+    private void encodePassword(RegistrationDto dto) {
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+    }
+
+    private UserDto userToDto(User user) {
+        UserDto dto = mapper.map(user, UserDto.class);
+        if (user.getPhoto() != null) {
+            dto.setPhoto("api/user/current/photo/" + user.getId());
+        }
+        dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
+        dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
+        dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
+        dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
+        dto.setRoles(user.getRoleNames());
+        return dto;
+    }
+
+    private UserBasicDto userToUserBasicDto(User user) {
+        UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
+        userBasicDto.setRoles(user.getRoleNames());
+        return userBasicDto;
+    }
+
+    private UserInfo userInfoDtoToEntity(UserDto dto) {
+        UserInfo userInfo = mapper.map(dto, UserInfo.class);
+        Map<ContactType, String> contacts = userInfo.getContacts();
+        contacts.put(contactTypeService.findByName("LinkedIn").get(0), dto.getLinkedIn());
+        contacts.put(contactTypeService.findByName("Twitter").get(0), dto.getTwitter());
+        contacts.put(contactTypeService.findByName("FaceBook").get(0), dto.getFacebook());
+        contacts.put(contactTypeService.findByName("Blog").get(0), dto.getBlog());
+        userInfo.setContacts(contacts);
+        return userInfo;
+    }
+
 }

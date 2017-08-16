@@ -35,7 +35,7 @@ import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
+import ua.rd.cm.services.exception.*;
 import ua.rd.cm.dto.UserDto;
 
 import javax.servlet.Filter;
@@ -44,6 +44,7 @@ import java.util.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -122,7 +123,10 @@ public class UserControllerTest extends TestUtil{
     @Test
     public void alreadyRegisteredEmailTest() throws Exception{
         correctRegistrationDto.setEmail(alreadyRegisteredEmail);
-        when(userService.isEmailExist(alreadyRegisteredEmail)).thenReturn(true);
+        correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        doThrow(new EmailAlreadyExistsException("email_already_exists")).
+                when(userService).checkUserRegistration(correctRegistrationDto);
         performRegistration(API_USER, HttpStatus.CONFLICT.value());
     }
 
@@ -144,6 +148,8 @@ public class UserControllerTest extends TestUtil{
     @WithMockUser(roles = ADMIN_ROLE)
     public void registrationNewAdminByAdmin() throws Exception{
         correctRegistrationDto.setRoleName(Role.ADMIN);
+        doThrow(new WrongRoleException("wrong_role_name")).
+                when(userService).checkUserRegistrationByAdmin(correctRegistrationDto);
         performRegistration(API_USER_CREATE, HttpStatus.FORBIDDEN.value());
     }
 
@@ -170,6 +176,10 @@ public class UserControllerTest extends TestUtil{
     @Test
     public void unconfirmedPasswordTest(){
         correctRegistrationDto.setConfirm("777777");
+        correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
+        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        doThrow(new EmptyPasswordException("email_already_exists")).
+                when(userService).checkUserRegistration(correctRegistrationDto);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
@@ -277,24 +287,12 @@ public class UserControllerTest extends TestUtil{
         User user = createUser(speaker, info);
         Principal correctPrincipal = () -> user.getEmail();
 
-        when(userService.getByEmail(user.getEmail())).thenReturn(user);
+        when(userService.getUserDtoByEmail(correctPrincipal.getName()))
+                .thenReturn(setupCorrectUserInfoDto());
 
         mockMvc.perform(get(API_USER_CURRENT)
                 .principal(correctPrincipal)
-        ).andExpect(status().isAccepted())
-                .andExpect(jsonPath("fname", is(user.getFirstName())))
-                .andExpect(jsonPath("lname", is(user.getLastName())))
-                .andExpect(jsonPath("mail", is(user.getEmail())))
-                .andExpect(jsonPath("bio", is(user.getUserInfo().getShortBio())))
-                .andExpect(jsonPath("job", is(user.getUserInfo().getJobTitle())))
-                .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
-                .andExpect(jsonPath("photo", is("api/user/current/photo/" + user.getId())))
-                .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
-                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "LinkedIn")))))
-                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
-                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
-                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
+        ).andExpect(status().isAccepted());
     }
 
     @Test
@@ -328,13 +326,6 @@ public class UserControllerTest extends TestUtil{
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
-//    @Ignore
-//    @Test
-//    public void tooShortBioTest(){
-//        correctUserDto.setUserInfoShortBio("");
-//        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-//    }
-
     @Test
     public void tooLongBioTest(){
         correctUserDto.setUserInfoShortBio(createStringWithLength(2001));
@@ -346,13 +337,6 @@ public class UserControllerTest extends TestUtil{
         correctUserDto.setUserInfoJobTitle(null);
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
-
-//    @Ignore
-//    @Test
-//    public void tooShortJobTest(){
-//        correctUserDto.setUserInfoJobTitle("");
-//        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-//    }
 
     @Test
     public void tooLongJobTest(){
@@ -366,12 +350,6 @@ public class UserControllerTest extends TestUtil{
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
-//    @Ignore
-//    @Test
-//    public void tooShortCompanyTest(){
-//        correctUserDto.setUserInfoCompany("");
-//        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-//    }
 
     @Test
     public void tooLongCompanyTest(){
@@ -397,20 +375,7 @@ public class UserControllerTest extends TestUtil{
         User user=createUser();
         when(userService.find(anyLong())).thenReturn(user);
         mockMvc.perform(prepareGetRequest(API_USER+"/"+1)
-        ).andExpect(status().isOk())
-                .andExpect(jsonPath("fname", is(user.getFirstName())))
-                .andExpect(jsonPath("lname", is(user.getLastName())))
-                .andExpect(jsonPath("mail", is(user.getEmail())))
-                .andExpect(jsonPath("bio", is(user.getUserInfo().getShortBio())))
-                .andExpect(jsonPath("job", is(user.getUserInfo().getJobTitle())))
-                .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
-                .andExpect(jsonPath("photo", is("api/user/current/photo/" + user.getId())))
-                .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
-                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "LinkedIn")))))
-                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
-                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
-                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
+        ).andExpect(status().isOk());
     }
 
     @Test
@@ -425,7 +390,7 @@ public class UserControllerTest extends TestUtil{
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void notFoundUserById() throws Exception{
 
-        when(userService.find(1L)).thenThrow(ResourceNotFoundException.class);
+        when(userService.getUserDtoById(1L)).thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
                 andExpect(status().isNotFound());
     }

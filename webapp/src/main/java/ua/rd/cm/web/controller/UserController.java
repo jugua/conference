@@ -21,6 +21,10 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.EmptyPasswordException;
+import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.WrongRoleException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,11 +36,8 @@ import java.util.*;
 @RequestMapping("/api/user")
 @Log4j
 public class UserController {
-    private final ModelMapper mapper;
     private final UserService userService;
     private final UserInfoService userInfoService;
-    private final ContactTypeService contactTypeService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public ResponseEntity register(@Valid @RequestBody RegistrationDto dto,
@@ -54,13 +55,15 @@ public class UserController {
                                           BindingResult bindingResult,
                                           HttpServletRequest request
     ) {
-        if (!Arrays.asList(Role.SPEAKER, Role.ORGANISER).contains(dto.getRoleName())) {
+        try {
+            userService.checkUserRegistrationByAdmin(dto);
+            dto.setUserStatus(User.UserStatus.CONFIRMED);
+            return processUserRegistration(dto, bindingResult, request);
+        } catch (WrongRoleException ex) {
             MessageDto message = new MessageDto();
-            message.setError("wrong_role_name");
+            message.setError(ex.getMessage());
             return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
         }
-        dto.setUserStatus(User.UserStatus.CONFIRMED);
-        return processUserRegistration(dto, bindingResult, request);
     }
 
     @GetMapping("/current")
@@ -68,17 +71,19 @@ public class UserController {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        User currentUser = userService.getByEmail(principal.getName());
-        if (currentUser == null) {
+
+        try{
+            UserDto userDto = userService.getUserDtoByEmail(principal.getName());
+            return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
+        } catch (NoSuchUserException ex) {
             log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(userToDto(currentUser), HttpStatus.ACCEPTED);
         }
     }
 
     @PostMapping(value = "/current")
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto, Principal principal, BindingResult bindingResult) {
+    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto,
+                                         Principal principal, BindingResult bindingResult) {
         HttpStatus status;
         if (bindingResult.hasFieldErrors()) {
             status = HttpStatus.BAD_REQUEST;
@@ -86,8 +91,8 @@ public class UserController {
             status = HttpStatus.UNAUTHORIZED;
         } else {
             String userEmail = principal.getName();
-            userInfoService.update(prepareNewUserInfo(userEmail, dto));
-            userService.updateUserProfile(prepareNewUser(userEmail, dto));
+            userInfoService.update(userService.prepareNewUserInfoForUpdate(userEmail, dto));
+            userService.updateUserProfile(userService.prepareNewUserForUpdate(userEmail, dto));
             status = HttpStatus.OK;
         }
         return new ResponseEntity(status);
@@ -101,9 +106,8 @@ public class UserController {
             message.setError("unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
-        User user = userService.find(userId);
 
-        UserDto userDto = userToDto(user);
+        UserDto userDto = userService.getUserDtoById(userId);
         // userDto.setContactTypeService(contactTypeService);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
@@ -117,8 +121,9 @@ public class UserController {
             message.setError("unauthorized");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
-        List<User> users = userService.getByRolesExceptCurrent(currentUser, Role.ORGANISER, Role.SPEAKER);
-        return new ResponseEntity<>(userToUserBasicDto(users), HttpStatus.OK);
+        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRoleExpectCurrent(
+                currentUser, Role.ORGANISER, Role.SPEAKER);
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
     private User getAuthorizedUser(HttpServletRequest request) {
@@ -133,86 +138,34 @@ public class UserController {
         return null;
     }
 
-    private UserBasicDto userToUserBasicDto(User user) {
-        UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
-        userBasicDto.setRoles(user.getRoleNames());
-        return userBasicDto;
-    }
-
-    private List<UserBasicDto> userToUserBasicDto(List<User> users) {
-        List<UserBasicDto> userDtoList = new ArrayList<>();
-        if (users != null) {
-            for (User user : users) {
-                userDtoList.add(userToUserBasicDto(user));
-            }
-        }
-        return userDtoList;
-    }
 
     private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
         MessageDto message = new MessageDto();
-        if (bindingResult.hasFieldErrors() || !isPasswordConfirmed(dto)) {
+
+        try{
+
+            if (bindingResult.hasFieldErrors()) {
+                status = HttpStatus.BAD_REQUEST;
+                message.setError("empty_fields");
+                log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            } else {
+                userService.checkUserRegistration(dto);
+                userService.registerNewUser(dto);
+                status = HttpStatus.ACCEPTED;
+                message.setResult("success");
+            }
+        } catch (EmptyPasswordException ex) {
             status = HttpStatus.BAD_REQUEST;
-            message.setError("empty_fields");
+            message.setError(ex.getMessage());
             log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
-        } else if (userService.isEmailExist(dto.getEmail().toLowerCase())) {
+        } catch (EmailAlreadyExistsException ex) {
             status = HttpStatus.CONFLICT;
-            message.setError("email_already_exists");
+            message.setError(ex.getMessage());
             log.error("Registration failed: " + dto.toString() +
                     ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
-        } else {
-            encodePassword(dto);
-            userService.registerNewUser(dto);
-            status = HttpStatus.ACCEPTED;
-            message.setResult("success");
         }
+
         return ResponseEntity.status(status).body(message);
-    }
-
-    private void encodePassword(RegistrationDto dto) {
-        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-    }
-
-    private boolean isPasswordConfirmed(RegistrationDto dto) {
-        return dto.getPassword().equals(dto.getConfirm());
-    }
-
-    private UserInfo prepareNewUserInfo(String email, UserDto dto) {
-        User currentUser = userService.getByEmail(email);
-        UserInfo currentUserInfo = userInfoDtoToEntity(dto);
-        currentUserInfo.setId(currentUser.getUserInfo().getId());
-        return currentUserInfo;
-    }
-
-    private User prepareNewUser(String email, UserDto dto) {
-        User currentUser = userService.getByEmail(email);
-        currentUser.setFirstName(dto.getFirstName());
-        currentUser.setLastName(dto.getLastName());
-        return currentUser;
-    }
-
-    private UserInfo userInfoDtoToEntity(UserDto dto) {
-        UserInfo userInfo = mapper.map(dto, UserInfo.class);
-        Map<ContactType, String> contacts = userInfo.getContacts();
-        contacts.put(contactTypeService.findByName("LinkedIn").get(0), dto.getLinkedIn());
-        contacts.put(contactTypeService.findByName("Twitter").get(0), dto.getTwitter());
-        contacts.put(contactTypeService.findByName("FaceBook").get(0), dto.getFacebook());
-        contacts.put(contactTypeService.findByName("Blog").get(0), dto.getBlog());
-        userInfo.setContacts(contacts);
-        return userInfo;
-    }
-
-    private UserDto userToDto(User user) {
-        UserDto dto = mapper.map(user, UserDto.class);
-        if (user.getPhoto() != null) {
-            dto.setPhoto("api/user/current/photo/" + user.getId());
-        }
-        dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
-        dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
-        dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
-        dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
-        dto.setRoles(user.getRoleNames());
-        return dto;
     }
 }

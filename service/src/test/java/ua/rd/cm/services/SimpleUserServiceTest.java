@@ -43,11 +43,14 @@ public class SimpleUserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private ContactTypeService contactTypeService;
+
     private UserService userService;
 
     @Before
     public void initialize() {
-        userService = new UserServiceImpl(userRepository, roleRepository, mailService, tokenService, mapper, passwordEncoder);
+        userService = new UserServiceImpl(userRepository, roleRepository, mailService, mapper, tokenService, passwordEncoder, contactTypeService);
     }
 
     @Test
