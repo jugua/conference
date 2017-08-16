@@ -42,24 +42,22 @@ public class SimpleUserInfoServiceTest {
     @Test
     public void testUpdateUserInfo() {
         userInfoService.update(userInfo);
-        verify(userInfoRepository).update(userInfo);
+        verify(userInfoRepository).save(userInfo);
     }
 
     @Test
     public void testFindByIdUserInfo() {
-        List<UserInfo> list = new ArrayList<UserInfo>(){{
-            UserInfo userInfo = new UserInfo();
-            userInfo.setId(1L);
-            userInfo.setShortBio("bio");
-            userInfo.setJobTitle("job");
-            userInfo.setPastConference("pastConf");
-            userInfo.setCompany("company");
-            userInfo.setAdditionalInfo("info");
-            add(userInfo);
-        }};
-        when(userInfoRepository.findBySpecification(new UserInfoById(anyLong()))).thenReturn(list);
-        UserInfo userInfo = userInfoService.find(1L);
-        assertEquals(userInfo.getId(), list.get(0).getId());
-        assertEquals(userInfo, list.get(0));
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(1L);
+        userInfo.setShortBio("bio");
+        userInfo.setJobTitle("job");
+        userInfo.setPastConference("pastConf");
+        userInfo.setCompany("company");
+        userInfo.setAdditionalInfo("info");
+
+        when(userInfoRepository.findById(anyLong())).thenReturn(userInfo);
+        UserInfo userInfoT = userInfoService.find(1L);
+        assertEquals(userInfoT.getId(), userInfo.getId());
+        assertEquals(userInfoT, userInfo);
     }
 }

@@ -30,15 +30,7 @@ import java.util.Properties;
 @Import(RepositoryConfig.class)
 @PropertySource({"classpath:mail.properties", "classpath:fileStorage.properties"})
 public class ServiceConfig {
-
-    @Bean
-    public PlatformTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
-
-        return jpaTransactionManager;
-    }
-
+    
     @Bean
     public JavaMailSender getMailSender(Environment environment) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

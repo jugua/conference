@@ -17,6 +17,7 @@ import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE
 @Service
 public class ContactTypeServiceImpl implements ContactTypeService {
 
+@Autowired
     private ContactTypeRepository contactTypeRepository;
 
     @Autowired
@@ -26,16 +27,16 @@ public class ContactTypeServiceImpl implements ContactTypeService {
 
     @Override
     public ContactType find(Long id) {
-        List<ContactType> contatcTypes = contactTypeRepository.findBySpecification(new ContactTypeById(id));
-        if (contatcTypes.isEmpty()) {
+        ContactType contatcType = contactTypeRepository. findById(id);
+        if (contatcType==null) {
             throw new ResourceNotFoundException(CONTACT_TYPE_NOT_FOUND);
         }
-        return contatcTypes.get(0);
+        return contatcType;
     }
 
     @Override
     public List<ContactType> findByName(String name) {
-        return contactTypeRepository.findBySpecification(new ContactTypeByName(name));
+        return contactTypeRepository.findByName(name);
     }
 
     @Override

@@ -6,7 +6,7 @@ import ua.rd.cm.repository.ContactTypeRepository;
 
 @Repository
 public class ContactTypeRepositoryImpl
-        extends AbstractJpaCrudRepository<ContactType> implements ContactTypeRepository {
+        extends AbstractJpaCrudRepository<ContactType>   {
 
     public ContactTypeRepositoryImpl() {
         super("c", ContactType.class);

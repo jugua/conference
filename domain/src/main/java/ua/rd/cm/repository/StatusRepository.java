@@ -1,5 +1,6 @@
 package ua.rd.cm.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.repository.specification.Specification;
 import java.util.List;

@@ -25,11 +25,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public UserInfo find(Long id) {
-        List<UserInfo> usersInfo = userInfoRepository.findBySpecification(new UserInfoById(id));
-        if (usersInfo.isEmpty()) {
+        UserInfo usersInfo = userInfoRepository.findById(id);
+        if (usersInfo==null) {
             throw new ResourceNotFoundException(USER_INFO_NOT_FOUND);
         }
-        return usersInfo.get(0);
+        return usersInfo;
     }
 
     @Override
@@ -41,6 +41,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     @Transactional
     public void update(UserInfo userInfo) {
-        userInfoRepository.update(userInfo);
+        userInfoRepository.save(userInfo);
     }
 }

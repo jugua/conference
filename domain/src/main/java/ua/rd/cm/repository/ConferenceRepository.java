@@ -1,11 +1,19 @@
 package ua.rd.cm.repository;
 
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import ua.rd.cm.domain.Conference;
-import ua.rd.cm.repository.specification.Specification;
+import java.time.LocalDate;
 
 import java.util.List;
 
-public interface ConferenceRepository extends CrudRepository<Conference> {
+@Repository
+public interface ConferenceRepository extends CrudRepository<Conference, Long> {
 
-    List<Conference> getAllWithTalks(Specification<Conference> spec);
+    List<Conference> findAllByEndDateIsLessThan(LocalDate localDateTime);
+
+    @Override
+    List<Conference> findAll();
+
+    Conference findById(Long id);
 }

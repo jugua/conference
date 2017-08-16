@@ -11,15 +11,10 @@ import org.modelmapper.ModelMapper;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
-import ua.rd.cm.repository.specification.language.LanguageByName;
-import ua.rd.cm.repository.specification.level.LevelByName;
 import ua.rd.cm.repository.specification.talk.TalkById;
-import ua.rd.cm.repository.specification.topic.TopicByName;
-import ua.rd.cm.repository.specification.type.TypeByName;
 import ua.rd.cm.services.exception.*;
 import ua.rd.cm.services.impl.TalkServiceImpl;
 import ua.rd.cm.services.preparator.ChangeTalkBySpeakerPreparator;
-import ua.rd.cm.services.preparator.SubmitNewTalkSpeakerPreparator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,6 +47,8 @@ public class TalkServiceImplTest {
     private UserRepository userRepository;
     @Mock
     private MailService mailService;
+    @Mock
+    private RoleRepository roleRepository;
 
     private TalkService talkService;
 
@@ -68,15 +65,12 @@ public class TalkServiceImplTest {
     private Type type;
     private Level level;
     private List<Language> languages = new ArrayList<>();
-    private List<Topic> topics = new ArrayList<>();
-    private List<Type> types = new ArrayList<>();
-    private List<Level> levels = new ArrayList<>();
     private List<Talk> talks = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
         modelMapper = new ModelMapper();
-        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, mailService);
+        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, mailService, roleRepository);
         userInfo = new UserInfo();
         userInfo.setId(1L);
         userInfo.setShortBio("bio");
@@ -115,9 +109,6 @@ public class TalkServiceImplTest {
         topic = new Topic("JVM Languages and new programming paradigms");
 
         languages.add(language);
-        levels.add(level);
-        types.add(type);
-        topics.add(topic);
 
         setupCorrectTalkDto();
 
@@ -129,10 +120,10 @@ public class TalkServiceImplTest {
 
     @Test
     public void testSuccessSaveAsDto() throws Exception {
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
-        when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
+        when(languageRepository.findByName("English")).thenReturn(language);
+        when(levelRepository.findByName("Beginner")).thenReturn(level);
+        when(topicRepository.findTopicByName(anyString())).thenReturn(topic);
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talk.setOrganiser(null);
         talkService.save(talkDto, speakerUser, null);
         verify(talkRepository, times(1)).save(talk);
@@ -141,79 +132,45 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testLanguageNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(LanguageNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
-    }
-
-    @Test
-    public void testLevelNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(LevelNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
-    }
-
-    @Test
-    public void testTopicNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(TopicNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
-        when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
-    }
-
-    @Test
-    public void testTypeNotFoundErrorWhenSave() throws Exception {
-        expectedException.expect(TypeNotFoundException.class);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
-        when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(new ArrayList<>());
-        talkService.save(talkDto, speakerUser, null);
-    }
-
-    @Test
     public void testAddFileSuccessful() throws Exception {
         String pathFile = "Path";
         talk.setPathToAttachedFile(pathFile);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.addFile(talkDto, pathFile);
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
     }
 
     @Test
     public void testAddFileSuccessfulNullArg() throws Exception {
         talk.setPathToAttachedFile(null);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.addFile(talkDto, null);
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
     }
 
     @Test
     public void testDeleteFile() throws Exception {
         talk.setPathToAttachedFile("Path");
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.deleteFile(talkDto, true);
         talk.setPathToAttachedFile(null);
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
     }
 
     @Test
     public void testGetFilePath() throws Exception {
         String pathFile = "Path";
         talk.setPathToAttachedFile(pathFile);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         assertEquals(talkService.getFilePath(talkDto), pathFile);
     }
 
     @Test
     public void testUpdateAsOrganiserSuccessful() throws Exception {
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
         verify(mailService, times(1)).notifyUsers(anyList(), any());
     }
 
@@ -225,7 +182,7 @@ public class TalkServiceImplTest {
         talkDto.setOrganiserComment(createStringWithLength(5000));
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
@@ -237,7 +194,7 @@ public class TalkServiceImplTest {
         talkDto.setStatusName(null);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
@@ -250,7 +207,7 @@ public class TalkServiceImplTest {
         talkDto.setOrganiserComment(null);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
@@ -259,48 +216,44 @@ public class TalkServiceImplTest {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("wrong_status");
         talk.setStatus(TalkStatus.REJECTED);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkDto.setStatusName(TalkStatus.NEW.getName());
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
     @Test
     public void testUpdateAsSpeakerWithNotifySuccessful() throws Exception {
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
-        when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
-
-
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
+        when(languageRepository.findByName("English")).thenReturn(language);
+        when(levelRepository.findByName("Beginner")).thenReturn(level);
+        when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
 
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
         verify(mailService, times(1)).sendEmail(eq(organiserUser), any(ChangeTalkBySpeakerPreparator.class));
     }
 
     @Test
     public void testUpdateAsSpeakerWithOutNotifySuccessful() throws Exception {
         talk.setOrganiser(null);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
-        when(languageRepository.findBySpecification(any(LanguageByName.class))).thenReturn(languages);
-        when(levelRepository.findBySpecification(any(LevelByName.class))).thenReturn(levels);
-        when(topicRepository.findBySpecification(any(TopicByName.class))).thenReturn(topics);
-        when(typeRepository.findBySpecification(any(TypeByName.class))).thenReturn(types);
-
-
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
+        when(languageRepository.findByName("English")).thenReturn(language);
+        when(levelRepository.findByName("Beginner")).thenReturn(level);
+        when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
+        when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
 
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
         verify(mailService, never()).sendEmail(eq(organiserUser), any(ChangeTalkBySpeakerPreparator.class));
     }
 
     @Test
     public void testFindById() throws Exception {
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
 
         TalkDto talkDtoResult = talkService.findById(1L);
         talkDto.setSpeakerFullName(talk.getUser().getFullName());
