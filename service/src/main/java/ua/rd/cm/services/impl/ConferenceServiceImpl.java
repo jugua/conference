@@ -69,7 +69,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional(readOnly = true)
     public List<Conference> findUpcoming() {
-        List<Conference> conferences = conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now());
+        List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
         fillCallForPaperDatesActive(conferences);
         return conferences;
     }

@@ -12,6 +12,8 @@ public interface ConferenceRepository extends CrudRepository<Conference, Long> {
 
     List<Conference> findAllByEndDateIsLessThan(LocalDate localDateTime);
 
+    List<Conference> findAllByStartDateIsGreaterThanEqual(LocalDate localDateTime);
+
     @Override
     List<Conference> findAll();
 
