@@ -135,42 +135,42 @@ public class TalkServiceImplTest {
     public void testAddFileSuccessful() throws Exception {
         String pathFile = "Path";
         talk.setPathToAttachedFile(pathFile);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.addFile(talkDto, pathFile);
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
     }
 
     @Test
     public void testAddFileSuccessfulNullArg() throws Exception {
         talk.setPathToAttachedFile(null);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.addFile(talkDto, null);
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
     }
 
     @Test
     public void testDeleteFile() throws Exception {
         talk.setPathToAttachedFile("Path");
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.deleteFile(talkDto, true);
         talk.setPathToAttachedFile(null);
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
     }
 
     @Test
     public void testGetFilePath() throws Exception {
         String pathFile = "Path";
         talk.setPathToAttachedFile(pathFile);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         assertEquals(talkService.getFilePath(talkDto), pathFile);
     }
 
     @Test
     public void testUpdateAsOrganiserSuccessful() throws Exception {
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
         verify(mailService, times(1)).notifyUsers(anyList(), any());
     }
 
@@ -182,7 +182,7 @@ public class TalkServiceImplTest {
         talkDto.setOrganiserComment(createStringWithLength(5000));
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
@@ -194,7 +194,7 @@ public class TalkServiceImplTest {
         talkDto.setStatusName(null);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
@@ -207,7 +207,7 @@ public class TalkServiceImplTest {
         talkDto.setOrganiserComment(null);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
@@ -216,44 +216,44 @@ public class TalkServiceImplTest {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("wrong_status");
         talk.setStatus(TalkStatus.REJECTED);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkDto.setStatusName(TalkStatus.NEW.getName());
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
-        verify(talkRepository, never()).update(talk);
+        verify(talkRepository, never()).save(talk);
         verify(mailService, never()).notifyUsers(anyList(), any());
     }
 
     @Test
     public void testUpdateAsSpeakerWithNotifySuccessful() throws Exception {
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         when(languageRepository.findByName("English")).thenReturn(language);
         when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
 
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
         verify(mailService, times(1)).sendEmail(eq(organiserUser), any(ChangeTalkBySpeakerPreparator.class));
     }
 
     @Test
     public void testUpdateAsSpeakerWithOutNotifySuccessful() throws Exception {
         talk.setOrganiser(null);
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
         when(languageRepository.findByName("English")).thenReturn(language);
         when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName("JVM Languages and new programming paradigms")).thenReturn(topic);
         when(typeRepository.findByName("Regular Talk")).thenReturn(type);
         talkService.updateAsSpeaker(talkDto, speakerUser);
 
-        verify(talkRepository, times(1)).update(talk);
+        verify(talkRepository, times(1)).save(talk);
         verify(mailService, never()).sendEmail(eq(organiserUser), any(ChangeTalkBySpeakerPreparator.class));
     }
 
     @Test
     public void testFindById() throws Exception {
-        when(talkRepository.findBySpecification(any(TalkById.class))).thenReturn(talks);
+        when(talkRepository.findById(anyLong())).thenReturn(talk);
 
         TalkDto talkDtoResult = talkService.findById(1L);
         talkDto.setSpeakerFullName(talk.getUser().getFullName());
