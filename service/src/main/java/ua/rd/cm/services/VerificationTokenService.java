@@ -7,12 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
-import ua.rd.cm.repository.specification.AndSpecification;
-import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByStatus;
-import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
-
-import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByType;
-import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByUserId;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -51,11 +45,10 @@ public class VerificationTokenService {
 
     @Transactional
     public void setPreviousTokensExpired(VerificationToken newToken) {
-        List<VerificationToken> tokens = tokenRepository.findBySpecification
-                (new AndSpecification<>(new AndSpecification<>(new
-                        VerificationTokenByUserId(newToken.getUser().getId())
-                        , new VerificationTokenByStatus(VerificationToken.TokenStatus.VALID))
-                        , new VerificationTokenByType(newToken.getType())));
+        List<VerificationToken> tokens = tokenRepository.
+                findByUserIdAndStatusAndType(   newToken.getUser().getId(),
+                                                VerificationToken.TokenStatus.VALID,
+                                                newToken.getType());
 
         if (!tokens.isEmpty()) {
             for (VerificationToken token : tokens) {
@@ -80,7 +73,7 @@ public class VerificationTokenService {
     }
 
     public VerificationToken getToken(String token) {
-        List<VerificationToken> tokens = tokenRepository.findBySpecification(new VerificationTokenByToken(token));
+        List<VerificationToken> tokens = tokenRepository.findByToken(token);
         return tokens.isEmpty() ? null : tokens.get(0);
     }
 
@@ -102,7 +95,7 @@ public class VerificationTokenService {
 
     @Transactional
     public void updateToken(VerificationToken token) {
-        tokenRepository.update(token);
+        tokenRepository.save(token);
     }
 
     private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
@@ -111,15 +104,10 @@ public class VerificationTokenService {
     }
 
     private VerificationToken loadFromDatabase(Long userId, VerificationToken.TokenType tokenType) {
-        List<VerificationToken> tokens = tokenRepository.findBySpecification(
-                new AndSpecification<>(
-                        new AndSpecification<>(
-                                new VerificationTokenByUserId(userId),
-                                new VerificationTokenByStatus(VerificationToken.TokenStatus.VALID)
-                        ),
-                        new VerificationTokenByType(tokenType)
-                )
-        );
+        List<VerificationToken> tokens = tokenRepository.
+                findByUserIdAndStatusAndType(   userId,
+                                                VerificationToken.TokenStatus.VALID,
+                                                tokenType);
         return tokens.isEmpty() ? null : tokens.get(0);
     }
 }
