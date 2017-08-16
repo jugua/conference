@@ -1,10 +1,5 @@
 package ua.rd.cm.services;
 
-import static org.junit.Assert.*;
-
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,28 +9,40 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
-import ua.rd.cm.repository.specification.verificationtoken.VerificationTokenByToken;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class VerificationTokenServiceTest {
 
+    private static User user;
     @Mock
     private VerificationTokenRepository tokenRepository;
-
     private VerificationTokenService tokenService;
     private VerificationToken verificationToken;
     private VerificationToken testedToken;
 
-    private static User user;
-
     @BeforeClass
     public static void init() {
         user = createUser();
+    }
+
+    private static User createUser() {
+        User result = new User();
+        result.setFirstName("FName");
+        result.setLastName("LName");
+        result.setEmail("test@gmail.com");
+        result.setPassword("password");
+        result.setPhoto("testUrl3");
+        result.setStatus(User.UserStatus.CONFIRMED);
+        return result;
     }
 
     @Before
@@ -77,7 +84,7 @@ public class VerificationTokenServiceTest {
         verificationToken.setExpiryDate(createExpiredDate(61));
         assertTrue(tokenService.isTokenExpired(verificationToken));
     }
-    
+
     @Test
     public void testExpiredTokenIsTokenExpired() {
         verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
@@ -131,17 +138,6 @@ public class VerificationTokenServiceTest {
 
     private VerificationToken createTokenUsingService() {
         return tokenService.createToken(user, VerificationToken.TokenType.FORGOT_PASS);
-    }
-
-    private static User createUser() {
-        User result = new User();
-        result.setFirstName("FName");
-        result.setLastName("LName");
-        result.setEmail("test@gmail.com");
-        result.setPassword("password");
-        result.setPhoto("testUrl3");
-        result.setStatus(User.UserStatus.CONFIRMED);
-        return result;
     }
 
     private LocalDateTime createExpiredDate(int decreasingTimeInMinutes) {

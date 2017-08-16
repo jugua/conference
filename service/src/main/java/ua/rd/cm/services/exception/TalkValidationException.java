@@ -16,7 +16,7 @@ public class TalkValidationException extends RuntimeException {
     public static final String STATUS_IS_NULL = "status_is_null";
     public static final String NOT_ALLOWED_TO_UPDATE = "forbidden";
 
-    private Map<String, HttpStatus> messageStatusMap = new HashMap<String, HttpStatus>(){{
+    private Map<String, HttpStatus> messageStatusMap = new HashMap<String, HttpStatus>() {{
         put(ADDITIONAL_COMMENT_TOO_LONG, HttpStatus.PAYLOAD_TOO_LARGE);
         put(ORG_COMMENT_TOO_LONG, HttpStatus.PAYLOAD_TOO_LARGE);
         put(ORG_COMMENT_IS_EMPTY, HttpStatus.BAD_REQUEST);
@@ -30,6 +30,6 @@ public class TalkValidationException extends RuntimeException {
     }
 
     public HttpStatus getHttpStatus() {
-        return messageStatusMap.get(getMessage()) != null ?  messageStatusMap.get(getMessage()) : HttpStatus.BAD_REQUEST;
+        return messageStatusMap.get(getMessage()) != null ? messageStatusMap.get(getMessage()) : HttpStatus.BAD_REQUEST;
     }
 }

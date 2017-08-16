@@ -30,7 +30,7 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic find(Long id) {
         Topic topic = topicRepository.findOne(id);
-        if (topic==null) {
+        if (topic == null) {
             throw new TopicNotFoundException();
         }
         return topic;

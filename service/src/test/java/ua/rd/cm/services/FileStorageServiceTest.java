@@ -1,6 +1,9 @@
 package ua.rd.cm.services;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -13,11 +16,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ua.rd.cm.services.exception.FileValidationException.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,11 +27,13 @@ public class FileStorageServiceTest {
     private static final String PARENTFOLDER = System.getProperty("java.io.tmpdir");
     private static final String FOLDER = PARENTFOLDER + (PARENTFOLDER.endsWith(File.separator) ? "" : File.separator) + "fs";
     private static FileStorageService fileStorageService;
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
     private MockMultipartFile mockedFile = mock(MockMultipartFile.class);
     private MockMultipartFile mockMultipartFile = new MockMultipartFile(
             "fileData.docx",
             "file.docx",
-            "application/pdf", new byte[] { 1, 2, 3 });
+            "application/pdf", new byte[]{1, 2, 3});
 
     @Before
     public void set() throws IOException {
@@ -47,9 +51,6 @@ public class FileStorageServiceTest {
     public void clean() throws IOException {
         recurrentDeleteIfExist(new File(FOLDER));
     }
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     //saveFile
 
@@ -167,7 +168,7 @@ public class FileStorageServiceTest {
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
         String filePath = fileStorageService.saveFile(mockedFile);
-         fileStorageService.deleteFile(filePath);
+        fileStorageService.deleteFile(filePath);
         assertEquals(false, new File(filePath).exists());
     }
 
@@ -201,7 +202,7 @@ public class FileStorageServiceTest {
     }
 
     @Test
-    public void testFileValidationSuccess(){
+    public void testFileValidationSuccess() {
         fileStorageService.checkFileValidation(mockMultipartFile);
     }
 

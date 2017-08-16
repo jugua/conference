@@ -1,10 +1,9 @@
 package ua.rd.cm.services.preparator;
 
 import lombok.AllArgsConstructor;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
-import javax.mail.internet.MimeMessage;
+
 import java.util.HashMap;
 
 @AllArgsConstructor
@@ -17,19 +16,19 @@ public class ChangeTalkStatusOrganiserPreparator extends CustomMimeMessagePrepar
     public String getTemplateName() {
         String template;
         switch (currentTalk.getStatus().getName()) {
-            case "In Progress" : {
+            case "In Progress": {
                 template = "talk_status_updated_to_in-progress_organizer.ftl";
                 break;
             }
-            case "Approved" : {
+            case "Approved": {
                 template = "talk_status_updated_to_approved_organizer.ftl";
                 break;
             }
-            case "Rejected" : {
+            case "Rejected": {
                 template = "talk_status_updated_to_rejected_organizer.ftl";
                 break;
             }
-            default : {
+            default: {
                 template = ""; //TODO template for wrong message or exception
                 break;
             }

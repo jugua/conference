@@ -5,11 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
-import ua.rd.cm.repository.specification.userinfo.UserInfoById;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
-
-import java.util.List;
 
 import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_INFO_NOT_FOUND;
 
@@ -26,7 +23,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserInfo find(Long id) {
         UserInfo usersInfo = userInfoRepository.findById(id);
-        if (usersInfo==null) {
+        if (usersInfo == null) {
             throw new ResourceNotFoundException(USER_INFO_NOT_FOUND);
         }
         return usersInfo;

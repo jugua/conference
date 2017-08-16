@@ -5,10 +5,8 @@ import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
@@ -19,7 +17,6 @@ import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
-import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
 
 @Configuration
@@ -30,7 +27,7 @@ import java.util.Properties;
 @Import(RepositoryConfig.class)
 @PropertySource({"classpath:mail.properties", "classpath:fileStorage.properties"})
 public class ServiceConfig {
-    
+
     @Bean
     public JavaMailSender getMailSender(Environment environment) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();

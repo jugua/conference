@@ -3,6 +3,7 @@ package ua.rd.cm.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,17 +13,17 @@ public class UserDto extends UserBasicDto {
 
     @NotNull
     @JsonProperty("bio")
-    @Size( max = 2000)
+    @Size(max = 2000)
     private String userInfoShortBio;
 
     @NotNull
     @JsonProperty("job")
-    @Size( max = 256)
+    @Size(max = 256)
     private String userInfoJobTitle;
 
     @NotNull
     @JsonProperty("company")
-    @Size( max = 256)
+    @Size(max = 256)
     private String userInfoCompany;
 
     @JsonProperty("past")

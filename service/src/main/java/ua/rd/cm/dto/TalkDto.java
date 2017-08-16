@@ -16,68 +16,68 @@ import javax.validation.constraints.Size;
 @ToString
 public class TalkDto {
 
-	@JsonProperty("id")
-	private Long id;
+    @JsonProperty("id")
+    private Long id;
 
-	@NotNull
-	@Size(min = 1, max = 250)
-	@JsonProperty("title")
-	private String title;
+    @NotNull
+    @Size(min = 1, max = 250)
+    @JsonProperty("title")
+    private String title;
 
-	@JsonProperty("speakerId")
-	private Long userId;
+    @JsonProperty("speakerId")
+    private Long userId;
 
-	@JsonProperty("conferenceId")
-	private Long conferenceId;
+    @JsonProperty("conferenceId")
+    private Long conferenceId;
 
-	@JsonProperty("conferenceName")
-	private String conferenceName;
+    @JsonProperty("conferenceName")
+    private String conferenceName;
 
-	@JsonProperty("name")
-	private String speakerFullName;
+    @JsonProperty("name")
+    private String speakerFullName;
 
-	@NotNull
-	@Size(min = 1, max = 3000)
-	@JsonProperty("description")
-	private String description;
+    @NotNull
+    @Size(min = 1, max = 3000)
+    @JsonProperty("description")
+    private String description;
 
-	@NotNull
-	@Size(min = 1, max = 255)
-	@JsonProperty("topic")
-	private String topicName;
+    @NotNull
+    @Size(min = 1, max = 255)
+    @JsonProperty("topic")
+    private String topicName;
 
-	@NotNull
-	@Size(min = 1, max = 255)
-	@JsonProperty("type")
-	private String typeName;
+    @NotNull
+    @Size(min = 1, max = 255)
+    @JsonProperty("type")
+    private String typeName;
 
-	@NotNull
-	@Size(min = 1, max = 255)
-	@JsonProperty("lang")
-	private String languageName;
+    @NotNull
+    @Size(min = 1, max = 255)
+    @JsonProperty("lang")
+    private String languageName;
 
-	@NotNull
-	@Size(min = 1, max = 255)
-	@JsonProperty("level")
-	private String levelName;
+    @NotNull
+    @Size(min = 1, max = 255)
+    @JsonProperty("level")
+    private String levelName;
 
-	@Size(max = 1500)
-	@JsonProperty("addon")
-	private String additionalInfo;
+    @Size(max = 1500)
+    @JsonProperty("addon")
+    private String additionalInfo;
 
-	@JsonProperty("status")
-	private String statusName;
+    @JsonProperty("status")
+    private String statusName;
 
-	@JsonProperty("date")
-	private String date;
+    @JsonProperty("date")
+    private String date;
 
-	@Size(max = 1000)
-	@JsonProperty("comment")
-	private String organiserComment;
+    @Size(max = 1000)
+    @JsonProperty("comment")
+    private String organiserComment;
 
-	@JsonProperty("assignee")
-	private String assignee;
+    @JsonProperty("assignee")
+    private String assignee;
 
-	@JsonProperty("file")
-	private MultipartFile multipartFile;
+    @JsonProperty("file")
+    private MultipartFile multipartFile;
 }

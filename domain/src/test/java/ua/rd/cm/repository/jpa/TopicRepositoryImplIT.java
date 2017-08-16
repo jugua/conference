@@ -29,7 +29,7 @@ public class TopicRepositoryImplIT {
 
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
-    public void testFindAllShouldReturntwo(){
+    public void testFindAllShouldReturntwo() {
         int expectedSize = 2;
         Collection<Topic> topics = (Collection<Topic>) topicRepository.findAll();
         assertEquals(topics.size(), expectedSize);
@@ -37,19 +37,19 @@ public class TopicRepositoryImplIT {
 
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
-    public void testFindTopicByWrongName(){
+    public void testFindTopicByWrongName() {
         assertNull(topicRepository.findTopicByName("wrong"));
     }
 
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
-    public void testFindTopicByCorrectName(){
+    public void testFindTopicByCorrectName() {
         assertNotNull(topicRepository.findTopicByName("RNN"));
     }
 
     @Test
     @DatabaseSetup("/ds/conference.xml")
-    public void testCreateTopic(){
+    public void testCreateTopic() {
         Topic newTopic = new Topic("name");
         topicRepository.save(newTopic);
         int expectedSize = 3;
@@ -59,7 +59,7 @@ public class TopicRepositoryImplIT {
 
     @Test
     @DatabaseSetup("/ds/insert-conference.xml")
-    public void testDeleteTopic(){
+    public void testDeleteTopic() {
         Topic newTopic = new Topic("name");
         Topic insertedTopic = topicRepository.save(newTopic);
         topicRepository.delete(insertedTopic);

@@ -11,8 +11,7 @@ import org.modelmapper.ModelMapper;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
-import ua.rd.cm.repository.specification.talk.TalkById;
-import ua.rd.cm.services.exception.*;
+import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.impl.TalkServiceImpl;
 import ua.rd.cm.services.preparator.ChangeTalkBySpeakerPreparator;
 
@@ -22,16 +21,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TalkServiceImplTest {
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
     @Mock
     private TalkRepository talkRepository;
-
     private ModelMapper modelMapper;
     @Mock
     private LevelRepository levelRepository;
@@ -49,17 +49,12 @@ public class TalkServiceImplTest {
     private MailService mailService;
     @Mock
     private RoleRepository roleRepository;
-
     private TalkService talkService;
-
     private TalkDto talkDto;
     private Talk talk;
-
     private User speakerUser;
     private User organiserUser;
-
     private UserInfo userInfo;
-
     private Language language;
     private Topic topic;
     private Type type;
@@ -114,9 +109,6 @@ public class TalkServiceImplTest {
 
         talks.add(talk);
     }
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void testSuccessSaveAsDto() throws Exception {

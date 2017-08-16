@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface TypeRepository extends CrudRepository<Type, Long> {
     Type findById(Long id);
+
     Type findByName(String name);
+
     List<Type> findAll();
 }

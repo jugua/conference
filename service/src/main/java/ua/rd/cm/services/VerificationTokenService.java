@@ -3,10 +3,10 @@ package ua.rd.cm.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -46,9 +46,9 @@ public class VerificationTokenService {
     @Transactional
     public void setPreviousTokensExpired(VerificationToken newToken) {
         List<VerificationToken> tokens = tokenRepository.
-                findByUserIdAndStatusAndType(   newToken.getUser().getId(),
-                                                VerificationToken.TokenStatus.VALID,
-                                                newToken.getType());
+                findByUserIdAndStatusAndType(newToken.getUser().getId(),
+                        VerificationToken.TokenStatus.VALID,
+                        newToken.getType());
 
         if (!tokens.isEmpty()) {
             for (VerificationToken token : tokens) {
@@ -59,8 +59,8 @@ public class VerificationTokenService {
     }
 
     public boolean isTokenValid(VerificationToken verificationToken, VerificationToken.TokenType currentType) {
-        return (verificationToken != null && verificationToken.getType().equals(currentType) 
-        		&& verificationToken.getStatus().equals(VerificationToken.TokenStatus.VALID));
+        return (verificationToken != null && verificationToken.getType().equals(currentType)
+                && verificationToken.getStatus().equals(VerificationToken.TokenStatus.VALID));
     }
 
     public boolean isTokenExpired(VerificationToken verificationToken) {
@@ -105,9 +105,9 @@ public class VerificationTokenService {
 
     private VerificationToken loadFromDatabase(Long userId, VerificationToken.TokenType tokenType) {
         List<VerificationToken> tokens = tokenRepository.
-                findByUserIdAndStatusAndType(   userId,
-                                                VerificationToken.TokenStatus.VALID,
-                                                tokenType);
+                findByUserIdAndStatusAndType(userId,
+                        VerificationToken.TokenStatus.VALID,
+                        tokenType);
         return tokens.isEmpty() ? null : tokens.get(0);
     }
 }

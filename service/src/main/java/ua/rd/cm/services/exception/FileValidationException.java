@@ -11,7 +11,7 @@ public class FileValidationException extends RuntimeException {
     public static final String DELETE = "delete";
     public static final String UNSUPPORTED_MEDIA_TYPE = "patter";
 
-    private Map<String, HttpStatus> messageStatusMap = new HashMap<String, HttpStatus>(){{
+    private Map<String, HttpStatus> messageStatusMap = new HashMap<String, HttpStatus>() {{
         put(EMPTY, HttpStatus.BAD_REQUEST);
         put(MAX_SIZE, HttpStatus.PAYLOAD_TOO_LARGE);
         put(DELETE, HttpStatus.BAD_REQUEST);
@@ -23,6 +23,6 @@ public class FileValidationException extends RuntimeException {
     }
 
     public HttpStatus getHttpStatus() {
-        return messageStatusMap.get(getMessage()) != null ?  messageStatusMap.get(getMessage()) : HttpStatus.BAD_REQUEST;
+        return messageStatusMap.get(getMessage()) != null ? messageStatusMap.get(getMessage()) : HttpStatus.BAD_REQUEST;
     }
 }

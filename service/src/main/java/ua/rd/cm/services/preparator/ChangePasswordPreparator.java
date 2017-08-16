@@ -1,9 +1,7 @@
 package ua.rd.cm.services.preparator;
 
-import org.springframework.mail.javamail.MimeMessageHelper;
 import ua.rd.cm.domain.User;
 
-import javax.mail.internet.MimeMessage;
 import java.util.HashMap;
 
 public class ChangePasswordPreparator extends CustomMimeMessagePreparator {
@@ -17,7 +15,7 @@ public class ChangePasswordPreparator extends CustomMimeMessagePreparator {
     public void prepareModel(User receiver) {
         model = new HashMap<>();
         model.put("name", receiver.getFirstName());
-        model.put("email",receiver.getEmail());
+        model.put("email", receiver.getEmail());
         model.put("subject", "Your password has been changed");
     }
 }

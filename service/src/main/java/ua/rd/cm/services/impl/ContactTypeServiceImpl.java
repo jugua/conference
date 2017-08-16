@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
-import ua.rd.cm.repository.specification.contacttype.ContactTypeById;
-import ua.rd.cm.repository.specification.contacttype.ContactTypeByName;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
@@ -17,7 +15,6 @@ import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE
 @Service
 public class ContactTypeServiceImpl implements ContactTypeService {
 
-@Autowired
     private ContactTypeRepository contactTypeRepository;
 
     @Autowired
@@ -27,11 +24,11 @@ public class ContactTypeServiceImpl implements ContactTypeService {
 
     @Override
     public ContactType find(Long id) {
-        ContactType contatcType = contactTypeRepository. findById(id);
-        if (contatcType==null) {
+        ContactType contactType = contactTypeRepository.findById(id);
+        if (contactType == null) {
             throw new ResourceNotFoundException(CONTACT_TYPE_NOT_FOUND);
         }
-        return contatcType;
+        return contactType;
     }
 
     @Override
@@ -48,7 +45,7 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     @Override
     @Transactional
     public void update(ContactType contactType) {
-        contactTypeRepository.update(contactType);
+        contactTypeRepository.save(contactType);
     }
 
     @Override

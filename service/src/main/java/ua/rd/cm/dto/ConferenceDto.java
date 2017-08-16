@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
  */
 //@Data
 @NoArgsConstructor
-public class ConferenceDto extends ConferenceDtoBasic{
+public class ConferenceDto extends ConferenceDtoBasic {
 
     @JsonProperty(value = "new", defaultValue = "0")
     private Integer newTalkCount = 0;

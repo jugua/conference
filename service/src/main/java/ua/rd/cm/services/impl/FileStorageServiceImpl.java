@@ -9,7 +9,10 @@ import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import javax.activation.MimetypesFileTypeMap;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -42,7 +45,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             throw new FileValidationException(DELETE);
         }
         File searchFile = new File(fileAbsolutePath);
-        if(!(searchFile.isFile() && searchFile.delete())){
+        if (!(searchFile.isFile() && searchFile.delete())) {
             throw new FileValidationException(DELETE);
         }
     }
@@ -137,8 +140,8 @@ public class FileStorageServiceImpl implements FileStorageService {
         getTypeIfSupported(file);
     }
 
-    private void ifFileIsEmpty(MultipartFile file){
-        if (file == null || file.isEmpty()){
+    private void ifFileIsEmpty(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
             throw new FileValidationException(EMPTY);
         }
     }
@@ -149,7 +152,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
         String mimeType = file.getContentType();
 
-        if(mimeType == null || !LIST_TYPE.contains(mimeType)){
+        if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
             throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
         }
 
@@ -160,7 +163,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     public String getTypeIfSupported(File file) {
         String mimeType = new MimetypesFileTypeMap().getContentType(file);
 
-        if(mimeType == null){
+        if (mimeType == null) {
             throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
         }
 
