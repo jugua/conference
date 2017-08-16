@@ -293,19 +293,6 @@ public class UserControllerTest extends TestUtil{
         mockMvc.perform(get(API_USER_CURRENT)
                 .principal(correctPrincipal)
         ).andExpect(status().isAccepted());
-//                .andExpect(jsonPath("fname", is(user.getFirstName())))
-//                .andExpect(jsonPath("lname", is(user.getLastName())))
-//                .andExpect(jsonPath("mail", is(user.getEmail())))
-//                .andExpect(jsonPath("bio", is(user.getUserInfo().getShortBio())))
-//                .andExpect(jsonPath("job", is(user.getUserInfo().getJobTitle())))
-//                .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
-//                .andExpect(jsonPath("photo", is("api/user/current/photo/" + user.getId())))
-//                .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
-//                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "LinkedIn")))))
-//                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
-//                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
-//                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-//                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
     }
 
     @Test
@@ -339,13 +326,6 @@ public class UserControllerTest extends TestUtil{
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
-//    @Ignore
-//    @Test
-//    public void tooShortBioTest(){
-//        correctUserDto.setUserInfoShortBio("");
-//        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-//    }
-
     @Test
     public void tooLongBioTest(){
         correctUserDto.setUserInfoShortBio(createStringWithLength(2001));
@@ -357,13 +337,6 @@ public class UserControllerTest extends TestUtil{
         correctUserDto.setUserInfoJobTitle(null);
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
-
-//    @Ignore
-//    @Test
-//    public void tooShortJobTest(){
-//        correctUserDto.setUserInfoJobTitle("");
-//        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-//    }
 
     @Test
     public void tooLongJobTest(){
@@ -377,12 +350,6 @@ public class UserControllerTest extends TestUtil{
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
-//    @Ignore
-//    @Test
-//    public void tooShortCompanyTest(){
-//        correctUserDto.setUserInfoCompany("");
-//        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-//    }
 
     @Test
     public void tooLongCompanyTest(){
@@ -409,19 +376,6 @@ public class UserControllerTest extends TestUtil{
         when(userService.find(anyLong())).thenReturn(user);
         mockMvc.perform(prepareGetRequest(API_USER+"/"+1)
         ).andExpect(status().isOk());
-//                .andExpect(jsonPath("fname", is(user.getFirstName())))
-//                .andExpect(jsonPath("lname", is(user.getLastName())))
-//                .andExpect(jsonPath("mail", is(user.getEmail())))
-//                .andExpect(jsonPath("bio", is(user.getUserInfo().getShortBio())))
-//                .andExpect(jsonPath("job", is(user.getUserInfo().getJobTitle())))
-//                .andExpect(jsonPath("past", is(user.getUserInfo().getPastConference())))
-//                .andExpect(jsonPath("photo", is("api/user/current/photo/" + user.getId())))
-//                .andExpect(jsonPath("info", is(user.getUserInfo().getAdditionalInfo())))
-//                .andExpect(jsonPath("linkedin", is(user.getUserInfo().getContacts().get(new ContactType(1L, "LinkedIn")))))
-//                .andExpect(jsonPath("twitter", is(user.getUserInfo().getContacts().get(new ContactType(2L, "Twitter")))))
-//                .andExpect(jsonPath("facebook", is(user.getUserInfo().getContacts().get(new ContactType(3L, "FaceBook")))))
-//                .andExpect(jsonPath("blog", is(user.getUserInfo().getContacts().get(new ContactType(4L, "Blog")))))
-//                .andExpect(jsonPath("roles[0]", is("ROLE_SPEAKER")));
     }
 
     @Test
