@@ -1,11 +1,14 @@
 package ua.rd.cm.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.services.*;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 @Configuration
 public class WebTestConfig {
