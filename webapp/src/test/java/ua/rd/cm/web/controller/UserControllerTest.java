@@ -178,7 +178,7 @@ public class UserControllerTest extends TestUtil{
         correctRegistrationDto.setConfirm("777777");
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
         correctRegistrationDto.setRoleName(Role.SPEAKER);
-        doThrow(new EmptyPasswordException("email_already_exists")).
+        doThrow(new PasswordMismatchException("email_already_exists")).
                 when(userService).checkUserRegistration(correctRegistrationDto);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }

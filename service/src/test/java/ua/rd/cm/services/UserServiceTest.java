@@ -10,8 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
+import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.impl.UserServiceImpl;
 
 import java.util.ArrayList;
@@ -23,7 +28,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleUserServiceTest {
+public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -194,7 +199,43 @@ public class SimpleUserServiceTest {
         verify(userRepository, times(1)).findByEmail(anyString());
     }
 
-    public User createDefaultUser() {
+    @Test(expected = PasswordMismatchException.class)
+    public void testCheckUserRegistrationWithDifferentPasswords() {
+        RegistrationDto testDto = setupCorrectRegistrationDto();
+        testDto.setPassword("12345");
+        testDto.setConfirm("123456");
+        userService.checkUserRegistration(testDto);
+    }
+
+    @Test(expected = EmailAlreadyExistsException.class)
+    public void testCheckUserRegistrationWithExistingEmail() {
+        RegistrationDto testDto = setupCorrectRegistrationDto();
+        User testUser = createDefaultUser();
+        testUser.setEmail(testDto.getEmail());
+
+        when(userRepository.findByEmail(testDto.getEmail())).thenReturn(testUser);
+        userService.checkUserRegistration(testDto);
+    }
+
+    @Test(expected = WrongRoleException.class)
+    public void testCheckUserRegistrationByAdmin() {
+        RegistrationDto testDto = setupCorrectRegistrationDto();
+        testDto.setRoleName(Role.ADMIN);
+
+        userService.checkUserRegistrationByAdmin(testDto);
+    }
+
+    @Test(expected = NoSuchUserException.class)
+    public void testGetUserDtoByEmail() {
+        String testEmail = "123@mail";
+        when(userRepository.findByEmail(testEmail)).thenReturn(null);
+
+        userService.getUserDtoByEmail(testEmail);
+    }
+
+
+
+    private User createDefaultUser() {
         User result = new User();
         result.setId(30L);
         result.setFirstName("test");
@@ -205,5 +246,15 @@ public class SimpleUserServiceTest {
         result.setStatus(User.UserStatus.CONFIRMED);
         result.setUserInfo(new UserInfo());
         return result;
+    }
+
+    private RegistrationDto setupCorrectRegistrationDto(){
+        RegistrationDto registrationDto = new RegistrationDto();
+        registrationDto.setPassword("123456");
+        registrationDto.setLastName("Ivanova");
+        registrationDto.setFirstName("Olya");
+        registrationDto.setConfirm("123456");
+        registrationDto.setEmail("ivanova@gmail.com");
+        return  registrationDto;
     }
 }
