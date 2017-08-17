@@ -13,7 +13,10 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.EmptyPasswordException;
+import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.impl.UserServiceImpl;
 
 import java.util.ArrayList;
@@ -203,6 +206,34 @@ public class UserServiceTest {
         testDto.setConfirm("123456");
         userService.checkUserRegistration(testDto);
     }
+
+    @Test(expected = EmailAlreadyExistsException.class)
+    public void testCheckUserRegistrationWithExistingEmail() {
+        RegistrationDto testDto = setupCorrectRegistrationDto();
+        User testUser = createDefaultUser();
+        testUser.setEmail(testDto.getEmail());
+
+        when(userRepository.findByEmail(testDto.getEmail())).thenReturn(testUser);
+        userService.checkUserRegistration(testDto);
+    }
+
+    @Test(expected = WrongRoleException.class)
+    public void testCheckUserRegistrationByAdmin() {
+        RegistrationDto testDto = setupCorrectRegistrationDto();
+        testDto.setRoleName(Role.ADMIN);
+
+        userService.checkUserRegistrationByAdmin(testDto);
+    }
+
+    @Test(expected = NoSuchUserException.class)
+    public void testGetUserDtoByEmail() {
+        String testEmail = "123@mail";
+        when(userRepository.findByEmail(testEmail)).thenReturn(null);
+
+        userService.getUserDtoByEmail(testEmail);
+    }
+
+
 
     private User createDefaultUser() {
         User result = new User();
