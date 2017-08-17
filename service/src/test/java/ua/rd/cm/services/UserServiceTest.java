@@ -14,7 +14,7 @@ import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.EmptyPasswordException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.impl.UserServiceImpl;
@@ -199,7 +199,7 @@ public class UserServiceTest {
         verify(userRepository, times(1)).findByEmail(anyString());
     }
 
-    @Test(expected = EmptyPasswordException.class)
+    @Test(expected = PasswordMismatchException.class)
     public void testCheckUserRegistrationWithDifferentPasswords() {
         RegistrationDto testDto = setupCorrectRegistrationDto();
         testDto.setPassword("12345");

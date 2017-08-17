@@ -16,7 +16,7 @@ import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.EmptyPasswordException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void checkUserRegistration(RegistrationDto dto) {
         if (!isPasswordConfirmed(dto)) {
-            throw new EmptyPasswordException("empty_fields");
+            throw new PasswordMismatchException("empty_fields");
         } else if (isEmailExist(dto.getEmail().toLowerCase())) {
             throw new EmailAlreadyExistsException("email_already_exists");
         } else {
