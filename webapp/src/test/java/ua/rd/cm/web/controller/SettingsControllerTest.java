@@ -20,18 +20,21 @@ import ua.rd.cm.dto.SettingsDto;
 
 import java.security.Principal;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
-public class ChangePasswordControllerTest {
+public class SettingsControllerTest {
     public static final String API_USER_CURRENT_PASSWORD = "/api/user/current/password";
+    public static final String API_USER_CURRENT_EMAIL = "/api/user/current/email";
     private MockMvc mockMvc;
     private SettingsDto settingsDto;
 
@@ -40,6 +43,7 @@ public class ChangePasswordControllerTest {
 
     @Autowired
     private UserService userService;
+
 
     private User user;
     private Principal principal;
@@ -129,6 +133,46 @@ public class ChangePasswordControllerTest {
         settingsDto.setConfirmedNewPassword(createStringWithLength(31));
         checkForBadRequest(principal);
     }
+
+
+    @Test
+    public void badEmailTest() throws Exception {
+        mockMvc.perform(post(API_USER_CURRENT_EMAIL)
+                .content("{\"mail\":\"badEmail.com\"}")
+                .principal(principal)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+
+        ).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void goodEmailTest() throws Exception {
+        mockMvc.perform(post(API_USER_CURRENT_EMAIL)
+                .content("{\"mail\":\"test@test.com\"}")
+                .principal(principal)
+
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    public void repeatableEmailTest() throws Exception {
+        when(userService.getByEmail("test@test.com")).thenReturn(user);
+        mockMvc.perform(post(API_USER_CURRENT_EMAIL)
+                .content("{\"mail\":\"test@test.com\"}")
+                .principal(principal)
+
+        ).andExpect(status().isConflict())
+                .andExpect(jsonPath("error", is("email_already_exists")));
+    }
+
+
+    @Test
+    public void emailVerificationStateTest() throws Exception {
+        mockMvc.perform(get(API_USER_CURRENT_EMAIL)
+                .principal(principal)
+        ).andExpect(status().isOk());
+    }
+
 
     private byte[] convertObjectToJsonBytes(Object object) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
