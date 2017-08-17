@@ -10,8 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
+import ua.rd.cm.services.exception.EmptyPasswordException;
 import ua.rd.cm.services.impl.UserServiceImpl;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SimpleUserServiceTest {
+public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
@@ -194,7 +196,15 @@ public class SimpleUserServiceTest {
         verify(userRepository, times(1)).findByEmail(anyString());
     }
 
-    public User createDefaultUser() {
+    @Test(expected = EmptyPasswordException.class)
+    public void testCheckUserRegistrationWithDifferentPasswords() {
+        RegistrationDto testDto = setupCorrectRegistrationDto();
+        testDto.setPassword("12345");
+        testDto.setConfirm("123456");
+        userService.checkUserRegistration(testDto);
+    }
+
+    private User createDefaultUser() {
         User result = new User();
         result.setId(30L);
         result.setFirstName("test");
@@ -205,5 +215,15 @@ public class SimpleUserServiceTest {
         result.setStatus(User.UserStatus.CONFIRMED);
         result.setUserInfo(new UserInfo());
         return result;
+    }
+
+    private RegistrationDto setupCorrectRegistrationDto(){
+        RegistrationDto registrationDto = new RegistrationDto();
+        registrationDto.setPassword("123456");
+        registrationDto.setLastName("Ivanova");
+        registrationDto.setFirstName("Olya");
+        registrationDto.setConfirm("123456");
+        registrationDto.setEmail("ivanova@gmail.com");
+        return  registrationDto;
     }
 }
