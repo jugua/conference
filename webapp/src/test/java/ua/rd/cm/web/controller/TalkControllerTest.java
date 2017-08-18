@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,18 +25,26 @@ import org.springframework.web.context.WebApplicationContext;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.*;
+import ua.rd.cm.domain.Role;
+import ua.rd.cm.domain.Talk;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
-import ua.rd.cm.services.exception.TalkNotFoundException;
-import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 
 import javax.servlet.Filter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,8 +58,13 @@ import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ua.rd.cm.services.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
+import static ua.rd.cm.services.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
@@ -73,6 +87,8 @@ public class TalkControllerTest extends TestUtil {
     private UserInfoService userInfoService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private FileStorageService fileStorageService;
 
     private MockMvc mockMvc;
 
@@ -80,13 +96,15 @@ public class TalkControllerTest extends TestUtil {
     private User organiserUser;
     private UserInfo userInfo;
     private TalkDto correctTalkDto;
+    private MockMultipartFile multipartFile;
 
     MockHttpServletRequestBuilder requestBuilder;
 
     @Before
     public void setUp() {
         correctTalkDto = setupCorrectTalkDto();
-        requestBuilder = MockMvcRequestBuilders.fileUpload(API_TALK).
+        multipartFile = createMultipartFile();
+        requestBuilder = fileUpload(API_TALK).
                 param("title", "title name").
                 param("description", "desc").
                 param("topic", "topic").
@@ -159,6 +177,39 @@ public class TalkControllerTest extends TestUtil {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))));
 
+    }
+
+    /**
+     * Test submitTalk() for successful result
+     *
+     * @throws Exception
+     */
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void testSuccessfulSubmitTalkAsSpeakerWithFile() throws Exception {
+        MockMultipartFile file = createMultipartFile();
+        TalkDto talkDto = new TalkDto(null, "title name", null, null, null, null,
+                "desc", "topic", "type", "English", "Beginner", null,
+                null, null, null, null, file);
+        Talk talk = new Talk();
+        talk.setId(1L);
+
+        requestBuilder = fileUpload(API_TALK).
+                file(file).
+                param("title", "title name").
+                param("description", "desc").
+                param("topic", "topic").
+                param("type", "type").
+                param("lang", "English").
+                param("level", "Beginner");
+
+        when(fileStorageService.saveFile(file)).thenReturn("path to file");
+        when(talkService.save(talkDto, speakerUser, "path to file")).thenReturn(talk);
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))));
+        verify(fileStorageService, times(1)).checkFileValidation(file);
     }
 
 
@@ -382,15 +433,112 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
-    public void handleTalkNotFoundCorrectStatus() throws Exception {
-        ResponseEntity<MessageDto> response = talkController.handleResourceNotFound(new TalkNotFoundException());
-        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void testTakeFile() throws Exception {
+        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+
+        String filePath = "file path";
+        when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
+
+        File file = new File("src/test/resources/trybel_master.JPG");
+        when(fileStorageService.getFile(filePath)).thenReturn(file);
+
+        String mimeType = MediaType.IMAGE_PNG_VALUE;
+        when(fileStorageService.getTypeIfSupported(file)).thenReturn(mimeType);
+
+        mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
+                .andExpect(status().isOk());
+
     }
 
     @Test
-    public void handleTalkNotFoundCorrectMessage() throws Exception {
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void testTakeFileWithIOException() throws Exception {
+        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+
+        String filePath = "file path";
+        when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
+
+        File file = new File("wrong path");
+        when(fileStorageService.getFile(filePath)).thenReturn(file);
+
+        String mimeType = MediaType.IMAGE_PNG_VALUE;
+        when(fileStorageService.getTypeIfSupported(file)).thenReturn(mimeType);
+
+        mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void testFileUpload() throws Exception {
+        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+
+        String filePath = "file path";
+        when(fileStorageService.saveFile(multipartFile)).thenReturn(filePath);
+
+        mockMvc.perform(fileUpload(API_TALK + "/1/file")
+                .file(multipartFile))
+                .andExpect(status().isOk());
+
+        verify(talkService, times(1)).addFile(correctTalkDto, filePath);
+    }
+
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void testFileDelete() throws Exception {
+        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+
+        String filePath = "file path";
+        when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
+
+        mockMvc.perform(delete(API_TALK+"/1/file"))
+                .andExpect(status().isOk());
+
+        verify(fileStorageService, times(1)).deleteFile(filePath);
+        verify(talkService, times(1)).deleteFile(correctTalkDto, true);
+    }
+
+    @Test
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    public void testFindFileName() throws Exception {
+        Talk talk = new Talk();
+        String filePath = "file path";
+
+        talk.setPathToAttachedFile(filePath);
+        when(talkService.findTalkById(1L)).thenReturn(talk);
+
+        File file = new File("wrong path");
+        when(fileStorageService.getFile(filePath)).thenReturn(file);
+
+        mockMvc.perform(get(API_TALK+"/1/filename"))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void handleTalkNotFoundCorrectStatusAndMessage() throws Exception {
         ResponseEntity<MessageDto> response = talkController.handleResourceNotFound(new TalkNotFoundException());
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(response.getBody().getError(), is(ResourceNotFoundException.TALK_NOT_FOUND));
+
+    }
+
+    @Test
+    public void handleTalkValidExceptionCorrectStatusAndMessage() throws Exception {
+        ResponseEntity<MessageDto> response = talkController.handleTalkValidationException(new TalkValidationException(NOT_ALLOWED_TO_UPDATE));
+        assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
+        assertThat(response.getBody().getError(), is(NOT_ALLOWED_TO_UPDATE));
+
+    }
+
+    @Test
+    public void handleFileValidExceptionCorrectStatusAndMessage() throws Exception {
+        ResponseEntity<MessageDto> response = talkController.handleFileValidationException(new FileValidationException(UNSUPPORTED_MEDIA_TYPE));
+        assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
+        assertThat(response.getBody().getError(), is(UNSUPPORTED_MEDIA_TYPE));
+
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
@@ -422,6 +570,18 @@ public class TalkControllerTest extends TestUtil {
         return correctTalkDto;
     }
 
+    private MockMultipartFile createMultipartFile() {
+        try {
+            File file = new File("src/test/resources/trybel_master.JPG");
+            FileInputStream fileInputStream = new FileInputStream(file);
+            return new MockMultipartFile("file", fileInputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private byte[] convertObjectToJsonBytes(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

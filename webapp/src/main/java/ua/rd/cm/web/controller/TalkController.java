@@ -197,7 +197,7 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/api/talk/{talk_id}/file")
+    @DeleteMapping("/{talk_id}/file")
     public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
