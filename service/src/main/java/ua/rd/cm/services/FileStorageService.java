@@ -5,6 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.*;
+
 public interface FileStorageService {
 
     String saveFile(MultipartFile file) throws IOException;
@@ -13,11 +15,9 @@ public interface FileStorageService {
 
     File getFile(String fileAbsolutePath);
 
-    String getTypeIfSupported(File file);
+    String getFileTypeIfSupported(File file);
 
-    String getTypeIfSupported(MultipartFile file);
+    void checkFileValidation(MultipartFile file, FileType fileType);
 
-    boolean isFileSizeGreaterThanMaxSize(MultipartFile multipartFile);
-
-    void checkFileValidation(MultipartFile file);
+    String getPhotoTypeIfSupported(File file);
 }
