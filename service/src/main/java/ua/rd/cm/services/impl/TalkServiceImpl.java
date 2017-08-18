@@ -68,7 +68,7 @@ public class TalkServiceImpl implements TalkService {
         }
 
         talk.setUser(user);
-        if (multipartFilePath != null) {
+        if (multipartFilePath != null && !multipartFilePath.equals("")) {
             talk.setPathToAttachedFile(multipartFilePath);
         }
         talk.setLanguage(languageRepository.findByName(talkDto.getLanguageName()));
