@@ -14,12 +14,16 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
+
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 @RestController
 @RequestMapping("/api/user/current/photo")
@@ -28,29 +32,25 @@ public class MyInfoController {
     private UserService userService;
     private FileStorageService fileStorageService;
 
-    private static final long MAX_SIZE = 2097152;
-    private static final List<String> SUPPORTED_TYPES = Arrays.asList(
-            MediaType.IMAGE_GIF_VALUE,
-            MediaType.IMAGE_JPEG_VALUE,
-            MediaType.IMAGE_PNG_VALUE
-    );
-
     @Autowired
     public MyInfoController(UserService userService, FileStorageService fileStorageService) {
         this.userService = userService;
         this.fileStorageService = fileStorageService;
     }
 
+    @ExceptionHandler(FileValidationException.class)
+    public ResponseEntity<MessageDto> handleFileValidationException(FileValidationException ex) {
+        MessageDto message = new MessageDto();
+        message.setError(ex.getMessage());
+        return new ResponseEntity<>(message, ex.getHttpStatus());
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable("id") Long userId) {
         User user = userService.find(userId);
-
         File file = fileStorageService.getFile(user.getPhoto());
 
-        String mimeType = getTypeIfSupported(file);
-        if (mimeType == null) {
-            return new ResponseEntity(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-        }
+        String mimeType = fileStorageService.getPhotoTypeIfSupported(file);
 
         try {
             InputStream inputStream = new FileInputStream(file);
@@ -69,35 +69,31 @@ public class MyInfoController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity upload(MultipartFile file, HttpServletRequest request) {
+    public ResponseEntity upload(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-        if (file == null || file.isEmpty()) {
-            return createError(HttpStatus.BAD_REQUEST, "save");
-        }
-        if (file.getSize() > MAX_SIZE) {
-            return createError(HttpStatus.PAYLOAD_TOO_LARGE, "maxSize");
-        }
-        if (getTypeIfSupported(file) == null) {
-            return createError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "pattern");
-
-        }
+        fileStorageService.checkFileValidation(file, PHOTO);
 
         String previousPhotoPath = currentUser.getPhoto();
         String newPhotoPath = "";
         try {
             newPhotoPath = fileStorageService.saveFile(file);
             if (!"".equals(newPhotoPath)) {
-                fileStorageService.deleteFile(previousPhotoPath);
+                if(previousPhotoPath != null) {
+                    fileStorageService.deleteFile(previousPhotoPath);
+                }
                 currentUser.setPhoto(newPhotoPath);
                 userService.updateUserProfile(currentUser);
-                return createResult(HttpStatus.OK, "api/user/current/photo/" + currentUser.getId());
+
+                MessageDto messageDto = new MessageDto();
+                messageDto.setResult("api/user/current/photo/" + currentUser.getId());
+                return ResponseEntity.status(HttpStatus.OK).body(messageDto);
             }
         } catch (IOException e) {
             log.info(e);
         }
 
-        return new ResponseEntity(HttpStatus.FORBIDDEN);
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
 
     }
 
@@ -121,54 +117,5 @@ public class MyInfoController {
 
     public void showForm(){
 
-    }
-
-    private ResponseEntity createError(HttpStatus status, String message) {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setError(message);
-        return ResponseEntity.status(status).body(messageDto);
-    }
-
-    private ResponseEntity createResult(HttpStatus status, String message) {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setResult(message);
-        return ResponseEntity.status(status).body(messageDto);
-    }
-
-    private String getTypeIfSupported(File file) {
-        try {
-            return getTypeIfSupported(new FileInputStream(file));
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
-    }
-
-    private String getTypeIfSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("^.+\\.(?i)(jp(e)?g|gif|png)$")) {
-            return null;
-        }
-
-        try {
-            return getTypeIfSupported(file.getInputStream());
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
-    }
-
-    private String getTypeIfSupported(InputStream stream) {
-        try (InputStream inputStream =
-                     new BufferedInputStream(stream)) {
-            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
-            if (mimeType == null || !SUPPORTED_TYPES.contains(mimeType)) {
-                return null;
-            }
-
-            return mimeType;
-        } catch (IOException e) {
-            log.debug(e);
-            return null;
-        }
     }
 }
