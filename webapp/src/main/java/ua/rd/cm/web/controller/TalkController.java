@@ -1,6 +1,5 @@
 package ua.rd.cm.web.controller;
 
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -16,11 +15,11 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.services.*;
 import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
-import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -31,6 +30,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.FILE;
 
 @Log4j
 @RestController
@@ -92,7 +93,7 @@ public class TalkController {
         }
 
         if (dto.getMultipartFile() != null) {
-            storageService.checkFileValidation(dto.getMultipartFile());
+            storageService.checkFileValidation(dto.getMultipartFile(), FILE);
         }
 
         String multipartFile = dto.getMultipartFile() != null ? saveNewAttachedFile(dto.getMultipartFile()) : null;
@@ -168,7 +169,7 @@ public class TalkController {
 
         File file = storageService.getFile(filePath);
 
-        String mimeType = storageService.getTypeIfSupported(file);
+        String mimeType = storageService.getFileTypeIfSupported(file);
 
         try {
             InputStreamResource inputStreamResource = new InputStreamResource(new FileInputStream(file));
