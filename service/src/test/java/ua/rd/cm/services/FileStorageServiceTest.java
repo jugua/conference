@@ -203,7 +203,7 @@ public class FileStorageServiceTest {
 
     @Test
     public void testFileValidationSuccess() {
-        fileStorageService.checkFileValidation(mockMultipartFile);
+        fileStorageService.checkFileValidation(mockMultipartFile, FileStorageServiceImpl.FileType.FILE);
     }
 
     @Test

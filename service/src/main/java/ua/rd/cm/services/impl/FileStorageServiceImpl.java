@@ -3,16 +3,15 @@ package ua.rd.cm.services.impl;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 import javax.activation.MimetypesFileTypeMap;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -24,10 +23,16 @@ import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOU
 public class FileStorageServiceImpl implements FileStorageService {
     private static final int MAX_FILE_VERSION_TO_CREATE = 100;
     private static final int MAX_LENGTH_OF_VERSION_SUBSTR = 3;
-    private static final long MAX_SIZE = 314_572_800;
+    private static final long MAX_SIZE_FILE = 314_572_800;
+    private static final long MAX_SIZE_PHOTO = 2097152;
 
+    private static final List<String> SUPPORTED_PHOTO_TYPES = Arrays.asList(
+            MediaType.IMAGE_GIF_VALUE,
+            MediaType.IMAGE_JPEG_VALUE,
+            MediaType.IMAGE_PNG_VALUE
+    );
 
-    private static final List<String> LIST_TYPE = Arrays.asList(
+    private static final List<String> SUPPORTED_ATTACHED_FILE_TYPES = Arrays.asList(
             "application/pdf",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation",
@@ -134,10 +139,18 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public void checkFileValidation(MultipartFile file) {
+    public void checkFileValidation(MultipartFile file, FileType fileType) {
         ifFileIsEmpty(file);
-        isFileSizeGreaterThanMaxSize(file);
-        getTypeIfSupported(file);
+        isFileSizeGreaterThanMaxSize(file, fileType);
+        isTypeSupported(file, fileType);
+    }
+
+    private void isTypeSupported(MultipartFile file, FileType fileType) {
+        if(fileType == FileType.FILE){
+            isAttachedFileTypeSupported(file);
+        }else {
+            isAttachedPhotoTypeSupported(file);
+        }
     }
 
     private void ifFileIsEmpty(MultipartFile file) {
@@ -146,21 +159,19 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
-    public String getTypeIfSupported(MultipartFile file) {
+    private void isAttachedFileTypeSupported(MultipartFile file) {
         if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
             throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
         }
         String mimeType = file.getContentType();
 
-        if (mimeType == null || !LIST_TYPE.contains(mimeType)) {
+        if (mimeType == null || !SUPPORTED_ATTACHED_FILE_TYPES.contains(mimeType)) {
             throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
         }
-
-        return mimeType;
     }
 
     @Override
-    public String getTypeIfSupported(File file) {
+    public String getFileTypeIfSupported(File file) {
         String mimeType = new MimetypesFileTypeMap().getContentType(file);
 
         if (mimeType == null) {
@@ -171,7 +182,50 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     }
 
-    public boolean isFileSizeGreaterThanMaxSize(MultipartFile multipartFile) {
-        return multipartFile.getSize() > MAX_SIZE;
+    @Override
+    public String getPhotoTypeIfSupported(File file) {
+        try {
+            return isAttachedPhotoTypeSupported(new FileInputStream(file));
+        } catch (IOException e) {
+            log.debug(e);
+            return null;
+        }
+    }
+
+    private void isFileSizeGreaterThanMaxSize(MultipartFile multipartFile, FileType fileType) {
+        long max_size = fileType == FileType.FILE ? MAX_SIZE_FILE : fileType == FileType.PHOTO ? MAX_SIZE_PHOTO : 0L;
+        if(multipartFile.getSize() > max_size){
+            throw new FileValidationException(MAX_SIZE);
+        }
+    }
+
+    private void isAttachedPhotoTypeSupported(MultipartFile file){
+        if (!file.getOriginalFilename().matches("^.+\\.(?i)(jp(e)?g|gif|png)$")) {
+            throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
+        }
+        try {
+            isAttachedPhotoTypeSupported(file.getInputStream());
+        } catch (IOException e) {
+            log.debug(e);
+        }
+    }
+
+
+    private String isAttachedPhotoTypeSupported(InputStream stream){
+        try (InputStream inputStream = new BufferedInputStream(stream)) {
+            String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
+            if (mimeType == null || !SUPPORTED_PHOTO_TYPES.contains(mimeType)) {
+                throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
+            }
+            return mimeType;
+        } catch (IOException e) {
+            log.debug(e);
+            return null;
+        }
+    }
+
+
+    public enum FileType {
+        FILE, PHOTO
     }
 }
