@@ -13,7 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
+import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.services.MailService;
+import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.ChangePasswordPreparator;
@@ -36,6 +38,7 @@ public class SettingsController {
     private MailService mailService;
     private PasswordEncoder passwordEncoder;
     private VerificationTokenService tokenService;
+    private final UserInfoService userInfoService;
 
     @PostMapping("/password")
     public ResponseEntity changePassword(@Valid @RequestBody SettingsDto dto, Principal principal, BindingResult bindingResult, HttpServletRequest request) {
@@ -116,6 +119,23 @@ public class SettingsController {
         messageDto.setResult("pending_email_change_found");
         messageDto.setSecondsToExpiry(String.valueOf(token.calculateSecondsToExpiry()));
         return ResponseEntity.ok(messageDto);
+    }
+
+    @PostMapping
+    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto,
+                                         Principal principal, BindingResult bindingResult) {
+        HttpStatus status;
+        if (bindingResult.hasFieldErrors()) {
+            status = HttpStatus.BAD_REQUEST;
+        } else if (principal == null) {
+            status = HttpStatus.UNAUTHORIZED;
+        } else {
+            String userEmail = principal.getName();
+            userInfoService.update(userService.prepareNewUserInfoForUpdate(userEmail, dto));
+            userService.updateUserProfile(userService.prepareNewUserForUpdate(userEmail, dto));
+            status = HttpStatus.OK;
+        }
+        return new ResponseEntity(status);
     }
 
     private String parseMail(String mail) {

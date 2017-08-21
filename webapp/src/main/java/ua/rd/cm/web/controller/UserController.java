@@ -61,38 +61,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/current")
-    public ResponseEntity getCurrentUser(Principal principal) {
-        if (principal == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        try{
-            UserDto userDto = userService.getUserDtoByEmail(principal.getName());
-            return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
-        } catch (NoSuchUserException ex) {
-            log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping(value = "/current")
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto,
-                                         Principal principal, BindingResult bindingResult) {
-        HttpStatus status;
-        if (bindingResult.hasFieldErrors()) {
-            status = HttpStatus.BAD_REQUEST;
-        } else if (principal == null) {
-            status = HttpStatus.UNAUTHORIZED;
-        } else {
-            String userEmail = principal.getName();
-            userInfoService.update(userService.prepareNewUserInfoForUpdate(userEmail, dto));
-            userService.updateUserProfile(userService.prepareNewUserForUpdate(userEmail, dto));
-            status = HttpStatus.OK;
-        }
-        return new ResponseEntity(status);
-    }
-
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
@@ -119,6 +87,21 @@ public class UserController {
         List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRoleExpectCurrent(
                 currentUser, Role.ORGANISER, Role.SPEAKER);
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/current")
+    public ResponseEntity getCurrentUser(Principal principal) {
+        if (principal == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        try{
+            UserDto userDto = userService.getUserDtoByEmail(principal.getName());
+            return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
+        } catch (NoSuchUserException ex) {
+            log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     private User getAuthorizedUser(HttpServletRequest request) {
