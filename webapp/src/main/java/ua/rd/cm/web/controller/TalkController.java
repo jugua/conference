@@ -11,14 +11,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ua.rd.cm.domain.*;
-import ua.rd.cm.services.*;
-import ua.rd.cm.services.exception.FileValidationException;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
-import ua.rd.cm.services.exception.TalkValidationException;
+import ua.rd.cm.domain.Talk;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.services.TalkService;
+import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
+import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +34,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.FILE;
 
 @Log4j
 @RestController
@@ -83,26 +85,15 @@ public class TalkController {
                 submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 
         MessageDto messageDto = new MessageDto();
-        HttpStatus httpStatus;
         User currentUser = userService.getByEmail(request.getRemoteUser());
-        Long id = null;
 
-        if (!checkForFilledUserInfo(currentUser)) {
-            httpStatus = HttpStatus.FORBIDDEN;
-            return new ResponseEntity<>(messageDto, httpStatus);
+        if (userInfoNotFilled(currentUser)) {
+            return new ResponseEntity<>(messageDto, HttpStatus.FORBIDDEN);
         }
 
-        if (dto.getMultipartFile() != null) {
-            storageService.checkFileValidation(dto.getMultipartFile(), FILE);
-        }
-
-        String multipartFile = dto.getMultipartFile() != null ? saveNewAttachedFile(dto.getMultipartFile()) : null;
-        Talk currentTalk = talkService.save(dto, currentUser, multipartFile);
-        id = currentTalk.getId();
-        httpStatus = HttpStatus.OK;
-
-        messageDto.setId(id);
-        return new ResponseEntity<>(messageDto, httpStatus);
+        Talk talk = talkService.save(dto, currentUser, uploadFile(dto.getMultipartFile()));
+        messageDto.setId(talk.getId());
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -189,11 +180,20 @@ public class TalkController {
     public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
                                  @RequestPart(value = "file") MultipartFile file,
                                  HttpServletRequest request) {
+        String filePath = uploadFile(file);
         TalkDto talkDto = talkService.findById(talkId);
-        String filePath = saveNewAttachedFile(file);
         talkService.addFile(talkDto, filePath);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private String uploadFile(MultipartFile file) {
+        try {
+            return storageService.saveFile(file, FileStorageServiceImpl.FileType.FILE);
+        } catch (IOException e) {
+            log.warn(e);
+            return null;
+        }
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -212,19 +212,11 @@ public class TalkController {
         return ResponseEntity.status(status).body(message);
     }
 
-    private boolean checkForFilledUserInfo(User currentUser) {
+    private boolean userInfoNotFilled(User currentUser) {
         UserInfo currentUserInfo = currentUser.getUserInfo();
-        return !(currentUserInfo.getShortBio().isEmpty() ||
+        return currentUserInfo.getShortBio().isEmpty() ||
                 currentUserInfo.getJobTitle().isEmpty() ||
-                currentUserInfo.getCompany().isEmpty());
+                currentUserInfo.getCompany().isEmpty();
     }
 
-    private String saveNewAttachedFile(MultipartFile multipartFile) {
-        try {
-            return storageService.saveFile(multipartFile);
-        } catch (IOException e) {
-            log.warn(e);
-        }
-        return null;
-    }
 }
