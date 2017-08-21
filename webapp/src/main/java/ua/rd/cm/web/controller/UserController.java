@@ -34,15 +34,7 @@ public class UserController {
     private final UserService userService;
     private final UserInfoService userInfoService;
 
-    @PostMapping
-    public ResponseEntity register(@Valid @RequestBody RegistrationDto dto,
-                                   BindingResult bindingResult,
-                                   HttpServletRequest request
-    ) {
-        dto.setUserStatus(User.UserStatus.UNCONFIRMED);
-        dto.setRoleName(Role.SPEAKER);
-        return processUserRegistration(dto, bindingResult, request);
-    }
+
 
     @PreAuthorize("hasRole(\"ADMIN\")")
     @PostMapping("/create")
@@ -74,48 +66,6 @@ public class UserController {
         // userDto.setContactTypeService(contactTypeService);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/admin")
-    public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
-        MessageDto message = new MessageDto();
-        User currentUser = getAuthorizedUser(request);
-        if (currentUser == null) {
-            message.setError("unauthorized");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
-        }
-        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRoleExpectCurrent(
-                currentUser, Role.ORGANISER, Role.SPEAKER);
-        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/current")
-    public ResponseEntity getCurrentUser(Principal principal) {
-        if (principal == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        try{
-            UserDto userDto = userService.getUserDtoByEmail(principal.getName());
-            return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
-        } catch (NoSuchUserException ex) {
-            log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    private User getAuthorizedUser(HttpServletRequest request) {
-        boolean inRole = request.isUserInRole(Role.ADMIN);
-        if (inRole) {
-            String userEmail = request.getUserPrincipal().getName();
-            User user = userService.getByEmail(userEmail);
-            if ((user != null) && (user.getEmail() != null)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
 
     private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
