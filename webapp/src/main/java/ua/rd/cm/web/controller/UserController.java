@@ -107,33 +107,6 @@ public class UserController {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/admin")
-    public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
-        MessageDto message = new MessageDto();
-        User currentUser = getAuthorizedUser(request);
-        if (currentUser == null) {
-            message.setError("unauthorized");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
-        }
-        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRoleExpectCurrent(
-                currentUser, Role.ORGANISER, Role.SPEAKER);
-        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
-    }
-
-    private User getAuthorizedUser(HttpServletRequest request) {
-        boolean inRole = request.isUserInRole(Role.ADMIN);
-        if (inRole) {
-            String userEmail = request.getUserPrincipal().getName();
-            User user = userService.getByEmail(userEmail);
-            if ((user != null) && (user.getEmail() != null)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-
     private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
         MessageDto message = new MessageDto();
