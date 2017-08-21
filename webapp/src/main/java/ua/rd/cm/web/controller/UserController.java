@@ -34,15 +34,7 @@ public class UserController {
     private final UserService userService;
     private final UserInfoService userInfoService;
 
-    @PostMapping
-    public ResponseEntity register(@Valid @RequestBody RegistrationDto dto,
-                                   BindingResult bindingResult,
-                                   HttpServletRequest request
-    ) {
-        dto.setUserStatus(User.UserStatus.UNCONFIRMED);
-        dto.setRoleName(Role.SPEAKER);
-        return processUserRegistration(dto, bindingResult, request);
-    }
+
 
     @PreAuthorize("hasRole(\"ADMIN\")")
     @PostMapping("/create")
