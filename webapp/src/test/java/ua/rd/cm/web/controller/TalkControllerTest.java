@@ -39,6 +39,7 @@ import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
+import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.servlet.Filter;
 import java.io.File;
@@ -209,7 +210,7 @@ public class TalkControllerTest extends TestUtil {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))));
-        verify(fileStorageService, times(1)).checkFileValidation(file);
+        verify(fileStorageService, times(1)).checkFileValidation(file, FileStorageServiceImpl.FileType.FILE);
     }
 
 
@@ -444,7 +445,7 @@ public class TalkControllerTest extends TestUtil {
         when(fileStorageService.getFile(filePath)).thenReturn(file);
 
         String mimeType = MediaType.IMAGE_PNG_VALUE;
-        when(fileStorageService.getTypeIfSupported(file)).thenReturn(mimeType);
+        when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
         mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
                 .andExpect(status().isOk());
@@ -463,7 +464,7 @@ public class TalkControllerTest extends TestUtil {
         when(fileStorageService.getFile(filePath)).thenReturn(file);
 
         String mimeType = MediaType.IMAGE_PNG_VALUE;
-        when(fileStorageService.getTypeIfSupported(file)).thenReturn(mimeType);
+        when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
         mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
                 .andExpect(status().isBadRequest());
