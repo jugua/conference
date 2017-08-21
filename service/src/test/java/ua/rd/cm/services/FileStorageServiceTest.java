@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
@@ -20,6 +21,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,26 +59,31 @@ public class FileStorageServiceTest {
     @Test
     public void uploadAttachment() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
+        final String CONTENT_TYPE = "application/pdf";
+
         final String EXPECTED_FILENAME = "SomeAttachment.pdf";
         final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        when(mockedFile.getContentType()).thenReturn(CONTENT_TYPE);
 
         assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
-                fileStorageService.saveFile(mockedFile));
+                fileStorageService.saveFile(mockedFile, FileType.FILE));
     }
 
     @Test
     public void uploadTwiceAttachment() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
+        final String CONTENT_TYPE = "application/pdf";
         final String EXPECTED_FILENAME = "SomeAttachment v1.pdf";
         final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        when(mockedFile.getContentType()).thenReturn(CONTENT_TYPE);
 
-        fileStorageService.saveFile(mockedFile);
+        fileStorageService.saveFile(mockedFile, FileType.FILE);
         assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
-                fileStorageService.saveFile(mockedFile));
+                fileStorageService.saveFile(mockedFile, FileType.FILE));
     }
 
     @Test
@@ -84,7 +91,7 @@ public class FileStorageServiceTest {
         final String FILENAME = "file.jpg";
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
-        assertEquals(true, new File(fileStorageService.saveFile(mockedFile)).exists());
+        assertEquals(true, new File(fileStorageService.saveFile(mockedFile, FileType.PHOTO)).exists());
     }
 
     @Test
@@ -96,33 +103,37 @@ public class FileStorageServiceTest {
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
         assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
-                fileStorageService.saveFile(mockedFile));
+                fileStorageService.saveFile(mockedFile, FileType.PHOTO));
     }
 
     @Test
     public void uploadFileTwice_1jpg() throws IOException {
         final String FILENAME = "1.jpg";
+        final String CONTENT_TYPE = "application/pdf";
         final String EXPECTED_FILENAME = "1 v1.jpg";
         final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        when(mockedFile.getContentType()).thenReturn(CONTENT_TYPE);
 
-        fileStorageService.saveFile(mockedFile);
-        assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
-                fileStorageService.saveFile(mockedFile));
+        fileStorageService.saveFile(mockedFile, FileType.PHOTO);
+        assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME, fileStorageService.saveFile(mockedFile, FileType.PHOTO));
     }
 
     @Test
     public void uploadFileThird_1jpg() throws IOException {
         final String FILENAME = "1.jpg";
+
         final String EXPECTED_FILENAME = "1 v2.jpg";
         final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
-        when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
-        fileStorageService.saveFile(mockedFile);
-        fileStorageService.saveFile(mockedFile);
+        when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        when(mockedFile.getContentType()).thenReturn(MediaType.IMAGE_JPEG_VALUE);
+
+        fileStorageService.saveFile(mockedFile, FileType.PHOTO);
+        fileStorageService.saveFile(mockedFile, FileType.PHOTO);
         assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
-                fileStorageService.saveFile(mockedFile));
+                fileStorageService.saveFile(mockedFile, FileType.PHOTO));
     }
 
     @Test
@@ -132,9 +143,11 @@ public class FileStorageServiceTest {
         final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
 
-        fileStorageService.saveFile(mockedFile);
+        fileStorageService.saveFile(mockedFile, FileType.PHOTO);
+        when(mockedFile.getContentType()).thenReturn(MediaType.IMAGE_JPEG_VALUE);
+
         assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
-                fileStorageService.saveFile(mockedFile));
+                fileStorageService.saveFile(mockedFile, FileType.PHOTO));
     }
 
     @Test
@@ -144,10 +157,11 @@ public class FileStorageServiceTest {
         final String EXPECTED_RELATED_PATH = File.separator + (EXPECTED_FILENAME.hashCode() % 32) + File.separator;
 
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        when(mockedFile.getContentType()).thenReturn(MediaType.IMAGE_JPEG_VALUE);
 
-        fileStorageService.saveFile(mockedFile);
+        fileStorageService.saveFile(mockedFile, FileType.PHOTO);
         assertEquals(FOLDER + EXPECTED_RELATED_PATH + EXPECTED_FILENAME,
-                fileStorageService.saveFile(mockedFile));
+                fileStorageService.saveFile(mockedFile, FileType.PHOTO));
     }
 
     //deleteFile
@@ -166,8 +180,9 @@ public class FileStorageServiceTest {
     public void deleteExistFile() throws IOException {
         final String FILENAME = "fileNameId.jpg";
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        when(mockedFile.getContentType()).thenReturn(MediaType.IMAGE_JPEG_VALUE);
 
-        String filePath = fileStorageService.saveFile(mockedFile);
+        String filePath = fileStorageService.saveFile(mockedFile, FileType.PHOTO);
         fileStorageService.deleteFile(filePath);
         assertEquals(false, new File(filePath).exists());
     }
@@ -202,16 +217,19 @@ public class FileStorageServiceTest {
     }
 
     @Test
-    public void testFileValidationSuccess() {
-        fileStorageService.checkFileValidation(mockMultipartFile, FileStorageServiceImpl.FileType.FILE);
+    public void testFileValidationSuccess() throws IOException {
+        fileStorageService.saveFile(mockMultipartFile, FileType.FILE);
     }
 
     @Test
     public void verifyFileNameNotChanged() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
-        when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        final String CONTENT_TYPE = "application/pdf";
 
-        String filePath = fileStorageService.saveFile(mockedFile);
+        when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
+        when(mockedFile.getContentType()).thenReturn(CONTENT_TYPE);
+
+        String filePath = fileStorageService.saveFile(mockedFile, FileType.FILE);
         File readedFile = fileStorageService.getFile(filePath);
 
         assertEquals(FILENAME, readedFile.getName());
@@ -220,11 +238,14 @@ public class FileStorageServiceTest {
     @Test
     public void verifyFileDataNotChanged() throws IOException {
         final String FILENAME = "SomeAttachment.pdf";
+        final String CONTENT_TYPE = "application/pdf";
+
         final byte[] fileData = new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         when(mockedFile.getOriginalFilename()).thenReturn(FILENAME);
         when(mockedFile.getBytes()).thenReturn(fileData);
+        when(mockedFile.getContentType()).thenReturn(CONTENT_TYPE);
 
-        String filePath = fileStorageService.saveFile(mockedFile);
+        String filePath = fileStorageService.saveFile(mockedFile, FileType.FILE);
         File readedFile = fileStorageService.getFile(filePath);
         byte[] readedBytes = Files.readAllBytes(readedFile.toPath());
 

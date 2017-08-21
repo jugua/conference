@@ -97,7 +97,7 @@ public class MyInfoControllerTest extends TestUtil {
         String newPhotoPath = "new photo pass";
         when(userService.getByEmail(SPEAKER_EMAIL)).thenReturn(user);
         user.setPhoto(previousPhotoPath);
-        when(fileStorageService.saveFile(multipartFile)).thenReturn(newPhotoPath);
+        when(fileStorageService.saveFile(multipartFile, PHOTO)).thenReturn(newPhotoPath);
 
         mockMvc.perform(fileUpload(API_PHOTO)
                 .file(multipartFile)
@@ -105,7 +105,6 @@ public class MyInfoControllerTest extends TestUtil {
         ).andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("api/user/current/photo/" + user.getId())));
 
-        verify(fileStorageService, times(1)).checkFileValidation(multipartFile, PHOTO);
         verify(fileStorageService, times(1)).deleteFile(previousPhotoPath);
         verify(userService, times(1)).updateUserProfile(user);
         assertTrue(user.getPhoto().equals(newPhotoPath));
@@ -117,14 +116,13 @@ public class MyInfoControllerTest extends TestUtil {
         MockMultipartFile multipartFile = setupCorrectMultipartFile();
         String previousPhotoPath = "previous photo pass";
         user.setPhoto(previousPhotoPath);
-        when(fileStorageService.saveFile(multipartFile)).thenReturn("");
+        when(fileStorageService.saveFile(multipartFile, PHOTO)).thenReturn("");
 
         mockMvc.perform(fileUpload(API_PHOTO)
                 .file(multipartFile)
                 .contentType(MediaType.IMAGE_JPEG)
         ).andExpect(status().isNotFound());
 
-        verify(fileStorageService, times(1)).checkFileValidation(multipartFile, PHOTO);
         verify(fileStorageService, never()).deleteFile(previousPhotoPath);
         verify(userService, never()).updateUserProfile(user);
     }

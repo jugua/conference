@@ -204,15 +204,14 @@ public class TalkControllerTest extends TestUtil {
                 param("lang", "English").
                 param("level", "Beginner");
 
-        when(fileStorageService.saveFile(file)).thenReturn("path to file");
+        when(fileStorageService.saveFile(file, FileStorageServiceImpl.FileType.FILE)).thenReturn("path to file");
         when(talkService.save(talkDto, speakerUser, "path to file")).thenReturn(talk);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))));
-        verify(fileStorageService, times(1)).checkFileValidation(file, FileStorageServiceImpl.FileType.FILE);
+        verify(fileStorageService, times(1)).saveFile(file, FileStorageServiceImpl.FileType.FILE);
     }
-
 
     /**
      * @throws Exception
@@ -477,7 +476,7 @@ public class TalkControllerTest extends TestUtil {
         when(talkService.findById(1L)).thenReturn(correctTalkDto);
 
         String filePath = "file path";
-        when(fileStorageService.saveFile(multipartFile)).thenReturn(filePath);
+        when(fileStorageService.saveFile(multipartFile, FileStorageServiceImpl.FileType.FILE)).thenReturn(filePath);
 
         mockMvc.perform(fileUpload(API_TALK + "/1/file")
                 .file(multipartFile))
