@@ -33,13 +33,11 @@ import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.FileValidationException;
-import ua.rd.cm.services.exception.TalkNotFoundException;
 
 import javax.servlet.Filter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URLConnection;
 import java.security.Principal;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -48,7 +46,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
@@ -58,7 +55,7 @@ import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 @Log4j
-public class MyInfoControllerTest extends TestUtil {
+public class MyInfoPageControllerTest extends TestUtil {
     private static final String API_PHOTO = "/api/user/current/photo";
     public static final String API_USER_CURRENT = "/api/user/current";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
@@ -74,7 +71,7 @@ public class MyInfoControllerTest extends TestUtil {
     private FileStorageService fileStorageService;
 
     @Autowired
-    private MyInfoController myInfoController;
+    private MyInfoPageController myInfoPageController;
 
     private MockMvc mockMvc;
 
@@ -285,7 +282,7 @@ public class MyInfoControllerTest extends TestUtil {
 
     @Test
     public void handleTalkNotFoundCorrectStatus() throws Exception {
-        ResponseEntity<MessageDto> response = myInfoController.handleFileValidationException(new FileValidationException(FileValidationException.UNSUPPORTED_MEDIA_TYPE));
+        ResponseEntity<MessageDto> response = myInfoPageController.handleFileValidationException(new FileValidationException(FileValidationException.UNSUPPORTED_MEDIA_TYPE));
         assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
     }
     private UserDto setupCorrectUserInfoDto() {

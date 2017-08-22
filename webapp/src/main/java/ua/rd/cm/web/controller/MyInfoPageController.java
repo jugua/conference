@@ -35,12 +35,12 @@ import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 @RestController
 @RequestMapping("/api/user/current")
 @Log4j
-public class MyInfoController {
+public class MyInfoPageController {
     private UserService userService;
     private FileStorageService fileStorageService;
     private final UserInfoService userInfoService;
 
-    public MyInfoController(UserService userService, FileStorageService fileStorageService, UserInfoService userInfoService) {
+    public MyInfoPageController(UserService userService, FileStorageService fileStorageService, UserInfoService userInfoService) {
         this.userService = userService;
         this.fileStorageService = fileStorageService;
         this.userInfoService = userInfoService;
