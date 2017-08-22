@@ -14,7 +14,7 @@ export default class MyTalksController {
     this.showEditPopup = false;
 
     this.statuses = Talks.statusStrings;
-    this.topics = Topic.query();
+    this.topics = Topic.queryForTalkPage();
   }
   showSettings() {
     this.showFilters = !this.showFilters;
