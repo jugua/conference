@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-public class LandingPageControllerTest extends TestUtil {
+public class MainPageControllerTest extends TestUtil {
     public static final String API_CONFERENCE = "/api/conference";
     public static final String API_NEW_CONFERENCE = "/api/conference";
 
@@ -65,7 +65,7 @@ public class LandingPageControllerTest extends TestUtil {
     private Filter springSecurityFilterChain;
 
     @Autowired
-    private LandingPageController landingPageController;
+    private MainPageController mainPageController;
 
     @Before
     public void setup() {
