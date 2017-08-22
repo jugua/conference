@@ -35,7 +35,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
-public class LandingPageController {
+public class MainPageController {
     private final ModelMapper mapper;
     private final TypeService typeService;
     private final TopicService topicService;
