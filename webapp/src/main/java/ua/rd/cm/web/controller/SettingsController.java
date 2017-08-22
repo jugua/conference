@@ -121,23 +121,6 @@ public class SettingsController {
         return ResponseEntity.ok(messageDto);
     }
 
-    @PostMapping
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto,
-                                         Principal principal, BindingResult bindingResult) {
-        HttpStatus status;
-        if (bindingResult.hasFieldErrors()) {
-            status = HttpStatus.BAD_REQUEST;
-        } else if (principal == null) {
-            status = HttpStatus.UNAUTHORIZED;
-        } else {
-            String userEmail = principal.getName();
-            userInfoService.update(userService.prepareNewUserInfoForUpdate(userEmail, dto));
-            userService.updateUserProfile(userService.prepareNewUserForUpdate(userEmail, dto));
-            status = HttpStatus.OK;
-        }
-        return new ResponseEntity(status);
-    }
-
     private String parseMail(String mail) {
         try {
             JsonNode node = mapper.readValue(mail, ObjectNode.class).get("mail");

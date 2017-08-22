@@ -59,12 +59,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @Log4j
 public class UserControllerTest extends TestUtil{
-    public static final String API_USER_CURRENT = "/api/user/current";
     public static final String API_USER = "/api/user";
     public static final String API_USER_CREATE = "/api/user/create";
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
-    private UserDto correctUserDto;
     private String uniqueEmail = "ivanova@gmail.com";
     private String alreadyRegisteredEmail = "registered@gmail.com";
 
@@ -93,7 +91,6 @@ public class UserControllerTest extends TestUtil{
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
-        correctUserDto = setupCorrectUserInfoDto();
         createSpeakerAndOrganiser(userService);
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -274,99 +271,9 @@ public class UserControllerTest extends TestUtil{
     }
 
     @Test
-    public void withoutDotEmailTest(){
+    public void withoutDotEmailTest() {
         correctRegistrationDto.setEmail("withoutDot@com");
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
-    }
-
-    @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void correctPrincipalGetCurrentUserTest() throws Exception{
-        Role speaker = createSpeakerRole();
-        UserInfo info = createUserInfo();
-        User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
-
-        when(userService.getUserDtoByEmail(correctPrincipal.getName()))
-                .thenReturn(setupCorrectUserInfoDto());
-
-        mockMvc.perform(get(API_USER_CURRENT)
-                .principal(correctPrincipal)
-        ).andExpect(status().isAccepted());
-    }
-
-    @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void correctFillUserInfoTest() throws Exception{
-        Role speaker = createSpeakerRole();
-        UserInfo info = createUserInfo();
-        User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
-
-        when(userService.getByEmail(user.getEmail())).thenReturn(user);
-
-        mockMvc.perform(post(API_USER_CURRENT)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctUserDto))
-                .principal(correctPrincipal)
-        ).andExpect(status().isOk());
-    }
-
-    @Test
-    public void incorrectPrincipalFillInfoTest() throws Exception {
-        mockMvc.perform(post(API_USER_CURRENT)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctUserDto))
-        ).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void nullBioTest() {
-        correctUserDto.setUserInfoShortBio(null);
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-    }
-
-    @Test
-    public void tooLongBioTest(){
-        correctUserDto.setUserInfoShortBio(createStringWithLength(2001));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-    }
-
-    @Test
-    public void nullJobTest() {
-        correctUserDto.setUserInfoJobTitle(null);
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-    }
-
-    @Test
-    public void tooLongJobTest(){
-        correctUserDto.setUserInfoJobTitle(createStringWithLength(257));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-    }
-
-    @Test
-    public void nullCompanyTest() {
-        correctUserDto.setUserInfoCompany(null);
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-    }
-
-
-    @Test
-    public void tooLongCompanyTest(){
-        correctUserDto.setUserInfoCompany(createStringWithLength(257));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-    }
-
-    @Test
-    public void tooLongPastConferenceTest(){
-        correctUserDto.setUserInfoPastConference(createStringWithLength(1001));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
-    }
-
-    @Test
-    public void tooLongAdditionalInfoTest(){
-        correctUserDto.setUserInfoAdditionalInfo(createStringWithLength(1001));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
     @Test
@@ -433,14 +340,6 @@ public class UserControllerTest extends TestUtil{
         registrationDto.setConfirm("123456");
         registrationDto.setEmail(uniqueEmail);
         return  registrationDto;
-    }
-
-    private UserDto setupCorrectUserInfoDto() {
-        UserDto userDto = new UserDto();
-        userDto.setUserInfoShortBio("bio");
-        userDto.setUserInfoJobTitle("job");
-        userDto.setUserInfoCompany("company");
-        return userDto;
     }
 
     private byte[] convertObjectToJsonBytes(Object object) throws Exception {

@@ -9,7 +9,7 @@ public class FileValidationException extends RuntimeException {
     public static final String EMPTY = "empty";
     public static final String MAX_SIZE = "max_size";
     public static final String DELETE = "delete";
-    public static final String UNSUPPORTED_MEDIA_TYPE = "patter";
+    public static final String UNSUPPORTED_MEDIA_TYPE = "pattern";
 
     private Map<String, HttpStatus> messageStatusMap = new HashMap<String, HttpStatus>() {{
         put(EMPTY, HttpStatus.BAD_REQUEST);
