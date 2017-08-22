@@ -13,11 +13,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.rd.cm.domain.User;
+
 import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
@@ -29,7 +30,6 @@ import java.net.URLConnection;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
-
 import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 @RestController

@@ -13,13 +13,8 @@ import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.dto.CreateConferenceDto;
-import ua.rd.cm.dto.CreateTopicDto;
-import ua.rd.cm.dto.CreateTypeDto;
+import ua.rd.cm.dto.*;
 import ua.rd.cm.services.*;
-import ua.rd.cm.dto.ConferenceDto;
-import ua.rd.cm.dto.ConferenceDtoBasic;
-import ua.rd.cm.dto.MessageDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

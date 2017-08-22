@@ -1,17 +1,11 @@
 package ua.rd.cm.config;
 
-import org.apache.log4j.Logger;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.*;
-import java.util.Arrays;
+import javax.servlet.Filter;
 
 /**
  * @author Yaroslav_Revin
