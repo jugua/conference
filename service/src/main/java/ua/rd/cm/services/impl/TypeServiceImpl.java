@@ -26,6 +26,8 @@ public class TypeServiceImpl implements TypeService {
         this.modelMapper = modelMapper;
     }
 
+
+
     @Override
     public Type find(Long id) {
         Type type = typeRepository.findById(id);
