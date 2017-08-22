@@ -72,28 +72,6 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping
-    public ResponseEntity submitTalk(
-            @Valid SubmitTalkDto submitTalkDto,
-            HttpServletRequest request) {
-
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
-                submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
-                submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
-
-        MessageDto messageDto = new MessageDto();
-        User currentUser = userService.getByEmail(request.getRemoteUser());
-
-        if (userInfoNotFilled(currentUser)) {
-            return new ResponseEntity<>(messageDto, HttpStatus.FORBIDDEN);
-        }
-
-        Talk talk = talkService.save(dto, currentUser, uploadFile(dto.getMultipartFile()));
-        messageDto.setId(talk.getId());
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
         List<TalkDto> userTalkDtoList;
@@ -232,12 +210,4 @@ public class TalkController {
     private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
         return ResponseEntity.status(status).body(message);
     }
-
-    private boolean userInfoNotFilled(User currentUser) {
-        UserInfo currentUserInfo = currentUser.getUserInfo();
-        return currentUserInfo.getShortBio().isEmpty() ||
-                currentUserInfo.getJobTitle().isEmpty() ||
-                currentUserInfo.getCompany().isEmpty();
-    }
-
 }
