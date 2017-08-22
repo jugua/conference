@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 
 import static ua.rd.cm.services.exception.FileValidationException.*;
 import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOUND;
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.FILE;
 
 @Log4j
 public class FileStorageServiceImpl implements FileStorageService {
@@ -68,12 +69,18 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public String saveFile(MultipartFile file) throws IOException {
+    public String saveFile(MultipartFile file, FileType fileType) throws IOException {
+        if (file == null) {
+            return null;
+        }
+        checkFileValidation(file, fileType);
+
         String serverFileName = getSuitableVersionedFilename(file.getOriginalFilename());
-        if (!"".equals(serverFileName)) {
+        if ("".equals(serverFileName)) {
+            return "";
+        } else {
             File serverFile = new File(serverFileName);
-            try (BufferedOutputStream stream =
-                         new BufferedOutputStream(new FileOutputStream(serverFile))) {
+            try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile))) {
                 stream.write(file.getBytes());
                 return serverFile.getAbsolutePath();
             } catch (IOException e) {
@@ -81,7 +88,6 @@ public class FileStorageServiceImpl implements FileStorageService {
                 throw e;
             }
         }
-        return "";
     }
 
     private String getExtension(String fileName) {
@@ -138,7 +144,6 @@ public class FileStorageServiceImpl implements FileStorageService {
         return folderPath;
     }
 
-    @Override
     public void checkFileValidation(MultipartFile file, FileType fileType) {
         ifFileIsEmpty(file);
         isFileSizeGreaterThanMaxSize(file, fileType);
@@ -146,9 +151,9 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     private void isTypeSupported(MultipartFile file, FileType fileType) {
-        if(fileType == FileType.FILE){
+        if (fileType == FileType.FILE) {
             isAttachedFileTypeSupported(file);
-        }else {
+        } else {
             isAttachedPhotoTypeSupported(file);
         }
     }
@@ -160,7 +165,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     private void isAttachedFileTypeSupported(MultipartFile file) {
-        if (!file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$")) {
+        if (!(file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$"))) {
             throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
         }
         String mimeType = file.getContentType();
@@ -194,12 +199,12 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     private void isFileSizeGreaterThanMaxSize(MultipartFile multipartFile, FileType fileType) {
         long max_size = fileType == FileType.FILE ? MAX_SIZE_FILE : fileType == FileType.PHOTO ? MAX_SIZE_PHOTO : 0L;
-        if(multipartFile.getSize() > max_size){
+        if (multipartFile.getSize() > max_size) {
             throw new FileValidationException(MAX_SIZE);
         }
     }
 
-    private void isAttachedPhotoTypeSupported(MultipartFile file){
+    private void isAttachedPhotoTypeSupported(MultipartFile file) {
         if (!file.getOriginalFilename().matches("^.+\\.(?i)(jp(e)?g|gif|png)$")) {
             throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
         }
@@ -211,7 +216,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
 
-    private String isAttachedPhotoTypeSupported(InputStream stream){
+    private String isAttachedPhotoTypeSupported(InputStream stream) {
         try (InputStream inputStream = new BufferedInputStream(stream)) {
             String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
             if (mimeType == null || !SUPPORTED_PHOTO_TYPES.contains(mimeType)) {
@@ -224,8 +229,8 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
-
     public enum FileType {
         FILE, PHOTO
     }
+
 }

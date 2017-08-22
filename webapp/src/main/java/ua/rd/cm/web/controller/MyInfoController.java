@@ -72,12 +72,10 @@ public class MyInfoController {
     public ResponseEntity upload(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-        fileStorageService.checkFileValidation(file, PHOTO);
-
         String previousPhotoPath = currentUser.getPhoto();
         String newPhotoPath = "";
         try {
-            newPhotoPath = fileStorageService.saveFile(file);
+            newPhotoPath = fileStorageService.saveFile(file, PHOTO);
             if (!"".equals(newPhotoPath)) {
                 if(previousPhotoPath != null) {
                     fileStorageService.deleteFile(previousPhotoPath);
