@@ -8,23 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.UserBasicDto;
-import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.*;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController

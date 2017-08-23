@@ -14,8 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import ua.rd.cm.web.security.CustomAuthenticationProvider;
 import ua.rd.cm.web.security.BasicAuthFilterImpl;
+import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
