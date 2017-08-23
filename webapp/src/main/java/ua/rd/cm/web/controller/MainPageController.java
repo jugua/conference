@@ -69,12 +69,6 @@ public class MainPageController {
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("type")
-    public ResponseEntity getTypes() {
-        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("type")
     public ResponseEntity createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
@@ -84,12 +78,6 @@ public class MainPageController {
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("topic")
-    public ResponseEntity getTopics() {
-        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("topic")
     public ResponseEntity createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
@@ -97,18 +85,6 @@ public class MainPageController {
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("level")
-    public ResponseEntity getLevels() {
-        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("lang")
-    public ResponseEntity getLanguages() {
-        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
     }
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {

@@ -3,10 +3,15 @@ export default class {
     'ngInject';
 
     this.res = $resource('/api/level');
+    this.resForTalksPage = $resource('/api/talk/level')
   }
 
   query() {
     return this.res.query();
+  }
+
+  queryForTalkPage() {
+    return this.resForTalksPage.query();
   }
 
   save(name) {

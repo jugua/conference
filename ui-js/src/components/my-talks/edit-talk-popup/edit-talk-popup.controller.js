@@ -16,10 +16,10 @@ export default class {
 
     this.fileNameObj = this.talkFileService.getName(this.talk.id);
 
-    this.topics = Topic.query();
-    this.types = Type.query();
-    this.langs = Language.query();
-    this.levels = Level.query();
+    this.topics = Topic.queryForTalkPage();
+    this.types = Type.queryForTalkPage();
+    this.langs = Language.queryForTalkPage();
+    this.levels = Level.queryForTalkPage();
   }
 
   get editable() {  // getter, convenient for template inline triggers
