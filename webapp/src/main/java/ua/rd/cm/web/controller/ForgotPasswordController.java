@@ -2,12 +2,14 @@ package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
@@ -19,6 +21,7 @@ import ua.rd.cm.services.preparator.ForgotMessagePreparator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.io.IOException;
 
 @RestController
@@ -51,8 +54,8 @@ public class ForgotPasswordController {
         MessageDto responseMessage = new MessageDto();
         ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
 
-        if(node.get("mail") != null) {
-            if(!userService.isEmailExist(node.get("mail").textValue())) {
+        if (node.get("mail") != null) {
+            if (!userService.isEmailExist(node.get("mail").textValue())) {
                 httpStatus = HttpStatus.BAD_REQUEST;
                 responseMessage.setError("email_not_found");
             } else {
@@ -74,13 +77,14 @@ public class ForgotPasswordController {
 
     @GetMapping("/forgotPassword/{token}")
     public ResponseEntity changePassword(@PathVariable String token) {
-        return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.FORGOT_PASS, verificationToken -> {});
+        return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.FORGOT_PASS, verificationToken -> {
+        });
     }
 
     @PostMapping("/forgotPassword/{token}")
     public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto, BindingResult bindingResult) {
         VerificationToken verificationToken = tokenService.getToken(token);
-        if(!isPasswordConfirmed(dto))
+        if (!isPasswordConfirmed(dto))
             return ResponseEntity.badRequest().build();
 
         User currentUser = verificationToken.getUser();

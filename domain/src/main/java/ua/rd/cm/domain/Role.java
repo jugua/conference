@@ -1,6 +1,7 @@
 package ua.rd.cm.domain;
 
 import lombok.*;
+
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;

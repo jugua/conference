@@ -94,6 +94,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         correctUserDto = setupCorrectUserInfoDto();
         when(userService.getByEmail(SPEAKER_EMAIL)).thenReturn(user);
     }
+
     @After
     public void resetMocks() {
         Mockito.reset(fileStorageService, userService);
@@ -195,7 +196,7 @@ public class MyInfoPageControllerTest extends TestUtil {
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void correctPrincipalGetCurrentUserTest() throws Exception{
+    public void correctPrincipalGetCurrentUserTest() throws Exception {
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
@@ -208,9 +209,10 @@ public class MyInfoPageControllerTest extends TestUtil {
                 .principal(correctPrincipal)
         ).andExpect(status().isAccepted());
     }
+
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void correctFillUserInfoTest() throws Exception{
+    public void correctFillUserInfoTest() throws Exception {
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
@@ -240,7 +242,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    public void tooLongBioTest(){
+    public void tooLongBioTest() {
         correctUserDto.setUserInfoShortBio(createStringWithLength(2001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
@@ -252,7 +254,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    public void tooLongJobTest(){
+    public void tooLongJobTest() {
         correctUserDto.setUserInfoJobTitle(createStringWithLength(257));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
@@ -265,19 +267,19 @@ public class MyInfoPageControllerTest extends TestUtil {
 
 
     @Test
-    public void tooLongCompanyTest(){
+    public void tooLongCompanyTest() {
         correctUserDto.setUserInfoCompany(createStringWithLength(257));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
     @Test
-    public void tooLongPastConferenceTest(){
+    public void tooLongPastConferenceTest() {
         correctUserDto.setUserInfoPastConference(createStringWithLength(1001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
     @Test
-    public void tooLongAdditionalInfoTest(){
+    public void tooLongAdditionalInfoTest() {
         correctUserDto.setUserInfoAdditionalInfo(createStringWithLength(1001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
@@ -288,6 +290,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         ResponseEntity<MessageDto> response = myInfoPageController.handleFileValidationException(new FileValidationException(FileValidationException.UNSUPPORTED_MEDIA_TYPE));
         assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
     }
+
     private UserDto setupCorrectUserInfoDto() {
         UserDto userDto = new UserDto();
         userDto.setUserInfoShortBio("bio");

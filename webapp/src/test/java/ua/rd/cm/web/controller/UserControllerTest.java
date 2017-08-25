@@ -56,10 +56,10 @@ import ua.rd.cm.services.exception.WrongRoleException;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 @Log4j
-public class UserControllerTest extends TestUtil{
+public class UserControllerTest extends TestUtil {
     public static final String API_USER = "/api/user";
     public static final String API_USER_CREATE = "/api/user/create";
     private MockMvc mockMvc;
@@ -112,12 +112,12 @@ public class UserControllerTest extends TestUtil{
     }
 
     @Test
-    public void correctRegistrationTest() throws Exception{
+    public void correctRegistrationTest() throws Exception {
         performRegistration(API_USER, HttpStatus.ACCEPTED.value());
     }
 
     @Test
-    public void alreadyRegisteredEmailTest() throws Exception{
+    public void alreadyRegisteredEmailTest() throws Exception {
         String alreadyRegisteredEmail = "registered@gmail.com";
         correctRegistrationDto.setEmail(alreadyRegisteredEmail);
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
@@ -129,21 +129,21 @@ public class UserControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(roles = ADMIN_ROLE)
-    public void correctRegistrationNewOrganiserByAdmin() throws Exception{
+    public void correctRegistrationNewOrganiserByAdmin() throws Exception {
         correctRegistrationDto.setRoleName(Role.ORGANISER);
         performRegistration(API_USER_CREATE, HttpStatus.ACCEPTED.value());
     }
 
     @Test
     @WithMockUser(roles = ADMIN_ROLE)
-    public void correctRegistrationNewSpeakerByAdmin() throws Exception{
+    public void correctRegistrationNewSpeakerByAdmin() throws Exception {
         correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.ACCEPTED.value());
     }
 
     @Test
     @WithMockUser(roles = ADMIN_ROLE)
-    public void registrationNewAdminByAdmin() throws Exception{
+    public void registrationNewAdminByAdmin() throws Exception {
         correctRegistrationDto.setRoleName(Role.ADMIN);
         doThrow(new WrongRoleException("wrong_role_name")).
                 when(userService).checkUserRegistrationByAdmin(correctRegistrationDto);
@@ -152,26 +152,26 @@ public class UserControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(roles = ORGANISER_ROLE)
-    public void registrationNewUserByAdminAsOrganiser() throws Exception{
+    public void registrationNewUserByAdminAsOrganiser() throws Exception {
         correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
     @WithMockUser(roles = SPEAKER_ROLE)
-    public void registrationNewUserByAdminAsSpeaker() throws Exception{
+    public void registrationNewUserByAdminAsSpeaker() throws Exception {
         correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
-    public void registrationNewUserByAdminWithoutRole() throws Exception{
+    public void registrationNewUserByAdminWithoutRole() throws Exception {
         correctRegistrationDto.setRoleName(Role.SPEAKER);
         performRegistration(API_USER_CREATE, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
-    public void unconfirmedPasswordTest(){
+    public void unconfirmedPasswordTest() {
         correctRegistrationDto.setConfirm("777777");
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
         correctRegistrationDto.setRoleName(Role.SPEAKER);
@@ -181,91 +181,91 @@ public class UserControllerTest extends TestUtil{
     }
 
     @Test
-    public void nullFirstNameTest(){
+    public void nullFirstNameTest() {
         correctRegistrationDto.setFirstName(null);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void toShortFirstNameTest(){
+    public void toShortFirstNameTest() {
         correctRegistrationDto.setFirstName("");
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void toLongFirstNameTest(){
+    public void toLongFirstNameTest() {
         correctRegistrationDto.setFirstName(createStringWithLength(57));
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void nullLastNameTest(){
+    public void nullLastNameTest() {
         correctRegistrationDto.setLastName(null);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void tooShortLastNameTest(){
+    public void tooShortLastNameTest() {
         correctRegistrationDto.setLastName("");
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void tooLongLastNameTest(){
+    public void tooLongLastNameTest() {
         correctRegistrationDto.setLastName(createStringWithLength(57));
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void nullPasswordTest(){
+    public void nullPasswordTest() {
         correctRegistrationDto.setPassword(null);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void tooShortPasswordTest(){
+    public void tooShortPasswordTest() {
         correctRegistrationDto.setPassword("");
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void tooLongPasswordTest(){
+    public void tooLongPasswordTest() {
         correctRegistrationDto.setPassword(createStringWithLength(31));
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void nullPasswordConfirmationTest(){
+    public void nullPasswordConfirmationTest() {
         correctRegistrationDto.setConfirm(null);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void tooShortPasswordConfirmationTest(){
+    public void tooShortPasswordConfirmationTest() {
         correctRegistrationDto.setConfirm("");
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void tooLongPasswordConfirmationTest(){
+    public void tooLongPasswordConfirmationTest() {
         correctRegistrationDto.setConfirm(createStringWithLength(31));
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void nullEmailTest(){
+    public void nullEmailTest() {
         correctRegistrationDto.setEmail(null);
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void emptyEmailTest(){
+    public void emptyEmailTest() {
         correctRegistrationDto.setEmail("");
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
-    public void withoutAtCharacterEmailTest(){
+    public void withoutAtCharacterEmailTest() {
         correctRegistrationDto.setEmail("withoutAtCharacter.com");
         checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
     }
@@ -278,31 +278,31 @@ public class UserControllerTest extends TestUtil{
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void getUserById() throws Exception{
-        User user=createUser();
+    public void getUserById() throws Exception {
+        User user = createUser();
         when(userService.find(anyLong())).thenReturn(user);
-        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)
+        mockMvc.perform(prepareGetRequest(API_USER + "/" + 1)
         ).andExpect(status().isOk());
     }
 
     @Test
-    public void incorrectGetUserById() throws Exception{
-        User user=createUser();
+    public void incorrectGetUserById() throws Exception {
+        User user = createUser();
         when(userService.find(1L)).thenReturn(user);
-        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
+        mockMvc.perform(prepareGetRequest(API_USER + "/" + 1)).
                 andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void notFoundUserById() throws Exception{
+    public void notFoundUserById() throws Exception {
 
         when(userService.getUserDtoById(1L)).thenThrow(ResourceNotFoundException.class);
-        mockMvc.perform(prepareGetRequest(API_USER+"/"+1)).
+        mockMvc.perform(prepareGetRequest(API_USER + "/" + 1)).
                 andExpect(status().isNotFound());
     }
 
-    private void performRegistration(String api, int expectedStatus) throws Exception{
+    private void performRegistration(String api, int expectedStatus) throws Exception {
         mockMvc.perform(post(api)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(correctRegistrationDto))
@@ -332,7 +332,7 @@ public class UserControllerTest extends TestUtil{
         }
     }
 
-    private RegistrationDto setupCorrectRegistrationDto(){
+    private RegistrationDto setupCorrectRegistrationDto() {
         RegistrationDto registrationDto = new RegistrationDto();
         registrationDto.setPassword("123456");
         registrationDto.setLastName("Ivanova");
@@ -340,7 +340,7 @@ public class UserControllerTest extends TestUtil{
         registrationDto.setConfirm("123456");
         String uniqueEmail = "ivanova@gmail.com";
         registrationDto.setEmail(uniqueEmail);
-        return  registrationDto;
+        return registrationDto;
     }
 
     private byte[] convertObjectToJsonBytes(Object object) throws Exception {
@@ -358,7 +358,7 @@ public class UserControllerTest extends TestUtil{
     }
 
     @Override
-    protected UserInfo createUserInfo(){
+    protected UserInfo createUserInfo() {
         ContactType contactType = new ContactType(1L, "LinkedIn");
         ContactType contactType2 = new ContactType(2L, "Twitter");
         ContactType contactType3 = new ContactType(3L, "FaceBook");
@@ -368,7 +368,7 @@ public class UserControllerTest extends TestUtil{
         when(contactTypes.get(anyInt())).thenReturn(contactType).thenReturn(contactType2).thenReturn(contactType3).thenReturn(contactType4);
         when(contactTypeService.findByName(anyString())).thenReturn(contactTypes);
 
-        Map<ContactType, String> contacts = new HashMap<ContactType, String>(){{
+        Map<ContactType, String> contacts = new HashMap<ContactType, String>() {{
             put(contactType, "LinkedIn");
             put(contactType2, "Twitter");
             put(contactType3, "FaceBook");

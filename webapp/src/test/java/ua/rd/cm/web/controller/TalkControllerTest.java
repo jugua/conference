@@ -446,7 +446,7 @@ public class TalkControllerTest extends TestUtil {
         String mimeType = MediaType.IMAGE_PNG_VALUE;
         when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
-        mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
+        mockMvc.perform(prepareGetRequest(API_TALK + "/1/file"))
                 .andExpect(status().isOk());
 
     }
@@ -465,7 +465,7 @@ public class TalkControllerTest extends TestUtil {
         String mimeType = MediaType.IMAGE_PNG_VALUE;
         when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
-        mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
+        mockMvc.perform(prepareGetRequest(API_TALK + "/1/file"))
                 .andExpect(status().isBadRequest());
 
     }
@@ -493,7 +493,7 @@ public class TalkControllerTest extends TestUtil {
         String filePath = "file path";
         when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
 
-        mockMvc.perform(delete(API_TALK+"/1/file"))
+        mockMvc.perform(delete(API_TALK + "/1/file"))
                 .andExpect(status().isOk());
 
         verify(fileStorageService, times(1)).deleteFile(filePath);
@@ -512,7 +512,7 @@ public class TalkControllerTest extends TestUtil {
         File file = new File("wrong path");
         when(fileStorageService.getFile(filePath)).thenReturn(file);
 
-        mockMvc.perform(get(API_TALK+"/1/filename"))
+        mockMvc.perform(get(API_TALK + "/1/filename"))
                 .andExpect(status().isOk());
 
     }

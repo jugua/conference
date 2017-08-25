@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+
 import ua.rd.cm.domain.Type;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;

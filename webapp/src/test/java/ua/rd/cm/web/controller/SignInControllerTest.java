@@ -44,9 +44,9 @@ import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-public class SignInControllerTest extends TestUtil{
+public class SignInControllerTest extends TestUtil {
     private static final String WRONG_JSON_WITHOUT_MAIL = "{}";
     private static final String WRONG_JSON_WITH_WRONG_MAIL = "{\"mail\":\"wrong@email\"}";
     private static final String JSON_WITH_CORRECT_MAIL = "{ \"mail\": \"user@gmail.com\"  }";
@@ -108,7 +108,7 @@ public class SignInControllerTest extends TestUtil{
 
     @Test
     public void testForgotPasswordWithBadRequestWithoutMail()
-            throws Exception{
+            throws Exception {
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST).contentType(MediaType.APPLICATION_JSON)
                 .content(WRONG_JSON_WITHOUT_MAIL))
                 .andExpect(status().isBadRequest());
@@ -116,16 +116,16 @@ public class SignInControllerTest extends TestUtil{
 
     @Test
     public void testForgotPasswordWithBadRequestWithWrongEmail()
-            throws Exception{
+            throws Exception {
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(WRONG_JSON_WITH_WRONG_MAIL))
-                        .andExpect(status().isBadRequest());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(WRONG_JSON_WITH_WRONG_MAIL))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void testForgotPasswordWithCorrectRequest()
-        throws Exception{
+            throws Exception {
         when(userService.isEmailExist(anyString())).thenReturn(true);
 
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST)
@@ -135,32 +135,32 @@ public class SignInControllerTest extends TestUtil{
     }
 
     @Test
-    public void testConfirmRegistrationWithWrongToken() throws Exception{
+    public void testConfirmRegistrationWithWrongToken() throws Exception {
         String url = REGISTRATION_CONFIRM_REQUEST;
         testForWrongToken(url);
     }
 
     @Test
-    public void testConfirmRegistrationWithExpiredToken() throws Exception{
+    public void testConfirmRegistrationWithExpiredToken() throws Exception {
         VerificationToken correctToken = createToken();
         correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
         String correctUrl = REGISTRATION_CONFIRM_REQUEST + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
-                            VerificationToken.TokenType.CONFIRMATION);
+                VerificationToken.TokenType.CONFIRMATION);
     }
 
     @Test
-    public void testConfirmRegistrationWithCorrectToken() throws Exception{
+    public void testConfirmRegistrationWithCorrectToken() throws Exception {
         VerificationToken correctToken = createToken();
         String correctUrl = REGISTRATION_CONFIRM_REQUEST + correctToken.getToken();
         testForCorrectToken(correctToken, correctUrl,
-                            VerificationToken.TokenType.CONFIRMATION);
+                VerificationToken.TokenType.CONFIRMATION);
         testForUpdatingSecurityContext(user);
         verify(userService).updateUserProfile(any());
     }
 
     @Test
-    public void testConfirmNewEmailWithCorrectToken() throws Exception{
+    public void testConfirmNewEmailWithCorrectToken() throws Exception {
         VerificationToken correctToken = createToken();
         VerificationToken.TokenType tokenType = VerificationToken.TokenType.CHANGING_EMAIL;
         correctToken.setType(tokenType);
@@ -172,22 +172,22 @@ public class SignInControllerTest extends TestUtil{
     }
 
     @Test
-    public void testConfirmNewEmailWithWrongToken() throws Exception{
+    public void testConfirmNewEmailWithWrongToken() throws Exception {
         String url = "/api/newEmailConfirm/";
         testForWrongToken(url);
     }
 
     @Test
-    public void testConfirmNewEmailWithExpiredToken() throws Exception{
+    public void testConfirmNewEmailWithExpiredToken() throws Exception {
         VerificationToken correctToken = createToken();
         correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
         String correctUrl = "/api/newEmailConfirm/" + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
-                            VerificationToken.TokenType.CHANGING_EMAIL);
+                VerificationToken.TokenType.CHANGING_EMAIL);
     }
 
     @Test
-    public void testChangePasswordWithCorrectToken() throws Exception{
+    public void testChangePasswordWithCorrectToken() throws Exception {
         VerificationToken correctToken = createToken();
         VerificationToken.TokenType tokenType = VerificationToken.TokenType.FORGOT_PASS;
         correctToken.setType(tokenType);
@@ -197,24 +197,24 @@ public class SignInControllerTest extends TestUtil{
     }
 
     @Test
-    public void testChangePasswordWithExpiredToken() throws Exception{
+    public void testChangePasswordWithExpiredToken() throws Exception {
         VerificationToken correctToken = createToken();
         correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
         String correctUrl = "/api/forgotPassword/" + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
-                            VerificationToken.TokenType.FORGOT_PASS);
+                VerificationToken.TokenType.FORGOT_PASS);
     }
 
     @Test
-    public void testChangePasswordWithWrongToken() throws Exception{
+    public void testChangePasswordWithWrongToken() throws Exception {
         String url = "/api/forgotPassword/";
         testForWrongToken(url);
     }
 
     @Test
-    public void testChangePasswordAndUpdatingUserProfileWithConfirmedPassword() throws Exception{
+    public void testChangePasswordAndUpdatingUserProfileWithConfirmedPassword() throws Exception {
         VerificationToken correctToken = createToken();
-        String correctUrl = "/api/forgotPassword/" +correctToken.getToken();
+        String correctUrl = "/api/forgotPassword/" + correctToken.getToken();
         String correctPassword = "password";
         NewPasswordDto dto = new NewPasswordDto(correctPassword);
         dto.setConfirm(correctPassword);
@@ -223,8 +223,8 @@ public class SignInControllerTest extends TestUtil{
         when(passwordEncoder.encode(anyString())).thenReturn(user.getPassword());
         when(tokenService.getToken(correctToken.getToken())).thenReturn(correctToken);
         mockMvc.perform(post(correctUrl)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(dto)))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(convertObjectToJsonBytes(dto)))
                 .andExpect(status().isOk());
         verify(userService).updateUserProfile(user);
     }
@@ -232,7 +232,7 @@ public class SignInControllerTest extends TestUtil{
     @Test
     public void testChangePasswordWithUnconfirmedPassword() throws Exception {
         VerificationToken correctToken = createToken();
-        String correctUrl = "/api/forgotPassword/" +correctToken.getToken();
+        String correctUrl = "/api/forgotPassword/" + correctToken.getToken();
         String correctPassword = "password";
         NewPasswordDto dto = new NewPasswordDto(correctPassword);
         dto.setConfirm(correctPassword);
@@ -283,25 +283,25 @@ public class SignInControllerTest extends TestUtil{
         when(tokenService.isTokenValid(any(VerificationToken.class), any(VerificationToken.TokenType.class))).thenReturn(false);
         when(tokenService.getToken(anyString())).thenReturn(null);
         doReturn(null).when(tokenService).getToken(wrongToken);
-        mockMvc.perform(get(baseUrl+wrongToken))
+        mockMvc.perform(get(baseUrl + wrongToken))
                 .andExpect(status().isBadRequest());
 
-        verify(tokenService).isTokenValid(  any(VerificationToken.class),
+        verify(tokenService).isTokenValid(any(VerificationToken.class),
                 any(VerificationToken.TokenType.class));
         verify(tokenService, never()).isTokenExpired(anyObject());
         verify(userService, never()).updateUserProfile(anyObject());
     }
 
-    public void testForUpdatingSecurityContext(User user){
+    public void testForUpdatingSecurityContext(User user) {
         Authentication expectedAuthentication = getAuthentication(user);
         verify(securityContext).setAuthentication(expectedAuthentication);
     }
 
-    private VerificationToken createToken(){
+    private VerificationToken createToken() {
         return realTokenService.createToken(user, VerificationToken.TokenType.CONFIRMATION);
     }
 
-    private Authentication getAuthentication(User user){
+    private Authentication getAuthentication(User user) {
         return AuthenticationFactory.createAuthentication(user);
     }
 

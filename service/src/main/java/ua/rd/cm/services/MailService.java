@@ -3,9 +3,11 @@ package ua.rd.cm.services;
 import freemarker.template.Configuration;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j;
+
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.services.preparator.CustomMimeMessagePreparator;
 

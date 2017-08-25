@@ -35,7 +35,7 @@ import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })
+@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public abstract class WithTokenControllerTest extends TestUtil {
 
@@ -126,25 +126,25 @@ public abstract class WithTokenControllerTest extends TestUtil {
         when(tokenService.isTokenValid(any(VerificationToken.class), any(VerificationToken.TokenType.class))).thenReturn(false);
         when(tokenService.getToken(anyString())).thenReturn(null);
         doReturn(null).when(tokenService).getToken(wrongToken);
-        mockMvc.perform(get(baseUrl+wrongToken))
+        mockMvc.perform(get(baseUrl + wrongToken))
                 .andExpect(status().isBadRequest());
 
-        verify(tokenService).isTokenValid(  any(VerificationToken.class),
+        verify(tokenService).isTokenValid(any(VerificationToken.class),
                 any(VerificationToken.TokenType.class));
         verify(tokenService, never()).isTokenExpired(anyObject());
         verify(userService, never()).updateUserProfile(anyObject());
     }
 
-    public void testForUpdatingSecurityContext(User user){
+    public void testForUpdatingSecurityContext(User user) {
         Authentication expectedAuthentication = getAuthentication(user);
         verify(securityContext).setAuthentication(expectedAuthentication);
     }
 
-    public VerificationToken createToken(){
+    public VerificationToken createToken() {
         return realTokenService.createToken(user, VerificationToken.TokenType.CONFIRMATION);
     }
 
-    private Authentication getAuthentication(User user){
+    private Authentication getAuthentication(User user) {
         return AuthenticationFactory.createAuthentication(user);
     }
 }

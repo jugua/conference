@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;

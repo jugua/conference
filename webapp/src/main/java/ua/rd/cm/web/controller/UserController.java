@@ -2,12 +2,14 @@ package ua.rd.cm.web.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
@@ -21,6 +23,7 @@ import ua.rd.cm.services.exception.WrongRoleException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.security.Principal;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
@@ -66,7 +69,7 @@ public class UserController {
         HttpStatus status;
         MessageDto message = new MessageDto();
 
-        try{
+        try {
 
             if (bindingResult.hasFieldErrors()) {
                 status = HttpStatus.BAD_REQUEST;

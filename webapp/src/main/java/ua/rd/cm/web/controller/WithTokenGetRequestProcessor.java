@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
@@ -46,7 +47,7 @@ public class WithTokenGetRequestProcessor {
     private MessageDto prepareMessageDto(String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setError(message);
-        return  messageDto;
+        return messageDto;
     }
 
     private void authenticateUser(User user) {

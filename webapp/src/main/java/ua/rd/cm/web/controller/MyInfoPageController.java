@@ -2,6 +2,7 @@ package ua.rd.cm.web.controller;
 
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import ua.rd.cm.domain.User;
 
 import ua.rd.cm.dto.UserDto;
@@ -25,11 +27,13 @@ import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.io.*;
 import java.net.URLConnection;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+
 import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 @RestController
@@ -60,7 +64,7 @@ public class MyInfoPageController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        try{
+        try {
             UserDto userDto = userService.getUserDtoByEmail(principal.getName());
             return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
         } catch (NoSuchUserException ex) {
@@ -119,7 +123,7 @@ public class MyInfoPageController {
         try {
             newPhotoPath = fileStorageService.saveFile(file, PHOTO);
             if (!"".equals(newPhotoPath)) {
-                if(previousPhotoPath != null) {
+                if (previousPhotoPath != null) {
                     fileStorageService.deleteFile(previousPhotoPath);
                 }
                 currentUser.setPhoto(newPhotoPath);
@@ -150,11 +154,11 @@ public class MyInfoPageController {
     }
 
 
-    public void fillForm(){
+    public void fillForm() {
 
     }
 
-    public void showForm(){
+    public void showForm() {
 
     }
 }

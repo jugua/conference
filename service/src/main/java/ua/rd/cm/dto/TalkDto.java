@@ -1,10 +1,12 @@
 package ua.rd.cm.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;

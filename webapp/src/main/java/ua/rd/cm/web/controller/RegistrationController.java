@@ -2,6 +2,7 @@ package ua.rd.cm.web.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
@@ -41,10 +43,11 @@ public class RegistrationController {
         return processUserRegistration(dto, bindingResult, request);
     }
 
-    public void registration(){
+    public void registration() {
 
     }
-    public void confirmationProcess(){
+
+    public void confirmationProcess() {
 
     }
 
@@ -53,7 +56,7 @@ public class RegistrationController {
         HttpStatus status;
         MessageDto message = new MessageDto();
 
-        try{
+        try {
 
             if (bindingResult.hasFieldErrors()) {
                 status = HttpStatus.BAD_REQUEST;

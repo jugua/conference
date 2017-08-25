@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -232,7 +233,6 @@ public class UserServiceTest {
     }
 
 
-
     private User createDefaultUser() {
         User result = new User();
         result.setId(30L);
@@ -246,13 +246,13 @@ public class UserServiceTest {
         return result;
     }
 
-    private RegistrationDto setupCorrectRegistrationDto(){
+    private RegistrationDto setupCorrectRegistrationDto() {
         RegistrationDto registrationDto = new RegistrationDto();
         registrationDto.setPassword("123456");
         registrationDto.setLastName("Ivanova");
         registrationDto.setFirstName("Olya");
         registrationDto.setConfirm("123456");
         registrationDto.setEmail("ivanova@gmail.com");
-        return  registrationDto;
+        return registrationDto;
     }
 }

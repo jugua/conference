@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+
 import ua.rd.cm.domain.Topic;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.TopicDto;
@@ -39,7 +40,7 @@ public class TopicServiceTest {
 
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
         topicService = new TopicServiceImpl(modelMapper, topicRepository);
@@ -62,21 +63,21 @@ public class TopicServiceTest {
     }
 
     @Test
-    public void testFindByCorrectId(){
+    public void testFindByCorrectId() {
         long correctId = 1;
         when(topicRepository.findOne(correctId)).thenReturn(topic);
         assertEquals(topicService.find(correctId), topic);
     }
 
     @Test(expected = TopicNotFoundException.class)
-    public void testFindByWrongId(){
-        long wrongId=100500;
+    public void testFindByWrongId() {
+        long wrongId = 100500;
         when(topicRepository.findOne(wrongId)).thenReturn(null);
         topicService.find(wrongId);
     }
 
     @Test
-    public void testSaveTopicIfExists(){
+    public void testSaveTopicIfExists() {
         Long id = 1L;
         when(topicRepository.findTopicByName(createTopicDto.getName())).thenReturn(topic);
         assertEquals(id, topicService.save(createTopicDto));
@@ -85,7 +86,7 @@ public class TopicServiceTest {
     }
 
     @Test
-    public void testSaveTopicIfNotExists(){
+    public void testSaveTopicIfNotExists() {
         String newName = "new";
         Long expectedId = topic.getId();
         createTopicDto.setName(newName);
@@ -98,14 +99,14 @@ public class TopicServiceTest {
     }
 
     @Test
-    public void testGetTopicByCorrectName(){
-        String correctName = "name" ;
+    public void testGetTopicByCorrectName() {
+        String correctName = "name";
         when(topicRepository.findTopicByName(correctName)).thenReturn(topic);
         assertEquals(topicService.getByName(correctName), topic);
     }
 
     @Test(expected = TopicNotFoundException.class)
-    public void testGetTopicByWrongName(){
+    public void testGetTopicByWrongName() {
         String wrongName = "wrongName";
         when(topicRepository.findTopicByName(wrongName)).thenReturn(null);
         topicService.getByName(wrongName);
