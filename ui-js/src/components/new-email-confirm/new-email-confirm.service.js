@@ -6,6 +6,6 @@ export default class NewEmailConfirmService {
   }
 
   emailConfirm(token) {
-    return this.http.get(`/api/newEmailConfirm/${token}`);
+    return this.http.get(`/confirmation/newEmailConfirm/${token}`);
   }
 }

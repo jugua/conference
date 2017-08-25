@@ -15,7 +15,7 @@ import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.OldEmailMessagePreparator;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/confirmation")
 public class ConfirmationController {
 
     private final WithTokenGetRequestProcessor withTokenGetRequestProcessor;

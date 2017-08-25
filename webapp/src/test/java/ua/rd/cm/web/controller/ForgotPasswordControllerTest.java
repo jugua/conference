@@ -22,7 +22,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     private static final String WRONG_JSON_WITH_WRONG_MAIL = "{\"mail\":\"wrong@email\"}";
     private static final String JSON_WITH_CORRECT_MAIL = "{ \"mail\": \"user@gmail.com\"  }";
 
-    private static final String FORGOT_PASSWORD_REQUEST = "/api/forgot-password/";
+    private static final String FORGOT_PASSWORD_REQUEST = "/forgotPasswordPage/forgotPassword/";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -60,7 +60,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
         VerificationToken correctToken = createToken();
         VerificationToken.TokenType tokenType = VerificationToken.TokenType.FORGOT_PASS;
         correctToken.setType(tokenType);
-        String correctUrl = "/api/forgotPassword/" + correctToken.getToken();
+        String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
         testForCorrectToken(correctToken, correctUrl, tokenType);
         testForUpdatingSecurityContext(user);
     }
@@ -69,21 +69,21 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     public void testChangePasswordWithExpiredToken() throws Exception{
         VerificationToken correctToken = createToken();
         correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
-        String correctUrl = "/api/forgotPassword/" + correctToken.getToken();
+        String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
                 VerificationToken.TokenType.FORGOT_PASS);
     }
 
     @Test
     public void testChangePasswordWithWrongToken() throws Exception{
-        String url = "/api/forgotPassword/";
+        String url = "/forgotPasswordPage/changePassword/";
         testForWrongToken(url);
     }
 
     @Test
     public void testChangePasswordAndUpdatingUserProfileWithConfirmedPassword() throws Exception{
         VerificationToken correctToken = createToken();
-        String correctUrl = "/api/forgotPassword/" +correctToken.getToken();
+        String correctUrl = "/forgotPasswordPage/changePassword/" +correctToken.getToken();
         String correctPassword = "password";
         NewPasswordDto dto = new NewPasswordDto(correctPassword);
         dto.setConfirm(correctPassword);
@@ -101,7 +101,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     @Test
     public void testChangePasswordWithUnconfirmedPassword() throws Exception {
         VerificationToken correctToken = createToken();
-        String correctUrl = "/api/forgotPassword/" +correctToken.getToken();
+        String correctUrl = "/forgotPasswordPage/changePassword/" +correctToken.getToken();
         String correctPassword = "password";
         NewPasswordDto dto = new NewPasswordDto(correctPassword);
         dto.setConfirm(correctPassword);

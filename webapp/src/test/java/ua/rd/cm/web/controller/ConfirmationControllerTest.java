@@ -17,7 +17,7 @@ import ua.rd.cm.domain.VerificationToken;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })
 @WebAppConfiguration
 public class ConfirmationControllerTest extends WithTokenControllerTest{
-    private static final String REGISTRATION_CONFIRM_REQUEST = "/api/registrationConfirm/";
+    private static final String REGISTRATION_CONFIRM_REQUEST = "/confirmation/registrationConfirm/";
 
     @Test
     public void testConfirmRegistrationWithWrongToken() throws Exception{
@@ -49,7 +49,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest{
         VerificationToken correctToken = createToken();
         VerificationToken.TokenType tokenType = VerificationToken.TokenType.CHANGING_EMAIL;
         correctToken.setType(tokenType);
-        String correctUrl = "/api/newEmailConfirm/" + correctToken.getToken();
+        String correctUrl = "/confirmation/newEmailConfirm/" + correctToken.getToken();
         when(tokenService.getEmail(correctToken.getToken())).thenReturn(user.getEmail());
         testForCorrectToken(correctToken, correctUrl, tokenType);
         testForUpdatingSecurityContext(user);
@@ -58,7 +58,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest{
 
     @Test
     public void testConfirmNewEmailWithWrongToken() throws Exception{
-        String url = "/api/newEmailConfirm/";
+        String url = "/confirmation/newEmailConfirm/";
         testForWrongToken(url);
     }
 
@@ -66,7 +66,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest{
     public void testConfirmNewEmailWithExpiredToken() throws Exception{
         VerificationToken correctToken = createToken();
         correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
-        String correctUrl = "/api/newEmailConfirm/" + correctToken.getToken();
+        String correctUrl = "/confirmation/newEmailConfirm/" + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
                 VerificationToken.TokenType.CHANGING_EMAIL);
     }

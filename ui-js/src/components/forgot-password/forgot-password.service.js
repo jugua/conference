@@ -2,7 +2,7 @@ class ForgotPasswordService {
   constructor($resource) {
     'ngInject';
 
-    this.resource = $resource('/api/forgot-password');
+    this.resource = $resource('/forgotPasswordPage/forgotPassword');
   }
 
   restore(user, successCallback, errorCallback) {

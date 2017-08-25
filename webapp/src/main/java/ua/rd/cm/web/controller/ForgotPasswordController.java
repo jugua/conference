@@ -25,7 +25,7 @@ import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.ForgotMessagePreparator;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/forgotPasswordPage")
 public class ForgotPasswordController {
 
     private final WithTokenGetRequestProcessor withTokenGetRequestProcessor;
@@ -48,7 +48,7 @@ public class ForgotPasswordController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/forgot-password")
+    @PostMapping("/forgotPassword")
     public ResponseEntity forgotPassword(@RequestBody String mail, HttpServletRequest request) throws IOException {
         HttpStatus httpStatus;
         MessageDto responseMessage = new MessageDto();
@@ -75,13 +75,13 @@ public class ForgotPasswordController {
         return ResponseEntity.status(httpStatus).body(responseMessage);
     }
 
-    @GetMapping("/forgotPassword/{token}")
+    @GetMapping("/changePassword/{token}")
     public ResponseEntity changePassword(@PathVariable String token) {
         return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.FORGOT_PASS, verificationToken -> {
         });
     }
 
-    @PostMapping("/forgotPassword/{token}")
+    @PostMapping("/changePassword/{token}")
     public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto, BindingResult bindingResult) {
         VerificationToken verificationToken = tokenService.getToken(token);
         if (!isPasswordConfirmed(dto))
