@@ -17,7 +17,19 @@
         <hibernate.version>5.2.3.Final</hibernate.version>
     </properties>
 
+
     <profiles>
+
+        <profile>
+            <id>integration-tests</id>
+            <properties>
+                <profile.folder>testing</profile.folder>
+            </properties>
+            <modules>
+                <module>IntegrationTesting</module>
+            </modules>
+        </profile>
+
         <profile>
             <id>js</id>
             <modules>

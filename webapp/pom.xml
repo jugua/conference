@@ -99,57 +99,6 @@
                 <profile.folder>master</profile.folder>
             </properties>
         </profile>
-        <profile>
-            <id>integration-tests</id>
-            <properties>
-                <profile.folder>testing</profile.folder>
-            </properties>
-            <build>
-                <plugins>
-                    <!--<plugin>-->
-                    <!--<groupId>org.apache.tomcat.maven</groupId>-->
-                    <!--<artifactId>tomcat7-maven-plugin</artifactId>-->
-                    <!--<version>2.2</version>-->
-                    <!--<configuration>-->
-                    <!--<path>/</path>-->
-                    <!--<fork>true</fork>-->
-                    <!--<port>9876</port>-->
-                    <!--</configuration>-->
-                    <!--<executions>-->
-                    <!--<execution>-->
-                    <!--<id>start-tomcat</id>-->
-                    <!--<phase>pre-integration-test</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>run-war-only</goal>-->
-                    <!--</goals>-->
-                    <!--</execution>-->
-                    <!--<execution>-->
-                    <!--<id>stop-tomcat</id>-->
-                    <!--<phase>post-integration-test</phase>-->
-                    <!--<goals>-->
-                    <!--<goal>shutdown</goal>-->
-                    <!--</goals>-->
-                    <!--</execution>-->
-                    <!--</executions>-->
-                    <!--</plugin>-->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>2.19.1</version>
-                        <executions>
-                            <execution>
-                                <id>integration-test</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                    <goal>verify</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
     </profiles>
 
     <dependencies>

@@ -1,4 +1,4 @@
-package ua.rd.cm.config;
+package jpa;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;

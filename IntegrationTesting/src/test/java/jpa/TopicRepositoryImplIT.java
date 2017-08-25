@@ -1,4 +1,4 @@
-package ua.rd.cm.repository.jpa;
+package jpa;
 
 import static org.junit.Assert.*;
 
@@ -16,7 +16,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 
-import ua.rd.cm.config.InMemoryRepositoryConfig;
 import ua.rd.cm.domain.Topic;
 import ua.rd.cm.repository.TopicRepository;
 
@@ -36,7 +35,6 @@ public class TopicRepositoryImplIT {
         Collection<Topic> topics = (Collection<Topic>) topicRepository.findAll();
         assertEquals(topics.size(), expectedSize);
     }
-
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
     public void testFindTopicByWrongName() {
