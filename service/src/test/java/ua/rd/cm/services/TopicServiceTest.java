@@ -35,11 +35,7 @@ public class TopicServiceTest {
 
     private Topic topic;
 
-    private TopicDto topicDto;
-
     private CreateTopicDto createTopicDto;
-
-    private List<TopicDto> topics;
 
 
     @Before
@@ -50,11 +46,11 @@ public class TopicServiceTest {
 
         topic = new Topic(1L, "name");
 
-        topicDto = new TopicDto();
+        TopicDto topicDto = new TopicDto();
         topicDto.setId(1L);
         topicDto.setName("name");
 
-        topics= new ArrayList<>();
+        List<TopicDto> topics = new ArrayList<>();
         topics.add(topicDto);
 
         createTopicDto = new CreateTopicDto("name");

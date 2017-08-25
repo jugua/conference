@@ -29,8 +29,6 @@ import java.security.Principal;
 @Log4j
 public class UserController {
     private final UserService userService;
-    private final UserInfoService userInfoService;
-
 
 
     @PreAuthorize("hasRole(\"ADMIN\")")

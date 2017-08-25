@@ -29,10 +29,8 @@ public class TypeServiceTest {
     private TypeService typeService;
     @Mock
     private TypeRepository typeRepository;
-    private ModelMapper modelMapper;
     private Type type;
     private CreateTypeDto createTypeDto;
-    private TypeDto typeDto;
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -40,10 +38,10 @@ public class TypeServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
         typeService = new TypeServiceImpl(typeRepository, modelMapper);
         createTypeDto = new CreateTypeDto("Olena");
-        typeDto = new TypeDto();
+        TypeDto typeDto = new TypeDto();
         typeDto.setId(3L);
         typeDto.setName("Olena");
         type = new Type(3L, "Olena");

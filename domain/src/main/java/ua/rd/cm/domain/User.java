@@ -61,6 +61,6 @@ public class User extends AbstractEntity {
     }
 
     public enum UserStatus {
-        CONFIRMED, UNCONFIRMED;
+        CONFIRMED, UNCONFIRMED
     }
 }

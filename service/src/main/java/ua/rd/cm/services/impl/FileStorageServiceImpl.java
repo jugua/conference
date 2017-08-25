@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 import static ua.rd.cm.services.exception.FileValidationException.*;
 import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOUND;
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.FILE;
 
 @Log4j
 public class FileStorageServiceImpl implements FileStorageService {

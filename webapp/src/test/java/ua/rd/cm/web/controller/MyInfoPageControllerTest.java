@@ -1,8 +1,22 @@
 package ua.rd.cm.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.Principal;
+
+import javax.servlet.Filter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +35,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
@@ -33,22 +52,6 @@ import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.FileValidationException;
-
-import javax.servlet.Filter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.Principal;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -329,8 +332,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         try {
             File file = new File("src/test/resources/trybel_master.JPG");
             FileInputStream fileInputStream = new FileInputStream(file);
-            MockMultipartFile mockFile = new MockMultipartFile("file", fileInputStream);
-            return mockFile;
+            return new MockMultipartFile("file", fileInputStream);
         } catch (IOException e) {
             log.info(e);
         }

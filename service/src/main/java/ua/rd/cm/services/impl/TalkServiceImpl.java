@@ -162,7 +162,6 @@ public class TalkServiceImpl implements TalkService {
     @Override
     public List<Talk> findByUserId(Long id) {
         List<Talk> talks = talkRepository.findByUserId(id);
-        ;
         if (talks.isEmpty()) {
             throw new TalkNotFoundException();
         }

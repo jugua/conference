@@ -1,9 +1,18 @@
 package ua.rd.cm.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.Filter;
+
 import org.junit.After;
-import lombok.extern.log4j.Log4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +33,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
@@ -31,27 +45,14 @@ import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.services.exception.*;
-import ua.rd.cm.dto.UserDto;
-
-import javax.servlet.Filter;
-import java.security.Principal;
-import java.util.*;
-
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
+import ua.rd.cm.services.exception.WrongRoleException;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -63,8 +64,6 @@ public class UserControllerTest extends TestUtil{
     public static final String API_USER_CREATE = "/api/user/create";
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
-    private String uniqueEmail = "ivanova@gmail.com";
-    private String alreadyRegisteredEmail = "registered@gmail.com";
 
     @Autowired
     private WebApplicationContext context;
@@ -119,6 +118,7 @@ public class UserControllerTest extends TestUtil{
 
     @Test
     public void alreadyRegisteredEmailTest() throws Exception{
+        String alreadyRegisteredEmail = "registered@gmail.com";
         correctRegistrationDto.setEmail(alreadyRegisteredEmail);
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
         correctRegistrationDto.setRoleName(Role.SPEAKER);
@@ -309,7 +309,7 @@ public class UserControllerTest extends TestUtil{
         ).andExpect(status().is(expectedStatus));
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception{
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
@@ -338,6 +338,7 @@ public class UserControllerTest extends TestUtil{
         registrationDto.setLastName("Ivanova");
         registrationDto.setFirstName("Olya");
         registrationDto.setConfirm("123456");
+        String uniqueEmail = "ivanova@gmail.com";
         registrationDto.setEmail(uniqueEmail);
         return  registrationDto;
     }

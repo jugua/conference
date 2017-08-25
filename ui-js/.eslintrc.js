@@ -35,4 +35,4 @@ module.exports = {
     // Own global Angular app bootstrapping function
     "include_all_modules": false,
   }
-}
+};

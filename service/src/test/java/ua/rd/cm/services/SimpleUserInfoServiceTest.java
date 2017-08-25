@@ -10,7 +10,6 @@ import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.services.impl.UserInfoServiceImpl;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)

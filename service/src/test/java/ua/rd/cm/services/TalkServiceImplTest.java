@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -32,7 +31,6 @@ public class TalkServiceImplTest {
     public ExpectedException expectedException = ExpectedException.none();
     @Mock
     private TalkRepository talkRepository;
-    private ModelMapper modelMapper;
     @Mock
     private LevelRepository levelRepository;
     @Mock
@@ -54,7 +52,6 @@ public class TalkServiceImplTest {
     private Talk talk;
     private User speakerUser;
     private User organiserUser;
-    private UserInfo userInfo;
     private Language language;
     private Topic topic;
     private Type type;
@@ -64,9 +61,9 @@ public class TalkServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
-        modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
         talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, mailService, roleRepository);
-        userInfo = new UserInfo();
+        UserInfo userInfo = new UserInfo();
         userInfo.setId(1L);
         userInfo.setShortBio("bio");
         userInfo.setJobTitle("job");
