@@ -1,5 +1,8 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,9 +12,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.services.impl.UserInfoServiceImpl;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserInfoServiceTest {

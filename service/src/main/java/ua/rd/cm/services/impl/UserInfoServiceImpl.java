@@ -1,5 +1,7 @@
 package ua.rd.cm.services.impl;
 
+import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_INFO_NOT_FOUND;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,8 +10,6 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
-
-import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_INFO_NOT_FOUND;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {

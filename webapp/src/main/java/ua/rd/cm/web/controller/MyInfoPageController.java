@@ -1,9 +1,16 @@
 package ua.rd.cm.web.controller;
 
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.Principal;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,27 +21,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
-
-import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.NoSuchUserException;
-import ua.rd.cm.services.impl.FileStorageServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import java.io.*;
-import java.net.URLConnection;
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
-
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 @RestController
 @RequestMapping("/api/user/current")

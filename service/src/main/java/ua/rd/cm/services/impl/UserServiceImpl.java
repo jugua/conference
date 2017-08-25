@@ -1,5 +1,10 @@
 package ua.rd.cm.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,15 +22,10 @@ import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Service

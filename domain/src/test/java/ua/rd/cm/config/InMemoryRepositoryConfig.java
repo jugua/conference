@@ -1,8 +1,7 @@
 package ua.rd.cm.config;
 
-import net.sf.log4jdbc.Log4jdbcProxyDataSource;
-import net.sf.log4jdbc.tools.Log4JdbcCustomFormatter;
-import net.sf.log4jdbc.tools.LoggingType;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,8 +19,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
+import net.sf.log4jdbc.Log4jdbcProxyDataSource;
+import net.sf.log4jdbc.tools.Log4JdbcCustomFormatter;
+import net.sf.log4jdbc.tools.LoggingType;
 
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")

@@ -1,5 +1,11 @@
 package ua.rd.cm.services.impl;
 
+import static ua.rd.cm.services.exception.TalkValidationException.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +19,6 @@ import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.preparator.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static ua.rd.cm.services.exception.TalkValidationException.*;
 
 @Service
 public class TalkServiceImpl implements TalkService {

@@ -1,11 +1,11 @@
 package ua.rd.cm.services;
 
-import org.springframework.web.multipart.MultipartFile;
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType;
 
 import java.io.File;
 import java.io.IOException;
 
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
 

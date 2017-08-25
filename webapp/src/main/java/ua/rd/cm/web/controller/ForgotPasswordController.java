@@ -1,7 +1,9 @@
 package ua.rd.cm.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
@@ -18,11 +23,6 @@ import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.ForgotMessagePreparator;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")

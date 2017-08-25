@@ -1,5 +1,14 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,15 +24,6 @@ import ua.rd.cm.repository.*;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.impl.TalkServiceImpl;
 import ua.rd.cm.services.preparator.ChangeTalkBySpeakerPreparator;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TalkServiceImplTest {

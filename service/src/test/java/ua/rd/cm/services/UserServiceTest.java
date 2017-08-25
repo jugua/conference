@@ -1,5 +1,11 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,16 +21,10 @@ import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.impl.UserServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {

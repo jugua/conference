@@ -1,7 +1,9 @@
 package ua.rd.cm.web.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -21,11 +25,6 @@ import ua.rd.cm.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.services.*;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import java.io.IOException;
 
 @Log4j
 @RestController

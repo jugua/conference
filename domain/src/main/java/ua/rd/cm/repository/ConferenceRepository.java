@@ -1,12 +1,12 @@
 package ua.rd.cm.repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import ua.rd.cm.domain.Conference;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Repository
 public interface ConferenceRepository extends CrudRepository<Conference, Long> {

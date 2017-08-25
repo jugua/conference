@@ -1,5 +1,14 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,15 +23,6 @@ import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.repository.TypeRepository;
 import ua.rd.cm.services.impl.TypeServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TypeServiceTest {

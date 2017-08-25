@@ -1,10 +1,10 @@
 package ua.rd.cm.services;
 
+import java.util.List;
+
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.TalkDto;
-
-import java.util.List;
 
 public interface TalkService {
 

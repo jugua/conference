@@ -1,11 +1,11 @@
 package ua.rd.cm.config;
 
+import javax.servlet.Filter;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-import javax.servlet.Filter;
 
 /**
  * @author Yaroslav_Revin

@@ -1,10 +1,10 @@
 package ua.rd.cm.services;
 
+import java.util.List;
+
 import ua.rd.cm.domain.Type;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
-
-import java.util.List;
 
 /**
  * @author Mariia Lapovska

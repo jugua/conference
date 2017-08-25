@@ -1,5 +1,7 @@
 package ua.rd.cm.web.controller;
 
+import java.util.function.Consumer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,6 @@ import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
-
-import java.util.function.Consumer;
 
 @Component
 public class WithTokenGetRequestProcessor {

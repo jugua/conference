@@ -1,7 +1,8 @@
 package ua.rd.cm.repository.jpa;
 
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
+import static org.junit.Assert.*;
+
+import java.util.Collection;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,13 +13,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
+
 import ua.rd.cm.config.InMemoryRepositoryConfig;
 import ua.rd.cm.domain.Topic;
 import ua.rd.cm.repository.TopicRepository;
-
-import java.util.Collection;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {InMemoryRepositoryConfig.class})

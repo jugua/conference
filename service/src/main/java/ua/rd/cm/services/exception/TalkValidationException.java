@@ -1,9 +1,9 @@
 package ua.rd.cm.services.exception;
 
-import org.springframework.http.HttpStatus;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.http.HttpStatus;
 
 /**
  * Created by Valeriia_Fatova on 8/9/2017.

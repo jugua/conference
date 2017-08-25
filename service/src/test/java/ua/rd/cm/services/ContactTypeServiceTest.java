@@ -1,5 +1,14 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,15 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.services.impl.ContactTypeServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 /**

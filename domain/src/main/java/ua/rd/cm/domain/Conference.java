@@ -1,11 +1,11 @@
 package ua.rd.cm.domain;
 
-import lombok.*;
+import java.time.LocalDate;
+import java.util.Collection;
 
 import javax.persistence.*;
 
-import java.time.LocalDate;
-import java.util.Collection;
+import lombok.*;
 
 @Data
 @NoArgsConstructor

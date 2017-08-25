@@ -1,5 +1,13 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,14 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)

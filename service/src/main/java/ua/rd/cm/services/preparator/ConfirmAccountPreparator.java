@@ -1,10 +1,10 @@
 package ua.rd.cm.services.preparator;
 
+import java.util.HashMap;
+
 import lombok.AllArgsConstructor;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
-
-import java.util.HashMap;
 
 @AllArgsConstructor
 public class ConfirmAccountPreparator extends CustomMimeMessagePreparator {

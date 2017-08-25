@@ -1,5 +1,8 @@
 package ua.rd.cm.services.impl;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +13,6 @@ import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.repository.ConferenceRepository;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @Transactional

@@ -1,5 +1,11 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +22,6 @@ import ua.rd.cm.dto.TopicDto;
 import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.services.exception.TopicNotFoundException;
 import ua.rd.cm.services.impl.TopicServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)

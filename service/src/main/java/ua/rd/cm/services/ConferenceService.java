@@ -1,9 +1,9 @@
 package ua.rd.cm.services;
 
+import java.util.List;
+
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.dto.CreateConferenceDto;
-
-import java.util.List;
 
 public interface ConferenceService {
 

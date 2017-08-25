@@ -1,12 +1,12 @@
 package ua.rd.cm.dto.converter;
 
+import java.util.stream.Collectors;
+
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
 
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.CreateConferenceDto;
-
-import java.util.stream.Collectors;
 
 public class CreateConferenceToConference implements Converter<CreateConferenceDto, Conference> {
 

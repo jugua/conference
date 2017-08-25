@@ -1,8 +1,8 @@
 package ua.rd.cm.services;
 
-import ua.rd.cm.dto.LevelDto;
-
 import java.util.List;
+
+import ua.rd.cm.dto.LevelDto;
 
 /**
  * @author Olha_Melnyk

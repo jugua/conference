@@ -1,11 +1,11 @@
 package ua.rd.cm.web.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
-import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.SettingsDto;
 import ua.rd.cm.services.MailService;
@@ -25,13 +30,6 @@ import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.preparator.ChangePasswordPreparator;
 import ua.rd.cm.services.preparator.NewEmailMessagePreparator;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
 
 @Log4j
 @RestController

@@ -1,13 +1,13 @@
 package ua.rd.cm.web.security;
 
+import java.util.Collection;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import ua.rd.cm.domain.User;
-
-import java.util.Collection;
 
 public final class AuthenticationFactory {
 

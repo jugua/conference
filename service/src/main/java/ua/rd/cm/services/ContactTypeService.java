@@ -1,8 +1,8 @@
 package ua.rd.cm.services;
 
-import ua.rd.cm.domain.ContactType;
-
 import java.util.List;
+
+import ua.rd.cm.domain.ContactType;
 
 
 public interface ContactTypeService {

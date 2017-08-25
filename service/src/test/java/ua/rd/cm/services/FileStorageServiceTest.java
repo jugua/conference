@@ -1,5 +1,15 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,16 +23,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import ua.rd.cm.services.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType;
 
 
 @RunWith(MockitoJUnitRunner.class)

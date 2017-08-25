@@ -1,14 +1,14 @@
 package ua.rd.cm.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import javax.persistence.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
