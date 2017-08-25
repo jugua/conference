@@ -1,18 +1,19 @@
 package ua.rd.cm.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.rd.cm.domain.Type;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.repository.TypeRepository;
 import ua.rd.cm.services.TypeService;
 import ua.rd.cm.services.exception.TypeNotFoundException;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TypeServiceImpl implements TypeService {

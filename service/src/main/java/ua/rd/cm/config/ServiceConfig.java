@@ -1,5 +1,7 @@
 package ua.rd.cm.config;
 
+import java.util.Properties;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -8,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.CreateConferenceDto;
@@ -16,8 +19,6 @@ import ua.rd.cm.dto.converter.CreateConferenceToConference;
 import ua.rd.cm.services.FileStorageService;
 import ua.rd.cm.services.MailService;
 import ua.rd.cm.services.impl.FileStorageServiceImpl;
-
-import java.util.Properties;
 
 @Configuration
 @ComponentScan(basePackages = {

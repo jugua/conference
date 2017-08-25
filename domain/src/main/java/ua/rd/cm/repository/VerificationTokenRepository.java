@@ -1,10 +1,11 @@
 package ua.rd.cm.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ua.rd.cm.domain.VerificationToken;
 
-import java.util.List;
+import ua.rd.cm.domain.VerificationToken;
 
 @Repository
 public interface VerificationTokenRepository extends CrudRepository<VerificationToken, Long> {

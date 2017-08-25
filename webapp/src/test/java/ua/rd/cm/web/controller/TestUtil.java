@@ -1,22 +1,21 @@
 package ua.rd.cm.web.controller;
 
 
-import ua.rd.cm.domain.ContactType;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.services.UserService;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
+import ua.rd.cm.domain.ContactType;
+import ua.rd.cm.domain.Role;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.services.UserService;
 
 public class TestUtil {
-    private String alreadyRegisteredEmail = "ivanova@gmail.com";
     protected static final String ORGANISER_EMAIL = "trybel@gmail.com";
     protected static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     public static final String SPEAKER_ROLE = "SPEAKER";
@@ -31,6 +30,7 @@ public class TestUtil {
         user.setId(1L);
         user.setFirstName("Olya");
         user.setLastName("Ivanova");
+        String alreadyRegisteredEmail = "ivanova@gmail.com";
         user.setEmail(alreadyRegisteredEmail);
         user.setPassword("123456");
         user.setPhoto("api/user/current/photo/");

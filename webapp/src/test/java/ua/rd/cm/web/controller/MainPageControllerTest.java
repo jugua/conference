@@ -1,6 +1,19 @@
 package ua.rd.cm.web.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.Filter;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +28,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
@@ -27,25 +43,11 @@ import ua.rd.cm.services.LevelService;
 import ua.rd.cm.services.TopicService;
 import ua.rd.cm.services.TypeService;
 
-import javax.servlet.Filter;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class MainPageControllerTest extends TestUtil {
     public static final String API_CONFERENCE = "/api/conference";
-    public static final String API_NEW_CONFERENCE = "/api/conference";
 
     private MockMvc mockMvc;
 
@@ -63,9 +65,6 @@ public class MainPageControllerTest extends TestUtil {
     private LevelService levelService;
     @Autowired
     private Filter springSecurityFilterChain;
-
-    @Autowired
-    private MainPageController mainPageController;
 
     @Before
     public void setup() {
@@ -336,7 +335,7 @@ public class MainPageControllerTest extends TestUtil {
                 .andExpect(status().isOk());
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }

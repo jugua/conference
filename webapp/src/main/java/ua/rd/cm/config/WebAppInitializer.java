@@ -1,17 +1,17 @@
 package ua.rd.cm.config;
 
+import javax.servlet.Filter;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.Filter;
-
 /**
  * @author Yaroslav_Revin
  */
 @Order(2)
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer/*WebApplicationInitializer*/{
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer/*WebApplicationInitializer*/ {
 
     @Override
     protected Filter[] getServletFilters() {
@@ -19,12 +19,12 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
         OpenEntityManagerInViewFilter openEntityManagerInViewFilter = new OpenEntityManagerInViewFilter();
-        return new Filter[] { characterEncodingFilter, openEntityManagerInViewFilter };
+        return new Filter[]{characterEncodingFilter, openEntityManagerInViewFilter};
     }
-    
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {
+        return new Class[]{
                 SecurityConfig.class,
                 ServiceConfig.class,
                 RepositoryConfig.class,
@@ -34,12 +34,12 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { WebMvcConfig.class };
+        return new Class[]{WebMvcConfig.class};
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { "/" };
+        return new String[]{"/"};
     }
 
 }

@@ -1,9 +1,16 @@
 package ua.rd.cm.services.impl;
 
+import static ua.rd.cm.services.exception.TalkValidationException.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
@@ -12,12 +19,6 @@ import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.preparator.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static ua.rd.cm.services.exception.TalkValidationException.*;
 
 @Service
 public class TalkServiceImpl implements TalkService {
@@ -162,7 +163,6 @@ public class TalkServiceImpl implements TalkService {
     @Override
     public List<Talk> findByUserId(Long id) {
         List<Talk> talks = talkRepository.findByUserId(id);
-        ;
         if (talks.isEmpty()) {
             throw new TalkNotFoundException();
         }

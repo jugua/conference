@@ -1,10 +1,11 @@
 package ua.rd.cm.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ua.rd.cm.domain.Talk;
 
-import java.util.List;
+import ua.rd.cm.domain.Talk;
 
 @Repository
 public interface TalkRepository extends CrudRepository<Talk, Long> {

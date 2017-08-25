@@ -1,5 +1,11 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -14,18 +21,10 @@ import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.NoSuchUserException;
+import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
 import ua.rd.cm.services.impl.UserServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -234,7 +233,6 @@ public class UserServiceTest {
     }
 
 
-
     private User createDefaultUser() {
         User result = new User();
         result.setId(30L);
@@ -248,13 +246,13 @@ public class UserServiceTest {
         return result;
     }
 
-    private RegistrationDto setupCorrectRegistrationDto(){
+    private RegistrationDto setupCorrectRegistrationDto() {
         RegistrationDto registrationDto = new RegistrationDto();
         registrationDto.setPassword("123456");
         registrationDto.setLastName("Ivanova");
         registrationDto.setFirstName("Olya");
         registrationDto.setConfirm("123456");
         registrationDto.setEmail("ivanova@gmail.com");
-        return  registrationDto;
+        return registrationDto;
     }
 }

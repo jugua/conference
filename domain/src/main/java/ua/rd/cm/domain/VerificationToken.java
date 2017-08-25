@@ -1,13 +1,14 @@
 package ua.rd.cm.domain;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 @Data
 @NoArgsConstructor

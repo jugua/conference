@@ -1,5 +1,14 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,20 +17,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+
 import ua.rd.cm.domain.Type;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.repository.TypeRepository;
 import ua.rd.cm.services.impl.TypeServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TypeServiceTest {
@@ -29,10 +30,8 @@ public class TypeServiceTest {
     private TypeService typeService;
     @Mock
     private TypeRepository typeRepository;
-    private ModelMapper modelMapper;
     private Type type;
     private CreateTypeDto createTypeDto;
-    private TypeDto typeDto;
 
     @Rule
     public final ExpectedException expectedException = ExpectedException.none();
@@ -40,10 +39,10 @@ public class TypeServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
         typeService = new TypeServiceImpl(typeRepository, modelMapper);
         createTypeDto = new CreateTypeDto("Olena");
-        typeDto = new TypeDto();
+        TypeDto typeDto = new TypeDto();
         typeDto.setId(3L);
         typeDto.setName("Olena");
         type = new Type(3L, "Olena");

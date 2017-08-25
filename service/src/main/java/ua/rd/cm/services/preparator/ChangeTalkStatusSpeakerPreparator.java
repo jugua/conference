@@ -1,10 +1,10 @@
 package ua.rd.cm.services.preparator;
 
+import java.util.HashMap;
+
 import lombok.AllArgsConstructor;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
-
-import java.util.HashMap;
 
 @AllArgsConstructor
 public class ChangeTalkStatusSpeakerPreparator extends CustomMimeMessagePreparator {

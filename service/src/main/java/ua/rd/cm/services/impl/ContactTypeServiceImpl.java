@@ -1,16 +1,17 @@
 package ua.rd.cm.services.impl;
 
+import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE_NOT_FOUND;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.services.ContactTypeService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
-
-import java.util.List;
-
-import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE_NOT_FOUND;
 
 @Service
 public class ContactTypeServiceImpl implements ContactTypeService {

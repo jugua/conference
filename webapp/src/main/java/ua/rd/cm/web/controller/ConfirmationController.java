@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.services.MailService;

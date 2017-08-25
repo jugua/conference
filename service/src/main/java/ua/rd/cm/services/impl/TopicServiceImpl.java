@@ -1,19 +1,20 @@
 package ua.rd.cm.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import ua.rd.cm.domain.Topic;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.TopicDto;
 import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.services.TopicService;
 import ua.rd.cm.services.exception.TopicNotFoundException;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class TopicServiceImpl implements TopicService {

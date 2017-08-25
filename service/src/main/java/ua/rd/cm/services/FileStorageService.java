@@ -1,13 +1,11 @@
 package ua.rd.cm.services;
 
-import org.springframework.web.multipart.MultipartFile;
-import ua.rd.cm.dto.TalkDto;
+import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType;
 
 import java.io.File;
 import java.io.IOException;
 
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.*;
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.FILE;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
 

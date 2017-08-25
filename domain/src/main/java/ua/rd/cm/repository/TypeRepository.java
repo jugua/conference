@@ -1,10 +1,11 @@
 package ua.rd.cm.repository;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ua.rd.cm.domain.Type;
 
-import java.util.List;
+import ua.rd.cm.domain.Type;
 
 @Repository
 public interface TypeRepository extends CrudRepository<Type, Long> {

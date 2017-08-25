@@ -1,27 +1,25 @@
 package ua.rd.cm.web.controller;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserDto;
-import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.security.Principal;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
@@ -29,8 +27,6 @@ import java.security.Principal;
 @Log4j
 public class UserController {
     private final UserService userService;
-    private final UserInfoService userInfoService;
-
 
 
     @PreAuthorize("hasRole(\"ADMIN\")")
@@ -68,7 +64,7 @@ public class UserController {
         HttpStatus status;
         MessageDto message = new MessageDto();
 
-        try{
+        try {
 
             if (bindingResult.hasFieldErrors()) {
                 status = HttpStatus.BAD_REQUEST;

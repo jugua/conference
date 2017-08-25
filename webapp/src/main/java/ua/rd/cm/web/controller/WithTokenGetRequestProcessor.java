@@ -1,17 +1,18 @@
 package ua.rd.cm.web.controller;
 
+import java.util.function.Consumer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
-
-import java.util.function.Consumer;
 
 @Component
 public class WithTokenGetRequestProcessor {
@@ -46,7 +47,7 @@ public class WithTokenGetRequestProcessor {
     private MessageDto prepareMessageDto(String message) {
         MessageDto messageDto = new MessageDto();
         messageDto.setError(message);
-        return  messageDto;
+        return messageDto;
     }
 
     private void authenticateUser(User user) {
