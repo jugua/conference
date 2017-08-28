@@ -8,7 +8,7 @@ export default class ManageUsersService {
   }
 
   getUsers() {
-    this.users = this.$resource('/api/user/admin', {}, {
+    this.users = this.$resource('/manageUsers/getAllUsersForAdmin', {}, {
       getAll: {
         method: 'GET',
         isArray: true,

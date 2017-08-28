@@ -2,7 +2,7 @@ class AddUserService {
   constructor($resource) {
     'ngInject';
 
-    this.resource = $resource('/api/user/create', {}, {
+    this.resource = $resource('/user/registerByAdmin', {}, {
       add: {
         method: 'POST',
         headers: {
