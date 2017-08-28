@@ -11,15 +11,16 @@ public class FileValidationException extends RuntimeException {
     public static final String DELETE = "delete";
     public static final String UNSUPPORTED_MEDIA_TYPE = "pattern";
 
-    private Map<String, HttpStatus> messageStatusMap = new HashMap<String, HttpStatus>() {{
-        put(EMPTY, HttpStatus.BAD_REQUEST);
-        put(MAX_SIZE, HttpStatus.PAYLOAD_TOO_LARGE);
-        put(DELETE, HttpStatus.BAD_REQUEST);
-        put(UNSUPPORTED_MEDIA_TYPE, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-    }};
+    private Map<String, HttpStatus> messageStatusMap;
 
     public FileValidationException(String message) {
         super(message);
+        messageStatusMap = new HashMap<String, HttpStatus>() {{
+            put(EMPTY, HttpStatus.BAD_REQUEST);
+            put(MAX_SIZE, HttpStatus.PAYLOAD_TOO_LARGE);
+            put(DELETE, HttpStatus.BAD_REQUEST);
+            put(UNSUPPORTED_MEDIA_TYPE, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+        }};
     }
 
     public HttpStatus getHttpStatus() {

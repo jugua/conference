@@ -3,6 +3,7 @@ package ua.rd.cm.web.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -54,9 +55,7 @@ public class SettingsController {
         if (!userService.isAuthenticated(user, dto.getCurrentPassword())) {
             log.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest: " + request.toString() + "]");
             messageDto.setError("wrong_password");
-            messageDto.setFields(new ArrayList<String>() {{
-                add("currentPassword");
-            }});
+            messageDto.setFields(Arrays.asList("currentPassword"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
         }
         if (!checkPasswordConfirmed(dto)) {
