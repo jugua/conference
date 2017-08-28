@@ -23,14 +23,14 @@ import ua.rd.cm.services.exception.WrongRoleException;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @Log4j
 public class UserController {
     private final UserService userService;
 
 
     @PreAuthorize("hasRole(\"ADMIN\")")
-    @PostMapping("/create")
+    @PostMapping("/registerByAdmin")
     public ResponseEntity registerByAdmin(@Valid @RequestBody RegistrationDto dto,
                                           BindingResult bindingResult,
                                           HttpServletRequest request
