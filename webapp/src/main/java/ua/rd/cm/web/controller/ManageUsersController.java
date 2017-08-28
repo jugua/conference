@@ -22,13 +22,13 @@ import ua.rd.cm.services.UserService;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/manageUsers")
 @Log4j
 public class ManageUsersController {
     private final UserService userService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/admin")
+    @GetMapping("/getAllUsersForAdmin")
     public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
         MessageDto message = new MessageDto();
         User currentUser = getAuthorizedUser(request);
