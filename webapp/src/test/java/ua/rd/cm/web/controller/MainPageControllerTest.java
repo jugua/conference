@@ -48,6 +48,7 @@ import ua.rd.cm.services.TypeService;
 @WebAppConfiguration
 public class MainPageControllerTest extends TestUtil {
     public static final String API_CONFERENCE = "/conference";
+    public static final String API_LEVEL = "/level";
     public static final String API_TOPIC = "/topic";
     public static final String API_TYPE = "/type";
 
@@ -307,7 +308,7 @@ public class MainPageControllerTest extends TestUtil {
 
     @Test
     public void getLevelsShouldNotWorkForUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(API_LEVEL))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -321,7 +322,7 @@ public class MainPageControllerTest extends TestUtil {
             add(levelDto);
         }};
         when(levelService.findAll()).thenReturn(levels);
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(API_LEVEL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0].id", is(levelDto.getId().intValue())))
                 .andExpect(jsonPath("[0].name", is(levelDto.getName())));
@@ -331,7 +332,7 @@ public class MainPageControllerTest extends TestUtil {
     @WithMockUser(roles = ORGANISER_ROLE)
     public void getLevelsShouldWorkForOrganiser() throws Exception {
         when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(API_LEVEL))
                 .andExpect(status().isOk());
     }
 
@@ -339,7 +340,7 @@ public class MainPageControllerTest extends TestUtil {
     @WithMockUser(roles = ADMIN_ROLE)
     public void getLevelsShouldWorkForAdmin() throws Exception {
         when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(API_LEVEL))
                 .andExpect(status().isOk());
     }
 
