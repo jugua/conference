@@ -14,8 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import ua.rd.cm.web.security.CustomAuthenticationProvider;
+
 import ua.rd.cm.web.security.BasicAuthFilterImpl;
+import ua.rd.cm.web.security.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -36,27 +37,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/").permitAll()
-                    .mvcMatchers(HttpMethod.POST, "/api/login").permitAll()
-                    .mvcMatchers(HttpMethod.POST, "/api/user").permitAll()
-                    .mvcMatchers(HttpMethod.POST, "/api/talk").permitAll()
-                    .mvcMatchers(HttpMethod.POST, "/api").permitAll()
-                    .antMatchers("/api/user/current").authenticated()
-                    .antMatchers("/api/helloworld").authenticated()
-                    .and()
+                .antMatchers("/").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/api/login").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/api/user").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/api/talk").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/api").permitAll()
+                .antMatchers("/api/user/current").authenticated()
+                .antMatchers("/api/helloworld").authenticated()
+                .and()
                 .csrf()
-                    .csrfTokenRepository(csrfTokenRepository())
-                    .and()
+                .csrfTokenRepository(csrfTokenRepository())
+                .and()
                 .httpBasic()
-                    .and()
+                .and()
                 .logout()
-                    .logoutUrl("/api/logout")
-                    .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true)
-                    .clearAuthentication(true)
-                    .deleteCookies("JSESSIONID")
-                    .permitAll()
-                    .and()
+                .logoutUrl("/api/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+                .and()
                 .addFilterBefore(basicAuthFilterImpl, BasicAuthenticationFilter.class);
     }
 

@@ -1,6 +1,15 @@
 package ua.rd.cm.web.controller;
 
-import lombok.extern.log4j.Log4j;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -11,47 +20,34 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.services.FileStorageService;
-import ua.rd.cm.services.TalkService;
-import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
+import ua.rd.cm.services.*;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.impl.FileStorageServiceImpl;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController
 @RequestMapping("/api/talk")
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalkController {
     private static final String ORGANISER = "ORGANISER";
 
     public static final String DEFAULT_TALK_STATUS = "New";
-    private UserService userService;
-    private TalkService talkService;
-    private FileStorageService storageService;
-
-    @Autowired
-    public TalkController(UserService userService, TalkService talkService, FileStorageService storageService) {
-        this.userService = userService;
-        this.talkService = talkService;
-        this.storageService = storageService;
-    }
+    private final UserService userService;
+    private final TalkService talkService;
+    private final FileStorageService storageService;
+    private final TypeService typeService;
+    private final TopicService topicService;
+    private final LevelService levelService;
+    private final LanguageService languageService;
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex) {
@@ -72,28 +68,6 @@ public class TalkController {
         MessageDto message = new MessageDto();
         message.setError(ex.getMessage());
         return new ResponseEntity<>(message, ex.getHttpStatus());
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping
-    public ResponseEntity submitTalk(
-            @Valid SubmitTalkDto submitTalkDto,
-            HttpServletRequest request) {
-
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
-                submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
-                submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
-
-        MessageDto messageDto = new MessageDto();
-        User currentUser = userService.getByEmail(request.getRemoteUser());
-
-        if (userInfoNotFilled(currentUser)) {
-            return new ResponseEntity<>(messageDto, HttpStatus.FORBIDDEN);
-        }
-
-        Talk talk = talkService.save(dto, currentUser, uploadFile(dto.getMultipartFile()));
-        messageDto.setId(talk.getId());
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -208,15 +182,31 @@ public class TalkController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("topic")
+    public ResponseEntity getTopics() {
+        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("level")
+    public ResponseEntity getLevels() {
+        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("lang")
+    public ResponseEntity getLanguages() {
+        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("type")
+    public ResponseEntity getTypes() {
+        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
+    }
+
     private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
         return ResponseEntity.status(status).body(message);
     }
-
-    private boolean userInfoNotFilled(User currentUser) {
-        UserInfo currentUserInfo = currentUser.getUserInfo();
-        return currentUserInfo.getShortBio().isEmpty() ||
-                currentUserInfo.getJobTitle().isEmpty() ||
-                currentUserInfo.getCompany().isEmpty();
-    }
-
 }

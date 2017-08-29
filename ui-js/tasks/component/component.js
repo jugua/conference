@@ -1,4 +1,4 @@
-import <%= camelName %>Component from './<%= kebabName %>.component';
+import <%= camelName %>Component; from; './<%= kebabName %>.component';
 
 export default (app) => {
   app.config(($stateProvider) => {
@@ -7,5 +7,6 @@ export default (app) => {
         url: '/<%= kebabName %>',
         template: '<<%= kebabName %>></<%= kebabName %>>'
       });
-  }).component('<%= camelName %>', <%= camelName %>Component);
+  }).component('<%= camelName %>', < %= camelName % > Component;
+    )
 };

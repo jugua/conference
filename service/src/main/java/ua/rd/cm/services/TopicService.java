@@ -1,10 +1,10 @@
 package ua.rd.cm.services;
 
+import java.util.List;
+
 import ua.rd.cm.domain.Topic;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.TopicDto;
-
-import java.util.List;
 
 /**
  * @author Mariia Lapovska

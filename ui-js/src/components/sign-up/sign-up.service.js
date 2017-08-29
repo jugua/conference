@@ -2,11 +2,7 @@ class SignUpService {
   constructor($resource) {
     'ngInject';
 
-    this.resource = $resource('/api/user', {}, {
-      update: {
-        method: 'PUT' // this method issues a PUT request
-      }
-    });
+    this.resource = $resource('/registration', {}, {});
   }
 
   signUp(user, successCallback, errorCallback) {

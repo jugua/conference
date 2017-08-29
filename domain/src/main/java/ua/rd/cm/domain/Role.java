@@ -1,9 +1,10 @@
 package ua.rd.cm.domain;
 
-import lombok.*;
+import javax.persistence.*;
+
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
+import lombok.*;
 
 @Data
 @NoArgsConstructor

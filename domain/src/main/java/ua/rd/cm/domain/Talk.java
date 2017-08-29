@@ -1,9 +1,10 @@
 package ua.rd.cm.domain;
 
-import lombok.*;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
+import lombok.*;
 
 @Data
 @NoArgsConstructor

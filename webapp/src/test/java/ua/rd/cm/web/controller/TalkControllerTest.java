@@ -1,8 +1,30 @@
 package ua.rd.cm.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
+import static ua.rd.cm.services.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.Filter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +44,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
@@ -31,41 +58,15 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.impl.FileStorageServiceImpl;
-
-import javax.servlet.Filter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ua.rd.cm.services.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
-import static ua.rd.cm.services.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
@@ -95,7 +96,6 @@ public class TalkControllerTest extends TestUtil {
 
     private User speakerUser;
     private User organiserUser;
-    private UserInfo userInfo;
     private TalkDto correctTalkDto;
     private MockMultipartFile multipartFile;
 
@@ -113,7 +113,7 @@ public class TalkControllerTest extends TestUtil {
                 param("lang", "English").
                 param("level", "Beginner");
 
-        userInfo = new UserInfo();
+        UserInfo userInfo = new UserInfo();
         userInfo.setId(1L);
         userInfo.setShortBio("bio");
         userInfo.setJobTitle("job");
@@ -362,7 +362,7 @@ public class TalkControllerTest extends TestUtil {
         talkDto.setOrganiserComment("comment");
         talkDto.setStatusName(APPROVED);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1l, talkDto))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1L, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
         verify(talkService, atLeastOnce()).updateAsOrganiser(talkDto, organiserUser);
@@ -380,7 +380,7 @@ public class TalkControllerTest extends TestUtil {
         talkDto.setOrganiserComment("comment");
         talkDto.setStatusName(APPROVED);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1l, talkDto))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1L, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
         verify(talkService, atLeastOnce()).updateAsSpeaker(talkDto, speakerUser);
@@ -412,7 +412,7 @@ public class TalkControllerTest extends TestUtil {
 
         doThrow(new TalkValidationException(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG)).when(talkService).updateAsSpeaker(talkDto, speakerUser);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1l, talkDto))
+        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1L, talkDto))
                 .andExpect(status().isPayloadTooLarge())
                 .andExpect(jsonPath("error", is(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG)));
     }
@@ -446,7 +446,7 @@ public class TalkControllerTest extends TestUtil {
         String mimeType = MediaType.IMAGE_PNG_VALUE;
         when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
-        mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
+        mockMvc.perform(prepareGetRequest(API_TALK + "/1/file"))
                 .andExpect(status().isOk());
 
     }
@@ -465,7 +465,7 @@ public class TalkControllerTest extends TestUtil {
         String mimeType = MediaType.IMAGE_PNG_VALUE;
         when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
-        mockMvc.perform(prepareGetRequest(API_TALK+"/1/file"))
+        mockMvc.perform(prepareGetRequest(API_TALK + "/1/file"))
                 .andExpect(status().isBadRequest());
 
     }
@@ -493,7 +493,7 @@ public class TalkControllerTest extends TestUtil {
         String filePath = "file path";
         when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
 
-        mockMvc.perform(delete(API_TALK+"/1/file"))
+        mockMvc.perform(delete(API_TALK + "/1/file"))
                 .andExpect(status().isOk());
 
         verify(fileStorageService, times(1)).deleteFile(filePath);
@@ -512,7 +512,7 @@ public class TalkControllerTest extends TestUtil {
         File file = new File("wrong path");
         when(fileStorageService.getFile(filePath)).thenReturn(file);
 
-        mockMvc.perform(get(API_TALK+"/1/filename"))
+        mockMvc.perform(get(API_TALK + "/1/filename"))
                 .andExpect(status().isOk());
 
     }
@@ -541,7 +541,7 @@ public class TalkControllerTest extends TestUtil {
 
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) throws Exception {
+    private MockHttpServletRequestBuilder prepareGetRequest(String uri) {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }

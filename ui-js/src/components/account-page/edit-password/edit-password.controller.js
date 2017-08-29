@@ -113,7 +113,7 @@ export default class EditPasswordController {
 
     if (this.editPasswordForm.currentPassword.$error.wrong_password) {
       this.errorMessage = this.errorMessages.wrongPassword;
-      return;
+
     }
   }
 }

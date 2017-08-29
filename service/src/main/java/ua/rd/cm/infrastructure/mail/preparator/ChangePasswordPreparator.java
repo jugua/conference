@@ -1,8 +1,8 @@
-package ua.rd.cm.services.preparator;
-
-import ua.rd.cm.domain.User;
+package ua.rd.cm.infrastructure.mail.preparator;
 
 import java.util.HashMap;
+
+import ua.rd.cm.domain.User;
 
 public class ChangePasswordPreparator extends CustomMimeMessagePreparator {
 

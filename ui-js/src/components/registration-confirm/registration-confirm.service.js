@@ -6,6 +6,6 @@ export default class RegistrationConfirmService {
   }
 
   registrationConfirm(token) {
-    return this.http.get(`/api/registrationConfirm/${token}`);
+    return this.http.get(`/confirmation/registrationConfirm/${token}`);
   }
 }

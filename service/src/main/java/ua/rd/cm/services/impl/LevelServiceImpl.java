@@ -1,14 +1,15 @@
 package ua.rd.cm.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import ua.rd.cm.dto.LevelDto;
 import ua.rd.cm.repository.LevelRepository;
 import ua.rd.cm.services.LevelService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LevelServiceImpl implements LevelService {

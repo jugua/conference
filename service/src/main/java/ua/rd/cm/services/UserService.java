@@ -1,12 +1,12 @@
 package ua.rd.cm.services;
 
+import java.util.List;
+
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
-
-import java.util.List;
 
 public interface UserService {
 

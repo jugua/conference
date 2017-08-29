@@ -3,10 +3,15 @@ export default class {
     'ngInject';
 
     this.res = $resource('/api/type');
+    this.resForTalksPage = $resource('/api/talk/type');
   }
 
   query() {
     return this.res.query();
+  }
+
+  queryForTalkPage() {
+    return this.resForTalksPage.query();
   }
 
   save(name, successCallback) {

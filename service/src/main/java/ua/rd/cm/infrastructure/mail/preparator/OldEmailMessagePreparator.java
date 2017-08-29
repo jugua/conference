@@ -1,10 +1,10 @@
-package ua.rd.cm.services.preparator;
-
-import lombok.AllArgsConstructor;
-import ua.rd.cm.domain.User;
+package ua.rd.cm.infrastructure.mail.preparator;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+
+import lombok.AllArgsConstructor;
+import ua.rd.cm.domain.User;
 
 @AllArgsConstructor
 public class OldEmailMessagePreparator extends CustomMimeMessagePreparator {

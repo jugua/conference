@@ -1,12 +1,14 @@
 package ua.rd.cm.services;
 
+import java.util.List;
+import java.time.LocalDate;
+
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.dto.ConferenceDto;
 import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
 
-import java.time.LocalDate;
-import java.util.List;
+
 
 public interface ConferenceService {
 

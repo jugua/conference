@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 let User = require('./../model/User');
 

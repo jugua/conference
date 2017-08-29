@@ -1,24 +1,25 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.infrastructure.fileStorage.impl;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.log4j.Log4j;
-import org.springframework.http.MediaType;
-import org.springframework.web.multipart.MultipartFile;
-import ua.rd.cm.services.FileStorageService;
-import ua.rd.cm.services.exception.FileValidationException;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
+import static ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException.*;
+import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOUND;
 
-import javax.activation.MimetypesFileTypeMap;
 import java.io.*;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static ua.rd.cm.services.exception.FileValidationException.*;
-import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOUND;
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.FILE;
+import javax.activation.MimetypesFileTypeMap;
+
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
+import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 @Log4j
 public class FileStorageServiceImpl implements FileStorageService {

@@ -1,5 +1,5 @@
-export default class <%= pascalName %>Controller {
-  constructor() {
+export default class <%= pascalName %>Controller; {
+  constructor(); {
 
   }
 }

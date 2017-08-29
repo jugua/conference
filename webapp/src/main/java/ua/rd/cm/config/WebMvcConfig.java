@@ -1,8 +1,7 @@
 package ua.rd.cm.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.IOException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,19 +15,21 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * @author Yaroslav_Revin
  */
 @EnableWebMvc
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = "ua.rd.cm.web", excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class) })
-public class WebMvcConfig  extends WebMvcConfigurerAdapter {
+        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-    @Bean(name="multipartResolver")
+    @Bean(name = "multipartResolver")
     public CommonsMultipartResolver getResolver() throws IOException {
         return new CommonsMultipartResolver();
     }

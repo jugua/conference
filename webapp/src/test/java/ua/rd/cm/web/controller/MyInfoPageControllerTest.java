@@ -1,8 +1,22 @@
 package ua.rd.cm.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.Principal;
+
+import javax.servlet.Filter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +35,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.log4j.Log4j;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
@@ -30,25 +49,9 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.PhotoDto;
 import ua.rd.cm.dto.UserDto;
-import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.exception.FileValidationException;
-
-import javax.servlet.Filter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.Principal;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -91,6 +94,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         correctUserDto = setupCorrectUserInfoDto();
         when(userService.getByEmail(SPEAKER_EMAIL)).thenReturn(user);
     }
+
     @After
     public void resetMocks() {
         Mockito.reset(fileStorageService, userService);
@@ -192,7 +196,7 @@ public class MyInfoPageControllerTest extends TestUtil {
 
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void correctPrincipalGetCurrentUserTest() throws Exception{
+    public void correctPrincipalGetCurrentUserTest() throws Exception {
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
@@ -205,9 +209,10 @@ public class MyInfoPageControllerTest extends TestUtil {
                 .principal(correctPrincipal)
         ).andExpect(status().isAccepted());
     }
+
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void correctFillUserInfoTest() throws Exception{
+    public void correctFillUserInfoTest() throws Exception {
         Role speaker = createSpeakerRole();
         UserInfo info = createUserInfo();
         User user = createUser(speaker, info);
@@ -237,7 +242,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    public void tooLongBioTest(){
+    public void tooLongBioTest() {
         correctUserDto.setUserInfoShortBio(createStringWithLength(2001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
@@ -249,7 +254,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    public void tooLongJobTest(){
+    public void tooLongJobTest() {
         correctUserDto.setUserInfoJobTitle(createStringWithLength(257));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
@@ -262,19 +267,19 @@ public class MyInfoPageControllerTest extends TestUtil {
 
 
     @Test
-    public void tooLongCompanyTest(){
+    public void tooLongCompanyTest() {
         correctUserDto.setUserInfoCompany(createStringWithLength(257));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
     @Test
-    public void tooLongPastConferenceTest(){
+    public void tooLongPastConferenceTest() {
         correctUserDto.setUserInfoPastConference(createStringWithLength(1001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
 
     @Test
-    public void tooLongAdditionalInfoTest(){
+    public void tooLongAdditionalInfoTest() {
         correctUserDto.setUserInfoAdditionalInfo(createStringWithLength(1001));
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
     }
@@ -285,6 +290,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         ResponseEntity<MessageDto> response = myInfoPageController.handleFileValidationException(new FileValidationException(FileValidationException.UNSUPPORTED_MEDIA_TYPE));
         assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
     }
+
     private UserDto setupCorrectUserInfoDto() {
         UserDto userDto = new UserDto();
         userDto.setUserInfoShortBio("bio");
@@ -329,8 +335,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         try {
             File file = new File("src/test/resources/trybel_master.JPG");
             FileInputStream fileInputStream = new FileInputStream(file);
-            MockMultipartFile mockFile = new MockMultipartFile("file", fileInputStream);
-            return mockFile;
+            return new MockMultipartFile("file", fileInputStream);
         } catch (IOException e) {
             log.info(e);
         }

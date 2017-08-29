@@ -1,5 +1,11 @@
 package ua.rd.cm.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,18 +15,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+
 import ua.rd.cm.domain.Topic;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.TopicDto;
 import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.services.exception.TopicNotFoundException;
 import ua.rd.cm.services.impl.TopicServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -35,26 +36,22 @@ public class TopicServiceTest {
 
     private Topic topic;
 
-    private TopicDto topicDto;
-
     private CreateTopicDto createTopicDto;
-
-    private List<TopicDto> topics;
 
 
     @Before
-    public void setup(){
+    public void setup() {
         MockitoAnnotations.initMocks(this);
 
         topicService = new TopicServiceImpl(modelMapper, topicRepository);
 
         topic = new Topic(1L, "name");
 
-        topicDto = new TopicDto();
+        TopicDto topicDto = new TopicDto();
         topicDto.setId(1L);
         topicDto.setName("name");
 
-        topics= new ArrayList<>();
+        List<TopicDto> topics = new ArrayList<>();
         topics.add(topicDto);
 
         createTopicDto = new CreateTopicDto("name");
@@ -66,21 +63,21 @@ public class TopicServiceTest {
     }
 
     @Test
-    public void testFindByCorrectId(){
+    public void testFindByCorrectId() {
         long correctId = 1;
         when(topicRepository.findOne(correctId)).thenReturn(topic);
         assertEquals(topicService.find(correctId), topic);
     }
 
     @Test(expected = TopicNotFoundException.class)
-    public void testFindByWrongId(){
-        long wrongId=100500;
+    public void testFindByWrongId() {
+        long wrongId = 100500;
         when(topicRepository.findOne(wrongId)).thenReturn(null);
         topicService.find(wrongId);
     }
 
     @Test
-    public void testSaveTopicIfExists(){
+    public void testSaveTopicIfExists() {
         Long id = 1L;
         when(topicRepository.findTopicByName(createTopicDto.getName())).thenReturn(topic);
         assertEquals(id, topicService.save(createTopicDto));
@@ -89,7 +86,7 @@ public class TopicServiceTest {
     }
 
     @Test
-    public void testSaveTopicIfNotExists(){
+    public void testSaveTopicIfNotExists() {
         String newName = "new";
         Long expectedId = topic.getId();
         createTopicDto.setName(newName);
@@ -102,14 +99,14 @@ public class TopicServiceTest {
     }
 
     @Test
-    public void testGetTopicByCorrectName(){
-        String correctName = "name" ;
+    public void testGetTopicByCorrectName() {
+        String correctName = "name";
         when(topicRepository.findTopicByName(correctName)).thenReturn(topic);
         assertEquals(topicService.getByName(correctName), topic);
     }
 
     @Test(expected = TopicNotFoundException.class)
-    public void testGetTopicByWrongName(){
+    public void testGetTopicByWrongName() {
         String wrongName = "wrongName";
         when(topicRepository.findTopicByName(wrongName)).thenReturn(null);
         topicService.getByName(wrongName);

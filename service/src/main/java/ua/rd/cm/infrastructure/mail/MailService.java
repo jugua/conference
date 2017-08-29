@@ -1,15 +1,16 @@
-package ua.rd.cm.services;
+package ua.rd.cm.infrastructure.mail;
+
+import java.util.List;
+
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 
 import freemarker.template.Configuration;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import ua.rd.cm.domain.User;
-import ua.rd.cm.services.preparator.CustomMimeMessagePreparator;
-
-import java.util.List;
+import ua.rd.cm.infrastructure.mail.preparator.CustomMimeMessagePreparator;
 
 @Log4j
 public class MailService {
