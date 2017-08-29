@@ -48,8 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @Log4j
 public class RegistrationControllerTest extends TestUtil{
-    public static final String API_USER = "/api/user";
-    public static final String API_USER_CREATE = "/api/user/create";
+    public static final String REGISTER_USER_URL = "/registration";
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
 
@@ -102,102 +101,102 @@ public class RegistrationControllerTest extends TestUtil{
     @Test
     public void tooLongPasswordTest() {
         correctRegistrationDto.setPassword(createStringWithLength(31));
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void withoutDotEmailTest() {
         correctRegistrationDto.setEmail("withoutDot@com");
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void toLongFirstNameTest() {
         correctRegistrationDto.setFirstName(createStringWithLength(57));
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void withoutAtCharacterEmailTest() {
         correctRegistrationDto.setEmail("withoutAtCharacter.com");
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void nullEmailTest() {
         correctRegistrationDto.setEmail(null);
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void emptyEmailTest() {
         correctRegistrationDto.setEmail("");
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void nullFirstNameTest() {
         correctRegistrationDto.setFirstName(null);
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void toShortFirstNameTest() {
         correctRegistrationDto.setFirstName("");
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void nullLastNameTest() {
         correctRegistrationDto.setLastName(null);
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void tooShortLastNameTest() {
         correctRegistrationDto.setLastName("");
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void tooLongLastNameTest() {
         correctRegistrationDto.setLastName(createStringWithLength(57));
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void nullPasswordTest() {
         correctRegistrationDto.setPassword(null);
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void tooShortPasswordTest() {
         correctRegistrationDto.setPassword("");
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void nullPasswordConfirmationTest() {
         correctRegistrationDto.setConfirm(null);
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void tooShortPasswordConfirmationTest() {
         correctRegistrationDto.setConfirm("");
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void tooLongPasswordConfirmationTest() {
         correctRegistrationDto.setConfirm(createStringWithLength(31));
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     @Test
     public void correctRegistrationTest() throws Exception {
-        performRegistration(API_USER, HttpStatus.ACCEPTED.value());
+        performRegistration(REGISTER_USER_URL, HttpStatus.ACCEPTED.value());
     }
 
     @Test
@@ -208,7 +207,7 @@ public class RegistrationControllerTest extends TestUtil{
         correctRegistrationDto.setRoleName(Role.SPEAKER);
         doThrow(new EmailAlreadyExistsException("email_already_exists")).
                 when(userService).checkUserRegistration(correctRegistrationDto);
-        performRegistration(API_USER, HttpStatus.CONFLICT.value());
+        performRegistration(REGISTER_USER_URL, HttpStatus.CONFLICT.value());
     }
 
     @Test
@@ -218,7 +217,7 @@ public class RegistrationControllerTest extends TestUtil{
         correctRegistrationDto.setRoleName(Role.SPEAKER);
         doThrow(new PasswordMismatchException("email_already_exists")).
                 when(userService).checkUserRegistration(correctRegistrationDto);
-        checkForBadRequest(API_USER, RequestMethod.POST, correctRegistrationDto);
+        checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 
     private String createStringWithLength(int length) {
