@@ -113,5 +113,5 @@ public class MainPageController {
     }
 
 
-}webapp/src/main/java/ua/rd/cm/web/controller/MainPageController.java
+}
 
