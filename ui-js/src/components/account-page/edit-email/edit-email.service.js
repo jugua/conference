@@ -15,7 +15,7 @@ class EditEmailService {
   }
 
   updateEmail(newEmail) {
-    return this.http.post('api/user/current/email', { mail: newEmail }, {
+    return this.http.post('settings/email', { mail: newEmail }, {
       headers: {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
@@ -24,7 +24,7 @@ class EditEmailService {
   }
 
   checkPendingUpdate() {
-    return this.http.get('api/user/current/email', {
+    return this.http.get('settings/email', {
       headers: {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
