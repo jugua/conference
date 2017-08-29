@@ -35,7 +35,7 @@ import ua.rd.cm.services.TypeService;
 @RequestMapping("/api/")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class MainPageController {
-    private final ModelMapper mapper;
+
     private final TypeService typeService;
     private final TopicService topicService;
     private final ConferenceService conferenceService;
@@ -65,7 +65,7 @@ public class MainPageController {
     @PatchMapping("conference/update/{id}")
     public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult, HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
-        Conference conference = conferenceDtoToConference(dto);
+        Conference conference = conferenceService.conferenceDtoToConference(dto);
         // TODO: check conferenceDto
         conferenceService.update(conference);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
@@ -91,72 +91,13 @@ public class MainPageController {
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
-            List<ConferenceDto> conferencesDto = conferenceListToDto(conferences);
+            List<ConferenceDto> conferencesDto = conferenceService.conferenceListToDto(conferences);
             return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
         }
-        List<ConferenceDtoBasic> conferenceDtoBasics = conferenceListToDtoBasic(conferences);
+        List<ConferenceDtoBasic> conferenceDtoBasics = conferenceService.conferenceListToDtoBasic(conferences);
         return new ResponseEntity<>(conferenceDtoBasics, HttpStatus.OK);
     }
 
-    private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
-        return mapper.map(conference, ConferenceDtoBasic.class);
-    }
 
-    private List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences) {
-        List<ConferenceDtoBasic> conferenceDtoBasics = new ArrayList<>();
-        if (conferences != null) {
-            for (Conference conf : conferences) {
-                conferenceDtoBasics.add(conferenceToDtoBasic(conf));
-            }
-        }
-        return conferenceDtoBasics;
-    }
-
-    private ConferenceDto conferenceToDto(Conference conference) {
-        ConferenceDto conferenceDto = mapper.map(conference, ConferenceDto.class);
-        conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
-        conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
-        conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
-        conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
-        if (conference.getTalks() != null) {
-            Map<String, Integer> talks = new HashMap<>();
-            for (Talk talk : conference.getTalks()) {
-                String status = talk.getStatus().getName();
-                Integer count = 0;
-                if (talks.get(status) != null) {
-                    count = talks.get(status);
-                }
-                talks.put(status, ++count);
-            }
-
-            conferenceDto.setNewTalkCount(talks.get(TalkStatus.NEW.getName()));
-            conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.APPROVED.getName()));
-            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.REJECTED.getName()));
-            conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.IN_PROGRESS.getName()));
-        }
-        return conferenceDto;
-    }
-
-    private String convertDateToString(LocalDate localDate) {
-        if (localDate != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return localDate.format(formatter);
-        }
-        return null;
-    }
-
-    private List<ConferenceDto> conferenceListToDto(List<Conference> conferences) {
-        List<ConferenceDto> conferenceDtos = new ArrayList<>();
-        if (conferences != null) {
-            for (Conference conf : conferences) {
-                conferenceDtos.add(conferenceToDto(conf));
-            }
-        }
-        return conferenceDtos;
-    }
-
-    private Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
-        return mapper.map(conferenceDto, Conference.class);
-    }
 }
 

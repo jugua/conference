@@ -2,6 +2,12 @@ package ua.rd.cm.services.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ua.rd.cm.domain.Conference;
+import ua.rd.cm.domain.Talk;
+import ua.rd.cm.domain.TalkStatus;
+import ua.rd.cm.dto.ConferenceDto;
+import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.repository.ConferenceRepository;
 import ua.rd.cm.services.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
+
+
 
 @Service
 @Transactional
@@ -73,6 +85,68 @@ public class ConferenceServiceImpl implements ConferenceService {
         List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
         fillCallForPaperDatesActive(conferences);
         return conferences;
+    }
+
+
+    public ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
+        return modelMapper.map(conference, ConferenceDtoBasic.class);
+    }
+
+    public List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences) {
+        List<ConferenceDtoBasic> conferenceDtoBasics = new ArrayList<>();
+        if (conferences != null) {
+            for (Conference conf : conferences) {
+                conferenceDtoBasics.add(conferenceToDtoBasic(conf));
+            }
+        }
+        return conferenceDtoBasics;
+    }
+
+    public ConferenceDto conferenceToDto(Conference conference) {
+        ConferenceDto conferenceDto = modelMapper.map(conference, ConferenceDto.class);
+        conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
+        conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
+        conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
+        conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
+        if (conference.getTalks() != null) {
+            Map<String, Integer> talks = new HashMap<>();
+            for (Talk talk : conference.getTalks()) {
+                String status = talk.getStatus().getName();
+                Integer count = 0;
+                if (talks.get(status) != null) {
+                    count = talks.get(status);
+                }
+                talks.put(status, ++count);
+            }
+
+            conferenceDto.setNewTalkCount(talks.get(TalkStatus.NEW.getName()));
+            conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.APPROVED.getName()));
+            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.REJECTED.getName()));
+            conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.IN_PROGRESS.getName()));
+        }
+        return conferenceDto;
+    }
+
+    public String convertDateToString(LocalDate localDate) {
+        if (localDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return localDate.format(formatter);
+        }
+        return null;
+    }
+
+    public List<ConferenceDto> conferenceListToDto(List<Conference> conferences) {
+        List<ConferenceDto> conferenceDtos = new ArrayList<>();
+        if (conferences != null) {
+            for (Conference conf : conferences) {
+                conferenceDtos.add(conferenceToDto(conf));
+            }
+        }
+        return conferenceDtos;
+    }
+
+    public Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
+        return modelMapper.map(conferenceDto, Conference.class);
     }
 
     private void fillCallForPaperDatesActive(List<Conference> conferences) {

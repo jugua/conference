@@ -86,7 +86,13 @@ public class MainPageControllerTest extends TestUtil {
     public void getUpcomingConferencesWithNoTalks() throws Exception {
         List<Conference> conferences = new ArrayList<>();
         conferences.add(new Conference());
+        List<ConferenceDto> conferencesDto =new ArrayList<>();
+        List<ConferenceDtoBasic> conferenceDtoBasics = new ArrayList<>();
+        conferenceDtoBasics.add(new ConferenceDtoBasic());
+        conferencesDto.add(new ConferenceDto());
         when(conferenceService.findUpcoming()).thenReturn(conferences);
+        when(conferenceService.conferenceListToDto(conferences)).thenReturn(conferencesDto);
+        when(conferenceService.conferenceListToDtoBasic(conferences)).thenReturn(conferenceDtoBasics);
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
                 andExpect(status().isOk()).
                 andExpect(jsonPath("$[0].new", is(0))).
