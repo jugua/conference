@@ -2,9 +2,9 @@ export default class {
   constructor($resource) {
     'ngInject';
 
-    this.res = $resource('/api/conference');
+    this.res = $resource('/conference');
 
-    this.resUpcoming = $resource('/api/conference/upcoming', {}, {
+    this.resUpcoming = $resource('/conference/upcoming', {}, {
       getAll: {
         method: 'GET',
         isArray: true,
@@ -15,7 +15,7 @@ export default class {
       }
     });
 
-    this.resPast = $resource('/api/conference/past', {}, {
+    this.resPast = $resource('/conference/past', {}, {
       getAll: {
         method: 'GET',
         isArray: true,
