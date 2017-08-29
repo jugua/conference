@@ -132,59 +132,6 @@ public class MainPageControllerTest extends TestUtil {
                 andExpect(status().isOk());
     }
 
-    @Test
-    public void getTypesShouldNotWorkForUnauthorized() throws Exception {
-        List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest(API_TYPE)).
-                andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
-    public void getTypesShouldWorkForOrganiser() throws Exception {
-        List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest(API_TYPE)).
-                andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
-    public void getTypesShouldWorkForSpeaker() throws Exception {
-        List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest(API_TYPE)).
-                andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(roles = ADMIN_ROLE)
-    public void getTypesShouldWorkForAdmin() throws Exception {
-        List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest("//type")).
-                andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(roles = ADMIN_ROLE)
-    public void getTypesShouldHaveRightValues() throws Exception {
-        TypeDto typeDto = new TypeDto();
-        typeDto.setId(1L);
-        typeDto.setName("SomeName");
-        List<TypeDto> types = new ArrayList<TypeDto>() {{
-            add(typeDto);
-        }};
-
-        when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest(API_TYPE)).
-                andExpect(status().isOk()).
-                andExpect(jsonPath("[0].id", is(typeDto.getId().intValue()))).
-                andExpect(jsonPath("[0].name", is(typeDto.getName())));
-    }
-
-    @Test
     @WithMockUser(roles = ADMIN_ROLE)
     public void createNewTypeShouldWorkForAdmin() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
@@ -225,46 +172,7 @@ public class MainPageControllerTest extends TestUtil {
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
     }
-
-    @Test
-    public void getTopicsShouldNotWorkForUnauthorized() throws Exception {
-        mockMvc.perform(get(API_TOPIC))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
-    public void getTopicsShouldWorkForSpeaker() throws Exception {
-        TopicDto topicDto = new TopicDto();
-        topicDto.setId(1L);
-        topicDto.setName("SomeName");
-        List<TopicDto> topics = new ArrayList<TopicDto>() {{
-            add(topicDto);
-        }};
-        when(topicService.findAll()).thenReturn(topics);
-        mockMvc.perform(get(API_TOPIC))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].id", is(topicDto.getId().intValue())))
-                .andExpect(jsonPath("[0].name", is(topicDto.getName())));
-    }
-
-    @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
-    public void getTopicsShouldWorkForOrganiser() throws Exception {
-        when(topicService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get(API_TOPIC))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(roles = ADMIN_ROLE)
-    public void getTopicsShouldWorkForAdmin() throws Exception {
-        when(topicService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get(API_TOPIC))
-                .andExpect(status().isOk());
-    }
-
-    @Test
+  
     @WithMockUser(roles = ADMIN_ROLE)
     public void createNewTopicShouldWorkForAdmin() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
@@ -304,44 +212,6 @@ public class MainPageControllerTest extends TestUtil {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void getLevelsShouldNotWorkForUnauthorized() throws Exception {
-        mockMvc.perform(get(API_LEVEL))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
-    public void getLevelsShouldWorkForSpeaker() throws Exception {
-        LevelDto levelDto = new LevelDto();
-        levelDto.setId(1L);
-        levelDto.setName("SomeName");
-        List<LevelDto> levels = new ArrayList<LevelDto>() {{
-            add(levelDto);
-        }};
-        when(levelService.findAll()).thenReturn(levels);
-        mockMvc.perform(get(API_LEVEL))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].id", is(levelDto.getId().intValue())))
-                .andExpect(jsonPath("[0].name", is(levelDto.getName())));
-    }
-
-    @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
-    public void getLevelsShouldWorkForOrganiser() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get(API_LEVEL))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(roles = ADMIN_ROLE)
-    public void getLevelsShouldWorkForAdmin() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get(API_LEVEL))
-                .andExpect(status().isOk());
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) {

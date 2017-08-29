@@ -161,68 +161,6 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
-     * Test submitTalk() for successful result
-     *
-     * @throws Exception
-     */
-    @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void testSuccessfulSubmitTalkAsSpeaker() throws Exception {
-        TalkDto talkDto = new TalkDto(null, "title name", null, null, null, null, "desc", "topic", "type", "English", "Beginner", null, null, null, null, null, null);
-        Talk talk = new Talk();
-        talk.setId(1L);
-
-        when(talkService.save(talkDto, speakerUser, null)).thenReturn(talk);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))));
-
-    }
-
-    /**
-     * Test submitTalk() for successful result
-     *
-     * @throws Exception
-     */
-    @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void testSuccessfulSubmitTalkAsSpeakerWithFile() throws Exception {
-        MockMultipartFile file = createMultipartFile();
-        TalkDto talkDto = new TalkDto(null, "title name", null, null, null, null,
-                "desc", "topic", "type", "English", "Beginner", null,
-                null, null, null, null, file);
-        Talk talk = new Talk();
-        talk.setId(1L);
-
-        requestBuilder = fileUpload(API_TALK).
-                file(file).
-                param("title", "title name").
-                param("description", "desc").
-                param("topic", "topic").
-                param("type", "type").
-                param("lang", "English").
-                param("level", "Beginner");
-
-        when(fileStorageService.saveFile(file, FileStorageServiceImpl.FileType.FILE)).thenReturn("path to file");
-        when(talkService.save(talkDto, speakerUser, "path to file")).thenReturn(talk);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(Integer.parseInt(talk.getId().toString()))));
-        verify(fileStorageService, times(1)).saveFile(file, FileStorageServiceImpl.FileType.FILE);
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Test
-    public void testUnauthorizedErrorWhenSubmitTalk() throws Exception {
-        mockMvc.perform(requestBuilder).andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
-    }
-
-    /**
      * Test getTalks() method for correct data return to speaker
      *
      * @throws Exception
