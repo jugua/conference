@@ -34,7 +34,7 @@ import ua.rd.cm.services.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController
-@RequestMapping("/api/talk")
+@RequestMapping("/talk")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalkController {
     private static final String ORGANISER = "ORGANISER";
@@ -90,10 +90,10 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
-    public ResponseEntity actionOnTalk(@PathVariable("id") Long talkId,
-                                       @RequestBody TalkDto dto,
-                                       BindingResult bindingResult,
-                                       HttpServletRequest request) {
+    public ResponseEntity updateTalk(@PathVariable("id") Long talkId,
+                                     @RequestBody TalkDto dto,
+                                     BindingResult bindingResult,
+                                     HttpServletRequest request) {
         MessageDto message = new MessageDto();
         dto.setId(talkId);
         if (bindingResult.hasFieldErrors()) {
@@ -115,7 +115,7 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/{talk_id}/filename",
             produces = "application/json")
-    public ResponseEntity takeFileName(@PathVariable("talk_id") Long talkId) {
+    public ResponseEntity getFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
 
         File file = storageService.getFile(talk.getPathToAttachedFile());
@@ -127,7 +127,7 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/{talk_id}/file")
-    public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
+    public ResponseEntity getFile(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
 
@@ -150,9 +150,9 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/{talk_id}/file")
-    public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
-                                 @RequestPart(value = "file") MultipartFile file,
-                                 HttpServletRequest request) {
+    public ResponseEntity uploadFile(@PathVariable("talk_id") Long talkId,
+                                     @RequestPart(value = "file") MultipartFile file,
+                                     HttpServletRequest request) {
         String filePath = uploadFile(file);
         TalkDto talkDto = talkService.findById(talkId);
         talkService.addFile(talkDto, filePath);
@@ -171,7 +171,7 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{talk_id}/file")
-    public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
+    public ResponseEntity deleteFile(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
 

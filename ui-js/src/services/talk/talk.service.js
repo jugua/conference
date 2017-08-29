@@ -5,7 +5,7 @@ export default class TalkService {
 
     this.log = $log;
 
-    this.talks = $resource('api/talk/:id', {}, {
+    this.talks = $resource('talk/:id', {}, {
       add: {
         method: 'POST',
         transformRequest: angular.identity,

@@ -5,7 +5,7 @@ export default class {
 
     this.log = $log;
 
-    this.res = $resource('api/talk/:talkId/file', {}, {
+    this.res = $resource('talk/:talkId/file', {}, {
       get: {
         method: 'GET',
       },
@@ -23,7 +23,7 @@ export default class {
       }
     });
 
-    this.resName = $resource('api/talk/:talkId/filename');
+    this.resName = $resource('talk/:talkId/filename');
   }
 
   get(talkId) {   // talk id

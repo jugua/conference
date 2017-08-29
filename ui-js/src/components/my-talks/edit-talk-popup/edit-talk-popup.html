@@ -93,7 +93,7 @@
 
       <div ng-if="$ctrl.fileNameObj.fileName">
         <span class="icon icon_attach"></span>
-        <a class="form-link link" ng-href="/api/talk/{{ $ctrl.talk.id }}/file">{{ $ctrl.fileNameObj.fileName }}</a>
+        <a class="form-link link" ng-href="/talk/{{ $ctrl.talk.id }}/file">{{ $ctrl.fileNameObj.fileName }}</a>
         <a class="form-link link"
            ng-if="$ctrl.editable"
            ng-click="$ctrl.confirmDeleteFile()">
