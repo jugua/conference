@@ -1,6 +1,6 @@
 package ua.rd.cm.web.controller;
 
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
+import static ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,10 +25,10 @@ import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserDto;
-import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 
 @RestController

@@ -1,4 +1,4 @@
-package ua.rd.cm.services.exception;
+package ua.rd.cm.infrastructure.fileStorage.exception;
 
 import java.util.HashMap;
 import java.util.Map;

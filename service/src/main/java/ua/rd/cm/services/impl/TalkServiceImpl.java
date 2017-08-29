@@ -14,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
-import ua.rd.cm.services.MailService;
+import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.preparator.*;
+import ua.rd.cm.infrastructure.mail.preparator.*;
 
 @Service
 public class TalkServiceImpl implements TalkService {

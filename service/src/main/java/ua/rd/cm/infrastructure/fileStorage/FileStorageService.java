@@ -1,6 +1,6 @@
-package ua.rd.cm.services;
+package ua.rd.cm.infrastructure.fileStorage;
 
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType;
+import static ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType;
 
 import java.io.File;
 import java.io.IOException;

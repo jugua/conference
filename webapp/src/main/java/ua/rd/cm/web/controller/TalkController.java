@@ -26,11 +26,12 @@ import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.*;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.impl.FileStorageServiceImpl;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController

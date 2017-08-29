@@ -19,10 +19,10 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.NewPasswordDto;
-import ua.rd.cm.services.MailService;
+import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
-import ua.rd.cm.services.preparator.ForgotMessagePreparator;
+import ua.rd.cm.infrastructure.mail.preparator.ForgotMessagePreparator;
 
 @RestController
 @RequestMapping("/forgotPasswordPage")
