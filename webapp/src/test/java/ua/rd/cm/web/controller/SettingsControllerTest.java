@@ -35,8 +35,8 @@ import ua.rd.cm.services.UserService;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
 public class SettingsControllerTest {
-    public static final String API_USER_CURRENT_PASSWORD = "/api/user/current/password";
-    public static final String API_USER_CURRENT_EMAIL = "/api/user/current/email";
+    public static final String API_USER_CURRENT_PASSWORD = "/settings/password";
+    public static final String API_USER_CURRENT_EMAIL = "/settings/email";
     private MockMvc mockMvc;
     private SettingsDto settingsDto;
 

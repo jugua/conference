@@ -33,7 +33,7 @@ import ua.rd.cm.infrastructure.mail.preparator.NewEmailMessagePreparator;
 
 @Log4j
 @RestController
-@RequestMapping("/api/user/current")
+@RequestMapping("/settings")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SettingsController {
     private ObjectMapper mapper;
