@@ -32,7 +32,7 @@ import ua.rd.cm.services.TypeService;
 
 @Log4j
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class MainPageController {
 
@@ -88,6 +88,7 @@ public class MainPageController {
         messageDto.setId(id);
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
+    
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
