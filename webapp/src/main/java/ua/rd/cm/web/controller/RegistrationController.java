@@ -25,7 +25,7 @@ import ua.rd.cm.services.exception.PasswordMismatchException;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/registration")
 @Log4j
 public class RegistrationController {
 
