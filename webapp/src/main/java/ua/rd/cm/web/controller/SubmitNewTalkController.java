@@ -23,8 +23,9 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.*;
-import ua.rd.cm.services.impl.FileStorageServiceImpl;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController

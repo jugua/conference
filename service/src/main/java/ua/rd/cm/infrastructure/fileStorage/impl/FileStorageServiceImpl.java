@@ -1,6 +1,6 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.infrastructure.fileStorage.impl;
 
-import static ua.rd.cm.services.exception.FileValidationException.*;
+import static ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException.*;
 import static ua.rd.cm.services.exception.ResourceNotFoundException.FILE_NOT_FOUND;
 
 import java.io.*;
@@ -17,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.services.FileStorageService;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 @Log4j

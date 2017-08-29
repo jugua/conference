@@ -10,7 +10,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ua.rd.cm.services.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
+import static ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
 import static ua.rd.cm.services.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
 
 import java.io.File;
@@ -58,15 +58,15 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.TalkService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.impl.FileStorageServiceImpl;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})

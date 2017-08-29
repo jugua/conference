@@ -1,4 +1,4 @@
-package ua.rd.cm.services.preparator;
+package ua.rd.cm.infrastructure.mail.preparator;
 
 import java.io.IOException;
 import java.util.Map;

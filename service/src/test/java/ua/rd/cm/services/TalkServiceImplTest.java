@@ -20,10 +20,11 @@ import org.modelmapper.ModelMapper;
 
 import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.repository.*;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.services.impl.TalkServiceImpl;
-import ua.rd.cm.services.preparator.ChangeTalkBySpeakerPreparator;
+import ua.rd.cm.infrastructure.mail.preparator.ChangeTalkBySpeakerPreparator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TalkServiceImplTest {

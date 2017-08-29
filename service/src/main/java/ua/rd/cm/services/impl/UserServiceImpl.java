@@ -18,14 +18,14 @@ import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.ContactTypeService;
-import ua.rd.cm.services.MailService;
+import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
-import ua.rd.cm.services.preparator.ConfirmAccountPreparator;
+import ua.rd.cm.infrastructure.mail.preparator.ConfirmAccountPreparator;
 
 
 @Service

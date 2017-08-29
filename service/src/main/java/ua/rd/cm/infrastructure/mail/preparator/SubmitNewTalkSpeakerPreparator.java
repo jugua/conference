@@ -1,14 +1,16 @@
-package ua.rd.cm.services.preparator;
+package ua.rd.cm.infrastructure.mail.preparator;
 
 import java.util.HashMap;
 
+import lombok.AllArgsConstructor;
 import ua.rd.cm.domain.User;
 
-public class ChangePasswordPreparator extends CustomMimeMessagePreparator {
+@AllArgsConstructor
+public class SubmitNewTalkSpeakerPreparator extends CustomMimeMessagePreparator {
 
     @Override
     public String getTemplateName() {
-        return "change_password_template.ftl";
+        return "submitted_talk_speaker.ftl";
     }
 
     @Override
@@ -16,6 +18,7 @@ public class ChangePasswordPreparator extends CustomMimeMessagePreparator {
         model = new HashMap<>();
         model.put("name", receiver.getFirstName());
         model.put("email", receiver.getEmail());
-        model.put("subject", "Your password has been changed");
+        model.put("subject", "Your talk's status has been updated");
     }
+
 }
