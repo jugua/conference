@@ -7,6 +7,7 @@ export default class TalkService {
 
     this.talks = $resource('api/talk/:id', {}, {
       add: {
+        url: '/submitTalk',
         method: 'POST',
         transformRequest: angular.identity,
         headers: {

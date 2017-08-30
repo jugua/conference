@@ -2,7 +2,7 @@ export default class {
   constructor($resource) {
     'ngInject';
 
-    this.res = $resource('/topic');
+    this.res = $resource('/submitTalk/getTopics');
     this.resForTalksPage = $resource('/api/talk/topic');
   }
 
@@ -15,7 +15,7 @@ export default class {
   }
 
   save(name, successCallback) {
-    return this.res.save(
+    return $resource('/api/topic').save(
       { name },
       () => { successCallback(); });
   }
