@@ -38,7 +38,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +61,12 @@ import static ua.rd.cm.web.controller.TestUtil.ORGANISER_ROLE;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class SubmitNewTalkControllerTest {
-    private static final String API_TALK = "/api/talk";
+    private static final String SUBMIT_TALK_PAGE_URL = "/submitTalk";
+    private static final String GET_TOPICS_URL = SUBMIT_TALK_PAGE_URL + "/getTopics";
+    private static final String GET_TYPES_URL = SUBMIT_TALK_PAGE_URL + "/getTypes";
+    private static final String GET_LEVELS_URL = SUBMIT_TALK_PAGE_URL + "/getLevels";
+    private static final String GET_LANGUAGES_URL = SUBMIT_TALK_PAGE_URL + "/getLanguages";
+
     public static final String SPEAKER_ROLE = "SPEAKER";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
@@ -96,7 +100,7 @@ public class SubmitNewTalkControllerTest {
 
     @Before
     public void setUp() {
-        requestBuilder = fileUpload(API_TALK).
+        requestBuilder = fileUpload(SUBMIT_TALK_PAGE_URL).
                 param("title", "title name").
                 param("description", "desc").
                 param("topic", "topic").
@@ -173,7 +177,7 @@ public class SubmitNewTalkControllerTest {
         Talk talk = new Talk();
         talk.setId(1L);
 
-        requestBuilder = fileUpload(API_TALK).
+        requestBuilder = fileUpload(SUBMIT_TALK_PAGE_URL).
                 file(file).
                 param("title", "title name").
                 param("description", "desc").
@@ -204,7 +208,7 @@ public class SubmitNewTalkControllerTest {
     public void getTypesShouldNotWorkForUnauthorized() throws Exception {
         List<TypeDto> types = new ArrayList<>();
         when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest("/api/type")).
+        mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isUnauthorized());
     }
 
@@ -213,7 +217,7 @@ public class SubmitNewTalkControllerTest {
     public void getTypesShouldWorkForOrganiser() throws Exception {
         List<TypeDto> types = new ArrayList<>();
         when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest("/api/type")).
+        mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
 
@@ -222,7 +226,7 @@ public class SubmitNewTalkControllerTest {
     public void getTypesShouldWorkForSpeaker() throws Exception {
         List<TypeDto> types = new ArrayList<>();
         when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest("/api/type")).
+        mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
 
@@ -231,7 +235,7 @@ public class SubmitNewTalkControllerTest {
     public void getTypesShouldWorkForAdmin() throws Exception {
         List<TypeDto> types = new ArrayList<>();
         when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest("/api/type")).
+        mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
 
@@ -246,7 +250,7 @@ public class SubmitNewTalkControllerTest {
         }};
 
         when(typeService.findAll()).thenReturn(types);
-        mockMvc.perform(prepareGetRequest("/api/type")).
+        mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk()).
                 andExpect(jsonPath("[0].id", CoreMatchers.is(typeDto.getId().intValue()))).
                 andExpect(jsonPath("[0].name", CoreMatchers.is(typeDto.getName())));
@@ -254,7 +258,7 @@ public class SubmitNewTalkControllerTest {
 
     @Test
     public void getTopicsShouldNotWorkForUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/topic"))
+        mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -268,7 +272,7 @@ public class SubmitNewTalkControllerTest {
             add(topicDto);
         }};
         when(topicService.findAll()).thenReturn(topics);
-        mockMvc.perform(get("/api/topic"))
+        mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0].id", CoreMatchers.is(topicDto.getId().intValue())))
                 .andExpect(jsonPath("[0].name", CoreMatchers.is(topicDto.getName())));
@@ -278,7 +282,7 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = ORGANISER_ROLE)
     public void getTopicsShouldWorkForOrganiser() throws Exception {
         when(topicService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get("/api/topic"))
+        mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }
 
@@ -286,13 +290,13 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = ADMIN_ROLE)
     public void getTopicsShouldWorkForAdmin() throws Exception {
         when(topicService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get("/api/topic"))
+        mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void getLevelsShouldNotWorkForUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -306,7 +310,7 @@ public class SubmitNewTalkControllerTest {
             add(levelDto);
         }};
         when(levelService.findAll()).thenReturn(levels);
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0].id", CoreMatchers.is(levelDto.getId().intValue())))
                 .andExpect(jsonPath("[0].name", CoreMatchers.is(levelDto.getName())));
@@ -316,7 +320,7 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = ORGANISER_ROLE)
     public void getLevelsShouldWorkForOrganiser() throws Exception {
         when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk());
     }
 
@@ -324,7 +328,7 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = ADMIN_ROLE)
     public void getLevelsShouldWorkForAdmin() throws Exception {
         when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get("/api/level"))
+        mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk());
     }
 

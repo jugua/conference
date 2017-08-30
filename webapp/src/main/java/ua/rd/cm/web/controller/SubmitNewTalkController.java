@@ -29,7 +29,7 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/submitTalk")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class SubmitNewTalkController {
     private final TypeService typeService;
@@ -41,31 +41,31 @@ public class SubmitNewTalkController {
     private final FileStorageService storageService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("type")
+    @GetMapping("/getTypes")
     public ResponseEntity getTypes() {
         return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("topic")
+    @GetMapping("/getTopics")
     public ResponseEntity getTopics() {
         return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("level")
+    @GetMapping("/getLevels")
     public ResponseEntity getLevels() {
         return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("lang")
+    @GetMapping("/getLanguages")
     public ResponseEntity getLanguages() {
         return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/talk")
+    @PostMapping
     public ResponseEntity submitTalk(
             @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {

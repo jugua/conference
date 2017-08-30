@@ -2,7 +2,7 @@ export default class {
   constructor($resource) {
     'ngInject';
 
-    this.res = $resource('/api/lang');
+    this.res = $resource('/submitTalk/getLanguages');
     this.resForTalksPage = $resource('/api/talk/lang');
   }
 
@@ -15,6 +15,6 @@ export default class {
   }
 
   save(name) {
-    return this.res.save(name);
+    return $resource('/api/lang').save(name);
   }
 }
