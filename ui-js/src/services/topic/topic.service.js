@@ -3,7 +3,7 @@ export default class {
     'ngInject';
 
     this.res = $resource('/submitTalk/getTopics');
-    this.resForTalksPage = $resource('/api/talk/topic');
+    this.resForTalksPage = $resource('/talks/getTopics');
   }
 
   query() {
