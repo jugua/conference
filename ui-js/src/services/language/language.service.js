@@ -3,7 +3,7 @@ export default class {
     'ngInject';
 
     this.res = $resource('/submitTalk/getLanguages');
-    this.resForTalksPage = $resource('/api/talk/lang');
+    this.resForTalksPage = $resource('/talks/getLanguages');
   }
 
   query() {

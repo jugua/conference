@@ -72,7 +72,7 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class TalkControllerTest extends TestUtil {
-    private static final String API_TALK = "/api/talk";
+    private static final String MY_TALKS_PAGE_URL = "/talks";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
     public static final String APPROVED = "Approved";
@@ -105,7 +105,7 @@ public class TalkControllerTest extends TestUtil {
     public void setUp() {
         correctTalkDto = setupCorrectTalkDto();
         multipartFile = createMultipartFile();
-        requestBuilder = fileUpload(API_TALK).
+        requestBuilder = fileUpload(MY_TALKS_PAGE_URL).
                 param("title", "title name").
                 param("description", "desc").
                 param("topic", "topic").
@@ -173,7 +173,7 @@ public class TalkControllerTest extends TestUtil {
         talks.add(talkDto);
 
         when(talkService.getTalksForSpeaker(speakerUser.getEmail())).thenReturn(talks);
-        mockMvc.perform(prepareGetRequest(API_TALK))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title", is(talkDto.getTitle())))
@@ -201,7 +201,7 @@ public class TalkControllerTest extends TestUtil {
         talkDtos.add(correctTalkDto);
 
         when(talkService.getTalksForOrganiser()).thenReturn(talkDtos);
-        mockMvc.perform(prepareGetRequest(API_TALK))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].title", is(correctTalkDto.getTitle())))
@@ -226,7 +226,7 @@ public class TalkControllerTest extends TestUtil {
      */
     @Test
     public void testUnauthorizedErrorGetMyTalks() throws Exception {
-        mockMvc.perform(prepareGetRequest(API_TALK))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
     }
@@ -243,7 +243,7 @@ public class TalkControllerTest extends TestUtil {
 
         when(talkService.findById((anyLong()))).thenReturn(correctTalkDto);
 
-        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(Integer.parseInt(correctTalkDto.getId().toString()))))
                 .andExpect(jsonPath("title", is(correctTalkDto.getTitle())))
@@ -269,7 +269,7 @@ public class TalkControllerTest extends TestUtil {
      */
     @Test
     public void testUnauthorizedErrorGetTalkById() throws Exception {
-        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
     }
@@ -283,7 +283,7 @@ public class TalkControllerTest extends TestUtil {
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void testTalkNotFoundExceptionGetTalkById() throws Exception {
         when(talkService.findById(anyLong())).thenThrow(new TalkNotFoundException());
-        mockMvc.perform(prepareGetRequest(API_TALK + "/" + 1)).
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1)).
                 andExpect(status().isNotFound())
                 .andExpect(jsonPath("error", is(ResourceNotFoundException.TALK_NOT_FOUND)));
     }
@@ -300,7 +300,7 @@ public class TalkControllerTest extends TestUtil {
         talkDto.setOrganiserComment("comment");
         talkDto.setStatusName(APPROVED);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1L, talkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1L, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
         verify(talkService, atLeastOnce()).updateAsOrganiser(talkDto, organiserUser);
@@ -318,7 +318,7 @@ public class TalkControllerTest extends TestUtil {
         talkDto.setOrganiserComment("comment");
         talkDto.setStatusName(APPROVED);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1L, talkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1L, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
         verify(talkService, atLeastOnce()).updateAsSpeaker(talkDto, speakerUser);
@@ -331,7 +331,7 @@ public class TalkControllerTest extends TestUtil {
      */
     @Test
     public void testUnauthorizedErrorWhenUpdateTalk() throws Exception {
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, correctTalkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1, correctTalkDto))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
     }
@@ -350,7 +350,7 @@ public class TalkControllerTest extends TestUtil {
 
         doThrow(new TalkValidationException(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG)).when(talkService).updateAsSpeaker(talkDto, speakerUser);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1L, talkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1L, talkDto))
                 .andExpect(status().isPayloadTooLarge())
                 .andExpect(jsonPath("error", is(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG)));
     }
@@ -365,7 +365,7 @@ public class TalkControllerTest extends TestUtil {
     public void testTalkNotFoundExceptionUserActionOnTalkAsOrganiser() throws Exception {
         doThrow(new TalkNotFoundException()).when(talkService).updateAsOrganiser(correctTalkDto, organiserUser);
 
-        mockMvc.perform(preparePatchRequest(API_TALK + "/" + 1, correctTalkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1, correctTalkDto))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("error", is(ResourceNotFoundException.TALK_NOT_FOUND)));
     }
@@ -384,7 +384,7 @@ public class TalkControllerTest extends TestUtil {
         String mimeType = MediaType.IMAGE_PNG_VALUE;
         when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
-        mockMvc.perform(prepareGetRequest(API_TALK + "/1/file"))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/1/takeFile"))
                 .andExpect(status().isOk());
 
     }
@@ -403,7 +403,7 @@ public class TalkControllerTest extends TestUtil {
         String mimeType = MediaType.IMAGE_PNG_VALUE;
         when(fileStorageService.getFileTypeIfSupported(file)).thenReturn(mimeType);
 
-        mockMvc.perform(prepareGetRequest(API_TALK + "/1/file"))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/1/takeFile"))
                 .andExpect(status().isBadRequest());
 
     }
@@ -416,7 +416,7 @@ public class TalkControllerTest extends TestUtil {
         String filePath = "file path";
         when(fileStorageService.saveFile(multipartFile, FileStorageServiceImpl.FileType.FILE)).thenReturn(filePath);
 
-        mockMvc.perform(fileUpload(API_TALK + "/1/file")
+        mockMvc.perform(fileUpload(MY_TALKS_PAGE_URL + "/1/uploadFile")
                 .file(multipartFile))
                 .andExpect(status().isOk());
 
@@ -431,7 +431,7 @@ public class TalkControllerTest extends TestUtil {
         String filePath = "file path";
         when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
 
-        mockMvc.perform(delete(API_TALK + "/1/file"))
+        mockMvc.perform(delete(MY_TALKS_PAGE_URL + "/1/deleteFile"))
                 .andExpect(status().isOk());
 
         verify(fileStorageService, times(1)).deleteFile(filePath);
@@ -450,7 +450,7 @@ public class TalkControllerTest extends TestUtil {
         File file = new File("wrong path");
         when(fileStorageService.getFile(filePath)).thenReturn(file);
 
-        mockMvc.perform(get(API_TALK + "/1/filename"))
+        mockMvc.perform(get(MY_TALKS_PAGE_URL + "/1/takeFileName"))
                 .andExpect(status().isOk());
 
     }
