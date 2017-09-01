@@ -5,6 +5,7 @@ export default class {
 
     this.log = $log;
 
+
     this.res = $resource('talks/:talkId/file', {}, {
       get: {
         url: '/talks/:talkId/takeFile',
@@ -26,7 +27,8 @@ export default class {
       }
     });
 
-    this.resName = $resource('/talks/:talkId/takeFileName');
+    this.resName = $resource('talk/:talkId/filename');
+
   }
 
   get(talkId) {   // talk id

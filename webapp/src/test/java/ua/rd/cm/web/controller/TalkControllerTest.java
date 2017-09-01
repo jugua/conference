@@ -72,6 +72,7 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class TalkControllerTest extends TestUtil {
+    private static final String API_TALK = "/talk";
     private static final String MY_TALKS_PAGE_URL = "/talks";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
@@ -161,6 +162,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
+
      * Test getTalks() method for correct data return to speaker
      *
      * @throws Exception
@@ -289,7 +291,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
-     * Test for actionOnTalk() method
+     * Test for updateTalk() method
      *
      * @throws Exception
      */
@@ -307,7 +309,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
-     * Test for actionOnTalk() method
+     * Test for updateTalk() method
      *
      * @throws Exception
      */
@@ -325,7 +327,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
-     * Test for actionOnTalk() method
+     * Test for updateTalk() method
      *
      * @throws Exception
      */
@@ -337,7 +339,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
-     * Test actionOnTalk() by speaker with TalkValidationException
+     * Test updateTalk() by speaker with TalkValidationException
      *
      * @throws Exception
      */
@@ -356,7 +358,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
-     * Test actionOnTalk() with TalkNotFoundException
+     * Test updateTalk() with TalkNotFoundException
      *
      * @throws Exception
      */
