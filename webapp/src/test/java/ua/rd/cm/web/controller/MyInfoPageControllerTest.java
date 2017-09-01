@@ -59,13 +59,12 @@ import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 @WebAppConfiguration
 @Log4j
 public class MyInfoPageControllerTest extends TestUtil {
-    private static final String API_PHOTO = "/api/user/current/photo";
-    public static final String API_USER_CURRENT = "/api/user/current";
+    private static final String API_PHOTO = "/myinfo/photo";
+    public static final String API_USER_CURRENT = "/myinfo";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     public static final String SPEAKER_ROLE = "SPEAKER";
     private User user;
     private UserDto correctUserDto;
-
 
     @Autowired
     private UserService userService;

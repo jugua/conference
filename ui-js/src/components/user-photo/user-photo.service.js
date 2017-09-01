@@ -11,7 +11,7 @@ class UserPhoto {
   uploadPhoto(file) {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post('api/user/current/photo', formData, {
+    return this.http.post('myinfo/photo', formData, {
       transformRequest: angular.identity,
       headers: {
         'Cache-Control': 'no-cache, no-store',
@@ -23,7 +23,7 @@ class UserPhoto {
 
   // deleting photo
   deleteUserPhoto() {
-    return this.http.delete('api/user/current/photo', {
+    return this.http.delete('myinfo/photo', {
       headers: {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
