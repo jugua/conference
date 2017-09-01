@@ -1,6 +1,6 @@
 package ua.rd.cm.web.controller;
 
-import static ua.rd.cm.services.impl.FileStorageServiceImpl.FileType.PHOTO;
+import static ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,14 +25,14 @@ import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserDto;
-import ua.rd.cm.services.FileStorageService;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 
 @RestController
-@RequestMapping("/api/user/current")
+@RequestMapping("/myinfo")
 @Log4j
 public class MyInfoPageController {
     private UserService userService;
@@ -54,7 +54,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
-    public ResponseEntity getCurrentUser(Principal principal) {
+    public ResponseEntity getUser(Principal principal) {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -68,6 +68,7 @@ public class MyInfoPageController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto,
                                          Principal principal, BindingResult bindingResult) {
@@ -87,7 +88,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/photo/{id}")
-    public ResponseEntity get(@PathVariable("id") Long userId) {
+    public ResponseEntity getPhoto(@PathVariable("id") Long userId) {
         User user = userService.find(userId);
         File file = fileStorageService.getFile(user.getPhoto());
 
@@ -110,7 +111,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/photo")
-    public ResponseEntity upload(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
+    public ResponseEntity uploadPhoto(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
         String previousPhotoPath = currentUser.getPhoto();
@@ -137,7 +138,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping(value = "/photo")
-    public ResponseEntity delete(HttpServletRequest request) {
+    public ResponseEntity deletePhoto(HttpServletRequest request) {
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
         fileStorageService.deleteFile(currentUser.getPhoto());

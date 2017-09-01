@@ -16,7 +16,7 @@ class EditPasswordService {
   }
 
   changePassword(passwords) {
-    return this.http.post('api/user/current/password', passwords, {
+    return this.http.post('settings/password', passwords, {
       headers: {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',

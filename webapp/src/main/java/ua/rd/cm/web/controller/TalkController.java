@@ -26,11 +26,12 @@ import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.*;
-import ua.rd.cm.services.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.impl.FileStorageServiceImpl;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController
@@ -113,7 +114,7 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/{talk_id}/filename",
+    @GetMapping(value = "/{talk_id}/takeFileName",
             produces = "application/json")
     public ResponseEntity getFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
@@ -126,8 +127,9 @@ public class TalkController {
 
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/{talk_id}/file")
-    public ResponseEntity getFile(@PathVariable("talk_id") Long talkId) {
+
+    @GetMapping(value = "/{talk_id}/takeFile")
+    public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
 
@@ -149,11 +151,12 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{talk_id}/file")
-    public ResponseEntity uploadFile(@PathVariable("talk_id") Long talkId,
-                                     @RequestPart(value = "file") MultipartFile file,
-                                     HttpServletRequest request) {
-        String filePath = uploadFile(file);
+
+    @PostMapping("/{talk_id}/uploadFile")
+    public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
+                                 @RequestPart(value = "file") MultipartFile file,
+                                 HttpServletRequest request) {
+      String filePath = uploadFile(file);
         TalkDto talkDto = talkService.findById(talkId);
         talkService.addFile(talkDto, filePath);
 
@@ -170,8 +173,8 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/{talk_id}/file")
-    public ResponseEntity deleteFile(@PathVariable("talk_id") Long talkId) {
+    @DeleteMapping("/{talk_id}/deleteFile")
+    public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
 
@@ -182,25 +185,25 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("topic")
+    @GetMapping("/getTopics")
     public ResponseEntity getTopics() {
         return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("level")
+    @GetMapping("/getLevels")
     public ResponseEntity getLevels() {
         return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("lang")
+    @GetMapping("/getLanguages")
     public ResponseEntity getLanguages() {
         return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("type")
+    @GetMapping("/getTypes")
     public ResponseEntity getTypes() {
         return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
     }

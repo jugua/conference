@@ -4,6 +4,7 @@ export default class {
 
     this.res = $resource('/api/topic');
     this.resForTalksPage = $resource('/talk/topic');
+
   }
 
   query() {
@@ -15,7 +16,7 @@ export default class {
   }
 
   save(name, successCallback) {
-    return this.res.save(
+    return $resource('/api/topic').save(
       { name },
       () => { successCallback(); });
   }

@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.infrastructure.mail;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import freemarker.template.Configuration;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
-import ua.rd.cm.services.preparator.CustomMimeMessagePreparator;
+import ua.rd.cm.infrastructure.mail.preparator.CustomMimeMessagePreparator;
 
 @Log4j
 public class MailService {

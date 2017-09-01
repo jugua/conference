@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
+import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.*;
 
 @Configuration

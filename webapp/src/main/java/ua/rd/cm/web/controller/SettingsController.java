@@ -2,7 +2,6 @@ package ua.rd.cm.web.controller;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,16 +24,16 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.SettingsDto;
-import ua.rd.cm.services.MailService;
+import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.UserInfoService;
 import ua.rd.cm.services.UserService;
 import ua.rd.cm.services.VerificationTokenService;
-import ua.rd.cm.services.preparator.ChangePasswordPreparator;
-import ua.rd.cm.services.preparator.NewEmailMessagePreparator;
+import ua.rd.cm.infrastructure.mail.preparator.ChangePasswordPreparator;
+import ua.rd.cm.infrastructure.mail.preparator.NewEmailMessagePreparator;
 
 @Log4j
 @RestController
-@RequestMapping("/api/user/current")
+@RequestMapping("/settings")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SettingsController {
     private ObjectMapper mapper;

@@ -18,6 +18,7 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;

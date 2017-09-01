@@ -4,6 +4,7 @@ export default class {
 
     this.res = $resource('/api/level');
     this.resForTalksPage = $resource('/talk/level');
+
   }
 
   query() {
@@ -15,6 +16,6 @@ export default class {
   }
 
   save(name) {
-    return this.res.save(name);
+    return $resource('/api/level').save(name);
   }
 }

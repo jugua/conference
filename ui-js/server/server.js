@@ -71,7 +71,7 @@ module.exports = (PORT) => {
     });
 
 // current  get user
-  router.route('/user/current')
+  router.route('/myinfo')
     .get(current.get)
     .post(current.update);
 
@@ -81,7 +81,7 @@ module.exports = (PORT) => {
   router.route('/user/current/email')
     .post(editEmail);
 
-  router.route('/user/current/photo')
+  router.route('/myinfo/photo')
     .post(upload.any(), photo.uploadImage)
     .delete(photo.deleteImage); // deleting photo
 

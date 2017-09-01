@@ -21,7 +21,7 @@ class Logout {
     })
       .then(() => {
         this.window.localStorage.removeItem('userInfo');
-        this.http.get('/api/user/current');
+        this.http.get('/myinfo');
         deferred.resolve();
       },
         (error) => {

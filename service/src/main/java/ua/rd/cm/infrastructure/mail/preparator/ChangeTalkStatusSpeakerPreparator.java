@@ -1,4 +1,4 @@
-package ua.rd.cm.services.preparator;
+package ua.rd.cm.infrastructure.mail.preparator;
 
 import java.util.HashMap;
 
