@@ -72,8 +72,7 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class TalkControllerTest extends TestUtil {
-    private static final String API_TALK = "/talk";
-    private static final String MY_TALKS_PAGE_URL = "/talks";
+    private static final String MY_TALKS_PAGE_URL = "/talk";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
     public static final String APPROVED = "Approved";
