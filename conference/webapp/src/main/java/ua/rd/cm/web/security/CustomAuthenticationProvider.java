@@ -8,7 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
 import ua.rd.cm.domain.User;
-import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.businessLogic.UserService;
 
 
 @Component

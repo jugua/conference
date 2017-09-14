@@ -20,8 +20,8 @@ import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.NewPasswordDto;
 import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.businessLogic.UserService;
+import ua.rd.cm.services.businessLogic.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.ForgotMessagePreparator;
 
 @RestController

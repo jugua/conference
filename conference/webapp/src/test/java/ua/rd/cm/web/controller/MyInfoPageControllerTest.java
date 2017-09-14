@@ -50,7 +50,7 @@ import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.PhotoDto;
 import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.businessLogic.UserService;
 import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 
 

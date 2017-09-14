@@ -1,12 +1,10 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.services.businessLogic.impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
@@ -21,7 +19,7 @@ import ua.rd.cm.dto.ConferenceDto;
 import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.repository.ConferenceRepository;
-import ua.rd.cm.services.ConferenceService;
+import ua.rd.cm.services.businessLogic.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
 
 

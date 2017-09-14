@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.businessLogic;
 
 import ua.rd.cm.domain.UserInfo;
 

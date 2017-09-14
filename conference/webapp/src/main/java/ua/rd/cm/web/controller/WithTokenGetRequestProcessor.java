@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.businessLogic.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
 
 @Component

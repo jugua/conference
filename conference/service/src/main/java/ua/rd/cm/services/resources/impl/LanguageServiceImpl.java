@@ -1,4 +1,4 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.services.resources.impl;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ua.rd.cm.domain.Language;
 import ua.rd.cm.repository.LanguageRepository;
-import ua.rd.cm.services.LanguageService;
+import ua.rd.cm.services.resources.LanguageService;
 
 @Service
 public class LanguageServiceImpl implements LanguageService {

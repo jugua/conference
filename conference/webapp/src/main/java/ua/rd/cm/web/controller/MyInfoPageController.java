@@ -28,8 +28,8 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.services.UserInfoService;
-import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.businessLogic.UserInfoService;
+import ua.rd.cm.services.businessLogic.UserService;
 import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 

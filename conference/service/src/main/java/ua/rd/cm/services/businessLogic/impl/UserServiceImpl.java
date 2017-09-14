@@ -1,4 +1,4 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.services.businessLogic.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +17,10 @@ import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.services.ContactTypeService;
+import ua.rd.cm.services.businessLogic.ContactTypeService;
 import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.VerificationTokenService;
+import ua.rd.cm.services.businessLogic.UserService;
+import ua.rd.cm.services.businessLogic.VerificationTokenService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.PasswordMismatchException;

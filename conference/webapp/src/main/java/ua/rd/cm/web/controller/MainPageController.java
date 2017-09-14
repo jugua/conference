@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.dto.*;
-import ua.rd.cm.services.*;
+import ua.rd.cm.services.businessLogic.ConferenceService;
+import ua.rd.cm.services.businessLogic.TopicService;
+import ua.rd.cm.services.businessLogic.TypeService;
+import ua.rd.cm.services.resources.LanguageService;
+import ua.rd.cm.services.resources.LevelService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

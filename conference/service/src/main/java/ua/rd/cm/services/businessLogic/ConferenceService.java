@@ -1,4 +1,4 @@
-package ua.rd.cm.services;
+package ua.rd.cm.services.businessLogic;
 
 import java.util.List;
 import java.time.LocalDate;
