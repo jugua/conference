@@ -18,3 +18,5 @@
 
 *.scpt binary
 *.scssc binary
+
+*.exe binary
