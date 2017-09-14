@@ -11,6 +11,8 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,16 +36,11 @@ import ua.rd.cm.services.exception.NoSuchUserException;
 @RestController
 @RequestMapping("/myinfo")
 @Log4j
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class MyInfoPageController {
     private UserService userService;
     private FileStorageService fileStorageService;
     private final UserInfoService userInfoService;
-
-    public MyInfoPageController(UserService userService, FileStorageService fileStorageService, UserInfoService userInfoService) {
-        this.userService = userService;
-        this.fileStorageService = fileStorageService;
-        this.userInfoService = userInfoService;
-    }
 
     @ExceptionHandler(FileValidationException.class)
     public ResponseEntity<MessageDto> handleFileValidationException(FileValidationException ex) {
