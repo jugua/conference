@@ -63,7 +63,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             throw new ResourceNotFoundException(FILE_NOT_FOUND);
         }
         File searchFile = new File(fileAbsolutePath);
-        if (!searchFile.isFile() || searchFile == null) {
+        if (!searchFile.isFile()) {
             throw new ResourceNotFoundException(FILE_NOT_FOUND);
         }
         return searchFile;
