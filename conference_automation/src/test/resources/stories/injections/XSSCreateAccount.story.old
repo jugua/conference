@@ -1,0 +1,22 @@
+Meta:
+
+Narrative:
+As a user
+I want to perform an action
+So that I can achieve a business goal
+
+Scenario: User create new account usint injection
+Meta:
+@regression @smoke
+
+Given user is on the sign up page
+When user  fill in the following fields: First Name, Last Name, E-mail, Password, Confirm Password:
+|firstName  |lastName  |email  |password  |confirmPassword  |
+|<firstName>|<lastName>|<email>|<password>|<confirmPassword>|
+And click submit button
+Then new user is registered
+And notification link was sent on email
+
+Examples:
+|<firstName>             |<lastName>              |<email>                 |<password>              |<confirmPassword>       |
+|<script>alert()</script>|<script>alert()</script>|<script>alert()</script>|<script>alert()</script>|<script>alert()</script>|

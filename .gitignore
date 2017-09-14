@@ -1,3 +1,7 @@
+reports
+gensrc
+.sonar/
+
 .gitignore
 # Maven target
 /**/target
@@ -163,6 +167,8 @@ $RECYCLE.BIN/
 # IntelliJ
 /out/
 *.iml
+*.iws
+*.ipr
 .idea
 
 # JIRA plugin

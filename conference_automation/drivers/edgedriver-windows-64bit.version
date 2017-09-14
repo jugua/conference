@@ -1,0 +1,7 @@
+{
+  "name": "edgedriver",
+  "platform": "windows",
+  "bit": "64",
+  "version": "2.10586",
+  "url": "https://download.microsoft.com/download/C/0/7/C07EBF21-5305-4EC8-83B1-A6FCC8F93F45/MicrosoftWebDriver.msi"
+}
