@@ -56,7 +56,6 @@ public class UserController {
         }
 
         UserDto userDto = userService.getUserDtoById(userId);
-        // userDto.setContactTypeService(contactTypeService);
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 

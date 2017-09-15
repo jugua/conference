@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import ua.rd.cm.services.businessLogic.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.OldEmailMessagePreparator;
 
 @RestController
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RequestMapping("/confirmation")
 public class ConfirmationController {
 
@@ -22,16 +24,6 @@ public class ConfirmationController {
     private final VerificationTokenService tokenService;
     private final UserService userService;
     private final MailService mailService;
-
-    @Autowired
-    public ConfirmationController(WithTokenGetRequestProcessor withTokenGetRequestProcessor,
-                                  VerificationTokenService tokenService,
-                                  UserService userService, MailService mailService) {
-        this.withTokenGetRequestProcessor = withTokenGetRequestProcessor;
-        this.tokenService = tokenService;
-        this.userService = userService;
-        this.mailService = mailService;
-    }
 
     @GetMapping("/registrationConfirm/{token}")
     public ResponseEntity confirmRegistration(@PathVariable String token) {
