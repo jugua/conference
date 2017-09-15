@@ -46,11 +46,9 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.services.ContactTypeService;
-import ua.rd.cm.services.UserInfoService;
-import ua.rd.cm.services.UserService;
-import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.PasswordMismatchException;
+import ua.rd.cm.services.businesslogic.ContactTypeService;
+import ua.rd.cm.services.businesslogic.UserInfoService;
+import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.WrongRoleException;
 

@@ -27,11 +27,16 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.services.*;
 import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
+import ua.rd.cm.services.businesslogic.TalkService;
+import ua.rd.cm.services.businesslogic.TopicService;
+import ua.rd.cm.services.businesslogic.TypeService;
+import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
+import ua.rd.cm.services.resources.LanguageService;
+import ua.rd.cm.services.resources.LevelService;
 
 @Log4j
 @RestController

@@ -16,7 +16,7 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserDto;
-import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;

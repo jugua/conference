@@ -38,10 +38,10 @@ import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.*;
-import ua.rd.cm.services.ConferenceService;
-import ua.rd.cm.services.LevelService;
-import ua.rd.cm.services.TopicService;
-import ua.rd.cm.services.TypeService;
+import ua.rd.cm.services.businesslogic.ConferenceService;
+import ua.rd.cm.services.resources.LevelService;
+import ua.rd.cm.services.businesslogic.TopicService;
+import ua.rd.cm.services.businesslogic.TypeService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})

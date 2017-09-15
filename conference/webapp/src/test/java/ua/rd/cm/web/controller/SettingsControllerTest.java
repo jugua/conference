@@ -29,7 +29,7 @@ import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.SettingsDto;
-import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.businesslogic.UserService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})

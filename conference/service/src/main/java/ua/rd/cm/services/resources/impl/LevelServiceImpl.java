@@ -1,4 +1,4 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.services.resources.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import ua.rd.cm.dto.LevelDto;
 import ua.rd.cm.repository.LevelRepository;
-import ua.rd.cm.services.LevelService;
+import ua.rd.cm.services.resources.LevelService;
 
 @Service
 public class LevelServiceImpl implements LevelService {

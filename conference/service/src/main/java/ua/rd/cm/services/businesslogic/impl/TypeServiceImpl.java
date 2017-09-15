@@ -1,4 +1,4 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.services.businesslogic.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +12,7 @@ import ua.rd.cm.domain.Type;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.repository.TypeRepository;
-import ua.rd.cm.services.TypeService;
+import ua.rd.cm.services.businesslogic.TypeService;
 import ua.rd.cm.services.exception.TypeNotFoundException;
 
 @Service

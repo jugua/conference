@@ -18,7 +18,7 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserBasicDto;
-import ua.rd.cm.services.UserService;
+import ua.rd.cm.services.businesslogic.UserService;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController

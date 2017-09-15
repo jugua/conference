@@ -1,4 +1,4 @@
-package ua.rd.cm.services.impl;
+package ua.rd.cm.services.businesslogic.impl;
 
 import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE_NOT_FOUND;
 
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
-import ua.rd.cm.services.ContactTypeService;
+import ua.rd.cm.services.businesslogic.ContactTypeService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 @Service
