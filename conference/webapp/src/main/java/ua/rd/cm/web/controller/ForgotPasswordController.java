@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.ForgotMessagePreparator;
 
 @RestController
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RequestMapping("/forgotPasswordPage")
 public class ForgotPasswordController {
 
@@ -34,19 +36,6 @@ public class ForgotPasswordController {
     private final MailService mailService;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public ForgotPasswordController(WithTokenGetRequestProcessor withTokenGetRequestProcessor,
-                                    VerificationTokenService tokenService,
-                                    UserService userService, MailService mailService,
-                                    ObjectMapper objectMapper, PasswordEncoder passwordEncoder) {
-        this.withTokenGetRequestProcessor = withTokenGetRequestProcessor;
-        this.tokenService = tokenService;
-        this.userService = userService;
-        this.mailService = mailService;
-        this.objectMapper = objectMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @PostMapping("/forgotPassword")
     public ResponseEntity forgotPassword(@RequestBody String mail, HttpServletRequest request) throws IOException {

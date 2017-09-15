@@ -2,6 +2,7 @@ package ua.rd.cm.web.controller;
 
 import java.util.function.Consumer;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,11 @@ import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
 
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 @Component
 public class WithTokenGetRequestProcessor {
 
     private final VerificationTokenService tokenService;
-
-    @Autowired
-    public WithTokenGetRequestProcessor(VerificationTokenService tokenService) {
-        this.tokenService = tokenService;
-    }
 
     public ResponseEntity process(String token, VerificationToken.TokenType tokenType, Consumer<VerificationToken> action) {
         VerificationToken verificationToken = tokenService.getToken(token);
