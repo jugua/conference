@@ -25,10 +25,10 @@ import ua.rd.cm.dto.SubmitTalkDto;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import ua.rd.cm.services.business_logic.TalkService;
-import ua.rd.cm.services.business_logic.TopicService;
-import ua.rd.cm.services.business_logic.TypeService;
-import ua.rd.cm.services.business_logic.UserService;
+import ua.rd.cm.services.businesslogic.TalkService;
+import ua.rd.cm.services.businesslogic.TopicService;
+import ua.rd.cm.services.businesslogic.TypeService;
+import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.resources.LanguageService;
 import ua.rd.cm.services.resources.LevelService;
 

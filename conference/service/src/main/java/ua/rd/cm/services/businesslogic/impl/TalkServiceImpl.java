@@ -1,4 +1,4 @@
-package ua.rd.cm.services.business_logic.impl;
+package ua.rd.cm.services.businesslogic.impl;
 
 import static ua.rd.cm.services.exception.TalkValidationException.*;
 
@@ -15,7 +15,7 @@ import ua.rd.cm.domain.*;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.repository.*;
 import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.services.business_logic.TalkService;
+import ua.rd.cm.services.businesslogic.TalkService;
 import ua.rd.cm.services.exception.TalkNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.infrastructure.mail.preparator.*;

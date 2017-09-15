@@ -1,4 +1,4 @@
-package ua.rd.cm.services.business_logic.impl;
+package ua.rd.cm.services.businesslogic.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ import ua.rd.cm.domain.Topic;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.TopicDto;
 import ua.rd.cm.repository.TopicRepository;
-import ua.rd.cm.services.business_logic.TopicService;
+import ua.rd.cm.services.businesslogic.TopicService;
 import ua.rd.cm.services.exception.TopicNotFoundException;
 
 @Service

@@ -21,14 +21,14 @@ import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.services.business_logic.ContactTypeService;
-import ua.rd.cm.services.business_logic.UserService;
-import ua.rd.cm.services.business_logic.VerificationTokenService;
+import ua.rd.cm.services.businesslogic.ContactTypeService;
+import ua.rd.cm.services.businesslogic.UserService;
+import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
-import ua.rd.cm.services.business_logic.impl.UserServiceImpl;
+import ua.rd.cm.services.businesslogic.impl.UserServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {

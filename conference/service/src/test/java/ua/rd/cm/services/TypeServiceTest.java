@@ -22,8 +22,8 @@ import ua.rd.cm.domain.Type;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.repository.TypeRepository;
-import ua.rd.cm.services.business_logic.TypeService;
-import ua.rd.cm.services.business_logic.impl.TypeServiceImpl;
+import ua.rd.cm.services.businesslogic.TypeService;
+import ua.rd.cm.services.businesslogic.impl.TypeServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TypeServiceTest {

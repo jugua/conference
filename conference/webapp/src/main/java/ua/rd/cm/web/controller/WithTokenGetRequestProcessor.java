@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.services.business_logic.VerificationTokenService;
+import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))

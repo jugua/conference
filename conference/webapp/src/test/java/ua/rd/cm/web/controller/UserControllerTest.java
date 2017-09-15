@@ -46,9 +46,9 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.services.business_logic.ContactTypeService;
-import ua.rd.cm.services.business_logic.UserInfoService;
-import ua.rd.cm.services.business_logic.UserService;
+import ua.rd.cm.services.businesslogic.ContactTypeService;
+import ua.rd.cm.services.businesslogic.UserInfoService;
+import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.WrongRoleException;
 

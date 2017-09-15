@@ -31,7 +31,7 @@ import ua.rd.cm.dto.TopicDto;
 import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import ua.rd.cm.services.business_logic.*;
+import ua.rd.cm.services.businesslogic.*;
 import ua.rd.cm.services.resources.LevelService;
 
 import javax.servlet.Filter;

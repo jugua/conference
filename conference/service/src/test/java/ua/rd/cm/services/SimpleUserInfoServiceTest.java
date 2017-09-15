@@ -11,8 +11,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.repository.UserInfoRepository;
-import ua.rd.cm.services.business_logic.UserInfoService;
-import ua.rd.cm.services.business_logic.impl.UserInfoServiceImpl;
+import ua.rd.cm.services.businesslogic.UserInfoService;
+import ua.rd.cm.services.businesslogic.impl.UserInfoServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleUserInfoServiceTest {
