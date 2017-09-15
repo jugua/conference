@@ -17,8 +17,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
-import ua.rd.cm.services.businessLogic.ContactTypeService;
-import ua.rd.cm.services.businessLogic.impl.ContactTypeServiceImpl;
+import ua.rd.cm.services.business_logic.ContactTypeService;
+import ua.rd.cm.services.business_logic.impl.ContactTypeServiceImpl;
 
 
 /**

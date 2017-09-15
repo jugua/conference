@@ -1,4 +1,4 @@
-package ua.rd.cm.services.businessLogic.impl;
+package ua.rd.cm.services.business_logic.impl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +19,7 @@ import ua.rd.cm.dto.ConferenceDto;
 import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.repository.ConferenceRepository;
-import ua.rd.cm.services.businessLogic.ConferenceService;
+import ua.rd.cm.services.business_logic.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
 
 

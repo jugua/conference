@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.services.businessLogic.UserService;
-import ua.rd.cm.services.businessLogic.VerificationTokenService;
+import ua.rd.cm.services.business_logic.UserService;
+import ua.rd.cm.services.business_logic.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.OldEmailMessagePreparator;
 
 @RestController
