@@ -38,11 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .mvcMatchers(HttpMethod.POST, "/api/login").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/login").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/talk").permitAll()
-                .mvcMatchers(HttpMethod.POST, "/api").permitAll()
-                .antMatchers("/api/user/current").authenticated()
+                .mvcMatchers(HttpMethod.POST, "/").permitAll()
+                .antMatchers("/myinfo").authenticated()
 
                 .and()
                 .csrf()
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .logout()
-                .logoutUrl("/api/logout")
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
