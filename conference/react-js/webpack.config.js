@@ -37,6 +37,17 @@ module.exports = {
 	// > Module Handles
 	module: {
 		rules: [
+			// ESLint
+			{
+					enforce: 'pre',
+					test: /\.js*/,
+					exclude: /node_modules/,
+					loader: 'eslint-loader',
+					options: {
+              failOnWarning: false,
+							failOError: false
+					}
+			},
 			// > JS / JSX
 			{
 				test: /\.(js|jsx)?$/,
