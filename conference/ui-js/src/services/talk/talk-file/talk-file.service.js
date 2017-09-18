@@ -6,7 +6,7 @@ export default class {
     this.log = $log;
 
 
-    this.res = $resource('talk/:talkId/file', {}, {
+    this.res = $resource('talk/:talkId/takeFile', {}, {
       get: {
         url: '/talk/:talkId/takeFile',
         method: 'GET',
