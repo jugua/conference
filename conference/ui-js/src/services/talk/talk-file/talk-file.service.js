@@ -27,7 +27,7 @@ export default class {
       }
     });
 
-    this.resName = $resource('talk/:talkId/filename');
+    this.resName = $resource('talk/:talkId/takeFileName');
 
   }
 
