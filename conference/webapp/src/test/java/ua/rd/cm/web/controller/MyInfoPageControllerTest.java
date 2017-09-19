@@ -113,7 +113,7 @@ public class MyInfoPageControllerTest extends TestUtil {
                 .file(multipartFile)
                 .contentType(MediaType.IMAGE_JPEG)
         ).andExpect(status().isOk())
-                .andExpect(jsonPath("result", is("api/user/current/photo/" + user.getId())));
+                .andExpect(jsonPath("result", is("/photo/" + user.getId())));
 
         verify(fileStorageService, times(1)).deleteFile(previousPhotoPath);
         verify(userService, times(1)).updateUserProfile(user);
