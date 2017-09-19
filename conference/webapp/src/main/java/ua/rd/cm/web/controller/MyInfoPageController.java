@@ -123,7 +123,7 @@ public class MyInfoPageController {
                 userService.updateUserProfile(currentUser);
 
                 MessageDto messageDto = new MessageDto();
-                messageDto.setResult("api/user/current/photo/" + currentUser.getId());
+                messageDto.setResult("/photo/" + currentUser.getId());
                 return ResponseEntity.status(HttpStatus.OK).body(messageDto);
             }
         } catch (IOException e) {
