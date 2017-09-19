@@ -60,7 +60,7 @@ public class MyInfoPageController {
             UserDto userDto = userService.getUserDtoByEmail(principal.getName());
             return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
         } catch (NoSuchUserException ex) {
-            log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
+            log.error("Request for [myinfo] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
