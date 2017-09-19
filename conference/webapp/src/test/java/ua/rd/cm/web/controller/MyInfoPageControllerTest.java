@@ -158,7 +158,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         File file = new File("src/test/resources/trybel_master.JPG");
         String mimeType = MediaType.IMAGE_PNG_VALUE;
 
-        when(fileStorageService.getFile("api/user/current/photo/")).thenReturn(file);
+        when(fileStorageService.getFile("myinfo/photo/")).thenReturn(file);
         when((fileStorageService.getPhotoTypeIfSupported(file))).thenReturn(mimeType);
 
         mockMvc.perform(get(API_PHOTO + "/1"))
@@ -173,7 +173,7 @@ public class MyInfoPageControllerTest extends TestUtil {
         File file = new File("wrong path");
         String mimeType = MediaType.IMAGE_PNG_VALUE;
 
-        when(fileStorageService.getFile("api/user/current/photo/")).thenReturn(file);
+        when(fileStorageService.getFile("myinfo/photo/")).thenReturn(file);
         when((fileStorageService.getPhotoTypeIfSupported(file))).thenReturn(mimeType);
 
         mockMvc.perform(get(API_PHOTO + "/1"))
