@@ -5,7 +5,7 @@ const Foo = React.createClass({
     return (
       <p>I am not a very smart component...</p>
     );
-  }
+  },
 });
 
 export default Foo;
