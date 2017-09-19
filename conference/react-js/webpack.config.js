@@ -5,7 +5,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const DEBUG = process.env.NODE_ENV !== 'production';
 
-// >> Target Structure <<
 // > Root App
 const APP_FOLDER = path.resolve(__dirname, './app');
 // > Dist
