@@ -3,7 +3,7 @@ import './component.sass';
 
 function ComponentA() {
   return (
-    <h2>COMPONENT A - Folkbit</h2>
+    <p>I am not a very smart component...</p>
   );
 }
 

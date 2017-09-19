@@ -6,7 +6,7 @@ import ComponentA from './ComponentA';
 import ComponentB from './ComponentB';
 
 function App() {
-   return (
+  return (
     <div>
       <h1>HI WORLD</h1>
       <ComponentA />
