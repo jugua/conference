@@ -13,7 +13,7 @@ class Logout {
   logout() {
     const deferred = this.q.defer();
 
-    this.http.post('/api/logout', {
+    this.http.post('/logout', {
       headers: {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache'
