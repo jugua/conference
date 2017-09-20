@@ -3,7 +3,7 @@ import './component.sass';
 
 function ComponentA() {
   return (
-    <p>I am not a very smart component...</p>
+    <p>I am not a very smart component...dsdsdsd</p>
   );
 }
 

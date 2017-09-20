@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "prod": "NODE_ENV=production npm run build",
-    "dev": "webpack-dev-server --watch --hot",
+    "dev": "webpack-dev-server --inline --hot & webpack --watch",
     "lint": "eslint ./src/**/*.js*",
     "lint-fix": "eslint ./src/**/*.js* --fix",
     "test": "node node_modules/jest/bin/jest.js"
