@@ -1,5 +1,6 @@
 import React from 'react';
+import './style.sass';
 
 export default () => (
-  <h1>Component B</h1>
+  <h3>Component B</h3>
 );
