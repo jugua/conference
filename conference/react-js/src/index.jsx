@@ -1,9 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import './index.sass';
 
-import ComponentA from './ComponentA';
-import ComponentB from './ComponentB';
+import ComponentA from './components/ComponentA';
+import ComponentB from './components/ComponentB';
 
 function App() {
   // constructor(props) {
