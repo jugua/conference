@@ -1,9 +1,9 @@
-import React from "react";
-import { render } from "react-dom";
-import "./index.sass";
+import React from 'react';
+import { render } from 'react-dom';
+import './index.sass';
 
-import ComponentA from "./ComponentA";
-import ComponentB from "./ComponentB";
+import ComponentA from './ComponentA';
+import ComponentB from './ComponentB';
 
 function App() {
   return (
@@ -15,4 +15,4 @@ function App() {
   );
 }
 
-render(<App />, document.getElementById("react-root"));
+render(<App />, document.getElementById('react-root'));

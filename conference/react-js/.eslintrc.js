@@ -1,11 +1,11 @@
 module.exports = {
-    "extends": "airbnb",
     "plugins": [
         "react",
         "jsx-a11y",
         "import",
         "jest"
     ],
+    "extends": ["eslint-config-airbnb"],
     "env": {
         "browser": true,
         "node": true,
@@ -13,7 +13,12 @@ module.exports = {
     },
     "rules": {
         "semi": ["error", "always"],
-        "quotes": ["error", "double"],
-        "indent": ["error", 2]
+        "quotes": ["error", "single"],
+        "indent": ["error", 2],
+        "eol-last": ["error", "always"],
+        "max-len": [1, 80, 2, {ignoreComments: true}],
+        "react/no-deprecated": "error",
+
+
     }
 };

@@ -1,5 +1,5 @@
-import React from "react";
-import "./component.sass";
+import React from 'react';
+import './component.sass';
 
 function ComponentA() {
   return (
