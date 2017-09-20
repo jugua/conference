@@ -1,0 +1,1 @@
+cut pre-commit to .git/hooks folder
