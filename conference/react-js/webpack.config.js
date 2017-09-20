@@ -6,7 +6,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const DEBUG = process.env.NODE_ENV !== 'production';
 
 // > Root App
-const APP_FOLDER = path.resolve(__dirname, './app');
+const APP_FOLDER = path.resolve(__dirname);
 // > Dist
 const DIST_FOLDER = path.resolve(APP_FOLDER, './dist');
 const DIST_FOLDER_STYLE = path.resolve(DIST_FOLDER, './style');
@@ -16,7 +16,7 @@ const DIST_FILE_CSS_BUNDLE_NAME = 'bundle.css';
 const DIST_FILE_CSS_BUNDLE = `style/${DIST_FILE_CSS_BUNDLE_NAME}`;
 // > Src
 const SRC_FOLDER = path.resolve(APP_FOLDER, './src');
-const SRC_FILE_JS_APP = path.resolve(SRC_FOLDER, 'app.jsx');
+const SRC_FILE_JS_APP = path.resolve(SRC_FOLDER, 'index.jsx');
 
 module.exports = {
 	// > JS Input / Output
@@ -54,7 +54,7 @@ module.exports = {
 				include: [APP_FOLDER],
 				exclude: /(node_modules)/,
 				options: {
-					presets: ['es2015', 'react', 'stage-2'],
+					presets: ['env', 'react', 'stage-2'],
 				},
 			},
 			// > CSS / SCSS
