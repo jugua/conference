@@ -35,9 +35,8 @@ import ua.rd.cm.infrastructure.mail.preparator.NewEmailMessagePreparator;
 @Log4j
 @RestController
 @RequestMapping("/settings")
-@AllArgsConstructor(/*onConstructor = @__(@Autowired)*/)
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SettingsController {
-    @Autowired
     @Qualifier(value = "rightObjectMapper")
     private ObjectMapper mapper;
     private UserService userService;
