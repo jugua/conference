@@ -3,10 +3,8 @@ package ua.rd.cm.config;
 import java.io.IOException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.*;
+import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -27,6 +25,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = "ua.rd.cm.web", excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
+@Import(RepositoryRestMvcConfiguration.class)
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name = "multipartResolver")
@@ -49,7 +48,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         return new ModelMapper();
     }
 
-    @Bean
+    @Primary
+    @Bean(name = "rightObjectMapper")
     public ObjectMapper objectMapper() {
         return Jackson2ObjectMapperBuilder.json()
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)

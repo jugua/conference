@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,14 +35,21 @@ import ua.rd.cm.infrastructure.mail.preparator.NewEmailMessagePreparator;
 @Log4j
 @RestController
 @RequestMapping("/settings")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor(/*onConstructor = @__(@Autowired)*/)
 public class SettingsController {
+    @Autowired
+    @Qualifier(value = "rightObjectMapper")
     private ObjectMapper mapper;
+    @Autowired
     private UserService userService;
+    @Autowired
     private MailService mailService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
     private VerificationTokenService tokenService;
-    private final UserInfoService userInfoService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @PostMapping("/password")
     public ResponseEntity changePassword(@Valid @RequestBody SettingsDto dto, Principal principal, BindingResult bindingResult, HttpServletRequest request) {
