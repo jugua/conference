@@ -3,13 +3,14 @@ const webpack = require('webpack');
 const cssnano = require('cssnano');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const DEBUG = process.env.NODE_ENV !== 'production';
 
 // > Root App
 const APP_FOLDER = path.resolve(__dirname);
 // > Dist
-const DIST_FOLDER = path.resolve(APP_FOLDER, './dist');
+const DIST_FOLDER = path.resolve(APP_FOLDER, './target/dist');
 const DIST_FOLDER_STYLE = path.resolve(DIST_FOLDER, './style');
 
 const DIST_FILE_JS_BUNDLE = 'js/bundle.js';
@@ -24,7 +25,7 @@ module.exports = {
   entry: SRC_FILE_JS_APP,
   output: {
     path: DIST_FOLDER,
-    publicPath: '/dist/',
+    publicPath: './',
     filename: DIST_FILE_JS_BUNDLE,
     sourceMapFilename: 'sourcemaps/[file].map',
   },
@@ -80,6 +81,10 @@ module.exports = {
         disable: false,
         allChunks: true,
       }),
+      new HtmlWebpackPlugin({
+        title: "Conference",
+        template: 'src/root-react.html'
+      })
     ] :
     [
       new webpack.DefinePlugin({
