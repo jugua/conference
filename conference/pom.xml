@@ -22,6 +22,7 @@
             <id>js</id>
             <modules>
                 <module>ui-js</module>
+                <module>react-js</module>
             </modules>
         </profile>
 
