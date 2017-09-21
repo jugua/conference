@@ -9,8 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.businesslogic.*;
-import ua.rd.cm.services.resources.LanguageService;
-import ua.rd.cm.services.resources.LevelService;
 
 @Configuration
 public class WebTestConfig {
@@ -47,16 +45,6 @@ public class WebTestConfig {
     @Bean
     public TypeService mockTypeService() {
         return mock(TypeService.class);
-    }
-
-    @Bean
-    public LevelService mockLevelService() {
-        return mock(LevelService.class);
-    }
-
-    @Bean
-    public LanguageService mockLanguageService() {
-        return mock(LanguageService.class);
     }
 
     @Bean
