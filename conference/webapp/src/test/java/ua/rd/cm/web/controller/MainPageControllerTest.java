@@ -39,7 +39,6 @@ import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.*;
 import ua.rd.cm.services.businesslogic.ConferenceService;
-import ua.rd.cm.services.resources.LevelService;
 import ua.rd.cm.services.businesslogic.TopicService;
 import ua.rd.cm.services.businesslogic.TypeService;
 
@@ -64,8 +63,6 @@ public class MainPageControllerTest extends TestUtil {
     private TypeService typeService;
     @Autowired
     private TopicService topicService;
-    @Autowired
-    private LevelService levelService;
     @Autowired
     private Filter springSecurityFilterChain;
 

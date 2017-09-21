@@ -32,7 +32,6 @@ import ua.rd.cm.dto.TypeDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import ua.rd.cm.services.businesslogic.*;
-import ua.rd.cm.services.resources.LevelService;
 
 import javax.servlet.Filter;
 import java.io.File;
@@ -90,8 +89,6 @@ public class SubmitNewTalkControllerTest {
     private TypeService typeService;
     @Autowired
     private TopicService topicService;
-    @Autowired
-    private LevelService levelService;
 
     private MockMvc mockMvc;
 
@@ -299,38 +296,6 @@ public class SubmitNewTalkControllerTest {
     public void getLevelsShouldNotWorkForUnauthorized() throws Exception {
         mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
-    public void getLevelsShouldWorkForSpeaker() throws Exception {
-        LevelDto levelDto = new LevelDto();
-        levelDto.setId(1L);
-        levelDto.setName("SomeName");
-        List<LevelDto> levels = new ArrayList<LevelDto>() {{
-            add(levelDto);
-        }};
-        when(levelService.findAll()).thenReturn(levels);
-        mockMvc.perform(get(GET_LEVELS_URL))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].id", CoreMatchers.is(levelDto.getId().intValue())))
-                .andExpect(jsonPath("[0].name", CoreMatchers.is(levelDto.getName())));
-    }
-
-    @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
-    public void getLevelsShouldWorkForOrganiser() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get(GET_LEVELS_URL))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(roles = ADMIN_ROLE)
-    public void getLevelsShouldWorkForAdmin() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
-        mockMvc.perform(get(GET_LEVELS_URL))
-                .andExpect(status().isOk());
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) {
