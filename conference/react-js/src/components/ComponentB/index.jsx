@@ -1,6 +1,10 @@
 import React from 'react';
 import './style.sass';
 
-export default () => (
-  <h3>Component B</h3>
-);
+ function ComponentA(){
+   return <h3>Component B</h3>
+ };
+
+
+
+export default ComponentA
