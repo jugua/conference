@@ -46,30 +46,6 @@ public class SubmitNewTalkController {
     private final FileStorageService storageService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getTypes")
-    public ResponseEntity getTypes() {
-        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getTopics")
-    public ResponseEntity getTopics() {
-        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getLevels")
-    public ResponseEntity getLevels() {
-        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getLanguages")
-    public ResponseEntity getLanguages() {
-        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity submitTalk(
             @Valid SubmitTalkDto submitTalkDto,

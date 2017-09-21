@@ -83,30 +83,6 @@ public class MainPageController {
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("type")
-    public ResponseEntity getTypes() {
-        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("topic")
-    public ResponseEntity getTopics() {
-        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("level")
-    public ResponseEntity getLevels() {
-        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("lang")
-    public ResponseEntity getLanguages() {
-        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
-    }
-
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
             List<ConferenceDto> conferencesDto = conferenceService.conferenceListToDto(conferences);
