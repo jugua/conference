@@ -37,10 +37,6 @@ import ua.rd.cm.services.resources.LevelService;
 @RequestMapping("/submitTalk")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class SubmitNewTalkController {
-    private final TypeService typeService;
-    private final TopicService topicService;
-    private final LevelService levelService;
-    private final LanguageService languageService;
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;

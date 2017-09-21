@@ -31,8 +31,6 @@ public class MainPageController {
     private final TypeService typeService;
     private final TopicService topicService;
     private final ConferenceService conferenceService;
-    private final LevelService levelService;
-    private final LanguageService languageService;
 
     @GetMapping("conference/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {

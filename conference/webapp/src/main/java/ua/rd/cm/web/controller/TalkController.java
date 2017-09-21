@@ -49,10 +49,6 @@ public class TalkController {
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
-    private final TypeService typeService;
-    private final TopicService topicService;
-    private final LevelService levelService;
-    private final LanguageService languageService;
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex) {
