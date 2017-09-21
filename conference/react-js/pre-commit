@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#move to our directory
+cd "$(git rev-parse --show-toplevel)"
+cd conference/react-js
+
+#---------------------------------
+#ESLint
+echo ".....ESLint....."
+npm run lint
+ESLINT_EXIT="$?"
+
+if [[ "${ESLINT_EXIT}" == 0 ]]; then
+  printf "\n\033[42mESLINT SUCCEEDED\033[0m\n"
+else
+  printf "\n\033[41mESLINT FAILED:\033[0m Fix eslint errors and try again\n"
+  exit 1
+fi
+#---------------------------------
+
+#---------------------------------
+#Tests
+echo ".....Unit tests....."
+npm run test
+TESTS_EXIT="$?"
+
+if [[ "${TESTS_EXIT}" == 0 ]]; then
+  printf "\n\033[42mTESTS SUCCEEDED\033[0m\n"
+else
+  printf "\n\033[41mTESTS FAILED:\033[0m Fix tests errors and try again\n"
+  exit 1
+fi
+
+#---------------------------------
+exit $?
