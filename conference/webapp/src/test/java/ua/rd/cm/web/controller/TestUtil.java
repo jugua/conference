@@ -33,7 +33,7 @@ public class TestUtil {
         String alreadyRegisteredEmail = "ivanova@gmail.com";
         user.setEmail(alreadyRegisteredEmail);
         user.setPassword("123456");
-        user.setPhoto("api/user/current/photo/");
+        user.setPhoto("myinfo/photo/");
         user.setStatus(User.UserStatus.CONFIRMED);
         user.setUserInfo(createUserInfo());
         user.setUserRoles(roles);
@@ -83,7 +83,7 @@ public class TestUtil {
         speakerUser.setLastName("Ivanova");
         speakerUser.setEmail("ivanova@gmail.com");
         speakerUser.setPassword("123456");
-        speakerUser.setPhoto("api/user/current/photo/");
+        speakerUser.setPhoto("myinfo/photo/");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(createUserInfo());
         speakerUser.setUserRoles(speakerRole);
@@ -97,7 +97,7 @@ public class TestUtil {
         organiserUser.setLastName("Trybel");
         organiserUser.setEmail("trybel@gmail.com");
         organiserUser.setPassword("123456");
-        organiserUser.setPhoto("api/user/current/photo/");
+        organiserUser.setPhoto("myinfo/photo/");
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(createUserInfo());
         organiserUser.setUserRoles(speakerRole);

@@ -208,7 +208,7 @@ public class UserServiceImpl implements UserService {
     private UserDto userToDto(User user) {
         UserDto dto = mapper.map(user, UserDto.class);
         if (user.getPhoto() != null) {
-            dto.setPhoto("api/user/current/photo/" + user.getId());
+            dto.setPhoto("myinfo/photo/" + user.getId());
         }
         dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
