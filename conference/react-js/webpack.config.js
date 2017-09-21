@@ -120,7 +120,7 @@ module.exports = {
     poll: true,
   },
   devServer: {
-    contentBase: APP_FOLDER,
+    contentBase: APP_FOLDER + '/target/dist/',
     compress: true,
     port: 7070,
     hot: true,
