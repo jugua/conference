@@ -40,15 +40,10 @@ public class SettingsController {
     @Autowired
     @Qualifier(value = "rightObjectMapper")
     private ObjectMapper mapper;
-    @Autowired
     private UserService userService;
-    @Autowired
     private MailService mailService;
-    @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private VerificationTokenService tokenService;
-    @Autowired
     private UserInfoService userInfoService;
 
     @PostMapping("/password")
