@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 @PreAuthorize("isAuthenticated()")
-@RepositoryRestResource(path = "topic")
+@RepositoryRestResource(path = "topics")
 public interface TopicRepository extends CrudRepository<Topic, Long> {
 
     List<Topic> findAll();

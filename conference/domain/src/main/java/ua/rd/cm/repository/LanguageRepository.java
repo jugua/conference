@@ -12,7 +12,7 @@ import ua.rd.cm.domain.Language;
 
 @Repository
 @PreAuthorize("isAuthenticated()")
-@RepositoryRestResource(path = "lang")
+@RepositoryRestResource(path = "languages")
 public interface LanguageRepository extends CrudRepository<Language, Long> {
     @Override
     List<Language> findAll();

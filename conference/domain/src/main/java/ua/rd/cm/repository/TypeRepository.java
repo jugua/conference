@@ -12,7 +12,7 @@ import ua.rd.cm.domain.Type;
 
 @Repository
 @PreAuthorize("isAuthenticated()")
-@RepositoryRestResource(path = "type")
+@RepositoryRestResource(path = "types")
 public interface TypeRepository extends CrudRepository<Type, Long> {
 
     Type findById(Long id);

@@ -12,7 +12,7 @@ import ua.rd.cm.domain.Level;
 
 @Repository
 @PreAuthorize("isAuthenticated()")
-@RepositoryRestResource(path = "level")
+@RepositoryRestResource(path = "levels")
 public interface LevelRepository extends CrudRepository<Level, Long> {
     @Override
     List<Level> findAll();
