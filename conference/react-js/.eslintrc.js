@@ -16,7 +16,7 @@ module.exports = {
         "quotes": ["error", "single"],
         "indent": ["error", 2],
         "eol-last": ["error", "always"],
-        "max-len": [1, 80, 2, {ignoreComments: true}],
+        "max-len": [1, 80, 2],
         "react/no-deprecated": "error",
 
 
