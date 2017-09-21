@@ -1,15 +1,7 @@
 package ua.rd.cm.web.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -20,23 +12,25 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import ua.rd.cm.services.businesslogic.TalkService;
-import ua.rd.cm.services.businesslogic.TopicService;
-import ua.rd.cm.services.businesslogic.TypeService;
 import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import ua.rd.cm.services.resources.LanguageService;
-import ua.rd.cm.services.resources.LevelService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Log4j
 @RestController

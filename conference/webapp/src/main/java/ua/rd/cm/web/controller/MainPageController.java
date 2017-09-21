@@ -14,8 +14,6 @@ import ua.rd.cm.dto.*;
 import ua.rd.cm.services.businesslogic.ConferenceService;
 import ua.rd.cm.services.businesslogic.TopicService;
 import ua.rd.cm.services.businesslogic.TypeService;
-import ua.rd.cm.services.resources.LanguageService;
-import ua.rd.cm.services.resources.LevelService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
