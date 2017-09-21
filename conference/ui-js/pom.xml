@@ -76,7 +76,7 @@
 
                     <execution>
                         <id>exec-gulp</id>
-                        <phase>process-sources</phase>
+                        <phase>initialize</phase>
                         <configuration>
                             <executable>gulp</executable>
                             <arguments>
@@ -96,6 +96,7 @@
                     <warSourceDirectory>${dir.dist}</warSourceDirectory>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.kelveden</groupId>
                 <artifactId>maven-karma-plugin</artifactId>
