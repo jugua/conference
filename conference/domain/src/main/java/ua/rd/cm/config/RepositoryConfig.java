@@ -3,6 +3,8 @@ package ua.rd.cm.config;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,6 +20,9 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
@@ -25,15 +30,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
 public class RepositoryConfig {
 
+
+
     @Bean(destroyMethod = "close")
     public DataSource dataSource(Environment environment) {
-        BasicDataSource ds = new BasicDataSource();
-
-        ds.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        ds.setUrl(environment.getProperty("jdbc.url"));
-        ds.setUsername(environment.getProperty("jdbc.username"));
-        ds.setPassword(environment.getProperty("jdbc.password"));
-        return ds;
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+        config.setJdbcUrl(environment.getProperty("jdbc.url"));
+        config.setUsername(environment.getProperty("jdbc.username"));
+        config.setPassword(environment.getProperty("jdbc.password"));
+        config.addDataSourceProperty( "cachePrepStmts" , "true" );
+        config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
+        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+        return new HikariDataSource(config);
     }
 
     @Bean
@@ -58,7 +67,6 @@ public class RepositoryConfig {
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
-
         return transactionManager;
     }
 }
