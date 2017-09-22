@@ -1,11 +1,9 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
+import Routes from './Routers';
 
-
-function App() {
-  return (
-    <h1>App</h1>
-  );
-}
-
-render(<App />, document.getElementById('react-root'));
+ReactDOM.render(
+  <Routes />,
+  document.getElementById('react-root'),
+)
+;

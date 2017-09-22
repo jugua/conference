@@ -18,6 +18,7 @@ module.exports = {
         "eol-last": ["error", "always"],
         "max-len": [1, 80, 2],
         "react/no-deprecated": "error",
+        "react/prop-types": 0
 
 
     }
