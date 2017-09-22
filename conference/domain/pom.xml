@@ -108,5 +108,12 @@
         </dependency>
         <!-- logging end -->
 
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+
+
     </dependencies>
 </project>
