@@ -24,7 +24,7 @@ gulp.task('serve-src-java-vm', function () {
     contentBase: __dirname + '/src',
     proxy: {
       '/api': {
-        target: 'http://localhost:8025',
+        target: 'http://ecsd00100875.epam.com:8025',
         secure: false
       }
     },
