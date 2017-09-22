@@ -5,7 +5,7 @@ export default class TalkService {
 
     this.log = $log;
 
-    this.talks = $resource('talk/:id', {}, {
+    this.talks = $resource('/api/talk/:id', {}, {
       add: {
         url: '/submitTalk',
         method: 'POST',
@@ -17,7 +17,7 @@ export default class TalkService {
         }
       },
       getAll: {
-        url: '/talks',
+        url: '/api/talk',
         method: 'GET',
         isArray: true,
         headers: {
@@ -26,7 +26,7 @@ export default class TalkService {
         }
       },
       get: {
-        url: '/talks/:id',
+        url: '/api/talks/:id',
         method: 'GET',
         params: { id: '@id' },
         headers: {
@@ -35,7 +35,7 @@ export default class TalkService {
         }
       },
       update: {
-        url: '/talks/:id',
+        url: '/api/talks/:id',
         method: 'PATCH',
         params: { id: '@id' }
       }
