@@ -1,8 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import ComponentA from './components/ComponentA';
-import ComponentB from './components/ComponentB';
 
 function App() {
   // constructor(props) {
@@ -11,12 +9,7 @@ function App() {
   //
   // render() {
   return (
-    <div>
-      <h1>HI WORLD</h1>
-      <ComponentA />
-      <ComponentB />
-      <p>ssdsd</p>
-    </div>
+    <h1>App</h1>
   );
   // }
 }
