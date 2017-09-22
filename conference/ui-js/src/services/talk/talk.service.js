@@ -17,7 +17,7 @@ export default class TalkService {
         }
       },
       getAll: {
-        url: '/api/talk',
+        url: '/talk',
         method: 'GET',
         isArray: true,
         headers: {
@@ -26,7 +26,7 @@ export default class TalkService {
         }
       },
       get: {
-        url: '/api/talks/:id',
+        url: '/talk/:id',
         method: 'GET',
         params: { id: '@id' },
         headers: {
@@ -35,7 +35,7 @@ export default class TalkService {
         }
       },
       update: {
-        url: '/api/talks/:id',
+        url: '/talk/:id',
         method: 'PATCH',
         params: { id: '@id' }
       }
