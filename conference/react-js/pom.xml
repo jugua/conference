@@ -11,7 +11,32 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>react-js</artifactId>
+    <packaging>war</packaging>
 
+
+    <profiles>
+        <profile>
+            <id>webapp</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <skipTestRun>true</skipTestRun>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>js</id>
+            <activation>
+                <property>
+                    <name>skipTests</name>
+                </property>
+            </activation>
+            <properties>
+                <skipTestRun>false</skipTestRun>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -53,6 +78,7 @@
                         <id>exec-npm-run-test</id>
                         <phase>test</phase>
                         <configuration>
+                            <skip>${skipTestRun}</skip>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>run</argument>
@@ -63,6 +89,7 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+
                 </executions>
             </plugin>
         </plugins>
