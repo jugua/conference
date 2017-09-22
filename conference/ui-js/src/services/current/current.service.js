@@ -1,7 +1,7 @@
 function Current($resource, $q, $rootScope, LocalStorage) {
   'ngInject';
 
-  const users = $resource('/my-info', {}, {
+  const users = $resource('/myinfo', {}, {
     getCurrentUser: {
       method: 'GET',
       headers: {

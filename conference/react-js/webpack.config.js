@@ -25,7 +25,7 @@ module.exports = {
   entry: SRC_FILE_JS_APP,
   output: {
     path: DIST_FOLDER,
-    publicPath: './',
+    publicPath: '',
     filename: DIST_FILE_JS_BUNDLE,
     sourceMapFilename: 'sourcemaps/[file].map',
   },

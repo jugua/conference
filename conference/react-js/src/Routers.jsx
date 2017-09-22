@@ -4,7 +4,7 @@ import {
   Route,
   Link,
 } from 'react-router-dom';
-import Upcomming from './components/Upcomming';
+import Upcoming from './components/Upcoming';
 import Past from './components/Past';
 
 const Routers = () => (
@@ -16,7 +16,7 @@ const Routers = () => (
             className="tabs-list__anchor tabs-list__anchor_active"
             to="/"
           >
-            Upcomming
+            Upcoming
           </Link>
         </li>
         <li className="tabs-list__item">
@@ -32,7 +32,7 @@ const Routers = () => (
         <Route
           exact
           path="/"
-          component={Upcomming}
+          component={Upcoming}
         />
         <Route path="/past" component={Past} />
       </div>

@@ -9,6 +9,6 @@
 <body>
 <h1>prod ver</h1>
 <div id="react-root"></div>
-<script src="../target/dist/js/bundle.js"></script>
+<script src="../js/bundle.js"></script>
 </body>
 </html>
