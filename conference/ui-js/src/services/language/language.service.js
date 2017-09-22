@@ -2,8 +2,8 @@ export default class {
   constructor($resource) {
     'ngInject';
 
-    this.res = $resource('/talk/getLanguages');
-    this.resForTalksPage = $resource('/talk/getLanguages');
+    this.res = $resource('/languages');
+    this.resForTalksPage = $resource('/languages');
 
   }
 
