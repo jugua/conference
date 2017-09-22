@@ -4,6 +4,7 @@ import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,14 +15,10 @@ import ua.rd.cm.services.businesslogic.ContactTypeService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 @Service
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ContactTypeServiceImpl implements ContactTypeService {
 
     private ContactTypeRepository contactTypeRepository;
-
-    @Autowired
-    public ContactTypeServiceImpl(ContactTypeRepository contactTypeRepository) {
-        this.contactTypeRepository = contactTypeRepository;
-    }
 
     @Override
     public ContactType find(Long id) {

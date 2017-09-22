@@ -68,7 +68,7 @@ public class UserController {
             if (bindingResult.hasFieldErrors()) {
                 status = HttpStatus.BAD_REQUEST;
                 message.setError("empty_fields");
-                log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+                log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
             } else {
                 userService.checkUserRegistration(dto);
                 userService.registerNewUser(dto);
@@ -78,7 +78,7 @@ public class UserController {
         } catch (PasswordMismatchException ex) {
             status = HttpStatus.BAD_REQUEST;
             message.setError(ex.getMessage());
-            log.error("Request for [api/user] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
         } catch (EmailAlreadyExistsException ex) {
             status = HttpStatus.CONFLICT;
             message.setError(ex.getMessage());

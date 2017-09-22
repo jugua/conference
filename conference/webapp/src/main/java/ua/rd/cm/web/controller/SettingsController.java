@@ -63,7 +63,7 @@ public class SettingsController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDto);
         }
         if (bindingResult.hasFieldErrors()) {
-            log.error("Request for [api/user/current/password] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Request for [settings/password] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
         }
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
