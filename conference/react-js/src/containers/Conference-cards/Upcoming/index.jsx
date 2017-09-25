@@ -46,7 +46,7 @@ class Upcoming extends PureComponent {
             </div>
             <div className="conference-card-dates_cfp ng-binding">
               <span className="conference-card-label">Call For Papers:</span>
-              {element.start_date? element.start_date :'TBD — TBD'}
+              {element.start_date ? element.start_date : 'TBD — TBD'}
             </div>
             <div className="conference-card-description ng-binding">
               {element.description}

@@ -9,7 +9,6 @@ class Past extends PureComponent {
       data: null,
     };
   }
-
   componentWillMount() {
     axios.get(`${baseUrl}/api/conference/past`)
       .then((response) => {
@@ -17,15 +16,12 @@ class Past extends PureComponent {
         this.setState({ data });
       });
   }
-
   render() {
     if (!this.state.data) {
       return <div />;
     }
-
     const data = this.state.data;
     const dataArray = Object.values(data);
-
     return (
       <div className="tabs-container">
         {dataArray.map(element => (
@@ -38,15 +34,17 @@ class Past extends PureComponent {
             </div>
             <div className="conference-card-dates ng-binding">
               <span className="conference-card-label">Dates:</span>
-              {element.start_date && element.end-date?
-              element.start_date - element.start_date
-                :'TBD — TBD'}
+              {element.start_date ? element.start_date : 'TBD'}
+              —
+              {element.end_date ? element.end_date : 'TBD'}
             </div>
             <div className="conference-card-dates_cfp ng-binding">
               <span className="conference-card-label">Call For Papers:</span>
-              {element.start_date && element.end-date?
-              element.call_for_paper_start_date - element.call_for_paper_end_date
-                :'TBD — TBD'}
+              {element.call_for_paper_start_date ?
+                element.call_for_paper_start_date : 'TBD'}
+              —
+              {element.call_for_paper_end_date ?
+                element.call_for_paper_end_date : 'TBD'}
             </div>
             <div className="conference-card-description ng-binding">
               {element.description}

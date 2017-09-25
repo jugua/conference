@@ -46,7 +46,7 @@ module.exports = {
         loader: 'eslint-loader',
         options: {
           failOnWarning: false,
-          failOError: false,
+          failOnError: false
         },
       },
       // > JS / JSX
@@ -68,6 +68,10 @@ module.exports = {
           publicPath: DIST_FOLDER_STYLE,
         }),
       },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader?name=src/fonts/**/[name].[ext]'
+      }
     ], // rules
   }, // module
   devtool: DEBUG ? 'source-map' : '',
