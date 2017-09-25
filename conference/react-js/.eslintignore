@@ -1,0 +1,5 @@
+**/*.sass
+**/*.jsx.snap
+**/*.html
+**/*.scss
+**/*.css

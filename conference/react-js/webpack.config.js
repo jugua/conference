@@ -130,5 +130,10 @@ module.exports = {
     compress: true,
     port: 7070,
     hot: true,
+    proxy: {
+        target: 'http://ecsd00100875.epam.com:8025',
+        secure: false
+        // changeOrigin: true
+      }
   },
 };
