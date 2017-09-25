@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Tabs from './Tabs';
+import Tabs from '../components/Tabs';
 import '../scss/main.scss';
 
 class App extends Component {
