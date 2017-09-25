@@ -18,7 +18,6 @@ module.exports = {
         "eol-last": ["error", "always"],
         "max-len": [1, 80, 2],
         "react/no-deprecated": "error",
-
-
+        "no-multiple-empty-lines": [2, {"max": 1}]
     }
 };

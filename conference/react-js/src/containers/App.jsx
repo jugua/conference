@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Routers from '../Routers';
+import PropTypes from 'prop-types';
+import Tabs from './Tabs';
+import '../scss/main.scss';
 
 class App extends Component {
   constructor(props) {
@@ -11,19 +13,19 @@ class App extends Component {
     const name = this.props.name;
     return (
       <div>
-        Привет { name }, я App
-        <Routers />
+        Привет {name}, я App
+        <Tabs />
       </div>
     );
   }
 }
-
-App.PropTypes = { user: React.PropTypes.object.isRequired };
 
 function mapStateToProps(state) {
   return {
     name: state.user.name,
   };
 }
+
+App.propTypes = { name: PropTypes.string.isRequired };
 
 export default connect(mapStateToProps)(App);
