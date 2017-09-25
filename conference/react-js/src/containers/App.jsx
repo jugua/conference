@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tabs from './Tabs';
+import ForgotPassword from './Forgot-password';
 import '../scss/main.scss';
 
 class App extends Component {
@@ -15,6 +16,7 @@ class App extends Component {
       <div>
         Привет {name}, я App
         <Tabs />
+        <ForgotPassword />
       </div>
     );
   }
