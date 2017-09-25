@@ -94,6 +94,10 @@ html {
   padding-left: 5px;
   font-size: 16px;
 
+  &__invalid {
+    border: 1px solid red;
+    }
+
   &:focus {
     outline: none;
     border-bottom: 2px solid $sharp-blue;
