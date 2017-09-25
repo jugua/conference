@@ -1,0 +1,265 @@
+html {
+  font-family: $base-font-family;
+  }
+
+/*--- Buttons Style ---*/
+
+.btn {
+  width: 200px;
+  display: block;
+  margin: 10px;
+  padding: 5px;
+  font-family: "Oswald Regular", sans-serif;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: capitalize;
+  background: $dark-blue;
+
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover,
+  &:focus {
+    background: darken($dark-blue, 20%)
+    }
+
+  &_right {
+    float: right;
+    }
+
+  &_small {
+    width: 60px;
+    }
+
+  &_cancel {
+    background: $raspberry;
+    &:hover {
+      background: darken($raspberry, 20%);
+      }
+    }
+
+  &:active {
+    outline: 0
+    }
+  }
+  
+//Forms
+
+.form {
+  &-title {
+    margin: 0 0 20px 0;
+    padding: 0;
+    font-size: 25px;
+    text-transform: uppercase;
+    }
+  &-label {
+    display: block;
+    text-transform: capitalize;
+    font-size: 16px;
+    font-family: "Oswald Regular", sans-serif;
+
+    &_required:after {
+      content: ' *';
+      display: inline;
+      color: red;
+      }
+    &_inline {
+      display: inline-block;
+      width: 20%;
+      min-width: 150px;
+      }
+    }
+  &-link {
+    display: inline-block;
+    margin: 5px 0 20px;
+    }
+  &-date-block {
+    margin: 15px 0;
+    }
+  }
+  
+// Fields Style
+
+
+.field {
+  display: block;
+  width: 100%;
+  height: 30px;
+  margin: 10px auto;
+  border: none;
+  box-sizing: border-box;
+  padding-left: 5px;
+  font-size: 16px;
+
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid $sharp-blue;
+    }
+
+  &_border {
+    border: $border;
+    }
+
+  &:focus {
+    border: none;
+    border-bottom: 2px solid $sharp-blue;
+    }
+
+  .textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    margin: 10px 0;
+    resize: none;
+    }
+
+  &:focus {
+    outline: none;
+    border: 2px solid $sharp-blue;
+    }
+  }
+  
+.pop-up {
+  position: relative;
+  width: 450px;
+  margin: auto 0;
+  background: white;
+
+  @media ($mxw: $sdmx) {
+    width: 300px;
+    }
+
+  &__title {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Oswald Regular", sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    background: $light-grey;
+    text-transform: capitalize;
+    padding: 15px;
+    margin: 0;
+    }
+
+  &__notification {
+    display: block;
+    margin: 10px;
+    text-align: center;
+    &_light {
+      font-family: "Oswald Light", sans-serif;
+      }
+
+    &_not-margin {
+      margin: 0;
+      }
+
+    &-user {
+      word-wrap: break-word;
+      font-family: "Oswald Bold";
+      display: inline-block;
+      max-width: 100%;
+      }
+    }
+
+  &__button {
+    margin: 10px auto 15px;
+    }
+
+  &-button-wrapper {
+    display: flex;
+    justify-content: space-around;
+    margin: 15px;
+
+    &_wrap {
+      flex-wrap: wrap;
+      }
+    }
+
+  &__tip {
+    width: 100%;
+    box-sizing: border-box;
+    background: $light-grey;
+    text-align: center;
+    font-family: Oswald Light;
+    font-size: 14px;
+    padding: 5px 0;
+    }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background-color: transparent;
+    background-image: url("/images/close-icon.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+
+    &:active {
+      outline: none;
+      }
+    }
+  }
+
+
+.icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  vertical-align: bottom;
+
+  &_info {
+    background-image: url("/images/info-icon.svg");
+    }
+
+  &_attach {
+    background-image: url("/images/attach.svg");
+    vertical-align: middle;
+    }
+
+  &_delete {
+    background-image: url("/images/delete.svg");
+    vertical-align: middle;
+    }
+
+  &-small {
+    width: 16px;
+    height: 16px;
+
+    &-margin-left {
+      margin-left: 8px;
+      }
+    }
+  }
+
+.md-default-theme {
+  background-color: rgb(255, 255, 255) !important;
+  }
+
+
+
+  
+.webpack_bundle_images {
+  background: url("/images/default_ava.jpg");
+  background: url("/images/favicon.png");
+  }
+
+.link {
+  color: $link-blue;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    }
+
+  &_header {
+    color: #fff;
+    text-decoration: none;
+    }
+  }

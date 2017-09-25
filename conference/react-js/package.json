@@ -7,8 +7,8 @@
     "build": "webpack --config webpack.config.js",
     "prod": "NODE_ENV=production npm run build",
     "dev": "webpack-dev-server --hot --open & webpack --watch",
-    "lint": "eslint ./src/**",
-    "lint-fix": "eslint ./src/** --fix",
+    "lint": "eslint src/**/*.js*",
+    "lint-fix": "eslint src/**/*.js* --fix",
     "test": "jest"
   },
   "pre-commit": [
