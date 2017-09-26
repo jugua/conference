@@ -38,6 +38,7 @@
         </profile>
     </profiles>
     <dependencies>
+        <!--spring-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
@@ -56,6 +57,9 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
+        <!--spring end-->
+
+        <!--database-->
 
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -70,11 +74,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-dbcp2</artifactId>
-        </dependency>
+        
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -85,9 +85,16 @@
         </dependency>
 
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
+
+        <!--database end-->
 
         <!-- testing -->
         <dependency>
@@ -112,6 +119,9 @@
             <artifactId>log4jdbc-remix</artifactId>
         </dependency>
         <!-- logging end -->
+
+
+
 
     </dependencies>
 </project>
