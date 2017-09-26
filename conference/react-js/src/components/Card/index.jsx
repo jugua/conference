@@ -1,15 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-function Card(args) {
-  const { id,
-    title,
-    start_date: startDate,
-    end_date: endDate,
-    call_for_paper_end_date: callForPaperEndDate,
-    call_for_paper_start_date: CallForPaperStartDate,
-    description,
-    location } = args.data;
-  const { enableButton = true } = args;
+function Card({ data: {
+  call_for_paper_end_date: callForPaperEndDate,
+  call_for_paper_start_date: CallForPaperStartDate,
+  cfp_active: cfpActive,
+  description,
+  end_date: endDate,
+  location,
+  id,
+  start_date: startDate,
+  title,
+} }) {
   return (
     <div className="tabs-container conference-card">
       <div className="conference-card-title">
@@ -18,11 +20,11 @@ function Card(args) {
           className="conference-card-title__link"
         >{title}</a>
       </div>
-      {enableButton ? <button
+      {cfpActive && (<button
         className="btn btn-right conference-card-title__btn"
       >
         Submit Talk
-      </button> : ''}
+      </button>)}
 
       <div className="conference-card-dates">
         <span className="conference-card-label">Dates:</span>
@@ -48,5 +50,21 @@ function Card(args) {
     </div>
   );
 }
+
+Card.propTypes = { data: PropTypes.shape({
+  call_for_paper_end_date: '',
+  call_for_paper_start_date: '',
+  cfp_active: false,
+  description: '',
+  end_date: '',
+  location: '',
+  id: '',
+  start_date: '',
+  title: '',
+}) };
+
+Card.defaultProps = {
+  data: {},
+};
 
 export default Card;

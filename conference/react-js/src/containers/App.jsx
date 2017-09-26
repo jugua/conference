@@ -9,10 +9,10 @@ import '../scss/main.scss';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { date: new Date() };
+    this.state = new Date();
   }
   render() {
-    const name = this.props.name;
+    const { name } = this.props;
     return (
       <div>
         <SignInForm />
