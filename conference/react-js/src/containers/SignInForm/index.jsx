@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import classNames from 'classnames/bind';
 
 class SignInForm extends PureComponent {
   constructor(props) {
@@ -9,42 +10,33 @@ class SignInForm extends PureComponent {
       isValidCredentials: true,
     };
 
-    this.emailChangeHandler = this.emailChangeHandler.bind(this);
-    this.submitHandler = this.submitHandler.bind(this);
-    this.passwordChangeHandler = this.passwordChangeHandler.bind(this);
-  }
+    this.submitHandler = (event) => {
+      // simulate bad credentials
+      this.setState({
+        isValidCredentials: false,
+      });
 
-  submitHandler(event) {
-    // simulate bad credentials
-    this.setState({
-      isValidCredentials: false,
-    });
+      event.preventDefault();
+    };
 
-    event.preventDefault();
-  }
+    this.formChangeHandler = (event) => {
+      const target = event.target;
 
-  emailChangeHandler(event) {
-    const target = event.target;
-
-    this.setState({
-      email: target.value,
-      isValidCredentials: true,
-    });
-  }
-
-  passwordChangeHandler(event) {
-    const target = event.target;
-
-    this.setState({
-      password: target.value,
-      isValidCredentials: true,
-    });
+      this.setState({
+        [target.name]: target.value,
+        isValidCredentials: true,
+      });
+    };
   }
 
   render() {
     return (
       <div className="sign-in-wrapper">
-        <form className="sign-in" onSubmit={this.submitHandler}>
+        <form
+          className="sign-in"
+          onSubmit={this.submitHandler}
+          onChange={this.formChangeHandler}
+        >
           <h2 className="form-title sign-in__title">sign in</h2>
           <label
             htmlFor="sign-in-email"
@@ -56,19 +48,13 @@ class SignInForm extends PureComponent {
             type="email"
             name="email"
             id="sign-in-email"
-            className={this.state.isValidCredentials ?
-              'field' :
-              'field field__invalid'}
+            className={classNames({
+              field: true,
+              field__invalid: !this.state.isValidCredentials,
+            })}
             value={this.state.email}
-            onChange={this.emailChangeHandler}
             required
           />
-          {/* <span className="field-error"> */}
-          {/* We can not find an account with that email address */}
-          {/* </span> */}
-          {/* <span className="field-error"> */}
-          {/* You have to go to your email and confirm your account */}
-          {/* </span> */}
           <div className="sign-in__password-cont">
             <label htmlFor="sign-in-password" className="form-label">
               password:
@@ -78,20 +64,17 @@ class SignInForm extends PureComponent {
           <input
             type="password"
             name="password"
-            className={this.state.isValidCredentials ?
-              'field' :
-              'field field__invalid'}
+            className={classNames({
+              field: true,
+              field__invalid: !this.state.isValidCredentials,
+            })}
             id="sign-in-password"
-            onChange={this.passwordChangeHandler}
             value={this.state.password}
           />
-          {
-            this.state.isValidCredentials ?
-              '' :
-              <span className="field-error">
+          { this.state.isValidCredentials || (
+            <span className="field-error">
                 Your credentials is incorrect
-              </span>
-          }
+            </span>) }
 
           <input
             type="submit"
