@@ -15,7 +15,7 @@ const DIST_FOLDER_STYLE = path.resolve(DIST_FOLDER, './style');
 
 const DIST_FILE_JS_BUNDLE = 'js/bundle.js';
 const DIST_FILE_CSS_BUNDLE_NAME = 'bundle.css';
-const DIST_FILE_CSS_BUNDLE = `style/${DIST_FILE_CSS_BUNDLE_NAME}`;
+const DIST_FILE_CSS_BUNDLE = `./style/${DIST_FILE_CSS_BUNDLE_NAME}`;
 // > Src
 const SRC_FOLDER = path.resolve(APP_FOLDER, './src');
 const SRC_FILE_JS_APP = path.resolve(SRC_FOLDER, 'index.jsx');
@@ -63,14 +63,25 @@ module.exports = {
       {
         test: /\.(css|scss|sass)?$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader/url!file-loader',
+          fallback: 'style-loader',
           use: ['css-loader', 'sass-loader'],
           publicPath: DIST_FOLDER_STYLE,
         }),
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file-loader?name=src/fonts/**/[name].[ext]'
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: '../',
+              outputPath: 'fonts/oswald/'
+              // useRelativePath: true,
+
+            }
+          }
+        ]
       }
     ], // rules
   }, // module
@@ -130,10 +141,5 @@ module.exports = {
     compress: true,
     port: 7070,
     hot: true,
-    proxy: {
-        target: 'http://ecsd00100875.epam.com:8025',
-        secure: false
-        // changeOrigin: true
-      }
   },
 };

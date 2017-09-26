@@ -5,7 +5,7 @@ Error: File to import not found or unreadable: /inc/const.
 1: // Imports will go here to import other component's style.
 2: // This allows for sharing of global variables.
 3: 
-4: 
+4: @import "normalize";
 5: @import "fonst";
 6: @import '/inc/const';
 7: @import '/inc/mixins';
@@ -58,4 +58,4 @@ C:/Ruby24-x64/bin/scss:22:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: File to import not found or unreadable: /inc/const.\A         on line 6 of main.scss\A \A 1: // Imports will go here to import other component's style.\A 2: // This allows for sharing of global variables.\A 3: \A 4: \A 5: @import \"fonst\";\A 6: @import '/inc/const';\A 7: @import '/inc/mixins';\A 8: @import '/inc/common';\A 9: @import '../components/Tabs/tabs';\A 10: @import '../containers/Conference-cards/style';\A 11: @import '../containers/SignInForm/style';"; }
+  content: "Error: File to import not found or unreadable: /inc/const.\A         on line 6 of main.scss\A \A 1: // Imports will go here to import other component's style.\A 2: // This allows for sharing of global variables.\A 3: \A 4: @import \"normalize\";\A 5: @import \"fonst\";\A 6: @import '/inc/const';\A 7: @import '/inc/mixins';\A 8: @import '/inc/common';\A 9: @import '../components/Tabs/tabs';\A 10: @import '../containers/Conference-cards/style';\A 11: @import '../containers/SignInForm/style';"; }
