@@ -6,6 +6,7 @@ exports[`Sign in form Sign in form renders correctly 1`] = `
 >
   <form
     className="sign-in"
+    onChange={[Function]}
     onSubmit={[Function]}
   >
     <h2
@@ -23,7 +24,6 @@ exports[`Sign in form Sign in form renders correctly 1`] = `
       className="field"
       id="sign-in-email"
       name="email"
-      onChange={[Function]}
       required={true}
       type="email"
       value=""
@@ -48,11 +48,9 @@ exports[`Sign in form Sign in form renders correctly 1`] = `
       className="field"
       id="sign-in-password"
       name="password"
-      onChange={[Function]}
       type="password"
       value=""
     />
-    
     <input
       className="btn sign-in__submit"
       type="submit"
