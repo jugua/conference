@@ -25,6 +25,13 @@
         <profile>
             <id>js</id>
             <modules>
+                <module>react-js</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>angular</id>
+            <modules>
                 <module>ui-js</module>
             </modules>
         </profile>
@@ -48,6 +55,7 @@
                 <module>service</module>
                 <module>ui-js</module>
                 <module>webapp</module>
+                <module>react-js</module>
             </modules>
         </profile>
     </profiles>
