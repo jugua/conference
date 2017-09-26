@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ForgotPassword from './Forgot-password';
 import Tabs from '../components/Tabs';
-import SignInForm from '../containers/SignInForm/index';
+import Header from '../components/Header';
 import '../scss/main.scss';
 
 class App extends Component {
@@ -15,7 +15,7 @@ class App extends Component {
     const name = this.props.name;
     return (
       <div>
-        <SignInForm />
+        <Header />
         Привет {name}, я App
         <Tabs />
         <ForgotPassword />
