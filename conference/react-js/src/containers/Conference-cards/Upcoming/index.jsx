@@ -12,14 +12,13 @@ class Upcoming extends PureComponent {
   }
   componentWillMount() {
     axios.get(`${baseUrl}/api/conference/upcoming`)
-      .then((response) => {
-        const { data } = response;
+      .then(({ data }) => {
         this.setState({ data });
       });
   }
   render() {
-    const data = this.state.data;
-    if (!this.state.data) {
+    const { data } = this.state;
+    if (!data) {
       return <div />;
     }
     const dataArray = Object.values(data);
