@@ -36,6 +36,7 @@ html {
 
   &_cancel {
     background: $raspberry;
+
     &:hover {
       background: darken($raspberry, 20%);
       }
@@ -55,6 +56,7 @@ html {
     font-size: 25px;
     text-transform: uppercase;
     }
+
   &-label {
     display: block;
     text-transform: capitalize;
@@ -66,16 +68,19 @@ html {
       display: inline;
       color: red;
       }
+
     &_inline {
       display: inline-block;
       width: 20%;
       min-width: 150px;
       }
     }
+
   &-link {
     display: inline-block;
     margin: 5px 0 20px;
     }
+
   &-date-block {
     margin: 15px 0;
     }
@@ -96,36 +101,67 @@ html {
 
   &__invalid {
     border: 1px solid red;
-    }
+  }
 
   &:focus {
     outline: none;
     border-bottom: 2px solid $sharp-blue;
-    }
+  }
 
   &_border {
     border: $border;
+
+    &:focus {
+      border: none;
+      border-bottom: 2px solid $sharp-blue;
+      }
     }
 
-  &:focus {
-    border: none;
-    border-bottom: 2px solid $sharp-blue;
-    }
+  &-error {
+    display: block;
+    margin: 0 auto 10px;
+    font-size: 13px;
+    color: red;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 
-  .textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 5px;
-    margin: 10px 0;
-    resize: none;
+    &_center {
+      text-align: center
+      }
     }
+  }
+
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  margin: 10px 0;
+  resize: none;
 
   &:focus {
     outline: none;
     border: 2px solid $sharp-blue;
     }
   }
-  
+
+// Pop-Up Styles
+
+.pop-up-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  z-index: 2;
+  background: rgba(51, 51, 51, 0.35);
+  }
+
 .pop-up {
   position: relative;
   width: 450px;
@@ -152,6 +188,7 @@ html {
     display: block;
     margin: 10px;
     text-align: center;
+
     &_light {
       font-family: "Oswald Light", sans-serif;
       }
@@ -187,7 +224,7 @@ html {
     box-sizing: border-box;
     background: $light-grey;
     text-align: center;
-    font-family: Oswald Light;
+    font-family: "Oswald Light";
     font-size: 14px;
     padding: 5px 0;
     }
