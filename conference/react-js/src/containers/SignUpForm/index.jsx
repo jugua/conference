@@ -42,7 +42,9 @@ export default class SignUp extends React.Component {
             onChange={this.formChangeHandler}
           >
             <h2 className="form-title sign-up__title">create new account</h2>
-            <label htmlFor="name" className="form-label form-label_required">first name:</label>
+            <label htmlFor="name" className="form-label form-label_required">
+              first name:
+            </label>
             <input
               type="text"
               id="name"
@@ -51,7 +53,9 @@ export default class SignUp extends React.Component {
               required
               maxLength="56"
             />
-            <label htmlFor="surname" className="form-label form-label_required">last name:</label>
+            <label htmlFor="surname" className="form-label form-label_required">
+              last name:
+            </label>
             <input
               type="text"
               id="surname"
@@ -60,7 +64,9 @@ export default class SignUp extends React.Component {
               required
               maxLength="56"
             />
-            <label htmlFor="mail" className="form-label form-label_required">Email:</label>
+            <label htmlFor="mail" className="form-label form-label_required">
+              Email:
+            </label>
             <input
               type="email"
               id="mail"
@@ -68,11 +74,18 @@ export default class SignUp extends React.Component {
               className="field sign-up__field"
               required
             />
-            {/* {this.state.isValidCredentials || ( <span className="field-error">Please enter a valid email
-            address</span>)} */}
-            {/* {this.state.isValidCredentials || ( <span className="field-error">There is an existing account
+            {/* {this.state.isValidCredentials ||
+            (<span className="field-error">
+            Please enter a valid email address</span>)} */}
+            {/* {this.state.isValidCredentials ||
+            ( <span className="field-error">There is an existing account
             associated with</span>)} */}
-            <label htmlFor="password" className="form-label form-label_required">password:</label>
+            <label
+              htmlFor="password"
+              className="form-label form-label_required"
+            >
+              password:
+            </label>
             <input
               type="password"
               id="password"
@@ -82,9 +95,12 @@ export default class SignUp extends React.Component {
               minLength="6"
               maxLength="30"
             />
-            {/* {this.state.isValidCredentials || (<span className="field-error">Please use at least one non-space
+            {/* {this.state.isValidCredentials ||
+            (<span className="field-error">Please use at least one non-space
             character in your password</span>)} */}
-            <label htmlFor="confirm" className="form-label form-label_required">confirm password:</label>
+            <label htmlFor="confirm" className="form-label form-label_required">
+              confirm password:
+            </label>
             <input
               type="password"
               id="confirm"
@@ -94,17 +110,27 @@ export default class SignUp extends React.Component {
               minLength="6"
               maxLength="30"
             />
-            {this.state.password !== this.state.confirm ? (<span className="field-error">Passwords do not match</span>) : null}
-            {/* {this.state.isValidCredentials || ( <span className="field-error">Passwords do not match</span>)} */}
-            <input type="submit" className="sign-up__button btn" value="submit" />
+            {this.state.password !== this.state.confirm ?
+              (<span className="field-error">Passwords do not match</span>)
+              : null}
+            {/* {this.state.isValidCredentials ||
+            ( <span className="field-error">Passwords do not match</span>)} */}
+            <input
+              type="submit"
+              className="sign-up__button btn"
+              value="submit"
+            />
           </form>
         </div>
         <div className="pop-up-wrapper">
           <div className="pop-up">
-            <h3 className="pop-up__title">You&#39;ve successfully registered.</h3>
+            <h3 className="pop-up__title">
+              You&#39;ve successfully registered.
+            </h3>
             <p className="pop-up__notification">
               <span className="pop-up__notification-user" />, go to
-              <span className="pop-up__notification-user" /> to complete the sign-up process</p>
+              <span className="pop-up__notification-user" />
+              to complete the sign-up process</p>
             <button className="btn pop-up__button" >OK</button>
           </div>
         </div>
