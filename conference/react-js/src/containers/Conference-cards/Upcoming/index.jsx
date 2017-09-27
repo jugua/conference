@@ -10,23 +10,26 @@ class Upcoming extends PureComponent {
       data: null,
     };
   }
+
   componentWillMount() {
     axios.get(`${baseUrl}/api/conference/upcoming`)
       .then(({ data }) => {
         this.setState({ data });
       });
   }
+
+  setCards = data => Object.values(data)
+    .map(element => (
+      <Card data={element} key={element.id} />),
+    );
   render() {
     const { data } = this.state;
     if (!data) {
       return <div />;
     }
-    const dataArray = Object.values(data);
     return (
       <div className="tabs-container">
-        {dataArray.map(element => (
-          <Card data={element} key={element.id} />
-        ))}
+        {this.setCards(data)}
       </div>
     );
   }

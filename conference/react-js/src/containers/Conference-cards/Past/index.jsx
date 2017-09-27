@@ -10,23 +10,26 @@ class Past extends PureComponent {
       data: null,
     };
   }
+
   componentWillMount() {
-    axios.get(`${baseUrl}/api/conference/past`)
+    axios.get(`${baseUrl}/api/conference/Past`)
       .then(({ data }) => {
         this.setState({ data });
       });
   }
+
+  setCards = data => Object.values(data)
+    .map(element => (
+      <Card data={element} key={element.id} />),
+    );
   render() {
     const { data } = this.state;
     if (!data) {
       return <div />;
     }
-    const dataArray = Object.values(data);
     return (
       <div className="tabs-container">
-        {dataArray.map(element => (
-          <Card data={element} key={element.id} />
-        ))}
+        {this.setCards(data)}
       </div>
     );
   }
