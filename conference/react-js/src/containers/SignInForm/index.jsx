@@ -86,6 +86,7 @@ class SignInForm extends PureComponent {
         <div className="sign-in__separator" />
 
         <a className="btn sign-in__create">create new account</a>
+
       </div>
     );
   }
