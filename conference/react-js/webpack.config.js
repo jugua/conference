@@ -19,7 +19,6 @@ const DIST_FILE_CSS_BUNDLE = `./style/${DIST_FILE_CSS_BUNDLE_NAME}`;
 // > Src
 const SRC_FOLDER = path.resolve(APP_FOLDER, './src');
 const SRC_FILE_JS_APP = path.resolve(SRC_FOLDER, 'index.jsx');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 module.exports = {
   // > JS Input / Output
@@ -90,46 +89,46 @@ module.exports = {
   context: __dirname,
   target: 'web',
   plugins: DEBUG ?
-    [
-      // > Configure CSS Bundle file
-      new ExtractTextPlugin({
-        filename: DIST_FILE_CSS_BUNDLE,
-        disable: false,
-        allChunks: true,
-      }),
-      new HtmlWebpackPlugin({
-        title: "Conference",
-        template: 'src/root-react.html'
-      })
-    ] :
-    [
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify('production'),
-        },
-      }),
-      new webpack.optimize.OccurrenceOrderPlugin(),
-      // > Minimize JS
-      new webpack.optimize.UglifyJsPlugin({
-        sourceMap: false,
-        mangle: false,
-      }),
-      // > CSS Bundle
-      new ExtractTextPlugin({
-        filename: DIST_FILE_CSS_BUNDLE,
-        disable: false,
-        allChunks: true,
-      }),
-      // > Minimize CSS
-      new OptimizeCssAssetsPlugin({
-        assetNameRegExp: DIST_FILE_CSS_BUNDLE_NAME,
-        cssProcessor: cssnano,
-        cssProcessorOptions: {
-          discardComments: { removeAll: true },
-        },
-        canPrint: true,
-      }),
-    ], // plugins
+      [
+        // > Configure CSS Bundle file
+        new ExtractTextPlugin({
+          filename: DIST_FILE_CSS_BUNDLE,
+          disable: false,
+          allChunks: true,
+        }),
+        new HtmlWebpackPlugin({
+          title: "Conference",
+          template: 'src/root-react.html'
+        })
+      ] :
+      [
+        new webpack.DefinePlugin({
+          'process.env': {
+            NODE_ENV: JSON.stringify('production'),
+          },
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        // > Minimize JS
+        new webpack.optimize.UglifyJsPlugin({
+          sourceMap: false,
+          mangle: false,
+        }),
+        // > CSS Bundle
+        new ExtractTextPlugin({
+          filename: DIST_FILE_CSS_BUNDLE,
+          disable: false,
+          allChunks: true,
+        }),
+        // > Minimize CSS
+        new OptimizeCssAssetsPlugin({
+          assetNameRegExp: DIST_FILE_CSS_BUNDLE_NAME,
+          cssProcessor: cssnano,
+          cssProcessorOptions: {
+            discardComments: { removeAll: true },
+          },
+          canPrint: true,
+        }),
+      ], // plugins
   cache: false,
   watchOptions: {
     aggregateTimeout: 1000,
