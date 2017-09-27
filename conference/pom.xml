@@ -46,6 +46,14 @@
         </profile>
 
         <profile>
+	    <id>it</id>
+            <modules>
+                <module>webapp</module>
+                <module>it</module>
+            </modules>
+        </profile>
+
+        <profile>
             <id>webapp</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -54,8 +62,8 @@
                 <module>domain</module>
                 <module>service</module>
                 <module>ui-js</module>
-                <module>webapp</module>
                 <module>react-js</module>
+                <module>webapp</module>
             </modules>
         </profile>
     </profiles>
