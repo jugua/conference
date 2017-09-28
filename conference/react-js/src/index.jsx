@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-
 import ComponentA from './components/ComponentA';
 import ComponentB from './components/ComponentB';
 

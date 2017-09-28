@@ -1,10 +1,8 @@
 import React from 'react';
 import './style.sass';
 
- function ComponentA(){
-   return <h3>Component B</h3>
- };
+function ComponentA() {
+  return <h3>Component B</h3>;
+}
 
-
-
-export default ComponentA
+export default ComponentA;
