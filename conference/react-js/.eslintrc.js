@@ -5,6 +5,16 @@ module.exports = {
         "import",
         "jest"
     ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "modules": true,
+            "experimentalObjectRestSpread": true
+        }
+    },
     "extends": ["eslint-config-airbnb"],
     "env": {
         "browser": true,

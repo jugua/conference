@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 class SignInForm extends PureComponent {
   constructor(props) {
@@ -9,25 +9,25 @@ class SignInForm extends PureComponent {
       password: '',
       isValidCredentials: true,
     };
-
-    this.submitHandler = (event) => {
-      // simulate bad credentials
-      this.setState({
-        isValidCredentials: false,
-      });
-
-      event.preventDefault();
-    };
-
-    this.formChangeHandler = (event) => {
-      const target = event.target;
-
-      this.setState({
-        [target.name]: target.value,
-        isValidCredentials: true,
-      });
-    };
   }
+
+  formChangeHandler = (event) => {
+    const target = event.target;
+
+    this.setState({
+      [target.name]: target.value,
+      isValidCredentials: true,
+    });
+  };
+
+  submitHandler = (event) => {
+    // simulate bad credentials
+    this.setState({
+      isValidCredentials: false,
+    });
+
+    event.preventDefault();
+  };
 
   render() {
     return (

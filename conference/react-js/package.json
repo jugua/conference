@@ -20,11 +20,13 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
+    "babel-eslint": "^8.0.1",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.0.0",
     "babel-preset-airbnb": "^2.4.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.4",
     "cssnano": "^3.10.0",
