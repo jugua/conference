@@ -12,7 +12,7 @@ class Past extends PureComponent {
   }
 
   componentWillMount() {
-    axios.get(`${baseUrl}/api/conference/Past`)
+    axios.get(`${baseUrl}/api/conference/past`)
       .then(({ data }) => {
         this.setState({ data });
       });
