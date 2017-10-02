@@ -4,8 +4,8 @@ import {
   Route,
   NavLink,
 } from 'react-router-dom';
-import Upcoming from '../../containers/Conference-cards/Upcoming';
-import Past from '../../containers/Conference-cards/Past';
+import Upcoming from '../../components/Upcoming';
+import Past from '../../components/Past';
 
 function Tabs() {
   return (
