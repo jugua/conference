@@ -69,7 +69,20 @@ module.exports = {
         }),
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        test: /\.(gif|png|jpe?g|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: '../',
+              outputPath: 'images/'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
         use: [
           {
             loader: 'file-loader',

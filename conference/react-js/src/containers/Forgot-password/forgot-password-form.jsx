@@ -79,7 +79,10 @@ class ForgotPasswordForm extends Component {
             </Link >
           </div>
         </form>
-        <button className="pop-up__close" />
+        <Link
+          className="pop-up__close"
+          to="/"
+        />
       </div>
     );
   }
