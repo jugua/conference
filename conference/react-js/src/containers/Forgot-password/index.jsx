@@ -1,60 +1,55 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import Form from './forgot-password-form';
+import Message from
+  '../../components/ForgotPassword/forgot-password-message';
+import * as pageActions from '../../actions/forgot-password';
+import actions from '../../constants/actions-types';
 
-function ForgotPassword() {
-  return (
-    <div className="pop-up-wrapper">
-      <div className="pop-up">
-        <h3 className="pop-up__title">Forgot password?</h3>
-        <form noValidate name="userForm">
-          <p className="pop-up__notification">Please enter your email:</p>
-          <input
-            type="email"
-            className="field pop-up__input"
-            name="mail"
-            required
-          />
-          <span className="field-error error-title_pop-up">
-            Please enter your registered email
-          </span>
-          <span className="field-error error-title_pop-up">
-            Please enter a valid email address
-          </span>
-          <span className="field-error error-title_pop-up">
-            We can not find an account with that email address
-          </span>
-          <div className="pop-up-button-wrapper">
-            <input
-              type="submit"
-              className="btn pop-up__button"
-              value="Continue"
-            />
-            <input
-              type="button"
-              className="btn pop-up__button btn_cancel"
-              value="Cancel"
-            />
-          </div>
-        </form>
-        <button className="pop-up__close" />
+class ForgotPassword extends Component {
+  componentWillUnmount() {
+    const { pageActions: { showSuccessMessage } } = this.props;
+    const { HIDE_FORGOT_MESSAGE } = actions;
+    showSuccessMessage(HIDE_FORGOT_MESSAGE);
+  }
+  render() {
+    const { pageActions: { showSuccessMessage, showError } } = this.props;
+    const { forgotPassword } = this.props;
+    const { HIDE_EMAIL_ERROR, SHOW_FORGOT_MESSAGE, EMAIL_IS_EMPTY } = actions;
+    return (
+      <div className="pop-up-wrapper">
+        {forgotPassword || <Form
+          showSuccessMessage={showSuccessMessage}
+          showError={showError}
+          HIDE_EMAIL_ERROR={HIDE_EMAIL_ERROR}
+          SHOW_FORGOT_MESSAGE={SHOW_FORGOT_MESSAGE}
+          EMAIL_IS_EMPTY={EMAIL_IS_EMPTY}
+        />}
+        {forgotPassword && (
+          <Message />
+        )}
       </div>
-
-      <div className="pop-up">
-        <h3 className="pop-up__title">
-          Password forgotten
-        </h3>
-        <p className="pop-up__notification">
-          We just emailed you a link.
-          Please check your email and click the secure
-          link.
-        </p>
-        <button
-          className="btn pop-up__button"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
+    );
+  }
+}
+function mapStateToProps(state) {
+  return {
+    forgotPassword: state.forgotPassword,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    pageActions: bindActionCreators(pageActions, dispatch),
+  };
 }
 
-export default ForgotPassword;
+ForgotPassword.propTypes = {
+  forgotPassword: PropTypes.bool.isRequired,
+  pageActions: PropTypes.shape({
+    showSuccessMessage: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
+  }).isRequired };
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);

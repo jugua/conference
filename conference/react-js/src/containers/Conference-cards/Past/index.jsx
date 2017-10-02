@@ -13,9 +13,11 @@ class Past extends PureComponent {
 
   componentWillMount() {
     axios.get(`${baseUrl}/api/conference/past`)
-      .then(({ data }) => {
-        this.setState({ data });
-      });
+      .then(
+        ({ data }) => {
+          this.setState({ data },
+          );
+        });
   }
 
   setCards = data => Object.values(data)
