@@ -44,6 +44,13 @@ public class MainPageController {
         return responseEntityConferencesByRole(request, conferences);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("conference/{id}")
+    public ResponseEntity getConferenceById(@PathVariable long id) {
+        Conference conference = conferenceService.findById(id);
+        return new ResponseEntity(conference, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("conference")
     public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
