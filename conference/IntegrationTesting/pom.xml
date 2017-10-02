@@ -61,6 +61,7 @@
         <dependency>
             <groupId>ua.rd.cm</groupId>
             <artifactId>webapp</artifactId>
+            <type>war</type>
             <version>1.0</version>
             <scope>test</scope>
         </dependency>

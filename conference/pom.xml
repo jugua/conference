@@ -40,7 +40,6 @@
             <id>java</id>
             <modules>
                 <module>domain</module>
-                <module>IntegrationTesting</module>
                 <module>service</module>
                 <module>webapp</module>
             </modules>
@@ -53,7 +52,6 @@
             </activation>
             <modules>
                 <module>domain</module>
-                <module>IntegrationTesting</module>
                 <module>service</module>
                 <module>ui-js</module>
                 <module>webapp</module>
@@ -143,11 +141,7 @@
                 <artifactId>domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>ua.rd.cm</groupId>
-                <artifactId>IntegrationTesting</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>ua.rd.cm</groupId>
                 <artifactId>service</artifactId>
