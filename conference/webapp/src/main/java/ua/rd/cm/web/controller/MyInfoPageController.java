@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +24,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserDto;
@@ -35,7 +35,7 @@ import ua.rd.cm.services.exception.NoSuchUserException;
 
 @RestController
 @RequestMapping("/myinfo")
-@Log4j
+@Slf4j
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class MyInfoPageController {
     private UserService userService;
@@ -101,7 +101,7 @@ public class MyInfoPageController {
 
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
-            log.debug(e);
+            log.debug("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
@@ -127,7 +127,7 @@ public class MyInfoPageController {
                 return ResponseEntity.status(HttpStatus.OK).body(messageDto);
             }
         } catch (IOException e) {
-            log.info(e);
+            log.info("", e);
         }
         return new ResponseEntity(HttpStatus.NOT_FOUND);
 

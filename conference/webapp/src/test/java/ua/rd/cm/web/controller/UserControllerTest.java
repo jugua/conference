@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.Filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,6 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
@@ -56,7 +56,7 @@ import ua.rd.cm.services.exception.WrongRoleException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-@Log4j
+@Slf4j
 public class UserControllerTest extends TestUtil {
     public static final String USER_URL = "/user";
     public static final String USER_CREATE_URL = "/user/registerByAdmin";
@@ -204,7 +204,7 @@ public class UserControllerTest extends TestUtil {
                 ).andExpect(status().isBadRequest());
             }
         } catch (Exception e) {
-            log.info(e);
+            log.info("", e);
         }
     }
 

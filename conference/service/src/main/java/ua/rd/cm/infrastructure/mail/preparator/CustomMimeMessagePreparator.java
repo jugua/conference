@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -12,10 +13,9 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 
-@Log4j
+@Slf4j
 public abstract class CustomMimeMessagePreparator implements MimeMessagePreparator {
     protected Map<String, Object> model;
     @Setter

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
@@ -31,9 +31,9 @@ import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.ChangePasswordPreparator;
 import ua.rd.cm.infrastructure.mail.preparator.NewEmailMessagePreparator;
 
-@Log4j
 @RestController
 @RequestMapping("/settings")
+@Slf4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SettingsController {
     private ObjectMapper mapper;

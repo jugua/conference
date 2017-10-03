@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE xml>
 
 <!-- An example log4j configuration xml file for logback  -->
 <!-- Logging levels are:                                  -->
@@ -10,13 +9,13 @@
 <configuration scan="true" scanPeriod="10 seconds">
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <Target>System.out</Target>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm} %-5p %c{1}:%L - %m%n</pattern>
         </encoder>
     </appender>
 
     <!-- log4jdbc sql & jdbc logging -->
-
     <logger name="log4jdbc.debug" additivity="false">
         <level value="DEBUG"/>
         <appender-ref ref="STDOUT"/>
@@ -48,7 +47,7 @@
         <level value="INFO"/>
     </logger>
 
-    <root level="debug">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 

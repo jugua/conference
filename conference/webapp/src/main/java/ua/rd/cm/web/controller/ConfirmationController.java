@@ -16,8 +16,8 @@ import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.OldEmailMessagePreparator;
 
 @RestController
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RequestMapping("/confirmation")
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ConfirmationController {
 
     private final WithTokenGetRequestProcessor withTokenGetRequestProcessor;

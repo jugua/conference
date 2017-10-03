@@ -1,5 +1,7 @@
 package ua.rd.cm.web.controller;
 
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -9,12 +11,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
-@Log4j
 @RestControllerAdvice
+@Slf4j
 public class ApplicationControllerAdvice {
     public static final String UNAUTHORIZED_MSG = "unauthorized";
 
@@ -38,7 +39,7 @@ public class ApplicationControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
     public MessageDto defaultHandler(Exception e) {
-        log.error(e);
+        log.error("", e);
         return messageDtoWithError("internal_error");
     }
 

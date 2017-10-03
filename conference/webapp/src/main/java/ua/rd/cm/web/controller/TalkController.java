@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
@@ -38,9 +38,10 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import ua.rd.cm.services.resources.LanguageService;
 import ua.rd.cm.services.resources.LevelService;
 
-@Log4j
+
 @RestController
 @RequestMapping("/talk")
+@Slf4j
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalkController {
     private static final String ORGANISER = "ORGANISER";
@@ -150,7 +151,7 @@ public class TalkController {
             header.set("Content-Disposition", "attachment; filename=" + new String(file.getName().getBytes(), StandardCharsets.ISO_8859_1));
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
-            log.debug(e);
+            log.debug("", e);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
@@ -161,7 +162,7 @@ public class TalkController {
     public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
                                  @RequestPart(value = "file") MultipartFile file,
                                  HttpServletRequest request) {
-      String filePath = uploadFile(file);
+        String filePath = uploadFile(file);
         TalkDto talkDto = talkService.findById(talkId);
         talkService.addFile(talkDto, filePath);
 
@@ -172,7 +173,7 @@ public class TalkController {
         try {
             return storageService.saveFile(file, FileStorageServiceImpl.FileType.FILE);
         } catch (IOException e) {
-            log.warn(e);
+            log.warn("", e);
             return null;
         }
     }

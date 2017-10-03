@@ -2,7 +2,7 @@ package ua.rd.cm.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-@Log4j
-public class RegistrationControllerTest extends TestUtil{
+@Slf4j
+public class RegistrationControllerTest extends TestUtil {
     public static final String REGISTER_USER_URL = "/registration";
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
@@ -249,7 +249,7 @@ public class RegistrationControllerTest extends TestUtil{
                 ).andExpect(status().isBadRequest());
             }
         } catch (Exception e) {
-            log.info(e);
+            log.info("", e);
         }
     }
 

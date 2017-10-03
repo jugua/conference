@@ -3,6 +3,7 @@ package ua.rd.cm.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
@@ -21,10 +21,11 @@ import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
 
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+
 @RestController
 @RequestMapping("/user")
-@Log4j
+@Slf4j
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class UserController {
     private final UserService userService;
 

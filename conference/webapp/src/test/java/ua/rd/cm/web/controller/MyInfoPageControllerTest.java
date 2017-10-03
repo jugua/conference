@@ -17,6 +17,7 @@ import java.security.Principal;
 
 import javax.servlet.Filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +40,6 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
@@ -57,7 +57,7 @@ import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
-@Log4j
+@Slf4j
 public class MyInfoPageControllerTest extends TestUtil {
     private static final String API_PHOTO = "/myinfo/photo";
     public static final String API_USER_CURRENT = "/myinfo";
@@ -188,7 +188,7 @@ public class MyInfoPageControllerTest extends TestUtil {
             MockMultipartFile mockFile = new MockMultipartFile("trybel_master", fileInputStream);
             photoDto.setFile(mockFile);
         } catch (IOException e) {
-            log.info(e);
+            log.info("", e);
         }
         return photoDto;
     }
@@ -318,7 +318,7 @@ public class MyInfoPageControllerTest extends TestUtil {
                 ).andExpect(status().isBadRequest());
             }
         } catch (Exception e) {
-            log.info(e);
+            log.info("", e);
         }
     }
 
@@ -336,7 +336,7 @@ public class MyInfoPageControllerTest extends TestUtil {
             FileInputStream fileInputStream = new FileInputStream(file);
             return new MockMultipartFile("file", fileInputStream);
         } catch (IOException e) {
-            log.info(e);
+            log.info("", e);
         }
         return null;
     }

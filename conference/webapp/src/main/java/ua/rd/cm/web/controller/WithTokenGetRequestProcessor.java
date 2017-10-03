@@ -15,8 +15,9 @@ import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
 
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+
 @Component
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class WithTokenGetRequestProcessor {
 
     private final VerificationTokenService tokenService;

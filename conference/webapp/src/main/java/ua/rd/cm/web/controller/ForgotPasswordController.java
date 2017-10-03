@@ -26,8 +26,8 @@ import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.ForgotMessagePreparator;
 
 @RestController
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RequestMapping("/forgotPasswordPage")
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ForgotPasswordController {
 
     private final WithTokenGetRequestProcessor withTokenGetRequestProcessor;
