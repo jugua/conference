@@ -11,20 +11,22 @@ import actions from '../../constants/actions-types';
 class ForgotPassword extends Component {
   componentWillUnmount() {
     const { pageActions: { showSuccessMessage } } = this.props;
-    const { HIDE_FORGOT_MESSAGE } = actions;
-    showSuccessMessage(HIDE_FORGOT_MESSAGE);
+    const { HIDE_SUCCESS_RESET_PASSWORD_MESSAGE } = actions;
+    showSuccessMessage(HIDE_SUCCESS_RESET_PASSWORD_MESSAGE);
   }
   render() {
     const { pageActions: { showSuccessMessage, showError } } = this.props;
     const { forgotPassword } = this.props;
-    const { HIDE_EMAIL_ERROR, SHOW_FORGOT_MESSAGE, EMAIL_IS_EMPTY } = actions;
+    const { HIDE_SUCCESS_RESET_PASSWORD_MESSAGE,
+      SHOW_SUCCESS_RESET_PASSWORD_MESSAGE,
+      EMAIL_IS_EMPTY } = actions;
     return (
       <div className="pop-up-wrapper">
         {forgotPassword || <Form
           showSuccessMessage={showSuccessMessage}
           showError={showError}
-          HIDE_EMAIL_ERROR={HIDE_EMAIL_ERROR}
-          SHOW_FORGOT_MESSAGE={SHOW_FORGOT_MESSAGE}
+          hide={HIDE_SUCCESS_RESET_PASSWORD_MESSAGE}
+          show={SHOW_SUCCESS_RESET_PASSWORD_MESSAGE}
           EMAIL_IS_EMPTY={EMAIL_IS_EMPTY}
         />}
         {forgotPassword && (

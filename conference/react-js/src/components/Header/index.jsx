@@ -47,7 +47,6 @@ class Header extends PureComponent {
   };
 
   render() {
-    // console.log(this.state.visible);
     return (
       <header className="header">
         <div className="header__title"><a href="/#/" className="link_header">

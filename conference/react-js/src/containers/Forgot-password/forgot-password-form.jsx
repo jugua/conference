@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -7,15 +7,15 @@ import baseUrl from '../../constants/backend-url';
 import ErrorText
   from '../../components/ForgotPassword/forgot-password-error-text';
 
-class ForgotPasswordForm extends Component {
+class ForgotPasswordForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = { email: '' };
   }
   componentWillUnmount() {
     const { showError } = this.props;
-    const { HIDE_EMAIL_ERROR } = this.props;
-    showError(HIDE_EMAIL_ERROR);
+    const { hide } = this.props;
+    showError(hide);
   }
   handleChange = ({ target: { value } }) => {
     this.setState({ email: value });
@@ -23,13 +23,13 @@ class ForgotPasswordForm extends Component {
   sendMail =(e) => {
     e.preventDefault();
     const { email } = this.state;
-    const { EMAIL_IS_EMPTY, SHOW_FORGOT_MESSAGE } = this.props;
+    const { EMAIL_IS_EMPTY, show } = this.props;
     const { showSuccessMessage, showError } = this.props;
     if (email.length !== 0) {
       axios.post(`${baseUrl}/forgotPasswordPage/forgotPassword`,
         { mail: email })
         .then(() => {
-          showSuccessMessage(SHOW_FORGOT_MESSAGE);
+          showSuccessMessage(show);
         }).catch((
           { response: { data: { error } } }) => {
           showError(error);
@@ -90,9 +90,9 @@ function mapStateToProps(state) {
 }
 
 ForgotPasswordForm.propTypes = {
-  SHOW_FORGOT_MESSAGE: PropTypes.string.isRequired,
+  show: PropTypes.string.isRequired,
+  hide: PropTypes.string.isRequired,
   EMAIL_IS_EMPTY: PropTypes.string.isRequired,
-  HIDE_EMAIL_ERROR: PropTypes.string.isRequired,
   forgotPasswordErrorMessage: PropTypes.string.isRequired,
   showSuccessMessage: PropTypes.func.isRequired,
   showError: PropTypes.func.isRequired,

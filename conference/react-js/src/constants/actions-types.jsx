@@ -1,9 +1,9 @@
 const actions = {
-  SHOW_FORGOT_MESSAGE: 'show',
-  HIDE_FORGOT_MESSAGE: 'hide',
+  SHOW_SUCCESS_RESET_PASSWORD_MESSAGE: 'show',
+  HIDE_SUCCESS_RESET_PASSWORD_MESSAGE: 'hide',
   EMAIL_IS_EMPTY: 'email_is_empty',
   EMAIL_NOT_FOUND: 'email_not_found',
-  HIDE_EMAIL_ERROR: '',
+  HIDE_EMAIL_ERROR: 'hide_email_error',
 };
 
 export default actions;
