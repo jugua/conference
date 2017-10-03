@@ -1,6 +1,5 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-
 import SignInForm from './index';
 
 jest.unmock('./index');
