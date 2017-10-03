@@ -27,7 +27,7 @@ class SignIn {
       body = {};
     }
 
-    this.http.post('/api/login/', body, { headers }).then(({ data }) => {
+    this.http.post('/login/', body, { headers }).then(({ data }) => {
       if (data.token) {
         this.userInfo = {
           token: data.token
