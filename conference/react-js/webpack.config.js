@@ -10,7 +10,7 @@ const DEBUG = process.env.NODE_ENV !== 'production';
 // > Root App
 const APP_FOLDER = path.resolve(__dirname);
 // > Dist
-const DIST_FOLDER = path.resolve(APP_FOLDER, './target/dist');
+const DIST_FOLDER = path.resolve(APP_FOLDER, './target/dist/react');
 const DIST_FOLDER_STYLE = path.resolve(DIST_FOLDER, './style');
 
 const DIST_FILE_JS_BUNDLE = 'js/bundle.js';

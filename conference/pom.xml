@@ -54,8 +54,8 @@
                 <module>domain</module>
                 <module>service</module>
                 <module>ui-js</module>
-                <module>webapp</module>
                 <module>react-js</module>
+                <module>webapp</module>
             </modules>
         </profile>
     </profiles>
