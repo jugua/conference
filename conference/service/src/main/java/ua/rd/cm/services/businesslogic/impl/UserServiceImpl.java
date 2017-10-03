@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +30,7 @@ import ua.rd.cm.infrastructure.mail.preparator.ConfirmAccountPreparator;
 
 
 @Service
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -38,18 +40,6 @@ public class UserServiceImpl implements UserService {
     private VerificationTokenService tokenService;
     private PasswordEncoder passwordEncoder;
     private ContactTypeService contactTypeService;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, MailService mailService, ModelMapper mapper, VerificationTokenService tokenService, PasswordEncoder passwordEncoder, ContactTypeService contactTypeService) {
-
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.mailService = mailService;
-        this.mapper = mapper;
-        this.tokenService = tokenService;
-        this.passwordEncoder = passwordEncoder;
-        this.contactTypeService = contactTypeService;
-    }
 
     @Override
     public User find(Long id) {
@@ -218,7 +208,7 @@ public class UserServiceImpl implements UserService {
     private UserDto userToDto(User user) {
         UserDto dto = mapper.map(user, UserDto.class);
         if (user.getPhoto() != null) {
-            dto.setPhoto("api/user/current/photo/" + user.getId());
+            dto.setPhoto("myinfo/photo/" + user.getId());
         }
         dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
         dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
