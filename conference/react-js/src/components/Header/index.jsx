@@ -10,16 +10,19 @@ class Header extends PureComponent {
     };
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('click', this.closeSignIn);
+  }
+
   onButtonAccountClick = () => {
-    this.setState(
-      { visible: !this.state.visible },
-      () => {
-        document.removeEventListener('click', this.closeSignIn);
-        if (this.state.visible) {
-          document.addEventListener('click', this.closeSignIn);
-        }
-      },
-    );
+    document.removeEventListener('click', this.closeSignIn);
+    if (!this.state.visible) {
+      document.addEventListener('click', this.closeSignIn);
+    }
+
+    this.setState({
+      visible: !this.state.visible,
+    });
   };
 
   closeSignIn = (event) => {
