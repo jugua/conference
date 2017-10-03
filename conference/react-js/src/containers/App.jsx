@@ -36,7 +36,6 @@ class App extends Component {
             exact
             component={SignUp}
           />
-        Route
         </div>
       </Router>
     )

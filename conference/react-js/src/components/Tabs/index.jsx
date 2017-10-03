@@ -5,8 +5,8 @@ import {
   NavLink,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Upcoming from '../../containers/Conference-cards/Upcoming';
-import Past from '../../containers/Conference-cards/Past';
+import Upcoming from '../Upcoming';
+import Past from '../Past';
 
 function Tabs({ match: { path } }) {
   return (

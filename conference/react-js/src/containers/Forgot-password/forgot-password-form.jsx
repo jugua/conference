@@ -26,13 +26,8 @@ class ForgotPasswordForm extends Component {
     const { EMAIL_IS_EMPTY, SHOW_FORGOT_MESSAGE } = this.props;
     const { showSuccessMessage, showError } = this.props;
     if (email.length !== 0) {
-      const config = {
-        headers: { 'X-XSRF-TOKEN': '61be8830-1255-457b-af7d-4fb8c97862c0' },
-      };
-      axios.post(`${baseUrl}/api/forgot-password`,
-        { mail: email },
-        config,
-      )
+      axios.post(`${baseUrl}/forgotPasswordPage/forgotPassword`,
+        { mail: email })
         .then(() => {
           showSuccessMessage(SHOW_FORGOT_MESSAGE);
         }).catch((

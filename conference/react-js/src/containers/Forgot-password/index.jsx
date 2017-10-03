@@ -34,6 +34,7 @@ class ForgotPassword extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   return {
     forgotPassword: state.forgotPassword,

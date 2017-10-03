@@ -255,16 +255,16 @@ html {
   vertical-align: bottom;
 
   &_info {
-    background-image: url("/images/info-icon.svg");
+    background-image: url("../images/info-icon.svg");
     }
 
   &_attach {
-    background-image: url("/images/attach.svg");
+    background-image: url("../images/attach.svg");
     vertical-align: middle;
     }
 
   &_delete {
-    background-image: url("/images/delete.svg");
+    background-image: url("../images/delete.svg");
     vertical-align: middle;
     }
 
@@ -286,8 +286,8 @@ html {
 
   
 .webpack_bundle_images {
-  background: url("/images/default_ava.jpg");
-  background: url("/images/favicon.png");
+  background: url("../images/default_ava.jpg");
+  background: url("../images/favicon.png");
   }
 
 .link {
