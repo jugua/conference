@@ -3,6 +3,7 @@ package ua.rd.cm.services.businesslogic.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,11 @@ import ua.rd.cm.services.businesslogic.TypeService;
 import ua.rd.cm.services.exception.TypeNotFoundException;
 
 @Service
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TypeServiceImpl implements TypeService {
 
     private TypeRepository typeRepository;
     private ModelMapper modelMapper;
-
-    @Autowired
-    public TypeServiceImpl(TypeRepository typeRepository, ModelMapper modelMapper) {
-        this.typeRepository = typeRepository;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public Type find(Long id) {

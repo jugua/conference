@@ -6,13 +6,13 @@ export default class {
     this.log = $log;
 
 
-    this.res = $resource('talks/:talkId/file', {}, {
+    this.res = $resource('talk/:talkId/takeFile', {}, {
       get: {
-        url: '/talks/:talkId/takeFile',
+        url: '/talk/:talkId/takeFile',
         method: 'GET',
       },
       save: {
-        url: '/talks/:talkId/uploadFile',
+        url: '/talk/:talkId/uploadFile',
         method: 'POST',
         params: { talkId: '@talkId' },
         transformRequest: angular.identity,   // multipart
@@ -21,13 +21,13 @@ export default class {
         }
       },
       delete: {
-        url: '/talks/:talkId/deleteFile',
+        url: '/talk/:talkId/deleteFile',
         method: 'DELETE',
         params: { talkId: '@talkId' },
       }
     });
 
-    this.resName = $resource('talk/:talkId/filename');
+    this.resName = $resource('talk/:talkId/takeFileName');
 
   }
 
