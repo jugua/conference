@@ -1,12 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import ComponentA from './index';
+import SignInForm from './index';
 
 jest.unmock('./index');
-describe('ComponentA', () => {
-  it('ComponentA renders correctly', () => {
+
+describe('Sign in form', () => {
+  it('Sign in form renders correctly', () => {
     const tree = renderer.create(
-      <ComponentA />,
+      <SignInForm />,
     ).toJSON();
     expect(tree).toMatchSnapshot();
   });

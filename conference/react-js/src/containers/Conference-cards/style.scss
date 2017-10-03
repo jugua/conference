@@ -1,0 +1,52 @@
+.conference-card {
+  font-family: "Oswald Light", sans-serif;
+
+  &-title {
+    display: inline-block;
+    font-family: "Oswald Regular", sans-serif;
+    color: $link-blue;
+    margin: 0 0 10px 0;
+    width: 80%;
+    box-sizing: border-box;
+
+    &__btn {
+      display: inline-block;
+      margin: 0;
+      width: 20%;
+      min-width: 120px;
+      box-sizing: border-box
+      }
+
+    &__link {
+      color: $link-blue;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline
+        }
+      }
+    }
+
+  &-label {
+
+    display: inline-block;
+    width: 20%;
+    min-width: 120px;
+    font-weight: bold;
+    }
+
+  &-description {
+
+    margin: 10px 0;
+    }
+
+  &-location {
+    margin-bottom: 10px;
+    }
+
+  &-counter {
+    display: inline-block;
+    width: 20%;
+    min-width: 120px;
+    }
+  }

@@ -6,9 +6,9 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "prod": "NODE_ENV=production npm run build",
-    "dev": "webpack-dev-server --inline --hot & webpack --watch",
-    "lint": "eslint ./src/**",
-    "lint-fix": "eslint ./src/** --fix",
+    "dev": "webpack-dev-server --hot --open & webpack --watch",
+    "lint": "eslint src/**/*.js*",
+    "lint-fix": "eslint src/**/*.js* --fix",
     "test": "jest"
   },
   "pre-commit": [
@@ -20,11 +20,13 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
+    "babel-eslint": "^8.0.1",
     "babel-jest": "^21.0.2",
     "babel-loader": "^7.0.0",
     "babel-preset-airbnb": "^2.4.0",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.4",
     "cssnano": "^3.10.0",
@@ -43,21 +45,24 @@
     "jest": "^21.1.0",
     "node-sass": "^4.5.3",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
+    "react-addons-test-utils": "^15.6.0",
+    "react-test-renderer": "^15.6.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
     "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.4.5",
-    "react-addons-test-utils": "^15.6.0",
-    "react-test-renderer": "^15.6.1"
+    "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "classnames": "^2.2.5",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
     "redux": "^3.7.2"
   },
   "jest": {

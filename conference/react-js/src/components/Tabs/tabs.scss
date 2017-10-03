@@ -1,0 +1,84 @@
+.tabs {
+  &-layout {
+    width: 100%;
+    height: calc(100vh - 70px);
+    box-sizing: border-box;
+    padding: 20px 0 0;
+    @media ($mnw: $mdmn) and ($mxw: $mdmx) {
+      box-sizing: border-box;
+      padding: 20px 10px 0;
+      }
+    }
+
+  &-wrapper {
+    width: 86%;
+    height: 100%;
+    margin: 0 auto;
+
+    @media ($mnw: $xsdmn) and ($mxw: $mdmx) {
+      width: 100%;
+      }
+
+    @media ($mnw: $ldmx) {
+      width: 65%;
+      }
+
+    @media ($mnw: $xldmn) {
+      width: 70%;
+      }
+
+    &_embedded {
+      width: 100%;
+      }
+    }
+  &-list {
+    display: flex;
+    @include box-shadow(0, 1px, 5px, 0, $color-shadow);
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+      flex-direction: column
+      }
+
+    &__anchor {
+      display: block;
+      padding: 10px 20px;
+      text-transform: capitalize;
+      text-decoration: none;
+      color: #000;
+      font-size: 22px;
+      font-family: Oswald Light;
+      position: relative;
+      cursor: pointer;
+      &:hover {
+        color: $dark-blue
+        }
+      &_active {
+        border-bottom: 4px solid $dark-blue;
+        @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+          border-bottom: 1px solid $light-grey;
+          &:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            display: block;
+            border-radius: 50%;
+            float: right;
+            background: $sharp-blue;
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            }
+          }
+        }
+      }
+    }
+  &-container {
+    width: 100%;
+    margin: 10px 0;
+    box-sizing: border-box;
+    padding: 5px;
+    @include box-shadow(0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    @media ($mnw: $mdmn) {
+      padding: 20px
+      }
+    }
+  }
