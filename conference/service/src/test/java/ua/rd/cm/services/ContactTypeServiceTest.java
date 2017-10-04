@@ -1,12 +1,15 @@
 package ua.rd.cm.services;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -20,7 +23,6 @@ import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.services.businesslogic.ContactTypeService;
 import ua.rd.cm.services.businesslogic.impl.ContactTypeServiceImpl;
 
-
 /**
  * @author Olha_Melnyk
  */
@@ -30,55 +32,48 @@ public class ContactTypeServiceTest {
     @Mock
     private ContactTypeRepository contactTypeRepository;
 
-    private ContactTypeService contactTypeService;
+    private ContactTypeService testing;
     private ContactType contactType;
 
     @Before
     public void setUp() {
-        contactTypeService = new ContactTypeServiceImpl(contactTypeRepository);
-        contactType = new ContactType(1L, "VK");
+        testing = new ContactTypeServiceImpl(contactTypeRepository);
+        contactType = new ContactType("VK");
+        contactType.setId(1L);
     }
 
     @Test
     public void testSaveContactType() {
-        contactTypeService.save(contactType);
+        testing.save(contactType);
         verify(contactTypeRepository).save(contactType);
     }
 
     @Test
     public void testUpdateContactType() {
-        contactTypeService.update(contactType);
+        testing.update(contactType);
         verify(contactTypeRepository).save(contactType);
     }
 
     @Test
     public void testFindByIdContactType() {
-        List<ContactType> list = new ArrayList<ContactType>() {{
-            add(contactType);
-        }};
+        List<ContactType> list = Collections.singletonList(contactType);
         when(contactTypeRepository.findById(anyLong())).thenReturn(list.get(0));
-        ContactType contactType = contactTypeService.find(1L);
-        assertEquals(new Long(1L), contactType.getId());
+        ContactType contactType = testing.find(1L);
+        assertThat(contactType.getId(), is(1L));
     }
 
     @Test
     public void testFindByNameContactType() {
-        List<ContactType> list = new ArrayList<ContactType>() {{
-            add(contactType);
-        }};
-        when(contactTypeRepository.findByName(anyString())).thenReturn(list);
-        List<ContactType> contactTypes = contactTypeService.findByName("VK");
-        assertEquals(list, contactTypes);
+        when(contactTypeRepository.findFirstByName(anyString())).thenReturn(contactType);
+        ContactType actual = testing.findByName("VK");
+        assertEquals(contactType, actual);
     }
 
     @Test
     public void testFindAll() {
-        List<ContactType> list = new ArrayList<ContactType>() {{
-            add(contactType);
-            add(new ContactType(2L, "Twitter"));
-        }};
+        List<ContactType> list = Arrays.asList(contactType, new ContactType("Twitter"));
         when(contactTypeRepository.findAll()).thenReturn(list);
-        List<ContactType> contactTypes = contactTypeService.findAll();
+        List<ContactType> contactTypes = testing.findAll();
         assertEquals(contactTypes, list);
     }
 }

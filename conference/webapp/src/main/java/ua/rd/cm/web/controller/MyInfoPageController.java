@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
@@ -75,9 +76,7 @@ public class MyInfoPageController {
         } else if (principal == null) {
             status = HttpStatus.UNAUTHORIZED;
         } else {
-            String userEmail = principal.getName();
-            userInfoService.update(userService.prepareNewUserInfoForUpdate(userEmail, dto));
-            userService.updateUserProfile(userService.prepareNewUserForUpdate(userEmail, dto));
+            userInfoService.update(principal.getName(), dto);
             status = HttpStatus.OK;
         }
         return new ResponseEntity(status);

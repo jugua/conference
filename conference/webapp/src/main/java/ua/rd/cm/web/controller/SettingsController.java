@@ -12,7 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,26 +29,26 @@ import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.SettingsDto;
 import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.services.businesslogic.UserInfoService;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.ChangePasswordPreparator;
 import ua.rd.cm.infrastructure.mail.preparator.NewEmailMessagePreparator;
+import ua.rd.cm.services.businesslogic.UserService;
+import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
 
 @Log4j
 @RestController
 @RequestMapping("/settings")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SettingsController {
+
     private ObjectMapper mapper;
     private UserService userService;
     private MailService mailService;
     private PasswordEncoder passwordEncoder;
     private VerificationTokenService tokenService;
-    private final UserInfoService userInfoService;
 
     @PostMapping("/password")
-    public ResponseEntity changePassword(@Valid @RequestBody SettingsDto dto, Principal principal, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity changePassword(@Valid @RequestBody SettingsDto dto, Principal principal,
+                                         BindingResult bindingResult, HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
         if (principal == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -52,18 +56,21 @@ public class SettingsController {
         User user = userService.getByEmail(principal.getName());
 
         if (!userService.isAuthenticated(user, dto.getCurrentPassword())) {
-            log.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest:" +
+                    " " + request.toString() + "]");
             messageDto.setError("wrong_password");
             messageDto.setFields(Arrays.asList("currentPassword"));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
         }
         if (!checkPasswordConfirmed(dto)) {
-            log.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " +
+                    "" + request.toString() + "]");
             messageDto.setResult("password_math");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDto);
         }
         if (bindingResult.hasFieldErrors()) {
-            log.error("Request for [settings/password] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            log.error("Request for [settings/password] is failed: validation is failed. [HttpServletRequest: " +
+                    request.toString() + "]");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
         }
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
