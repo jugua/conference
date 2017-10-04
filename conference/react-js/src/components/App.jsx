@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
-import ForgotPassword from './../containers/Forgot-password';
+import ForgotPassword from './Forgot-password';
 import Tabs from './Tabs';
 import Header from './Header';
 import '../scss/main.scss';

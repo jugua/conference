@@ -52,11 +52,12 @@ function Tabs({ match: { path } }) {
   );
 }
 
-Tabs.propTypes = { match: PropTypes.shape({
-  isExact: PropTypes.boolean,
-  path: PropTypes.string,
-  url: PropTypes.string,
-  params: PropTypes.object,
-}).isRequired };
+Tabs.propTypes = {
+  match: PropTypes.shape({
+    isExact: PropTypes.boolean,
+    path: PropTypes.string,
+    url: PropTypes.string,
+    params: PropTypes.object,
+  }).isRequired };
 
 export default Tabs;

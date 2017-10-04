@@ -2,10 +2,12 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
+import changeVisibilityComponent from '../../actions/forgot-password';
 import baseUrl from '../../constants/backend-url';
 import ErrorText
-  from '../../components/ForgotPassword/forgot-password-error-text';
+  from '../../components/Forgot-password/forgot-password-error-text';
 
 class ForgotPasswordForm extends PureComponent {
   constructor(props) {
@@ -13,31 +15,39 @@ class ForgotPasswordForm extends PureComponent {
     this.state = { email: '' };
   }
   componentWillUnmount() {
-    const { showError } = this.props;
-    const { hide } = this.props;
-    showError(hide);
+    const {
+      hide,
+      HIDE_EMAIL_ERROR,
+      changeVisibilityComponent: changeVisibility } = this.props;
+    changeVisibility(hide);
+    changeVisibility(HIDE_EMAIL_ERROR);
   }
+
   handleChange = ({ target: { value } }) => {
     this.setState({ email: value });
   };
+
   sendMail =(e) => {
     e.preventDefault();
     const { email } = this.state;
-    const { EMAIL_IS_EMPTY, show } = this.props;
-    const { showSuccessMessage, showError } = this.props;
+    const {
+      EMAIL_IS_EMPTY,
+      show,
+      changeVisibilityComponent: changeVisibility } = this.props;
     if (email.length !== 0) {
       axios.post(`${baseUrl}/forgotPasswordPage/forgotPassword`,
         { mail: email })
         .then(() => {
-          showSuccessMessage(show);
+          changeVisibility(show);
         }).catch((
           { response: { data: { error } } }) => {
-          showError(error);
+          changeVisibility(error);
         });
     } else {
-      showError(EMAIL_IS_EMPTY);
+      changeVisibility(EMAIL_IS_EMPTY);
     }
   };
+
   render() {
     const { forgotPasswordErrorMessage } = this.props;
     return (
@@ -83,20 +93,24 @@ class ForgotPasswordForm extends PureComponent {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    forgotPasswordErrorMessage: state.forgotPasswordErrorMessage,
-  };
-}
-
 ForgotPasswordForm.propTypes = {
   show: PropTypes.string.isRequired,
   hide: PropTypes.string.isRequired,
   EMAIL_IS_EMPTY: PropTypes.string.isRequired,
+  HIDE_EMAIL_ERROR: PropTypes.string.isRequired,
+  changeVisibilityComponent: PropTypes.func.isRequired,
   forgotPasswordErrorMessage: PropTypes.string.isRequired,
-  showSuccessMessage: PropTypes.func.isRequired,
-  showError: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(ForgotPasswordForm);
+const mapDispatchToProps = dispatch => ({
+
+  changeVisibilityComponent: bindActionCreators(
+    changeVisibilityComponent, dispatch),
+});
+
+const mapStateToProps = state => (
+  { forgotPasswordErrorMessage: state.forgotPasswordErrorMessage }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordForm);
 

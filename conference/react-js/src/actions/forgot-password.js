@@ -1,6 +1,2 @@
-export const showError = actionType => ({
-  type: actionType,
-});
-
-export const showSuccessMessage = actionType => ({ type: actionType });
-
+const changeVisibilityComponent = actionType => ({ type: actionType });
+export default changeVisibilityComponent;
