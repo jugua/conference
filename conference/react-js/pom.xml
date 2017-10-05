@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
     <parent>
-        <groupId>ua.rd.cm</groupId>
         <artifactId>conference</artifactId>
+        <groupId>ua.rd.cm</groupId>
         <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ui-js</artifactId>
+    <artifactId>react-js</artifactId>
     <packaging>war</packaging>
 
     <properties>
@@ -24,43 +24,19 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <build-task>build</build-task>
                 <skipTestRun>true</skipTestRun>
             </properties>
         </profile>
+
         <profile>
-            <id>angular</id>
+            <id>js</id>
+            <activation>
+                <property>
+                    <name>skipTests</name>
+                </property>
+            </activation>
             <properties>
-                <build-task>build</build-task>
                 <skipTestRun>false</skipTestRun>
-            </properties>
-        </profile>
-        <profile>
-            <id>testing</id>
-            <properties>
-                <build-task>build-min</build-task>
-                <skipTestRun>true</skipTestRun>
-            </properties>
-        </profile>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <build-task>build-min</build-task>
-                <skipTestRun>true</skipTestRun>
-            </properties>
-        </profile>
-        <profile>
-            <id>stable</id>
-            <properties>
-                <build-task>build-min</build-task>
-                <skipTestRun>true</skipTestRun>
-            </properties>
-        </profile>
-        <profile>
-            <id>master</id>
-            <properties>
-                <build-task>build-min</build-task>
-                <skipTestRun>true</skipTestRun>
             </properties>
         </profile>
     </profiles>
@@ -87,12 +63,29 @@
                     </execution>
 
                     <execution>
-                        <id>exec-gulp</id>
+                        <id>exec-npm-run-build</id>
                         <phase>process-sources</phase>
                         <configuration>
-                            <executable>gulp</executable>
+                            <executable>npm</executable>
                             <arguments>
-                                <argument>${build-task}</argument>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                            </arguments>
+                        </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>exec-npm-run-test</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <skip>${skipTestRun}</skip>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>test</argument>
                             </arguments>
                         </configuration>
                         <goals>
@@ -108,26 +101,7 @@
                     <warSourceDirectory>${dir.dist}</warSourceDirectory>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>com.kelveden</groupId>
-                <artifactId>maven-karma-plugin</artifactId>
-                <version>1.8</version>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <skipTests>${skipTestRun}</skipTests>
-                    <karmaExecutable>${basedir}/node_modules/.bin/karma</karmaExecutable>
-                    <browsers>PhantomJS</browsers>
-                    <reporters>dots</reporters>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+
 </project>

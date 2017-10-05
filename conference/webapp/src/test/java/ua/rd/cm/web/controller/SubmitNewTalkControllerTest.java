@@ -63,10 +63,10 @@ import static ua.rd.cm.web.controller.TestUtil.ORGANISER_ROLE;
 @WebAppConfiguration
 public class SubmitNewTalkControllerTest {
     private static final String SUBMIT_TALK_PAGE_URL = "/submitTalk";
-    private static final String GET_TOPICS_URL = SUBMIT_TALK_PAGE_URL + "/getTopics";
-    private static final String GET_TYPES_URL = SUBMIT_TALK_PAGE_URL + "/getTypes";
-    private static final String GET_LEVELS_URL = SUBMIT_TALK_PAGE_URL + "/getLevels";
-    private static final String GET_LANGUAGES_URL = SUBMIT_TALK_PAGE_URL + "/getLanguages";
+    private static final String GET_TOPICS_URL = "/topics";
+    private static final String GET_TYPES_URL = "/types";
+    private static final String GET_LEVELS_URL = "/levels";
+    private static final String GET_LANGUAGES_URL = "/languages";
 
     public static final String SPEAKER_ROLE = "SPEAKER";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";

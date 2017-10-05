@@ -10,7 +10,7 @@ const DEBUG = process.env.NODE_ENV !== 'production';
 // > Root App
 const APP_FOLDER = path.resolve(__dirname);
 // > Dist
-const DIST_FOLDER = path.resolve(APP_FOLDER, './target/dist');
+const DIST_FOLDER = path.resolve(APP_FOLDER, './target/dist/react');
 const DIST_FOLDER_STYLE = path.resolve(DIST_FOLDER, './style');
 
 const DIST_FILE_JS_BUNDLE = 'js/bundle.js';
@@ -41,7 +41,7 @@ module.exports = {
       // ESLint
       {
         enforce: 'pre',
-        test: /\.js*/,
+        test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
@@ -69,7 +69,20 @@ module.exports = {
         }),
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        test: /\.(gif|png|jpe?g|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: '../',
+              outputPath: 'images/'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(eot|ttf|woff|woff2)$/,
         use: [
           {
             loader: 'file-loader',
@@ -85,7 +98,8 @@ module.exports = {
       }
     ], // rules
   }, // module
-  devtool: DEBUG ? 'source-map' : '',
+  // devtool: DEBUG ? 'source-map' : '',
+  devtool: 'source-map',
   context: __dirname,
   target: 'web',
   plugins: DEBUG ?

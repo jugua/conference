@@ -65,7 +65,8 @@ public class TalkServiceImplTest {
     @Before
     public void setUp() throws Exception {
         ModelMapper modelMapper = new ModelMapper();
-        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, mailService, roleRepository);
+
+        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, roleRepository, mailService);
         UserInfo userInfo = new UserInfo();
         userInfo.setId(1L);
         userInfo.setShortBio("bio");

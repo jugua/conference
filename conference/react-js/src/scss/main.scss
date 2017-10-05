@@ -1,13 +1,13 @@
 // Imports will go here to import other component's style.
 // This allows for sharing of global variables.
 
-@import "normalize";
-@import "fonst";
+@import 'normalize';
+@import 'fonst';
 @import '/inc/const';
 @import '/inc/mixins';
-@import '/inc/common';
+@import 'common';
 @import '../components/Tabs/tabs';
-@import '../containers/Conference-cards/style';
+@import '../containers/CardsList/style';
 @import '../containers/SignInForm/style';
 @import '../containers/SignUpForm/sign-up';
 @import '../containers/Forgot-password/forgot-password';

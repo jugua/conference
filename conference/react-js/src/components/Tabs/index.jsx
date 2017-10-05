@@ -5,8 +5,8 @@ import {
   NavLink,
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Upcoming from '../../containers/Conference-cards/Upcoming';
-import Past from '../../containers/Conference-cards/Past';
+import Upcoming from '../Upcoming';
+import Past from '../Past';
 
 function Tabs({ match: { path } }) {
   return (
@@ -52,11 +52,12 @@ function Tabs({ match: { path } }) {
   );
 }
 
-Tabs.propTypes = { match: PropTypes.shape({
-  isExact: PropTypes.boolean,
-  path: PropTypes.string,
-  url: PropTypes.string,
-  params: PropTypes.object,
-}).isRequired };
+Tabs.propTypes = {
+  match: PropTypes.shape({
+    isExact: PropTypes.boolean,
+    path: PropTypes.string,
+    url: PropTypes.string,
+    params: PropTypes.object,
+  }).isRequired };
 
 export default Tabs;

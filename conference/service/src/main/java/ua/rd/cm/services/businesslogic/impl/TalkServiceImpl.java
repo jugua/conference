@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import ua.rd.cm.services.exception.TalkValidationException;
 import ua.rd.cm.infrastructure.mail.preparator.*;
 
 @Service
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalkServiceImpl implements TalkService {
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     private static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
@@ -34,20 +36,6 @@ public class TalkServiceImpl implements TalkService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private MailService mailService;
-
-    @Autowired
-    public TalkServiceImpl(TalkRepository talkRepository, ModelMapper modelMapper, LevelRepository levelRepository, LanguageRepository languageRepository, TopicRepository topicRepository, TypeRepository typeRepository, ConferenceRepository conferenceRepository, UserRepository userRepository, MailService mailService, RoleRepository roleRepository) {
-        this.talkRepository = talkRepository;
-        this.modelMapper = modelMapper;
-        this.levelRepository = levelRepository;
-        this.languageRepository = languageRepository;
-        this.topicRepository = topicRepository;
-        this.typeRepository = typeRepository;
-        this.conferenceRepository = conferenceRepository;
-        this.userRepository = userRepository;
-        this.mailService = mailService;
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     @Transactional

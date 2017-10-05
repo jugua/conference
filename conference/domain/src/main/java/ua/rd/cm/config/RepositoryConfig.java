@@ -3,20 +3,26 @@ package ua.rd.cm.config;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.h2.tools.Server;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
@@ -27,13 +33,20 @@ public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
     public DataSource dataSource(Environment environment) {
-        BasicDataSource ds = new BasicDataSource();
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+        config.setJdbcUrl(environment.getProperty("jdbc.url"));
+        config.setUsername(environment.getProperty("jdbc.username"));
+        config.setPassword(environment.getProperty("jdbc.password"));
+        config.addDataSourceProperty( "cachePrepStmts" , "true" );
+        config.addDataSourceProperty( "prepStmtCacheSize" , "250" );
+        config.addDataSourceProperty( "prepStmtCacheSqlLimit" , "2048" );
+        return new HikariDataSource(config);
+    }
 
-        ds.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        ds.setUrl(environment.getProperty("jdbc.url"));
-        ds.setUsername(environment.getProperty("jdbc.username"));
-        ds.setPassword(environment.getProperty("jdbc.password"));
-        return ds;
+    @Bean(initMethod="start",destroyMethod="stop")
+    public org.h2.tools.Server h2WebConsoleServer () throws SQLException {
+        return org.h2.tools.Server.createWebServer("-web","-webAllowOthers","-webDaemon","-webPort", "8082");
     }
 
     @Bean
@@ -58,7 +71,6 @@ public class RepositoryConfig {
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(emf);
-
         return transactionManager;
     }
 }

@@ -189,30 +189,6 @@ public class TalkController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getTopics")
-    public ResponseEntity getTopics() {
-        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getLevels")
-    public ResponseEntity getLevels() {
-        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getLanguages")
-    public ResponseEntity getLanguages() {
-        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getTypes")
-    public ResponseEntity getTypes() {
-        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
-    }
-
     private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
         return ResponseEntity.status(status).body(message);
     }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,19 +24,13 @@ import ua.rd.cm.services.businesslogic.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
 
 
-
 @Service
 @Transactional
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ConferenceServiceImpl implements ConferenceService {
 
     private final ModelMapper modelMapper;
     private final ConferenceRepository conferenceRepository;
-
-    @Autowired
-    public ConferenceServiceImpl(ModelMapper modelMapper, ConferenceRepository conferenceRepository) {
-        this.modelMapper = modelMapper;
-        this.conferenceRepository = conferenceRepository;
-    }
 
     @Override
     @Transactional(readOnly = true)
