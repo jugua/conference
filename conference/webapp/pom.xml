@@ -161,13 +161,11 @@
             <groupId>ua.rd.cm</groupId>
             <artifactId>service</artifactId>
         </dependency>
-
         <dependency>
             <groupId>ua.rd.cm</groupId>
             <artifactId>ui-js</artifactId>
             <type>war</type>
         </dependency>
-
         <dependency>
             <groupId>ua.rd.cm</groupId>
             <artifactId>react-js</artifactId>

@@ -11,17 +11,17 @@ import java.util.regex.Pattern;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
-@Log4j
+@Slf4j
 public class FileStorageServiceImpl implements FileStorageService {
     private static final int MAX_FILE_VERSION_TO_CREATE = 100;
     private static final int MAX_LENGTH_OF_VERSION_SUBSTR = 3;
@@ -85,7 +85,7 @@ public class FileStorageServiceImpl implements FileStorageService {
                 stream.write(file.getBytes());
                 return serverFile.getAbsolutePath();
             } catch (IOException e) {
-                log.error(e);
+                log.error("", e);
                 throw e;
             }
         }
@@ -124,7 +124,7 @@ public class FileStorageServiceImpl implements FileStorageService {
                 if (!proposedFile.exists())
                     break;
             } catch (IOException e) {
-                log.warn(e);
+                log.warn("", e);
             }
         }
         if (version > MAX_FILE_VERSION_TO_CREATE || "".equals(proposedFullPath))
@@ -193,7 +193,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             return isAttachedPhotoTypeSupported(new FileInputStream(file));
         } catch (IOException e) {
-            log.debug(e);
+            log.debug("", e);
             return null;
         }
     }
@@ -212,7 +212,7 @@ public class FileStorageServiceImpl implements FileStorageService {
         try {
             isAttachedPhotoTypeSupported(file.getInputStream());
         } catch (IOException e) {
-            log.debug(e);
+            log.debug("", e);
         }
     }
 
@@ -225,7 +225,7 @@ public class FileStorageServiceImpl implements FileStorageService {
             }
             return mimeType;
         } catch (IOException e) {
-            log.debug(e);
+            log.debug("", e);
             return null;
         }
     }

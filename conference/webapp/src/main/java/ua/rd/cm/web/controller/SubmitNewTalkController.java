@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -32,9 +32,9 @@ import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.resources.LanguageService;
 import ua.rd.cm.services.resources.LevelService;
 
-@Log4j
 @RestController
 @RequestMapping("/submitTalk")
+@Slf4j
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class SubmitNewTalkController {
     private final UserService userService;
@@ -74,7 +74,7 @@ public class SubmitNewTalkController {
         try {
             return storageService.saveFile(file, FileStorageServiceImpl.FileType.FILE);
         } catch (IOException e) {
-            log.warn(e);
+            log.warn("", e);
             return null;
         }
     }
