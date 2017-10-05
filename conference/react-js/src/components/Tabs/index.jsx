@@ -4,10 +4,11 @@ import {
   Route,
   NavLink,
 } from 'react-router-dom';
-import Upcoming from '../../components/Upcoming';
-import Past from '../../components/Past';
+import PropTypes from 'prop-types';
+import Upcoming from '../Upcoming';
+import Past from '../Past';
 
-function Tabs() {
+function Tabs({ match: { path } }) {
   return (
     <Router>
       <div className="tabs-layout">
@@ -16,9 +17,9 @@ function Tabs() {
             <ul className="tabs-list">
               <li className="tabs-list__item">
                 <NavLink
-                  className="tabs-list__anchor"
-                  to="/"
                   exact
+                  className="tabs-list__anchor"
+                  to={`${path}`}
                   activeClassName="tabs-list__anchor_active"
                 >
                   Upcoming
@@ -27,8 +28,7 @@ function Tabs() {
               <li className="tabs-list__item">
                 <NavLink
                   className="tabs-list__anchor"
-                  to="/past"
-                  exact
+                  to={`${path}past`}
                   activeClassName="tabs-list__anchor_active"
                 >
                   Past
@@ -37,12 +37,12 @@ function Tabs() {
             </ul>
             <Route
               exact
-              path="/"
+              path={`${path}`}
               component={Upcoming}
 
             />
             <Route
-              path="/past"
+              path={`${path}past`}
               component={Past}
             />
           </div>
@@ -51,5 +51,13 @@ function Tabs() {
     </Router>
   );
 }
+
+Tabs.propTypes = {
+  match: PropTypes.shape({
+    isExact: PropTypes.boolean,
+    path: PropTypes.string,
+    url: PropTypes.string,
+    params: PropTypes.object,
+  }).isRequired };
 
 export default Tabs;

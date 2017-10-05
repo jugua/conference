@@ -38,8 +38,8 @@ exports[`Sign in form Sign in form renders correctly 1`] = `
         password:
       </label>
       <a
-        className="sign-in__forgot"
-        href=""
+        href="/forgot-password"
+        onClick={[Function]}
       >
         forgot password?
       </a>
@@ -62,6 +62,8 @@ exports[`Sign in form Sign in form renders correctly 1`] = `
   />
   <a
     className="btn sign-in__create"
+    href="/sign-up"
+    onClick={[Function]}
   >
     create new account
   </a>
