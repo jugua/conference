@@ -4,6 +4,9 @@ import {
   Link,
 } from 'react-router-dom';
 
+import login from '../../actions/login';
+import loginValidation from '../../actions/loginVlidation';
+
 class SignInForm extends PureComponent {
   constructor(props) {
     super(props);
@@ -13,6 +16,16 @@ class SignInForm extends PureComponent {
       isValidCredentials: true,
     };
   }
+
+  onLoginSuccess = (res) => {
+    console.log(res);
+  };
+
+  onLoginFail = () => {
+    this.setState({
+      isValidCredentials: false,
+    });
+  };
 
   formChangeHandler = (event) => {
     const target = event.target;
@@ -24,12 +37,16 @@ class SignInForm extends PureComponent {
   };
 
   submitHandler = (event) => {
-    // simulate bad credentials
-    this.setState({
-      isValidCredentials: false,
-    });
-
     event.preventDefault();
+
+    if (loginValidation(this.state)) {
+      login(this.state).then(
+        res => this.onLoginSuccess(res),
+        () => this.onLoginFail(),
+      );
+    } else {
+      this.onLoginFail();
+    }
   };
 
   render() {
@@ -77,6 +94,7 @@ class SignInForm extends PureComponent {
             })}
             id="sign-in-password"
             value={this.state.password}
+            required
           />
           { this.state.isValidCredentials || (
             <span className="field-error">
