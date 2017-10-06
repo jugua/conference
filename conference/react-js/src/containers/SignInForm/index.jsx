@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import {
   Link,
 } from 'react-router-dom';
+import { forgotPassword, signUp } from '../../constants/route-url';
 
 class SignInForm extends PureComponent {
   constructor(props) {
@@ -63,7 +64,7 @@ class SignInForm extends PureComponent {
               password:
             </label>
             <Link
-              to="/forgot-password"
+              to={forgotPassword}
             >
               forgot password?
             </Link >
@@ -93,7 +94,7 @@ class SignInForm extends PureComponent {
         <div className="sign-in__separator" />
         <Link
           className="btn sign-in__create"
-          to="/sign-up"
+          to={signUp}
         >
           create new account
         </Link >
