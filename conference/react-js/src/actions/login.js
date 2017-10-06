@@ -1,16 +1,14 @@
 import axios from 'axios';
-import baseUrl from '../constants/backend-url';
+import { loginUrl } from '../constants/backend-url';
 
 const utf8ToB64 = str => window.btoa(unescape(encodeURIComponent(str)));
 
-const login = ({ password, email }) => axios.post(
-  `${baseUrl}/api/login`,
-  null,
-  {
-    headers: {
-      authorization: `Basic ${utf8ToB64(`${email}:${password}`)}`,
-    },
-  },
-);
+const login = ({ password, email }) => {
+  const headers = {
+    authorization: `Basic ${utf8ToB64(`${email}:${password}`)}`,
+  };
+
+  return axios.post(loginUrl, null, { headers });
+};
 
 export default login;
