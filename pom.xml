@@ -5,11 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.epam.cm.base</groupId>
-    <artifactId>api</artifactId>
+    <artifactId>conference</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <dependencies>
 
+            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>3.8</version>
+                <scope>test</scope>
+            </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
@@ -21,12 +27,8 @@
             <artifactId>spring-web</artifactId>
             <version>4.1.2.RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
+
+    </dependencies>
+    
 </project>

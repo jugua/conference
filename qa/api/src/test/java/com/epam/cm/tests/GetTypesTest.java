@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 
-public class LoginTests extends SimpleBaseTest {
+public class GetTypesTest extends SimpleBaseTest{
 
-    @Test
-    public void positiveLoginTest(){
+    @Test //6656
+    public void positiveGetTypesTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -19,11 +19,27 @@ public class LoginTests extends SimpleBaseTest {
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .
         when()
-                .post( "/api/login")
+                .get( "/api/type")
                 .
 
         then().log().all()
                 .statusCode(200);
+    }
 
+    @Test //6655
+    public void negativeGetTypesTest(){
+
+        given()
+                .contentType(ContentType.JSON)
+                .baseUri(config.baseHost)
+                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .
+        when()
+                .get( "/api/type")
+                .
+
+        then().log().all()
+                .statusCode(401);
     }
 }
