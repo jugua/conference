@@ -8,23 +8,24 @@ import Tabs from './Tabs';
 import Header from './Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
+import { baseUrl, forgotPassword, signUp } from '../constants/route-url';
 
 const App = () => (
   <Router>
     <div>
       <Header />
       <Route
-        path="/"
+        path={baseUrl}
         exact
         component={Tabs}
       />
       <Route
-        path="/forgot-password"
+        path={forgotPassword}
         exact
         component={ForgotPassword}
       />
       <Route
-        path="/sign-up"
+        path={signUp}
 
         component={SignUp}
       />

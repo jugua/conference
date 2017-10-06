@@ -1,8 +1,8 @@
 import React from 'react';
-import baseUrl from '../../constants/backend-url';
 import CardsList from '../../containers/CardsList';
+import { past } from '../../constants/backend-url';
 
-const Past = () => <CardsList url={`${baseUrl}/conference/past`} />;
+const Past = () => <CardsList url={past} />;
 
 export default Past;
 

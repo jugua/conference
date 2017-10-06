@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import changeVisibilityComponent from '../../actions/forgot-password';
-import baseUrl from '../../constants/backend-url';
 import ErrorText
   from '../../components/Forgot-password/forgot-password-error-text';
+import { forgotPassword } from '../../constants/backend-url';
+import { baseUrl } from '../../constants/route-url';
 
 class ForgotPasswordForm extends PureComponent {
   constructor(props) {
@@ -16,10 +17,8 @@ class ForgotPasswordForm extends PureComponent {
   }
   componentWillUnmount() {
     const {
-      hide,
       HIDE_EMAIL_ERROR,
       changeVisibilityComponent: changeVisibility } = this.props;
-    changeVisibility(hide);
     changeVisibility(HIDE_EMAIL_ERROR);
   }
 
@@ -35,7 +34,7 @@ class ForgotPasswordForm extends PureComponent {
       show,
       changeVisibilityComponent: changeVisibility } = this.props;
     if (email.length !== 0) {
-      axios.post(`${baseUrl}/forgotPasswordPage/forgotPassword`,
+      axios.post(`${forgotPassword}`,
         { mail: email })
         .then(() => {
           changeVisibility(show);
@@ -78,7 +77,7 @@ class ForgotPasswordForm extends PureComponent {
             </button>
             <Link
               className="btn pop-up__button btn_cancel"
-              to="/"
+              to={baseUrl}
             >
               Cancel
             </Link >
@@ -86,7 +85,7 @@ class ForgotPasswordForm extends PureComponent {
         </form>
         <Link
           className="pop-up__close"
-          to="/"
+          to={baseUrl}
         />
       </div>
     );
@@ -95,7 +94,6 @@ class ForgotPasswordForm extends PureComponent {
 
 ForgotPasswordForm.propTypes = {
   show: PropTypes.string.isRequired,
-  hide: PropTypes.string.isRequired,
   EMAIL_IS_EMPTY: PropTypes.string.isRequired,
   HIDE_EMAIL_ERROR: PropTypes.string.isRequired,
   changeVisibilityComponent: PropTypes.func.isRequired,

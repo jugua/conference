@@ -1,6 +1,10 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import {
+  Link,
+} from 'react-router-dom';
 import SignInForm from '../../containers/SignInForm';
+import { baseUrl } from '../../constants/route-url';
 
 class Header extends PureComponent {
   constructor() {
@@ -49,8 +53,14 @@ class Header extends PureComponent {
   render() {
     return (
       <header className="header">
-        <div className="header__title"><a href="/#/" className="link_header">
-            conference management</a></div>
+        <div className="header__title">
+          <Link
+            className="link_header"
+            to={baseUrl}
+          >
+            conference management
+          </Link>
+        </div>
         <div className="menu-container">
           <button
             className="menu-container__button js-dropdown"
