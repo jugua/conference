@@ -39,7 +39,7 @@ public class GetTypesTest extends SimpleBaseTest{
                 .get( "/api/type")
                 .
 
-        then().log().all()
+            then().log().all()
                 .statusCode(401);
     }
 }
