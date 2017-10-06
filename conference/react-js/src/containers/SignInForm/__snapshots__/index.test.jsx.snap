@@ -38,7 +38,7 @@ exports[`Sign in form Sign in form renders correctly 1`] = `
         password:
       </label>
       <a
-        href="/forgot-password"
+        href="/react/forgot-password"
         onClick={[Function]}
       >
         forgot password?
@@ -62,7 +62,7 @@ exports[`Sign in form Sign in form renders correctly 1`] = `
   />
   <a
     className="btn sign-in__create"
-    href="/sign-up"
+    href="/react/sign-up"
     onClick={[Function]}
   >
     create new account
