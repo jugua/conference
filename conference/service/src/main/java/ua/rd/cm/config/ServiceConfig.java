@@ -3,14 +3,15 @@ package ua.rd.cm.config;
 import java.util.Properties;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
-
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.dto.CreateConferenceDto;
@@ -26,13 +27,20 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
         "ua.rd.cm.services"
 })
 @Import(RepositoryConfig.class)
-@PropertySource({"classpath:mail.properties", "classpath:fileStorage.properties"})
+@PropertySources({
+        @PropertySource("classpath:app.properties"),
+        @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
+})
 public class ServiceConfig {
+
+    @Bean
+    public static PlaceholderConfigurerSupport propertyPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
     @Bean
     public JavaMailSender getMailSender(Environment environment) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-
         mailSender.setHost(environment.getProperty("mail.host"));
         mailSender.setPort(environment.getProperty("mail.port", Integer.class));
         mailSender.setUsername(environment.getProperty("mail.username"));

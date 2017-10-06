@@ -167,14 +167,12 @@
             <artifactId>ui-js</artifactId>
             <type>war</type>
         </dependency>
-
         <dependency>
             <groupId>ua.rd.cm</groupId>
             <artifactId>react-js</artifactId>
             <version>1.0</version>
             <type>war</type>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
