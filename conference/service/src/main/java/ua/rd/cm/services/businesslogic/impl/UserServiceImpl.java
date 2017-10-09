@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
         Role role = roleRepository.findByName(roleName);
-        return userRepository.findAllByUserRolesIsIn(role).stream().filter(user -> user != currentUser).collect
+        return userRepository.findAllByRolesIsIn(role).stream().filter(user -> user != currentUser).collect
                 (Collectors.toList());
     }
 
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
                 roles.add(role);
             }
         }
-        return userRepository.findAllByUserRolesIsIn(roles).stream().filter(user -> user != currentUser).collect
+        return userRepository.findAllByRolesIsIn(roles).stream().filter(user -> user != currentUser).collect
                 (Collectors.toList());
     }
 

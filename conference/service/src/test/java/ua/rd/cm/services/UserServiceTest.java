@@ -79,7 +79,7 @@ public class UserServiceTest {
         Role role = new Role(Role.ORGANISER);
 
         when(roleRepository.findByName(Role.ORGANISER)).thenReturn(role);
-        when(userRepository.findAllByUserRolesIsIn(role)).thenReturn(users);
+        when(userRepository.findAllByRolesIsIn(role)).thenReturn(users);
 
         List<User> resultUsersList = testing.getByRoleExceptCurrent(user1, Role.ORGANISER);
         assertTrue(resultUsersList.contains(user2));
@@ -107,7 +107,7 @@ public class UserServiceTest {
         when(roleRepository.findByName(Role.ORGANISER)).thenReturn(roleOrganiser);
         when(roleRepository.findByName(Role.SPEAKER)).thenReturn(roleSpeaker);
 
-        when(userRepository.findAllByUserRolesIsIn(Arrays.asList(roleOrganiser, roleSpeaker)))
+        when(userRepository.findAllByRolesIsIn(Arrays.asList(roleOrganiser, roleSpeaker)))
                 .thenReturn(users);
 
         List<User> resultUsersList = testing.getByRolesExceptCurrent(user1, Role.ORGANISER, Role.SPEAKER);
