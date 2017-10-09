@@ -1,6 +1,7 @@
 package ua.rd.cm.web.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -120,6 +121,13 @@ public class MainPageControllerTest extends TestUtil {
     public void getPastConferencesTestUnauthorized() throws Exception {
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
                 andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = SPEAKER_ROLE)
+    public void getConferenceById() throws Exception {
+        mockMvc.perform(prepareGetRequest("/conference/" + anyInt())).
+            andExpect(status().isOk());
     }
 
     @Test
