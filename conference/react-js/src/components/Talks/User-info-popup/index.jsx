@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
+import classNames from 'classnames';
 
 class SpeakerInfo extends Component {
   constructor(props) {
@@ -28,12 +29,15 @@ class SpeakerInfo extends Component {
             contentLabel="onRequestClose Example"
             onRequestClose={this.handleCloseModal}
             className={{
-              base: `pop-up pop-up_big
-              ${this.state.showModal ? null : 'pop-up_close'}`,
-            }}
+              base: classNames({
+                'pop-up pop-up_big': true,
+                'pop-up_close': !this.state.showModal,
+              }) }}
             overlayClassName={{
-              afterOpen: `pop-up-wrapper
-              ${this.state.showModal ? null : 'pop-up_close'}`,
+              afterOpen: classNames({
+                'pop-up-wrapper': true,
+                'pop-up_close': !this.state.showModal,
+              }),
             }}
           >
             <h3 className="pop-up__title talks-user-info-popup__title">
