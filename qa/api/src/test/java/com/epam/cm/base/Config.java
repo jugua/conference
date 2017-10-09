@@ -11,6 +11,8 @@ public class Config {
     public String speakerPassword;
     public String adminUser;
     public String adminPassword;
+    public String wrongUser;
+    public String wrongPassword;
 
     public Config (Properties properties){
         baseHost = properties.getProperty("baseHost");
@@ -20,6 +22,8 @@ public class Config {
         speakerPassword = properties.getProperty("speaker.password");
         adminUser = properties.getProperty("admin.user");
         adminPassword = properties.getProperty("admin.password");
+        wrongUser = properties.getProperty("wrong.user");
+        wrongPassword = properties.getProperty("wrong.password");
     }
 
 }
