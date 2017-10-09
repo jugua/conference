@@ -1,10 +1,15 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
 import {
   Link,
 } from 'react-router-dom';
-import SignInForm from '../../containers/SignInForm';
-import { baseUrl } from '../../constants/route-url';
+import {
+  baseUrl,
+} from '../../constants/route-url';
+// import SignInForm from '../../containers/SignInForm';
+// import UserMenu from '../User-menu';
 
 class Header extends PureComponent {
   constructor() {
@@ -51,6 +56,7 @@ class Header extends PureComponent {
   };
 
   render() {
+    // const user = this.props.user;
     return (
       <header className="header">
         <div className="header__title">
@@ -72,7 +78,19 @@ class Header extends PureComponent {
             none: !this.state.visible,
           })}
           >
-            <SignInForm />
+            {/* { */}
+            {/* user ? */}
+            {/* <UserMenu */}
+            {/* data={[ */}
+            {/* { Conferences: `${baseUrl}` }, */}
+            {/* { Talks: `${talks}` }, */}
+            {/* { Settings: `${settings}` }, */}
+            {/* { 'Manage user': `${manageUser}` }, */}
+            {/* { 'Sign Out': `${baseUrl}` }, */}
+            {/* ]} */}
+            {/* : <SignInForm /> */}
+            {/* } */}
+
           </div>
         </div>
       </header>
@@ -80,4 +98,9 @@ class Header extends PureComponent {
   }
 }
 
+// const mapStateToProps = state => ({
+//   user: state.user,
+// });
+
+// export default connect(mapStateToProps)(Header);
 export default Header;
