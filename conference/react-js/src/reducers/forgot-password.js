@@ -9,7 +9,7 @@ const results={
 };
 
 const forgotPassword = (isPasswordForgottenSent = false, action) => (
-    results.hasOwnProperty(action.type) ?
+    Object.prototype.hasOwnProperty.call(results, action.type) ?
       results[action.type] : isPasswordForgottenSent
 );
 export default forgotPassword;
