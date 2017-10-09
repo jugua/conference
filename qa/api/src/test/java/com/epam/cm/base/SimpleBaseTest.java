@@ -28,7 +28,9 @@ public class SimpleBaseTest {
 
 
         response =
-                when().post(config.baseHost).then().log().all().
+                when().get(config.baseHost).then().log().all().
                         extract().response();
+
+        System.out.println("\n\n");
     }
 }
