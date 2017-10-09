@@ -114,38 +114,16 @@
             <groupId>ua.rd.cm</groupId>
             <artifactId>service</artifactId>
         </dependency>
-
         <dependency>
             <groupId>ua.rd.cm</groupId>
             <artifactId>ui-js</artifactId>
             <type>war</type>
         </dependency>
-         <dependency>
-             <groupId>ua.rd.cm</groupId>
-             <artifactId>react-js</artifactId>
-             <version>1.0</version>
-             <type>war</type>
-         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
+            <groupId>ua.rd.cm</groupId>
+            <artifactId>react-js</artifactId>
+            <version>1.0</version>
+            <type>war</type>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -155,12 +133,6 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <version>4.2.3.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${spring-version}</version>
         </dependency>
 
         <dependency>
@@ -182,7 +154,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.hibernate</groupId>

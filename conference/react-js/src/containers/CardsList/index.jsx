@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import Card from '../Card';
+import Card from '../../components/Card';
 
 class CardsList extends PureComponent {
   constructor(props) {

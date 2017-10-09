@@ -5,9 +5,9 @@
 @import 'fonst';
 @import '/inc/const';
 @import '/inc/mixins';
-@import '/inc/common';
+@import 'common';
 @import '../components/Tabs/tabs';
-@import '../containers/Conference-cards/style';
+@import '../containers/CardsList/style';
 @import '../containers/SignInForm/style';
 @import '../containers/SignUpForm/sign-up';
 @import '../containers/Forgot-password/forgot-password';

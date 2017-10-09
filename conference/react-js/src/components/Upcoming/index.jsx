@@ -1,7 +1,7 @@
 import React from 'react';
-import baseUrl from '../../constants/backend-url';
-import CardsList from '../CardsList';
+import CardsList from '../../containers/CardsList';
+import { upcoming } from '../../constants/backend-url';
 
-const Upcoming = () => <CardsList url={`${baseUrl}/api/conference/upcoming`} />;
+const Upcoming = () => <CardsList url={upcoming} />;
 
 export default Upcoming;

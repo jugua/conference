@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import {
+  Link,
+} from 'react-router-dom';
+import { forgotPassword, signUp } from '../../constants/route-url';
 
 class SignInForm extends PureComponent {
   constructor(props) {
@@ -59,7 +63,11 @@ class SignInForm extends PureComponent {
             <label htmlFor="sign-in-password" className="form-label">
               password:
             </label>
-            <a href="" className="sign-in__forgot">forgot password?</a>
+            <Link
+              to={forgotPassword}
+            >
+              forgot password?
+            </Link >
           </div>
           <input
             type="password"
@@ -84,8 +92,12 @@ class SignInForm extends PureComponent {
         </form>
 
         <div className="sign-in__separator" />
-
-        <a className="btn sign-in__create">create new account</a>
+        <Link
+          className="btn sign-in__create"
+          to={signUp}
+        >
+          create new account
+        </Link >
 
       </div>
     );

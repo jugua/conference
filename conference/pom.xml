@@ -16,9 +16,30 @@
         <spring.security.version>4.2.3.RELEASE</spring.security.version>
         <hibernate.version>5.2.4.Final</hibernate.version>
         <hikariCP.version>2.6.1</hikariCP.version>
-
         <dbunit.version>2.4.9</dbunit.version>
         <spring.test.dbunit.version>1.3.0</spring.test.dbunit.version>
+        <lombok.version>1.16.18</lombok.version>
+        <commons-fileupload.version>1.3.3</commons-fileupload.version>
+        <spring.hateoas.version>0.23.0.RELEASE</spring.hateoas.version>
+        <spring.data.jpa.version>1.11.7.RELEASE</spring.data.jpa.version>
+        <spring.data.rest.version>2.6.7.RELEASE</spring.data.rest.version>
+        <javax.mail.version>1.4.7</javax.mail.version>
+        <javax.mail.api.version>1.6.0</javax.mail.api.version>
+        <freemarket.version>2.3.23</freemarket.version>
+        <javax.servlet.api.version>4.0.0</javax.servlet.api.version>
+        <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
+        <h2database.version>1.4.196</h2database.version>
+        <mysql.conector.java.version>6.0.6</mysql.conector.java.version>
+        <javax.validation.api.version>2.0.0.Final</javax.validation.api.version>
+        <fasterxml.version>2.9.1</fasterxml.version>
+        <modelmapper.version>1.1.0</modelmapper.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+        <log4j.version>1.2.17</log4j.version>
+        <log4jdbc.version>0.2.7</log4jdbc.version>
+        <mockito.version>1.10.19</mockito.version>
+        <junit.version>4.12</junit.version>
+        <jsonpath.version>2.4.0</jsonpath.version>
     </properties>
 
     <profiles>
@@ -54,8 +75,8 @@
                 <module>domain</module>
                 <module>service</module>
                 <module>ui-js</module>
-                <module>webapp</module>
                 <module>react-js</module>
+                <module>webapp</module>
             </modules>
         </profile>
     </profiles>
@@ -157,12 +178,13 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.16.18</version>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
-                <version>1.3.3</version>
+                <version>${commons-fileupload.version}</version>
             </dependency>
             <!-- utility end -->
 
@@ -195,18 +217,18 @@
             <dependency>
                 <groupId>org.springframework.hateoas</groupId>
                 <artifactId>spring-hateoas</artifactId>
-                <version>0.23.0.RELEASE</version>
+                <version>${spring.hateoas.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
-                <version>1.11.7.RELEASE</version>
+                <version>${spring.data.jpa.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-rest-webmvc</artifactId>
-                <version>2.6.7.RELEASE</version>
+                <version>${spring.data.rest.version}</version>
             </dependency>
 
             <dependency>
@@ -224,29 +246,29 @@
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
-                <version>1.4.7</version>
+                <version>${javax.mail.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>javax.mail-api</artifactId>
-                <version>1.6.0</version>
+                <version>${javax.mail.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
-                <version>2.3.23</version>
+                <version>${freemarket.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>4.0.0</version>
+                <version>${javax.servlet.api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>jstl</artifactId>
-                <version>1.2</version>
+                <version>${javax.servlet.jstl.version}</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -254,12 +276,12 @@
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
-                <version>1.4.196</version>
+                <version>${h2database.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>6.0.6</version>
+                <version>${mysql.conector.java.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.zaxxer</groupId>
@@ -282,57 +304,57 @@
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
-                <version>2.0.0.Final</version>
+                <version>${javax.validation.api.version}</version>
             </dependency>
             <!-- hibernate end -->
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.9.1</version>
+                <version>${fasterxml.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.datatype</groupId>
                 <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>2.9.1</version>
+                <version>${fasterxml.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.modelmapper</groupId>
                 <artifactId>modelmapper</artifactId>
-                <version>1.1.0</version>
+                <version>${modelmapper.version}</version>
             </dependency>
 
             <!-- logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.25</version>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.2.3</version>
+                <version>${logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.2.3</version>
+                <version>${logback.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
-                <version>1.7.25</version>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
+                <version>${log4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.lazyluke</groupId>
                 <artifactId>log4jdbc-remix</artifactId>
-                <version>0.2.7</version>
+                <version>${log4jdbc.version}</version>
             </dependency>
             <!-- logging end -->
 
@@ -340,13 +362,13 @@
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
-                <version>1.10.19</version>
+                <version>${mockito.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -370,13 +392,13 @@
             <dependency>
                 <groupId>com.jayway.jsonpath</groupId>
                 <artifactId>json-path</artifactId>
-                <version>2.4.0</version>
+                <version>${jsonpath.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.jayway.jsonpath</groupId>
                 <artifactId>json-path-assert</artifactId>
-                <version>2.4.0</version>
+                <version>${jsonpath.version}</version>
                 <scope>test</scope>
             </dependency>
             <!-- testing end -->

@@ -52,15 +52,15 @@ function Card({ data: {
 }
 
 Card.propTypes = { data: PropTypes.shape({
-  call_for_paper_end_date: '',
-  call_for_paper_start_date: '',
+  call_for_paper_end_date: PropTypes.string,
+  call_for_paper_start_date: PropTypes.string,
   cfp_active: false,
-  description: '',
-  end_date: '',
-  location: '',
-  id: '',
-  start_date: '',
-  title: '',
+  description: PropTypes.string,
+  end_date: PropTypes.string,
+  location: PropTypes.string,
+  id: PropTypes.number,
+  start_date: PropTypes.string,
+  title: PropTypes.string,
 }) };
 
 Card.defaultProps = {
