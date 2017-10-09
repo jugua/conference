@@ -63,8 +63,6 @@ public class UpcomingConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth()
                 .preemptive().basic(config.wrongUser,config.wrongPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
         .when()
                 .get( "/api/conference/upcoming")
         .then().log().all()

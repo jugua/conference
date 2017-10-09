@@ -63,8 +63,6 @@ public class PastConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth()
                 .preemptive().basic(config.wrongUser,config.wrongPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
         .when()
                 .get( "/api/conference/past")
         .then().log().all()
