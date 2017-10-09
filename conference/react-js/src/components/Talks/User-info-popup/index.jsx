@@ -1,43 +1,46 @@
 import React, { Component } from 'react';
+import ReactModal from 'react-modal';
 
 class SpeakerInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      popupIsShown: false,
-      closePop: false,
+      showModal: false,
     };
   }
 
-  closePopUp = () => {
-    const showPopUp = this.state.popupIsShown;
-    this.setState({
-      popupIsShown: !showPopUp,
-    });
-  }
+    handleOpenModal = () => {
+      this.setState({ showModal: true });
+    }
 
-    handleClick = (e) => {
-      const closePop = this.state.closePop;
+    handleCloseModal = () => {
       this.setState({
-        closePop: !closePop,
+        showModal: false,
       });
-      console.log(e.target);
     }
 
     render() {
       return (
-        <div
-          className={`pop-up-wrapper ${this.state.popupIsShown ? 'test' : ''} ${this.state.closePop ? 'close' : ''}`}
-          role="presentation"
-          onClick={this.handleClick}
-        >
-          <div
-            className={`pop-up pop-up_big ${this.state.popupIsShown ? 'test' : ''}`}
+        <div>
+          <button onClick={this.handleOpenModal}>Trigger Modal</button>
+          <ReactModal
+            isOpen={this.state.showModal}
+            contentLabel="onRequestClose Example"
+            onRequestClose={this.handleCloseModal}
+            className={{
+              base: `pop-up pop-up_big
+              ${this.state.showModal ? null : 'pop-up_close'}`,
+            }}
+            overlayClassName={{
+              afterOpen: `pop-up-wrapper
+              ${this.state.showModal ? null : 'pop-up_close'}`,
+            }}
           >
-            <h3 className="pop-up__title talks-user-info-popup__title">Test</h3>
+            <h3 className="pop-up__title talks-user-info-popup__title">
+              User&#39;s info</h3>
             <button
               className="pop-up__close"
-              onClick={this.closePopUp}
+              onClick={this.handleCloseModal}
             />
             <div className="talks-user-info-popup__form-wrapper">
               <img className="my-info__ava" src="" alt="" />
@@ -148,9 +151,12 @@ class SpeakerInfo extends Component {
                   maxLength="1000"
                 />
               </form>
-              <button className="btn talks-user-info-popup__button">close</button>
+              <button
+                className="btn talks-user-info-popup__button"
+                onClick={this.handleCloseModal}
+              >close</button>
             </div>
-          </div>
+          </ReactModal>
         </div>
       );
     }
