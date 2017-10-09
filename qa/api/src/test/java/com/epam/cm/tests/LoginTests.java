@@ -30,13 +30,11 @@ public class LoginTests extends SimpleBaseTest {
     @Test
     public void negativeLoginTestInvalidLogin(){
 
-        int i = 8;
-        String str  = config.invalidUser;
-        Response response2 =
+
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().preemptive().basic(config.invalidUser, config.organiserPassword)
+                .auth().preemptive().basic("gdgdyt873@eu.co", config.organiserPassword)
                 .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .
@@ -45,7 +43,7 @@ public class LoginTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(401).extract().response();
-                        //and().cookie( response.cookie("XSRF-TOKEN")).extract().response();
+
 
 
     }
@@ -56,7 +54,7 @@ public class LoginTests extends SimpleBaseTest {
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().preemptive().basic(config.organiserUser, config.invalidPassword)
+                .auth().preemptive().basic(config.organiserUser, "732723tf")
                 .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
 
