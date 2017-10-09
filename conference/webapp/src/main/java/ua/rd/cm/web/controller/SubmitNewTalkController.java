@@ -37,37 +37,9 @@ import ua.rd.cm.services.resources.LevelService;
 @RequestMapping("/submitTalk")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class SubmitNewTalkController {
-    private final TypeService typeService;
-    private final TopicService topicService;
-    private final LevelService levelService;
-    private final LanguageService languageService;
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getTypes")
-    public ResponseEntity getTypes() {
-        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getTopics")
-    public ResponseEntity getTopics() {
-        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getLevels")
-    public ResponseEntity getLevels() {
-        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/getLanguages")
-    public ResponseEntity getLanguages() {
-        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
-    }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping

@@ -1,18 +1,16 @@
 import React, { PureComponent } from 'react';
 import axios from 'axios';
-import baseUrl from '../../../constants/backend-url';
-import Card from '../../../components/Card';
+import PropTypes from 'prop-types';
+import Card from '../../components/Card';
 
-class Past extends PureComponent {
+class CardsList extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      data: null,
-    };
+    this.state = { data: '' };
   }
-
-  componentWillMount() {
-    axios.get(`${baseUrl}/api/conference/Past`)
+  componentDidMount() {
+    const { url } = this.props;
+    axios.get(url)
       .then(({ data }) => {
         this.setState({ data });
       });
@@ -22,11 +20,9 @@ class Past extends PureComponent {
     .map(element => (
       <Card data={element} key={element.id} />),
     );
+
   render() {
     const { data } = this.state;
-    if (!data) {
-      return <div />;
-    }
     return (
       <div className="tabs-container">
         {this.setCards(data)}
@@ -35,4 +31,7 @@ class Past extends PureComponent {
   }
 }
 
-export default Past;
+CardsList.propTypes = {
+  url: PropTypes.string.isRequired,
+};
+export default CardsList;

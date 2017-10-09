@@ -60,7 +60,7 @@ public class MyInfoPageController {
             UserDto userDto = userService.getUserDtoByEmail(principal.getName());
             return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
         } catch (NoSuchUserException ex) {
-            log.error("Request for [api/user/current] is failed: User entity for current principal is not found");
+            log.error("Request for [myinfo] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -123,7 +123,7 @@ public class MyInfoPageController {
                 userService.updateUserProfile(currentUser);
 
                 MessageDto messageDto = new MessageDto();
-                messageDto.setResult("api/user/current/photo/" + currentUser.getId());
+                messageDto.setResult("/photo/" + currentUser.getId());
                 return ResponseEntity.status(HttpStatus.OK).body(messageDto);
             }
         } catch (IOException e) {

@@ -1,5 +1,14 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import { forgotPassword, signUp } from '../../constants/route-url';
+import login from '../../actions/login';
+import getUserInfo from '../../actions/getUserInfo';
+import loginValidation from '../../actions/loginVlidation';
+import actionTypes from '../../constants/actions-types';
 
 class SignInForm extends PureComponent {
   constructor(props) {
@@ -11,6 +20,19 @@ class SignInForm extends PureComponent {
     };
   }
 
+  onLoginSuccess = () => {
+    getUserInfo().then(
+      res => this.props.setCurrentUser(res.data),
+      (err) => { throw err; },
+    );
+  };
+
+  onLoginFail = () => {
+    this.setState({
+      isValidCredentials: false,
+    });
+  };
+
   formChangeHandler = (event) => {
     const target = event.target;
 
@@ -21,12 +43,15 @@ class SignInForm extends PureComponent {
   };
 
   submitHandler = (event) => {
-    // simulate bad credentials
-    this.setState({
-      isValidCredentials: false,
-    });
-
     event.preventDefault();
+    if (loginValidation(this.state)) {
+      login(this.state).then(
+        () => this.onLoginSuccess(),
+        () => this.onLoginFail(),
+      );
+    } else {
+      this.onLoginFail();
+    }
   };
 
   render() {
@@ -59,7 +84,11 @@ class SignInForm extends PureComponent {
             <label htmlFor="sign-in-password" className="form-label">
               password:
             </label>
-            <a href="" className="sign-in__forgot">forgot password?</a>
+            <Link
+              to={forgotPassword}
+            >
+              forgot password?
+            </Link >
           </div>
           <input
             type="password"
@@ -70,6 +99,7 @@ class SignInForm extends PureComponent {
             })}
             id="sign-in-password"
             value={this.state.password}
+            required
           />
           { this.state.isValidCredentials || (
             <span className="field-error">
@@ -84,12 +114,29 @@ class SignInForm extends PureComponent {
         </form>
 
         <div className="sign-in__separator" />
-
-        <a className="btn sign-in__create">create new account</a>
+        <Link
+          className="btn sign-in__create"
+          to={signUp}
+        >
+          create new account
+        </Link >
 
       </div>
     );
   }
 }
 
-export default SignInForm;
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: (user) => {
+    dispatch({
+      type: actionTypes.SET_USER,
+      payload: user,
+    });
+  },
+});
+
+SignInForm.propTypes = {
+  setCurrentUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(SignInForm);

@@ -2,6 +2,7 @@ package ua.rd.cm.services.businesslogic.impl;
 
 import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_INFO_NOT_FOUND;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,14 +13,10 @@ import ua.rd.cm.services.businesslogic.UserInfoService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 @Service
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class UserInfoServiceImpl implements UserInfoService {
 
     private UserInfoRepository userInfoRepository;
-
-    @Autowired
-    public UserInfoServiceImpl(UserInfoRepository userInfoRepository) {
-        this.userInfoRepository = userInfoRepository;
-    }
 
     @Override
     public UserInfo find(Long id) {

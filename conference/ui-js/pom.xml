@@ -19,36 +19,48 @@
 
     <profiles>
         <profile>
-            <id>local</id>
+            <id>webapp</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <build-task>build</build-task>
+                <skipTestRun>true</skipTestRun>
+            </properties>
+        </profile>
+        <profile>
+            <id>angular</id>
+            <properties>
+                <build-task>build</build-task>
+                <skipTestRun>false</skipTestRun>
             </properties>
         </profile>
         <profile>
             <id>testing</id>
             <properties>
                 <build-task>build-min</build-task>
+                <skipTestRun>true</skipTestRun>
             </properties>
         </profile>
         <profile>
             <id>dev</id>
             <properties>
                 <build-task>build-min</build-task>
+                <skipTestRun>true</skipTestRun>
             </properties>
         </profile>
         <profile>
             <id>stable</id>
             <properties>
                 <build-task>build-min</build-task>
+                <skipTestRun>true</skipTestRun>
             </properties>
         </profile>
         <profile>
             <id>master</id>
             <properties>
                 <build-task>build-min</build-task>
+                <skipTestRun>true</skipTestRun>
             </properties>
         </profile>
     </profiles>
@@ -96,6 +108,7 @@
                     <warSourceDirectory>${dir.dist}</warSourceDirectory>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>com.kelveden</groupId>
                 <artifactId>maven-karma-plugin</artifactId>
@@ -109,6 +122,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <skipTests>${skipTestRun}</skipTests>
                     <karmaExecutable>${basedir}/node_modules/.bin/karma</karmaExecutable>
                     <browsers>PhantomJS</browsers>
                     <reporters>dots</reporters>

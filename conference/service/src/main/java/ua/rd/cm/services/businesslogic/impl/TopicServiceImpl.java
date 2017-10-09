@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +18,11 @@ import ua.rd.cm.services.businesslogic.TopicService;
 import ua.rd.cm.services.exception.TopicNotFoundException;
 
 @Service
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TopicServiceImpl implements TopicService {
 
     private final ModelMapper modelMapper;
     private final TopicRepository topicRepository;
-
-    @Autowired
-    public TopicServiceImpl(ModelMapper modelMapper, TopicRepository topicRepository) {
-        this.modelMapper = modelMapper;
-        this.topicRepository = topicRepository;
-    }
 
     @Override
     public Topic find(Long id) {
