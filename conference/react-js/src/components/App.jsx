@@ -11,7 +11,9 @@ import SignUp from '../containers/SignUpForm';
 import {
   baseUrl,
   forgotPassword,
-  signUp } from '../constants/route-url';
+  signUp,
+  manageUser } from '../constants/route-url';
+import ManageUser from './Manage-user/';
 
 const App = () => (
   <Router>
@@ -31,6 +33,10 @@ const App = () => (
         path={signUp}
 
         component={SignUp}
+      />
+      <Route
+        path={manageUser}
+        component={ManageUser}
       />
     </div>
   </Router>

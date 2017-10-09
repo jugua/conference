@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
-// import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Link,
 } from 'react-router-dom';
 import {
   baseUrl,
+  settings,
+  manageUser,
+  talks,
 } from '../../constants/route-url';
-// import SignInForm from '../../containers/SignInForm';
-// import UserMenu from '../User-menu';
+import SignInForm from '../../containers/SignInForm';
+import UserMenu from '../User-menu';
 
 class Header extends PureComponent {
   constructor() {
@@ -56,7 +59,8 @@ class Header extends PureComponent {
   };
 
   render() {
-    // const user = this.props.user;
+    console.log(this.props.user);
+    const { user: { roles: [roles], lname } } = this.props;
     return (
       <header className="header">
         <div className="header__title">
@@ -71,25 +75,26 @@ class Header extends PureComponent {
           <button
             className="menu-container__button js-dropdown"
             onClick={this.onButtonAccountClick}
-          >Your Account
+          >{ lname ? `${lname}'s` : 'Your'} Account
           </button>
           <div className={classNames({
             'menu-container__content': true,
             none: !this.state.visible,
           })}
           >
-            {/* { */}
-            {/* user ? */}
-            {/* <UserMenu */}
-            {/* data={[ */}
-            {/* { Conferences: `${baseUrl}` }, */}
-            {/* { Talks: `${talks}` }, */}
-            {/* { Settings: `${settings}` }, */}
-            {/* { 'Manage user': `${manageUser}` }, */}
-            {/* { 'Sign Out': `${baseUrl}` }, */}
-            {/* ]} */}
-            {/* : <SignInForm /> */}
-            {/* } */}
+            {
+              roles ?
+                <UserMenu
+                  data={[
+                    { Conferences: baseUrl },
+                    { Talks: talks },
+                    { Settings: settings },
+                    { 'Manage user': manageUser },
+                    { 'Sign Out': baseUrl },
+                  ]}
+                />
+                : <SignInForm />
+            }
 
           </div>
         </div>
@@ -98,9 +103,28 @@ class Header extends PureComponent {
   }
 }
 
-// const mapStateToProps = state => ({
-//   user: state.user,
-// });
+Header.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    roles: PropTypes.array,
+    mail: PropTypes.string,
+    fname: PropTypes.string,
+    lname: PropTypes.string,
+    bio: PropTypes.string,
+    job: PropTypes.string,
+    company: PropTypes.string,
+    past: PropTypes.string,
+    photo: PropTypes.string,
+    linkedin: PropTypes.string,
+    twitter: PropTypes.string,
+    facebook: PropTypes.string,
+    blog: PropTypes.string,
+    info: PropTypes.string,
+  }).isRequired,
+};
 
-// export default connect(mapStateToProps)(Header);
-export default Header;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(Header);
