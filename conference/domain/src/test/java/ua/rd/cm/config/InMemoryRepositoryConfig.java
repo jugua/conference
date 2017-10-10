@@ -60,8 +60,7 @@ public class InMemoryRepositoryConfig {
     @Bean
     public AbstractEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
                                                                  JpaVendorAdapter jpaVendorAdapter) {
-        LocalContainerEntityManagerFactoryBean emf =
-                new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 
         emf.setDataSource(dataSource);
         emf.setJpaVendorAdapter(jpaVendorAdapter);
