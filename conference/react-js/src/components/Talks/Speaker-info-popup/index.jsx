@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
+import Input from '../Form-components/Input';
+import Label from '../Form-components/Label';
+import Textarea from '../Form-components/Textarea';
 
 class SpeakerInfo extends Component {
   constructor(props) {
@@ -49,110 +52,91 @@ class SpeakerInfo extends Component {
             <div className="talks-user-info-popup__form-wrapper">
               <img className="my-info__ava" src="" alt="" />
               <form className="my-info" name="">
-                <label
-                  htmlFor="my-info-bio"
+                <Label
                   className="form-label my-info__label my-info__label_bio"
-                >Short Bio
-                </label>
-                <textarea
-                  name="bio"
+                  htmlFor="my-info-bio"
+                  label="Short Bio"
+                />
+                <Textarea
                   id="my-info-bio"
                   className="textarea my-info__bio"
-                  maxLength="2000"
-                  disabled
+                  name="bio"
+                  maxLen="2000"
                 />
-                <label
+                <Label
                   className="form-label"
                   htmlFor="my-job-title"
-                >Job Title</label>
-                <input
-                  type="text"
-                  className="field field_border"
-                  id="my-job-title"
-                  disabled
+                  label="Job Title"
                 />
-                <label
+                <Input
+                  id="my-job-title"
+                />
+                <Label
                   className="form-label"
                   htmlFor="my-company"
-                >Company</label>
-                <input
-                  type="text"
-                  className="field field_border"
-                  id="my-company"
-                  disabled
+                  label="Company"
                 />
-                <label
+                <Input
+                  id="my-company"
+                />
+                <Label
                   className="form-label"
                   htmlFor="my-past-conferences"
-                >Past Conferences</label>
-                <textarea
-                  type="text"
-                  name="past"
-                  id="my-past-conferences"
-                  rows="5"
-                  className="textarea"
-                  disabled
+                  label="Past Conferences"
                 />
-                <label
+                <Textarea
+                  id="my-past-conferences"
+                  name="past"
+                  rows="5"
+                />
+                <Label
                   className="form-label"
                   htmlFor="my-email"
-                >Email</label>
-                <input
-                  type="text"
-                  className="field field_border"
-                  id="my-email"
-                  disabled
+                  label="Email"
                 />
-                <label
+                <Input
+                  id="my-email"
+                />
+                <Label
                   className="form-label"
                   htmlFor="my-linkedin"
-                >LinkedIn</label>
-                <input
-                  type="text"
-                  className="field field_border"
-                  id="my-linkedin"
-                  disabled
+                  label="LinkedIn"
                 />
-                <label
+                <Input id="my-linkedin" />
+                <Label
                   className="form-label"
                   htmlFor="my-twitter"
-                >twitter</label>
-                <input
-                  type="text"
-                  className="field field_border"
-                  id="my-twitter"
-                  disabled
+                  label="Twitter"
                 />
-                <label
+                <Input
+                  id="my-twitter"
+                />
+                <Label
                   className="form-label"
                   htmlFor="my-facebook"
-                >facebook</label>
-                <input
-                  type="text"
-                  className="field field_border"
-                  id="my-facebook"
-                  disabled
+                  label="Facebook"
                 />
-                <label
+                <Input
+                  id="my-facebook"
+                />
+                <Label
                   className="form-label"
                   htmlFor="my-blog"
-                >blog</label>
-                <input
-                  type="text"
-                  className="field field_border"
-                  id="my-blog"
-                  disabled
+                  label="Blog"
                 />
-                <label
+                <Input
+                  id="my-blog"
+                />
+                <Label
                   className="form-label"
                   htmlFor="my-additional-info"
-                >Additional Info</label>
-                <textarea
-                  rows="5"
-                  className="textarea"
+                  label="Additional Info"
+                />
+                <Textarea
                   id="my-additional-info"
-                  disabled
-                  maxLength="1000"
+                  name="past"
+                  rows="5"
+                  maxLen="1000"
                 />
               </form>
               <button
