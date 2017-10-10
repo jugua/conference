@@ -13,7 +13,7 @@ import {
   forgotPassword,
   signUp,
   manageUser } from '../constants/route-url';
-import ManageUser from './Manage-user/';
+import ManageUser from '../containers/Manage-user/';
 
 const App = () => (
   <Router>
