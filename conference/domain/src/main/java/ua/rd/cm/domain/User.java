@@ -1,40 +1,57 @@
 package ua.rd.cm.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true, exclude = {"photo", "userInfo"})
 @ToString(exclude = {"password", "photo", "userInfo"})
 @Entity
-@Table(name = "user")
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "user_seq")
-@AttributeOverride(name = "id", column = @Column(name = "user_id"))
 public class User extends AbstractEntity {
 
+    @NonNull
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
+    @NonNull
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @NonNull
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @NonNull
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "photo")
     private String photo;
 
+    @NonNull
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus status;
@@ -45,10 +62,24 @@ public class User extends AbstractEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
-    private Set<Role> userRoles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
+
+    @Builder
+    public User(Long id, String firstName, String lastName, String email, String password,
+                String photo, UserStatus status, UserInfo userInfo, Set<Role> roles) {
+        super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.photo = photo;
+        this.status = status;
+        this.userInfo = userInfo;
+        this.roles = roles;
+    }
 
     public boolean addRole(Role role) {
-        return userRoles.add(role);
+        return roles.add(role);
     }
 
     public String getFullName() {
@@ -56,9 +87,7 @@ public class User extends AbstractEntity {
     }
 
     public List<String> getRoleNames() {
-        List<String> roleNames = new ArrayList<>();
-        userRoles.forEach(role -> roleNames.add(role.getName()));
-        return roleNames;
+        return roles.stream().map(Role::getName).collect(Collectors.toList());
     }
 
     public enum UserStatus {

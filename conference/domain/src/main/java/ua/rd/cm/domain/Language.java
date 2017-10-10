@@ -1,27 +1,29 @@
 package ua.rd.cm.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "language")
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "language_seq")
-@AttributeOverride(name = "id", column = @Column(name = "language_id"))
 public class Language extends AbstractEntity {
 
-    @Column(name = "language_name", nullable = false, unique = true)
+    @NonNull
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Language(Long id, String name) {
-        this.id = id;
+        super(id);
         this.name = name;
     }
 }
