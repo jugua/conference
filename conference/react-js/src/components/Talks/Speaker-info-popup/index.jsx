@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
-import Input from '../Form-components/Input';
-import Label from '../Form-components/Label';
-import Textarea from '../Form-components/Textarea';
+import InputBox from '../Form-components/InputBox';
+import TextareaBox from '../Form-components/TextareaBox';
 
 class SpeakerInfo extends Component {
   constructor(props) {
@@ -29,7 +28,7 @@ class SpeakerInfo extends Component {
           <button onClick={this.handleOpenModal}>Trigger Modal</button>
           <ReactModal
             isOpen={this.state.showModal}
-            contentLabel="onRequestClose Example"
+            contentLabel="onRequestClose"
             onRequestClose={this.handleCloseModal}
             className={{
               base: classNames({
@@ -52,91 +51,33 @@ class SpeakerInfo extends Component {
             <div className="talks-user-info-popup__form-wrapper">
               <img className="my-info__ava" src="" alt="" />
               <form className="my-info" name="">
-                <Label
-                  className="form-label my-info__label my-info__label_bio"
-                  htmlFor="my-info-bio"
-                  label="Short Bio"
-                />
-                <Textarea
+                <TextareaBox
                   id="my-info-bio"
+                  labelClassName="my-info__label my-info__label_bio"
                   className="textarea my-info__bio"
+                  label="Short Bio"
                   name="bio"
-                  maxLen="2000"
+                  maxLen={2000}
                 />
-                <Label
-                  className="form-label"
-                  htmlFor="my-job-title"
-                  label="Job Title"
-                />
-                <Input
-                  id="my-job-title"
-                />
-                <Label
-                  className="form-label"
-                  htmlFor="my-company"
-                  label="Company"
-                />
-                <Input
-                  id="my-company"
-                />
-                <Label
-                  className="form-label"
-                  htmlFor="my-past-conferences"
-                  label="Past Conferences"
-                />
-                <Textarea
+                <InputBox id="my-job-title" label="Job Title" disabled />
+                <InputBox id="my-company" label="Company" disabled />
+                <TextareaBox
                   id="my-past-conferences"
+                  label="Past Conferences"
                   name="past"
-                  rows="5"
+                  rows={5}
                 />
-                <Label
-                  className="form-label"
-                  htmlFor="my-email"
-                  label="Email"
-                />
-                <Input
-                  id="my-email"
-                />
-                <Label
-                  className="form-label"
-                  htmlFor="my-linkedin"
-                  label="LinkedIn"
-                />
-                <Input id="my-linkedin" />
-                <Label
-                  className="form-label"
-                  htmlFor="my-twitter"
-                  label="Twitter"
-                />
-                <Input
-                  id="my-twitter"
-                />
-                <Label
-                  className="form-label"
-                  htmlFor="my-facebook"
-                  label="Facebook"
-                />
-                <Input
-                  id="my-facebook"
-                />
-                <Label
-                  className="form-label"
-                  htmlFor="my-blog"
-                  label="Blog"
-                />
-                <Input
-                  id="my-blog"
-                />
-                <Label
-                  className="form-label"
-                  htmlFor="my-additional-info"
-                  label="Additional Info"
-                />
-                <Textarea
+                <InputBox id="my-email" label="Email" disabled />
+                <InputBox id="my-linkedin" label="LinkedIn" disabled />
+                <InputBox id="my-twitter" label="Twitter" disabled />
+                <InputBox id="my-facebook" label="Facebook" disabled />
+                <InputBox id="my-blog" label="Blog" disabled />
+                <TextareaBox
                   id="my-additional-info"
+                  label="Additional Info"
                   name="past"
-                  rows="5"
-                  maxLen="1000"
+                  rows={5}
+                  maxLen={1000}
                 />
               </form>
               <button
