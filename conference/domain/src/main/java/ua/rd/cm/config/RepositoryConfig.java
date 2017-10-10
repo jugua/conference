@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -25,17 +26,19 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 
 @Configuration
 @ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
 @PropertySources({
         @PropertySource("classpath:app.properties"),
         @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
-
 })
-@EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
 public class RepositoryConfig {
 
     @Bean

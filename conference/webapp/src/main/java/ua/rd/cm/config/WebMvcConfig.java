@@ -30,11 +30,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = "ua.rd.cm.web", excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
-@PropertySources({
-        @PropertySource("classpath:app.properties"),
-        @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
-})
-
 @EnableSwagger2
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 

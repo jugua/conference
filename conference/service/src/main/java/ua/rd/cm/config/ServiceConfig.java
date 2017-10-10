@@ -1,7 +1,11 @@
 package ua.rd.cm.config;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Properties;
 
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.context.annotation.*;
@@ -27,10 +31,6 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
         "ua.rd.cm.services"
 })
 @Import(RepositoryConfig.class)
-@PropertySources({
-        @PropertySource("classpath:app.properties"),
-        @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
-})
 public class ServiceConfig {
 
     @Bean
