@@ -6,12 +6,13 @@ import { bindActionCreators } from 'redux';
 import loadData from '../../actions/load-data';
 import actions from '../../constants/actions-types';
 import { rolesUI } from '../../constants/roles';
+import { allUsers } from '../../constants/backend-url';
 
 class ManageUser extends PureComponent {
   componentDidMount() {
     const { LOAD_USER_DATA } = actions;
     const { load } = this.props;
-    axios.get('/manageUsers/getAllUsersForAdmin')
+    axios.get(allUsers)
       .then(({ data }) => (load(LOAD_USER_DATA, data)));
   }
 
