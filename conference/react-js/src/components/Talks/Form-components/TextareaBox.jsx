@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const TextareaBox = props => (
-
   <div className="input-box">
     <label
       htmlFor={props.id}
