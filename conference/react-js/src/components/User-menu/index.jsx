@@ -2,18 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const menuList = data => data.map(element => (
+const menuList = data => data.map(({ title, link, last }) => (
   <li
-    key={Object.keys(element)[0]}
+    key={title}
     className={`menu-list__item
-      ${Object.keys(element)[0].indexOf('Out') === -1 ?
-    '' : 'menu-list__item_sign-out'} `}
+      ${last ?
+    'menu-list__item_sign-out' : ''} `}
   >
     <Link
       className="menu-list__title"
-      to={Object.values(element)[0]}
+      to={link}
     >
-      {Object.keys(element)[0]}
+      {title}
     </Link>
   </li>
 ));

@@ -5,14 +5,9 @@ import PropTypes from 'prop-types';
 import {
   Link,
 } from 'react-router-dom';
-import {
-  baseUrl,
-  settings,
-  manageUser,
-  talks,
-} from '../../constants/route-url';
+import { baseUrl } from '../../constants/route-url';
 import SignInForm from '../../containers/SignInForm';
-import UserMenu from '../User-menu';
+import UserMenuFilter from '../User-menu-filter';
 
 class Header extends PureComponent {
   constructor() {
@@ -59,7 +54,6 @@ class Header extends PureComponent {
   };
 
   render() {
-    console.log(this.props.user);
     const { user: { roles: [roles], lname } } = this.props;
     return (
       <header className="header">
@@ -84,14 +78,8 @@ class Header extends PureComponent {
           >
             {
               roles ?
-                <UserMenu
-                  data={[
-                    { Conferences: baseUrl },
-                    { Talks: talks },
-                    { Settings: settings },
-                    { 'Manage user': manageUser },
-                    { 'Sign Out': baseUrl },
-                  ]}
+                <UserMenuFilter
+                  roles={roles}
                 />
                 : <SignInForm />
             }
