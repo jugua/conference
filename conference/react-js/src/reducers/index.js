@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import user from './test-reducers';
+import user from './user';
 import forgotPassword from './forgot-password';
 import forgotPasswordErrorMessage from './forgot-password-error-message';
 

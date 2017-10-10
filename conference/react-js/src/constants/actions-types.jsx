@@ -4,6 +4,7 @@ const actions = {
   EMAIL_IS_EMPTY: 'email_is_empty',
   EMAIL_NOT_FOUND: 'email_not_found',
   HIDE_EMAIL_ERROR: 'hide_email_error',
+  SET_USER: 'set_user',
 };
 
 export default actions;
