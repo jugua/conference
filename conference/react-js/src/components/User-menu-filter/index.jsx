@@ -32,6 +32,7 @@ const UserMenuFilter = ({ roles }) => {
       { title: 'Conferences', link: baseUrl },
       { title: 'Talks', link: talks },
       { title: 'Settings', link: settings },
+      { title: 'Manage user', link: manageUser },
       { title: 'Sign Out', link: baseUrl, last: true },
     ];
     break;
