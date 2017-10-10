@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import Card from '../../components/Card';
-import SpeakerInfo from '../../components/Talks/User-info-popup';
 
 class CardsList extends PureComponent {
   constructor(props) {
@@ -27,7 +26,6 @@ class CardsList extends PureComponent {
     return (
       <div className="tabs-container">
         {this.setCards(data)}
-        <SpeakerInfo />
       </div>
     );
   }
