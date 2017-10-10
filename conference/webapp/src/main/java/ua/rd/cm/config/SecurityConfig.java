@@ -43,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.POST, "/talk").permitAll()
                 .mvcMatchers(HttpMethod.POST, "/").permitAll()
                 .antMatchers("/myinfo").authenticated()
-
                 .and()
                 .csrf()
                 .csrfTokenRepository(csrfTokenRepository())
