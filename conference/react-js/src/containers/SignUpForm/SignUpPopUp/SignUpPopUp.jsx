@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ShowMainPage from './ShowMainPage';
 
 const SignUpPopUp = props => (
   <div className="pop-up-wrapper">
@@ -8,11 +9,11 @@ const SignUpPopUp = props => (
         You&#39;ve successfully registered.
       </h3>
       <p className="pop-up__notification">
-        <span className="pop-up__notification-user">{props.userName}</span>,&nbsp;
-          go to&nbsp;
+        <span className="pop-up__notification-user">{props.userName}</span>
+          ,&nbsp;go to&nbsp;
         <span className="pop-up__notification-user">{props.mail}</span>
     to complete the sign-up process</p>
-      <button className="btn pop-up__button">OK</button>
+      <ShowMainPage />
     </div>
   </div>
 );

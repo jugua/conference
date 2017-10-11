@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import { registrationUrl } from '../../constants/backend-url';
 import SignUpPopUp from './SignUpPopUp/SignUpPopUp';
+import ErrorMessage from './SignUpPopUp/ErrorMessages';
 
-export default class SignUp extends React.Component {
+export default class SignUp extends Component {
   constructor(props) {
     super(props);
 
@@ -15,6 +16,7 @@ export default class SignUp extends React.Component {
       confirm: '',
       isRegistrated: true,
       responseOk: false,
+      responseStatus: 0,
     };
 
     this.formChangeHandler = (e) => {
@@ -33,7 +35,11 @@ export default class SignUp extends React.Component {
     this.submitHandler = (e) => {
       e.preventDefault();
       registration(this.state)
-        .then(() => (this.setState({ responseOk: true })))
+        .then(resp => (this.setState({
+          responseOk: true,
+          response: resp,
+          responseStatus: resp.status,
+        })))
         .catch(error => console.log(error));
     };
   }
@@ -79,12 +85,11 @@ export default class SignUp extends React.Component {
             className="field sign-up__field"
             required
           />
-          {/* {this.state.isValidCredentials ||
-            (<span className="field-error">
-            Please enter a valid email address</span>)} */}
-          {/* {this.state.isValidCredentials ||
-            ( <span className="field-error">There is an existing account
-            associated with</span>)} */}
+          {this.state.responseStatus === 409 ?
+            (<ErrorMessage errorMessage="There is an existing account
+                 associated with"
+            />)
+            : null}
           <label
             htmlFor="password"
             className="form-label form-label_required"
@@ -116,10 +121,8 @@ export default class SignUp extends React.Component {
             maxLength="30"
           />
           {this.state.password !== this.state.confirm ?
-            (<span className="field-error">Passwords do not match</span>)
+            (<ErrorMessage errorMessage="Passwords do not match" />)
             : null}
-          {/* {this.state.isValidCredentials ||
-            ( <span className="field-error">Passwords do not match</span>)} */}
           <input
             type="submit"
             className="sign-up__button btn"
