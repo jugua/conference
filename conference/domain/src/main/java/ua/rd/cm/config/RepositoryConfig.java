@@ -29,10 +29,6 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
 @PropertySource("classpath:default/jdbc.properties")
-@PropertySources({
-        @PropertySource("classpath:default/app.properties"),
-        @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
-})
 public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
