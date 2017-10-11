@@ -2,6 +2,9 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.*;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -10,25 +13,26 @@ import static io.restassured.RestAssured.given;
 
 public class UpdateConferenceTests extends SimpleBaseTest {
 
-    //        List<Integer> id = endResponse.path("id");
 
     //6866
     @Test
-    public void getUpcomingConferencesAdminTest(){
+    public void updateConferenceAdminTest(){
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
-                .cookie(SimpleBaseTest.XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
-                .header(SimpleBaseTest.X_XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.CONFERENCE_BODY_JSON)
                 .
         when()
-                .patch(EndPointURL.UPDATE_CONFERENCE)
+                .patch(EndpointUrl.UPDATE_CONFERENCE)
                 .
         then().log().all()
-                .statusCode(200);
+                .statusCode(200).assertThat()
+                .body("error", Matchers.nullValue())
+                .extract().response();
     }
 
 
@@ -37,40 +41,68 @@ public class UpdateConferenceTests extends SimpleBaseTest {
     // Bug ID: EPMFARMKPP-6895
     // Link to Bug: https://jirapct.epam.com/jira/browse/EPMFARMKPP-6895
     @Test
-    public void getUpcomingConferencesOrganiserTest(){
+    @Ignore
+    public void updateConferenceOrganiserTest(){
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
-                .cookie(SimpleBaseTest.XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
-                .header(SimpleBaseTest.X_XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.CONFERENCE_BODY_JSON)
                 .
         when()
-                .patch(EndPointURL.UPDATE_CONFERENCE)
+                .patch(EndpointUrl.UPDATE_CONFERENCE)
                 .
         then().log().all()
-                .statusCode(200);
+                .statusCode(200).assertThat()
+                .body("error", Matchers.nullValue())
+                .extract().response();
     }
 
 
     //6863
     @Test
-    public void getUpcomingConferencesUserWithInvalidCredentialsTest(){
+    public void updateConferenceUserWithInvalidCredentialsTest(){
 
+        endResponse =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.wrongUser,config.wrongPassword)
-                .cookie(SimpleBaseTest.XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
-                .header(SimpleBaseTest.X_XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.CONFERENCE_BODY_JSON)
                 .
         when()
-                .patch(EndPointURL.UPDATE_CONFERENCE)
+                .patch(EndpointUrl.UPDATE_CONFERENCE)
                 .
         then().log().all()
-                .statusCode(401);
+                .statusCode(401).extract().response();
+
+        String jsonAsString = endResponse.getBody().asString();
+
+        Assert.assertEquals(ConferenceConstants.LOGIN_AUTH_ERR, jsonAsString);
+    }
+
+    //6864
+    @Test
+    public void updateNonExistingConferenceAdminTest(){
+
+        endResponse =
+        given()
+                .contentType(ContentType.JSON)
+                .baseUri(config.baseHost)
+                .auth().preemptive().basic(config.adminUser, config.adminPassword)
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .body(ConferenceConstants.NON_EXISTING_CONFERENCE_BODY_JSON)
+                .
+        when()
+                .patch(EndpointUrl.UPDATE_NON_EXISTING_CONFERENCE)
+                .
+        then().log().all()
+                .statusCode(404).extract().response();
     }
 }

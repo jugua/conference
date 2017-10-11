@@ -23,11 +23,15 @@ public class ConferenceConstants {
 
 
 
+
     public static final String CONFERENCE_BODY_JSON = "{\"id\": 9, \"title\": \"TestConferenceTested\", \"description\": \"Test\"," +
             " \"location\": \"Kyiv\", \"start_date\": \"2017-09-09\", \"end_date\": \"2017-11-29\", " +
             "\"call_for_paper_start_date\": \"2017-10-09\", \"call_for_paper_end_date\": \"2017-10-29\"," +
             "\"cfp_active\": true, \"new\": 0, \"in-progress\": 0, \"approved\": 0, \"rejected\": 0 }";
 
-
+    public static final String NON_EXISTING_CONFERENCE_BODY_JSON = "{\"id\": 505, \"title\": \"No Conference\", \"description\": \"Test\"," +
+            " \"location\": \"Kyiv\", \"start_date\": \"2017-09-09\", \"end_date\": \"2017-11-29\", " +
+            "\"call_for_paper_start_date\": \"2017-10-09\", \"call_for_paper_end_date\": \"2017-10-29\"," +
+            "\"cfp_active\": true, \"new\": 0, \"in-progress\": 0, \"approved\": 0, \"rejected\": 0 }";
 
 }

@@ -35,7 +35,7 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .
         when()
-                .get(EndPointURL.UPCOMING_CONFERENCE)
+                .get(EndpointUrl.UPCOMING_CONFERENCE)
                 .
         then().log().all()
                 .statusCode(200).assertThat()
@@ -72,11 +72,11 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().basic(config.adminUser, config.adminPassword)
-                .cookie(SimpleBaseTest.XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
-                .header(SimpleBaseTest.X_XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .
         when()
-                .get(EndPointURL.UPCOMING_CONFERENCE)
+                .get(EndpointUrl.UPCOMING_CONFERENCE)
                 .
         then().log().all()
                 .statusCode(200).assertThat()
@@ -113,10 +113,10 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().basic(config.organiserUser, config.organiserPassword)
-                .cookie(SimpleBaseTest.XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
-                .header(SimpleBaseTest.X_XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
         .when()
-                .get(EndPointURL.UPCOMING_CONFERENCE)
+                .get(EndpointUrl.UPCOMING_CONFERENCE)
         .then().log().all()
                 .statusCode(200).assertThat()
                 .body("id", Matchers.notNullValue())
@@ -154,7 +154,7 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
                 .auth()
                 .preemptive().basic(config.wrongUser,config.wrongPassword)
         .when()
-                .get(EndPointURL.UPCOMING_CONFERENCE)
+                .get(EndpointUrl.UPCOMING_CONFERENCE)
         .then().log().all()
                 .statusCode(401).extract().response();
 

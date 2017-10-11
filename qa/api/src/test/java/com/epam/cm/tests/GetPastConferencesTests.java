@@ -2,7 +2,6 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.*;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -10,7 +9,6 @@ import org.junit.Test;
 
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -38,7 +36,7 @@ public class GetPastConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .
         when()
-                .get(EndPointURL.PAST_CONFERENCE)
+                .get(EndpointUrl.PAST_CONFERENCE)
                 .
         then().log().all()
                 .statusCode(200).assertThat()
@@ -76,11 +74,11 @@ public class GetPastConferencesTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().basic(config.adminUser, config.adminPassword)
-                .cookie(SimpleBaseTest.XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
-                .header(SimpleBaseTest.X_XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .
         when()
-                .get(EndPointURL.PAST_CONFERENCE)
+                .get(EndpointUrl.PAST_CONFERENCE)
                 .
         then().log().all()
                 .statusCode(200).assertThat()
@@ -118,10 +116,10 @@ public class GetPastConferencesTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().basic(config.organiserUser, config.organiserPassword)
-                .cookie(SimpleBaseTest.XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
-                .header(SimpleBaseTest.X_XSRF_TOKEN, response.cookie(SimpleBaseTest.XSRF_TOKEN))
+                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
         .when()
-                .get(EndPointURL.PAST_CONFERENCE)
+                .get(EndpointUrl.PAST_CONFERENCE)
         .then().log().all()
                 .statusCode(200).assertThat()
                 .body("id", Matchers.notNullValue())
@@ -159,7 +157,7 @@ public class GetPastConferencesTests extends SimpleBaseTest {
                 .auth()
                 .preemptive().basic(config.wrongUser,config.wrongPassword)
         .when()
-                .get(EndPointURL.PAST_CONFERENCE)
+                .get(EndpointUrl.PAST_CONFERENCE)
         .then().log().all()
                 .statusCode(401).extract().response();
 
