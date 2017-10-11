@@ -14,17 +14,17 @@ public class LoginTests extends SimpleBaseTest {
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().basic(config.speakerUser, config.speakerPassword)
+                .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .
+
+
         when()
                 .post( "/api/login")
                 .
         then().log().all()
-                .statusCode(200);
-
-
+                .statusCode(200).extract().response();
 
     }
 }
