@@ -1,4 +1,7 @@
 import React from 'react';
+import axios from 'axios';
+import { registrationUrl } from '../../constants/backend-url';
+import SignUpPopUp from './SignUpPopUp/SignUpPopUp';
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -13,22 +16,24 @@ export default class SignUp extends React.Component {
       isRegistrated: true,
     };
 
-    this.submitHandler = (e) => {
-      // simulate bad credentials
-
-      this.setState({
-        isRegistrated: false,
-      });
-
-      e.preventDefault();
-    };
-
     this.formChangeHandler = (e) => {
       const target = e.target;
 
       this.setState({
         [target.name]: target.value,
       });
+    };
+
+    const registration = ({ mail, password, confirm, fname, lname }) => {
+      const body = { mail, password, confirm, fname, lname };
+      return axios.post(registrationUrl, body);
+    };
+
+    this.submitHandler = (e) => {
+      e.preventDefault();
+      registration(this.state)
+        .then(() => <SignUpPopUp userName={this.state.fname} mail={this.state.mail} />)
+        .catch(error => console.log(error));
     };
   }
 
@@ -120,18 +125,6 @@ export default class SignUp extends React.Component {
             value="submit"
           />
         </form>
-        {/* <div className="pop-up-wrapper"> */}
-        {/* <div className="pop-up"> */}
-        {/* <h3 className="pop-up__title"> */}
-        {/* You&#39;ve successfully registered. */}
-        {/* </h3> */}
-        {/* <p className="pop-up__notification"> */}
-        {/* <span className="pop-up__notification-user" />, go to */}
-        {/* <span className="pop-up__notification-user" /> */}
-        {/* to complete the sign-up process</p> */}
-        {/* <button className="btn pop-up__button" >OK</button> */}
-        {/* </div> */}
-        {/* </div> */}
       </div>
     );
   }
