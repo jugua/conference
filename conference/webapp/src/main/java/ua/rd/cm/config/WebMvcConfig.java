@@ -37,11 +37,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
-    @Bean
-    public static PlaceholderConfigurerSupport propertyPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver getResolver() throws IOException {
         return new CommonsMultipartResolver();

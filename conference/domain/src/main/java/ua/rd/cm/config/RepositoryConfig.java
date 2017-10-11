@@ -37,11 +37,6 @@ import java.sql.SQLException;
 @PropertySource("classpath:default/jdbc.properties")
 public class RepositoryConfig {
 
-    @Bean
-    public static PlaceholderConfigurerSupport propertyPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-
     @Bean(destroyMethod = "close")
     public DataSource dataSource(Environment environment) {
         DataSource dataSource = jndiDataSource();

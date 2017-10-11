@@ -30,11 +30,6 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 public class ServiceConfig {
 
     @Bean
-    public static PlaceholderConfigurerSupport propertyPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
     public JavaMailSender getMailSender(Environment environment) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(environment.getProperty("mail.host"));
