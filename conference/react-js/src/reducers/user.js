@@ -1,22 +1,20 @@
 import actionTypes from '../constants/actions-types';
 
-const initialState = {
-  id: -1,
-  roles: [],
+const initialState = { id: 5,
+  roles: [''],
   mail: '',
-  fname: '',
-  lname: '',
+  fname: 'Admin',
+  lname: 'Admin',
   bio: '',
   job: '',
   company: '',
-  past: '',
-  photo: '',
-  linkedin: '',
-  twitter: '',
-  facebook: '',
-  blog: '',
-  info: '',
-};
+  past: null,
+  photo: null,
+  linkedin: null,
+  twitter: null,
+  facebook: null,
+  blog: null,
+  info: null };
 
 function user(state = initialState, action) {
   const { type, payload } = action;

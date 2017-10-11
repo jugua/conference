@@ -1,0 +1,55 @@
+.pop-up_big {
+  width: 800px;
+  max-width: 100%;
+  }
+
+.new-talk {
+  width: 95%;
+  margin: 0 auto;
+  font-family: 'Oswald Light';
+
+  &__select {
+    width: 100%;
+    margin: 10px 0;
+
+    &:focus {
+      outline: none;
+      }
+    }
+  }
+
+.file-upload {
+  &__label_named {
+    height: 30px;
+    border: $border;
+    margin: 10px 0;
+    }
+
+  &__label_error {
+    border: red 1px solid;
+    }
+
+  &__button_named {
+    display: inline-block;
+    vertical-align: middle;
+    height: 30px;
+    width: 100px;
+    margin: 0;
+    padding: 0;
+    background: url(../images/pen-icon.svg) no-repeat center;
+    background-size: 20%;
+    background-color: $dark-blue;
+
+    &:hover,
+    &:focus {
+      background: url(../images/pen-icon-white.svg) no-repeat center;
+      background-size: 20%;
+      background-color: darken($dark-blue, 20%);
+      }
+    }
+
+  &__filename {
+    margin: 0;
+    padding: 0;
+    }
+  }

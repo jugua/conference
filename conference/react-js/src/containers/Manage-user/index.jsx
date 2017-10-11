@@ -7,8 +7,13 @@ import loadData from '../../actions/load-data';
 import actions from '../../constants/actions-types';
 import { rolesUI } from '../../constants/roles';
 import { allUsers } from '../../constants/backend-url';
+import AddNewUser from '../Add-new-user';
 
 class ManageUser extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = { isShowAddNewUserPopUp: false };
+  }
   componentDidMount() {
     const { LOAD_USER_DATA } = actions;
     const { load } = this.props;
@@ -32,29 +37,41 @@ class ManageUser extends PureComponent {
     ))
   );
 
+  toggleAddUserPopUp = () => (
+    this.setState({
+      isShowAddNewUserPopUp: !this.state.isShowAddNewUserPopUp,
+    })
+  );
+
   render() {
+    const { isShowAddNewUserPopUp } = this.state;
     const { users } = this.props;
     return (
       <div className="tabs-layout">
         <div className="tabs-wrapper">
           <ul className="tabs-list">
             <li className="tabs-list__item">
-              <button
+              <a
                 className="tabs-list__anchor tabs-list__anchor_active"
               >
            Manage Users
-              </button>
+              </a>
             </li>
           </ul>
           <div className="tabs-container">
             <div className="my-talks__header">
-              <a href="" className="btn my-talks__button">
+              <button
+                onClick={this.toggleAddUserPopUp}
+                className="btn my-talks__button"
+              >
              Add New User
-              </a>
+              </button>
             </div>
             <div className="data-table">
               <div className="table-header">
-                <div className="table-header__item table-header__item_role">
+                <div
+                  className="table-header__item table-header__item_role"
+                >
                role
                 </div>
                 <div className="table-header__item table-header__item_name">
@@ -71,6 +88,10 @@ class ManageUser extends PureComponent {
             </div>
           </div>
         </div>
+        {isShowAddNewUserPopUp &&
+        <AddNewUser
+          toggleAddUserPopUp={this.toggleAddUserPopUp}
+        />}
       </div>
     );
   }

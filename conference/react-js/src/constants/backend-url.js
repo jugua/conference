@@ -4,3 +4,4 @@ export const past = '/conference/past ';
 export const userInfo = '/myinfo';
 export const loginUrl = '/login';
 export const allUsers = '/manageUsers/getAllUsersForAdmin';
+export const createNewUser = '/user/registerByAdmin';
