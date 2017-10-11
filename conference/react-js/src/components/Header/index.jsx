@@ -4,7 +4,8 @@ import {
   Link,
 } from 'react-router-dom';
 import SignInForm from '../../containers/SignInForm';
-import { baseUrl } from '../../constants/route-url';
+// import Talks from '../Talks';
+import { baseUrl, talks } from '../../constants/route-url';
 
 class Header extends PureComponent {
   constructor() {
@@ -59,6 +60,13 @@ class Header extends PureComponent {
             to={baseUrl}
           >
             conference management
+          </Link>
+        </div>
+        <div>
+          <Link
+            to={talks}
+          >
+            Talks
           </Link>
         </div>
         <div className="menu-container">

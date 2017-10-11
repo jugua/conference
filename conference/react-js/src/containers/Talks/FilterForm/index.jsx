@@ -1,14 +1,31 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import applyFilters from '../../../action';
+import axios from 'axios';
+import applyFilters from '../../../actions/filter';
 import Calendar from '../../../components/Talks/Calendar';
+import { topics } from '../../../constants/backend-url';
 
 class FilterForm extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { listOfTopics: '' };
   }
+
+  componentDidMount() {
+    axios.get(topics)
+      .then(({ data }) => (
+        this.setState({ listOfTopics: data })
+      ))
+      .catch(({ response: { listOfTopics } }) => (
+        console.log(listOfTopics)
+      ));
+  }
+
+  setTopics = listOfTopics => (
+    Object.values(listOfTopics).map(({ name }) => (
+      <option>{name}</option>),
+    ));
 
   handleFilterClick = (e) => {
     e.preventDefault();
@@ -29,6 +46,7 @@ class FilterForm extends PureComponent {
   }
 
   render() {
+    const { listOfTopics } = this.state;
     return (
       <div className="my-talk-settings">
         <form className="my-talk-settings__filters">
@@ -64,7 +82,9 @@ class FilterForm extends PureComponent {
               id="my-talk-topic"
               className="my-talk-settings__select
               my-talk-settings__select_topic"
-            />
+            >
+              {this.setTopics(listOfTopics)}
+            </select>
           </div>
           <div className="my-talk-settings__date-wrapper">
             <div className="form-label my-talk-settings__date-label">
