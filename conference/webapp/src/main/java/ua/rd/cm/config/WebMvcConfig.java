@@ -3,9 +3,7 @@ package ua.rd.cm.config;
 import java.io.IOException;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -30,10 +28,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan(basePackages = "ua.rd.cm.web", excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
-@PropertySources({
-        @PropertySource("classpath:default/app.properties"),
-        @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
-})
 @EnableSwagger2
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
