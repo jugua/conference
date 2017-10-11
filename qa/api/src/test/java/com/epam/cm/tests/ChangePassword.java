@@ -4,11 +4,12 @@ import com.epam.cm.base.SimpleBaseTest;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-
-
+import static com.epam.cm.base.EndpointUrl.PASSWORD;
 import static io.restassured.RestAssured.given;
 
 public class ChangePassword extends SimpleBaseTest {
+
+    public static final String passwordChangeJSON = "{\"currentPassword\": \"speaker\", \"newPassword\": \"speaker\", \"confirmNewPassword\": \"speaker\"}";
 
     @Test
     public void ChangePasswordIfAuthorized(){
@@ -16,11 +17,11 @@ public class ChangePassword extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .body("{\"currentPassword\": \"speaker\", \"newPassword\": \"speaker\", \"confirmNewPassword\": \"speaker\"}").
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
+                .body(passwordChangeJSON).
         when()
-                .post( "/api/user/current/password")
+                .post(PASSWORD)
                 .
         then().log().all()
                 .statusCode(200).assertThat().body(Matchers.equalTo("")).extract().response();
@@ -31,11 +32,11 @@ public class ChangePassword extends SimpleBaseTest {
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .body("{\"currentPassword\": \"speaker\", \"newPassword\": \"speaker\", \"confirmNewPassword\": \"speaker\"}").
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
+                .body(passwordChangeJSON).
                 when()
-                .post( "/api/user/current/password")
+                .post(PASSWORD)
                 .
                         then().log().all()
                 .statusCode(401).assertThat().body(Matchers.equalTo("")).extract().response();

@@ -7,10 +7,19 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.epam.cm.base.EndpointUrl.TALK;
+import static com.epam.cm.base.TextConst.*;
 import static io.restassured.RestAssured.given;
 
 public class CreateNewTalk extends SimpleBaseTest {
-    public static Response endresp;
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    Date currentDate = new Date();
+
     @Test
     public void createNewTalk(){
 
@@ -18,26 +27,26 @@ public class CreateNewTalk extends SimpleBaseTest {
                 .contentType(ContentType.URLENC)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .formParam("title","TestTalk1")
-                .formParam("description","this is test talk for automate test")
-                .formParam("topic","ML")
-                .formParam("type","Lighting Talk")
-                .formParam("lang","English")
-                .formParam("level","Beginner")
-                .formParam("status","New")
-                .formParam("date","1506419805177").
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
+                .formParam(TITLE,"Test talk " + dateFormat.format(currentDate))
+                .formParam(DESCRIPTION,"this is test talk for automate test")
+                .formParam(TOPIC,"ML")
+                .formParam(TYPE,"Lighting Talk")
+                .formParam(LANG,"English")
+                .formParam(LEVEL,"Beginner")
+                .formParam(STATUS,"New")
+                .formParam(DATE,"1506419805177").
         when()
-                .post( "/api/talk")
+                .post(TALK)
                 .
         then().log().all()
                 .statusCode(200).assertThat()
-                .body("error", Matchers.nullValue())
-                .body("secondsToExpiry", Matchers.nullValue())
-                .body("result", Matchers.nullValue())
-                .body("id", Matchers.is(Integer.class))
-                .body("fields", Matchers.nullValue())
+                .body(ERROR, Matchers.nullValue())
+                .body(SECONDSTOEXPIRY, Matchers.nullValue())
+                .body(RESULT, Matchers.nullValue())
+                .body(ID, Matchers.is(Integer.class))
+                .body(FIELDS, Matchers.nullValue())
                 .extract().response();
     }
 }

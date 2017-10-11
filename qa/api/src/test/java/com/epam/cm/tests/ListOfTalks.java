@@ -7,6 +7,8 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import java.util.List;
 
+import static com.epam.cm.base.EndpointUrl.TALK;
+import static com.epam.cm.base.TextConst.*;
 import static io.restassured.RestAssured.given;
 
 public class ListOfTalks extends SimpleBaseTest {
@@ -18,32 +20,32 @@ public class ListOfTalks extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
                 .
         when()
-                .get( "/api/talk")
+                .get(TALK)
                 .
         then().log().all()
                 .statusCode(200).assertThat()
-                .body("title", Matchers.notNullValue())
-                .body("description", Matchers.notNullValue())
-                .body("date", Matchers.notNullValue())
+                .body(TITLE, Matchers.notNullValue())
+                .body(DESCRIPTION, Matchers.notNullValue())
+                .body(DATE, Matchers.notNullValue())
                 .extract().response();
 
-        List<String> language = endresp.path("lang");
+        List<String> language = endresp.path(LANG);
         for (String lang:language){
-            assert (lang.contains("English")||lang.contains("Russian")||lang.contains("Ukrainian"));
+            assert (lang.contains(ENGLISH)||lang.contains(RUSSIAN)||lang.contains(UKRAINIAN));
         }
 
-        List<String> level = endresp.path("level");
+        List<String> level = endresp.path(LEVEL);
         for (String lvl:level){
-            assert (lvl.contains("Beginner")||lvl.contains("Expert")||lvl.contains("Advanced")||lvl.contains("Intermediate"));
+            assert (lvl.contains(BEGINNER)||lvl.contains(EXPERT)||lvl.contains(ADVANCED)||lvl.contains(INTERMEDIATE));
         }
 
-        List<String> topic = endresp.path("topic");
+        List<String> topic = endresp.path(TOPIC);
         for (String top:topic){
-            assert (top.contains("Architecture & Cloud")||top.contains("BigData & NoSQL")||top.contains("JVM Languages and new programming paradigms")||top.contains("ML")||top.contains("Software engineering practices")||top.contains("Web development and Java Enterprise technologies")||top.contains("New talk topic test"));
+            assert (top.contains(ARCHITECTURE)||top.contains(BIGDATA)||top.contains(JVM)||top.contains(ML)||top.contains(SOFTWARE)||top.contains(WEBDEVELOPMENT)||top.contains(NEWTALKTOPIC));
         }
 
     }
@@ -55,32 +57,32 @@ public class ListOfTalks extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
                 .
                         when()
-                .get( "/api/talk")
+                .get(TALK)
                 .
                         then().log().all()
                 .statusCode(200)
-                .body("title", Matchers.notNullValue())
-                .body("description", Matchers.notNullValue())
-                .body("date", Matchers.notNullValue())
+                .body(TITLE, Matchers.notNullValue())
+                .body(DESCRIPTION, Matchers.notNullValue())
+                .body(DATE, Matchers.notNullValue())
                 .extract().response();
 
-        List<String> language = endresp.path("lang");
+        List<String> language = endresp.path(LANG);
         for (String lang:language){
-            assert (lang.contains("English")||lang.contains("Russian")||lang.contains("Ukrainian"));
+            assert (lang.contains(ENGLISH)||lang.contains(RUSSIAN)||lang.contains(UKRAINIAN));
         }
 
-        List<String> level = endresp.path("level");
+        List<String> level = endresp.path(LEVEL);
         for (String lvl:level){
-            assert (lvl.contains("Beginner")||lvl.contains("Expert")||lvl.contains("Advanced")||lvl.contains("Intermediate"));
+            assert (lvl.contains(BEGINNER)||lvl.contains(EXPERT)||lvl.contains(ADVANCED)||lvl.contains(INTERMEDIATE));
         }
 
-        List<String> topic = endresp.path("topic");
+        List<String> topic = endresp.path(TOPIC);
         for (String top:topic){
-            assert (top.contains("Architecture & Cloud")||top.contains("BigData & NoSQL")||top.contains("JVM Languages and new programming paradigms")||top.contains("ML")||top.contains("Software engineering practices")||top.contains("Web development and Java Enterprise technologies")||top.contains("New talk topic test"));
+            assert (top.contains(ARCHITECTURE)||top.contains(BIGDATA)||top.contains(JVM)||top.contains(ML)||top.contains(SOFTWARE)||top.contains(WEBDEVELOPMENT)||top.contains(NEWTALKTOPIC));
         }
     }
 }
