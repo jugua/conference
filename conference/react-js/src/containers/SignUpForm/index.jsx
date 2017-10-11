@@ -38,9 +38,12 @@ export default class SignUp extends Component {
         .then(resp => (this.setState({
           responseOk: true,
           response: resp,
-          responseStatus: resp.status,
         })))
-        .catch(error => console.log(error));
+        .catch(error => (
+          this.setState({
+            responseStatus: error.response.status,
+          })
+        ));
     };
   }
 
@@ -85,11 +88,11 @@ export default class SignUp extends Component {
             className="field sign-up__field"
             required
           />
-          {this.state.responseStatus === 409 ?
+          {this.state.responseStatus === 409 &&
             (<ErrorMessage errorMessage="There is an existing account
                  associated with"
             />)
-            : null}
+          }
           <label
             htmlFor="password"
             className="form-label form-label_required"
