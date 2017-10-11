@@ -26,8 +26,6 @@ import { talk } from '../../../constants/backend-url';
 class DisplayTalks extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-    //  const { data } = this.state;
     this.state = { data: '' };
   }
 

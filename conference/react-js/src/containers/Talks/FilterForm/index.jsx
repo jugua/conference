@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import applyFilters from '../../../actions/filter';
+import { bindActionCreators } from 'redux';
+import load from '../../../actions/load';
+// import applyFilters from '../../../actions/filter';
 import Calendar from '../../../components/Talks/Calendar';
 import { topics } from '../../../constants/backend-url';
 
@@ -14,9 +16,10 @@ class FilterForm extends PureComponent {
 
   componentDidMount() {
     axios.get(topics)
-      .then(({ data }) => (
-        this.setState({ listOfTopics: data })
-      ))
+      .then(({ data }) => {
+        this.setState({ listOfTopics: data });
+        console.log(data, 'axios get');
+      })
       .catch(({ response: { listOfTopics } }) => (
         console.log(listOfTopics)
       ));
@@ -30,22 +33,27 @@ class FilterForm extends PureComponent {
   handleFilterClick = (e) => {
     e.preventDefault();
     this.doFilter();
-  }
+  };
 
   handleResetFiltersClick = () => {
     this.state = {};
     this.doFilter();
-  }
+  };
 
   doFilter = () => {
-    this.props.dispatch(applyFilters(this.state));
-  }
+    // this.props.dispatch(applyFilters(this.state));
+    const filter = 'New';
+    console.log('doFilter', filter, this.state.listOfTopics);
+    const { talks: list } = this.props;
+    this.props.load('filter', { filter, list });
+  };
 
   changeStatusFilter = (e) => {
     this.state.status = e.target.value;
-  }
+  };
 
   render() {
+    console.log(this.state, 'render');
     const { listOfTopics } = this.state;
     return (
       <div className="my-talk-settings">
@@ -116,7 +124,22 @@ class FilterForm extends PureComponent {
 }
 
 FilterForm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  load: PropTypes.func.isRequired,
+  talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-export default connect()(FilterForm);
+// mapStateToProps = state => (
+//
+// )
+
+const mapDispatchToProps = dispatch => ({
+
+  load: bindActionCreators(
+    load, dispatch),
+});
+
+const mapStateToProps = state => ({
+  talks: state.talks,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterForm);

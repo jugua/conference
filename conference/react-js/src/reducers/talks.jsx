@@ -14,6 +14,18 @@ const talks = (state = talksInitial, action) => {
   if (action.type === 'load') {
     return [...state, ...action.payload];
   }
+  if (action.type === 'filter') {
+    console.log(action, 'reducer');
+    const { payload: { filter, list } } = action;
+    const filtered = (data) => {
+      console.log(data);
+      return data.status === filter;
+    };
+    console.log(typeof list, 'type of');
+    const res = list.filter(filtered);
+    console.log(res);
+    return [...res];
+  }
 
   return state;
 };
