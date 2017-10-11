@@ -7,9 +7,11 @@
 @import '/inc/mixins';
 @import 'common';
 @import '../components/Tabs/tabs';
+@import '../components/Header/header';
 @import '../containers/CardsList/style';
 @import '../containers/SignInForm/style';
 @import '../containers/SignUpForm/sign-up';
 @import '../containers/Forgot-password/forgot-password';
-@import '../components/Header/header';
+@import '../containers/Forgot-password/forgot-password';
+@import '../containers/SettingsPage/style';
 

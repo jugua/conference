@@ -8,12 +8,14 @@ import Tabs from './Tabs';
 import Header from './Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
+import SettingsPage from '../containers/SettingsPage';
 import { baseUrl, forgotPassword, signUp } from '../constants/route-url';
 
 const App = () => (
   <Router>
     <div>
       <Header />
+      <SettingsPage />
       <Route
         path={baseUrl}
         exact
