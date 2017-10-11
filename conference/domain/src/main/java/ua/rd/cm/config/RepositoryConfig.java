@@ -30,9 +30,8 @@ import java.sql.SQLException;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
-
 @PropertySources({
-        @PropertySource("classpath:app.properties"),
+        @PropertySource("classpath:default/app.properties"),
         @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
 })
 @PropertySource("classpath:default/jdbc.properties")
