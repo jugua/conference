@@ -28,7 +28,6 @@ const App = () => (
       />
       <Route
         path={signUp}
-
         component={SignUp}
       />
     </div>

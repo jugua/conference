@@ -127,7 +127,7 @@ public class SubmitNewTalkControllerTest {
         speakerUser.setPassword("123456");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(userInfo);
-        speakerUser.setUserRoles(speakerRole);
+        speakerUser.setRoles(speakerRole);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
