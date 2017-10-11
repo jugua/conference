@@ -14,6 +14,7 @@ export default class SignUp extends React.Component {
       password: '',
       confirm: '',
       isRegistrated: true,
+      responseOk: false,
     };
 
     this.formChangeHandler = (e) => {
@@ -32,7 +33,7 @@ export default class SignUp extends React.Component {
     this.submitHandler = (e) => {
       e.preventDefault();
       registration(this.state)
-        .then(() => <SignUpPopUp userName={this.state.fname} mail={this.state.mail} />)
+        .then(() => (this.setState({ responseOk: true })))
         .catch(error => console.log(error));
     };
   }
@@ -125,6 +126,10 @@ export default class SignUp extends React.Component {
             value="submit"
           />
         </form>
+        {this.state.responseOk === true ? <SignUpPopUp
+          userName={this.state.fname}
+          mail={this.state.mail}
+        /> : null}
       </div>
     );
   }
