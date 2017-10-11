@@ -14,6 +14,11 @@ public class SimpleBaseTest {
 
     protected Config config;
     protected Response response;
+    protected Response endResponse;
+
+    public static final String XSRF_TOKEN = "XSRF-TOKEN";
+    public static final String X_XSRF_TOKEN = "X-XSRF-TOKEN";
+
     @Before
     public void setup(){
 
