@@ -8,7 +8,7 @@ class SlideBlock extends PureComponent {
   }
 
   componentWillMount() {
-    this.setDefaultValues();
+    // this.setDefaultValues();
   }
 
   onChange = ({ target }) => {
@@ -20,6 +20,7 @@ class SlideBlock extends PureComponent {
   onSubmit = (event) => {
     event.preventDefault();
     this.props.saveAction(this.state);
+    this.props.cancelAction();
   };
 
   onCancel = () => {
@@ -36,11 +37,11 @@ class SlideBlock extends PureComponent {
   };
 
   toggle = () => {
+    this.setDefaultValues();
     this.props.show(this.props.index);
   };
 
   render() {
-    console.log('slide rendered');
     const {
       header,
       inputs,
@@ -52,12 +53,13 @@ class SlideBlock extends PureComponent {
         <div className="settings__title">{header}</div>
         <form
           className="settings__row-content"
-          onChange={this.onChange}
           onSubmit={this.onSubmit}
         >
           <div>
             {
-              inputs.map(({ name, id, label, type, readonly }) => (
+              inputs.map(({
+                name, id, label, type, readonly, pattern, required,
+              }) => (
                 <div key={id}>
                   <label
                     className="form-label"
@@ -66,11 +68,14 @@ class SlideBlock extends PureComponent {
                   </label>
                   <input
                     className="field"
+                    onChange={this.onChange}
                     name={name}
                     id={id}
                     type={type}
                     readOnly={readonly}
+                    pattern={pattern}
                     value={this.state[name]}
+                    required={required}
                   />
                 </div>
               ))
@@ -79,7 +84,6 @@ class SlideBlock extends PureComponent {
               type="submit"
               className="btn btn__inline"
               value="Save"
-              onClick={this.toggle}
             />
             <input
               type="button"
@@ -123,6 +127,7 @@ SlideBlock.propTypes = {
   inputs: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     id: PropTypes.string,
+    pattern: PropTypes.string,
     label: PropTypes.string,
     type: PropTypes.string,
     value: PropTypes.string,
