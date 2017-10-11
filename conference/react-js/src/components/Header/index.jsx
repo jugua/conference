@@ -24,9 +24,9 @@ class Header extends PureComponent {
       document.addEventListener('click', this.closeSignIn);
     }
 
-    this.setState({
-      visible: !this.state.visible,
-    });
+    this.setState(prevState => ({
+      visible: !prevState.visible,
+    }));
   };
 
   closeSignIn = (event) => {
