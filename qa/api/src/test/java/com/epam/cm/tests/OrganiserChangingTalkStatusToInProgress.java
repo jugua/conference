@@ -16,8 +16,8 @@ public class OrganiserChangingTalkStatusToInProgress extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth(). preemptive().basic(config.organiserUser,config.organiserPassword)
-                .cookie(XSRF_TOKEN, response.cookie(XSRF_TOKEN))
-                .header(X_XSRF_TOKEN, response.cookie(XSRF_TOKEN))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get( "api/user/1")

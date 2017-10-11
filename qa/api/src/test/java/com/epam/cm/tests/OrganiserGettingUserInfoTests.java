@@ -2,7 +2,6 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.*;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.Test;
 
 
@@ -19,11 +18,11 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest{
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth(). preemptive().basic(config.organiserUser,config.organiserPassword)
-                .cookie(XSRF_TOKEN, response.cookie(XSRF_TOKEN))
-                .header(X_XSRF_TOKEN, response.cookie(XSRF_TOKEN))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
                 .
                         when()
-                .get(EndPointURL.API_USER_EXISTING)
+                .get(EndpointUrl.USER_EXISTING)
                 .
                         then().log().all()
                 .statusCode(200)
@@ -40,11 +39,11 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest{
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth(). preemptive().basic(config.wrongUser,config.wrongPassword)
-                .cookie(XSRF_TOKEN, response.cookie(XSRF_TOKEN))
-                .header(X_XSRF_TOKEN, response.cookie(XSRF_TOKEN))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
                 .
                         when()
-                .get(EndPointURL.API_USER_EXISTING)
+                .get(EndpointUrl.USER_EXISTING)
                 .
                         then().log().all()
                 .statusCode(401);
@@ -61,11 +60,11 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest{
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth(). preemptive().basic(config.organiserUser,config.organiserPassword)
-                .cookie(XSRF_TOKEN, response.cookie(XSRF_TOKEN))
-                .header(X_XSRF_TOKEN, response.cookie(XSRF_TOKEN))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
                 .
                         when()
-                .get( EndPointURL.API_USER_NONEXISTING)
+                .get( EndpointUrl.USER_NONEXISTING)
                 .
                         then().log().all()
                 .statusCode(404);
