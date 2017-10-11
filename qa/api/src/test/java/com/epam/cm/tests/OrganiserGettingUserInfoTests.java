@@ -7,13 +7,15 @@ import org.junit.Test;
 
 import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
+
 
 public class OrganiserGettingUserInfoTests extends SimpleBaseTest{
 
     //6662
     @Test
     public void positiveOrganiserGettingExistingUserTest(){
-        endResponse =
+
             given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
@@ -25,8 +27,7 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest{
                 .get(EndpointUrl.USER_EXISTING)
                 .
                         then().log().all()
-                .statusCode(200)
-                .extract().response();
+                .statusCode(200).assertThat().body("id", hasToString("1")).body("roles", notNullValue());
 
 
     }
