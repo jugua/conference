@@ -1,41 +1,35 @@
 package com.epam.cm.tests;
 
+import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import io.restassured.filter.cookie.CookieFilter;
-import io.restassured.filter.session.SessionFilter;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.sessionId;
 
-/**
- * Created by Mariia_Koltsova on 10/5/2017.
- */
 public class LogoutTests extends SimpleBaseTest {
 
 
-    @Test
+    @Test //6620
     @Ignore
-    public void positiveLogoutTest(){
+    public void positiveLogoutTest() {
 
-         CookieFilter cookieFilter = new CookieFilter();
+        CookieFilter cookieFilter = new CookieFilter();
 
-         Response response1 =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
                 .filter(cookieFilter)
 
                 .
                         when()
-                .post( "/api/login")
-                    .then().log().all()
+                .post(EndpointUrl.LOGIN)
+                .then().log().all()
                 .statusCode(200).extract().response();
 
 
@@ -43,17 +37,17 @@ public class LogoutTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .filter(cookieFilter)
-                .cookie("XSRF-TOKEN", response1.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response1.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(XTOKEN, response.cookie(TOKEN))
 
 
-                .   when()
-                .post( "/api/logout")
+                .when()
+                .post(EndpointUrl.LOGOUT)
+
                 .then().log().all()
                 .statusCode(200).extract().response();
 
     }
-
 
 
 }
