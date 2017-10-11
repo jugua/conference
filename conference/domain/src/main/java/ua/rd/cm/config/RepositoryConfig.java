@@ -1,16 +1,16 @@
 package ua.rd.cm.config;
 
+import java.sql.SQLException;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import org.springframework.context.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
@@ -22,17 +22,17 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
-import java.sql.SQLException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
+@PropertySource("classpath:default/jdbc.properties")
 @PropertySources({
         @PropertySource("classpath:default/app.properties"),
         @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
 })
-@PropertySource("classpath:default/jdbc.properties")
 public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
