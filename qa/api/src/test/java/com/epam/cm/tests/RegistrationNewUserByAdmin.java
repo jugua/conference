@@ -52,7 +52,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
     }
 
     @Test
-    public void unauthorizedRegistrationExistingUserByAdminTest() {
+    public void unauthorizedRegistrationUserByAdminTest() {
 
         given()
                 .contentType(ContentType.JSON)
