@@ -1,7 +1,5 @@
 package ua.rd.cm.config;
 
-import java.sql.SQLException;
-
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -11,11 +9,13 @@ import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -24,14 +24,18 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+
+import java.sql.SQLException;
+
 @Configuration
-@ComponentScan(basePackages = "ua.rd.cm.repository")
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ua.rd.cm.repository")
+
 @PropertySources({
         @PropertySource("classpath:app.properties"),
         @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
 })
+@PropertySource("classpath:default/jdbc.properties")
 public class RepositoryConfig {
 
     @Bean
@@ -41,15 +45,51 @@ public class RepositoryConfig {
 
     @Bean(destroyMethod = "close")
     public DataSource dataSource(Environment environment) {
-        HikariConfig config = new HikariConfig();
-        config.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        config.setJdbcUrl(environment.getProperty("jdbc.url"));
-        config.setUsername(environment.getProperty("jdbc.username"));
-        config.setPassword(environment.getProperty("jdbc.password"));
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        return new HikariDataSource(config);
+        DataSource dataSource = jndiDataSource();
+        if (dataSource == null) {
+            dataSource = embeddedDataSource(environment);
+        }
+
+        return dataSource;
+    }
+
+    private DataSource jndiDataSource() {
+        DataSource dataSource = null;
+
+        String jndiDs = "jdbc/conference";
+        log().info("Using jndi datasource {}", jndiDs);
+        final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
+        dsLookup.setResourceRef(true);
+        try {
+            dataSource = dsLookup.getDataSource(jndiDs);
+        } catch (Exception e) {
+            log().warn("Failed to load datasource {}", jndiDs);
+        }
+        return dataSource;
+    }
+
+    private DataSource embeddedDataSource(Environment environment) {
+        DataSource ds;
+        HikariConfig h2Config = new HikariConfig();
+        h2Config.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+        h2Config.setJdbcUrl(environment.getProperty("jdbc.url"));
+        h2Config.setUsername(environment.getProperty("jdbc.username"));
+        h2Config.setPassword(environment.getProperty("jdbc.password"));
+
+        h2Config.setMinimumIdle(environment.getProperty("jdbc.minimumIdle", Integer.class, 5));
+        h2Config.setMaximumPoolSize(environment.getProperty("jdbc.maximumPoolSize", Integer.class, 10));
+        h2Config.setIdleTimeout(environment.getProperty("jdbc.idleTimeout", Long.class, 1800L));
+
+        h2Config.addDataSourceProperty("jdbc.cachePrepStmts", "true");
+        h2Config.addDataSourceProperty("jdbc.prepStmtCacheSize", "250");
+        h2Config.addDataSourceProperty("jdbc.prepStmtCacheSqlLimit", "2048");
+
+        String connectionTestQuery = environment.getProperty("jdbc.connectionTestQuery");
+        if (connectionTestQuery != null) {
+            h2Config.setConnectionTestQuery(connectionTestQuery);
+        }
+        ds = new HikariDataSource(h2Config);
+        return ds;
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
@@ -81,4 +121,13 @@ public class RepositoryConfig {
         transactionManager.setEntityManagerFactory(emf);
         return transactionManager;
     }
+
+    private Logger log() {
+        return LazyHolder.LOG;
+    }
+
+    private static class LazyHolder {
+        private static final Logger LOG = LoggerFactory.getLogger(RepositoryConfig.class);
+    }
+
 }
