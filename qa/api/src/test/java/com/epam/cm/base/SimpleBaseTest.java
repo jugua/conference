@@ -1,6 +1,5 @@
 package com.epam.cm.base;
 
-import com.epam.cm.jira.Jira;
 import io.restassured.response.Response;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,8 +17,10 @@ public class SimpleBaseTest {
 
     protected Config config;
     protected Response response;
-
-    @Rule
+    public static final String TOKEN = "XSRF-TOKEN";
+    public static final String XTOKEN = "X-XSRF-TOKEN";
+ 
+ @Rule
     public TestWatcher watchman= new TestWatcher() {
 
 
@@ -32,11 +33,14 @@ public class SimpleBaseTest {
         }
     };
 
+
+
     @Before
     public void setup(){
 
         Resource resource = new ClassPathResource("/config.properties");
-
+        RestAssured.defaultParser = Parser.JSON;
+        RestAssured.registerParser("text/plain", Parser.JSON);
 
         try{
             Properties props = PropertiesLoaderUtils.loadProperties(resource);
@@ -46,7 +50,10 @@ public class SimpleBaseTest {
 
 
         response =
-                when().post(config.baseHost).then().log().all().
-                        extract().response();
+                when().get(config.baseHost);
+//                        .then().log().all().
+//                        extract().response();
+
+
     }
 }
