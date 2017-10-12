@@ -18,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
-import ua.rd.cm.services.businesslogic.VerificationTokenService;
+import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
 
 
 @RunWith(MockitoJUnitRunner.class)
