@@ -1,11 +1,6 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import axios from 'axios';
-import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
-import load from '../../../actions/load';
+import { PropTypes } from 'prop-types';
 import TalksList from '../../../components/Talks/TalksList';
-import { talk } from '../../../constants/backend-url';
 // import TalksList from '../../../components/Talks/TalksList/index';
 //
 // const equalsOrLeftUndefined = (left, right) =>
@@ -24,23 +19,6 @@ import { talk } from '../../../constants/backend-url';
 // const DisplayTalks = connect(mapStateToProps)(TalksList);
 
 class DisplayTalks extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { data: '' };
-  }
-
-  componentDidMount() {
-    axios.get(talk)
-      .then(({ data }) => {
-        this.props.load('load', data);
-        // this.props.load('load', {filter, data})
-        this.setState({ data });
-      })
-      .catch(({ response: { data } }) => (
-        console.log(data)
-      ));
-  }
-
   setTalks = data => Object.values(data)
     .map(element => (
       /* eslint-disable */
@@ -49,35 +27,17 @@ class DisplayTalks extends Component {
     );
 
   render() {
-    const { data } = this.props;
+    const { talk } = this.props;
     return (
       <div className="data-table__inner-wrapper">
-        {this.setTalks(data)}
+        {this.setTalks(talk)}
       </div>
     );
   }
 }
 
-DisplayTalks.propTypes = { load: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string,
-    date: PropTypes.string,
-    description: PropTypes.string,
-    lang: PropTypes.string,
-    level: PropTypes.string,
-    status: PropTypes.string,
-    title: PropTypes.string,
-    topic: PropTypes.string,
-    type: PropTypes.string,
-  })).isRequired };
+DisplayTalks.propTypes = {
+  talk: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
 
-const mapStateToProps = state => ({
-  data: state.talks,
-});
-
-const mapDispatchToProps = dispatch => ({
-  load: bindActionCreators(
-    load, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DisplayTalks);
+export default DisplayTalks;

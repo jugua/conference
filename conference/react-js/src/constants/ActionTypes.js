@@ -1,3 +1,0 @@
-export const APPLY_FILTERS = 'APPLY_FILTERS';
-export const RESET_FILTERS = 'RESET_FILTERS';
-export const SET_FILTER = 'SET_VISIBILITY_FILTER';

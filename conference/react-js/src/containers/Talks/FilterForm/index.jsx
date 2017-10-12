@@ -1,60 +1,41 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import axios from 'axios';
-import { bindActionCreators } from 'redux';
-import load from '../../../actions/load';
-// import applyFilters from '../../../actions/filter';
+// import load from '../../../actions/load';
 import Calendar from '../../../components/Talks/Calendar';
-import { topics } from '../../../constants/backend-url';
 
 class FilterForm extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { listOfTopics: '' };
-  }
-
-  componentDidMount() {
-    axios.get(topics)
-      .then(({ data }) => {
-        this.setState({ listOfTopics: data });
-        console.log(data, 'axios get');
-      })
-      .catch(({ response: { listOfTopics } }) => (
-        console.log(listOfTopics)
-      ));
-  }
-
   setTopics = listOfTopics => (
     Object.values(listOfTopics).map(({ name }) => (
       <option>{name}</option>),
     ));
+  //
+  // handleFilterClick = (e) => {
+  //   e.preventDefault();
+  //   this.doFilter();
+  // };
 
-  handleFilterClick = (e) => {
-    e.preventDefault();
-    this.doFilter();
-  };
+  // handleResetFiltersClick = () => {
+  //   this.state = {};
+  //   this.doFilter();
+  // };
 
-  handleResetFiltersClick = () => {
-    this.state = {};
-    this.doFilter();
-  };
+  // doFilter = () => {
+  //   // this.props.dispatch(applyFilters(this.state));
+  //   const filter = 'New';
+  //   console.log('doFilter', filter, this.state.listOfTopics);
+  //   const { talks: list } = this.props;
+  //   this.props.load('filter', { filter, list });
+  // };
 
-  doFilter = () => {
-    // this.props.dispatch(applyFilters(this.state));
-    const filter = 'New';
-    console.log('doFilter', filter, this.state.listOfTopics);
-    const { talks: list } = this.props;
-    this.props.load('filter', { filter, list });
-  };
-
-  changeStatusFilter = (e) => {
-    this.state.status = e.target.value;
-  };
+  // changeStatusFilter = (e) => {
+  //   this.state.status = e.target.value;
+  // };
 
   render() {
-    console.log(this.state, 'render');
-    const { listOfTopics } = this.state;
+    const { topics,
+      onChangeFilter,
+      handleFilterClick,
+      handleResetFiltersClick } = this.props;
     return (
       <div className="my-talk-settings">
         <form className="my-talk-settings__filters">
@@ -67,11 +48,14 @@ class FilterForm extends PureComponent {
             >Status
             </label>
             <select
+              name="status"
               id="my-talk-status"
               className="my-talk-settings__select"
-              onChange={this.changeStatusFilter}
+              onChange={onChangeFilter}
             >
-              <option />
+              <option
+                defaultValue=""
+              />
               <option>New</option>
               <option>In Progress</option>
               <option>Approved</option>
@@ -87,11 +71,16 @@ class FilterForm extends PureComponent {
               my-talk-settings__label "
             >Topic</label>
             <select
+              name="topic"
               id="my-talk-topic"
               className="my-talk-settings__select
               my-talk-settings__select_topic"
+              onChange={onChangeFilter}
             >
-              {this.setTopics(listOfTopics)}
+              <option
+                defaultValue=""
+              />
+              {this.setTopics(topics)}
             </select>
           </div>
           <div className="my-talk-settings__date-wrapper">
@@ -108,13 +97,13 @@ class FilterForm extends PureComponent {
               type="button"
               className="my-talk-settings__button"
               value="apply"
-              onClick={this.handleFilterClick}
+              onClick={handleFilterClick}
             />
             <input
               type="reset"
               className="my-talk-settings__button"
               value="reset"
-              onClick={this.handleResetFiltersClick}
+              onClick={handleResetFiltersClick}
             />
           </div>
         </form>
@@ -124,22 +113,10 @@ class FilterForm extends PureComponent {
 }
 
 FilterForm.propTypes = {
-  load: PropTypes.func.isRequired,
-  talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  topics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onChangeFilter: PropTypes.func.isRequired,
+  handleFilterClick: PropTypes.func.isRequired,
+  handleResetFiltersClick: PropTypes.func.isRequired,
 };
 
-// mapStateToProps = state => (
-//
-// )
-
-const mapDispatchToProps = dispatch => ({
-
-  load: bindActionCreators(
-    load, dispatch),
-});
-
-const mapStateToProps = state => ({
-  talks: state.talks,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterForm);
+export default FilterForm;

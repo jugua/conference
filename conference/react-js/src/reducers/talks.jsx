@@ -1,29 +1,21 @@
-// import Talks from '../components/Talks/talksListData';
-// import TalksObj from '../containers/Talks/GetTalks';
-// const talks = (state = TalksObj) => state;
+import actions from '../constants/actions-types';
+
+const { APPLY_FILTERS } = actions;
 
 const talksInitial = [];
-//   filter: {
-//     status: '',
-//     topic: '',
-//   },
-//   data: [],
-// };
 
 const talks = (state = talksInitial, action) => {
   if (action.type === 'load') {
     return [...state, ...action.payload];
   }
-  if (action.type === 'filter') {
-    console.log(action, 'reducer');
-    const { payload: { filter, list } } = action;
-    const filtered = (data) => {
-      console.log(data);
-      return data.status === filter;
+  if (action.type === APPLY_FILTERS) {
+    const { payload: { filter: { topic, status }, listOfTalks } } = action;
+    const filtered = (elementOfListTopic) => {
+      const countExtendTopic = elementOfListTopic.topic.indexOf(topic);
+      const countExtendStatus = elementOfListTopic.status.indexOf(status);
+      return countExtendStatus > -1 && countExtendTopic > -1;
     };
-    console.log(typeof list, 'type of');
-    const res = list.filter(filtered);
-    console.log(res);
+    const res = listOfTalks.filter(filtered);
     return [...res];
   }
 
@@ -31,15 +23,3 @@ const talks = (state = talksInitial, action) => {
 };
 
 export default talks;
-
-// switch (action.type) {
-//  case 'load':
-//  const { payload: {filter , data }} = action;
-//  const filtered = (data, 'topic') => (
-//
-//  )
-//    return [...state, ...action.payload]
-//  case 'APPLY_FILTERS':
-//    return Object.assign({}, action.filter);
-//  default:
-//    return state
