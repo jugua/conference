@@ -19,4 +19,10 @@ public class TextConstants {
     public static final String ENGLISH = "English";
     public static final String RUSSIAN = "Russian";
     public static final String UKRAINIAN = "Ukrainian";
+
+    public static final String WRONG_USER = "wronguser123";
+    public static final String WRONG_PASSWORD = "wrongpassword123";
+
+    public static final String EXISTING_USER_ID = "1";
+    public static final String NON_EXISTING_USER_ID = "99999";
 }
