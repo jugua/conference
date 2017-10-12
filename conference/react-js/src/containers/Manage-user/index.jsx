@@ -39,18 +39,18 @@ class ManageUser extends PureComponent {
         <div className="tabs-wrapper">
           <ul className="tabs-list">
             <li className="tabs-list__item">
-              <button
+              <a
                 className="tabs-list__anchor tabs-list__anchor_active"
               >
            Manage Users
-              </button>
+              </a>
             </li>
           </ul>
           <div className="tabs-container">
             <div className="my-talks__header">
-              <a href="" className="btn my-talks__button">
+              <button className="btn my-talks__button">
              Add New User
-              </a>
+              </button>
             </div>
             <div className="data-table">
               <div className="table-header">
