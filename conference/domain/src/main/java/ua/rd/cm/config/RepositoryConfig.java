@@ -1,6 +1,7 @@
 package ua.rd.cm.config;
 
 import java.sql.SQLException;
+import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -92,7 +93,8 @@ public class RepositoryConfig {
 
     @Bean
     public AbstractEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
-                                                                 JpaVendorAdapter jpaVendorAdapter) {
+                                                                 JpaVendorAdapter jpaVendorAdapter,
+                                                                 Environment environment) {
         LocalContainerEntityManagerFactoryBean emf =
                 new LocalContainerEntityManagerFactoryBean();
 
@@ -100,8 +102,13 @@ public class RepositoryConfig {
         emf.setJpaVendorAdapter(jpaVendorAdapter);
         emf.setPackagesToScan("ua.rd.cm.domain");
 
+        Properties props = new Properties();
+        props.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+
+        emf.setJpaProperties(props);
         return emf;
     }
+
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
