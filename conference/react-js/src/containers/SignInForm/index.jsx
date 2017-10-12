@@ -21,10 +21,9 @@ class SignInForm extends PureComponent {
   }
 
   onLoginSuccess = () => {
-    getUserInfo().then(
-      res => this.props.setCurrentUser(res.data),
-      (err) => { throw err; },
-    );
+    getUserInfo()
+      .then(res => this.props.setCurrentUser(res.data))
+      .catch((err) => { throw err; });
   };
 
   onLoginFail = () => {
@@ -45,10 +44,9 @@ class SignInForm extends PureComponent {
   submitHandler = (event) => {
     event.preventDefault();
     if (loginValidation(this.state)) {
-      login(this.state).then(
-        () => this.onLoginSuccess(),
-        () => this.onLoginFail(),
-      );
+      login(this.state)
+        .then(this.onLoginSuccess)
+        .catch(this.onLoginFail);
     } else {
       this.onLoginFail();
     }

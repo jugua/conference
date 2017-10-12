@@ -4,11 +4,11 @@ import static ua.rd.cm.services.exception.ResourceNotFoundException.CONTACT_TYPE
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.AllArgsConstructor;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.services.businesslogic.ContactTypeService;
@@ -30,8 +30,8 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     }
 
     @Override
-    public List<ContactType> findByName(String name) {
-        return contactTypeRepository.findByName(name);
+    public ContactType findByName(String name) {
+        return contactTypeRepository.findFirstByName(name);
     }
 
     @Override

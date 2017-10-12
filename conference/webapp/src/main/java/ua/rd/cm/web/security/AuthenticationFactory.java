@@ -22,7 +22,7 @@ public final class AuthenticationFactory {
 
     private static UserDetails createUserDetails(User user) {
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), user.getPassword(), user.getUserRoles()
+                user.getEmail(), user.getPassword(), user.getRoles()
         );
     }
 }

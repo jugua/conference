@@ -1,7 +1,10 @@
 package ua.rd.cm.services;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +24,8 @@ import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.TopicDto;
 import ua.rd.cm.repository.TopicRepository;
 import ua.rd.cm.services.businesslogic.TopicService;
-import ua.rd.cm.services.exception.TopicNotFoundException;
 import ua.rd.cm.services.businesslogic.impl.TopicServiceImpl;
+import ua.rd.cm.services.exception.TopicNotFoundException;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,7 +49,8 @@ public class TopicServiceTest {
 
         topicService = new TopicServiceImpl(modelMapper, topicRepository);
 
-        topic = new Topic(1L, "name");
+        topic = new Topic("name");
+        topic.setId(1L);
 
         TopicDto topicDto = new TopicDto();
         topicDto.setId(1L);

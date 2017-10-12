@@ -12,7 +12,7 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.VerificationTokenService;
+import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.OldEmailMessagePreparator;
 
 @RestController

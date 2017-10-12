@@ -15,15 +15,22 @@ class ManageUser extends PureComponent {
     this.state = { isShowAddNewUserPopUp: false };
   }
   componentDidMount() {
+    this.getAllUsers();
+  }
+  getAllUsers = () => (
+    axios.get(allUsers)
+      .then(({ data }) => (this.showNewUsers(data)))
+  );
+
+  showNewUsers = (data) => {
     const { LOAD_USER_DATA } = actions;
     const { load } = this.props;
-    axios.get(allUsers)
-      .then(({ data }) => (load(LOAD_USER_DATA, data)));
-  }
+    load(LOAD_USER_DATA, data);
+  };
 
   ShowListUsers = data => (
     data.map(({ fname, roles: [roles], mail }) => (
-      <div className="data-table__row">
+      <div className="data-table__row" key={mail}>
         <div className="data-table__column data-table__column_role">
           {[rolesUI[roles]]}
         </div>
@@ -91,6 +98,7 @@ class ManageUser extends PureComponent {
         {isShowAddNewUserPopUp &&
         <AddNewUser
           toggleAddUserPopUp={this.toggleAddUserPopUp}
+          getAllUsers={this.getAllUsers}
         />}
       </div>
     );

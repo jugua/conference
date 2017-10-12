@@ -1,27 +1,29 @@
 package ua.rd.cm.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "level")
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "level_seq")
-@AttributeOverride(name = "id", column = @Column(name = "level_id"))
 public class Level extends AbstractEntity {
 
+    @NonNull
     @Column(name = "level_name", nullable = false, unique = true)
     private String name;
 
     public Level(Long id, String name) {
-        this.id = id;
+        super(id);
         this.name = name;
     }
 }
