@@ -24,8 +24,7 @@ const UserMenuFilter = ({ roles }) => {
   if (speakerRole > -1) {
     data = [...data, { title: 'My talks', link: myTalks },
       { title: 'My info', link: myInfo }];
-  }
-  if (adminRole > -1) {
+  } else if (adminRole > -1) {
     data = [...data, { title: 'Manage user', link: manageUser }];
   }
   data = [...data,
