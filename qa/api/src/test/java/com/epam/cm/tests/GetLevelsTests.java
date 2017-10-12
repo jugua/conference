@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -12,7 +13,8 @@ import static org.hamcrest.Matchers.*;
 
 public class GetLevelsTests extends SimpleBaseTest {
 
-    @Test //6738
+    @Test
+    @Jira("6738")
     public void positiveGetLevelsTest() {
 
         given()
@@ -37,7 +39,8 @@ public class GetLevelsTests extends SimpleBaseTest {
 
     }
 
-    @Test //6744
+    @Test
+    @Jira("6744")
     public void negativeGetLevelsTest() {
 
         given()

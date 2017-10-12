@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -25,7 +26,8 @@ public class LoginTests extends SimpleBaseTest {
         };
     }
 
-    @Test //6621
+    @Test
+    @Jira("6621")
     public void positiveLoginTest() {
 
         given()
@@ -46,7 +48,8 @@ public class LoginTests extends SimpleBaseTest {
 
     }
 
-    @Test //6893, 6894
+    @Test
+    @Jira({"6893, 6894"})
     @UseDataProvider("invalidLoginDataProvider")
     public void negativeLoginTestInvalidLoginError(String login, String password) {
 
@@ -70,6 +73,7 @@ public class LoginTests extends SimpleBaseTest {
     }
 
     @Test //6619
+    @Jira("6619")
     public void negativeLoginTestInvalidPass() {
 
         given()

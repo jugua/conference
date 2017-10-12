@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Jira {
-    String value();
+    String [] value();
 }

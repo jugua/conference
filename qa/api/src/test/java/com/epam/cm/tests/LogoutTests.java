@@ -2,6 +2,7 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -14,6 +15,7 @@ public class LogoutTests extends SimpleBaseTest {
 
 
     @Test //6620
+    @Jira("6620")
     @Ignore
     public void positiveLogoutTest() {
 

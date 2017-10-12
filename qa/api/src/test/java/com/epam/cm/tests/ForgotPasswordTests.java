@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -14,7 +15,8 @@ import static org.hamcrest.Matchers.hasToString;
  */
 public class ForgotPasswordTests extends SimpleBaseTest {
 
-    @Test //6665
+    @Test
+    @Jira("6665")
     public void positiveForgotPasswordTest() {
 
         given()
@@ -33,7 +35,8 @@ public class ForgotPasswordTests extends SimpleBaseTest {
 
     }
 
-    @Test //6697
+    @Test
+    @Jira("6697")
     public void negativeForgotPasswordTest() {
 
         given()
