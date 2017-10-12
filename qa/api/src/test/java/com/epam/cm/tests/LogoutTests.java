@@ -4,6 +4,7 @@ import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -18,6 +19,7 @@ public class LogoutTests extends SimpleBaseTest {
 
         CookieFilter cookieFilter = new CookieFilter();
 
+        Response resp =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
@@ -37,8 +39,8 @@ public class LogoutTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .filter(cookieFilter)
-                .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .cookie(TOKEN, resp.cookie(TOKEN))
+                .header(XTOKEN, resp.cookie(TOKEN))
 
 
                 .when()
