@@ -2,16 +2,14 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
-import com.epam.cm.base.TextConst;
+import com.epam.cm.base.TextConstants;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-/**
- * Created by Mariia_Koltsova on 10/5/2017.
- */
+
 public class GetLevelsTests extends SimpleBaseTest {
 
     @Test //6738
@@ -30,10 +28,11 @@ public class GetLevelsTests extends SimpleBaseTest {
                         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConst.NAME,
-                        hasItems(TextConst.ADVANCED, TextConst.BEGINNER, TextConst.EXPERT,
-                                TextConst.INTERMEDIATE))
-                .and().assertThat().body(TextConst.ID, notNullValue())
+                .body(TextConstants.NAME,
+                        hasItems(TextConstants.ADVANCED, TextConstants.BEGINNER, TextConstants.EXPERT,
+                                TextConstants.INTERMEDIATE))
+                .and().assertThat().body(TextConstants.NAME, hasSize(4))
+                .and().assertThat().body(TextConstants.ID, notNullValue())
                 .extract().response();
 
     }
@@ -44,7 +43,6 @@ public class GetLevelsTests extends SimpleBaseTest {
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().preemptive().basic(config.speakerUser, "76w883")
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(XTOKEN, response.cookie(TOKEN))
                 .
@@ -53,7 +51,7 @@ public class GetLevelsTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConst.ERROR, hasToString(TextConst.PASSWORDERROR))
+                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED))
                 .extract().response();
 
     }

@@ -36,8 +36,9 @@ public class SimpleBaseTest {
 
 
         response =
-                when().get(config.baseHost).then().log().all().
-                        extract().response();
+                when().get(config.baseHost);
+//                        .then().log().all().
+//                        extract().response();
 
 
     }

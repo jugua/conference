@@ -2,7 +2,7 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
-import com.epam.cm.base.TextConst;
+import com.epam.cm.base.TextConstants;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .body("{\"mail\":\"test@test.com\"}")
                 .
                         when()
-                .post(EndpointUrl.FORGOTPASS)
+                .post(EndpointUrl.FORGOT_PASSWORD)
                 .
                         then().log().all()
                 .statusCode(200).extract().response();
@@ -45,11 +45,11 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .body("{\"mail\":\"test1@t.com\"}")
                 .
                         when()
-                .post(EndpointUrl.FORGOTPASS)
+                .post(EndpointUrl.FORGOT_PASSWORD)
                 .
                         then().log().all()
                 .statusCode(400)
-                .assertThat().body(TextConst.ERROR, hasToString(TextConst.EMAILNOTFOUND))
+                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.EMAIL_NOT_FOUND))
                 .extract().response();
 
     }

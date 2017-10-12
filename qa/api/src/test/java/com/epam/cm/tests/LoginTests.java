@@ -2,17 +2,28 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
-import com.epam.cm.base.TextConst;
+import com.epam.cm.base.TextConstants;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasToString;
 
-
+@RunWith(DataProviderRunner.class)
 public class LoginTests extends SimpleBaseTest {
 
+    @DataProvider
+    public static Object[][] invalidLoginDataProvider() {
+        return new Object[][] {
+                { "gdgdyt873@eu.co", "organiser" },
+                { "", "" }
+        };
+    }
 
     @Test //6621
     public void positiveLoginTest() {
@@ -35,13 +46,14 @@ public class LoginTests extends SimpleBaseTest {
 
     }
 
-    @Test //6893
-    public void negativeLoginTestInvalidLogin() {
+    @Test //6893, 6894
+    @UseDataProvider("invalidLoginDataProvider")
+    public void negativeLoginTestInvalidLoginError(String login, String password) {
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().preemptive().basic("gdgdyt873@eu.co", config.organiserPassword)
+                .auth().preemptive().basic(login, password)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(XTOKEN, response.cookie(TOKEN))
                 .
@@ -51,7 +63,8 @@ public class LoginTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConst.ERROR, hasToString(TextConst.LOGINERROR))
+                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.LOGIN_ERROR))
+
                 .extract().response();
 
     }
@@ -72,29 +85,10 @@ public class LoginTests extends SimpleBaseTest {
                 .
                         then().log().all().assertThat()
                 .statusCode(401)
-                .assertThat().body(TextConst.ERROR, hasToString(TextConst.PASSWORDERROR))
+                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.PASSWORD_ERROR))
                 .extract().response();
 
     }
 
-    @Test //6894
-    public void negativeLoginTestEmptyFields() {
 
-        given()
-                .contentType(ContentType.JSON)
-                .baseUri(config.baseHost)
-                .auth().preemptive().basic("", "")
-                .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
-
-                .
-                        when()
-                .post(EndpointUrl.LOGIN)
-                .
-                        then().log().all()
-                .statusCode(401)
-                .assertThat().body(TextConst.ERROR, hasToString(TextConst.LOGINERROR))
-                .extract().response();
-
-    }
 }

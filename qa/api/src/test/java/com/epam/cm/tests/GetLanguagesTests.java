@@ -2,7 +2,7 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
-import com.epam.cm.base.TextConst;
+import com.epam.cm.base.TextConstants;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -14,8 +14,8 @@ import static org.hamcrest.Matchers.*;
  */
 public class GetLanguagesTests extends SimpleBaseTest {
 
-    @Test //6753
-    public void positiveGetLangTest() {
+    @Test
+    public void positiveGetLangTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -30,15 +30,15 @@ public class GetLanguagesTests extends SimpleBaseTest {
                         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConst.NAME,
-                        hasItems(TextConst.ENGLISH, TextConst.UKRAINIAN, TextConst.RUSSIAN))
-                .and().assertThat().body(TextConst.ID, notNullValue())
+                .body(TextConstants.NAME,
+                        hasItems(TextConstants.ENGLISH, TextConstants.UKRAINIAN, TextConstants.RUSSIAN))
+                .and().assertThat().body(TextConstants.NAME, hasSize(3))
+                .and().assertThat().body(TextConstants.ID, notNullValue())
                 .extract().response();
 
     }
-
-    @Test //6755
-    public void negativeGetLangTest() {
+    @Test
+    public void negativeGetLangTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -47,11 +47,11 @@ public class GetLanguagesTests extends SimpleBaseTest {
                 .header(XTOKEN, response.cookie(TOKEN))
                 .
                         when()
-                .get(EndpointUrl.LANGUAGES)
+                .get( EndpointUrl.LANGUAGES)
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConst.ERROR, hasToString(TextConst.UNAUTHORIZED))
+                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED))
                 .extract().response();
 
     }
