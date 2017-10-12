@@ -2,12 +2,15 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
@@ -15,19 +18,19 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-@RunWith(DataProviderRunner.class)
 public class AddNewTopicTest extends SimpleBaseTest {
 
-    @DataProvider
-    public static Object[][] newTopicDataProvider() {
-        return new Object[][] {
-                {"{\"name\": \"Some talk topic test\"}"}
-        };
+    Path pathToNewTopicData = Paths.get(getClass().getClassLoader()
+            .getResource("AddNewTopicData").toURI());
+    byte[] fileNewTopicData = Files.readAllBytes(pathToNewTopicData);
+    String validContent = new String(fileNewTopicData);
+
+    public AddNewTopicTest() throws IOException, URISyntaxException {
     }
 
-    @UseDataProvider("newTopicDataProvider")
-    @Test //6679
-    public void positiveAddNewTalkTypeTest(String topicName){
+    @Test
+    @Jira("6679")
+    public void positiveAddNewTalkTypeTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -35,7 +38,7 @@ public class AddNewTopicTest extends SimpleBaseTest {
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(XTOKEN, response.cookie(TOKEN))
-                .body(topicName)
+                .body(validContent)
                 .
 
         when()
@@ -48,9 +51,9 @@ public class AddNewTopicTest extends SimpleBaseTest {
                 .extract().response();
     }
 
-    @UseDataProvider("newTopicDataProvider")
-    @Test //6681
-    public void negativeAddNewTalkTypeTest(String topicName){
+    @Test
+    @Jira("6681")
+    public void negativeAddNewTalkTypeTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -58,7 +61,7 @@ public class AddNewTopicTest extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(XTOKEN, response.cookie(TOKEN))
-                .body(topicName)
+                .body(validContent)
                 .
 
         when()

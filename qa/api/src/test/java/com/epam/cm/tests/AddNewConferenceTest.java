@@ -1,14 +1,17 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import com.epam.cm.base.SimpleBaseTest;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
@@ -16,33 +19,25 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-@RunWith(DataProviderRunner.class)
 public class AddNewConferenceTest extends SimpleBaseTest{
 
-    @DataProvider
-    public static Object[][] newConferenceValidDataProvider() {
-        return new Object[][] {
-                {"{ \"title\": \"TestConference\", \"description\": \"Test\", \"location\": \"Kyiv\", " +
-                        "\"start_date\": \"2017-09-09\", \"end_date\": \"2017-11-29\", \"no_dates\": \"true\", " +
-                        "\"cfp_start_date\": \"2017-09-09\", \"cfp_end_date\": \"2017-11-29\", \"cfp_no_dates\": \"true\", " +
-                        "\"topics\": [1,2,3,4], \"types\": [4,2], \"languages\": [1,3], \"levels\": [4,3], \"organisers\": [3, 4, 5] }"
-                }
-        };
+    Path pathToAddNewConferenceValidData = Paths.get(getClass().getClassLoader()
+            .getResource("AddNewConferenceValidData").toURI());
+    byte[] fileBytesAddNewConferenceValidData = Files.readAllBytes(pathToAddNewConferenceValidData);
+    String validContent = new String(fileBytesAddNewConferenceValidData);
+
+    Path pathToAddNewConferenceInvalidData = Paths.get(getClass().getClassLoader()
+            .getResource("AddNewConferenceInvalidData").toURI());
+    byte[] fileBytesAddNewConferenceInvalidData = Files.readAllBytes(pathToAddNewConferenceInvalidData);
+    String invalidContent = new String(fileBytesAddNewConferenceInvalidData);
+
+
+    public AddNewConferenceTest() throws IOException, URISyntaxException {
     }
 
-    @DataProvider
-    public static Object[][] newConferenceInvalidDataProvider() {
-        return new Object[][] {
-                {" { \"title\": \"\", \"description\": \"\", \"location\": \"\", \"start_date\": \"\", \"end_date\": \"2017-11-29\", " +
-                        "\"no_dates\": \"true\", \"cfp_start_date\": \"2017-09-09\", \"cfp_end_date\": \"2017-11-29\", \"cfp_no_dates\": \"true\", " +
-                        "\"topics\": [1,2,3,4], \"types\": [4,2], \"languages\": [1,3], \"levels\": [4,3], \"organisers\": [3, 4, 5] }"
-                }
-        };
-    }
-
-    @UseDataProvider("newConferenceValidDataProvider")
-    @Test //6622
-    public void positiveAddNewConferenceTest(String newConferenceData){
+    @Test
+    @Jira("6622")
+    public void positiveAddNewConferenceTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -50,10 +45,10 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(XTOKEN, response.cookie(TOKEN))
-                .body(newConferenceData)
+                .body(validContent)
                 .
         when()
-                .post( EndpointUrl.CONFERENCE)
+                .post(EndpointUrl.CONFERENCE)
                 .
 
         then().log().all()
@@ -62,9 +57,9 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .extract().response();
     }
 
-    @UseDataProvider("newConferenceValidDataProvider")
-    @Test //6659
-    public void negativeAddNewConferenceTest(String newConferenceData){
+    @Test
+    @Jira("6659")
+    public void negativeAddNewConferenceTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -72,10 +67,10 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(XTOKEN, response.cookie(TOKEN))
-                .body(newConferenceData)
+                .body(validContent)
                 .
         when()
-                .post( EndpointUrl.CONFERENCE)
+                .post(EndpointUrl.CONFERENCE)
                 .
 
         then().log().all()
@@ -85,9 +80,9 @@ public class AddNewConferenceTest extends SimpleBaseTest{
     }
 
     @Ignore //test failed. bug 6825
-    @UseDataProvider("newConferenceInvalidDataProvider")
-    @Test //6822
-    public void negativeValidationFailedAddNewConferenceTest(String newConferenceData){
+    @Test
+    @Jira("6822")
+    public void negativeValidationFailedAddNewConferenceTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -95,11 +90,11 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(XTOKEN, response.cookie(TOKEN))
-                .body(newConferenceData)
+                .body(invalidContent)
                 .
 
         when()
-                .post( EndpointUrl.CONFERENCE)
+                .post(EndpointUrl.CONFERENCE)
                 .
 
         then().log().all()

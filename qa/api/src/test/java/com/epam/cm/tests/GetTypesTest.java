@@ -2,6 +2,7 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -12,7 +13,8 @@ import static org.hamcrest.Matchers.hasToString;
 
 public class GetTypesTest extends SimpleBaseTest{
 
-    @Test //6655
+    @Test
+    @Jira("6655")
     public void positiveGetTypesTest(){
 
         given()
@@ -33,7 +35,8 @@ public class GetTypesTest extends SimpleBaseTest{
                 .extract().response();
     }
 
-    @Test //6656
+    @Test
+    @Jira("6656")
     public void negativeGetTypesTest(){
 
         given()

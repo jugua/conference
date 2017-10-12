@@ -2,6 +2,7 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -12,7 +13,8 @@ import static com.epam.cm.base.TextConstants.*;
 
 public class GetTopicsForNewTalkTest extends SimpleBaseTest{
 
-    @Test //6690
+    @Test
+    @Jira("6690")
     public void positiveGetTypesTest(){
 
         given()
@@ -33,7 +35,8 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
                 .extract().response();
     }
 
-    @Test //6693
+    @Test
+    @Jira("6693")
     public void negativeGetTypesTest(){
 
         given()
