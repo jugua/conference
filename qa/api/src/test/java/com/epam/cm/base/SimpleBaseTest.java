@@ -16,8 +16,8 @@ import static io.restassured.RestAssured.when;
 
 public class SimpleBaseTest {
 
-    public static final String TOKEN = "XSRF-TOKEN";
-    public static final String XTOKEN = "X-XSRF-TOKEN";
+    protected static final String TOKEN = "XSRF-TOKEN";
+    protected static final String X_TOKEN = "X-XSRF-TOKEN";
 
     protected Config config =
             EnvironmentUtils.getPropertiesFromConfig("/config.properties");

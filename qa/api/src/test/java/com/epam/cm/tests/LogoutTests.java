@@ -27,7 +27,7 @@ public class LogoutTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .filter(cookieFilter)
 
                 .
@@ -42,7 +42,7 @@ public class LogoutTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .filter(cookieFilter)
                 .cookie(TOKEN, resp.cookie(TOKEN))
-                .header(XTOKEN, resp.cookie(TOKEN))
+                .header(X_TOKEN, resp.cookie(TOKEN))
 
 
                 .when()
