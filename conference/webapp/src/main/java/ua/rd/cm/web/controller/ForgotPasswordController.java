@@ -22,7 +22,7 @@ import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.NewPasswordDto;
 import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.VerificationTokenService;
+import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
 import ua.rd.cm.infrastructure.mail.preparator.ForgotMessagePreparator;
 
 @RestController

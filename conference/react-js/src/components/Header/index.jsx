@@ -54,7 +54,7 @@ class Header extends PureComponent {
   };
 
   render() {
-    const { user: { roles: [roles], lname } } = this.props;
+    const { user: { roles, fname } } = this.props;
     return (
       <header className="header">
         <div className="header__title">
@@ -69,7 +69,7 @@ class Header extends PureComponent {
           <button
             className="menu-container__button js-dropdown"
             onClick={this.onButtonAccountClick}
-          >{ lname ? `${lname}'s` : 'Your'} Account
+          >{ fname ? `${fname}'s` : 'Your'} Account
           </button>
           <div className={classNames({
             'menu-container__content': true,
@@ -77,7 +77,7 @@ class Header extends PureComponent {
           })}
           >
             {
-              roles ?
+              roles.length > 0 ?
                 <UserMenuFilter
                   roles={roles}
                 />

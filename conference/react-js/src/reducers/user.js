@@ -1,31 +1,13 @@
 import actionTypes from '../constants/actions-types';
 
-const initialState = {
+const defaultUser = {
   id: -1,
   roles: [],
-  mail: '',
   fname: '',
-  lname: '',
-  bio: '',
-  job: '',
-  company: '',
-  past: '',
-  photo: '',
-  linkedin: '',
-  twitter: '',
-  facebook: '',
-  blog: '',
-  info: '',
 };
 
-function user(state = initialState, action) {
-  const { type, payload } = action;
-  switch (type) {
-  case actionTypes.SET_USER:
-    return payload;
-  default:
-    return state;
-  }
-}
+const user = (state = defaultUser, { type, payload }) => (
+  type === actionTypes.SET_USER ? payload : state
+);
 
 export default user;

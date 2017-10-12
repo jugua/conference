@@ -1,9 +1,13 @@
 package ua.rd.cm.repository.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.Collection;
+import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,47 +30,50 @@ import ua.rd.cm.repository.TopicRepository;
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 public class TopicRepositoryImplIT {
+
     @Autowired
-    private TopicRepository topicRepository;
+    private TopicRepository testing;
+    private Topic newTopic;
+
+    @Before
+    public void setUp() throws Exception {
+        newTopic = new Topic(1L, "name");
+    }
 
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
     public void testFindAllShouldReturntwo() {
         int expectedSize = 2;
-        Collection<Topic> topics = (Collection<Topic>) topicRepository.findAll();
+        Collection<Topic> topics = (Collection<Topic>) testing.findAll();
         assertEquals(topics.size(), expectedSize);
     }
 
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
     public void testFindTopicByWrongName() {
-        assertNull(topicRepository.findTopicByName("wrong"));
+        assertNull(testing.findTopicByName("wrong"));
     }
 
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
     public void testFindTopicByCorrectName() {
-        assertNotNull(topicRepository.findTopicByName("RNN"));
+        assertNotNull(testing.findTopicByName("RNN"));
     }
 
     @Test
     @DatabaseSetup("/ds/conference.xml")
     public void testCreateTopic() {
-        Topic newTopic = new Topic("name");
-        topicRepository.save(newTopic);
-        int expectedSize = 3;
-        Collection<Topic> topics = (Collection<Topic>) topicRepository.findAll();
-        assertEquals(topics.size(), expectedSize);
+        testing.save(newTopic);
+        List<Topic> topics = testing.findAll();
+        assertEquals(topics.size(), 3);
     }
 
     @Test
     @DatabaseSetup("/ds/insert-conference.xml")
     public void testDeleteTopic() {
-        Topic newTopic = new Topic("name");
-        Topic insertedTopic = topicRepository.save(newTopic);
-        topicRepository.delete(insertedTopic);
-        int expectedSize = 2;
-        Collection<Topic> topics = (Collection<Topic>) topicRepository.findAll();
-        assertEquals(topics.size(), expectedSize);
+        Topic insertedTopic = testing.save(newTopic);
+        testing.delete(insertedTopic);
+        Collection<Topic> topics = testing.findAll();
+        assertEquals(topics.size(), 2);
     }
 }
