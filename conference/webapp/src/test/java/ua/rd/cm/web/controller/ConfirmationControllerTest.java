@@ -31,7 +31,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest{
         correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
         String correctUrl = REGISTRATION_CONFIRM_REQUEST + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
-                VerificationToken.TokenType.CONFIRMATION);
+                VerificationToken.TokenType.CONFIRMATION);  
     }
 
     @Test

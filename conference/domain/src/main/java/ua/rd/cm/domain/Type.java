@@ -1,27 +1,30 @@
 package ua.rd.cm.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "type")
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "type_seq")
-@AttributeOverride(name = "id", column = @Column(name = "type_id"))
 public class Type extends AbstractEntity {
 
-    @Column(name = "type_name", nullable = false, unique = true)
+    @NonNull
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Type(Long id, String name) {
-        this.id = id;
+        super(id);
         this.name = name;
     }
+
 }

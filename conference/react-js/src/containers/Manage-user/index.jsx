@@ -18,7 +18,7 @@ class ManageUser extends PureComponent {
 
   ShowListUsers = data => (
     data.map(({ fname, roles: [roles], mail }) => (
-      <div className="data-table__row">
+      <div className="data-table__row" key={mail}>
         <div className="data-table__column data-table__column_role">
           {[rolesUI[roles]]}
         </div>
