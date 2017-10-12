@@ -70,7 +70,7 @@ public class UpdateConferenceTests extends SimpleBaseTest {
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().preemptive().basic(config.wrongUser,config.wrongPassword)
+                .auth().preemptive().basic(TextConstants.WRONG_USER, TextConstants.WRONG_PASSWORD)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.CONFERENCE_BODY_JSON)

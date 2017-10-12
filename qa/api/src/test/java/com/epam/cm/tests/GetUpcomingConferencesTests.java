@@ -53,14 +53,14 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
         String jsonAsString = endResponse.getBody().asString();
 
         ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-
-        for (Map m : jsonAsArrayList) {
-            pastConferencesCount++;
-            pastConferenceFieldsCount = m.values().size();
-        }
+        pastConferencesCount = jsonAsArrayList.size();
 
         Assert.assertTrue(pastConferencesCount > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
-        Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+
+        for (Map m : jsonAsArrayList) {
+            pastConferenceFieldsCount = m.values().size();
+            Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+        }
     }
 
     //6729
@@ -94,14 +94,14 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
         String jsonAsString = endResponse.getBody().asString();
 
         ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-
-        for (Map m : jsonAsArrayList) {
-            pastConferencesCount++;
-            pastConferenceFieldsCount = m.values().size();
-        }
+        pastConferencesCount = jsonAsArrayList.size();
 
         Assert.assertTrue(pastConferencesCount > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
-        Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+
+        for (Map m : jsonAsArrayList) {
+            pastConferenceFieldsCount = m.values().size();
+            Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+        }
     }
 
     //6759
@@ -133,14 +133,14 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
         String jsonAsString = endResponse.getBody().asString();
 
         ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-
-        for (Map m : jsonAsArrayList) {
-            pastConferencesCount++;
-            pastConferenceFieldsCount = m.values().size();
-        }
+        pastConferencesCount = jsonAsArrayList.size();
 
         Assert.assertTrue(pastConferencesCount > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
-        Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+
+        for (Map m : jsonAsArrayList) {
+            pastConferenceFieldsCount = m.values().size();
+            Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+        }
     }
 
     //6806
@@ -152,7 +152,7 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth()
-                .preemptive().basic(config.wrongUser,config.wrongPassword)
+                .preemptive().basic(TextConstants.WRONG_USER, TextConstants.WRONG_PASSWORD)
         .when()
                 .get(EndpointUrl.UPCOMING_CONFERENCE)
         .then().log().all()
