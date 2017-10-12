@@ -1,7 +1,11 @@
 package com.epam.cm.base;
 
+import com.epam.cm.jira.Jira;
 import io.restassured.response.Response;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -14,6 +18,20 @@ public class SimpleBaseTest {
 
     protected Config config;
     protected Response response;
+
+    @Rule
+    public TestWatcher watchman= new TestWatcher() {
+
+
+        @Override
+        protected void finished( Description description) {
+
+            System.out.println(description.getAnnotation(Jira.class).value());
+
+
+        }
+    };
+
     @Before
     public void setup(){
 
