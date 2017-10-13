@@ -8,8 +8,12 @@ import Tabs from './Tabs';
 import Header from './Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
-import Talks from '../containers/Talks';
-import { baseUrl, forgotPassword, signUp, talks } from '../constants/route-url';
+import {
+  baseUrl,
+  forgotPassword,
+  signUp,
+  manageUser } from '../constants/route-url';
+import ManageUser from './Manage-user/';
 
 const App = () => (
   <Router>
@@ -27,13 +31,17 @@ const App = () => (
       />
       <Route
         path={signUp}
-
         component={SignUp}
       />
       <Route
+<<<<<<< HEAD
         path={talks}
 
         component={Talks}
+=======
+        path={manageUser}
+        component={ManageUser}
+>>>>>>> dev
       />
     </div>
   </Router>

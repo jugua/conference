@@ -1,46 +1,61 @@
 package ua.rd.cm.domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "user_info")
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "user_info_seq")
-@AttributeOverride(name = "id", column = @Column(name = "user_info_id"))
 public class UserInfo extends AbstractEntity {
 
-    @Column(name = "short_bio", nullable = false, length = 2000)
+    @NonNull
+    @Column(nullable = false, length = 2000)
     private String shortBio = "";
 
-    @Column(name = "job_title", nullable = false, length = 256)
+    @NonNull
+    @Column(nullable = false, length = 256)
     private String jobTitle = "";
 
-    @Column(name = "past_conference", length = 1000)
+    @Column(length = 1000)
     private String pastConference;
 
-    @Column(name = "company", nullable = false, length = 256)
+    @NonNull
+    @Column(nullable = false, length = 256)
     private String company = "";
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_info_contact",
-            joinColumns = @JoinColumn(name = "user_info_id")
-    )
-    @Column(name = "link", length = 1000)
-    @MapKeyJoinColumn(name = "contact_type_id",
-            referencedColumnName = "contact_type_id")
-    private Map<ContactType, String> contacts = new HashMap<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Contact> contacts = new ArrayList<>();
 
-    @Column(name = "additional_info", length = 1000)
+    @Column(length = 1000)
     private String additionalInfo;
+
+    @Builder
+    public UserInfo(Long id, String shortBio, String jobTitle, String pastConference,
+                    String company, List<Contact> contacts, String additionalInfo) {
+        super(id);
+        this.shortBio = shortBio;
+        this.jobTitle = jobTitle;
+        this.pastConference = pastConference;
+        this.company = company;
+        this.contacts = contacts;
+        this.additionalInfo = additionalInfo;
+    }
+
+    public void addContact(Contact contact) {
+        contacts.add(contact);
+    }
 }

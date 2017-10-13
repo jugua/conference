@@ -4,11 +4,12 @@ package ua.rd.cm.web.controller;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
+import ua.rd.cm.domain.Contact;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
@@ -16,11 +17,11 @@ import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.services.businesslogic.UserService;
 
 public class TestUtil {
-    protected static final String ORGANISER_EMAIL = "trybel@gmail.com";
-    protected static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     public static final String SPEAKER_ROLE = "SPEAKER";
     public static final String ORGANISER_ROLE = "ORGANISER";
     public static final String ADMIN_ROLE = "ADMIN";
+    protected static final String ORGANISER_EMAIL = "trybel@gmail.com";
+    protected static final String SPEAKER_EMAIL = "ivanova@gmail.com";
 
     protected User createUser(Role role, UserInfo info) {
         Set<Role> roles = new HashSet<>();
@@ -36,7 +37,7 @@ public class TestUtil {
         user.setPhoto("myinfo/photo/");
         user.setStatus(User.UserStatus.CONFIRMED);
         user.setUserInfo(createUserInfo());
-        user.setUserRoles(roles);
+        user.setRoles(roles);
         return user;
     }
 
@@ -54,12 +55,11 @@ public class TestUtil {
         ContactType contactType3 = new ContactType(3L, "FaceBook");
         ContactType contactType4 = new ContactType(4L, "Blog");
 
-        Map<ContactType, String> contacts = new HashMap<ContactType, String>() {{
-            put(contactType, "LinkedIn");
-            put(contactType2, "Twitter");
-            put(contactType3, "FaceBook");
-            put(contactType4, "Blog");
-        }};
+        List<Contact> contacts = Arrays.asList(
+                new Contact(1L, "url1", contactType),
+                new Contact(2L, "url2", contactType2),
+                new Contact(3L, "url3", contactType3),
+                new Contact(4L, "url4", contactType4));
 
         UserInfo userInfo = new UserInfo();
         userInfo.setId(1L);
@@ -86,7 +86,7 @@ public class TestUtil {
         speakerUser.setPhoto("myinfo/photo/");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(createUserInfo());
-        speakerUser.setUserRoles(speakerRole);
+        speakerUser.setRoles(speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
@@ -100,7 +100,7 @@ public class TestUtil {
         organiserUser.setPhoto("myinfo/photo/");
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(createUserInfo());
-        organiserUser.setUserRoles(speakerRole);
+        organiserUser.setRoles(speakerRole);
         when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speakerUser);
         when(userService.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organiserUser);
     }

@@ -98,8 +98,7 @@ module.exports = {
       }
     ], // rules
   }, // module
-  // devtool: DEBUG ? 'source-map' : '',
-  devtool: 'source-map',
+  devtool: DEBUG ? 'source-map' : '',
   context: __dirname,
   target: 'web',
   plugins: DEBUG ?
