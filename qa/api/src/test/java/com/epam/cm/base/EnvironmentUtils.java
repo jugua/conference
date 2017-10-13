@@ -1,12 +1,12 @@
 package com.epam.cm.base;
 
-import org.codehaus.groovy.util.StringUtil;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.Properties;
+
+import static org.springframework.core.io.support.PropertiesLoaderUtils.*;
 
 public class EnvironmentUtils {
 
@@ -14,7 +14,7 @@ public class EnvironmentUtils {
         Resource resource = new ClassPathResource(path);
 
         try{
-            Properties props = PropertiesLoaderUtils.loadProperties(resource);
+            Properties props = loadProperties(resource);
             Config config = new Config(props);
             String host = System.getProperty("host");
 

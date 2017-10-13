@@ -31,7 +31,7 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .post(EndpointUrl.FORGOT_PASSWORD)
                 .
                         then().log().all()
-                .statusCode(200).extract().response();
+                .statusCode(200);
 
     }
 
@@ -52,8 +52,8 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(400)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.EMAIL_NOT_FOUND))
-                .extract().response();
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.EMAIL_NOT_FOUND));
 
     }
 

@@ -3,14 +3,9 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.jira.Jira;
+import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
@@ -20,14 +15,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 public class AddNewTalkTypeTest extends SimpleBaseTest {
 
-    Path pathToNewTalkTypeData = Paths.get(getClass().getClassLoader()
-            .getResource("AddNewTalkTypeData").toURI());
-    byte[] fileNewTalkTypeData = Files.readAllBytes(pathToNewTalkTypeData);
-    String validContent = new String(fileNewTalkTypeData);
-
-
-    public AddNewTalkTypeTest() throws URISyntaxException, IOException {
-    }
+    private String validContent = JsonLoader.asString("AddNewTalkTypeData.json");
 
     @Test
     @Jira("6657")
@@ -38,7 +26,7 @@ public class AddNewTalkTypeTest extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body(validContent)
                 .
 
@@ -61,7 +49,7 @@ public class AddNewTalkTypeTest extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body(validContent)
                 .
 

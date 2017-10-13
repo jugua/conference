@@ -2,6 +2,7 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.jira.Jira;
+import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import com.epam.cm.base.SimpleBaseTest;
 import org.junit.Ignore;
@@ -21,19 +22,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 public class AddNewConferenceTest extends SimpleBaseTest{
 
-    Path pathToAddNewConferenceValidData = Paths.get(getClass().getClassLoader()
-            .getResource("AddNewConferenceValidData").toURI());
-    byte[] fileBytesAddNewConferenceValidData = Files.readAllBytes(pathToAddNewConferenceValidData);
-    String validContent = new String(fileBytesAddNewConferenceValidData);
-
-    Path pathToAddNewConferenceInvalidData = Paths.get(getClass().getClassLoader()
-            .getResource("AddNewConferenceInvalidData").toURI());
-    byte[] fileBytesAddNewConferenceInvalidData = Files.readAllBytes(pathToAddNewConferenceInvalidData);
-    String invalidContent = new String(fileBytesAddNewConferenceInvalidData);
-
-
-    public AddNewConferenceTest() throws IOException, URISyntaxException {
-    }
+    String validContent  = JsonLoader.asString("AddNewConferenceValidData.json");
 
     @Test
     @Jira("6622")
@@ -44,7 +33,7 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body(validContent)
                 .
         when()
@@ -66,7 +55,7 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body(validContent)
                 .
         when()
@@ -83,13 +72,14 @@ public class AddNewConferenceTest extends SimpleBaseTest{
     @Test
     @Jira("6822")
     public void negativeValidationFailedAddNewConferenceTest(){
+        String invalidContent =JsonLoader.asString("AddNewConferenceInvalidData.json");
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body(invalidContent)
                 .
 

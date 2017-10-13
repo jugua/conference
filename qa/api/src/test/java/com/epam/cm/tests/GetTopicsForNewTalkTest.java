@@ -22,7 +22,7 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
                 .get(EndpointUrl.TOPIC)
@@ -31,8 +31,7 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
         then().log().all()
                 .statusCode(200)
                 .assertThat().body(NAME,
-                    hasItems(JVM, SOFTWARE, ARCHITECTURE))
-                .extract().response();
+                    hasItems(JVM, SOFTWARE, ARCHITECTURE));
     }
 
     @Test
@@ -43,7 +42,7 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
                 .get(EndpointUrl.TOPIC)
@@ -51,7 +50,6 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
 
         then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED))
-                .extract().response();
+                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
     }
 }

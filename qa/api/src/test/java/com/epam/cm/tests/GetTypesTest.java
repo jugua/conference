@@ -22,7 +22,7 @@ public class GetTypesTest extends SimpleBaseTest{
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
                 .get(EndpointUrl.TYPE)
@@ -31,8 +31,7 @@ public class GetTypesTest extends SimpleBaseTest{
         then().log().all()
                 .statusCode(200)
                 .assertThat().body(NAME,
-                    hasItems(REGULAR, ONLINE, LIGHTING, HANDS_ON_LAB))
-                .extract().response();
+                    hasItems(REGULAR, ONLINE, LIGHTING, HANDS_ON_LAB));
     }
 
     @Test
@@ -43,7 +42,7 @@ public class GetTypesTest extends SimpleBaseTest{
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
 
         when()
@@ -52,7 +51,6 @@ public class GetTypesTest extends SimpleBaseTest{
 
             then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED))
-                .extract().response();
+                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
     }
 }

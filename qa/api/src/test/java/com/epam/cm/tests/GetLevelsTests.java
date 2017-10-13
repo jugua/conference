@@ -34,8 +34,7 @@ public class GetLevelsTests extends SimpleBaseTest {
                         hasItems(TextConstants.ADVANCED, TextConstants.BEGINNER, TextConstants.EXPERT,
                                 TextConstants.INTERMEDIATE))
                 .and().assertThat().body(TextConstants.NAME, hasSize(4))
-                .and().assertThat().body(TextConstants.ID, notNullValue())
-                .extract().response();
+                .and().assertThat().body(TextConstants.ID, notNullValue());
 
     }
 
@@ -54,8 +53,7 @@ public class GetLevelsTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED))
-                .extract().response();
+                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
 
     }
 
