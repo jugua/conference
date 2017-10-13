@@ -1,6 +1,12 @@
 import actionTypes from '../constants/actions-types';
 
-const user = (state = {}, { type, payload }) => (
+const defaultUser = {
+  id: -1,
+  roles: [],
+  fname: '',
+};
+
+const user = (state = defaultUser, { type, payload }) => (
   type === actionTypes.SET_USER ? payload : state
 );
 
