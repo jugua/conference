@@ -15,22 +15,22 @@ import {
 } from '../../constants/roles';
 
 const UserMenuFilter = ({ roles }) => {
-  let data = [
+  const data = [
     { title: 'Conferences', link: baseUrl },
     { title: 'Talks', link: talks },
   ];
   const speakerRole = roles.indexOf(speaker);
   const adminRole = roles.indexOf(admin);
   if (speakerRole > -1) {
-    data = [...data, { title: 'My talks', link: myTalks },
-      { title: 'My info', link: myInfo }];
+    data.push({ title: 'My talks', link: myTalks },
+      { title: 'My info', link: myInfo });
   } else if (adminRole > -1) {
-    data = [...data, { title: 'Manage user', link: manageUser }];
+    data.push({ title: 'Manage user', link: manageUser });
   }
-  data = [...data,
+  data.push(
     { title: 'Settings', link: settings },
     { title: 'Sign Out', link: baseUrl, last: true },
-  ];
+  );
   return (
     <UserMenu data={data} />
   );
