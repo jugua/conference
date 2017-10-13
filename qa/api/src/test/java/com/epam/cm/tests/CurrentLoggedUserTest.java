@@ -19,8 +19,8 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
 
 
@@ -55,8 +55,8 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body("{ \"id\": 1, \"roles\": [\"ROLE_SPEAKER\"],\"mail\": \"speaker@speaker.com\", \"fname\": \"Master\", \"lname\": \"Trybel\", \"bio\": \"Short bio000\", \"job\": \"JuniorTest\",\"company\": \"EPAM\", \"past\": \"Past conference\",\"photo\": \"api/user/current/photo/1\", \"linkedin\": \"linkedin.com\", \"twitter\": \"twitter.com\", \"facebook.com\": \"facebook.com\", \"blog\": \"userblog.com\", \"info\": \"Additional info\" }")
                 .when()
                 .post( "/api/user/current")
@@ -73,8 +73,8 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body("{ \"id\": 1, \"roles\": [\"ROLE_SPEAKER\"],\"mail\": \"speaker@speaker.com\", \"fname\": \"Master\", \"lname\": \"Trybel\", \"bio\": \"Short bio000\",\"company\": \"EPAM\", \"past\": \"Past conference\",\"photo\": \"api/user/current/photo/1\", \"linkedin\": \"linkedin.com\", \"twitter\": \"twitter.com\", \"facebook.com\": \"facebook.com\", \"blog\": \"userblog.com\", \"info\": \"Additional info\" }")
                 .when()
                 .post( "/api/user/current")

@@ -26,8 +26,8 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body("{\"fname\": \"fnametest1\", \"lname\": \"lnametest1\", " +
                         "\"mail\": \""+"autoUser"+getCurrentTimeStamp()+"@mailtest1.com\"," +
                         " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\" }")
@@ -46,8 +46,8 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body("{\"lname\": \"lnametest1\", " +
                         "\"mail\": \""+"autoUser"+getCurrentTimeStamp()+"@mailtest1.com\"," +
                         " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\" }")
@@ -65,8 +65,8 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
-                .cookie("XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
-                .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body("{\"fname\": \"fnametest1\", \"lname\": \"lnametest1\", " +
                         "\"mail\": \"speaker@speaker.com\"," +
                         " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\" }")

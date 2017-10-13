@@ -1,11 +1,9 @@
 package com.epam.cm.utils;
 
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
