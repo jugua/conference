@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 const menuList = data => data.map(({ title, link, last }) => (
   <li
     key={title}
-    className={`menu-list__item
-      ${last ?
-    'menu-list__item_sign-out' : ''} `}
+    className={
+      classNames(
+        'menu-list__item',
+        { 'menu-list__item_sign-out': last,
+        })}
   >
     <Link
       className="menu-list__title"

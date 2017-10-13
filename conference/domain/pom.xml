@@ -51,7 +51,6 @@
         <!--spring end-->
 
         <!--database-->
-
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-rest-webmvc</artifactId>
@@ -65,7 +64,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -84,7 +83,6 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
-
         <!--database end-->
 
         <!-- testing -->
@@ -110,9 +108,5 @@
             <artifactId>log4jdbc-remix</artifactId>
         </dependency>
         <!-- logging end -->
-
-
-
-
     </dependencies>
 </project>

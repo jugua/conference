@@ -14,7 +14,8 @@
     <properties>
         <spring-version>4.3.11.RELEASE</spring-version>
         <spring.security.version>4.2.3.RELEASE</spring.security.version>
-        <hibernate.version>5.2.4.Final</hibernate.version>
+        <hibernate.version>5.2.11.Final</hibernate.version>
+        <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
         <hikariCP.version>2.6.1</hikariCP.version>
         <dbunit.version>2.4.9</dbunit.version>
         <spring.test.dbunit.version>1.3.0</spring.test.dbunit.version>
@@ -22,7 +23,7 @@
         <commons-fileupload.version>1.3.3</commons-fileupload.version>
         <spring.hateoas.version>0.23.0.RELEASE</spring.hateoas.version>
         <spring.data.jpa.version>1.11.7.RELEASE</spring.data.jpa.version>
-        <spring.data.rest.version>2.6.7.RELEASE</spring.data.rest.version>
+        <spring.data.rest.version>3.0.0.RELEASE</spring.data.rest.version>
         <javax.mail.version>1.4.7</javax.mail.version>
         <javax.mail.api.version>1.6.0</javax.mail.api.version>
         <freemarket.version>2.3.23</freemarket.version>
@@ -299,14 +300,15 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate.version}</version>
+                <version>${hibernate-validator.version}</version>
             </dependency>
+            <!-- hibernate end -->
+
             <dependency>
                 <groupId>javax.validation</groupId>
                 <artifactId>validation-api</artifactId>
                 <version>${javax.validation.api.version}</version>
             </dependency>
-            <!-- hibernate end -->
 
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
