@@ -8,7 +8,7 @@ import Tabs from './Tabs';
 import Header from './Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
-import Talks from './Talks';
+import Talks from '../containers/Talks';
 import { baseUrl, forgotPassword, signUp, talks } from '../constants/route-url';
 
 const App = () => (

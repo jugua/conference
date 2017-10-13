@@ -2,19 +2,21 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 function TalksList({ data: {
-  _id,
   date,
   status,
   title,
   topic,
+  assignee,
+  name,
+  comment,
 } }) {
   return (
-    <div className="data-table__row" key={_id}>
+    <div className="data-table__row">
       <div className="data-table__column data-table__column_check-talk">
         <input type="checkbox" />
       </div>
       <div className="data-table__column data-table__column_speaker-talk">
-        <a className="link">Speaker</a></div>
+        <a className="link">{name}</a></div>
       <div className="data-table__column data-table__column_title-talk">
         <a className="link">{title}</a>
       </div>
@@ -28,17 +30,16 @@ function TalksList({ data: {
         {status}
       </div>
       <div className="data-table__column data-table__column_comments-talk">
-        comment
+        {comment}
       </div>
       <div className="data-table__column data-table__column_assign-talk">
-        assignee
+        {assignee}
       </div>
     </div>
   );
 }
 
 TalksList.propTypes = { data: PropTypes.shape({
-  _id: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   lang: PropTypes.string.isRequired,
@@ -47,6 +48,9 @@ TalksList.propTypes = { data: PropTypes.shape({
   title: PropTypes.string.isRequired,
   topic: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  assignee: PropTypes.string,
+  comment: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 }).isRequired,
 };
 

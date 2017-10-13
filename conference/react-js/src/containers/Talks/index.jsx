@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
-import FilterForm from '../../containers/Talks/FilterForm';
-import DisplayTalks from '../../containers/Talks/DisplayTalks';
+import FilterForm from './FilterForm';
+import DisplayTalks from './DisplayTalks';
 import load from '../../actions/load';
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
@@ -22,9 +22,7 @@ class TalksRender extends Component {
     const { LOAD } = action;
     axios.get(topics)
       .then(({ data }) => {
-        console.log(data);
         this.setState({ listOfTopics: data });
-        console.log(data, 'axios get');
       })
       .catch(({ response: { listOfTopics } }) => (
         console.log(listOfTopics)
@@ -138,13 +136,17 @@ class TalksRender extends Component {
                   1
                 </div>
                 <div className="pagination__item pagination__item_forward" />
-                <div className="pagination__item pagination__item_fast-forward" />
+                <div className="pagination__item
+                  pagination__item_fast-forward"
+                />
               </div>
               <select className="pagination__select">
+                <option defaultValue="" />
+                <option value="5">5</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
-                <option selected value="50">50</option>
+                <option value="50">50</option>
                 <option value="100">100</option>
               </select>
               <div className="pagination__per-page">

@@ -1,35 +1,12 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
-// import load from '../../../actions/load';
-import Calendar from '../../../components/Talks/Calendar';
+// import Calendar from '../../../components/Talks/Calendar';
 
 class FilterForm extends PureComponent {
   setTopics = listOfTopics => (
-    Object.values(listOfTopics).map(({ name }) => (
-      <option>{name}</option>),
+    Object.values(listOfTopics).map(({ name, id }) => (
+      <option key={id}>{name}</option>),
     ));
-  //
-  // handleFilterClick = (e) => {
-  //   e.preventDefault();
-  //   this.doFilter();
-  // };
-
-  // handleResetFiltersClick = () => {
-  //   this.state = {};
-  //   this.doFilter();
-  // };
-
-  // doFilter = () => {
-  //   // this.props.dispatch(applyFilters(this.state));
-  //   const filter = 'New';
-  //   console.log('doFilter', filter, this.state.listOfTopics);
-  //   const { talks: list } = this.props;
-  //   this.props.load('filter', { filter, list });
-  // };
-
-  // changeStatusFilter = (e) => {
-  //   this.state.status = e.target.value;
-  // };
 
   render() {
     const { topics,
@@ -82,15 +59,6 @@ class FilterForm extends PureComponent {
               />
               {this.setTopics(topics)}
             </select>
-          </div>
-          <div className="my-talk-settings__date-wrapper">
-            <div className="form-label my-talk-settings__date-label">
-              submitted date
-            </div>
-            <div className="calendars-wrapper">
-              <Calendar />
-              <Calendar />
-            </div>
           </div>
           <div className="my-talk-settings__button-wrapper">
             <input
