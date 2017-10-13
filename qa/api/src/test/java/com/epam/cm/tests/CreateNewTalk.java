@@ -14,6 +14,7 @@ import java.util.Date;
 import static com.epam.cm.base.EndpointUrl.TALK;
 import static com.epam.cm.base.TextConst.*;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.core.Is.is;
 
 public class CreateNewTalk extends SimpleBaseTest {
 
@@ -28,7 +29,7 @@ public class CreateNewTalk extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .formParam(TITLE,"Test talk " + dateFormat.format(currentDate))
                 .formParam(DESCRIPTION,"this is test talk for automate test")
                 .formParam(TOPIC,"ML")
@@ -45,7 +46,7 @@ public class CreateNewTalk extends SimpleBaseTest {
                 .body(ERROR, Matchers.nullValue())
                 .body(SECONDSTOEXPIRY, Matchers.nullValue())
                 .body(RESULT, Matchers.nullValue())
-                .body(ID, Matchers.is(Integer.class))
+                .body(ID, is(Integer.class))
                 .body(FIELDS, Matchers.nullValue())
                 .extract().response();
     }

@@ -18,7 +18,7 @@ public class ChangePassword extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body(passwordChangeJSON).
         when()
                 .post(PASSWORD)
@@ -33,7 +33,7 @@ public class ChangePassword extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body(passwordChangeJSON).
                 when()
                 .post(PASSWORD)

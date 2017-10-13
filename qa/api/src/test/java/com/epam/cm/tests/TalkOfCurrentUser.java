@@ -25,7 +25,7 @@ public static Response endresp;
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
                 .get(TALK + "/33")
@@ -53,7 +53,7 @@ public static Response endresp;
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(TALK + "/60")

@@ -12,7 +12,7 @@ import static com.epam.cm.base.TextConst.*;
 import static io.restassured.RestAssured.given;
 
 public class ListOfTalks extends SimpleBaseTest {
-    public static Response endresp;
+    private   Response endresp;
     @Test
     public void listOfTalksIfOrganiser(){
         endresp =
@@ -21,7 +21,7 @@ public class ListOfTalks extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
                 .get(TALK)
@@ -58,7 +58,7 @@ public class ListOfTalks extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(TALK)
