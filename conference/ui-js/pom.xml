@@ -88,7 +88,7 @@
 
                     <execution>
                         <id>exec-gulp</id>
-                        <phase>initialize</phase>
+                        <phase>process-sources</phase>
                         <configuration>
                             <executable>gulp</executable>
                             <arguments>

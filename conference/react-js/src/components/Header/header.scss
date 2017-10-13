@@ -1,0 +1,174 @@
+.header {
+  width: 100%;
+  height: 70px;
+  background: $graphite;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+    height: 100px;
+    }
+
+  &__title {
+    height: 100%;
+    line-height: 70px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 40px;
+    padding: 0 130px;
+
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+      width: 100%;
+      height: 50%;
+      font-size: 25px;
+      line-height: 50px;
+      padding: 0;
+      text-align: center;
+      }
+
+    @media ($mnw: $mdmn) and ($mxw: $ldmx) {
+      padding: 0 50px;
+      }
+
+    }
+  }
+
+.menu-container {
+  height: 100%;
+  position: relative;
+
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+    width: 100%;
+    height: 50%;
+    text-align: center;
+    }
+
+  &__button {
+    border: 0;
+    background: $sharp-blue;
+    color: #fff;
+    font-size: 18px;
+    margin-top: 20px;
+    padding: 3px 15px;
+
+    &:hover {
+      cursor: pointer;
+      }
+
+    &:focus {
+      outline: 0;
+      }
+
+    &:active {
+      background: darken($sharp-blue, 15%)
+      }
+
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+      padding: 0 10px;
+      margin-top: 5px;
+      max-width: 350px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      }
+
+    @media ($mnw: $mdmn) and ($mxw: $ldmn) {
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      }
+    }
+  &__content {
+    width: 300px;
+    display: block;
+    position: absolute;
+    top: 70px;
+    z-index: 100;
+
+    @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
+      width: 100%;
+      top: 50px;
+      }
+
+    @media ($mnw: $sdmn) and ($mxw: $sdmx) {
+      top: 50px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      }
+    @media ($mnw: $mdmn) and ($mxw: $mdmx) {
+      top: 70px;
+      right: 0;
+      }
+    }
+
+  .none {
+    height: 0;
+    overflow: hidden;
+    }
+  }
+
+.menu-arrow {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 13px solid $sharp-blue;
+  position: absolute;
+  top: -12px;
+  left: 25px;
+
+  @media ($mnw: $mdmn) and ($mxw: $mdmx) {
+    left: 250px;
+    }
+
+  @media ($mnw: $sdmn) and ($mxw: $sdmx) {
+    left: 135px;
+    }
+
+  @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
+    left: 170px;
+    }
+  }
+
+.menu-list {
+  &__item {
+    width: 100%;
+    height: 50px;
+    background-color: $sharp-blue;
+    border-top: 1px solid #fff;
+
+    &:hover {
+      background-color: $dark-blue;
+      }
+
+    &:first-child {
+      border-top: none;
+      }
+
+    &_sign-out {
+      background-image: url(../images/sign-out.svg);
+      background-size: 24px 24px;
+      background-position: right 10px center;
+      background-repeat: no-repeat;
+      }
+    }
+
+  &__title {
+    width: 100%;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    box-sizing: border-box;
+
+    @media ($mnw: $mdmn) {
+      padding: 0 10px
+      }
+    }
+  }
+

@@ -1,9 +1,17 @@
 package ua.rd.cm.domain;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 
 public enum TalkStatus {
-    NEW("New"), IN_PROGRESS("In Progress"), APPROVED("Approved"), REJECTED("Rejected");
+
+    NEW("New"),
+    IN_PROGRESS("In Progress"),
+    APPROVED("Approved"),
+    REJECTED("Rejected");
 
     private String name;
 

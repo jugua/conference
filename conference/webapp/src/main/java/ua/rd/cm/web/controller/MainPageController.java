@@ -44,6 +44,13 @@ public class MainPageController {
         return responseEntityConferencesByRole(request, conferences);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("conference/{id}")
+    public ResponseEntity getConferenceById(@PathVariable long id) {
+        Conference conference = conferenceService.findById(id);
+        return new ResponseEntity(conference, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("conference")
     public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
@@ -54,13 +61,20 @@ public class MainPageController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("conference/update/{id}")
+    @PatchMapping("conference/update")
     public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult, HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
+        messageDto.setId(dto.getId());
         Conference conference = conferenceService.conferenceDtoToConference(dto);
-        // TODO: check conferenceDto
-        conferenceService.update(conference);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+
+        if (bindingResult.hasErrors()) {
+            messageDto.setError("field_error");
+            return new ResponseEntity<>(messageDto, HttpStatus.BAD_REQUEST);
+        } else {
+            messageDto.setError("successfully_updated");
+            conferenceService.update(conference);
+            return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        }
     }
 
     @PreAuthorize("hasRole('ADMIN')")

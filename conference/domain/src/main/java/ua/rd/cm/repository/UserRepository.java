@@ -20,7 +20,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAllByLastName(String lastName);
 
-    List<User> findAllByUserRolesIsIn(Role name);
+    List<User> findAllByRolesIsIn(Role name);
 
-    List<User> findAllByUserRolesIsIn(List<Role> name);
+    List<User> findAllByRolesIsIn(List<Role> name);
 }
