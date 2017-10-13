@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import SlideBlock from '../../components/SlideBlock';
 import CustomForm from '../../components/CustomForm';
+import InputBlock from '../../components/InputBlock';
 import actionTypes from '../../constants/actions-types';
 import changeEmail from '../../actions/changeEmail';
 import changePassword from '../../actions/changePassword';
@@ -39,8 +40,7 @@ class SettingsPage extends PureComponent {
 
   saveEmail = ({ newEmail }) => {
     changeEmail(newEmail)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         this.props.updateUser({
           ...this.props.user,
           mail: newEmail,
@@ -50,8 +50,7 @@ class SettingsPage extends PureComponent {
           message: 'Please, check your email!',
         });
       })
-      .catch((res) => {
-        console.log(res);
+      .catch(() => {
         let error = '';
         switch (status) {
         case 409:
@@ -145,26 +144,22 @@ class SettingsPage extends PureComponent {
             <CustomForm
               saveAction={this.saveEmail}
               cancelAction={this.cancelAction}
-              inputs={[
-                {
-                  name: 'oldEmail',
-                  id: 'old-email',
-                  label: 'Old email',
-                  type: 'email',
-                  value: mail,
-                  readonly: true,
-                },
-                {
-                  name: 'newEmail',
-                  id: 'new-email',
-                  label: 'New email',
-                  type: 'text',
-                  value: '',
-                  pattern: emailPattern.source,
-                  required: true,
-                },
-              ]}
-            />
+            >
+              <InputBlock
+                name="oldEmail"
+                label="Old email"
+                type="email"
+                value={mail}
+                pattern={emailPattern}
+                readonly
+              />
+              <InputBlock
+                name="newEmail"
+                label="New email"
+                type="email"
+                pattern={emailPattern}
+              />
+            </CustomForm>
           </SlideBlock>
 
           <SlideBlock
@@ -176,6 +171,7 @@ class SettingsPage extends PureComponent {
             <CustomForm
               saveAction={this.saveName}
               cancelAction={this.cancelAction}
+
               inputs={[
                 {
                   name: 'firstName',
