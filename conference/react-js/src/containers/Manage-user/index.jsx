@@ -53,7 +53,6 @@ class ManageUser extends PureComponent {
     const { ASC } = actions;
     const { users, load } = this.props;
     const value = this.state[name] === '' ? ASC : '';
-    console.log(load('sort', { users, direction: value, field: name }));
     load('sort', { users, direction: value, field: name });
     this.setState({ [name]: value });
   };
