@@ -1,7 +1,9 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.*;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -17,17 +19,18 @@ import static org.hamcrest.Matchers.*;
 
 public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
 
-    //6662
+
     @Test
+    @Jira("6662")
     public void positiveOrganiserGettingExistingUserTest() {
 
-        endResponse=
+       Response endResponse=
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(EndpointUrl.USER + TextConstants.EXISTING_USER_ID)
@@ -49,8 +52,8 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
 
     }
 
-    //6794
     @Test
+    @Jira("6794")
     public void negativeNonLoggedUserGettingExistingUserTest() {
 
         given()
@@ -58,7 +61,7 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(TextConstants.WRONG_USER, TextConstants.WRONG_PASSWORD)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(EndpointUrl.USER+TextConstants.EXISTING_USER_ID)
@@ -73,6 +76,7 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
 
     //6666
     @Test
+    @Jira("6666")
     public void negativeOrganiserGettingNonExistingUserTest() {
 
         given()
@@ -80,7 +84,7 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(EndpointUrl.USER+TextConstants.NON_EXISTING_USER_ID)
