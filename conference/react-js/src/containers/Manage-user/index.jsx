@@ -44,6 +44,12 @@ class ManageUser extends PureComponent {
     ))
   );
 
+  sortedList = ({ target: { dataset: { sort, name } } }) => {
+    const { users } = this.props;
+    const { load } = this.props;
+    load('sort', { users, direction: sort, field: name });
+  };
+
   toggleAddUserPopUp = () => (
     this.setState({
       isShowAddNewUserPopUp: !this.state.isShowAddNewUserPopUp,
@@ -51,6 +57,7 @@ class ManageUser extends PureComponent {
   );
 
   render() {
+    const { ASC } = actions;
     const { isShowAddNewUserPopUp } = this.state;
     const { users } = this.props;
     return (
@@ -77,14 +84,33 @@ class ManageUser extends PureComponent {
             <div className="data-table">
               <div className="table-header">
                 <div
+                  data-name="roles"
+                  data-sort={ASC}
+                  role="button"
+                  tabIndex={0}
+                  onClick={this.sortedList}
                   className="table-header__item table-header__item_role"
                 >
                role
                 </div>
-                <div className="table-header__item table-header__item_name">
+                <div
+                  data-name="fname"
+                  data-sort={ASC}
+                  role="button"
+                  tabIndex={0}
+                  onClick={this.sortedList}
+                  className="table-header__item table-header__item_name"
+                >
                name
                 </div>
-                <div className="table-header__item table-header__item_email">
+                <div
+                  data-name="mail"
+                  data-sort={ASC}
+                  role="button"
+                  tabIndex={0}
+                  onClick={this.sortedList}
+                  className="table-header__item table-header__item_email"
+                >
                email
                 </div>
                 <div className="table-header__item table-header__scroll-fix" />

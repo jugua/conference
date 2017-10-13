@@ -6,6 +6,8 @@ const actions = {
   HIDE_EMAIL_ERROR: 'hide_email_error',
   SET_USER: 'set_user',
   LOAD_USER_DATA: 'load-users',
+  SORT_USER_DATA: 'sort',
+  ASC: 'asc',
 };
 
 export default actions;
