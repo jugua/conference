@@ -3,3 +3,4 @@ export const upcoming = '/conference/upcoming';
 export const past = '/conference/past ';
 export const userInfo = '/myinfo';
 export const loginUrl = '/login';
+export const allUsers = '/manageUsers/getAllUsersForAdmin';
