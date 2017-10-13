@@ -9,7 +9,12 @@ import Header from './Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
 import SettingsPage from '../containers/SettingsPage';
-import { baseUrl, forgotPassword, signUp } from '../constants/route-url';
+import {
+  baseUrl,
+  forgotPassword,
+  signUp,
+  manageUser } from '../constants/route-url';
+import ManageUser from '../containers/Manage-user/';
 
 const App = () => (
   <Router>
@@ -29,6 +34,10 @@ const App = () => (
       <Route
         path={signUp}
         component={SignUp}
+      />
+      <Route
+        path={manageUser}
+        component={ManageUser}
       />
     </div>
   </Router>

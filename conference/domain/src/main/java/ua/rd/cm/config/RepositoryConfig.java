@@ -1,13 +1,17 @@
 package ua.rd.cm.config;
 
+import java.sql.SQLException;
+import java.util.Properties;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
@@ -19,8 +23,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.sql.SQLException;
-
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @EnableTransactionManagement
@@ -77,9 +81,9 @@ public class RepositoryConfig {
         return ds;
     }
 
-    @Bean(initMethod="start",destroyMethod="stop")
-    public org.h2.tools.Server h2WebConsoleServer () throws SQLException {
-        return org.h2.tools.Server.createWebServer("-web","-webAllowOthers","-webDaemon","-webPort", "8082");
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    public org.h2.tools.Server h2WebConsoleServer() throws SQLException {
+        return org.h2.tools.Server.createWebServer("-web", "-webAllowOthers", "-webDaemon", "-webPort", "8083");
     }
 
     @Bean
@@ -89,7 +93,8 @@ public class RepositoryConfig {
 
     @Bean
     public AbstractEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
-                                                                 JpaVendorAdapter jpaVendorAdapter) {
+                                                                 JpaVendorAdapter jpaVendorAdapter,
+                                                                 Environment environment) {
         LocalContainerEntityManagerFactoryBean emf =
                 new LocalContainerEntityManagerFactoryBean();
 
@@ -97,8 +102,13 @@ public class RepositoryConfig {
         emf.setJpaVendorAdapter(jpaVendorAdapter);
         emf.setPackagesToScan("ua.rd.cm.domain");
 
+        Properties props = new Properties();
+        props.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+
+        emf.setJpaProperties(props);
         return emf;
     }
+
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {

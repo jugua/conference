@@ -3,6 +3,7 @@
   -moz-box-shadow: $top $left $blur $dilation $color;
   box-shadow: $top $left $blur $dilation $color;
   }
+
 @mixin my-talk-before-title {
   width: 80px;
   display: block;
@@ -10,6 +11,7 @@
   margin-left: 3px;
   font-family: Oswald Regular, sans-serif;
   }
+
 @mixin filter-icon {
   content: ' ';
   display: block;

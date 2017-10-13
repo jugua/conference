@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   Link,
 } from 'react-router-dom';
-import SignInForm from '../../containers/SignInForm';
 import { baseUrl } from '../../constants/route-url';
+import SignInForm from '../../containers/SignInForm';
+import UserMenuFilter from '../User-menu-filter';
 
 class Header extends PureComponent {
   constructor() {
@@ -51,6 +54,7 @@ class Header extends PureComponent {
   };
 
   render() {
+    const { user: { roles, fname } } = this.props;
     return (
       <header className="header">
         <div className="header__title">
@@ -65,14 +69,21 @@ class Header extends PureComponent {
           <button
             className="menu-container__button js-dropdown"
             onClick={this.onButtonAccountClick}
-          >Your Account
+          >{ fname ? `${fname}'s` : 'Your'} Account
           </button>
           <div className={classNames({
             'menu-container__content': true,
             none: !this.state.visible,
           })}
           >
-            <SignInForm />
+            {
+              roles.length > 0 ?
+                <UserMenuFilter
+                  roles={roles}
+                />
+                : <SignInForm />
+            }
+
           </div>
         </div>
       </header>
@@ -80,4 +91,28 @@ class Header extends PureComponent {
   }
 }
 
-export default Header;
+Header.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    roles: PropTypes.array,
+    mail: PropTypes.string,
+    fname: PropTypes.string,
+    lname: PropTypes.string,
+    bio: PropTypes.string,
+    job: PropTypes.string,
+    company: PropTypes.string,
+    past: PropTypes.string,
+    photo: PropTypes.string,
+    linkedin: PropTypes.string,
+    twitter: PropTypes.string,
+    facebook: PropTypes.string,
+    blog: PropTypes.string,
+    info: PropTypes.string,
+  }).isRequired,
+};
+
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(Header);
