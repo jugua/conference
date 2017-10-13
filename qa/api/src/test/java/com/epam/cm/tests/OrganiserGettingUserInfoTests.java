@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import static io.restassured.path.json.JsonPath.from;
+
 import java.util.Map;
 
 import static io.restassured.RestAssured.config;
@@ -24,30 +25,29 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
     @Jira("6662")
     public void positiveOrganiserGettingExistingUserTest() {
 
-       Response endResponse=
-        given()
-                .contentType(ContentType.JSON)
-                .baseUri(config.baseHost)
-                .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
-                .cookie(TOKEN, response.cookie(TOKEN))
-                .header(X_TOKEN, response.cookie(TOKEN))
-                .
-                        when()
-                .get(EndpointUrl.USER + TextConstants.EXISTING_USER_ID)
-                .
-                        then().log().all()
-                .statusCode(200)
-                .assertThat()
-                .body(TextConstants.ID, hasToString(TextConstants.EXISTING_USER_ID))
-        .body("roles", notNullValue()).extract().response();
+        Response endResponse =
+                given()
+                        .contentType(ContentType.JSON)
+                        .baseUri(config.baseHost)
+                        .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
+                        .cookie(TOKEN, response.cookie(TOKEN))
+                        .header(X_TOKEN, response.cookie(TOKEN))
+                        .
+                when()
+                        .get(EndpointUrl.USER + TextConstants.EXISTING_USER_ID)
+                        .
+                then()
+                        .log().all()
+                        .statusCode(200)
+                        .assertThat()
+                        .body(TextConstants.ID, hasToString(TextConstants.EXISTING_USER_ID))
+                        .body(TextConstants.ROLES, notNullValue()).extract().response();
 
         String jsonAsString = endResponse.getBody().asString();
-        Map<String,?> jsonAsArrayList = from(jsonAsString).get("");
+        Map<String, ?> jsonAsArrayList = from(jsonAsString).get("");
         int fieldsCount = jsonAsArrayList.size();
 
         Assert.assertEquals(15, fieldsCount);
-
-
 
 
     }
@@ -63,13 +63,14 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
-                .get(EndpointUrl.USER+TextConstants.EXISTING_USER_ID)
+        when()
+                .get(EndpointUrl.USER + TextConstants.EXISTING_USER_ID)
                 .
-                        then().log().all()
+        then()
+                .log().all()
                 .statusCode(401)
                 .assertThat()
-                .body("error", hasToString("login_auth_err"));
+                .body(TextConstants.ERROR, hasToString("login_auth_err"));
 
 
     }
@@ -86,17 +87,18 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
-                .get(EndpointUrl.USER+TextConstants.NON_EXISTING_USER_ID)
+        when()
+                .get(EndpointUrl.USER + TextConstants.NON_EXISTING_USER_ID)
                 .
-                        then().log().all()
+        then()
+                .log().all()
                 .statusCode(404)
                 .assertThat()
-                .body("error", hasToString("user_not_found"))
-                .body("secondsToExpiry", nullValue())
-                .body("result", nullValue())
-                .body("id", nullValue())
-                .body("fields", nullValue());
+                .body(TextConstants.ERROR, hasToString("user_not_found"))
+                .body(TextConstants.SECONDS_TO_EXPIRY, nullValue())
+                .body(TextConstants.RESULT, nullValue())
+                .body(TextConstants.ID, nullValue())
+                .body(TextConstants.FIELDS, nullValue());
 
 
     }
