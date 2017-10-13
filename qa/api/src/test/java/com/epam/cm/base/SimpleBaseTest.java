@@ -33,6 +33,9 @@ public class SimpleBaseTest {
     };
 
 
+
+
+
     @Before
     public void setup(){
         RestAssured.defaultParser = Parser.JSON;
