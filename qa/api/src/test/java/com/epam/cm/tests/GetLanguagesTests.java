@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import static org.hamcrest.Matchers.*;
 public class GetLanguagesTests extends SimpleBaseTest {
 
     @Test
+    @Jira("6753")
     public void positiveGetLangTest(){
 
         given()
@@ -22,7 +24,7 @@ public class GetLanguagesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(EndpointUrl.LANGUAGES)
@@ -32,27 +34,32 @@ public class GetLanguagesTests extends SimpleBaseTest {
                 .assertThat()
                 .body(TextConstants.NAME,
                         hasItems(TextConstants.ENGLISH, TextConstants.UKRAINIAN, TextConstants.RUSSIAN))
-                .and().assertThat().body(TextConstants.NAME, hasSize(3))
-                .and().assertThat().body(TextConstants.ID, notNullValue())
-                .extract().response();
+                .and()
+                .assertThat()
+                .body(TextConstants.NAME, hasSize(3))
+
+                .and()
+                .assertThat()
+                .body(TextConstants.ID, notNullValue());
 
     }
     @Test
+    @Jira("6755")
     public void negativeGetLangTest(){
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get( EndpointUrl.LANGUAGES)
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED))
-                .extract().response();
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
 
     }
 

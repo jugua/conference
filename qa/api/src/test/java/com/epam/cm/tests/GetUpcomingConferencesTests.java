@@ -1,7 +1,9 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.*;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,21 +17,12 @@ import static io.restassured.path.json.JsonPath.from;
 
 
 public class GetUpcomingConferencesTests extends SimpleBaseTest {
-    int pastConferencesCount = 0;
-    int pastConferenceFieldsCount = 0;
 
-
-    @Before
-    public void setCountersToZero() {
-        pastConferencesCount = 0;
-        pastConferenceFieldsCount = 0;
-    }
-
-    //6732
     @Test
+    @Jira("6732")
     public void getUpcomingConferencesNonLoggedUserTest(){
 
-        endResponse =
+        Response endResponse =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
@@ -53,27 +46,25 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
         String jsonAsString = endResponse.getBody().asString();
 
         ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-        pastConferencesCount = jsonAsArrayList.size();
 
-        Assert.assertTrue(pastConferencesCount > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
+        Assert.assertTrue(jsonAsArrayList.size() > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
 
         for (Map m : jsonAsArrayList) {
-            pastConferenceFieldsCount = m.values().size();
-            Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+            Assert.assertTrue( m.values().size() <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
         }
     }
 
-    //6729
     @Test
+    @Jira("6729")
     public void getUpcomingConferencesAdminTest(){
 
-        endResponse =
+       Response endResponse =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().basic(config.adminUser, config.adminPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .
         when()
                 .get(EndpointUrl.UPCOMING_CONFERENCE)
@@ -94,27 +85,27 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
         String jsonAsString = endResponse.getBody().asString();
 
         ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-        pastConferencesCount = jsonAsArrayList.size();
+        int pastConferencesCount = jsonAsArrayList.size();
 
         Assert.assertTrue(pastConferencesCount > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
 
         for (Map m : jsonAsArrayList) {
-            pastConferenceFieldsCount = m.values().size();
+            int pastConferenceFieldsCount = m.values().size();
             Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
         }
     }
 
-    //6759
     @Test
+    @Jira("6759")
     public void getUpcomingConferencesOrganiserTest(){
 
-        endResponse =
+        Response endResponse =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().basic(config.organiserUser, config.organiserPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
         .when()
                 .get(EndpointUrl.UPCOMING_CONFERENCE)
         .then().log().all()
@@ -133,21 +124,19 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
         String jsonAsString = endResponse.getBody().asString();
 
         ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-        pastConferencesCount = jsonAsArrayList.size();
 
-        Assert.assertTrue(pastConferencesCount > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
+        Assert.assertTrue(jsonAsArrayList.size() > ConferenceConstants.LEAST_NUMBER_OF_CONFERENCES);
 
         for (Map m : jsonAsArrayList) {
-            pastConferenceFieldsCount = m.values().size();
-            Assert.assertTrue(pastConferenceFieldsCount <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
+            Assert.assertTrue(m.values().size() <= ConferenceConstants.FIELDS_NUMBER_OF_CONFERENCES_JSON);
         }
     }
 
-    //6806
     @Test
+    @Jira("6806")
     public void getUpcomingConferencesUserWithInvalidCredentialsTest(){
 
-        endResponse =
+        Response endResponse =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)

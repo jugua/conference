@@ -14,6 +14,7 @@ public class Config {
     public String wrongUser;
     public String wrongPassword;
 
+
     public Config (Properties properties){
         baseHost = properties.getProperty("baseHost");
         organiserUser = properties.getProperty("organiser.user");
