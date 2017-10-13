@@ -16,15 +16,9 @@ import static io.restassured.path.json.JsonPath.from;
 
 
 public class GetPastConferencesTests extends SimpleBaseTest {
-    int pastConferencesCount = 0;
-    int pastConferenceFieldsCount = 0;
+    int pastConferencesCount;
+    int pastConferenceFieldsCount;
 
-
-    @Before
-    public void setCountersToZero() {
-        pastConferencesCount = 0;
-        pastConferenceFieldsCount = 0;
-    }
 
     //6812
     @Test
