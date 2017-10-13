@@ -36,7 +36,8 @@ public class AddNewTopicTest extends SimpleBaseTest {
 
         then().log().all()
                 .statusCode(200)
-                .assertThat().body(ERROR, nullValue(), ID, notNullValue());
+                .assertThat()
+                .body(ERROR, nullValue(), ID, notNullValue());
     }
 
     @Test
@@ -58,6 +59,7 @@ public class AddNewTopicTest extends SimpleBaseTest {
 
         then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
+                .assertThat()
+                .body(ERROR, hasToString(UNAUTHORIZED));
     }
 }

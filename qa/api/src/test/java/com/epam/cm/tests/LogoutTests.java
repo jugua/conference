@@ -14,7 +14,7 @@ import static io.restassured.RestAssured.given;
 public class LogoutTests extends SimpleBaseTest {
 
 
-    @Test //6620
+    @Test
     @Jira("6620")
     @Ignore
     public void positiveLogoutTest() {

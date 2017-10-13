@@ -12,6 +12,7 @@ public class Config {
     public String adminUser;
     public String adminPassword;
 
+
     public Config (Properties properties){
         baseHost = properties.getProperty("baseHost");
         organiserUser = properties.getProperty("organiser.user");

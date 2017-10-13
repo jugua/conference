@@ -8,11 +8,6 @@ import com.epam.cm.base.SimpleBaseTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
@@ -22,7 +17,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 public class AddNewConferenceTest extends SimpleBaseTest{
 
-    String validContent  = JsonLoader.asString("AddNewConferenceValidData.json");
+    private String validContent  = JsonLoader.asString("AddNewConferenceValidData.json");
 
     @Test
     @Jira("6622")
@@ -42,8 +37,9 @@ public class AddNewConferenceTest extends SimpleBaseTest{
 
         then().log().all()
                 .statusCode(200)
-                .assertThat().body(ERROR, nullValue(), ID, notNullValue())
-                .extract().response();
+                .assertThat()
+                .body(ERROR, nullValue(), ID, notNullValue());
+
     }
 
     @Test
@@ -64,8 +60,8 @@ public class AddNewConferenceTest extends SimpleBaseTest{
 
         then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED))
-                .extract().response();
+                .assertThat()
+                .body(ERROR, hasToString(UNAUTHORIZED));
     }
 
     @Ignore //test failed. bug 6825
@@ -88,7 +84,6 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .
 
         then().log().all()
-                .statusCode(400)
-                .extract().response();
+                .statusCode(400);
     }
 }

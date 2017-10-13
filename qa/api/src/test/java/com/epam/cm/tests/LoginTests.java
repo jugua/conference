@@ -70,7 +70,7 @@ public class LoginTests extends SimpleBaseTest {
 
     }
 
-    @Test //6619
+    @Test
     @Jira("6619")
     public void negativeLoginTestInvalidPass() {
 

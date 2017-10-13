@@ -40,4 +40,11 @@ public class TextConstants {
     public static final String ONLINE= "Online Talk";
     public static final String REGULAR= "Regular Talk";
     public static final String HANDS_ON_LAB= "Hands-On-Lab";
+
+    public static final String WRONG_USER = "wronguser123";
+    public static final String WRONG_PASSWORD = "wrongpassword123";
+
+    public static final String EXISTING_USER_ID = "1";
+    public static final String NON_EXISTING_USER_ID = "99999";
+
 }

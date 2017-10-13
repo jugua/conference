@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import static org.hamcrest.Matchers.*;
 public class GetLanguagesTests extends SimpleBaseTest {
 
     @Test
+    @Jira("6753")
     public void positiveGetLangTest(){
 
         given()
@@ -42,6 +44,7 @@ public class GetLanguagesTests extends SimpleBaseTest {
 
     }
     @Test
+    @Jira("6755")
     public void negativeGetLangTest(){
 
         given()

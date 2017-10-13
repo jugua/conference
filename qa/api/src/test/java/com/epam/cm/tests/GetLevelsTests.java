@@ -53,7 +53,8 @@ public class GetLevelsTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
 
     }
 

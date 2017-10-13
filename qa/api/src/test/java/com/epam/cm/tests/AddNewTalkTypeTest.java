@@ -36,8 +36,7 @@ public class AddNewTalkTypeTest extends SimpleBaseTest {
 
         then().log().all()
                 .statusCode(200)
-                .assertThat().body(ERROR, nullValue(), ID, notNullValue())
-                .extract().response();
+                .assertThat().body(ERROR, nullValue(), ID, notNullValue());
     }
 
     @Test
@@ -59,7 +58,6 @@ public class AddNewTalkTypeTest extends SimpleBaseTest {
 
         then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED))
-                .extract().response();
+                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
     }
 }
