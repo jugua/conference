@@ -5,7 +5,7 @@ export default class TalkService {
 
     this.log = $log;
 
-    this.talks = $resource('talk/:id', {}, {
+    this.talks = $resource('/talk/:id', {}, {
       add: {
         url: '/submitTalk',
         method: 'POST',

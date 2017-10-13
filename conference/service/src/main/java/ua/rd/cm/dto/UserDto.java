@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ua.rd.cm.domain.Contact;
 
 @Data
 @NoArgsConstructor
@@ -49,4 +50,25 @@ public class UserDto extends UserBasicDto {
     @JsonProperty("info")
     @Size(max = 1000)
     private String userInfoAdditionalInfo;
+
+    public void setContact(Contact contact) {
+        String name = contact.getContactType().getName();
+        String value = contact.getValue();
+        switch (name) {
+            case "LinkedIn":
+                linkedIn = value;
+                break;
+            case "Twitter":
+                twitter = value;
+                break;
+            case "Facebook":
+                facebook = value;
+                break;
+            case "Blog":
+                blog = value;
+                break;
+            default:
+                break;
+        }
+    }
 }
