@@ -89,4 +89,6 @@ public class LoginTests extends SimpleBaseTest {
                 .assertThat()
                 .body(TextConstants.ERROR, hasToString(TextConstants.PASSWORD_ERROR));
     }
+
+
 }

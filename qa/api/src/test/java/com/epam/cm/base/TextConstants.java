@@ -1,6 +1,7 @@
 package com.epam.cm.base;
 
 public class TextConstants {
+
     public static final String ERROR = "error";
     public static final String NAME = "name";
     public static final String ID = "id";
