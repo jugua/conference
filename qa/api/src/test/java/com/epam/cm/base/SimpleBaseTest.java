@@ -8,14 +8,11 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import java.util.Arrays;
-import java.util.Properties;
 
 import static io.restassured.RestAssured.when;
+
 
 public class SimpleBaseTest {
 
@@ -25,9 +22,6 @@ public class SimpleBaseTest {
     protected Config config =
             EnvironmentUtils.getPropertiesFromConfig("/config.properties");
     protected Response response;
-
-    protected Response endResponse;
-
 
  @Rule
     public TestWatcher watchman= new TestWatcher() {
@@ -39,25 +33,14 @@ public class SimpleBaseTest {
     };
 
 
+
+
+
     @Before
     public void setup(){
-
-        Resource resource = new ClassPathResource("/config.properties");
         RestAssured.defaultParser = Parser.JSON;
         RestAssured.registerParser("text/plain", Parser.JSON);
 
-        try{
-            Properties props = PropertiesLoaderUtils.loadProperties(resource);
-            config = new Config(props);
-        }
-        catch (Exception e) {throw new RuntimeException("oopps");}
-
-
-        response =
-                when().get(config.baseHost);
-//                        .then().log().all().
-//                        extract().response();
-
-
+        response = when().get(config.baseHost);
     }
 }

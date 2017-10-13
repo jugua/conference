@@ -13,6 +13,9 @@
     <artifactId>react-js</artifactId>
     <packaging>war</packaging>
 
+    <properties>
+        <dir.dist>target/dist</dir.dist>
+    </properties>
 
     <profiles>
         <profile>
@@ -61,7 +64,7 @@
 
                     <execution>
                         <id>exec-npm-run-build</id>
-                        <phase>initialize</phase>
+                        <phase>process-sources</phase>
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
@@ -89,8 +92,14 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceDirectory>${dir.dist}</warSourceDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>

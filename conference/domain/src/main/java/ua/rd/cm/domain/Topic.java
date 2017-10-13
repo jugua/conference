@@ -1,27 +1,29 @@
 package ua.rd.cm.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "topic")
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "topic_seq")
-@AttributeOverride(name = "id", column = @Column(name = "topic_id"))
 public class Topic extends AbstractEntity {
 
-    @Column(name = "topic_name", nullable = false, unique = true)
+    @NonNull
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Topic(Long id, String name) {
-        this.id = id;
+        super(id);
         this.name = name;
     }
 }
