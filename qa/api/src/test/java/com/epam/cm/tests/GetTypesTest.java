@@ -2,22 +2,20 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
-import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
+import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasToString;
 
-/**
- * Created by Mariia_Koltsova on 10/6/2017.
- */
-public class ForgotPasswordTests extends SimpleBaseTest {
+public class GetTypesTest extends SimpleBaseTest{
 
     @Test
-    @Jira("6665")
-    public void positiveForgotPasswordTest() {
+    @Jira("6655")
+    public void positiveGetTypesTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -25,37 +23,34 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{\"mail\":\"test@test.com\"}")
                 .
-                        when()
-                .post(EndpointUrl.FORGOT_PASSWORD)
+        when()
+                .get(EndpointUrl.TYPE)
                 .
-                        then().log().all()
-                .statusCode(200);
 
+        then().log().all()
+                .statusCode(200)
+                .assertThat().body(NAME,
+                    hasItems(REGULAR, ONLINE, LIGHTING, HANDS_ON_LAB));
     }
 
     @Test
-    @Jira("6697")
-    public void negativeForgotPasswordTest() {
+    @Jira("6656")
+    public void negativeGetTypesTest(){
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{\"mail\":\"test1@t.com\"}")
                 .
-                        when()
-                .post(EndpointUrl.FORGOT_PASSWORD)
-                .
-                        then().log().all()
-                .statusCode(400)
-                .assertThat()
-                .body(TextConstants.ERROR, hasToString(TextConstants.EMAIL_NOT_FOUND));
 
+        when()
+                .get(EndpointUrl.TYPE)
+                .
+
+            then().log().all()
+                .statusCode(401)
+                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
     }
-
-
 }

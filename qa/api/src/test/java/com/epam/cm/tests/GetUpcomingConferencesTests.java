@@ -67,7 +67,7 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().basic(config.adminUser, config.adminPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .
         when()
                 .get(EndpointUrl.UPCOMING_CONFERENCE)
@@ -108,7 +108,7 @@ public class GetUpcomingConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().basic(config.organiserUser, config.organiserPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
         .when()
                 .get(EndpointUrl.UPCOMING_CONFERENCE)
         .then().log().all()

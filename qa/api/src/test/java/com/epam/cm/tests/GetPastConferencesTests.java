@@ -69,7 +69,7 @@ public class GetPastConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().basic(config.adminUser, config.adminPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .
         when()
                 .get(EndpointUrl.PAST_CONFERENCE)
@@ -111,7 +111,7 @@ public class GetPastConferencesTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().basic(config.organiserUser, config.organiserPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
         .when()
                 .get(EndpointUrl.PAST_CONFERENCE)
         .then().log().all()

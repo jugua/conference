@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -25,7 +26,8 @@ public class LoginTests extends SimpleBaseTest {
         };
     }
 
-    @Test //6621
+    @Test
+    @Jira("6621")
     public void positiveLoginTest() {
 
         given()
@@ -33,20 +35,20 @@ public class LoginTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .post(EndpointUrl.LOGIN)
                 .
                         then().log().all()
                 .statusCode(200)
-                .assertThat().body(Matchers.isEmptyOrNullString())
-                .extract().response();
+                .assertThat().body(Matchers.isEmptyOrNullString());
 
 
     }
 
-    @Test //6893, 6894
+    @Test
+    @Jira({"6893, 6894"})
     @UseDataProvider("invalidLoginDataProvider")
     public void negativeLoginTestInvalidLoginError(String login, String password) {
 
@@ -55,7 +57,7 @@ public class LoginTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(login, password)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .post(EndpointUrl.LOGIN)
@@ -63,14 +65,13 @@ public class LoginTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.LOGIN_ERROR))
-
-                .extract().response();
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.LOGIN_ERROR));
 
     }
 
-
-    @Test //6619
+    @Test
+    @Jira("6619")
     public void negativeLoginTestInvalidPass() {
 
         given()
@@ -78,16 +79,16 @@ public class LoginTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, "732723tf")
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
 
-                .
-                        when()
+                .when()
                 .post(EndpointUrl.LOGIN)
                 .
                         then().log().all().assertThat()
                 .statusCode(401)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.PASSWORD_ERROR))
-                .extract().response();
-
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.PASSWORD_ERROR));
     }
+
+
 }

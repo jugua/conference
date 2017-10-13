@@ -2,20 +2,24 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
-import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
+import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
+import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
+public class AddNewTopicTest extends SimpleBaseTest {
 
-public class GetLevelsTests extends SimpleBaseTest {
+   private  String validContent = JsonLoader.asString("AddNewTopicData.json");
 
     @Test
-    @Jira("6738")
-    public void positiveGetLevelsTest() {
+    @Jira("6679")
+    public void positiveAddNewTalkTypeTest(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -23,39 +27,39 @@ public class GetLevelsTests extends SimpleBaseTest {
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
+                .body(validContent)
                 .
-                        when()
-                .get(EndpointUrl.LEVELS)
+
+        when()
+                .post(EndpointUrl.TOPIC)
                 .
-                        then().log().all()
+
+        then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConstants.NAME,
-                        hasItems(TextConstants.ADVANCED, TextConstants.BEGINNER, TextConstants.EXPERT,
-                                TextConstants.INTERMEDIATE))
-                .and().assertThat().body(TextConstants.NAME, hasSize(4))
-                .and().assertThat().body(TextConstants.ID, notNullValue());
-
+                .body(ERROR, nullValue(), ID, notNullValue());
     }
 
     @Test
-    @Jira("6744")
-    public void negativeGetLevelsTest() {
+    @Jira("6681")
+    public void negativeAddNewTalkTypeTest(){
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
+                .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
+                .body(validContent)
                 .
-                        when()
-                .get(EndpointUrl.LEVELS)
+
+        when()
+                .post( EndpointUrl.TOPIC)
                 .
-                        then().log().all()
+
+        then().log().all()
                 .statusCode(401)
                 .assertThat()
-                .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
-
+                .body(ERROR, hasToString(UNAUTHORIZED));
     }
-
 }

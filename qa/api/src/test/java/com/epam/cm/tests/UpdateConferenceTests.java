@@ -23,7 +23,7 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.CONFERENCE_BODY_JSON)
                 .
         when()
@@ -49,7 +49,7 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.CONFERENCE_BODY_JSON)
                 .
         when()
@@ -72,7 +72,7 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(TextConstants.WRONG_USER, TextConstants.WRONG_PASSWORD)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.CONFERENCE_BODY_JSON)
                 .
         when()
@@ -96,7 +96,7 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.XTOKEN, response.cookie(SimpleBaseTest.TOKEN))
+                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
                 .body(ConferenceConstants.NON_EXISTING_CONFERENCE_BODY_JSON)
                 .
         when()
