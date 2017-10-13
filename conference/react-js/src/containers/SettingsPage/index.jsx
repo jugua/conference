@@ -5,23 +5,31 @@ import PropTypes from 'prop-types';
 import SlideBlock from '../../components/SlideBlock';
 import actionTypes from '../../constants/actions-types';
 import changeEmail from '../../actions/changeEmail';
-import { emailPattern,
-  namePattern } from '../../constants/patterns';
+import changePassword from '../../actions/changePassword';
+import changeName from '../../actions/changeName';
+import {
+  emailPattern,
+  namePattern,
+  passwordPattern,
+} from '../../constants/patterns';
+import { technicalError, expiredSession } from '../../constants/errors';
 
 class SettingsPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       current: -1,
+      error: '',
+      message: '',
     };
   }
 
-  componentWillMount() {
-    // this.props.addMockUser();
-  }
-
   showCurrent = (index) => {
-    this.setState({ current: index });
+    this.setState({
+      current: index,
+      error: '',
+      message: '',
+    });
   };
 
   cancelAction = () => {
@@ -35,28 +43,84 @@ class SettingsPage extends PureComponent {
           ...this.props.user,
           mail: newEmail,
         });
+
+        this.setState({
+          message: 'Please, check your email!',
+        });
       })
-      .catch((err) => { throw err; });
+      .catch(({ status }) => {
+        let error = '';
+        console.log(status);
+        switch (status) {
+        case 409:
+          error = 'This email already exists';
+          break;
+        case 401:
+          error = expiredSession;
+          break;
+        default:
+          error = technicalError;
+        }
+
+        this.setState({
+          error,
+        });
+      });
   };
 
   saveName = ({ firstName, lastName }) => {
-    this.props.updateUser({
+    const updatedUser = {
       ...this.props.user,
       fname: firstName,
       lname: lastName,
-    });
+    };
+
+    changeName(updatedUser)
+      .then(() => {
+        this.props.updateUser(updatedUser);
+        this.setState({
+          message: 'Your info updated!',
+        });
+      })
+      .catch(() => {
+        this.setState({
+          error: technicalError,
+        });
+      });
   };
 
-  savePassword = () => {
+  savePassword = ({ currentPassword, newPassword, confirmNewPassword }) => {
+    if (newPassword === confirmNewPassword) {
+      changePassword({ currentPassword, newPassword, confirmNewPassword })
+        .then(() => {
+          this.setState({
+            message: 'Your password changed!',
+          });
+        })
+        .catch(({ status }) => {
+          let error = '';
 
+          if (status === 403) {
+            error = 'Wrong password';
+          } else {
+            error = technicalError;
+          }
+
+          this.setState({
+            error,
+          });
+        });
+    } else {
+      this.setState({
+        error: 'Passwords do not match',
+      });
+    }
   };
 
   render() {
-    const {
-      lname = '',
-      fname = '',
-      mail = '',
-    } = this.props.user;
+    const { lname = '', fname = '', mail = '' } = this.props.user;
+
+    const { error, message } = this.state;
 
     const blocks = [
       {
@@ -108,11 +172,52 @@ class SettingsPage extends PureComponent {
           },
         ],
       },
+      {
+        header: 'Password',
+        brief: '******',
+        action: this.savePassword,
+        inputs: [
+          {
+            name: 'currentPassword',
+            id: 'current-password',
+            label: 'Current password',
+            type: 'password',
+            value: '',
+            pattern: passwordPattern.source,
+            required: true,
+          },
+          {
+            name: 'newPassword',
+            id: 'new-password',
+            label: 'New password',
+            type: 'password',
+            value: '',
+            pattern: passwordPattern.source,
+            required: true,
+          },
+          {
+            name: 'confirmNewPassword',
+            id: 'confirm-password',
+            label: 'Confirm password',
+            type: 'password',
+            value: '',
+            pattern: passwordPattern.source,
+            required: true,
+          },
+        ],
+      },
     ];
 
     return (
       <div className="settings-wrapper">
         <div className="settings__block">
+          <div className="settings__header">Account settings</div>
+          { error && <div className="settings__info settings__error">
+            {error}
+          </div> }
+          { message && <div className="settings__info settings__success">
+            {message}
+          </div> }
           {
             blocks.map(({
               brief,
@@ -155,32 +260,9 @@ const mapDispatchToProps = dispatch => ({
       payload: user,
     });
   },
-  // addMockUser: () => {
-  //   dispatch({
-  //     type: actionTypes.SET_USER,
-  //     payload: {
-  //       bio: '',
-  //       blog: null,
-  //       company: '',
-  //       facebook: null,
-  //       fname: 'Organiser',
-  //       id: 3,
-  //       info: null,
-  //       job: '',
-  //       linkedin: null,
-  //       lname: 'Organiser',
-  //       mail: 'organiser@gmail.com',
-  //       past: null,
-  //       photo: null,
-  //       roles: ['ROLE_ORGANISER'],
-  //       twitter: null,
-  //     },
-  //   });
-  // },
 });
 
 SettingsPage.propTypes = {
-  // addMockUser: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,

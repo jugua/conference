@@ -19,6 +19,19 @@
   }
 
 .settings {
+  &__success {
+    background: $lime-green
+    }
+
+  &__error {
+    background: $raspberry
+    }
+
+  &__info {
+    padding: 20px;
+    text-align: center;
+    }
+
   &__block {
     margin-top: 20px;
     }
