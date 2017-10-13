@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
-// import Calendar from '../../../components/Talks/Calendar';
 
 class FilterForm extends PureComponent {
   setTopics = listOfTopics => (

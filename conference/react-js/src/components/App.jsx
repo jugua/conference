@@ -12,8 +12,10 @@ import {
   baseUrl,
   forgotPassword,
   signUp,
-  manageUser } from '../constants/route-url';
+  manageUser,
+  talks } from '../constants/route-url';
 import ManageUser from './Manage-user/';
+import Talks from '../containers/Talks';
 
 const App = () => (
   <Router>
@@ -34,14 +36,12 @@ const App = () => (
         component={SignUp}
       />
       <Route
-<<<<<<< HEAD
         path={talks}
-
         component={Talks}
-=======
+      />
+      <Route
         path={manageUser}
         component={ManageUser}
->>>>>>> dev
       />
     </div>
   </Router>

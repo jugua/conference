@@ -9,7 +9,7 @@ import load from '../../actions/load';
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
 
-class TalksRender extends Component {
+class Talks extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,19 +23,13 @@ class TalksRender extends Component {
     axios.get(topics)
       .then(({ data }) => {
         this.setState({ listOfTopics: data });
-      })
-      .catch(({ response: { listOfTopics } }) => (
-        console.log(listOfTopics)
-      ));
+      });
 
     axios.get(talk)
       .then(({ data }) => {
         this.props.load(LOAD, data);
         this.setState({ listOfTalks: data });
-      })
-      .catch(({ response: { data } }) => (
-        console.log(data)
-      ));
+      });
   }
 
   onChangeFilter = ({ target: { name, value } }) => {
@@ -163,7 +157,7 @@ class TalksRender extends Component {
   }
 }
 
-TalksRender.propTypes = {
+Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
@@ -180,4 +174,4 @@ const mapDispatchToProps = dispatch => ({
     load, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TalksRender);
+export default connect(mapStateToProps, mapDispatchToProps)(Talks);

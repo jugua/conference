@@ -5,9 +5,7 @@ import TalksList from '../../../components/TalksList';
 class DisplayTalks extends Component {
   setTalks = data => Object.values(data)
     .map(element => (
-      /* eslint-disable */
-      <TalksList data={element} key={element.id}/>)
-      /* eslint-enable */
+      <TalksList data={element} key={element.id} />),
     );
 
   render() {
