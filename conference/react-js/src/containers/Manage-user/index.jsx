@@ -12,7 +12,12 @@ import AddNewUser from '../Add-new-user';
 class ManageUser extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { isShowAddNewUserPopUp: false };
+    this.state = {
+      isShowAddNewUserPopUp: false,
+      fname: '',
+      roles: '',
+      mail: '',
+    };
   }
   componentDidMount() {
     this.getAllUsers();
@@ -44,10 +49,13 @@ class ManageUser extends PureComponent {
     ))
   );
 
-  sortedList = ({ target: { dataset: { sort, name } } }) => {
-    const { users } = this.props;
-    const { load } = this.props;
-    load('sort', { users, direction: sort, field: name });
+  sortedList = ({ target: { dataset: { name } } }) => {
+    const { ASC } = actions;
+    const { users, load } = this.props;
+    const value = this.state[name] === '' ? ASC : '';
+    console.log(load('sort', { users, direction: value, field: name }));
+    load('sort', { users, direction: value, field: name });
+    this.setState({ [name]: value });
   };
 
   toggleAddUserPopUp = () => (
@@ -57,7 +65,6 @@ class ManageUser extends PureComponent {
   );
 
   render() {
-    const { ASC } = actions;
     const { isShowAddNewUserPopUp } = this.state;
     const { users } = this.props;
     return (
@@ -85,7 +92,6 @@ class ManageUser extends PureComponent {
               <div className="table-header">
                 <div
                   data-name="roles"
-                  data-sort={ASC}
                   role="button"
                   tabIndex={0}
                   onClick={this.sortedList}
@@ -95,7 +101,6 @@ class ManageUser extends PureComponent {
                 </div>
                 <div
                   data-name="fname"
-                  data-sort={ASC}
                   role="button"
                   tabIndex={0}
                   onClick={this.sortedList}
@@ -105,7 +110,6 @@ class ManageUser extends PureComponent {
                 </div>
                 <div
                   data-name="mail"
-                  data-sort={ASC}
                   role="button"
                   tabIndex={0}
                   onClick={this.sortedList}

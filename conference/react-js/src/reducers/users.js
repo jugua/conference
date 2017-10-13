@@ -14,7 +14,7 @@ const users = (allUser = [], action) => {
       if (direction === ASC) {
         return a[field] > b[field];
       }
-      return b[field] < a[field];
+      return a[field] < b[field];
     };
 
     return [...userList.sort(sortDirection)];
