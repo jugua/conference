@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import SlideBlock from '../../components/SlideBlock';
+import CustomForm from '../../components/CustomForm';
 import actionTypes from '../../constants/actions-types';
 import changeEmail from '../../actions/changeEmail';
 import changePassword from '../../actions/changePassword';
@@ -18,27 +19,28 @@ class SettingsPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      current: -1,
+      current: '',
       error: '',
       message: '',
     };
   }
 
-  showCurrent = (index) => {
+  setCurrent = (header) => {
     this.setState({
-      current: index,
+      current: header,
       error: '',
       message: '',
     });
   };
 
   cancelAction = () => {
-    this.setState({ current: -1 });
+    this.setState({ current: '' });
   };
 
   saveEmail = ({ newEmail }) => {
     changeEmail(newEmail)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         this.props.updateUser({
           ...this.props.user,
           mail: newEmail,
@@ -48,9 +50,9 @@ class SettingsPage extends PureComponent {
           message: 'Please, check your email!',
         });
       })
-      .catch(({ status }) => {
+      .catch((res) => {
+        console.log(res);
         let error = '';
-        console.log(status);
         switch (status) {
         case 409:
           error = 'This email already exists';
@@ -119,130 +121,124 @@ class SettingsPage extends PureComponent {
 
   render() {
     const { lname = '', fname = '', mail = '' } = this.props.user;
-
-    const { error, message } = this.state;
-
-    const blocks = [
-      {
-        header: 'Email',
-        brief: mail,
-        action: this.saveEmail,
-        inputs: [
-          {
-            name: 'oldEmail',
-            id: 'old-email',
-            label: 'Old email',
-            type: 'email',
-            value: mail,
-            readonly: true,
-          },
-          {
-            name: 'newEmail',
-            id: 'new-email',
-            label: 'New email',
-            type: 'text',
-            value: '',
-            pattern: emailPattern.source,
-            required: true,
-          },
-        ],
-      },
-      {
-        header: 'Name',
-        brief: `${fname} ${lname}`,
-        action: this.saveName,
-        inputs: [
-          {
-            name: 'firstName',
-            id: 'first-name',
-            label: 'First name',
-            type: 'text',
-            value: fname,
-            pattern: namePattern.source,
-            required: true,
-          },
-          {
-            name: 'lastName',
-            id: 'last-name',
-            label: 'Last name',
-            type: 'text',
-            value: lname,
-            pattern: namePattern.source,
-            required: true,
-          },
-        ],
-      },
-      {
-        header: 'Password',
-        brief: '******',
-        action: this.savePassword,
-        inputs: [
-          {
-            name: 'currentPassword',
-            id: 'current-password',
-            label: 'Current password',
-            type: 'password',
-            value: '',
-            pattern: passwordPattern.source,
-            required: true,
-          },
-          {
-            name: 'newPassword',
-            id: 'new-password',
-            label: 'New password',
-            type: 'password',
-            value: '',
-            pattern: passwordPattern.source,
-            required: true,
-          },
-          {
-            name: 'confirmNewPassword',
-            id: 'confirm-password',
-            label: 'Confirm password',
-            type: 'password',
-            value: '',
-            pattern: passwordPattern.source,
-            required: true,
-          },
-        ],
-      },
-    ];
+    const { error, message, current } = this.state;
 
     return (
       <div className="settings-wrapper">
         <div className="settings__block">
           <div className="settings__header">Account settings</div>
+
           { error && <div className="settings__info settings__error">
             {error}
           </div> }
+
           { message && <div className="settings__info settings__success">
             {message}
           </div> }
-          {
-            blocks.map(({
-              brief,
-              header,
-              action,
-              inputs,
-              readonly,
-              required,
-              pattern,
-            }, index) => (
-              <SlideBlock
-                index={index}
-                brief={brief}
-                readonly={readonly || false}
-                pattern={pattern || null}
-                key={header}
-                header={header}
-                saveAction={action}
-                cancelAction={this.cancelAction}
-                inputs={inputs}
-                isOpened={index === this.state.current}
-                show={this.showCurrent}
-                required={required || false}
-              />))
-          }
+
+          <SlideBlock
+            header="Email"
+            current={current}
+            brief={mail}
+            show={this.setCurrent}
+          >
+            <CustomForm
+              saveAction={this.saveEmail}
+              cancelAction={this.cancelAction}
+              inputs={[
+                {
+                  name: 'oldEmail',
+                  id: 'old-email',
+                  label: 'Old email',
+                  type: 'email',
+                  value: mail,
+                  readonly: true,
+                },
+                {
+                  name: 'newEmail',
+                  id: 'new-email',
+                  label: 'New email',
+                  type: 'text',
+                  value: '',
+                  pattern: emailPattern.source,
+                  required: true,
+                },
+              ]}
+            />
+          </SlideBlock>
+
+          <SlideBlock
+            header="Name"
+            current={current}
+            brief={`${fname} ${lname}`}
+            show={this.setCurrent}
+          >
+            <CustomForm
+              saveAction={this.saveName}
+              cancelAction={this.cancelAction}
+              inputs={[
+                {
+                  name: 'firstName',
+                  id: 'first-name',
+                  label: 'First name',
+                  type: 'text',
+                  value: fname,
+                  pattern: namePattern.source,
+                  required: true,
+                },
+                {
+                  name: 'lastName',
+                  id: 'last-name',
+                  label: 'Last name',
+                  type: 'text',
+                  value: lname,
+                  pattern: namePattern.source,
+                  required: true,
+                },
+              ]}
+            />
+          </SlideBlock>
+
+          <SlideBlock
+            header="Password"
+            current={current}
+            brief="******"
+            show={this.setCurrent}
+          >
+            <CustomForm
+              saveAction={this.savePassword}
+              cancelAction={this.cancelAction}
+              inputs={[
+                {
+                  name: 'currentPassword',
+                  id: 'current-password',
+                  label: 'Current password',
+                  type: 'password',
+                  value: '',
+                  pattern: passwordPattern.source,
+                  required: true,
+                },
+                {
+                  name: 'newPassword',
+                  id: 'new-password',
+                  label: 'New password',
+                  type: 'password',
+                  value: '',
+                  pattern: passwordPattern.source,
+                  required: true,
+                },
+                {
+                  name: 'confirmNewPassword',
+                  id: 'confirm-password',
+                  label: 'Confirm password',
+                  type: 'password',
+                  value: '',
+                  pattern: passwordPattern.source,
+                  required: true,
+                },
+              ]}
+            />
+          </SlideBlock>
         </div>
       </div>
     );
