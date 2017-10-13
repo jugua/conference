@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.businesslogic.*;
+import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
 import ua.rd.cm.services.resources.LanguageService;
 import ua.rd.cm.services.resources.LevelService;
 

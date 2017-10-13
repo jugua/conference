@@ -3,7 +3,12 @@ package ua.rd.cm.config;
 import java.util.Properties;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -17,22 +22,21 @@ import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.dto.converter.CreateConferenceToConference;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
+import ua.rd.cm.infrastructure.mail.MailService;
 
 @Configuration
-@ComponentScan(basePackages = {
-        "ua.rd.cm.domain",
-        "ua.rd.cm.services"
+@ComponentScan(basePackages = {"ua.rd.cm.services"})
+@PropertySources({
+        @PropertySource("classpath:default/app.properties"),
+        @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
 })
 @Import(RepositoryConfig.class)
-@PropertySource({"classpath:mail.properties", "classpath:fileStorage.properties"})
 public class ServiceConfig {
 
     @Bean
     public JavaMailSender getMailSender(Environment environment) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-
         mailSender.setHost(environment.getProperty("mail.host"));
         mailSender.setPort(environment.getProperty("mail.port", Integer.class));
         mailSender.setUsername(environment.getProperty("mail.username"));
@@ -83,7 +87,8 @@ public class ServiceConfig {
     }
 
     @Bean
-    public MailService getMailService(JavaMailSender javaMailSender, freemarker.template.Configuration freemarkerConfiguration,
+    public MailService getMailService(JavaMailSender javaMailSender, freemarker.template.Configuration
+            freemarkerConfiguration,
                                       Environment environment) {
         return new MailService(javaMailSender, freemarkerConfiguration,
                 environment.getProperty("mail.url"),

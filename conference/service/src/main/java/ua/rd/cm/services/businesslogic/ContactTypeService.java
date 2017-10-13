@@ -15,5 +15,5 @@ public interface ContactTypeService {
 
     List<ContactType> findAll();
 
-    List<ContactType> findByName(String name);
+    ContactType findByName(String name);
 }

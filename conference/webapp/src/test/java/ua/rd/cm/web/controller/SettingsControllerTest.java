@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -35,18 +36,19 @@ import ua.rd.cm.services.businesslogic.UserService;
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
 public class SettingsControllerTest {
+
     public static final String API_USER_CURRENT_PASSWORD = "/settings/password";
     public static final String API_USER_CURRENT_EMAIL = "/settings/email";
-    private MockMvc mockMvc;
-    private SettingsDto settingsDto;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private SettingsController settingsController;
-
     @Autowired
     private UserService userService;
+    private MockMvc mockMvc;
 
-
+    private SettingsDto settingsDto;
     private User user;
     private Principal principal;
 
@@ -67,8 +69,8 @@ public class SettingsControllerTest {
 
     @Test
     public void correctChangePasswordTest() throws Exception {
-        when(userService.isAuthenticated(any(User.class), anyString())).
-                thenReturn(true);
+        when(userService.isAuthenticated(any(User.class), anyString())).thenReturn(true);
+        when(passwordEncoder.encode(settingsDto.getNewPassword())).thenReturn("encoded");
         mockMvc.perform(post(API_USER_CURRENT_PASSWORD)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(settingsDto))

@@ -1,18 +1,18 @@
 package ua.rd.cm.services.businesslogic.impl;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.AllArgsConstructor;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
@@ -146,10 +146,13 @@ public class ConferenceServiceImpl implements ConferenceService {
         if (conferences != null) {
             for (Conference conference : conferences) {
                 LocalDate now = LocalDate.now();
+                LocalDate callForPaperEndDate = conference.getCallForPaperEndDate();
+
                 boolean isActive;
-                if (conference.getCallForPaperEndDate() != null && conference.getCallForPaperStartDate() != null) {
-                    isActive = (conference.getCallForPaperEndDate().isAfter(now) || conference.getCallForPaperEndDate().isEqual(now))
-                            && (conference.getCallForPaperStartDate().isBefore(now) || conference.getCallForPaperStartDate().isEqual(now));
+                if (callForPaperEndDate != null && conference.getCallForPaperStartDate() != null) {
+                    isActive = (callForPaperEndDate.isAfter(now) || callForPaperEndDate.isEqual(now))
+                            && (conference.getCallForPaperStartDate().isBefore(now)
+                            || conference.getCallForPaperStartDate().isEqual(now));
                 } else {
                     isActive = true;
                 }
