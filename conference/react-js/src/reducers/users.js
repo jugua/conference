@@ -6,7 +6,8 @@ const users = (allUser = [], action) => {
   const { type, payload } = action;
   if (type === LOAD_USER_DATA) {
     return [
-      ...allUser, ...payload,
+      ...allUser,
+      ...payload,
     ];
   }
   return allUser;
