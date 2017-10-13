@@ -5,6 +5,8 @@ import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
 import io.restassured.http.ContentType;
 import org.junit.Test;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.collection.IsArrayWithSize;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
