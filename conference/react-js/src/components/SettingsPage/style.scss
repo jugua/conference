@@ -1,7 +1,7 @@
 .settings-wrapper {
   width: 50%;
   height: calc(100vh - 90px);
-  margin: 10px auto;
+  margin: 20px auto;
   box-sizing: border-box;
   padding: 20px;
   box-shadow: (0, 0, 5px, 0, rgba(0,0,0,0.15));
@@ -30,10 +30,6 @@
   &__info {
     padding: 20px;
     text-align: center;
-    }
-
-  &__block {
-    margin-top: 20px;
     }
 
   &__row {

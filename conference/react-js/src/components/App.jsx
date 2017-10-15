@@ -8,7 +8,7 @@ import Tabs from './Tabs';
 import Header from './Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
-import SettingsPage from '../containers/SettingsPage';
+import SettingsPage from '../components/SettingsPage';
 import {
   baseUrl,
   forgotPassword,
