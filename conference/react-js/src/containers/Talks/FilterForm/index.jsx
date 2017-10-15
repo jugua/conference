@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 
 class FilterForm extends PureComponent {
   setTopics = listOfTopics => (
-    Object.values(listOfTopics).map(({ name, id }) => (
+    listOfTopics.map(({ name, id }) => (
       <option key={id}>{name}</option>),
     ));
 

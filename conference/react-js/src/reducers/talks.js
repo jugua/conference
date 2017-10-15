@@ -15,8 +15,7 @@ const talks = (state = talksInitial, action) => {
       const countExtendStatus = elementOfListTopic.status.indexOf(status);
       return countExtendStatus > -1 && countExtendTopic > -1;
     };
-    const res = listOfTalks.filter(filtered);
-    return [...res];
+    return listOfTalks.filter(filtered);
   }
 
   return state;

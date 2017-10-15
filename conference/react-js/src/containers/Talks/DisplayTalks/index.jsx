@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import TalksList from '../../../components/TalksList';
+import TalksList from '../../../components/Talks/TalksList';
 
 class DisplayTalks extends Component {
-  setTalks = data => Object.values(data)
+  setTalks = data => data
     .map(element => (
       <TalksList data={element} key={element.id} />),
     );
@@ -11,9 +11,9 @@ class DisplayTalks extends Component {
   render() {
     const { talk } = this.props;
     return (
-      <div className="data-table__inner-wrapper">
+      <tbody className="data-table__inner-wrapper">
         {this.setTalks(talk)}
-      </div>
+      </tbody>
     );
   }
 }

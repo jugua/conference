@@ -189,10 +189,15 @@
 
 .data-table {
   margin-top: 10px;
+  width: 100%;
+  display: block;
 
   @media ($mnw: $xmdmx) {
     height: calc(100% - 175px);
     @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+  }
+  &__header-block {
+    display: block;
   }
   &__text {
     text-overflow: ellipsis;
@@ -211,7 +216,7 @@
     font-size: 14px;
   }
   &__inner-wrapper {
-
+    display: block;
     @media ($mnw: $sdmn) and ($mxw: $xmdmx) {
       display: flex;
       flex-wrap: wrap;

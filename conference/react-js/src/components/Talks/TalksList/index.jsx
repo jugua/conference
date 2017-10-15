@@ -11,31 +11,31 @@ function TalksList({ data: {
   comment,
 } }) {
   return (
-    <div className="data-table__row">
-      <div className="data-table__column data-table__column_check-talk">
+    <tr className="data-table__row">
+      <td className="data-table__column data-table__column_check-talk">
         <input type="checkbox" />
-      </div>
-      <div className="data-table__column data-table__column_speaker-talk">
-        <a className="link">{name}</a></div>
-      <div className="data-table__column data-table__column_title-talk">
+      </td>
+      <td className="data-table__column data-table__column_speaker-talk">
+        <a className="link">{name}</a></td>
+      <td className="data-table__column data-table__column_title-talk">
         <a className="link">{title}</a>
-      </div>
-      <div className="data-table__column data-table__column_topic-talk">
+      </td>
+      <td className="data-table__column data-table__column_topic-talk">
         {topic}
-      </div>
-      <div className="data-table__column data-table__column_date-talk">
+      </td>
+      <td className="data-table__column data-table__column_date-talk">
         {date}
-      </div>
-      <div className="data-table__column data-table__column_status-talk">
+      </td>
+      <td className="data-table__column data-table__column_status-talk">
         {status}
-      </div>
-      <div className="data-table__column data-table__column_comments-talk">
+      </td>
+      <td className="data-table__column data-table__column_comments-talk">
         {comment}
-      </div>
-      <div className="data-table__column data-table__column_assign-talk">
+      </td>
+      <td className="data-table__column data-table__column_assign-talk">
         {assignee}
-      </div>
-    </div>
+      </td>
+    </tr>
   );
 }
 
