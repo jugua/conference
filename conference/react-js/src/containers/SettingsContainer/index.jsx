@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import editUser from '../../actions/edit-user';
+
 import SlideBlock from '../../components/SlideBlock';
 import NameBrief from '../../components/NameBrief';
 import EmailBrief from '../../components/EmailBrief';
@@ -45,6 +46,7 @@ class SettingsContainer extends PureComponent {
 
   show = (id) => {
     this.setState({ current: id });
+    this.props.reset();
   }
 
   change = ({ target: { name, value } }) => {
@@ -53,17 +55,37 @@ class SettingsContainer extends PureComponent {
     });
   }
 
-  submit = (e) => {
+  submitEmail = (e) => {
     e.preventDefault();
-    const { fname, lname, mail, oldMail } = this.state;
+    const { mail } = this.state;
+    const { setMessage, edit } = this.props;
 
-    this.props.edit({
-      fname,
-      lname,
-      mail: mail || oldMail,
-    });
-
+    edit({ mail });
+    setMessage('Your email changed!');
     this.cancel();
+  };
+
+  submitName = (e) => {
+    e.preventDefault();
+    const { fname, lname } = this.state;
+    const { edit, setMessage } = this.props;
+
+    edit({ fname, lname });
+    setMessage('Your name changed!');
+    this.cancel();
+  }
+
+  submitPassword = (e) => {
+    e.preventDefault();
+    const { newPassword,
+      confirmNewPassword } = this.state;
+
+    if (newPassword === confirmNewPassword) {
+      this.props.setMessage('Your password changed!');
+      this.cancel();
+    } else {
+      this.props.setError('Passwords do not match');
+    }
   }
 
   cancel = () => {
@@ -93,7 +115,7 @@ class SettingsContainer extends PureComponent {
           />
           <NameChangeForm
             cancel={this.cancel}
-            submit={this.submit}
+            submit={this.submitName}
             change={this.change}
             fname={fname}
             lname={lname}
@@ -106,7 +128,7 @@ class SettingsContainer extends PureComponent {
           />
           <EmailChangeForm
             cancel={this.cancel}
-            submit={this.submit}
+            submit={this.submitEmail}
             change={this.change}
             mail={mail}
             oldMail={oldMail}
@@ -116,7 +138,7 @@ class SettingsContainer extends PureComponent {
           <PasswordBrief show={() => this.show(2)} />
           <PasswordChangeForm
             cancel={this.cancel}
-            submit={this.submit}
+            submit={this.submitPassword}
             change={this.change}
             currentPassword={currentPassword}
             newPassword={newPassword}
@@ -136,6 +158,9 @@ const mapStateToProps = ({
 
 SettingsContainer.propTypes = {
   edit: PropTypes.func.isRequired,
+  setMessage: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
 export default connect(

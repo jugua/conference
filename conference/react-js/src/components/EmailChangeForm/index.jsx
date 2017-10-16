@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import InputBlock from '../../components/InputBlock';
+import { emailPattern } from '../../constants/patterns';
 
 const EmailChangeForm = ({
   oldMail, mail, submit, change, cancel,
@@ -26,6 +27,7 @@ const EmailChangeForm = ({
         onChange={change}
         value={mail}
         required
+        pattern={emailPattern.source}
       />
       <input
         type="submit"

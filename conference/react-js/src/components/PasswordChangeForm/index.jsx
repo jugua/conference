@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import InputBlock from '../InputBlock';
+import { passwordPattern } from '../../constants/patterns';
 
 const PasswordChangeForm = ({
   currentPassword, newPassword, confirmNewPassword,
@@ -19,18 +20,24 @@ const PasswordChangeForm = ({
         label="Current password"
         name="currentPassword"
         type="password"
+        required
+        pattern={passwordPattern.source}
       />
       <InputBlock
         value={newPassword}
         label="New password"
         name="newPassword"
         type="password"
+        required
+        pattern={passwordPattern.source}
       />
       <InputBlock
         value={confirmNewPassword}
         label="Confirm new password"
         name="confirmNewPassword"
         type="password"
+        required
+        pattern={passwordPattern.source}
       />
       <input
         type="submit"

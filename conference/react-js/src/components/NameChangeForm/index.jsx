@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import InputBlock from '../../components/InputBlock';
+import { namePattern } from '../../constants/patterns';
 
 const NameChangeForm = ({
   submit, change, fname, lname, cancel,
@@ -17,11 +18,15 @@ const NameChangeForm = ({
         value={fname}
         label="First name"
         name="fname"
+        required
+        pattern={namePattern.source}
       />
       <InputBlock
         value={lname}
         label="Last name"
         name="lname"
+        required
+        pattern={namePattern.source}
       />
       <input
         type="submit"

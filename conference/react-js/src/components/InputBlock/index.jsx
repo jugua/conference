@@ -8,6 +8,7 @@ const InputBlock = ({
   type,
   readonly,
   pattern,
+  required,
   value,
 }) => (
   <div>
@@ -24,6 +25,7 @@ const InputBlock = ({
         readOnly={readonly}
         pattern={pattern}
         value={value}
+        required={required}
       />
     </label>
   </div>
@@ -37,6 +39,7 @@ InputBlock.propTypes = {
   type: PropTypes.string,
   value: PropTypes.string,
   readonly: PropTypes.bool,
+  required: PropTypes.bool,
 };
 
 InputBlock.defaultProps = {
@@ -46,6 +49,7 @@ InputBlock.defaultProps = {
   type: 'text',
   value: '',
   readonly: false,
+  required: false,
 };
 
 export default InputBlock;

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import { forgotPassword, signUp } from '../../constants/route-url';
 import login from '../../actions/login';
-import getUserInfo from '../../actions/getUserInfo';
+import getUserInfo from '../../actions/get-user-info';
 import loginValidation from '../../actions/loginVlidation';
 import actionTypes from '../../constants/actions-types';
 
