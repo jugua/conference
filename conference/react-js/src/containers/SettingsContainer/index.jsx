@@ -6,8 +6,10 @@ import editUser from '../../actions/edit-user';
 import SlideBlock from '../../components/SlideBlock';
 import NameBrief from '../../components/NameBrief';
 import EmailBrief from '../../components/EmailBrief';
+import PasswordBrief from '../../components/PasswordBrief';
 import NameChangeForm from '../../components/NameChangeForm';
 import EmailChangeForm from '../../components/EmailChangeForm';
+import PasswordChangeForm from '../../components/PasswordChangeForm';
 
 class SettingsContainer extends PureComponent {
   constructor(props) {
@@ -75,9 +77,9 @@ class SettingsContainer extends PureComponent {
       lname,
       mail,
       oldMail,
-      // currentPassword,
-      // newPassword,
-      // confirmNewPassword,
+      currentPassword,
+      newPassword,
+      confirmNewPassword,
       current,
     } = this.state;
 
@@ -110,10 +112,17 @@ class SettingsContainer extends PureComponent {
             oldMail={oldMail}
           />
         </SlideBlock>
-        {/* <SlideBlock isOpened={current === 2}>
-          <EmailBrief show={() => this.show(2)} />
-          <PasswordChangeForm cancel={this.cancel} />
-        </SlideBlock> */}
+        <SlideBlock isOpened={current === 2}>
+          <PasswordBrief show={() => this.show(2)} />
+          <PasswordChangeForm
+            cancel={this.cancel}
+            submit={this.submit}
+            change={this.change}
+            currentPassword={currentPassword}
+            newPassword={newPassword}
+            confirmNewPassword={confirmNewPassword}
+          />
+        </SlideBlock>
       </div>
     );
   }
