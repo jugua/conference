@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const BriefEmail = ({ mail, show }) => (
@@ -15,11 +14,9 @@ const BriefEmail = ({ mail, show }) => (
   </div>
 );
 
-const mapStateToProps = ({ user: { mail } }) => ({ mail });
-
 BriefEmail.propTypes = {
   mail: PropTypes.string.isRequired,
   show: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(BriefEmail);
+export default BriefEmail;
