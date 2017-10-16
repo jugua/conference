@@ -6,11 +6,10 @@ const BriefEmail = ({ mail, show }) => (
     role="button"
     onClick={show}
     tabIndex={0}
+    className="settings__brief settings__row"
   >
-    <div>
-      <span className="">Email</span>
-      <span>{`${mail}`}</span>
-    </div>
+    <div className="settings__title">Email</div>
+    <div className="settings__row-content">{`${mail}`}</div>
   </div>
 );
 

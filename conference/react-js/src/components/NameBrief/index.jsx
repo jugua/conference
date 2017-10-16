@@ -6,9 +6,10 @@ const NameBrief = ({ fname, lname, show }) => (
     role="button"
     tabIndex={0}
     onClick={show}
+    className="settings__brief settings__row"
   >
-    <span className="">Name</span>
-    <span>{`${fname} ${lname}`}</span>
+    <div className="settings__title">Name</div>
+    <div className="settings__row-content">{`${fname} ${lname}`}</div>
   </div>
 );
 

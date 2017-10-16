@@ -6,9 +6,10 @@ const PasswordBrief = ({ show }) => (
     role="button"
     tabIndex={0}
     onClick={show}
+    className="settings__brief settings__row"
   >
-    <span className="">Password</span>
-    <span>********</span>
+    <div className="settings__title">Password</div>
+    <div className="settings__row-content">********</div>
   </div>
 );
 

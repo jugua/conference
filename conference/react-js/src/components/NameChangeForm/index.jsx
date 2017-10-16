@@ -6,32 +6,35 @@ import InputBlock from '../../components/InputBlock';
 const NameChangeForm = ({
   submit, change, fname, lname, cancel,
 }) => (
-  <form
-    onSubmit={submit}
-    onChange={change}
-    className="settings__row-content"
-  >
-    <InputBlock
-      value={fname}
-      label="First name"
-      name="fname"
-    />
-    <InputBlock
-      value={lname}
-      label="Last name"
-      name="lname"
-    />
-    <input
-      type="submit"
-      className="btn btn__inline"
-    />
-    <input
-      type="button"
-      className="btn btn__inline"
-      value="Cancel"
-      onClick={cancel}
-    />
-  </form>
+  <div className="settings__row settings__details">
+    <div className="settings__title">Name</div>
+    <form
+      onSubmit={submit}
+      onChange={change}
+      className="settings__row-content"
+    >
+      <InputBlock
+        value={fname}
+        label="First name"
+        name="fname"
+      />
+      <InputBlock
+        value={lname}
+        label="Last name"
+        name="lname"
+      />
+      <input
+        type="submit"
+        className="btn btn__inline"
+      />
+      <input
+        type="button"
+        className="btn btn__inline"
+        value="Cancel"
+        onClick={cancel}
+      />
+    </form>
+  </div>
 );
 
 NameChangeForm.propTypes = {
