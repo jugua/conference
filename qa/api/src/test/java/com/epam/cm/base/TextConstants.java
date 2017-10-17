@@ -15,6 +15,7 @@ public class TextConstants {
     public static final String FIELDS = "fields";
     public static final String STATUS = "status";
     public static final String TYPE = "type";
+    public static final String ROLES = "roles";
 
     public static final String LOGIN_ERROR = "login_auth_err";
     public static final String PASSWORD_ERROR = "password_auth_err";
@@ -46,5 +47,8 @@ public class TextConstants {
 
     public static final String EXISTING_USER_ID = "1";
     public static final String NON_EXISTING_USER_ID = "99999";
+
+    public static final String EXISTING_TALK_NEW_OR_IN_PROGRESS_ID = "1";
+    public static final String NON_EXISTING_TALK_ID = "99999";
 
 }
