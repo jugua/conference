@@ -24,13 +24,23 @@ public class SimpleBaseTest {
     protected Response response;
 
  @Rule
-    public TestWatcher watchman= new TestWatcher() {
-        @Override
-        protected void finished( Description description) {
-            System.out.println(Arrays.asList(
-                    description.getAnnotation(Jira.class).value()));
-        }
-    };
+    public TestWatcher watchman;
+
+    {
+        watchman = new TestWatcher() {
+            @Override
+            protected void finished(Description description) {
+
+                Jira annotation = description.getAnnotation(Jira.class);
+
+                if (annotation == null)
+                    throw  new RuntimeException("Executable test has not been marked by Jira annotation");
+
+                System.out.println(Arrays.asList(
+                        annotation.value()));
+            }
+        };
+    }
 
     @Before
     public void setup(){
