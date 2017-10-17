@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SlideBlock = ({ isOpened, children }) => (
-  <div className="">
+  <div>
     {
       isOpened ?
         children[1] :

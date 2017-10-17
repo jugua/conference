@@ -12,7 +12,6 @@ const PasswordChangeForm = ({
     <div className="settings__title">Password</div>
     <form
       onSubmit={submit}
-      onChange={change}
       className="settings__row-content"
     >
       <InputBlock
@@ -22,6 +21,7 @@ const PasswordChangeForm = ({
         type="password"
         required
         pattern={passwordPattern.source}
+        onChange={change}
       />
       <InputBlock
         value={newPassword}
@@ -30,6 +30,7 @@ const PasswordChangeForm = ({
         type="password"
         required
         pattern={passwordPattern.source}
+        onChange={change}
       />
       <InputBlock
         value={confirmNewPassword}
@@ -38,6 +39,7 @@ const PasswordChangeForm = ({
         type="password"
         required
         pattern={passwordPattern.source}
+        onChange={change}
       />
       <input
         type="submit"

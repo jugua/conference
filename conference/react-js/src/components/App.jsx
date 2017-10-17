@@ -14,7 +14,9 @@ import {
   forgotPassword,
   signUp,
   manageUser,
-  talks } from '../constants/route-url';
+  talks,
+  settings,
+} from '../constants/route-url';
 import ManageUser from '../containers/Manage-user/';
 import Talks from '../containers/Talks';
 
@@ -22,11 +24,15 @@ const App = () => (
   <Router>
     <div>
       <Header />
-      <SettingsPage />
       <Route
         path={baseUrl}
         exact
         component={Tabs}
+      />
+      <Route
+        path={settings}
+        exact
+        component={SettingsPage}
       />
       <Route
         path={forgotPassword}

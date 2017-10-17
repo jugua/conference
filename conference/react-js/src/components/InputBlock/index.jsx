@@ -10,6 +10,7 @@ const InputBlock = ({
   pattern,
   required,
   value,
+  onChange,
 }) => (
   <div>
     <label
@@ -26,6 +27,7 @@ const InputBlock = ({
         pattern={pattern}
         value={value}
         required={required}
+        onChange={onChange}
       />
     </label>
   </div>
@@ -40,6 +42,7 @@ InputBlock.propTypes = {
   value: PropTypes.string,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
 InputBlock.defaultProps = {
@@ -47,9 +50,10 @@ InputBlock.defaultProps = {
   pattern: null,
   label: null,
   type: 'text',
-  value: '',
+  value: null,
   readonly: false,
   required: false,
+  onChange: null,
 };
 
 export default InputBlock;
