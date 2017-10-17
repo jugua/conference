@@ -1,6 +1,7 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -11,6 +12,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
 
 
     @Test
+    @Jira("6689")
     public void positiveRegistrationUserByAdminTest() {
 
         given()
@@ -32,6 +34,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
     }
 
     @Test
+    @Jira("6694")
     public void absentParamRegistrationUserByAdminTest() {
 
         given()
@@ -52,6 +55,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
     }
 
     @Test
+    @Jira("7040")
     public void unauthorizedRegistrationUserByAdminTest() {
 
         given()
@@ -72,6 +76,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
 
     }
     @Test
+    @Jira("6691")
     public void negativeRegistrationExistingUserByAdminTest() {
 
         given()

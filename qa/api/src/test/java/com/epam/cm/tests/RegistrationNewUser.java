@@ -1,6 +1,7 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
         return strDate;
     }
     @Test
+    @Jira("6674")
     public void positiveRegistrationNewUserTest(){
 
         given()
@@ -40,6 +42,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
 
     }
     @Test
+    @Jira("6675")
     public void negativeRegistrationNewUserTest(){
 
         given()
@@ -59,6 +62,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .statusCode(400).extract().response();
     }
     @Test
+    @Jira("6677")
     public void negativeRegistrationExistingUserTest(){
 
         given()

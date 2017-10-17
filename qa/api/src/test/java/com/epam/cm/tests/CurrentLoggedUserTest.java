@@ -1,6 +1,7 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -13,6 +14,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class CurrentLoggedUserTest extends SimpleBaseTest {
 
     @Test
+    @Jira("6826")
     public void positiveCurrentLoggedUserTest(){
 
         given()
@@ -34,6 +36,7 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
 
     }
     @Test
+    @Jira("6828")
     public void negativeCurrentLoggedUserNoTokenTest(){
 
         given()
@@ -49,6 +52,7 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
 
     }
     @Test
+    @Jira("6830")
     public void positiveUpdateUserInfoTest(){
 
         given()
@@ -67,6 +71,7 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
 
     }
     @Test
+    @Jira("6832")
     public void negativeJsonTypeUpdateTest(){
 
         given()
