@@ -54,8 +54,4 @@ TalksList.propTypes = { data: PropTypes.shape({
 }).isRequired,
 };
 
-TalksList.defaultProps = {
-  talks: {},
-};
-
 export default TalksList;

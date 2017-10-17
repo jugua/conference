@@ -57,10 +57,6 @@ class Talks extends Component {
     this.props.load(APPLY_FILTERS, { filter, listOfTalks });
   };
 
-  changeStatusFilter = (e) => {
-    this.state.status = e.target.value;
-  };
-
   render() {
     const { listOfTopics } = this.state;
     const { talks } = this.props;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import loadData from '../../actions/load-data';
+import loadData from '../../actions/load';
 import actions from '../../constants/actions-types';
 import { rolesUI } from '../../constants/roles';
 import { allUsers } from '../../constants/backend-url';
