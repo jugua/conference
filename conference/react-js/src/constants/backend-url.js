@@ -4,4 +4,5 @@ export const past = '/conference/past ';
 export const userInfo = '/myinfo';
 export const loginUrl = '/login';
 export const allUsers = '/manageUsers/getAllUsersForAdmin';
-export const talks = '/talk';
+export const talk = '/talk';
+export const topics = '/topics';

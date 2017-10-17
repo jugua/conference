@@ -7,6 +7,8 @@ const actions = {
   SET_USER: 'set_user',
   SET_TALKS: 'set_talks',
   LOAD_USER_DATA: 'load_users_data',
+  APPLY_FILTERS: 'apply_filters',
+  LOAD: 'load',
 };
 
 export default actions;

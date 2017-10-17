@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 
-import loadData from '../../actions/load-data';
+import loadData from '../../actions/load';
 import { forgotPassword, signUp } from '../../constants/route-url';
 import login from '../../actions/login';
 import getUserInfo from '../../actions/getUserInfo';

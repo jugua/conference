@@ -13,8 +13,10 @@ import {
   baseUrl,
   forgotPassword,
   signUp,
-  manageUser } from '../constants/route-url';
+  manageUser,
+  talks } from '../constants/route-url';
 import ManageUser from '../containers/Manage-user/';
+import Talks from '../containers/Talks';
 
 const App = () => (
 
@@ -40,8 +42,11 @@ const App = () => (
           path={manageUser}
           component={ManageUser}
         />
+        <Route
+          path={talks}
+          component={Talks}
+        />
       </Switch>
-
     </div>
   </Router>
 );

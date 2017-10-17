@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { talks } from '../constants/backend-url';
 
-const getTalks = () => axios.get(talks);
+import { talk } from '../constants/backend-url';
+
+const getTalks = () => axios.get(talk);
 
 export default getTalks;
