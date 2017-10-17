@@ -14,7 +14,7 @@ import {
   signUp,
   manageUser,
   talks } from '../constants/route-url';
-import ManageUser from './Manage-user/';
+import ManageUser from '../containers/Manage-user/';
 import Talks from '../containers/Talks';
 
 const App = () => (

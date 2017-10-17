@@ -12,6 +12,7 @@ import ua.rd.cm.domain.Contact;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.businesslogic.ContactTypeService;
@@ -25,7 +26,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private UserInfoRepository userInfoRepository;
     private UserRepository userRepository;
     private ModelMapper mapper;
-    private ContactTypeService contactTypeService;
+    private ContactTypeRepository contactTypeRepository;
 
     @Override
     public UserInfo find(Long id) {
@@ -58,10 +59,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private UserInfo userInfoDtoToEntity(UserDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
-        userInfo.addContact(new Contact(dto.getLinkedIn(), contactTypeService.findByName("LinkedIn")));
-        userInfo.addContact(new Contact(dto.getTwitter(), contactTypeService.findByName("Twitter")));
-        userInfo.addContact(new Contact(dto.getFacebook(), contactTypeService.findByName("FaceBook")));
-        userInfo.addContact(new Contact(dto.getBlog(), contactTypeService.findByName("Blog")));
+        userInfo.addContact(new Contact(dto.getLinkedIn(), contactTypeRepository.findFirstByName("LinkedIn")));
+        userInfo.addContact(new Contact(dto.getTwitter(), contactTypeRepository.findFirstByName("Twitter")));
+        userInfo.addContact(new Contact(dto.getFacebook(), contactTypeRepository.findFirstByName("FaceBook")));
+        userInfo.addContact(new Contact(dto.getBlog(), contactTypeRepository.findFirstByName("Blog")));
         return userInfo;
     }
 }
