@@ -5,6 +5,7 @@ const actions = {
   EMAIL_NOT_FOUND: 'email_not_found',
   HIDE_EMAIL_ERROR: 'hide_email_error',
   SET_USER: 'set_user',
+  SET_TALKS: 'set_talks',
   LOAD_USER_DATA: 'load_users_data',
   APPLY_FILTERS: 'apply_filters',
   LOAD: 'load',
