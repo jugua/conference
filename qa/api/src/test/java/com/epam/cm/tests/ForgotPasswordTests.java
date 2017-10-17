@@ -25,7 +25,7 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{\"mail\":\"test@test.com\"}")
+                .body("{\"mail\":\"speaker@speaker.com\"}")
                 .
                         when()
                 .post(EndpointUrl.FORGOT_PASSWORD)
