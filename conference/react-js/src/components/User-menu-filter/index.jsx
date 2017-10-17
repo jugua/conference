@@ -6,28 +6,22 @@ import {
   settings,
   manageUser,
   talks,
-  myTalks,
   myInfo,
 } from '../../constants/route-url';
 import {
-  speaker,
   admin,
 } from '../../constants/roles';
 
 const UserMenuFilter = ({ roles }) => {
   const data = [
-    { title: 'Conferences', link: baseUrl },
     { title: 'Talks', link: talks },
   ];
-  const speakerRole = roles.indexOf(speaker);
   const adminRole = roles.indexOf(admin);
-  if (speakerRole > -1) {
-    data.push({ title: 'My talks', link: myTalks },
-      { title: 'My info', link: myInfo });
-  } else if (adminRole > -1) {
+  if (adminRole > -1) {
     data.push({ title: 'Manage user', link: manageUser });
   }
   data.push(
+    { title: 'My info', link: myInfo },
     { title: 'Settings', link: settings },
     { title: 'Sign Out', link: baseUrl, last: true },
   );

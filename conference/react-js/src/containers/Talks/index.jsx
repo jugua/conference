@@ -5,7 +5,7 @@ import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
-import load from '../../actions/load';
+import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
 
@@ -169,7 +169,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch => ({
 
   load: bindActionCreators(
-    load, dispatch),
+    loadData, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Talks);
