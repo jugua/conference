@@ -5,4 +5,6 @@ export const userInfo = '/myinfo';
 export const loginUrl = '/login';
 export const registrationUrl = '/registration';
 export const allUsers = '/manageUsers/getAllUsersForAdmin';
+export const talk = '/talk';
+export const topics = '/topics';
 
