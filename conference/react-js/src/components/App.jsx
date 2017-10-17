@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Switch,
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
@@ -16,27 +17,31 @@ import {
 import ManageUser from '../containers/Manage-user/';
 
 const App = () => (
+
   <Router>
     <div>
       <Header />
-      <Route
-        path={baseUrl}
-        exact
-        component={Tabs}
-      />
-      <Route
-        path={forgotPassword}
-        exact
-        component={ForgotPassword}
-      />
-      <Route
-        path={signUp}
-        component={SignUp}
-      />
-      <Route
-        path={manageUser}
-        component={ManageUser}
-      />
+      <Switch>
+        <Route
+          path={baseUrl}
+          exact
+          component={Tabs}
+        />
+        <Route
+          path={forgotPassword}
+          exact
+          component={ForgotPassword}
+        />
+        <Route
+          path={signUp}
+          component={SignUp}
+        />
+        <Route
+          path={manageUser}
+          component={ManageUser}
+        />
+      </Switch>
+
     </div>
   </Router>
 );
