@@ -10,7 +10,7 @@ const SignUpPopUp = props => (
       </h3>
       <p className="pop-up__notification">
         <span className="pop-up__notification-user">{props.userName}</span>
-          ,&nbsp;go to&nbsp;
+          ,&ensp;go to&ensp;
         <span className="pop-up__notification-user">{props.mail}</span>
     to complete the sign-up process</p>
       <ShowMainPage />

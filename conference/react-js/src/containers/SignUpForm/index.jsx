@@ -3,7 +3,7 @@ import axios from 'axios';
 import { registrationUrl } from '../../constants/backend-url';
 import SignUpPopUp from './SignUpPopUp/SignUpPopUp';
 import ErrorMessage from './SignUpPopUp/ErrorMessages';
-import RegistrationInputBox from './SignUpPopUp/RegistrationInputBox';
+import InputBlock from '../../components/InputBlock/index';
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -57,44 +57,59 @@ export default class SignUp extends Component {
           onChange={this.formChangeHandler}
         >
           <h2 className="form-title sign-up__title">create new account</h2>
-          <RegistrationInputBox
+          <InputBlock
             id="name"
             label="first name:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="fname"
             maxLength={56}
+            required
           />
-          <RegistrationInputBox
+          <InputBlock
             id="surname"
             label="last name:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="lname"
             maxLength={56}
+            required
           />
-          <RegistrationInputBox
+          <InputBlock
             id="mail"
+            type="email"
             label="Email:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="mail"
-            inputType="email"
+            required
           />
           {this.state.responseStatus === 409 &&
             (<ErrorMessage errorMessage="There is an existing account
                  associated with"
             />)
           }
-          <RegistrationInputBox
+          <InputBlock
             id="password"
+            type="password"
             label="password:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="password"
             maxLength={30}
             minLength={6}
-            inputType="password"
+            required
           />
-          <RegistrationInputBox
+          <InputBlock
             id="confirm"
+            type="password"
             label="confirm password:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="confirm"
             maxLength={30}
             minLength={6}
-            inputType="password"
+            required
           />
           {this.state.password !== this.state.confirm ?
             (<ErrorMessage errorMessage="Passwords do not match" />)
@@ -105,10 +120,10 @@ export default class SignUp extends Component {
             value="submit"
           />
         </form>
-        {this.state.responseOk === true ? <SignUpPopUp
+        {this.state.responseOk && <SignUpPopUp
           userName={this.state.fname}
           mail={this.state.mail}
-        /> : null}
+        /> }
       </div>
     );
   }
