@@ -2,32 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const InputBlock = ({
-  name,
+  disabled,
   id,
+  inputClass,
   label,
-  type,
-  readonly,
-  pattern,
-  required,
-  value,
+  labelClass,
+  name,
   onChange,
+  pattern,
+  readonly,
+  required,
+  type,
+  value,
 }) => (
   <div>
     <label
-      className="form-label"
+      className={`form-label ${labelClass}`}
       htmlFor={id}
     >
       {label}
       <input
-        className="field"
-        name={name}
+        disabled={disabled}
         id={id}
-        type={type}
-        readOnly={readonly}
-        pattern={pattern}
-        value={value}
-        required={required}
+        className={`field ${inputClass}`}
+        name={name}
         onChange={onChange}
+        pattern={pattern}
+        readOnly={readonly}
+        required={required}
+        type={type}
+        value={value}
       />
     </label>
   </div>
@@ -35,25 +39,31 @@ const InputBlock = ({
 
 InputBlock.propTypes = {
   name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   id: PropTypes.string,
-  pattern: PropTypes.string,
+  inputClass: PropTypes.string,
   label: PropTypes.string,
-  type: PropTypes.string,
-  value: PropTypes.string,
+  labelClass: PropTypes.string,
+  onChange: PropTypes.func,
+  pattern: PropTypes.string,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
-  onChange: PropTypes.func,
+  type: PropTypes.string,
+  value: PropTypes.string,
 };
 
 InputBlock.defaultProps = {
+  disabled: false,
   id: null,
-  pattern: null,
+  inputClass: null,
   label: null,
-  type: 'text',
-  value: null,
+  labelClass: null,
+  onChange: null,
+  pattern: null,
   readonly: false,
   required: false,
-  onChange: null,
+  type: 'text',
+  value: null,
 };
 
 export default InputBlock;
