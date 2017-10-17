@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
 import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.UserRepository;
 import ua.rd.cm.services.businesslogic.ContactTypeService;
@@ -30,14 +31,14 @@ public class SimpleUserInfoServiceTest {
     @Mock
     private ModelMapper mapper;
     @Mock
-    private ContactTypeService contactTypeService;
+    private ContactTypeRepository contactTypeRepository;
 
     private UserInfoService testing;
     private UserInfo userInfo;
 
     @Before
     public void setUp() {
-        testing = new UserInfoServiceImpl(userInfoRepository, userRepository, mapper, contactTypeService);
+        testing = new UserInfoServiceImpl(userInfoRepository, userRepository, mapper, contactTypeRepository);
         userInfo = mock(UserInfo.class);
     }
 

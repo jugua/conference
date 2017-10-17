@@ -7,3 +7,5 @@ export const changeEmailUrl = '/settings/email';
 export const changePasswordUrl = '/settings/password';
 export const changeNameUrl = '';
 export const allUsers = '/manageUsers/getAllUsersForAdmin';
+export const talk = '/talk';
+export const topics = '/topics';
