@@ -3,6 +3,7 @@ import axios from 'axios';
 import { registrationUrl } from '../../constants/backend-url';
 import SignUpPopUp from './SignUpPopUp/SignUpPopUp';
 import ErrorMessage from './SignUpPopUp/ErrorMessages';
+import RegistrationInputBox from './SignUpPopUp/RegistrationInputBox';
 
 export default class SignUp extends Component {
   constructor(props) {
@@ -56,72 +57,44 @@ export default class SignUp extends Component {
           onChange={this.formChangeHandler}
         >
           <h2 className="form-title sign-up__title">create new account</h2>
-          <label htmlFor="name" className="form-label form-label_required">
-              first name:
-          </label>
-          <input
-            type="text"
+          <RegistrationInputBox
             id="name"
+            label="first name:"
             name="fname"
-            className="field sign-up__field"
-            required
-            maxLength="56"
+            maxLength={56}
           />
-          <label htmlFor="surname" className="form-label form-label_required">
-              last name:
-          </label>
-          <input
-            type="text"
+          <RegistrationInputBox
             id="surname"
+            label="last name:"
             name="lname"
-            className="field sign-up__field"
-            required
-            maxLength="56"
+            maxLength={56}
           />
-          <label htmlFor="mail" className="form-label form-label_required">
-              Email:
-          </label>
-          <input
-            type="email"
+          <RegistrationInputBox
             id="mail"
+            label="Email:"
             name="mail"
-            className="field sign-up__field"
-            required
+            inputType="email"
           />
           {this.state.responseStatus === 409 &&
             (<ErrorMessage errorMessage="There is an existing account
                  associated with"
             />)
           }
-          <label
-            htmlFor="password"
-            className="form-label form-label_required"
-          >
-              password:
-          </label>
-          <input
-            type="password"
+          <RegistrationInputBox
             id="password"
+            label="password:"
             name="password"
-            className="field sign-up__field"
-            required
-            minLength="6"
-            maxLength="30"
+            maxLength={30}
+            minLength={6}
+            inputType="password"
           />
-          {/* {this.state.isValidCredentials ||
-            (<span className="field-error">Please use at least one non-space
-            character in your password</span>)} */}
-          <label htmlFor="confirm" className="form-label form-label_required">
-              confirm password:
-          </label>
-          <input
-            type="password"
+          <RegistrationInputBox
             id="confirm"
+            label="confirm password:"
             name="confirm"
-            className="field sign-up__field"
-            required
-            minLength="6"
-            maxLength="30"
+            maxLength={30}
+            minLength={6}
+            inputType="password"
           />
           {this.state.password !== this.state.confirm ?
             (<ErrorMessage errorMessage="Passwords do not match" />)
