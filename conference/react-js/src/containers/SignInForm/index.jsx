@@ -130,15 +130,6 @@ class SignInForm extends PureComponent {
   }
 }
 
-// const mapDispatchToProps = dispatch => ({
-//   setCurrentUser: (user) => {
-//     dispatch({
-//       type: actionTypes.SET_USER,
-//       payload: user,
-//     });
-//   },
-// });
-
 const mapDispatchToProps = dispatch => ({
   load: bindActionCreators(
     loadData, dispatch),
