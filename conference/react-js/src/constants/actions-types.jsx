@@ -9,6 +9,8 @@ const actions = {
   LOAD_USER_DATA: 'load_users_data',
   APPLY_FILTERS: 'apply_filters',
   LOAD: 'load',
+  ASC: 'asc',
+  SORT_DATA: 'sort_data',
 };
 
 export default actions;

@@ -6,7 +6,7 @@ const talksInitial = [];
 
 const talks = (state = talksInitial, action) => {
   if (action.type === LOAD) {
-    return [...state, ...action.payload];
+    return [...action.payload];
   }
   if (action.type === APPLY_FILTERS) {
     const { payload: { filter: { topic, status }, listOfTalks } } = action;
