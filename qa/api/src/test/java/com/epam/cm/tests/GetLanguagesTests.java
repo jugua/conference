@@ -26,10 +26,10 @@ public class GetLanguagesTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
+        when()
                 .get(EndpointUrl.LANGUAGES)
                 .
-                        then().log().all()
+        then().log().all()
                 .statusCode(200)
                 .assertThat()
                 .body(TextConstants.NAME,
@@ -41,8 +41,8 @@ public class GetLanguagesTests extends SimpleBaseTest {
                 .and()
                 .assertThat()
                 .body(TextConstants.ID, notNullValue());
-
     }
+
     @Test
     @Jira("6755")
     public void negativeGetLangTest(){
@@ -53,15 +53,12 @@ public class GetLanguagesTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
+        when()
                 .get( EndpointUrl.LANGUAGES)
                 .
-                        then().log().all()
+        then().log().all()
                 .statusCode(401)
                 .assertThat()
                 .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
-
     }
-
-
 }

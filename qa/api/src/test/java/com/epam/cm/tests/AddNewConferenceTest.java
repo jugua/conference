@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.nullValue;
 public class AddNewConferenceTest extends SimpleBaseTest{
 
     private String validContent  = JsonLoader.asString("AddNewConferenceValidData.json");
+    private String invalidContent  = JsonLoader.asString("AddNewConferenceInvalidData.json");
 
     @Test
     @Jira("6622")
@@ -39,7 +40,6 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .statusCode(200)
                 .assertThat()
                 .body(ERROR, nullValue(), ID, notNullValue());
-
     }
 
     @Test
@@ -68,6 +68,7 @@ public class AddNewConferenceTest extends SimpleBaseTest{
     @Test
     @Jira("6822")
     public void negativeValidationFailedAddNewConferenceTest(){
+
         String invalidContent =JsonLoader.asString("AddNewConferenceInvalidData.json");
 
         given()
@@ -78,11 +79,9 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .body(invalidContent)
                 .
-
         when()
                 .post(EndpointUrl.CONFERENCE)
                 .
-
         then().log().all()
                 .statusCode(400);
     }

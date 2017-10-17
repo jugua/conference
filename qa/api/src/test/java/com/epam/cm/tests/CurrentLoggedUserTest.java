@@ -1,8 +1,12 @@
 package com.epam.cm.tests;
 
+import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
+import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
@@ -12,6 +16,9 @@ import static org.hamcrest.core.IsEqual.equalTo;
  * Created by Oleh_Buryi on 10/5/2017.
  */
 public class CurrentLoggedUserTest extends SimpleBaseTest {
+
+    private String validContent  = JsonLoader.asString("CurrentLoggedUserValidData.json");
+    private String inValidContent  = JsonLoader.asString("CurrentLoggedUserInvalidData.json");
 
     @Test
     @Jira("6826")
@@ -24,17 +31,16 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-
-
-                        when()
-                .get( "/api/user/current")
+        when()
+                .get( EndpointUrl.USER_CURRENT)
                 .
-                        then()
+        then()
                 .log().all()
                 .statusCode(202)
-                 .assertThat() .body("id", equalTo(1));
-
+                .assertThat()
+                .body(TextConstants.ID, equalTo(1));
     }
+
     @Test
     @Jira("6828")
     public void negativeCurrentLoggedUserNoTokenTest(){
@@ -42,15 +48,15 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-
-                        .when()
-                .get( "/api/user/current")
                 .
-                        then()
+        when()
+                .get( EndpointUrl.USER_CURRENT)
+                .
+        then()
                 .log().all()
-                .statusCode(401).extract().response();
-
+                .statusCode(401);
     }
+
     @Test
     @Jira("6830")
     public void positiveUpdateUserInfoTest(){
@@ -61,15 +67,17 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{ \"id\": 1, \"roles\": [\"ROLE_SPEAKER\"],\"mail\": \"speaker@speaker.com\", \"fname\": \"Master\", \"lname\": \"Trybel\", \"bio\": \"Short bio000\", \"job\": \"JuniorTest\",\"company\": \"EPAM\", \"past\": \"Past conference\",\"photo\": \"api/user/current/photo/1\", \"linkedin\": \"linkedin.com\", \"twitter\": \"twitter.com\", \"facebook.com\": \"facebook.com\", \"blog\": \"userblog.com\", \"info\": \"Additional info\" }")
-                .when()
-                .post( "/api/user/current")
+                .body(validContent)
                 .
-                        then()
-                .log().all()
-                .statusCode(200).extract().response();
-
+        when()
+                .post( EndpointUrl.USER_CURRENT)
+                .
+        then().log().all()
+                .statusCode(200)
+                .assertThat()
+                .body(Matchers.isEmptyOrNullString());
     }
+
     @Test
     @Jira("6832")
     public void negativeJsonTypeUpdateTest(){
@@ -80,13 +88,13 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{ \"id\": 1, \"roles\": [\"ROLE_SPEAKER\"],\"mail\": \"speaker@speaker.com\", \"fname\": \"Master\", \"lname\": \"Trybel\", \"bio\": \"Short bio000\",\"company\": \"EPAM\", \"past\": \"Past conference\",\"photo\": \"api/user/current/photo/1\", \"linkedin\": \"linkedin.com\", \"twitter\": \"twitter.com\", \"facebook.com\": \"facebook.com\", \"blog\": \"userblog.com\", \"info\": \"Additional info\" }")
-                .when()
-                .post( "/api/user/current")
+                .body(inValidContent)
+        .when()
+                .post(EndpointUrl.USER_CURRENT)
                 .
-                        then()
-                .log().all()
-                .statusCode(400).extract().response();
-
+        then().log().all()
+                .statusCode(400)
+                .assertThat()
+                .body(Matchers.isEmptyOrNullString());
     }
 }

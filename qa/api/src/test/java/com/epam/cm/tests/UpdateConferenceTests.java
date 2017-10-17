@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasToString;
 
 public class UpdateConferenceTests extends SimpleBaseTest {
 
@@ -30,8 +31,9 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .patch(EndpointUrl.UPDATE_CONFERENCE)
                 .
         then().log().all()
-                .statusCode(200).assertThat()
-                .body("error", Matchers.nullValue());
+                .statusCode(200)
+                .assertThat()
+                .body(TextConstants.ERROR, Matchers.nullValue());
     }
 
     // Test is failed on old server
@@ -55,14 +57,13 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .
         then().log().all()
                 .statusCode(200).assertThat()
-                .body("error", Matchers.nullValue());
+                .body(TextConstants.ERROR, Matchers.nullValue());
     }
 
     @Test
     @Jira("6863")
     public void updateConferenceUserWithInvalidCredentialsTest(){
 
-        Response endResponse =
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
@@ -75,11 +76,9 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .patch(EndpointUrl.UPDATE_CONFERENCE)
                 .
         then().log().all()
-                .statusCode(401).extract().response();
-
-        String jsonAsString = endResponse.getBody().asString();
-
-        Assert.assertEquals(ConferenceConstants.LOGIN_AUTH_ERR, jsonAsString);
+                .statusCode(401)
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.LOGIN_ERROR));
     }
 
     @Test

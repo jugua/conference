@@ -14,6 +14,8 @@ public class EndpointUrl {
     public static final String USER = "api/user/";
     public static final String USER_EXISTING = "api/user/1";
     public static final String USER_NONEXISTING = "api/user/500";
+    public static final String USER_CURRENT = "api/user/current";
+    public static final String USER_CREATE = "api/user/create";
 
     public static final String PAST_CONFERENCE = "/api/conference/past";
     public static final String UPCOMING_CONFERENCE = "/api/conference/upcoming";

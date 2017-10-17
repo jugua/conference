@@ -1,15 +1,23 @@
 package com.epam.cm.tests;
 
+import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
+import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
 import static com.epam.cm.tests.RegistrationNewUser.*;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.nullValue;
 
 public class RegistrationNewUserByAdmin extends SimpleBaseTest {
 
+    private String validContent  = JsonLoader.asString("RegistrationNewUserByAdminInvalidDataAbsentParam.json");
+    private String invalidContentAbsentParam  = JsonLoader.asString("RegistrationNewUserByAdminInvalidDataAbsentParam.json");
+    private String invalidContentExistingUser  = JsonLoader.asString("RegistrationNewUserByAdminInvalidDataExistingUser.json");
 
     @Test
     @Jira("6689")
@@ -24,12 +32,14 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
                 .body("{\"fname\": \"fnametest1\", \"lname\": \"lnametest1\", " +
                         "\"mail\": \"" + "autoUser" + getCurrentTimeStamp() + "@mailtest1.com\"," +
                         " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\", \"roleName\" : \"ROLE_SPEAKER\" }")
-                .when()
-                .post("api/user/create")
+        .when()
+                .post(EndpointUrl.USER_CREATE)
                 .
-                        then()
+        then()
                 .log().all()
-                .statusCode(202).extract().response();
+                .statusCode(202)
+                .assertThat()
+                .body(TextConstants.ERROR, nullValue(), TextConstants.RESULT, hasToString(TextConstants.SUCCESS));
 
     }
 
@@ -43,14 +53,16 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{\"fname\": \"fnametest1\", \"lname\": \"lnametest1\", " +
-                        " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\", \"roleName\" : \"ROLE_SPEAKER\" }")
-                .when()
-                .post("api/user/create")
+                .body(invalidContentAbsentParam)
                 .
-                        then()
+        when()
+                .post(EndpointUrl.USER_CREATE)
+                .
+        then()
                 .log().all()
-                .statusCode(400).extract().response();
+                .statusCode(400)
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.EMPTY_FIELDS));
 
     }
 
@@ -67,12 +79,15 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
                 "\"mail\": \"" + "autoUser" + getCurrentTimeStamp() + "@mailtest1.com\"," +
                 " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\", \"roleName\" : \"ROLE_SPEAKER\" }")
 
-                .when()
-                .post("api/user/create")
                 .
-                        then()
+        when()
+                .post(EndpointUrl.USER_CREATE)
+                .
+        then()
                 .log().all()
-                .statusCode(401).extract().response();
+                .statusCode(401)
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
 
     }
     @Test
@@ -85,16 +100,16 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{\"fname\": \"fnametest1\", \"lname\": \"lnametest1\", " +
-                        "\"mail\": \"speaker@speaker.com\"," +
-                        " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\", \"roleName\" : \"ROLE_SPEAKER\" }")
-                .when()
-                .post("api/user/create")
+                .body(invalidContentExistingUser)
                 .
-                        then()
+        when()
+                .post(EndpointUrl.USER_CREATE)
+                .
+        then()
                 .log().all()
-                .statusCode(409).extract().response();
-
+                .statusCode(409)
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.EXISTING_EMAIL));
     }
 }
 

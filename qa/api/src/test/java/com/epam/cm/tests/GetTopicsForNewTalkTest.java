@@ -30,8 +30,8 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
 
         then().log().all()
                 .statusCode(200)
-                .assertThat().body(NAME,
-                    hasItems(JVM, SOFTWARE, ARCHITECTURE));
+                .assertThat()
+                .body(NAME, hasItems(JVM, SOFTWARE, ARCHITECTURE));
     }
 
     @Test
@@ -50,6 +50,7 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
 
         then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
+                .assertThat()
+                .body(ERROR, hasToString(UNAUTHORIZED));
     }
 }
