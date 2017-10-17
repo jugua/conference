@@ -1,53 +1,38 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  NavLink,
-} from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import Upcoming from '../Upcoming';
-import Past from '../Past';
-import { past, upcoming } from '../../constants/route-url';
+import AutorizedUserMenu from '../Autorized-user-menu';
+import { upcoming, myTalks } from '../../constants/route-url';
 
-const Tabs = () => (
-  <Router>
-    <div className="tabs-layout">
-      <div className="tabs-wrapper">
-        <div className="tabs-wrapper_embedded">
-          <ul className="tabs-list">
-            <li className="tabs-list__item">
-              <NavLink
-                exact
-                className="tabs-list__anchor"
-                to={upcoming}
-                activeClassName="tabs-list__anchor_active"
-              >
-                  Upcoming
-              </NavLink>
-            </li>
-            <li className="tabs-list__item">
-              <NavLink
-                className="tabs-list__anchor"
-                to={past}
-                activeClassName="tabs-list__anchor_active"
-              >
-                  Past
-              </NavLink>
-            </li>
-          </ul>
-          <Route
-            exact
-            path={upcoming}
-            component={Upcoming}
+const Tabs = ({ userTalks: { length } }) => (
 
-          />
-          <Route
-            path={past}
-            component={Past}
-          />
-        </div>
+  <div className="tabs-layout">
+    <div className="tabs-wrapper">
+      <div className="tabs-wrapper_embedded">
+        <AutorizedUserMenu length={length} />
+        <Route
+          path={upcoming}
+          component={Upcoming}
+        />
+        <Route
+          path={myTalks}
+          component={Upcoming}
+        />
       </div>
     </div>
-  </Router>
+  </div>
+
 );
 
-export default Tabs;
+Tabs.propTypes = {
+  userTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
+
+const mapStateToProps = state => ({
+  userTalks: state.userTalks,
+});
+
+export default connect(mapStateToProps)(Tabs);

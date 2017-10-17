@@ -6,6 +6,7 @@ const actions = {
   HIDE_EMAIL_ERROR: 'hide_email_error',
   SET_USER: 'set_user',
   EDIT_USER: 'edit_user',
+  SET_TALKS: 'set_talks',
   LOAD_USER_DATA: 'load_users_data',
   APPLY_FILTERS: 'apply_filters',
   LOAD: 'load',
