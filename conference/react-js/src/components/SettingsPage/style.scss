@@ -61,14 +61,9 @@
       }
     }
 
-  &__edit {
-    width: 6%;
-    text-align: right;
-    text-transform: capitalize;
-    }
-
   &__brief {
     display: flex;
+    position: relative;
     justify-content: flex-start;
     flex-wrap: wrap;
     box-sizing: border-box;
@@ -84,16 +79,17 @@
       outline: none
       }
 
-    &:hover .settings__edit {
+    &:hover {
       text-decoration: underline;
       @media ($mnw: $mdmn) {
         &:before {
           content: '';
           display: block;
+          position: absolute;
+          right: 1%;
           width: 15px;
           height: 15px;
-          float: left;
-          //background: url(assets/img/pen-icon.svg) no-repeat center;
+          background: url(../images/pen-icon.svg) no-repeat center;
           background-size: 80%;
           margin: 4px;
           }
