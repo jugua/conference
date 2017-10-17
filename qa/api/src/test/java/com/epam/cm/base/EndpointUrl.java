@@ -21,4 +21,8 @@ public class EndpointUrl {
     public static final String UPCOMING_CONFERENCE = "/api/conference/upcoming";
     public static final String UPDATE_CONFERENCE = "api/conference/update/9";
     public static final String UPDATE_NON_EXISTING_CONFERENCE = "api/conference/update";
+
+    public static final String PASSWORD = "/api/user/current/password";
+    public static final String TALK = "/api/talk";
+
 }
