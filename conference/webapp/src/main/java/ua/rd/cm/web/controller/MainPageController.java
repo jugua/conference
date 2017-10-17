@@ -46,10 +46,14 @@ public class MainPageController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("conference")
-    public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
+    public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto, BindingResult bindingResult) {
         Long id = conferenceService.save(dto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
+        if (bindingResult.hasErrors()){
+            messageDto.setError("validation_failed");
+            return new ResponseEntity<>(messageDto, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(messageDto, HttpStatus.OK);
     }
 

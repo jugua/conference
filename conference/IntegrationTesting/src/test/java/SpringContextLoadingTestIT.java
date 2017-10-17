@@ -15,7 +15,7 @@ import ua.rd.cm.config.ServiceConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RepositoryConfig.class, ServiceConfig.class, SecurityConfig.class})
+    @ContextConfiguration(classes = {RepositoryConfig.class, ServiceConfig.class, SecurityConfig.class})
 public class SpringContextLoadingTestIT {
     @Autowired
     private ApplicationContext applicationContext;
