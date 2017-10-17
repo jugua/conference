@@ -6,7 +6,7 @@ import Card from '../../components/Card';
 class CardsList extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { data: '' };
+    this.state = { data: [] };
   }
   componentDidMount() {
     const { url } = this.props;
@@ -16,10 +16,10 @@ class CardsList extends PureComponent {
       });
   }
 
-  setCards = data => Object.values(data)
-    .map(element => (
-      <Card data={element} key={element.id} />),
-    );
+  setCards = data => (data.map(element => (
+    <Card data={element} key={element.id} />),
+  )
+  );
 
   render() {
     const { data } = this.state;

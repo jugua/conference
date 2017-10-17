@@ -1,11 +1,11 @@
 import actions from '../constants/actions-types';
 
-const { APPLY_FILTERS } = actions;
+const { APPLY_FILTERS, LOAD } = actions;
 
 const talksInitial = [];
 
 const talks = (state = talksInitial, action) => {
-  if (action.type === 'load') {
+  if (action.type === LOAD) {
     return [...state, ...action.payload];
   }
   if (action.type === APPLY_FILTERS) {
