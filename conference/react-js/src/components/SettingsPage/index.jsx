@@ -11,6 +11,12 @@ class SettingsPage extends PureComponent {
     };
   }
 
+  setMessage = msg => this.setMessage({ message: msg, error: null });
+
+  setError = err => this.setState({ error: err, message: null });
+
+  reset = () => this.setState({ error: null, message: null });
+
   render() {
     const { error, message } = this.state;
 
@@ -26,9 +32,9 @@ class SettingsPage extends PureComponent {
             {message}
           </div> }
         <SettingsContainer
-          setMessage={msg => this.setState({ message: msg, error: null })}
-          setError={err => this.setState({ error: err, message: null })}
-          reset={() => this.setState({ error: null, message: null })}
+          setMessage={this.setMessage}
+          setError={this.setError}
+          reset={this.reset}
         />
       </div>
     );

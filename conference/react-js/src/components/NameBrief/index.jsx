@@ -9,7 +9,7 @@ const NameBrief = ({ fname, lname, show, title }) => (
     className="settings__brief settings__row"
   >
     <div className="settings__title">{title}</div>
-    <div className="settings__row-content">{`${fname} ${lname}`}</div>
+    <div className="settings__row-content">{fname} {lname}</div>
   </div>
 );
 

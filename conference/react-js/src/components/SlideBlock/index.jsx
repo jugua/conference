@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 const SlideBlock = ({ isOpened, children }) => (
   <div>
     {
-      isOpened ?
-        children[1] :
-        children[0]
+      children[+isOpened]
     }
   </div>
 );
