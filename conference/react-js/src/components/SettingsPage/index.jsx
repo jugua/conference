@@ -11,7 +11,7 @@ class SettingsPage extends PureComponent {
     };
   }
 
-  setMessage = msg => this.setMessage({ message: msg, error: null });
+  setMessage = msg => this.setState({ message: msg, error: null });
 
   setError = err => this.setState({ error: err, message: null });
 
