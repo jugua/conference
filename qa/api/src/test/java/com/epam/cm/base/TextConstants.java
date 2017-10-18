@@ -41,6 +41,7 @@ public class TextConstants {
     public static final String JVM = "JVM Languages and new programming paradigms";
     public static final String SOFTWARE = "Software engineering practices";
     public static final String WEB_DEVELOPMENT= "Web development and Java Enterprise technologies";
+    public static final String NEW_TALK_TOPIC= "New talk topic test";
 
     public static final String LIGHTING= "Lighting Talk";
     public static final String ONLINE= "Online Talk";

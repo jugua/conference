@@ -1,6 +1,7 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
+import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
 import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
@@ -8,8 +9,6 @@ import com.epam.cm.base.SimpleBaseTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
-
-import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.notNullValue;
@@ -39,7 +38,7 @@ public class AddNewConferenceTest extends SimpleBaseTest{
         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(ERROR, nullValue(), ID, notNullValue());
+                .body(TextConstants.ERROR, nullValue(), TextConstants.ID, notNullValue());
     }
 
     @Test
@@ -61,7 +60,7 @@ public class AddNewConferenceTest extends SimpleBaseTest{
         then().log().all()
                 .statusCode(401)
                 .assertThat()
-                .body(ERROR, hasToString(UNAUTHORIZED));
+                .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
     }
 
     @Ignore //test failed. bug 6825
