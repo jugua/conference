@@ -69,7 +69,7 @@ InputBlock.defaultProps = {
   readonly: false,
   required: false,
   type: 'text',
-  value: '',
+  value: undefined,
   maxLength: null,
   minLength: null,
 };

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Upcoming from '../Upcoming';
 import AutorizedUserMenu from '../Autorized-user-menu';
 import { upcoming, myTalks } from '../../constants/route-url';
+import MyInfo from '../MyInfo/index';
 
 const Tabs = ({ userTalks: { length } }) => (
 
@@ -21,6 +22,7 @@ const Tabs = ({ userTalks: { length } }) => (
           path={myTalks}
           component={Upcoming}
         />
+        <MyInfo />
       </div>
     </div>
   </div>

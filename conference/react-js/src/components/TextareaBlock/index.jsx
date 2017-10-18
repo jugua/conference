@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TextareaBox = props => (
-  <div className="input-box">
+const TextareaBlock = props => (
+  <div className="textarea-block">
     <label
       htmlFor={props.id}
       className={`form-label ${props.labelClassName}`}
@@ -18,24 +18,27 @@ const TextareaBox = props => (
   </div>
 );
 
-TextareaBox.propTypes = {
-  name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
-  labelClassName: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+TextareaBlock.propTypes = {
+  name: PropTypes.string,
+  id: PropTypes.string,
+  className: PropTypes.string,
+  labelClassName: PropTypes.string,
+  label: PropTypes.string,
   maxLen: PropTypes.number,
   rows: PropTypes.number,
-  disabled: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
 };
 
-TextareaBox.defaultProps = {
+TextareaBlock.defaultProps = {
+  name: null,
+  id: null,
   className: 'textarea',
-  disabled: 'disabled',
   labelClassName: '',
+  label: null,
   maxLen: null,
+  disabled: false,
   rows: null,
 };
 
-export default TextareaBox;
+export default TextareaBlock;
 

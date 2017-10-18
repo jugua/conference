@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
-import InputBox from '../Form-components/InputBox';
-import TextareaBox from '../Form-components/TextareaBox';
+import InputBlock from '../../InputBlock/index';
+import TextareaBlock from '../../TextareaBlock/index';
 
 class SpeakerInfo extends Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class SpeakerInfo extends Component {
           <div className="talks-user-info-popup__form-wrapper">
             <img className="my-info__ava" src="" alt="" />
             <form className="my-info" name="">
-              <TextareaBox
+              <TextareaBlock
                 id="my-info-bio"
                 labelClassName="my-info__label my-info__label_bio"
                 className="textarea my-info__bio"
@@ -60,20 +60,20 @@ class SpeakerInfo extends Component {
                 name="bio"
                 maxLen={2000}
               />
-              <InputBox id="my-job-title" label="Job Title" disabled />
-              <InputBox id="my-company" label="Company" disabled />
-              <TextareaBox
+              <InputBlock id="my-job-title" label="Job Title" disabled />
+              <InputBlock id="my-company" label="Company" disabled />
+              <TextareaBlock
                 id="my-past-conferences"
                 label="Past Conferences"
                 name="past"
                 rows={5}
               />
-              <InputBox id="my-email" label="Email" disabled />
-              <InputBox id="my-linkedin" label="LinkedIn" disabled />
-              <InputBox id="my-twitter" label="Twitter" disabled />
-              <InputBox id="my-facebook" label="Facebook" disabled />
-              <InputBox id="my-blog" label="Blog" disabled />
-              <TextareaBox
+              <InputBlock id="my-email" label="Email" disabled />
+              <InputBlock id="my-linkedin" label="LinkedIn" disabled />
+              <InputBlock id="my-twitter" label="Twitter" disabled />
+              <InputBlock id="my-facebook" label="Facebook" disabled />
+              <InputBlock id="my-blog" label="Blog" disabled />
+              <TextareaBlock
                 id="my-additional-info"
                 label="Additional Info"
                 name="past"
