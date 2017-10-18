@@ -24,8 +24,8 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"topics", "types", "languages", "levels", "talks", "organisers"})
-@ToString(exclude = {"topics", "types", "languages", "levels", "talks", "organisers"})
+@EqualsAndHashCode(callSuper = true, exclude = {"topics", "types", "languages", "levels", "talks", "organisers", "speakers"})
+@ToString(exclude = {"topics", "types", "languages", "levels", "talks", "organisers", "speakers"})
 @Entity
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "conf_seq")
 public class Conference extends AbstractEntity {
@@ -95,13 +95,20 @@ public class Conference extends AbstractEntity {
             inverseJoinColumns = @JoinColumn(name = "organiser_id")
     )
     private Collection<User> organisers;
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "conference_speaker",
+            joinColumns = @JoinColumn(name = "conference_id"),
+            inverseJoinColumns = @JoinColumn(name = "speaker_id")
+    )
+    private Collection<User> speakers;
 
     @Builder
     public Conference(Long id, String title, String description, String location, LocalDate startDate,
                       LocalDate endDate, LocalDate callForPaperStartDate, LocalDate callForPaperEndDate,
                       String pathToLogo, Boolean callForPaperActive, Collection<Topic> topics,
                       Collection<Type> types, Collection<Language> languages, Collection<Level> levels,
-                      Collection<Talk> talks, Collection<User> organisers) {
+                      Collection<Talk> talks, Collection<User> organisers, Collection<User> speakers) {
         super(id);
         this.title = title;
         this.description = description;
@@ -118,5 +125,6 @@ public class Conference extends AbstractEntity {
         this.levels = levels;
         this.talks = talks;
         this.organisers = organisers;
+        this.speakers = speakers;
     }
 }
