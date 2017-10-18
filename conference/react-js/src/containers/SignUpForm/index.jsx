@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
+import axios from 'axios';
+import { registrationUrl } from '../../constants/backend-url';
+import SignUpPopUp from './SignUpPopUp/SignUpPopUp';
+import ErrorMessage from './SignUpPopUp/ErrorMessages';
+import InputBlock from '../../components/InputBlock/index';
 
-export default class SignUp extends React.Component {
+export default class SignUp extends Component {
   constructor(props) {
     super(props);
 
@@ -11,16 +16,8 @@ export default class SignUp extends React.Component {
       password: '',
       confirm: '',
       isRegistrated: true,
-    };
-
-    this.submitHandler = (e) => {
-      // simulate bad credentials
-
-      this.setState({
-        isRegistrated: false,
-      });
-
-      e.preventDefault();
+      responseOk: false,
+      responseStatus: 0,
     };
 
     this.formChangeHandler = (e) => {
@@ -29,6 +26,25 @@ export default class SignUp extends React.Component {
       this.setState({
         [target.name]: target.value,
       });
+    };
+
+    const registration = ({ mail, password, confirm, fname, lname }) => {
+      const body = { mail, password, confirm, fname, lname };
+      return axios.post(registrationUrl, body);
+    };
+
+    this.submitHandler = (e) => {
+      e.preventDefault();
+      registration(this.state)
+        .then(resp => (this.setState({
+          responseOk: true,
+          response: resp,
+        })))
+        .catch(error => (
+          this.setState({
+            responseStatus: error.response.status,
+          })
+        ));
     };
   }
 
@@ -41,97 +57,73 @@ export default class SignUp extends React.Component {
           onChange={this.formChangeHandler}
         >
           <h2 className="form-title sign-up__title">create new account</h2>
-          <label htmlFor="name" className="form-label form-label_required">
-              first name:
-          </label>
-          <input
-            type="text"
+          <InputBlock
             id="name"
+            label="first name:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="fname"
-            className="field sign-up__field"
+            maxLength={56}
             required
-            maxLength="56"
           />
-          <label htmlFor="surname" className="form-label form-label_required">
-              last name:
-          </label>
-          <input
-            type="text"
+          <InputBlock
             id="surname"
+            label="last name:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="lname"
-            className="field sign-up__field"
+            maxLength={56}
             required
-            maxLength="56"
           />
-          <label htmlFor="mail" className="form-label form-label_required">
-              Email:
-          </label>
-          <input
-            type="email"
+          <InputBlock
             id="mail"
+            type="email"
+            label="Email:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
             name="mail"
-            className="field sign-up__field"
             required
           />
-          {/* {this.state.isValidCredentials ||
-            (<span className="field-error">
-            Please enter a valid email address</span>)} */}
-          {/* {this.state.isValidCredentials ||
-            ( <span className="field-error">There is an existing account
-            associated with</span>)} */}
-          <label
-            htmlFor="password"
-            className="form-label form-label_required"
-          >
-              password:
-          </label>
-          <input
-            type="password"
+          {this.state.responseStatus === 409 &&
+            (<ErrorMessage errorMessage="There is an existing account
+                 associated with"
+            />)
+          }
+          <InputBlock
             id="password"
-            name="password"
-            className="field sign-up__field"
-            required
-            minLength="6"
-            maxLength="30"
-          />
-          {/* {this.state.isValidCredentials ||
-            (<span className="field-error">Please use at least one non-space
-            character in your password</span>)} */}
-          <label htmlFor="confirm" className="form-label form-label_required">
-              confirm password:
-          </label>
-          <input
             type="password"
-            id="confirm"
-            name="confirm"
-            className="field sign-up__field"
+            label="password:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
+            name="password"
+            maxLength={30}
+            minLength={6}
             required
-            minLength="6"
-            maxLength="30"
+          />
+          <InputBlock
+            id="confirm"
+            type="password"
+            label="confirm password:"
+            labelClass="form-label_required"
+            inputClass="sign-up__field"
+            name="confirm"
+            maxLength={30}
+            minLength={6}
+            required
           />
           {this.state.password !== this.state.confirm ?
-            (<span className="field-error">Passwords do not match</span>)
+            (<ErrorMessage errorMessage="Passwords do not match" />)
             : null}
-          {/* {this.state.isValidCredentials ||
-            ( <span className="field-error">Passwords do not match</span>)} */}
           <input
             type="submit"
             className="sign-up__button btn"
             value="submit"
           />
         </form>
-        {/* <div className="pop-up-wrapper"> */}
-        {/* <div className="pop-up"> */}
-        {/* <h3 className="pop-up__title"> */}
-        {/* You&#39;ve successfully registered. */}
-        {/* </h3> */}
-        {/* <p className="pop-up__notification"> */}
-        {/* <span className="pop-up__notification-user" />, go to */}
-        {/* <span className="pop-up__notification-user" /> */}
-        {/* to complete the sign-up process</p> */}
-        {/* <button className="btn pop-up__button" >OK</button> */}
-        {/* </div> */}
-        {/* </div> */}
+        {this.state.responseOk && <SignUpPopUp
+          userName={this.state.fname}
+          mail={this.state.mail}
+        /> }
       </div>
     );
   }
