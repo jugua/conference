@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import loadData from '../../actions/load';
 import { forgotPassword, signUp } from '../../constants/route-url';
 import login from '../../actions/login';
-import getUserInfo from '../../actions/getUserInfo';
+import getUserInfo from '../../actions/get-user-info';
 import getTalks from '../../actions/getTalks';
 import loginValidation from '../../actions/loginVlidation';
 import actionTypes from '../../constants/actions-types';
