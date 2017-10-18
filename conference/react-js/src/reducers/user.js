@@ -6,8 +6,19 @@ const defaultUser = {
   fname: '',
 };
 
-const user = (state = defaultUser, { type, payload }) => (
-  type === actionTypes.SET_USER ? payload : state
-);
+const user = (state = defaultUser, { type, payload }) => {
+  const { SET_USER, EDIT_USER } = actionTypes;
+
+  switch (type) {
+  case SET_USER:
+    return payload;
+  case EDIT_USER:
+    return {
+      ...state,
+      ...payload,
+    };
+  default: return state;
+  }
+};
 
 export default user;

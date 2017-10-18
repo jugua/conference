@@ -44,7 +44,7 @@ const InputBlock = ({
 InputBlock.propTypes = {
   name: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   inputClass: PropTypes.string,
   label: PropTypes.string,
   labelClass: PropTypes.string,
@@ -69,7 +69,7 @@ InputBlock.defaultProps = {
   readonly: false,
   required: false,
   type: 'text',
-  value: '',
+  value: undefined,
   maxLength: null,
   minLength: null,
 };
