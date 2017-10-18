@@ -14,6 +14,8 @@ const InputBlock = ({
   required,
   type,
   value,
+  maxLength,
+  minLength,
 }) => (
   <div>
     <label
@@ -21,19 +23,21 @@ const InputBlock = ({
       htmlFor={id}
     >
       {label}
-      <input
-        disabled={disabled}
-        id={id}
-        className={`field ${inputClass}`}
-        name={name}
-        onChange={onChange}
-        pattern={pattern}
-        readOnly={readonly}
-        required={required}
-        type={type}
-        value={value}
-      />
     </label>
+    <input
+      disabled={disabled}
+      id={id}
+      className={`field ${inputClass}`}
+      name={name}
+      onChange={onChange}
+      pattern={pattern}
+      readOnly={readonly}
+      required={required}
+      type={type}
+      value={value}
+      maxLength={maxLength}
+      minLength={minLength}
+    />
   </div>
 );
 
@@ -50,6 +54,8 @@ InputBlock.propTypes = {
   required: PropTypes.bool,
   type: PropTypes.string,
   value: PropTypes.string,
+  maxLength: PropTypes.number,
+  minLength: PropTypes.number,
 };
 
 InputBlock.defaultProps = {
@@ -63,7 +69,9 @@ InputBlock.defaultProps = {
   readonly: false,
   required: false,
   type: 'text',
-  value: null,
+  value: undefined,
+  maxLength: null,
+  minLength: null,
 };
 
 export default InputBlock;

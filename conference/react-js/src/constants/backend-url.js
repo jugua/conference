@@ -9,3 +9,4 @@ export const changeNameUrl = '';
 export const allUsers = '/manageUsers/getAllUsersForAdmin';
 export const talk = '/talk';
 export const topics = '/topics';
+export const registrationUrl = '/registration';
