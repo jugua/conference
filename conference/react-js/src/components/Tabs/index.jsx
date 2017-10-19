@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Upcoming from '../Upcoming';
 import AutorizedUserMenu from '../Autorized-user-menu';
 import { upcoming, myTalks } from '../../constants/route-url';
-import MyInfo from '../MyInfo/index';
+import MyInfo from '../MyInfo/MyInfo';
 
 const Tabs = ({ userTalks: { length } }) => (
 

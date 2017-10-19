@@ -12,6 +12,26 @@
     overflow: hidden;
     background-size: cover;
     z-index: 1;
+
+    &-block {
+      position: relative;
+
+      &:hover {
+        cursor: pointer;
+
+        & .my-info__remove {
+          display: block;
+        }
+
+        & .change-photo {
+          height: 40px;
+        }
+      }
+
+
+    }
+
+
   }
   &__bio {
     width: calc(100% - 190px);
@@ -27,6 +47,38 @@
   &__button {
     margin: 20px auto;
   }
+
+  &__remove {
+    width: 15px;
+    height: 15px;
+    background: transparent;
+    display: none;
+    position: absolute;
+    left: 160px;
+    top: 2px;
+    border: 0;
+    float: right;
+    background-image: url(../images/close-icon.svg);
+    margin: 5px 5px 0 0;
+  }
+}
+.textarea-focus {
+  height: 147px;
+}
+
+.change-photo {
+  width: 180px;
+  height: 0;
+  color: #fff;
+  position: absolute;
+  bottom: -180px;
+  left: 0;
+  line-height: 40px;
+  text-align: center;
+  background-color: $sharp-blue;
+  font-family: Oswald Light,sans-serif;
+  -webkit-transition: height .5s;
+  transition: height .5s;
 }
 
 
@@ -49,16 +101,4 @@
       float: right;
     }
   }
-  //  & md-tooltip.tooltip {
-  //    color: $dark-blue;
-  //    font-size: 14px;
-  //    font-weight: normal;
-  //    line-height: 22px;
-  //    border-radius: 0;
-  //    border: 1px solid $dark-blue;
-  //    background-color: #fff;
-  //    padding: 3px 6px;
-  //    height: auto;
-  //  }
-  //}
 }
