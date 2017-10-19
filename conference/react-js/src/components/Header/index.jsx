@@ -56,7 +56,7 @@ class Header extends PureComponent {
 
   render() {
     const { user: { roles, fname }, dispatch } = this.props;
-    const logautAction = bindActionCreators(logout, dispatch);
+    const logoutAction = bindActionCreators(logout, dispatch);
 
     return (
       <header className="header">
@@ -83,7 +83,7 @@ class Header extends PureComponent {
               roles.length > 0 ?
                 <UserMenuFilter
                   roles={roles}
-                  logout={logautAction}
+                  logout={logoutAction}
                 />
                 : <SignInForm />
             }
