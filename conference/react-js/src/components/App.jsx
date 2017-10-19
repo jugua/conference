@@ -9,7 +9,10 @@ import Tabs from './Tabs';
 import Header from './Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
-import SettingsPage from '../components/SettingsPage';
+import SettingsPage from './SettingsPage';
+import History from './History';
+import ManageUser from '../containers/Manage-user/';
+import Talks from '../containers/Talks';
 import {
   baseUrl,
   forgotPassword,
@@ -17,9 +20,8 @@ import {
   manageUser,
   talks,
   settings,
+  history,
 } from '../constants/route-url';
-import ManageUser from '../containers/Manage-user/';
-import Talks from '../containers/Talks';
 
 const App = () => (
 
@@ -53,6 +55,10 @@ const App = () => (
         <Route
           path={talks}
           component={Talks}
+        />
+        <Route
+          path={history}
+          component={History}
         />
       </Switch>
     </div>

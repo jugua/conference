@@ -1,5 +1,5 @@
 export const baseUrl = '/react';
-export const past = `${baseUrl}/past`;
+export const history = `${baseUrl}/history`;
 export const upcoming = baseUrl;
 export const forgotPassword = `${baseUrl}/forgot-password`;
 export const talks = `${baseUrl}/talks`;
@@ -7,4 +7,5 @@ export const signUp = `${baseUrl}/sign-up`;
 export const settings = `${baseUrl}/settings`;
 export const manageUser = `${baseUrl}/manage-user`;
 export const myTalks = `${baseUrl}/my-talks`;
+export const myEvents = `${baseUrl}/my-events`;
 export const myInfo = `${baseUrl}/my-info`;
