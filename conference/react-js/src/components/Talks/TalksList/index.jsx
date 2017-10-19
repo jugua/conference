@@ -1,43 +1,39 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-function TalksList({ data: {
-  date,
-  status,
-  title,
-  topic,
-  assignee,
-  name,
-  comment,
-} }) {
-  return (
-    <tr className="data-table__row">
-      <td className="data-table__column data-table__column_check-talk">
-        <input type="checkbox" />
-      </td>
-      <td className="data-table__column data-table__column_speaker-talk">
-        <a className="link">{name}</a></td>
-      <td className="data-table__column data-table__column_title-talk">
-        <a className="link">{title}</a>
-      </td>
-      <td className="data-table__column data-table__column_topic-talk">
-        {topic}
-      </td>
-      <td className="data-table__column data-table__column_date-talk">
-        {date}
-      </td>
-      <td className="data-table__column data-table__column_status-talk">
-        {status}
-      </td>
-      <td className="data-table__column data-table__column_comments-talk">
-        {comment}
-      </td>
-      <td className="data-table__column data-table__column_assign-talk">
-        {assignee}
-      </td>
-    </tr>
-  );
-}
+const TalksList = ({ data, coloms }) =>
+  (<div className="data-table__row">
+    <div className="data-table__column data-table__column_check-talk">
+      <input type="checkbox" />
+    </div>
+    {coloms.map((col) => {
+      if (col === 'id') {
+        return null;
+      } else if (col === 'name') {
+        return (<div
+          key={col}
+          className="data-table__column
+        data-table__column_speaker-talk"
+        >
+          <a className="link">{data.name}</a></div>);
+      } else if (col === 'title') {
+        return (<div
+          key={col}
+          className="data-table__column
+        data-table__column_title-talk"
+        >
+          <a className="link">{data.title}</a>
+        </div>);
+      }
+      return (<div
+        key={col}
+        className={`${'data-table__column' +
+      ' data-table__column_'}${col}-talk`}
+      >
+        {data[col]}
+      </div>);
+    })}
+  </div>);
 
 TalksList.propTypes = { data: PropTypes.shape({
   date: PropTypes.string.isRequired,
@@ -52,6 +48,7 @@ TalksList.propTypes = { data: PropTypes.shape({
   comment: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 }).isRequired,
+coloms: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default TalksList;

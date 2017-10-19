@@ -1,13 +1,17 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import actions from '../../constants/actions-types';
 import Talks from '../../containers/Talks';
 
 const MyTalks = () => (
-  <Talks />
+  <Talks
+    coloms={[
+      'id',
+      'title',
+      'status',
+      'conferenceName',
+    ]}
+    sort={actions.SORT_USER_TALKS}
+  />
 );
 
-const mapStateToProps = state => ({
-  userTalks: state.userTalks,
-});
-
-export default connect(mapStateToProps)(MyTalks);
+export default MyTalks;
