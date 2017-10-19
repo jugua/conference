@@ -2,17 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import UserMenu from '../User-menu';
 import {
-  baseUrl,
   settings,
   manageUser,
   talks,
   myInfo,
+  root,
 } from '../../constants/route-url';
 import {
   admin,
 } from '../../constants/roles';
 
-const UserMenuFilter = ({ roles }) => {
+const UserMenuFilter = ({ roles, logout }) => {
   const data = [
     { title: 'Talks', link: talks },
   ];
@@ -23,7 +23,7 @@ const UserMenuFilter = ({ roles }) => {
   data.push(
     { title: 'My info', link: myInfo },
     { title: 'Settings', link: settings },
-    { title: 'Sign Out', link: baseUrl, last: true },
+    { title: 'Sign Out', link: root, last: true, click: logout },
   );
   return (
     <UserMenu data={data} />
@@ -32,6 +32,7 @@ const UserMenuFilter = ({ roles }) => {
 
 UserMenuFilter.propTypes = {
   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 export default UserMenuFilter;

@@ -3,10 +3,12 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 
 import { baseUrl } from '../../constants/route-url';
 import SignInForm from '../../containers/SignInForm';
 import UserMenuFilter from '../User-menu-filter';
+import logout from '../../actions/logout';
 
 class Header extends PureComponent {
   constructor() {
@@ -53,7 +55,9 @@ class Header extends PureComponent {
   };
 
   render() {
-    const { user: { roles, fname } } = this.props;
+    const { user: { roles, fname }, dispatch } = this.props;
+    const logautAction = bindActionCreators(logout, dispatch);
+
     return (
       <header className="header">
         <div className="header__title">
@@ -79,6 +83,7 @@ class Header extends PureComponent {
               roles.length > 0 ?
                 <UserMenuFilter
                   roles={roles}
+                  logout={logautAction}
                 />
                 : <SignInForm />
             }
@@ -91,6 +96,7 @@ class Header extends PureComponent {
 }
 
 Header.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     roles: PropTypes.array,
