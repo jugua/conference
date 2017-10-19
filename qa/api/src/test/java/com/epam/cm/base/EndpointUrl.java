@@ -11,7 +11,7 @@ public class EndpointUrl {
     public static final String LANGUAGES = "/api/lang";
     public static final String LEVELS = "/api/level";
     public static final String USER = "api/user/";
-
+    public static final String EMAIL = "/api/user/current/email";
     public static final String USER_EXISTING = "api/user/1";
     public static final String USER_NONEXISTING = "api/user/500";
     public static final String USER_CURRENT = "api/user/current";
