@@ -1,0 +1,112 @@
+.settings-wrapper {
+  width: 50%;
+  height: calc(100vh - 90px);
+  margin: 20px auto;
+  box-sizing: border-box;
+  padding: 20px;
+  box-shadow: (0, 0, 5px, 0, rgba(0,0,0,0.15));
+
+  @media ($mnw: $mdmn) and ($mxw: $xmdmx) {
+    width: 90%;
+    }
+  @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+    width: 100%;
+    padding: 20px 10px;
+    }
+  @media ($mnw: $xmmn) and ($mxw: $ldmx) {
+    width: 80%;
+    }
+  }
+
+.settings {
+  &__success {
+    background: $lime-green
+    }
+
+  &__error {
+    background: $raspberry
+    }
+
+  &__info {
+    padding: 20px;
+    text-align: center;
+    }
+
+  &__row {
+    display: flex;
+    margin: 20px 0;
+    }
+
+  &__header {
+    border-bottom: 1px solid $sharp-blue;
+    text-transform: capitalize;
+    box-sizing: border-box;
+    padding-bottom: 5px;
+    }
+
+  &__title {
+    width: 30%;
+    text-transform: capitalize;
+    @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+      width: 100%;
+      }
+    }
+
+  &__row-content {
+    font-family: Oswald Light, sans-serif;
+    width: 70%;
+    &_name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      }
+    }
+
+  &__brief {
+    display: flex;
+    position: relative;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    padding: 10px;
+    border-bottom: 1px solid $light-grey;
+
+    &:hover {
+      cursor: pointer;
+      background: #f2f2f2;
+      }
+
+    &:active {
+      outline: none
+      }
+
+    &:hover {
+      text-decoration: underline;
+      @media ($mnw: $mdmn) {
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          right: 1%;
+          width: 15px;
+          height: 15px;
+          background: url(../images/pen-icon.svg) no-repeat center;
+          background-size: 80%;
+          margin: 4px;
+          }
+        }
+      }
+    }
+
+  &__details {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #f2f2f2;
+    }
+  }
+
+.btn__inline {
+  display: inline-block;
+  margin-right: 20px;
+  margin-left: 0;
+  }
