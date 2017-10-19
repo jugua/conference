@@ -1,16 +1,17 @@
 package com.epam.cm.tests;
 
+import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.jira.Jira;
+import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import static com.epam.cm.base.EndpointUrl.PASSWORD;
 import static io.restassured.RestAssured.given;
 
 public class ChangePassword extends SimpleBaseTest {
 
-    public static final String passwordChangeJSON = "{\"currentPassword\": \"speaker\", \"newPassword\": \"speaker\", \"confirmNewPassword\": \"speaker\"}";
+    private String validContent  = JsonLoader.asString("ChangePasswordData.json");
 
     @Test
     @Jira("6829")
@@ -21,14 +22,14 @@ public class ChangePassword extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body(passwordChangeJSON).
+                .body(validContent).
         when()
-                .post(PASSWORD)
+                .post(EndpointUrl.PASSWORD)
                 .
         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(Matchers.equalTo(""));
+                .body(Matchers.isEmptyString());
     }
 
     @Test
@@ -39,11 +40,13 @@ public class ChangePassword extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body(passwordChangeJSON).
-                when()
-                .post(PASSWORD)
+                .body(validContent).
+        when()
+                .post(EndpointUrl.PASSWORD)
                 .
-                        then().log().all()
-                .statusCode(401).assertThat().body(Matchers.equalTo("")).extract().response();
+        then().log().all()
+                .statusCode(401)
+                .assertThat()
+                .body(Matchers.isEmptyString());
     }
 }

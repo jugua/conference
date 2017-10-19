@@ -16,8 +16,13 @@ public class TextConstants {
     public static final String STATUS = "status";
     public static final String TYPE = "type";
 
+    public static final String NEW = "New";
     public static final String SUCCESS = "success";
     public static final String ROLES = "roles";
+    public static final String TEST_TITLE = "Test talk ";
+    public static final String TEST_DESCRIPTION = "Test description";
+    public static final String TEST_DATE = "1506419805177";
+    public static final String DATE_PATTERN = "yyyy/MM/dd HH:mm:ss";
 
     public static final String LOGIN_ERROR = "login_auth_err";
     public static final String PASSWORD_ERROR = "password_auth_err";
@@ -26,6 +31,9 @@ public class TextConstants {
     public static final String USER_NOT_FOUND = "user_not_found";
     public static final String EXISTING_EMAIL = "email_already_exists";
     public static final String EMPTY_FIELDS = "empty_fields";
+    public static final String NULL_STATUS = "status_is_null";
+    public static final String TALK_NOT_FOUND = "talk_not_found";
+    public static final String SUCCESSFULLY_UPDATED = "successfully_updated";
 
     public static final String ADVANCED = "Advanced";
     public static final String BEGINNER = "Beginner";

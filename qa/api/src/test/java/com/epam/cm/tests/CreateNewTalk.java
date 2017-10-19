@@ -4,10 +4,10 @@ import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
-import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,22 +17,27 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 public class CreateNewTalk extends SimpleBaseTest {
 
-    //String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date());
+    DateFormat dateFormat = new SimpleDateFormat(TextConstants.DATE_PATTERN);
+    Date currentDate = new Date();
 
-    private String validContent  = JsonLoader.asString("CreateNewTalkValidData.json");
-
-    @Test //TODO
+    @Test
     @Jira("6696")
     public void createNewTalk(){
 
         given()
-                .contentType(ContentType.JSON)
+                .contentType(ContentType.URLENC)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body(validContent)
-                .
+                .formParam(TextConstants.TITLE,TextConstants.TEST_TITLE + dateFormat.format(currentDate))
+                .formParam(TextConstants.DESCRIPTION, TextConstants.TEST_DESCRIPTION)
+                .formParam(TextConstants.TOPIC,TextConstants.BIGDATA)
+                .formParam(TextConstants.TYPE,TextConstants.LIGHTING)
+                .formParam(TextConstants.LANG,TextConstants.ENGLISH)
+                .formParam(TextConstants.LEVEL,TextConstants.BEGINNER)
+                .formParam(TextConstants.STATUS,TextConstants.NEW)
+                .formParam(TextConstants.DATE,TextConstants.TEST_DATE).
         when()
                 .post(EndpointUrl.TALK)
                 .

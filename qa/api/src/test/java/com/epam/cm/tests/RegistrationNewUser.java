@@ -8,9 +8,6 @@ import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.nullValue;
@@ -19,14 +16,10 @@ import static org.hamcrest.Matchers.nullValue;
  * Created by Oleh_Buryi on 10/6/2017.
  */
 public class RegistrationNewUser extends SimpleBaseTest {
-    public static String getCurrentTimeStamp() {
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMddHHmmss");//dd/MM/yyyy
-        Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
-    }
 
-    private String validContent  = JsonLoader.asString("AddNewConferenceValidData.json");
+
+    private String validContent  = JsonLoader.asString("RegistrationNewUserValidData.json").replace("autoUser+TimeStamp", "autoUser" + getCurrentTimeStamp() + "@mail.com");
+    private String inValidContent  = JsonLoader.asString("RegistrationNewUserInvalidData.json").replace("autoUser+TimeStamp", "autoUser" + getCurrentTimeStamp() + "@mail.com");
     private String invalidContentExistingUser  = JsonLoader.asString("RegistrationNewUserInvalidDataExistingUser.json");
 
     @Test
@@ -39,9 +32,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{\"fname\": \"fnametest1\", \"lname\": \"lnametest1\", " +
-                        "\"mail\": \""+"autoUser"+getCurrentTimeStamp()+"@mailtest1.com\"," +
-                        " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\" }")
+                .body(validContent)
                 .
         when()
                 .post(EndpointUrl.USER)
@@ -50,7 +41,8 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .log().all()
                 .statusCode(202)
                 .assertThat()
-                .body(TextConstants.ERROR, nullValue(), TextConstants.RESULT, hasToString(TextConstants.SUCCESS));
+                .body(TextConstants.ERROR, nullValue(),
+                        TextConstants.RESULT, hasToString(TextConstants.SUCCESS));
     }
 
     @Test
@@ -63,9 +55,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body("{\"lname\": \"lnametest1\", " +
-                        "\"mail\": \""+"autoUser"+getCurrentTimeStamp()+"@mailtest1.com\"," +
-                        " \"password\": \"1testtest1\",\"confirm\": \"1testtest1\" }")
+                .body(inValidContent)
                 .
         when()
                 .post( EndpointUrl.USER)
@@ -98,25 +88,3 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .body(TextConstants.ERROR, hasToString(TextConstants.EXISTING_EMAIL));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

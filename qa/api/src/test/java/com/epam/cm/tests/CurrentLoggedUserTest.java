@@ -42,22 +42,6 @@ public class CurrentLoggedUserTest extends SimpleBaseTest {
     }
 
     @Test
-    @Jira("6828")
-    public void negativeCurrentLoggedUserNoTokenTest(){
-
-        given()
-                .contentType(ContentType.JSON)
-                .baseUri(config.baseHost)
-                .
-        when()
-                .get( EndpointUrl.USER_CURRENT)
-                .
-        then()
-                .log().all()
-                .statusCode(401);
-    }
-
-    @Test
     @Jira("6830")
     public void positiveUpdateUserInfoTest(){
 

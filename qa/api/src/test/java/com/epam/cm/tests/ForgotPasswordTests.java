@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Created by Mariia_Koltsova on 10/6/2017.
@@ -35,7 +36,9 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .post(EndpointUrl.FORGOT_PASSWORD)
                 .
         then().log().all()
-                .statusCode(200);
+                .statusCode(200)
+        .assertThat()
+        .body(TextConstants.ERROR, nullValue());
     }
 
     @Test

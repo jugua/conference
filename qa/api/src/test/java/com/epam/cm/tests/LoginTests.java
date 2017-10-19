@@ -42,7 +42,8 @@ public class LoginTests extends SimpleBaseTest {
                 .
         then().log().all()
                 .statusCode(200)
-                .assertThat().body(Matchers.isEmptyOrNullString());
+                .assertThat()
+                .body(Matchers.isEmptyOrNullString());
     }
 
     @Test
@@ -65,7 +66,6 @@ public class LoginTests extends SimpleBaseTest {
                 .statusCode(401)
                 .assertThat()
                 .body(TextConstants.ERROR, hasToString(TextConstants.LOGIN_ERROR));
-
     }
 
     @Test

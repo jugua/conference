@@ -12,7 +12,6 @@ import static org.hamcrest.Matchers.*;
 
 public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
 
-
     @Test
     @Jira("6662")
     public void positiveOrganiserGettingExistingUserTest() {
@@ -30,7 +29,8 @@ public class OrganiserGettingUserInfoTests extends SimpleBaseTest {
         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConstants.ID, hasToString(TextConstants.EXISTING_USER_ID), TextConstants.ROLES, notNullValue());
+                .body(TextConstants.ID, hasToString(TextConstants.EXISTING_USER_ID),
+                        TextConstants.ROLES, notNullValue());
     }
 
     @Test

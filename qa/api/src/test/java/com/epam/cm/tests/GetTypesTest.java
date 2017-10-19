@@ -30,7 +30,8 @@ public class GetTypesTest extends SimpleBaseTest{
 
         then().log().all()
                 .statusCode(200)
-                .assertThat().body(NAME, hasItems(REGULAR, ONLINE, LIGHTING, HANDS_ON_LAB));
+                .assertThat()
+                .body(NAME, hasItems(REGULAR, ONLINE, LIGHTING, HANDS_ON_LAB));
     }
 
     @Test
@@ -50,6 +51,7 @@ public class GetTypesTest extends SimpleBaseTest{
 
         then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
+                .assertThat()
+                .body(ERROR, hasToString(UNAUTHORIZED));
     }
 }

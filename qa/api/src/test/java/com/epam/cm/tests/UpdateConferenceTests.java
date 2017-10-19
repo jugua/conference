@@ -2,10 +2,9 @@ package com.epam.cm.tests;
 
 import com.epam.cm.base.*;
 import com.epam.cm.jira.Jira;
+import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -14,6 +13,8 @@ import static org.hamcrest.Matchers.hasToString;
 
 public class UpdateConferenceTests extends SimpleBaseTest {
 
+    private String validContent  = JsonLoader.asString("UpdateConferenceValidData.json");
+    private String invalidContent  = JsonLoader.asString("UpdateConferenceNonExisting.json");
 
     @Test
     @Jira("6866")
@@ -23,9 +24,9 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
-                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .body(ConferenceConstants.CONFERENCE_BODY_JSON)
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
+                .body(validContent)
                 .
         when()
                 .patch(EndpointUrl.UPDATE_CONFERENCE)
@@ -48,9 +49,9 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
-                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .body(ConferenceConstants.CONFERENCE_BODY_JSON)
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
+                .body(validContent)
                 .
         when()
                 .patch(EndpointUrl.UPDATE_CONFERENCE)
@@ -68,9 +69,9 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(TextConstants.WRONG_USER, TextConstants.WRONG_PASSWORD)
-                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .body(ConferenceConstants.CONFERENCE_BODY_JSON)
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
+                .body(validContent)
                 .
         when()
                 .patch(EndpointUrl.UPDATE_CONFERENCE)
@@ -89,9 +90,9 @@ public class UpdateConferenceTests extends SimpleBaseTest {
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
-                .cookie(SimpleBaseTest.TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .header(SimpleBaseTest.X_TOKEN, response.cookie(SimpleBaseTest.TOKEN))
-                .body(ConferenceConstants.NON_EXISTING_CONFERENCE_BODY_JSON)
+                .cookie(TOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
+                .body(invalidContent)
                 .
         when()
                 .patch(EndpointUrl.UPDATE_NON_EXISTING_CONFERENCE)

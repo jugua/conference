@@ -25,7 +25,8 @@ public class GetPastConferencesTests extends SimpleBaseTest {
         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConstants.ID, Matchers.notNullValue(), TextConstants.TITLE, Matchers.notNullValue());
+                .body(TextConstants.ID, Matchers.notNullValue(),
+                        TextConstants.TITLE, Matchers.notNullValue());
     }
 
     @Test
@@ -45,7 +46,8 @@ public class GetPastConferencesTests extends SimpleBaseTest {
         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConstants.ID, Matchers.notNullValue(), TextConstants.TITLE, Matchers.notNullValue());
+                .body(TextConstants.ID, Matchers.notNullValue(),
+                        TextConstants.TITLE, Matchers.notNullValue());
     }
 
     @Test
@@ -63,7 +65,8 @@ public class GetPastConferencesTests extends SimpleBaseTest {
         .then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConstants.ID, Matchers.notNullValue(), TextConstants.TITLE, Matchers.notNullValue());
+                .body(TextConstants.ID, Matchers.notNullValue(),
+                        TextConstants.TITLE, Matchers.notNullValue());
     }
 
     @Test

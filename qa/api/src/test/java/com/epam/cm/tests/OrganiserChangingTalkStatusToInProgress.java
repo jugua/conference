@@ -6,7 +6,6 @@ import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.nullValue;
@@ -35,11 +34,8 @@ public class OrganiserChangingTalkStatusToInProgress extends SimpleBaseTest {
                 .log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(TextConstants.ERROR, nullValue())
-                .body(TextConstants.SECONDS_TO_EXPIRY, nullValue())
-                .body(TextConstants.RESULT, hasToString("successfully_updated"))
-                .body(TextConstants.ID, nullValue())
-                .body(TextConstants.FIELDS, nullValue());
+                .body(TextConstants.ERROR, nullValue(),
+                        TextConstants.RESULT, hasToString(TextConstants.SUCCESSFULLY_UPDATED));
     }
 
     @Test
@@ -61,11 +57,7 @@ public class OrganiserChangingTalkStatusToInProgress extends SimpleBaseTest {
                 .log().all()
                 .statusCode(404)
                 .assertThat()
-                .body(TextConstants.ERROR, hasToString("talk_not_found"))
-                .body(TextConstants.SECONDS_TO_EXPIRY, nullValue())
-                .body(TextConstants.RESULT, nullValue())
-                .body(TextConstants.ID, nullValue())
-                .body(TextConstants.FIELDS, nullValue());
+                .body(TextConstants.ERROR, hasToString(TextConstants.TALK_NOT_FOUND));
     }
 
     @Test
@@ -87,11 +79,7 @@ public class OrganiserChangingTalkStatusToInProgress extends SimpleBaseTest {
                 .log().all()
                 .statusCode(400)
                 .assertThat()
-                .body(TextConstants.ERROR, hasToString("status_is_null"))
-                .body(TextConstants.SECONDS_TO_EXPIRY, nullValue())
-                .body(TextConstants.RESULT, nullValue())
-                .body(TextConstants.ID, nullValue())
-                .body(TextConstants.FIELDS, nullValue());
+                .body(TextConstants.ERROR, hasToString(TextConstants.NULL_STATUS));
     }
 
     @Test
@@ -113,8 +101,6 @@ public class OrganiserChangingTalkStatusToInProgress extends SimpleBaseTest {
                 .log().all()
                 .statusCode(401)
                 .assertThat()
-                .body(TextConstants.ERROR, hasToString("login_auth_err"));
+                .body(TextConstants.ERROR, hasToString(TextConstants.LOGIN_ERROR));
     }
-
-
 }

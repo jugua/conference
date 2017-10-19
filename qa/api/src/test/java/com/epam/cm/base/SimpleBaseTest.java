@@ -9,7 +9,9 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import static io.restassured.RestAssured.when;
 
@@ -48,5 +50,12 @@ public class SimpleBaseTest {
         RestAssured.registerParser("text/plain", Parser.JSON);
 
         response = when().get(config.baseHost);
+    }
+
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMddHHmmss");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
     }
 }

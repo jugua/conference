@@ -13,10 +13,9 @@ import static io.restassured.RestAssured.given;
 
 public class LogoutTests extends SimpleBaseTest {
 
-
     @Test
-    @Jira("6620")
     @Ignore
+    @Jira("6620")
     public void positiveLogoutTest() {
 
         CookieFilter cookieFilter = new CookieFilter();
@@ -29,7 +28,6 @@ public class LogoutTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .filter(cookieFilter)
-
                 .
         when()
                 .post(EndpointUrl.LOGIN)

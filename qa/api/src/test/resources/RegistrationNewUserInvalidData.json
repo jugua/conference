@@ -1,7 +1,6 @@
 {
-  "fname": "fnametest1",
   "lname": "lnametest1",
-  "mail": "autoUser+TimeStamp",
+  "mail": "autoUser+dateStamp",
   "password": "1testtest1",
   "confirm": "1testtest1"
 }
