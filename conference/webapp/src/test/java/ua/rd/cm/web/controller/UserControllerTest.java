@@ -1,14 +1,16 @@
 package ua.rd.cm.web.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.Filter;
 
@@ -41,6 +43,7 @@ import lombok.extern.log4j.Log4j;
 import ua.rd.cm.config.TestSecurityConfig;
 import ua.rd.cm.config.WebMvcConfig;
 import ua.rd.cm.config.WebTestConfig;
+import ua.rd.cm.domain.Contact;
 import ua.rd.cm.domain.ContactType;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
@@ -240,16 +243,17 @@ public class UserControllerTest extends TestUtil {
         ContactType contactType3 = new ContactType(3L, "FaceBook");
         ContactType contactType4 = new ContactType(4L, "Blog");
 
-        List contactTypes = spy(List.class);
-        when(contactTypes.get(anyInt())).thenReturn(contactType).thenReturn(contactType2).thenReturn(contactType3).thenReturn(contactType4);
-        when(contactTypeService.findByName(anyString())).thenReturn(contactTypes);
+        when(contactTypeService.findByName(anyString()))
+                .thenReturn(contactType)
+                .thenReturn(contactType2)
+                .thenReturn(contactType3)
+                .thenReturn(contactType4);
 
-        Map<ContactType, String> contacts = new HashMap<ContactType, String>() {{
-            put(contactType, "LinkedIn");
-            put(contactType2, "Twitter");
-            put(contactType3, "FaceBook");
-            put(contactType4, "Blog");
-        }};
+        List<Contact> contacts = Arrays.asList(
+                new Contact(1L, "url1", contactType),
+                new Contact(2L, "url2", contactType2),
+                new Contact(3L, "url3", contactType3),
+                new Contact(4L, "url4", contactType4));
 
         UserInfo userInfo = new UserInfo();
         userInfo.setId(1L);

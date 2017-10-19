@@ -1,37 +1,61 @@
 package com.epam.cm.base;
 
+import com.epam.cm.jira.Jira;
+import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import org.junit.Before;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.junit.Rule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 
-import java.util.Properties;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 
 import static io.restassured.RestAssured.when;
 
+
 public class SimpleBaseTest {
 
-    protected Config config;
+    protected static final String TOKEN = "XSRF-TOKEN";
+    protected static final String X_TOKEN = "X-XSRF-TOKEN";
+
+    protected Config config =
+            EnvironmentUtils.getPropertiesFromConfig("/config.properties");
     protected Response response;
-    public static final String TOKEN = "XSRF-TOKEN";
-    public static final String XTOKEN = "X-XSRF-TOKEN";
+
+ @Rule
+    public TestWatcher watchman;
+
+    {
+        watchman = new TestWatcher() {
+            @Override
+            protected void finished(Description description) {
+
+                Jira annotation = description.getAnnotation(Jira.class);
+
+                if (annotation == null)
+                    throw  new RuntimeException("Executable test has not been marked by Jira annotation");
+
+                System.out.println(Arrays.asList(
+                        annotation.value()));
+            }
+        };
+    }
 
     @Before
     public void setup(){
+        RestAssured.defaultParser = Parser.JSON;
+        RestAssured.registerParser("text/plain", Parser.JSON);
 
-        Resource resource = new ClassPathResource("/config.properties");
+        response = when().get(config.baseHost);
+    }
 
-
-        try{
-            Properties props = PropertiesLoaderUtils.loadProperties(resource);
-            config = new Config(props);
-        }
-        catch (Exception e) {throw new RuntimeException("oopps");}
-
-
-        response =
-                when().get(config.baseHost).then().log().all().
-                        extract().response();
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMddHHmmss");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
     }
 }

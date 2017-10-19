@@ -31,7 +31,7 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.repository.VerificationTokenRepository;
 import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.VerificationTokenService;
+import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
 import ua.rd.cm.web.security.AuthenticationFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)

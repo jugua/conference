@@ -3,7 +3,6 @@ package ua.rd.cm.services.businesslogic;
 import java.util.List;
 
 import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
@@ -44,7 +43,4 @@ public interface UserService {
 
     List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles);
 
-    UserInfo prepareNewUserInfoForUpdate(String email, UserDto dto);
-
-    User prepareNewUserForUpdate(String email, UserDto dto);
 }

@@ -1,6 +1,7 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import static com.epam.cm.base.TextConst.ERROR;
 import static io.restassured.RestAssured.given;
 
 public class ChangeUserEmailTests extends SimpleBaseTest {
+    @Jira("6743")
     @Test
     public void PositiveChangeTest(){
 
@@ -27,6 +29,7 @@ public class ChangeUserEmailTests extends SimpleBaseTest {
                 .log().all()
                 .statusCode(200).assertThat().body(Matchers.equalTo("")).extract().response();
     }
+    @Jira("6774")
     @Test
     public void EmailExistsChangeTest(){
 
@@ -44,6 +47,7 @@ public class ChangeUserEmailTests extends SimpleBaseTest {
                 .statusCode(409).assertThat()
                     .body(ERROR, Matchers.equalTo("email_already_exists"));
     }
+    @Jira("6773")
     @Test
     public void NotAuthorisedChangeTest(){
 
@@ -59,6 +63,7 @@ public class ChangeUserEmailTests extends SimpleBaseTest {
                 .log().all()
                 .statusCode(401).assertThat().body(Matchers.equalTo("")).extract().response();
     }
+    @Jira("6775")
     @Test
     public void WrongDataChangeTest() {
 
@@ -75,6 +80,7 @@ public class ChangeUserEmailTests extends SimpleBaseTest {
                 .log().all()
                 .statusCode(400).assertThat().body(Matchers.equalTo("")).extract().response();
     }
+    @Jira("6775")
     @Test
     public void DBErrorChangeTest() {
 

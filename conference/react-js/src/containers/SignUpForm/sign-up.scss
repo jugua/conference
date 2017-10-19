@@ -1,0 +1,29 @@
+.sign-up-wrapper {
+  width: 35%;
+  box-sizing: border-box;
+  padding: 25px;
+  margin: 0 auto;
+  background: $light-grey;
+
+  @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
+    width: 100%;
+    padding: 10px;
+  }
+
+  @media ($mnw: $sdmn) and ($mxw: $sdmx) {
+    width: 90%;
+    padding: 15px;
+  }
+
+  @media ($mnw: $mdmn) and ($mxw: $mdmx) {
+    width: 50%;
+    padding: 15px;
+  }
+}
+
+.sign-up {
+  &__button {
+    margin: 30px auto 15px;
+    width: 150px;
+  }
+}

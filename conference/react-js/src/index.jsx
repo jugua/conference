@@ -1,17 +1,14 @@
 import React from 'react';
-import { render } from 'react-dom';
-import ComponentA from './components/ComponentA';
-import ComponentB from './components/ComponentB';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import App from './components/App';
+import configureStore from './store/configureStore';
 
-function App() {
-  return (
-    <div>
-      <h1>HI WORLD</h1>
-      <ComponentA />
-      <ComponentB />
-      <p>ssdsd</p>
-    </div>
-  );
-}
+const store = configureStore();
 
-render(<App />, document.getElementById('react-root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('react-root'),
+);

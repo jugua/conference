@@ -2,31 +2,31 @@ package ua.rd.cm.services.businesslogic.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ua.rd.cm.domain.*;
+import lombok.AllArgsConstructor;
+import ua.rd.cm.domain.Role;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
+import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserBasicDto;
 import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.infrastructure.mail.MailService;
+import ua.rd.cm.infrastructure.mail.preparator.ConfirmAccountPreparator;
 import ua.rd.cm.repository.RoleRepository;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.services.businesslogic.ContactTypeService;
-import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.VerificationTokenService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
-import ua.rd.cm.infrastructure.mail.preparator.ConfirmAccountPreparator;
 
 
 @Service
@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
     private ModelMapper mapper;
     private VerificationTokenService tokenService;
     private PasswordEncoder passwordEncoder;
-    private ContactTypeService contactTypeService;
 
     @Override
     public User find(Long id) {
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void save(User user) {
-        if (user.getUserRoles().size() == 0) {
+        if (user.getRoles().size() == 0) {
             user.addRole(roleRepository.findByName(Role.SPEAKER));
         }
         if (user.getUserInfo() == null) {
@@ -104,7 +103,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
         Role role = roleRepository.findByName(roleName);
-        return userRepository.findAllByUserRolesIsIn(role).stream().filter(user -> user != currentUser).collect(Collectors.toList());
+        return userRepository.findAllByRolesIsIn(role).stream().filter(user -> user != currentUser).collect
+                (Collectors.toList());
     }
 
     @Override
@@ -116,7 +116,8 @@ public class UserServiceImpl implements UserService {
                 roles.add(role);
             }
         }
-        return userRepository.findAllByUserRolesIsIn(roles).stream().filter(user -> user != currentUser).collect(Collectors.toList());
+        return userRepository.findAllByRolesIsIn(roles).stream().filter(user -> user != currentUser).collect
+                (Collectors.toList());
     }
 
     @Override
@@ -174,22 +175,6 @@ public class UserServiceImpl implements UserService {
         return userDtoList;
     }
 
-    @Override
-    public UserInfo prepareNewUserInfoForUpdate(String email, UserDto dto) {
-        User currentUser = getByEmail(email);
-        UserInfo currentUserInfo = userInfoDtoToEntity(dto);
-        currentUserInfo.setId(currentUser.getUserInfo().getId());
-        return currentUserInfo;
-    }
-
-    @Override
-    public User prepareNewUserForUpdate(String email, UserDto dto) {
-        User currentUser = getByEmail(email);
-        currentUser.setFirstName(dto.getFirstName());
-        currentUser.setLastName(dto.getLastName());
-        return currentUser;
-    }
-
     private User mapRegistrationDtoToUser(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
@@ -210,10 +195,7 @@ public class UserServiceImpl implements UserService {
         if (user.getPhoto() != null) {
             dto.setPhoto("myinfo/photo/" + user.getId());
         }
-        dto.setLinkedIn(user.getUserInfo().getContacts().get(contactTypeService.findByName("LinkedIn").get(0)));
-        dto.setTwitter(user.getUserInfo().getContacts().get(contactTypeService.findByName("Twitter").get(0)));
-        dto.setFacebook(user.getUserInfo().getContacts().get(contactTypeService.findByName("FaceBook").get(0)));
-        dto.setBlog(user.getUserInfo().getContacts().get(contactTypeService.findByName("Blog").get(0)));
+        user.getUserInfo().getContacts().forEach(dto::setContact);
         dto.setRoles(user.getRoleNames());
         return dto;
     }
@@ -222,17 +204,6 @@ public class UserServiceImpl implements UserService {
         UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
         userBasicDto.setRoles(user.getRoleNames());
         return userBasicDto;
-    }
-
-    private UserInfo userInfoDtoToEntity(UserDto dto) {
-        UserInfo userInfo = mapper.map(dto, UserInfo.class);
-        Map<ContactType, String> contacts = userInfo.getContacts();
-        contacts.put(contactTypeService.findByName("LinkedIn").get(0), dto.getLinkedIn());
-        contacts.put(contactTypeService.findByName("Twitter").get(0), dto.getTwitter());
-        contacts.put(contactTypeService.findByName("FaceBook").get(0), dto.getFacebook());
-        contacts.put(contactTypeService.findByName("Blog").get(0), dto.getBlog());
-        userInfo.setContacts(contacts);
-        return userInfo;
     }
 
 }

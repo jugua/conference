@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "roles": ["ROLE_SPEAKER"],
+  "mail": "speaker@speaker.com",
+  "fname": "Master",
+  "lname": "Trybel",
+  "bio": "Short bio000",
+  "company": "EPAM",
+  "past": "Past conference",
+  "photo": "api/user/current/photo/1",
+  "linkedin": "linkedin.com",
+  "twitter": "twitter.com",
+  "facebook.com": "facebook.com",
+  "blog": "userblog.com",
+  "info": "Additional info"
+}

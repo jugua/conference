@@ -1,6 +1,7 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.SimpleBaseTest;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBodyExtractionOptions;
@@ -32,7 +33,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                     .baseUri(config.baseHost)
                     .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                     .cookie(TOKEN, response.cookie(TOKEN))
-                    .header(XTOKEN, response.cookie(TOKEN))
+                    .header(X_TOKEN, response.cookie(TOKEN))
                     .formParam(TITLE,"Test talk " + dateFormat.format(currentDate))
                     .formParam(DESCRIPTION,"this is test talk for automate test")
                     .formParam(TOPIC,"ML")
@@ -53,6 +54,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                     .body(FIELDS, Matchers.nullValue())
                     .extract().body();
     }
+    @Jira("6785")
     @Test
     public void PositiveApprovalTest(){
         given()
@@ -63,7 +65,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .body("{\"status\":\"Approved\",\"comment\":null}").
         when()
-                .patch(""+TALK+"/"+response1.jsonPath().get(ID)).
+                .patch(""+TALK+response1.jsonPath().get(ID)).
         then().log().all()
                 .statusCode(200).assertThat()
                 .body(ERROR, Matchers.nullValue())
@@ -73,6 +75,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .body(FIELDS, Matchers.nullValue())
                 .extract().response();
     }
+    @Jira("6786")
     @Test
     public void UserNotAuthorisedTest(){
         given()
@@ -82,7 +85,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .body("{\"status\":\"Approved\",\"comment\":null}").
         when()
-                .patch(""+TALK+"/"+response1.jsonPath().get(ID)).
+                .patch(""+TALK+response1.jsonPath().get(ID)).
         then().log().all()
                 .statusCode(401).assertThat()
                 .body(ERROR, Matchers.is(UNAUTHORIZED))
@@ -92,6 +95,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .body(FIELDS, Matchers.nullValue())
                 .extract().response();
     }
+    @Jira("6790")
     @Test
     public void TalkDoesNotExistTest(){
         given()
@@ -102,7 +106,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .body("{\"status\":\"Approved\",\"comment\":null}").
         when()
-                .patch(""+TALK+"/0").
+                .patch(""+TALK+"0").
         then().log().all()
                 .statusCode(404).assertThat()
                 .body(ERROR, Matchers.is(TALKNOTFOUND))
@@ -112,6 +116,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .body(FIELDS, Matchers.nullValue())
                 .extract().response();
     }
+    @Jira("6791")
     @Test
     public void EmptyStatusTest() {
         given()
@@ -122,7 +127,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .body("{\"status\":null,\"comment\":null}").
         when()
-                .patch(""+TALK+"/"+response1.jsonPath().get(ID)).
+                .patch(""+TALK+response1.jsonPath().get(ID)).
         then().log().all()
                 .statusCode(400).assertThat()
                 .body(ERROR, Matchers.is(STATUSISNULL))
@@ -132,6 +137,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .body(FIELDS, Matchers.nullValue())
                 .extract().response();
     }
+    @Jira("6792")
     @Test
     public void WrongTalkStatusTest() {
         given()
@@ -142,7 +148,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .body("{\"status\":\"Calabanga!\",\"comment\":null}").
         when()
-                .patch(""+TALK+"/"+response1.jsonPath().get(ID)).
+                .patch(""+TALK+response1.jsonPath().get(ID)).
         then().log().all()
                 .statusCode(409).assertThat()
                 .body(ERROR, Matchers.is(WRONGSTATUS))
@@ -152,7 +158,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .body(FIELDS, Matchers.nullValue())
                 .extract().response();
     }
-
+    @Jira("6793")
     @Test
     public void TooLongCommentTest() {
         given()
@@ -163,7 +169,7 @@ public class OrganiserChangesTalkStatusToApprovedTests extends SimpleBaseTest {
                 .header("X-XSRF-TOKEN", response.cookie("XSRF-TOKEN"))
                 .body("{\"status\":\"Approved\",\"comment\":\""+COMMENT1001SYMBOL+"\"}").
         when()
-                .patch(""+TALK+"/"+response1.jsonPath().get(ID)).
+                .patch(""+TALK+response1.jsonPath().get(ID)).
         then().log().all()
                 .statusCode(413).assertThat()
                 .body(ERROR, Matchers.is(COMMENTTOOLONG))

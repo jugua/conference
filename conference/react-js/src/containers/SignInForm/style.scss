@@ -1,0 +1,55 @@
+.sign-in {
+  &-wrapper {
+    padding: 25px;
+    background: $light-grey;
+
+    &_full {
+      width: 35%;
+      margin: 0 auto;
+      box-sizing: border-box;
+      }
+    }
+
+  &__title {
+    text-align: left;
+    }
+
+  &__create {
+    margin: auto;
+    }
+
+  &__label {
+    text-align: left;
+    }
+
+  &__password-cont {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    }
+
+  &__forgot {
+    font-size: 12px;
+    text-align: right;
+    text-transform: capitalize;
+    color: black;
+
+    &:hover {
+      color: $raspberry;
+      }
+    }
+
+  &__submit {
+    width: 150px;
+    margin: 30px auto
+    }
+
+  &__separator {
+    margin: 20px 0;
+    border-top: 1px solid $dark-blue;
+    }
+
+  &__invalid {
+    border: 1px solid red;
+    }
+  }
