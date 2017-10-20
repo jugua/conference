@@ -11,7 +11,6 @@
   &__header {
     border-bottom: 1px solid $sharp-blue;
     }
-
   &__button {
     width: 140px;
     margin: 0 10px 10px 0;
@@ -20,7 +19,6 @@
       margin: 10px auto;
       }
     }
-
   &__pop-up {
     width: 600px;
     }
@@ -39,53 +37,46 @@
   &__left-side {
     display: flex;
     }
-
   &__navi {
     margin: 0;
     font-family: "Oswald Light", sans-serif;
     }
-
   &__item-wrapper {
     display: flex;
     }
-
   &__item {
     width: 25px;
     height: 25px;
     margin-right: 5px;
-    @include box-shadow(0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    .box {
+      @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+      }
 
     &:hover {
       cursor: pointer;
       }
-
     &_current {
       display: flex;
       justify-content: center;
       align-items: center;
       }
-
     &_fast-forward {
       background: url(../images/fast_forward.svg) no-repeat center;
       background-size: 50%;
       }
-
     &_forward {
       background: url(../images/forward.svg) no-repeat center;
       background-size: 50%;
       }
-
     &_fast-back {
       background: url(../images/fast_back.svg) no-repeat center;
       background-size: 50%;
       }
-
     &_back {
       background: url(../images/back.svg) no-repeat center;
       background-size: 50%;
       }
     }
-
   &__select {
     width: 70px;
     height: 25px;
@@ -93,13 +84,12 @@
     padding-left: 15px;
     margin-left: 20px;
     border: 0;
-    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
     font-family: Oswald Light, sans-serif;
     }
-
   &__per-page {
     font-family: "Oswald Light";
-    margin-left: 20px
+    margin-left: 20px;
     }
   }
 
@@ -113,16 +103,13 @@
     height: 200px;
     padding: 0;
     }
-
   @media ($mnw: $sdmn) and ($mxw: $sdmx) {
     height: 120px;
     }
-
   &__filters {
     display: flex;
     flex-wrap: wrap;
     }
-
   &__title {
     text-transform: capitalize;
     line-height: 36px;
@@ -132,7 +119,6 @@
       margin: 0;
       }
     }
-
   &__button {
     width: 80px;
     height: 30px;
@@ -140,67 +126,57 @@
     border: 0;
     background: transparent;
     text-transform: capitalize;
-    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
 
     &:hover {
       background: $light-grey;
       cursor: pointer;
       }
-
     &:focus {
       outline: none;
       }
     }
-
   &__label {
     margin-bottom: 5px;
     font-size: 12px;
     }
-
   &__select {
     width: 130px;
     height: 30px;
     margin: 0 15px 0 0;
     border: 0;
-    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
     font-family: Oswald Light, sans-serif;
 
     &:focus {
       outline: none;
       }
-
     &:hover {
       cursor: pointer;
       }
-
     &_topic {
       width: 180px;
       }
-
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
       margin: 0;
       }
     }
-
   &__date-wrapper {
     box-sizing: border-box;
     @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
       display: none;
       }
     }
-
   &__date-label {
     font-size: 12px;
     box-sizing: border-box;
     padding-left: 15px;
     }
-
   &__date {
     margin: 0;
     position: relative;
     }
-
   &__select-wrapper {
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
@@ -213,19 +189,22 @@
 
 .data-table {
   margin-top: 10px;
+  width: 100%;
+  display: block;
 
   @media ($mnw: $xmdmx) {
     height: calc(100% - 175px);
-    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
     }
-
+  &__header-block {
+    display: block;
+    }
   &__text {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     text-transform: none;
     }
-
   &__tooltip {
     width: 300px;
     display: block;
@@ -236,21 +215,18 @@
     text-align: center;
     font-size: 14px;
     }
-
   &__inner-wrapper {
-
+    display: block;
     @media ($mnw: $sdmn) and ($mxw: $xmdmx) {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
       }
-
     @media ($mnw: $xmdmx) {
       height: calc(100% - 37px);
       overflow-y: scroll;
       }
     }
-
   &__row {
     display: flex;
     flex-wrap: wrap;
@@ -258,37 +234,32 @@
     font-family: Oswald Light, sans-serif;
     font-size: 14px;
     box-sizing: border-box;
-    justify-content: space-between;
 
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
       margin-bottom: 5px;
-      @include box-shadow (0, 1px, 5px, 0, rgba(0, 0, 0, 0.15));
+      @include box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15));
       }
-
     @media ($mnw: $sdmn) and ($mxw: $xmdmx) {
       width: 49%;
       margin-bottom: 10px;
-      @include box-shadow (0, 1px, 5px, 0, rgba(0, 0, 0, 0.15));
+      @include box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15));
       }
-
     @media ($mnw: $xmdmx) {
       &:nth-child(even) {
         background: #f2f2f2;
         }
-      }
-
-    @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
-      background: #fff;
+      @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+        background: #fff;
+        }
       }
     }
-
   &__column {
+    border-right: 1px solid #bbbbbb;
     box-sizing: border-box;
     @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
       border: none;
       }
-
     &_title {
       width: 18%;
       box-sizing: border-box;
@@ -305,7 +276,6 @@
           }
         }
       }
-
     &_topic {
       width: 22%;
       box-sizing: border-box;
@@ -322,7 +292,6 @@
           }
         }
       }
-
     &_status {
       width: 10%;
       box-sizing: border-box;
@@ -350,7 +319,6 @@
           }
         }
       }
-
     &_comments {
       width: 20%;
       position: relative;
@@ -369,7 +337,6 @@
           }
         }
       }
-
     &_conference {
       width: 15%;
       position: relative;
@@ -378,6 +345,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      border-right: 1px solid transparent;
 
       @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
         width: 100%;
@@ -399,7 +367,6 @@
         text-align: right;
         }
       }
-
     &_speaker-talk {
       width: 12%;
       box-sizing: border-box;
@@ -413,7 +380,6 @@
           }
         }
       }
-
     &_title-talk {
       width: 15%;
       box-sizing: border-box;
@@ -430,7 +396,6 @@
           }
         }
       }
-
     &_topic-talk {
       width: 15%;
       box-sizing: border-box;
@@ -447,7 +412,6 @@
           }
         }
       }
-
     &_date-talk {
       width: 15%;
       box-sizing: border-box;
@@ -461,7 +425,6 @@
           }
         }
       }
-
     &_status-talk {
       width: 7%;
       box-sizing: border-box;
@@ -475,7 +438,6 @@
           }
         }
       }
-
     &_comments-talk {
       width: 18%;
       box-sizing: border-box;
@@ -499,6 +461,7 @@
       width: 15%;
       box-sizing: border-box;
       padding: 5px 5px 5px 15px;
+      border-right: 1px solid transparent;
       @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
         width: 100%;
         padding: 2px 2px 5px 2px;
@@ -515,11 +478,11 @@
   height: 35px;
   display: flex;
   border-bottom: 2px solid #bbbbbb;
-  justify-content: space-between;
 
   &__item {
     text-transform: capitalize;
     box-sizing: border-box;
+    border-right: 1px solid #bbbbbb;
     padding: 5px;
 
     &_title {
@@ -527,10 +490,9 @@
       box-sizing: border-box;
       position: relative;
       &:before {
-        @include filter-icon
+        @include filter-icon;
         }
       }
-
     &_topic {
       width: 22%;
       position: relative;
@@ -538,7 +500,6 @@
         @include filter-icon;
         }
       }
-
     &_status {
       width: 10%;
       position: relative;
@@ -546,7 +507,6 @@
         @include filter-icon;
         }
       }
-
     &_date {
       width: 15%;
       position: relative;
@@ -554,123 +514,75 @@
         @include filter-icon;
         }
       }
-
-    &_comment {
+    &_comments {
       width: 20%;
       position: relative;
       padding-left: 15px;
-
-      &_conference {
-        width: 15%;
-        position: relative;
-        padding-left: 15px;
-        }
-
-      &_check-talk {
-        width: 3%;
-
-        &_speaker-talk {
-          width: 12%;
-          &:before {
-            @include filter-icon
-            }
-          }
-
-        &_title-talk {
-          width: 15%;
-          &:before {
-            @include filter-icon;
-            }
-          }
-
-        &_topic-talk {
-          width: 15%;
-          &:before {
-            @include filter-icon;
-            }
-          }
-
-        &_date-talk {
-          width: 15%;
-          &:before {
-            @include filter-icon;
-            }
-          }
-
-        &_status-talk {
-          width: 7%;
-          &:before {
-            @include filter-icon;
-            }
-          }
-
-        &_comment-talk {
-          width: 18%;
-          &:before {
-            @include filter-icon;
-            }
-          }
-
-        &_assign-talk {
-          width: 15%;
-          &:before {
-            @include filter-icon;
-            }
-          }
-        }
-
-      &__scroll-fix {
-        width: 17px;
-        @supports (-ms-ime-align: auto) {
-          width: 12px;
-          }
-        }
-
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        display: none;
-        }
+      }
+    &_conference {
+      width: 15%;
+      position: relative;
+      padding-left: 15px;
+      border-right: 1px solid transparent;
       }
 
+    &_check-talk {
+      width: 3%;
+      }
     &_speaker-talk {
       width: 12%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px;
-        &:before {
-          content: 'Speaker';
-          @include my-talk-before-title;
-          }
+      &:before {
+        @include filter-icon;
         }
       }
-
     &_title-talk {
       width: 15%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      &:before {
+        @include filter-icon;
+        }
       }
-
     &_topic-talk {
       width: 15%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
+      &:before {
+        @include filter-icon;
+        }
+      }
+    &_date-talk {
+      width: 15%;
+      &:before {
+        @include filter-icon;
+        }
       }
     &_status-talk {
       width: 7%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
+      &:before {
+        @include filter-icon;
+        }
       }
-    &_check-talk {
-      width: 3%;
-      box-sizing: border-box;
-      padding: 5px;
+    &_comments-talk {
+      width: 18%;
+      &:before {
+        @include filter-icon;
+        }
+      }
+    &_assign-talk {
+      width: 15%;
+      border-right: 1px solid transparent;
+      &:before {
+        @include filter-icon;
+        }
       }
     }
-
+  &__scroll-fix {
+    width: 17px;
+    border-right: 1px solid transparent;
+    @supports (-ms-ime-align: auto) {
+      width: 12px;
+      }
+    }
+  @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+    display: none;
+    }
   }
 
 .calendars-wrapper {
@@ -696,20 +608,20 @@
   }
 
 .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {
-  border: 1px solid rgb(16, 108, 200);
+  border: 1px solid rgb(16,108,200);
   }
 
 .md-datepicker-input-mask-opaque {
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0,0,0,0.87);
   }
 
 .md-whiteframe-1dp, .md-whiteframe-z1 {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
   }
 
 .md-calendar-day-header {
-  background: rgb(224, 224, 224);
-  color: rgba(0, 0, 0, 0.87);
+  background: rgb(224,224,224);
+  color: rgba(0,0,0,0.87);
   }
 
 .md-default-theme .md-datepicker-calendar-pane, .md-datepicker-calendar-pane {
@@ -721,8 +633,8 @@
   }
 
 .md-default-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-default-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {
-  background: rgb(16, 108, 200);
-  color: rgba(255, 255, 255, 0.87);
+  background: rgb(16,108,200);
+  color: rgba(255,255,255,0.87);
   border-color: transparent;
   }
 
@@ -742,7 +654,7 @@
     background-size: 70%;
     background-position: center;
     background-repeat: no-repeat;
-    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
     &:focus {
       outline: none;
       }

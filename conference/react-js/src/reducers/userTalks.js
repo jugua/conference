@@ -8,7 +8,7 @@ const userTalks = (state = [], { type, payload }) => {
     return payload;
   } else if (type === SORT_USER_TALKS) {
     const { direction, talks, field } = payload;
-    return [...talks.sort(propComparator(field, direction))];
+    return talks.sort(propComparator(field, direction));
   }
   return state;
 };
