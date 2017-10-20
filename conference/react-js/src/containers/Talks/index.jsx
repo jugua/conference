@@ -6,9 +6,9 @@ import { bindActionCreators } from 'redux';
 
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
-import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
+import loadData from '../../actions/load';
 
 class Talks extends Component {
   constructor(props) {
