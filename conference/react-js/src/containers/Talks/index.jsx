@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
 import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
+import Pagination from './Pagination/Pagination';
 import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
@@ -22,6 +23,8 @@ class Talks extends Component {
       topic: '',
       status: '',
       comments: '',
+      currentPage: 1,
+      quantityTalks: '20',
     };
   }
 
@@ -36,7 +39,11 @@ class Talks extends Component {
       .then(({ data }) => {
         this.props.load(LOAD, data);
         this.setState({ listOfTalks: data });
-      });
+        this.doFilter();
+      }).catch(() => {
+        this.doFilter();
+      },
+      );
   }
 
   onChangeFilter = ({ target: { name, value } }) => {
@@ -48,6 +55,22 @@ class Talks extends Component {
     }));
   };
 
+  onChangeQuantityTalks = ({ target: { value } }) => {
+    this.setState({ quantityTalks: value },
+      this.doFilter);
+  };
+
+  doFilter = () => {
+    const { filter, listOfTalks, currentPage, quantityTalks } = this.state;
+    const { APPLY_FILTERS } = action;
+    this.props.load(APPLY_FILTERS,
+      { filter,
+        listOfTalks,
+        page: currentPage,
+        quantity: quantityTalks,
+      });
+  };
+
   handleResetFiltersClick = () => {
     this.setState({
       filter: { topic: '', status: '' },
@@ -56,12 +79,6 @@ class Talks extends Component {
 
   handleFilterClick = () => {
     this.doFilter();
-  };
-
-  doFilter = () => {
-    const { filter, listOfTalks } = this.state;
-    const { APPLY_FILTERS } = action;
-    this.props.load(APPLY_FILTERS, { filter, listOfTalks });
   };
 
   sortTalks = ({ target: { tagName, dataset: { name } } }) => {
@@ -102,36 +119,10 @@ class Talks extends Component {
             <TalksHeader coloms={coloms} sortTalks={this.sortTalks} />
             <DisplayTalks talk={talksList} coloms={coloms} />
           </div>
-          <div className="pagination">
-            <div className="pagination__left-side">
-              <div className="pagination__item-wrapper">
-                <div className="pagination__item pagination__item_fast-back" />
-                <div className="pagination__item pagination__item_back" />
-                <div className="pagination__item pagination__item_current">
-                  1
-                </div>
-                <div className="pagination__item pagination__item_forward" />
-                <div className="pagination__item
-                  pagination__item_fast-forward"
-                />
-              </div>
-              <select className="pagination__select">
-                <option defaultValue="" />
-                <option value="5">5</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-              <div className="pagination__per-page">
-                Items per page
-              </div>
-            </div>
-            <div className="pagination__right-side">
-              <p className="pagination__navi">1 - 4 of 4 items</p>
-            </div>
-          </div>
+          <Pagination
+            quantityTalks={this.state.quantityTalks}
+            onChangeQuantityTalks={this.onChangeQuantityTalks}
+          />
         </div>
       </div>
     );
