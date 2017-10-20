@@ -3,10 +3,13 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 
+import loadData from '../../actions/load';
 import { forgotPassword, signUp } from '../../constants/route-url';
 import login from '../../actions/login';
-import getUserInfo from '../../actions/getUserInfo';
+import getUserInfo from '../../actions/get-user-info';
+import getTalks from '../../actions/getTalks';
 import loginValidation from '../../actions/loginVlidation';
 import actionTypes from '../../constants/actions-types';
 
@@ -21,8 +24,11 @@ class SignInForm extends PureComponent {
   }
 
   onLoginSuccess = () => {
+    const { SET_USER, SET_TALKS } = actionTypes;
     getUserInfo()
-      .then(res => this.props.setCurrentUser(res.data))
+      .then(res => this.props.load(SET_USER, res.data))
+      .then(getTalks()
+        .then(res => this.props.load(SET_TALKS, res.data)))
       .catch((err) => { throw err; });
   };
 
@@ -125,16 +131,12 @@ class SignInForm extends PureComponent {
 }
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: (user) => {
-    dispatch({
-      type: actionTypes.SET_USER,
-      payload: user,
-    });
-  },
+  load: bindActionCreators(
+    loadData, dispatch),
 });
 
 SignInForm.propTypes = {
-  setCurrentUser: PropTypes.func.isRequired,
+  load: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(SignInForm);
