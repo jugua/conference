@@ -16,7 +16,7 @@
 
   @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
     height: 100px;
-    }
+  }
 
   &__title {
     width: 430px;
@@ -41,7 +41,6 @@
       margin-left: 10%;
       padding: 0;
       }
-
     }
   }
 
@@ -59,7 +58,7 @@
     width: 100%;
     height: 50%;
     text-align: center;
-    }
+  }
 
   @media ($mnw: $mdmn) and ($mxw: $xmdmx) {
     right: 20px;
@@ -84,15 +83,15 @@
 
     &:hover {
       cursor: pointer;
-      }
+    }
 
     &:focus {
       outline: 0;
-      }
+    }
 
     &:active {
       background: darken($sharp-blue, 15%)
-      }
+    }
 
     @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
       padding: 0 10px;
