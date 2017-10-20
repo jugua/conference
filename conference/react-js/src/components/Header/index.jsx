@@ -56,33 +56,35 @@ class Header extends PureComponent {
     const { user: { roles, fname } } = this.props;
     return (
       <header className="header">
-        <div className="header__title">
-          <Link
-            className="link_header"
-            to={baseUrl}
-          >
-            conference management
-          </Link>
-        </div>
-        <div className="menu-container">
-          <button
-            className="menu-container__button js-dropdown"
-            onClick={this.onButtonAccountClick}
-          >{ fname ? `${fname}'s` : 'Your'} Account
-          </button>
-          <div className={classNames({
-            'menu-container__content': true,
-            none: !this.state.visible,
-          })}
-          >
-            {
-              roles.length > 0 ?
-                <UserMenuFilter
-                  roles={roles}
-                />
-                : <SignInForm />
-            }
+        <div className="header-wrapper">
+          <div className="header__title">
+            <Link
+              className="link_header"
+              to={baseUrl}
+            >
+              conference management
+            </Link>
+          </div>
+          <div className="menu-container">
+            <button
+              className="menu-container__button js-dropdown"
+              onClick={this.onButtonAccountClick}
+            >{ fname ? `${fname}'s` : 'Your'} Account
+            </button>
+            <div className={classNames({
+              'menu-container__content': true,
+              none: !this.state.visible,
+            })}
+            >
+              {
+                roles.length > 0 ?
+                  <UserMenuFilter
+                    roles={roles}
+                  />
+                  : <SignInForm />
+              }
 
+            </div>
           </div>
         </div>
       </header>

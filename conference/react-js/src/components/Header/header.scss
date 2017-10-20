@@ -2,15 +2,25 @@
   width: 100%;
   height: 70px;
   background: $graphite;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+
+  &-wrapper {
+    width: 70%;
+    margin: 0 auto;
+    position: relative;
+
+
+    @media ($mxw: $ldmx) {
+      width: 100%;
+    }
+  }
 
   @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
     height: 100px;
     }
 
   &__title {
+    width: 430px;
+    margin: 0 auto;
     height: 100%;
     line-height: 70px;
     color: #fff;
@@ -27,8 +37,9 @@
       text-align: center;
       }
 
-    @media ($mnw: $mdmn) and ($mxw: $ldmx) {
-      padding: 0 50px;
+    @media ($mnw: $mdmn) and ($mxw: $xmdmx) {
+      margin-left: 10%;
+      padding: 0;
       }
 
     }
@@ -36,7 +47,13 @@
 
 .menu-container {
   height: 100%;
-  position: relative;
+  position: absolute;
+  right: 60px;
+  top: 0;
+
+  @media ($mnw: $ldmn) and ($mxw: $ldmx) {
+    right: 140px;
+  }
 
   @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
     width: 100%;
@@ -44,7 +61,20 @@
     text-align: center;
     }
 
+  @media ($mnw: $mdmn) and ($mxw: $xmdmx) {
+    right: 20px;
+  }
+
+  @media  ($mxw: $sdmx) {
+    position: relative;
+    right: 0;
+  }
+
   &__button {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     border: 0;
     background: $sharp-blue;
     color: #fff;
@@ -67,17 +97,9 @@
     @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
       padding: 0 10px;
       margin-top: 5px;
-      max-width: 350px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       }
 
     @media ($mnw: $mdmn) and ($mxw: $ldmn) {
-      max-width: 220px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       }
     }
   &__content {
