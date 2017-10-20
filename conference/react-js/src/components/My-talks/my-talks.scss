@@ -258,6 +258,7 @@
     font-family: Oswald Light, sans-serif;
     font-size: 14px;
     box-sizing: border-box;
+    justify-content: space-between;
 
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
@@ -283,7 +284,6 @@
     }
 
   &__column {
-    border-right: 1px solid #bbbbbb;
     box-sizing: border-box;
     @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
       border: none;
@@ -378,7 +378,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      border-right: 1px solid transparent;
 
       @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
         width: 100%;
@@ -500,7 +499,6 @@
       width: 15%;
       box-sizing: border-box;
       padding: 5px 5px 5px 15px;
-      border-right: 1px solid transparent;
       @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
         width: 100%;
         padding: 2px 2px 5px 2px;
@@ -517,11 +515,11 @@
   height: 35px;
   display: flex;
   border-bottom: 2px solid #bbbbbb;
+  justify-content: space-between;
 
   &__item {
     text-transform: capitalize;
     box-sizing: border-box;
-    border-right: 1px solid #bbbbbb;
     padding: 5px;
 
     &_title {
@@ -557,7 +555,7 @@
         }
       }
 
-    &_comments {
+    &_comment {
       width: 20%;
       position: relative;
       padding-left: 15px;
@@ -566,7 +564,6 @@
         width: 15%;
         position: relative;
         padding-left: 15px;
-        border-right: 1px solid transparent;
         }
 
       &_check-talk {
@@ -607,7 +604,7 @@
             }
           }
 
-        &_comments-talk {
+        &_comment-talk {
           width: 18%;
           &:before {
             @include filter-icon;
@@ -616,7 +613,6 @@
 
         &_assign-talk {
           width: 15%;
-          border-right: 1px solid transparent;
           &:before {
             @include filter-icon;
             }
@@ -625,7 +621,6 @@
 
       &__scroll-fix {
         width: 17px;
-        border-right: 1px solid transparent;
         @supports (-ms-ime-align: auto) {
           width: 12px;
           }
@@ -635,7 +630,47 @@
         display: none;
         }
       }
+
+    &_speaker-talk {
+      width: 12%;
+      box-sizing: border-box;
+      padding: 5px 5px 5px 15px;
+      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+        width: 100%;
+        padding: 2px;
+        &:before {
+          content: 'Speaker';
+          @include my-talk-before-title;
+          }
+        }
+      }
+
+    &_title-talk {
+      width: 15%;
+      box-sizing: border-box;
+      padding: 5px 5px 5px 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      }
+
+    &_topic-talk {
+      width: 15%;
+      box-sizing: border-box;
+      padding: 5px 5px 5px 15px;
+      }
+    &_status-talk {
+      width: 7%;
+      box-sizing: border-box;
+      padding: 5px 5px 5px 15px;
+      }
+    &_check-talk {
+      width: 3%;
+      box-sizing: border-box;
+      padding: 5px;
+      }
     }
+
   }
 
 .calendars-wrapper {
