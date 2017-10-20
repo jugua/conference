@@ -13,8 +13,7 @@ const userTalks = (state = [], { type, payload }) => {
       }
       return a[field] < b[field];
     };
-
-    return [...talks.sort(sortDirection)];
+    return talks.sort(sortDirection);
   }
   return state;
 };
