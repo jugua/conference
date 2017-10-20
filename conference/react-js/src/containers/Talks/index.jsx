@@ -81,7 +81,8 @@ class Talks extends Component {
   render() {
     const { listOfTopics } = this.state;
     const { talks, coloms, userTalks, sort } = this.props;
-    const talksList = sort === 'talks' ? talks : userTalks;
+    const { SORT_ALL_TALKS } = action;
+    const talksList = sort === SORT_ALL_TALKS ? talks : userTalks;
     return (
 
       <div className="tabs-container">
@@ -152,9 +153,9 @@ Talks.defaultProps = {
     'title',
     'topic',
     'status',
-    // 'comment',
+    'comment',
   ],
-  sort: 'talks',
+  sort: action.SORT_ALL_TALKS,
 };
 
 function mapStateToProps(state) {
