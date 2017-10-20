@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
+
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
 import loadData from '../../actions/load';
