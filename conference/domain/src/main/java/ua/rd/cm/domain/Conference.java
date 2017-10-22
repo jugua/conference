@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import lombok.Builder;
@@ -29,7 +28,6 @@ import lombok.ToString;
         "speakers"})
 @ToString(exclude = {"topics", "types", "languages", "levels", "talks", "organisers", "speakers"})
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "conference_seq")
 public class Conference extends AbstractEntity {
 
     @NonNull

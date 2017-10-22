@@ -3,7 +3,6 @@ package ua.rd.cm.domain;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "contact_seq")
 public class Contact extends AbstractEntity {
 
     @NonNull

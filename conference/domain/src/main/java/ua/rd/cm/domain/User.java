@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +28,6 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true, exclude = {"photo", "userInfo", "organizerConferences", "speakerConferences"})
 @ToString(exclude = {"password", "photo", "userInfo", "organizerConferences", "speakerConferences"})
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "user_seq")
 public class User extends AbstractEntity {
 
     @NonNull
