@@ -61,19 +61,22 @@ public class User extends AbstractEntity {
     private UserInfo userInfo;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role")
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private Set<Role> roles = new HashSet<>();
-    
+
     @ManyToMany(mappedBy = "organisers")
     private Set<Conference> organizerConferences;
 
     @ManyToMany(mappedBy = "speakers")
     private Set<Conference> speakerConferences;
-    
+
     @Builder
     public User(Long id, String firstName, String lastName, String email, String password,
                 String photo, UserStatus status, UserInfo userInfo, Set<Role> roles,
-                Set<Conference> organizerConferences,Set<Conference> speakerConferences) {
+                Set<Conference> organizerConferences, Set<Conference> speakerConferences) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
