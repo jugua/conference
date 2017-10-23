@@ -95,6 +95,7 @@ class SignInForm extends PureComponent {
               password:
             </label>
             <Link
+              id="lnk-forgot-password"
               to={forgotPassword}
               onClick={this.close}
               className="sign-in__forgot"
@@ -121,6 +122,7 @@ class SignInForm extends PureComponent {
 
           <input
             type="submit"
+            id="btn-sign-in"
             value="Sign In"
             className="btn sign-in__submit"
           />
@@ -129,6 +131,7 @@ class SignInForm extends PureComponent {
         <div className="sign-in__separator" />
         <Link
           className="btn sign-in__create"
+          id="lnk-sign-up"
           onClick={this.close}
           to={signUp}
         >

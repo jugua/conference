@@ -1,4 +1,6 @@
 export const baseUrl = '/react';
+export const root = `${baseUrl}/`;
+export const past = `${baseUrl}/past`;
 export const history = `${baseUrl}/history`;
 export const upcoming = baseUrl;
 export const forgotPassword = `${baseUrl}/forgot-password`;

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const menuList = data => data.map(({ title, link, last }) => (
+const menuList = data => data.map(({ title, link, last, click = null }) => (
   <li
     key={title}
     className={
@@ -15,6 +15,7 @@ const menuList = data => data.map(({ title, link, last }) => (
     <Link
       className="menu-list__title"
       to={link}
+      onClick={click}
     >
       {title}
     </Link>
