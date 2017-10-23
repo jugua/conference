@@ -2,7 +2,7 @@
 -- Inserting necessary data into table `role`
 --
 
-INSERT INTO role VALUES (1, 'ROLE_SPEAKER'),(2, 'ROLE_ORGANISER'),(3, 'ROLE_ADMIN');
+INSERT INTO role VALUES (1, 'ROLE_SPEAKER'),(2, 'ROLE_ORGANISER'),(3, 'ROLE_ADMIN'),(4, 'ROLE_USER');
 
 UPDATE role_seq SET next_val = 3 WHERE next_val = 1;
 
@@ -137,6 +137,20 @@ INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_in
 UPDATE user_seq SET next_val = 6 WHERE next_val = 5;
 INSERT INTO user_role VALUES (5, 2);
 INSERT INTO user_role VALUES (5, 3);
+
+--
+-- Setting default user with role USER with only registration fields
+--
+
+INSERT INTO userinfo (id, company, jobTitle, shortBio)  VALUES (6, '', '', '');
+UPDATE user_info_seq SET next_val = 7 WHERE next_val = 6;
+
+
+INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (6, 'simple@gmail.com', 'simpleuser', 'simpleuser', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 6);
+UPDATE user_seq SET next_val = 7 WHERE next_val = 6;
+INSERT INTO user_role VALUES (6, 4);
+
+
 
 INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (1, 'JavaDay 1', 'The Very First JavaDay', 'Kiev', '2016-09-15', '2016-09-25', '2016-08-04', '2016-08-22', 'nologo');
 INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (2, 'JavaDay 2', 'Second JavaDay', 'Boston', '2016-11-23', '2016-11-30', '2016-11-01', '2016-11-01', 'nologo');

@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
+
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
 import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
-import loadData from '../../actions/load';
+
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
+import loadData from '../../actions/load';
 
 class Talks extends Component {
   constructor(props) {
@@ -65,7 +67,7 @@ class Talks extends Component {
   };
 
   sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'SPAN' && name !== undefined) {
+    if (tagName === 'SPAN' && name) {
       const { ASC, SORT_USER_TALKS, SORT_ALL_TALKS } = action;
       const { [name]: sortField } = this.state;
       const { load, sort, talks, userTalks } = this.props;

@@ -4,12 +4,12 @@ const { APPLY_FILTERS, LOAD } = actions;
 
 const talksInitial = [];
 
-const talks = (state = talksInitial, action) => {
-  if (action.type === LOAD) {
-    return action.payload;
+const talks = (state = talksInitial, { type, payload }) => {
+  if (type === LOAD) {
+    return payload;
   }
-  if (action.type === APPLY_FILTERS) {
-    const { payload: { filter: { topic, status }, listOfTalks } } = action;
+  if (type === APPLY_FILTERS) {
+    const { filter: { topic, status }, listOfTalks } = payload;
     const filtered = (elementOfListTopic) => {
       const countExtendTopic = elementOfListTopic.topic.indexOf(topic);
       const countExtendStatus = elementOfListTopic.status.indexOf(status);

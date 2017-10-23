@@ -62,6 +62,7 @@ class ForgotPasswordForm extends PureComponent {
 
           <input
             onChange={this.handleChange}
+            id="forgot-password-email"
             type="email"
             className="field pop-up__input"
             name="mail"
@@ -72,11 +73,13 @@ class ForgotPasswordForm extends PureComponent {
           <div className="pop-up-button-wrapper">
             <button
               className="btn pop-up__button"
+              id="btn-forgot-password-send"
               onClick={this.sendMail}
             >Continue
             </button>
             <Link
               className="btn pop-up__button btn_cancel"
+              id="lnk-forgot-password-cancel"
               to={baseUrl}
             >
               Cancel
