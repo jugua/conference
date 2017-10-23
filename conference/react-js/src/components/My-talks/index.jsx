@@ -4,7 +4,7 @@ import Talks from '../../containers/Talks';
 
 const MyTalks = () => (
   <Talks
-    coloms={[
+    columns={[
       'id',
       'title',
       'status',

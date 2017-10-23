@@ -71,7 +71,7 @@ class Talks extends Component {
       const { ASC, SORT_USER_TALKS, SORT_ALL_TALKS } = action;
       const { [name]: sortField } = this.state;
       const { load, sort, talks, userTalks } = this.props;
-      const value = sortField === '' ? ASC : '';
+      const value = sortField || ASC;
       const listForSort = sort === SORT_USER_TALKS ? userTalks : talks;
       const actionType = sort === SORT_USER_TALKS ?
         SORT_USER_TALKS : SORT_ALL_TALKS;
@@ -82,7 +82,7 @@ class Talks extends Component {
 
   render() {
     const { listOfTopics } = this.state;
-    const { talks, coloms, userTalks, sort } = this.props;
+    const { talks, columns, userTalks, sort } = this.props;
     const talksList = sort === 'talks' ? talks : userTalks;
     return (
 
@@ -100,8 +100,8 @@ class Talks extends Component {
           <div
             className="data-table"
           >
-            <TalksHeader coloms={coloms} sortTalks={this.sortTalks} />
-            <DisplayTalks talk={talksList} coloms={coloms} />
+            <TalksHeader columns={columns} sortTalks={this.sortTalks} />
+            <DisplayTalks talk={talksList} columns={columns} />
           </div>
           <div className="pagination">
             <div className="pagination__left-side">
@@ -143,28 +143,26 @@ Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   userTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  coloms: PropTypes.arrayOf(PropTypes.string),
+  columns: PropTypes.arrayOf(PropTypes.string),
   sort: PropTypes.string,
 };
 
 Talks.defaultProps = {
-  coloms: [
+  columns: [
     'id',
     'name',
     'title',
     'topic',
     'status',
-    // 'comment',
+    'comment',
   ],
   sort: 'talks',
 };
 
-function mapStateToProps(state) {
-  return {
-    talks: state.talks,
-    userTalks: state.userTalks,
-  };
-}
+const mapStateToProps = ({ talks, userTalks }) => (
+  { talks,
+    userTalks,
+  });
 
 const mapDispatchToProps = dispatch => ({
 

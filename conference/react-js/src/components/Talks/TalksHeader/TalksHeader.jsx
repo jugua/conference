@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-const TalksHeader = ({ coloms, sortTalks }) => (
+const TalksHeader = ({ columns, sortTalks }) => (
   <div
     role="presentation"
     className="data-table__header-block"
@@ -13,7 +13,7 @@ const TalksHeader = ({ coloms, sortTalks }) => (
       >
         <input type="checkbox" />
       </div>
-      {coloms.map((colom) => {
+      {columns.map((colom) => {
         switch (colom) {
         case 'id':
           return null;
@@ -49,7 +49,7 @@ const TalksHeader = ({ coloms, sortTalks }) => (
 );
 
 TalksHeader.propTypes = {
-  coloms: PropTypes.arrayOf(PropTypes.string).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortTalks: PropTypes.func.isRequired };
 
 export default TalksHeader;
