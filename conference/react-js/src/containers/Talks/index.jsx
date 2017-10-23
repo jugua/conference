@@ -60,6 +60,30 @@ class Talks extends Component {
       this.doFilter);
   };
 
+  onChangecurrentPage = ({ target: { classList: { value } } }) => {
+    if (value.indexOf('back') > -1) {
+      if (this.state.currentPage > 1) {
+        this.setState(prevValue => (
+          {
+            ...prevValue,
+            currentPage: Number(prevValue.currentPage) - 1,
+          }
+        ),
+        this.doFilter,
+        );
+      }
+    } else {
+      this.setState(prevValue => (
+        {
+          ...prevValue,
+          currentPage: Number(prevValue.currentPage) + 1,
+        }
+      ),
+      this.doFilter,
+      );
+    }
+  };
+
   doFilter = () => {
     const { filter, listOfTalks, currentPage, quantityTalks } = this.state;
     const { APPLY_FILTERS } = action;
@@ -96,7 +120,7 @@ class Talks extends Component {
   };
 
   render() {
-    const { listOfTopics } = this.state;
+    const { listOfTopics, quantityTalks, currentPage } = this.state;
     const { talks, coloms, userTalks, sort } = this.props;
     const { SORT_ALL_TALKS } = action;
     const talksList = sort === SORT_ALL_TALKS ? talks : userTalks;
@@ -120,7 +144,9 @@ class Talks extends Component {
             <DisplayTalks talk={talksList} coloms={coloms} />
           </div>
           <Pagination
-            quantityTalks={this.state.quantityTalks}
+            currentPage={currentPage}
+            onChangeCurrentPage={this.onChangecurrentPage}
+            quantityTalks={quantityTalks}
             onChangeQuantityTalks={this.onChangeQuantityTalks}
           />
         </div>
