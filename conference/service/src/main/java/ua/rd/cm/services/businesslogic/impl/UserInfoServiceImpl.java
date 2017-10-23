@@ -1,5 +1,6 @@
 package ua.rd.cm.services.businesslogic.impl;
 
+import static java.util.Optional.ofNullable;
 import static ua.rd.cm.services.exception.ResourceNotFoundException.USER_INFO_NOT_FOUND;
 
 import org.modelmapper.ModelMapper;
@@ -15,7 +16,6 @@ import ua.rd.cm.dto.UserDto;
 import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.UserRepository;
-import ua.rd.cm.services.businesslogic.ContactTypeService;
 import ua.rd.cm.services.businesslogic.UserInfoService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
@@ -59,10 +59,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private UserInfo userInfoDtoToEntity(UserDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
-        userInfo.addContact(new Contact(dto.getLinkedIn(), contactTypeRepository.findFirstByName("LinkedIn")));
-        userInfo.addContact(new Contact(dto.getTwitter(), contactTypeRepository.findFirstByName("Twitter")));
-        userInfo.addContact(new Contact(dto.getFacebook(), contactTypeRepository.findFirstByName("FaceBook")));
-        userInfo.addContact(new Contact(dto.getBlog(), contactTypeRepository.findFirstByName("Blog")));
+
+        ofNullable(createContact(dto.getLinkedIn(), "LinkedIn")).ifPresent(userInfo::addContact);
+        ofNullable(createContact(dto.getLinkedIn(), "Twitter")).ifPresent(userInfo::addContact);
+        ofNullable(createContact(dto.getLinkedIn(), "FaceBook")).ifPresent(userInfo::addContact);
+        ofNullable(createContact(dto.getLinkedIn(), "Blog")).ifPresent(userInfo::addContact);
+
         return userInfo;
+    }
+    private Contact createContact(String url, String contactType) {
+        return (url != null)
+                ? new Contact(url, contactTypeRepository.findFirstByName(contactType))
+                : null;
     }
 }

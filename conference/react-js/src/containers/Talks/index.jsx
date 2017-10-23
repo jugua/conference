@@ -65,7 +65,7 @@ class Talks extends Component {
   };
 
   sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'TH' && name !== undefined) {
+    if (tagName === 'TH' && name) {
       const { ASC, SORT_DATA } = action;
       const { talks, load } = this.props;
       const value = this.state[name] === '' ? ASC : '';
