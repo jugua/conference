@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,6 @@ import lombok.NonNull;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "user_info_seq")
 public class UserInfo extends AbstractEntity {
 
     @NonNull

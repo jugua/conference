@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import lombok.Builder;
@@ -25,10 +24,10 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"topics", "types", "languages", "levels", "talks", "organisers", "speakers"})
+@EqualsAndHashCode(callSuper = true, exclude = {"topics", "types", "languages", "levels", "talks", "organisers",
+        "speakers"})
 @ToString(exclude = {"topics", "types", "languages", "levels", "talks", "organisers", "speakers"})
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "conf_seq")
 public class Conference extends AbstractEntity {
 
     @NonNull
@@ -60,28 +59,28 @@ public class Conference extends AbstractEntity {
     private Boolean callForPaperActive;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "conference_topic",
+    @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "topic_id")
     )
     private Collection<Topic> topics;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "conference_type",
+    @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "type_id")
     )
     private Collection<Type> types;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "conference_language",
+    @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
     private Collection<Language> languages;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "conference_level",
+    @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "level_id")
     )
@@ -91,14 +90,14 @@ public class Conference extends AbstractEntity {
     private Collection<Talk> talks;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "conference_organiser",
+    @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "organiser_id")
     )
     private List<User> organisers;
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "conference_speaker",
+    @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "speaker_id")
     )
