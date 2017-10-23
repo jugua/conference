@@ -30,6 +30,7 @@ const EmailChangeForm = ({
       />
       <input
         type="submit"
+        value="Save"
         className="btn btn__inline"
         disabled={mail === oldMail}
       />

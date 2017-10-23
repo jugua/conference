@@ -26,8 +26,8 @@ import lombok.ToString;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"photo", "userInfo"})
-@ToString(exclude = {"password", "photo", "userInfo"})
+@EqualsAndHashCode(callSuper = true, exclude = {"photo", "userInfo", "organizerConferences", "speakerConferences"})
+@ToString(exclude = {"password", "photo", "userInfo", "organizerConferences", "speakerConferences"})
 @Entity
 @SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "user_seq")
 public class User extends AbstractEntity {
@@ -63,10 +63,17 @@ public class User extends AbstractEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
     private Set<Role> roles = new HashSet<>();
+    
+    @ManyToMany(mappedBy = "organisers")
+    private Set<Conference> organizerConferences;
 
+    @ManyToMany(mappedBy = "speakers")
+    private Set<Conference> speakerConferences;
+    
     @Builder
     public User(Long id, String firstName, String lastName, String email, String password,
-                String photo, UserStatus status, UserInfo userInfo, Set<Role> roles) {
+                String photo, UserStatus status, UserInfo userInfo, Set<Role> roles,
+                Set<Conference> organizerConferences,Set<Conference> speakerConferences) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -76,6 +83,8 @@ public class User extends AbstractEntity {
         this.status = status;
         this.userInfo = userInfo;
         this.roles = roles;
+        this.organizerConferences = organizerConferences;
+        this.speakerConferences = speakerConferences;
     }
 
     public boolean addRole(Role role) {
