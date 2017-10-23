@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public abstract class AbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public AbstractEntity(Long id) {

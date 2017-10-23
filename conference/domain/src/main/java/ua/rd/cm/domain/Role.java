@@ -2,7 +2,6 @@ package ua.rd.cm.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "role_seq")
 public class Role extends AbstractEntity implements GrantedAuthority {
 
     public static final String ORGANISER = "ROLE_ORGANISER";

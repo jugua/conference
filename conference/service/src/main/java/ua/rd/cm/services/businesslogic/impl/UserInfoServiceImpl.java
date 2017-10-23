@@ -65,6 +65,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         ofNullable(createContact(dto.getFacebook(), "FaceBook")).ifPresent(userInfo::addContact);
         ofNullable(createContact(dto.getBlog(), "Blog")).ifPresent(userInfo::addContact);
 
+
         return userInfo;
     }
     private Contact createContact(String url, String contactType) {
