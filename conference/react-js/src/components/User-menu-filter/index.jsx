@@ -7,18 +7,19 @@ import {
   talks,
   myInfo,
   root,
+  history,
 } from '../../constants/route-url';
 import {
   admin,
 } from '../../constants/roles';
 
 const UserMenuFilter = ({ roles, logout, close }) => {
-  const data = [
-    { title: 'Talks', link: talks },
-  ];
+  const data = [{ title: 'History', link: history }];
   const adminRole = roles.indexOf(admin);
   if (adminRole > -1) {
-    data.push({ title: 'Manage user', link: manageUser });
+    data.push({ title: 'Talks', link: talks },
+      { title: 'Manage user', link: manageUser },
+    );
   }
   data.push(
     { title: 'My info', link: myInfo },

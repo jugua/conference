@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
+
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
-import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
+import loadData from '../../actions/load';
 
 class Talks extends Component {
   constructor(props) {
@@ -15,7 +16,13 @@ class Talks extends Component {
     this.state = {
       listOfTalks: [],
       filter: { topic: '', status: '' },
-      listOfTopics: [] };
+      listOfTopics: [],
+      speaker: '',
+      title: '',
+      topic: '',
+      status: '',
+      comments: '',
+    };
   }
 
   componentDidMount() {
@@ -57,12 +64,22 @@ class Talks extends Component {
     this.props.load(APPLY_FILTERS, { filter, listOfTalks });
   };
 
+  sortTalks = ({ target: { tagName, dataset: { name } } }) => {
+    if (tagName === 'TH' && name) {
+      const { ASC, SORT_DATA } = action;
+      const { talks, load } = this.props;
+      const value = this.state[name] === '' ? ASC : '';
+      load(SORT_DATA, { talks, direction: value, field: name });
+      this.setState({ [name]: value });
+    }
+  };
+
   render() {
     const { listOfTopics } = this.state;
     const { talks } = this.props;
 
     return (
-      <div className="talks-container">
+      <div className="tabs-container">
         <div className="talks">
           <div className="talks__header">
             <a className="btn talks__button">export to excel </a>
@@ -73,39 +90,55 @@ class Talks extends Component {
             handleFilterClick={this.handleFilterClick}
             handleResetFiltersClick={this.handleResetFiltersClick}
           />
-          <table className="data-table">
-            <thead className="data-table__header-block">
+          <table
+            className="data-table"
+          >
+            <thead
+              role="presentation"
+              className="data-table__header-block"
+              onClick={this.sortTalks}
+            >
               <tr className="table-header">
                 <th className="table-header__item
                   table-header__item_check-talk"
                 >
                   <input type="checkbox" />
                 </th>
-                <th className="table-header__item
+                <th
+                  className="table-header__item
                   table-header__item_speaker-talk"
+                  data-name="speaker"
                 >
                   speaker
                 </th>
-                <th className="table-header__item
+                <th
+                  className="table-header__item
                   table-header__item_title-talk"
+                  data-name="title"
                 >
                   title
                 </th>
-                <th className="table-header__item
+                <th
+                  className="table-header__item
                   table-header__item_topic-talk"
+                  data-name="topic"
                 >
                   topic
                 </th>
                 <th className="table-header__item table-header__item_date-talk">
                   submitted date
                 </th>
-                <th className="table-header__item
+                <th
+                  className="table-header__item
                   table-header__item_status-talk"
+                  data-name="status"
                 >
                   status
                 </th>
-                <th className="table-header__item
+                <th
+                  className="table-header__item
                   table-header__item_comments-talk"
+                  data-name="comment"
                 >
                   organizer comments
                 </th>
