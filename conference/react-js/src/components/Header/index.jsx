@@ -14,7 +14,7 @@ class Header extends PureComponent {
   constructor() {
     super();
     this.state = {
-      visible: false,
+      dropdown: false,
     };
   }
 
@@ -24,12 +24,12 @@ class Header extends PureComponent {
 
   onButtonAccountClick = () => {
     document.removeEventListener('click', this.closeSignIn);
-    if (!this.state.visible) {
+    if (!this.state.dropdown) {
       document.addEventListener('click', this.closeSignIn);
     }
 
     this.setState(prevState => ({
-      visible: !prevState.visible,
+      dropdown: !prevState.dropdown,
     }));
   };
 
@@ -37,11 +37,17 @@ class Header extends PureComponent {
     const formContainer = document.querySelector('.menu-container__content');
     if (!this.isDescendant(formContainer, event.target)) {
       this.setState({
-        visible: false,
+        dropdown: false,
       });
       document.removeEventListener('click', this.closeSignIn);
     }
   };
+
+  closeDropDown = () => {
+    this.setState({
+      dropdown: false,
+    });
+  }
 
   isDescendant = (parent, child) => {
     let node = child.parentNode;
@@ -76,16 +82,19 @@ class Header extends PureComponent {
           </button>
           <div className={classNames({
             'menu-container__content': true,
-            none: !this.state.visible,
+            none: !this.state.dropdown,
           })}
           >
             {
               roles.length > 0 ?
                 <UserMenuFilter
+                  close={this.closeDropDown}
                   roles={roles}
                   logout={logoutAction}
+                /> :
+                <SignInForm
+                  close={this.closeDropDown}
                 />
-                : <SignInForm />
             }
 
           </div>

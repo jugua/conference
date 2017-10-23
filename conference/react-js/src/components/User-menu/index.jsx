@@ -22,9 +22,12 @@ const menuList = data => data.map(({ title, link, last, click = null }) => (
   </li>
 ));
 
-const UserMenu = ({ data }) => (
+const UserMenu = ({ data, close }) => (
   <div
-    className="dropdown ng-scope"
+    className="dropdown"
+    role="menu"
+    tabIndex={0}
+    onClick={close}
   >
     <div className="menu-arrow" />
     <ul className="menu-list">
@@ -34,6 +37,7 @@ const UserMenu = ({ data }) => (
 
 UserMenu.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  close: PropTypes.func.isRequired,
 };
 
 export default UserMenu;

@@ -12,7 +12,7 @@ import {
   admin,
 } from '../../constants/roles';
 
-const UserMenuFilter = ({ roles, logout }) => {
+const UserMenuFilter = ({ roles, logout, close }) => {
   const data = [
     { title: 'Talks', link: talks },
   ];
@@ -26,13 +26,14 @@ const UserMenuFilter = ({ roles, logout }) => {
     { title: 'Sign Out', link: root, last: true, click: logout },
   );
   return (
-    <UserMenu data={data} />
+    <UserMenu data={data} close={close} />
   );
 };
 
 UserMenuFilter.propTypes = {
   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
   logout: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
 };
 
 export default UserMenuFilter;
