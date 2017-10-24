@@ -13,11 +13,7 @@ class FilterForm extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const { topics } = nextProps;
-    const listOfTopics = [];
-    topics.map(({ name }) => (
-      listOfTopics.push(name)
-    ),
-    );
+    const listOfTopics = topics.map(({ name }) => name);
     this.setState({ listOfTopics });
   }
 

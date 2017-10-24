@@ -87,16 +87,16 @@ class Header extends PureComponent {
             })}
             >
               {
-              roles.length > 0 ?
-                <UserMenuFilter
-                  close={this.closeDropDown}
-                  roles={roles}
-                  logout={logoutAction}
-                /> :
-                <SignInForm
-                  close={this.closeDropDown}
-                />
-            }
+                roles.length > 0 ?
+                  <UserMenuFilter
+                    close={this.closeDropDown}
+                    roles={roles}
+                    logout={logoutAction}
+                  /> :
+                  <SignInForm
+                    close={this.closeDropDown}
+                  />
+              }
             </div>
           </div>
         </div>
