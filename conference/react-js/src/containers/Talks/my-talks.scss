@@ -145,6 +145,7 @@
     height: 30px;
     margin: 0 15px 0 0;
     border: 0;
+    word-break: break-all;
     @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
     font-family: Oswald Light, sans-serif;
 
@@ -156,6 +157,10 @@
     }
     &_topic {
       width: 180px;
+      &-container {
+        position: static;
+        width: 180px;
+      }
     }
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
@@ -182,8 +187,29 @@
       width: 100%;
       &_topic {
         margin-top: 5px;
+        &-drop  {
+          height: initial;
+          width: initial;
+          max-width: 350px;
+          max-height: 200px;
+        }
       }
     }
+  }
+}
+
+.my-talk-settings {
+  .my-talk-settings__select-wrapper_topic {
+    .my-talk-settings__select_topic-drop  {
+      height: initial;
+      width: initial;
+      max-width: 350px;
+      max-height: 200px;
+    }
+  }
+  .my-talk-settings__select_topic-container {
+    position: static;
+    width: 180px;
   }
 }
 
