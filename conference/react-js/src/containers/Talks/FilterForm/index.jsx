@@ -11,8 +11,8 @@ class FilterForm extends PureComponent {
     };
   }
 
-  componentWillReceiveProps() {
-    const { topics } = this.props;
+  componentWillReceiveProps(nextProps) {
+    const { topics } = nextProps;
     const listOfTopics = [];
     topics.map(({ name }) => (
       listOfTopics.push(name)
@@ -52,8 +52,7 @@ class FilterForm extends PureComponent {
           <div className="my-talk-settings__select-wrapper">
             <label
               htmlFor="my-talk-status"
-              className="form-label my-talk-settings__label
-            my-talk-settings__label_status"
+              className="form-label my-talk-settings__label"
             >Status
             </label>
             <select
