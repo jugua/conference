@@ -66,26 +66,27 @@ class Header extends PureComponent {
 
     return (
       <header className="header">
-        <div className="header__title">
-          <Link
-            className="link_header"
-            to={baseUrl}
-          >
-            conference management
-          </Link>
-        </div>
-        <div className="menu-container">
-          <button
-            className="menu-container__button js-dropdown"
-            onClick={this.onButtonAccountClick}
-          >{ fname ? `${fname}'s` : 'Your'} Account
-          </button>
-          <div className={classNames({
-            'menu-container__content': true,
-            none: !this.state.dropdown,
-          })}
-          >
-            {
+        <div className="header-wrapper">
+          <div className="header__title">
+            <Link
+              className="link_header"
+              to={baseUrl}
+            >
+              conference management
+            </Link>
+          </div>
+          <div className="menu-container">
+            <button
+              className="menu-container__button js-dropdown"
+              onClick={this.onButtonAccountClick}
+            >{ fname ? `${fname}'s` : 'Your'} Account
+            </button>
+            <div className={classNames({
+              'menu-container__content': true,
+              none: !this.state.dropdown,
+            })}
+            >
+              {
               roles.length > 0 ?
                 <UserMenuFilter
                   close={this.closeDropDown}
@@ -96,7 +97,7 @@ class Header extends PureComponent {
                   close={this.closeDropDown}
                 />
             }
-
+            </div>
           </div>
         </div>
       </header>
