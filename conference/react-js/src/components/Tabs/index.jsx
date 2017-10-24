@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Upcoming from '../Upcoming';
 import AutorizedUserMenu from '../Autorized-user-menu';
-import { upcoming, myTalks } from '../../constants/route-url';
-import MyTalks from '../../containers/My-talks';
+import { upcoming, myTalks, myEvents } from '../../constants/route-url';
+import MyTalks from '../My-talks';
+import MyEvents from '../MyEvents/MyEvents';
 
 const Tabs = ({ userTalks: { length } }) => (
   <Router>
@@ -22,6 +23,11 @@ const Tabs = ({ userTalks: { length } }) => (
           path={myTalks}
           exact
           component={MyTalks}
+        />
+        <Route
+          path={myEvents}
+          exact
+          component={MyEvents}
         />
       </div>
     </div>

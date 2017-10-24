@@ -2,7 +2,6 @@ package ua.rd.cm.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.SequenceGenerator;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "topic_seq")
 public class Topic extends AbstractEntity {
 
     @NonNull
