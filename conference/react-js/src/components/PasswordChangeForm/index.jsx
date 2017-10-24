@@ -43,6 +43,7 @@ const PasswordChangeForm = ({
       />
       <input
         type="submit"
+        value="Save"
         className="btn btn__inline"
       />
       <input

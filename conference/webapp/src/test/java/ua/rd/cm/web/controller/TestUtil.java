@@ -52,7 +52,7 @@ public class TestUtil {
     protected UserInfo createUserInfo() {
         ContactType contactType = new ContactType(1L, "LinkedIn");
         ContactType contactType2 = new ContactType(2L, "Twitter");
-        ContactType contactType3 = new ContactType(3L, "FaceBook");
+        ContactType contactType3 = new ContactType(3L, "Facebook");
         ContactType contactType4 = new ContactType(4L, "Blog");
 
         List<Contact> contacts = Arrays.asList(

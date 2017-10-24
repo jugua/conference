@@ -3,16 +3,18 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 
 import { baseUrl } from '../../constants/route-url';
 import SignInForm from '../../containers/SignInForm';
 import UserMenuFilter from '../User-menu-filter';
+import logout from '../../actions/logout';
 
 class Header extends PureComponent {
   constructor() {
     super();
     this.state = {
-      visible: false,
+      dropdown: false,
     };
   }
 
@@ -22,12 +24,12 @@ class Header extends PureComponent {
 
   onButtonAccountClick = () => {
     document.removeEventListener('click', this.closeSignIn);
-    if (!this.state.visible) {
+    if (!this.state.dropdown) {
       document.addEventListener('click', this.closeSignIn);
     }
 
     this.setState(prevState => ({
-      visible: !prevState.visible,
+      dropdown: !prevState.dropdown,
     }));
   };
 
@@ -35,11 +37,17 @@ class Header extends PureComponent {
     const formContainer = document.querySelector('.menu-container__content');
     if (!this.isDescendant(formContainer, event.target)) {
       this.setState({
-        visible: false,
+        dropdown: false,
       });
       document.removeEventListener('click', this.closeSignIn);
     }
   };
+
+  closeDropDown = () => {
+    this.setState({
+      dropdown: false,
+    });
+  }
 
   isDescendant = (parent, child) => {
     let node = child.parentNode;
@@ -53,7 +61,9 @@ class Header extends PureComponent {
   };
 
   render() {
-    const { user: { roles, fname } } = this.props;
+    const { user: { roles, fname }, dispatch } = this.props;
+    const logoutAction = bindActionCreators(logout, dispatch);
+
     return (
       <header className="header">
         <div className="header-wrapper">
@@ -73,17 +83,20 @@ class Header extends PureComponent {
             </button>
             <div className={classNames({
               'menu-container__content': true,
-              none: !this.state.visible,
+              none: !this.state.dropdown,
             })}
             >
               {
-                roles.length > 0 ?
-                  <UserMenuFilter
-                    roles={roles}
-                  />
-                  : <SignInForm />
-              }
-
+              roles.length > 0 ?
+                <UserMenuFilter
+                  close={this.closeDropDown}
+                  roles={roles}
+                  logout={logoutAction}
+                /> :
+                <SignInForm
+                  close={this.closeDropDown}
+                />
+            }
             </div>
           </div>
         </div>
@@ -93,6 +106,7 @@ class Header extends PureComponent {
 }
 
 Header.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.number,
     roles: PropTypes.array,

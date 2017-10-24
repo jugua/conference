@@ -62,7 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         ofNullable(createContact(dto.getLinkedIn(), "LinkedIn")).ifPresent(userInfo::addContact);
         ofNullable(createContact(dto.getLinkedIn(), "Twitter")).ifPresent(userInfo::addContact);
-        ofNullable(createContact(dto.getLinkedIn(), "FaceBook")).ifPresent(userInfo::addContact);
+        ofNullable(createContact(dto.getLinkedIn(), "Facebook")).ifPresent(userInfo::addContact);
         ofNullable(createContact(dto.getLinkedIn(), "Blog")).ifPresent(userInfo::addContact);
 
         return userInfo;
