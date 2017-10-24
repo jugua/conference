@@ -116,6 +116,7 @@ export default class SignUp extends Component {
             : null}
           <input
             type="submit"
+            id="btn-sign-up"
             className="sign-up__button btn"
             value="submit"
           />
