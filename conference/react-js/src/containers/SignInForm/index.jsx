@@ -25,6 +25,8 @@ class SignInForm extends PureComponent {
 
   onLoginSuccess = () => {
     const { SET_USER, SET_TALKS } = actionTypes;
+
+    this.close();
     getUserInfo()
       .then(res => this.props.load(SET_USER, res.data))
       .then(getTalks()
@@ -46,6 +48,10 @@ class SignInForm extends PureComponent {
       isValidCredentials: true,
     });
   };
+
+  close = () => {
+    this.props.close();
+  }
 
   submitHandler = (event) => {
     event.preventDefault();
@@ -89,7 +95,11 @@ class SignInForm extends PureComponent {
               password:
             </label>
             <Link
+              id="lnk-forgot-password"
               to={forgotPassword}
+              onClick={this.close}
+              className="sign-in__forgot"
+              tabIndex="-1"
             >
               forgot password?
             </Link >
@@ -112,6 +122,7 @@ class SignInForm extends PureComponent {
 
           <input
             type="submit"
+            id="btn-sign-in"
             value="Sign In"
             className="btn sign-in__submit"
           />
@@ -120,6 +131,8 @@ class SignInForm extends PureComponent {
         <div className="sign-in__separator" />
         <Link
           className="btn sign-in__create"
+          id="lnk-sign-up"
+          onClick={this.close}
           to={signUp}
         >
           create new account
@@ -137,6 +150,7 @@ const mapDispatchToProps = dispatch => ({
 
 SignInForm.propTypes = {
   load: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(SignInForm);
