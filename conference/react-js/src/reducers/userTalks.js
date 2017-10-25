@@ -1,19 +1,14 @@
 import actionTypes from '../constants/actions-types';
+import propComparator from '../utils/sortData';
 
-const { SET_TALKS, ASC, SORT_DATA } = actionTypes;
+const { SET_TALKS, SORT_USER_TALKS } = actionTypes;
 
 const userTalks = (state = [], { type, payload }) => {
   if (type === SET_TALKS) {
     return payload;
-  } else if (type === SORT_DATA) {
+  } else if (type === SORT_USER_TALKS) {
     const { direction, talks, field } = payload;
-    const sortDirection = (a, b) => {
-      if (direction === ASC) {
-        return a[field] > b[field];
-      }
-      return a[field] < b[field];
-    };
-    return talks.sort(sortDirection);
+    return talks.sort(propComparator(field, direction));
   }
   return state;
 };

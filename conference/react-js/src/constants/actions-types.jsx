@@ -11,7 +11,8 @@ const actions = {
   APPLY_FILTERS: 'apply_filters',
   LOAD: 'load',
   ASC: 'asc',
-  SORT_DATA: 'sort_data',
+  SORT_USER_TALKS: 'sort_user_talks',
+  SORT_ALL_TALKS: 'sort_all_talks',
 };
 
 export default actions;
