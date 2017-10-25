@@ -61,9 +61,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
 
         ofNullable(createContact(dto.getLinkedIn(), "LinkedIn")).ifPresent(userInfo::addContact);
-        ofNullable(createContact(dto.getLinkedIn(), "Twitter")).ifPresent(userInfo::addContact);
-        ofNullable(createContact(dto.getLinkedIn(), "FaceBook")).ifPresent(userInfo::addContact);
-        ofNullable(createContact(dto.getLinkedIn(), "Blog")).ifPresent(userInfo::addContact);
+        ofNullable(createContact(dto.getTwitter(), "Twitter")).ifPresent(userInfo::addContact);
+        ofNullable(createContact(dto.getFacebook(), "FaceBook")).ifPresent(userInfo::addContact);
+        ofNullable(createContact(dto.getBlog(), "Blog")).ifPresent(userInfo::addContact);
+
 
         return userInfo;
     }

@@ -41,11 +41,11 @@ class Talks extends Component {
       });
   }
 
-  onChangeFilter = ({ target: { name, value } }) => {
+  onChangeFilter = ({ target }) => {
     this.setState(prevState => ({
       filter: {
         ...prevState.filter,
-        [name]: value,
+        [target.name]: target.value,
       },
     }));
   };

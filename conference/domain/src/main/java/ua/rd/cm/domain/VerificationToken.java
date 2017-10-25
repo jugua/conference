@@ -3,7 +3,12 @@ package ua.rd.cm.domain;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +20,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@SequenceGenerator(name = "seq", allocationSize = 1, sequenceName = "token_seq")
-@AttributeOverride(name = "id", column = @Column(name = "token_id"))
 public class VerificationToken extends AbstractEntity {
     public static final int EXPIRATION_IN_MINUTES = 60;
 
