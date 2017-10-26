@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import ua.rd.cm.domain.Contact;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
@@ -195,7 +196,9 @@ public class UserServiceImpl implements UserService {
         if (user.getPhoto() != null) {
             dto.setPhoto("myinfo/photo/" + user.getId());
         }
-        user.getUserInfo().getContacts().forEach(dto::setContact);
+        List<Contact> contacts = user.getUserInfo().getContacts();
+        contacts.forEach(dto::setContact);
+        dto.setContacts(contacts);
         dto.setRoles(user.getRoleNames());
         return dto;
     }
