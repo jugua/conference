@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import ua.rd.cm.domain.Contact;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.UserInfoDto;
 import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.repository.UserInfoRepository;
 import ua.rd.cm.repository.UserRepository;
@@ -45,19 +45,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     @Transactional
-    public void update(String email, UserDto userDto) {
+    public void update(String email, UserInfoDto userInfoDto) {
         User user = userRepository.findByEmail(email);
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
+        user.setFirstName(userInfoDto.getFirstName());
+        user.setLastName(userInfoDto.getLastName());
 
-        UserInfo entity = userInfoDtoToEntity(userDto);
+        UserInfo entity = userInfoDtoToEntity(userInfoDto);
         entity.setId(user.getUserInfo().getId());
 
         userRepository.save(user);
         userInfoRepository.save(entity);
     }
 
-    private UserInfo userInfoDtoToEntity(UserDto dto) {
+    private UserInfo userInfoDtoToEntity(UserInfoDto dto) {
         UserInfo userInfo = mapper.map(dto, UserInfo.class);
 
         ofNullable(createContact(dto.getLinkedIn(), "LinkedIn")).ifPresent(userInfo::addContact);
