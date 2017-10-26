@@ -18,7 +18,7 @@ const AutorizedUserMenu = ({ length }) => (
         Upcoming
       </NavLink>
     </li>
-    {length > 0 ?
+    {length > 0 &&
       (<li className="tabs-list__item">
         <NavLink
           exact
@@ -29,8 +29,6 @@ const AutorizedUserMenu = ({ length }) => (
         My talks
         </NavLink>
       </li>)
-      :
-      null
     }
   </ul>
 );

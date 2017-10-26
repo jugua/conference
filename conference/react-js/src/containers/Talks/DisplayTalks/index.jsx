@@ -3,16 +3,16 @@ import { PropTypes } from 'prop-types';
 import TalksList from '../../../components/Talks/TalksList';
 
 class DisplayTalks extends Component {
-  setTalks = (data, coloms) => data
+  setTalks = (data, columns) => data
     .map(element => (
-      <TalksList data={element} key={element.id} coloms={coloms} />),
+      <TalksList data={element} key={element.id} columns={columns} />),
     );
 
   render() {
-    const { talk, coloms } = this.props;
+    const { talk, columns } = this.props;
     return (
       <div className="data-table__inner-wrapper">
-        {this.setTalks(talk, coloms)}
+        {this.setTalks(talk, columns)}
       </div>
     );
   }
@@ -20,7 +20,7 @@ class DisplayTalks extends Component {
 
 DisplayTalks.propTypes = {
   talk: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  coloms: PropTypes.arrayOf(PropTypes.string).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default DisplayTalks;

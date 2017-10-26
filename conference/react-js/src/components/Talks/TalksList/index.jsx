@@ -1,38 +1,45 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-const TalksList = ({ data, coloms }) =>
+const renderTalksList = (data, columns) => (
+  columns.map((col) => {
+    switch (col) {
+    case 'id':
+      return null;
+    case 'name':
+      return (<div
+        key={col}
+        className="data-table__column
+        data-table__column_speaker-talk"
+      >
+        <a className="link">{data.name}</a></div>);
+    case 'title':
+      return (<div
+        key={col}
+        className="data-table__column
+        data-table__column_title-talk"
+      >
+        <a className="link">{data.title}</a>
+      </div>);
+
+    default:
+      return (<div
+        key={col}
+        className={`${'data-table__column' +
+          ' data-table__column_'}${col}-talk`}
+      >
+        {data[col]}
+      </div>);
+    }
+  })
+);
+
+const TalksList = ({ data, columns }) =>
   (<div className="data-table__row">
     <div className="data-table__column data-table__column_check-talk">
       <input type="checkbox" />
     </div>
-    {coloms.map((col) => {
-      if (col === 'id') {
-        return null;
-      } else if (col === 'name') {
-        return (<div
-          key={col}
-          className="data-table__column
-        data-table__column_speaker-talk"
-        >
-          <a className="link">{data.name}</a></div>);
-      } else if (col === 'title') {
-        return (<div
-          key={col}
-          className="data-table__column
-        data-table__column_title-talk"
-        >
-          <a className="link">{data.title}</a>
-        </div>);
-      }
-      return (<div
-        key={col}
-        className={`${'data-table__column' +
-      ' data-table__column_'}${col}-talk`}
-      >
-        {data[col]}
-      </div>);
-    })}
+    {renderTalksList(data, columns)}
   </div>);
 
 TalksList.propTypes = { data: PropTypes.shape({
@@ -48,7 +55,7 @@ TalksList.propTypes = { data: PropTypes.shape({
   comment: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 }).isRequired,
-coloms: PropTypes.arrayOf(PropTypes.string).isRequired,
+columns: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default TalksList;

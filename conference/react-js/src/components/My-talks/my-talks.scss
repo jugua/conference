@@ -44,12 +44,22 @@
   &__item-wrapper {
     display: flex;
     }
+  &__navi {
+    margin: 0;
+    font-family: "Oswald Light", sans-serif;
+    }
+  &__item-wrapper {
+    display: flex;
+    }
   &__item {
     width: 25px;
     height: 25px;
     margin-right: 5px;
     .box {
-      @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+      @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+      }
+    &:hover {
+      cursor: pointer;
       }
 
     &:hover {
@@ -84,7 +94,7 @@
     padding-left: 15px;
     margin-left: 20px;
     border: 0;
-    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
     font-family: Oswald Light, sans-serif;
     }
   &__per-page {
@@ -109,6 +119,14 @@
   &__filters {
     display: flex;
     flex-wrap: wrap;
+
+    @media ($mnw: $sdmn) and ($mxw: $sdmx) {
+      height: 120px;
+      }
+    }
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
     }
   &__title {
     text-transform: capitalize;
@@ -126,7 +144,7 @@
     border: 0;
     background: transparent;
     text-transform: capitalize;
-    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
 
     &:hover {
       background: $light-grey;
@@ -145,7 +163,8 @@
     height: 30px;
     margin: 0 15px 0 0;
     border: 0;
-    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+    word-break: break-all;
+    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
     font-family: Oswald Light, sans-serif;
 
     &:focus {
@@ -154,9 +173,17 @@
     &:hover {
       cursor: pointer;
       }
-    &_topic {
-      width: 180px;
+    &:hover {
+      cursor: pointer;
       }
+    }
+  &_topic {
+    width: 180px;
+    }
+  &-container {
+    position: static;
+    width: 180px;
+
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
       margin: 0;
@@ -177,14 +204,38 @@
     margin: 0;
     position: relative;
     }
+  &__date {
+    margin: 0;
+    position: relative;
+    }
   &__select-wrapper {
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
       &_topic {
         margin-top: 5px;
+        &-drop {
+          height: initial;
+          width: initial;
+          max-width: 350px;
+          max-height: 200px;
+          }
         }
       }
     }
+  }
+
+.my-talk-settings,
+.my-talk-settings__select-wrapper_topic,
+.my-talk-settings__select_topic-drop {
+  height: initial;
+  width: initial;
+  max-width: 350px;
+  max-height: 200px;
+  }
+
+.my-talk-settings__select_topic-container {
+  position: static;
+  width: 180px;
   }
 
 .data-table {
@@ -194,7 +245,10 @@
 
   @media ($mnw: $xmdmx) {
     height: calc(100% - 175px);
-    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
+    }
+  &__header-block {
+    display: block;
     }
   &__header-block {
     display: block;
@@ -238,19 +292,20 @@
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
       margin-bottom: 5px;
-      @include box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15));
+      @include box-shadow (0, 1px, 5px, 0, rgba(0, 0, 0, 0.15));
       }
     @media ($mnw: $sdmn) and ($mxw: $xmdmx) {
       width: 49%;
       margin-bottom: 10px;
-      @include box-shadow (0, 1px, 5px, 0, rgba(0,0,0,0.15));
+      @include box-shadow (0, 1px, 5px, 0, rgba(0, 0, 0, 0.15));
       }
     @media ($mnw: $xmdmx) {
       &:nth-child(even) {
         background: #f2f2f2;
-        }
-      @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
-        background: #fff;
+
+        @media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+          background: #fff;
+          }
         }
       }
     }
@@ -260,215 +315,215 @@
     @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
       border: none;
       }
-    &_title {
-      width: 18%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 5px;
-        &:before {
-          content: 'Title';
-          @include my-talk-before-title;
-          }
-        }
-      }
-    &_topic {
-      width: 22%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding: 5px;
-        &:before {
-          content: 'Topic';
-          @include my-talk-before-title;
-          }
-        }
-      }
-    &_status {
-      width: 10%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 5px;
-        &:before {
-          content: 'Status';
-          @include my-talk-before-title;
-          }
-        }
-      }
-
-    &_date {
-      width: 15%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 5px;
-        &:before {
-          content: 'Date';
-          @include my-talk-before-title;
-          }
-        }
-      }
-    &_comments {
-      width: 20%;
-      position: relative;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 5px;
-        &:before {
-          content: 'Comments';
-          @include my-talk-before-title;
-          }
-        }
-      }
-    &_conference {
-      width: 15%;
-      position: relative;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      border-right: 1px solid transparent;
-
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 5px;
-        &:before {
-          content: 'Comments';
-          @include my-talk-before-title;
-          }
-        }
-      }
-
-    &_check-talk {
-      width: 3%;
-      box-sizing: border-box;
+    }
+  &_title {
+    width: 18%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
       padding: 5px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px;
-        text-align: right;
+      &:before {
+        content: 'Title';
+        @include my-talk-before-title;
         }
       }
-    &_speaker-talk {
-      width: 12%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px;
-        &:before {
-          content: 'Speaker';
-          @include my-talk-before-title;
-          }
-        }
-      }
-    &_title-talk {
-      width: 15%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
+    }
+  &_topic {
+    width: 22%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px;
-        &:before {
-          content: 'Title';
-          @include my-talk-before-title;
-          }
+      padding: 5px;
+      &:before {
+        content: 'Topic';
+        @include my-talk-before-title;
         }
       }
-    &_topic-talk {
-      width: 15%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        padding: 2px;
-        &:before {
-          content: 'Topic';
-          @include my-talk-before-title;
-          }
+
+    }
+  &_status {
+    width: 10%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 5px;
+      &:before {
+        content: 'Status';
+        @include my-talk-before-title;
         }
       }
-    &_date-talk {
-      width: 15%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px;
-        &:before {
-          content: 'Date';
-          @include my-talk-before-title;
-          }
+    }
+
+  &_date {
+    width: 15%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 5px;
+      &:before {
+        content: 'Date';
+        @include my-talk-before-title;
         }
       }
-    &_status-talk {
-      width: 7%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px;
-        &:before {
-          content: 'Status';
-          @include my-talk-before-title;
-          }
+    }
+  &_comments {
+    width: 20%;
+    position: relative;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 5px;
+      &:before {
+        content: 'Comments';
+        @include my-talk-before-title;
         }
       }
-    &_comments-talk {
-      width: 18%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
+    }
+  &_conference {
+    width: 15%;
+    position: relative;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-right: 1px solid transparent;
+
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 5px;
+      &:before {
+        content: 'Comments';
+        @include my-talk-before-title;
+        }
+      }
+    }
+
+  &_check-talk {
+    width: 3%;
+    box-sizing: border-box;
+    padding: 5px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 2px;
+      text-align: right;
+      }
+    }
+  &_speaker-talk {
+    width: 12%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 2px;
+      &:before {
+        content: 'Speaker';
+        @include my-talk-before-title;
+        }
+      }
+    }
+  &_title-talk {
+    width: 15%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 2px;
+      &:before {
+        content: 'Title';
+        @include my-talk-before-title;
+        }
+      }
+    }
+  &_topic-talk {
+    width: 15%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      text-transform: none;
-
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px;
-        &:before {
-          content: 'Comment';
-          @include my-talk-before-title;
-          }
+      padding: 2px;
+      &:before {
+        content: 'Topic';
+        @include my-talk-before-title;
         }
       }
+    }
+  &_date-talk {
+    width: 15%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 2px;
+      &:before {
+        content: 'Date';
+        @include my-talk-before-title;
+        }
+      }
+    }
+  &_status-talk {
+    width: 7%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 2px;
+      &:before {
+        content: 'Status';
+        @include my-talk-before-title;
+        }
+      }
+    }
+  &_comments-talk {
+    width: 18%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: none;
 
-    &_assign-talk {
-      width: 15%;
-      box-sizing: border-box;
-      padding: 5px 5px 5px 15px;
-      border-right: 1px solid transparent;
-      @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-        width: 100%;
-        padding: 2px 2px 5px 2px;
-        &:before {
-          content: 'Assign To';
-          @include my-talk-before-title;
-          }
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 2px;
+      &:before {
+        content: 'Comment';
+        @include my-talk-before-title;
+        }
+      }
+    }
+  &_assign-talk {
+    width: 15%;
+    box-sizing: border-box;
+    padding: 5px 5px 5px 15px;
+    border-right: 1px solid transparent;
+    @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+      width: 100%;
+      padding: 2px 2px 5px 2px;
+      &:before {
+        content: 'Assign To';
+        @include my-talk-before-title;
         }
       }
     }
@@ -491,6 +546,7 @@
       position: relative;
       &:before {
         @include filter-icon;
+
         }
       }
     &_topic {
@@ -519,6 +575,7 @@
       position: relative;
       padding-left: 15px;
       }
+
     &_conference {
       width: 15%;
       position: relative;
@@ -541,7 +598,14 @@
         @include filter-icon;
         }
       }
+
     &_topic-talk {
+      width: 15%;
+      &:before {
+        @include filter-icon;
+        }
+      }
+    &_date-talk {
       width: 15%;
       &:before {
         @include filter-icon;
@@ -561,6 +625,13 @@
       }
     &_comments-talk {
       width: 18%;
+      &:before {
+        @include filter-icon;
+        }
+      }
+    &_assign-talk {
+      width: 15%;
+      border-right: 1px solid transparent;
       &:before {
         @include filter-icon;
         }
@@ -608,20 +679,20 @@
   }
 
 .md-calendar-date.md-calendar-date-today .md-calendar-date-selection-indicator {
-  border: 1px solid rgb(16,108,200);
+  border: 1px solid rgb(16, 108, 200);
   }
 
 .md-datepicker-input-mask-opaque {
-  color: rgba(0,0,0,0.87);
+  color: rgba(0, 0, 0, 0.87);
   }
 
 .md-whiteframe-1dp, .md-whiteframe-z1 {
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
   }
 
 .md-calendar-day-header {
-  background: rgb(224,224,224);
-  color: rgba(0,0,0,0.87);
+  background: rgb(224, 224, 224);
+  color: rgba(0, 0, 0, 0.87);
   }
 
 .md-default-theme .md-datepicker-calendar-pane, .md-datepicker-calendar-pane {
@@ -633,13 +704,12 @@
   }
 
 .md-default-theme .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-calendar-date.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-default-theme .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator, .md-calendar-date.md-focus.md-calendar-selected-date .md-calendar-date-selection-indicator {
-  background: rgb(16,108,200);
-  color: rgba(255,255,255,0.87);
+  background: rgb(16, 108, 200);
+  color: rgba(255, 255, 255, 0.87);
   border-color: transparent;
   }
 
 .show-settings {
-
   display: flex;
   justify-content: flex-end;
 
@@ -654,7 +724,7 @@
     background-size: 70%;
     background-position: center;
     background-repeat: no-repeat;
-    @include box-shadow (0, 0, 5px, 0, rgba(0,0,0,0.15));
+    @include box-shadow (0, 0, 5px, 0, rgba(0, 0, 0, 0.15));
     &:focus {
       outline: none;
       }

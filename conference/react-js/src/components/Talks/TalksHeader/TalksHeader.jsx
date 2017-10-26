@@ -1,7 +1,40 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-const TalksHeader = ({ coloms, sortTalks }) => (
+const renderTalksHeader = columns => (
+  columns.map((col) => {
+    switch (col) {
+    case 'id':
+      return null;
+    case 'name':
+      return (<span
+        key={col}
+        className="table-header__item
+                  table-header__item_speaker-talk"
+        data-name="speaker"
+      >
+              speaker
+      </span>);
+    case 'conferenceName':
+      return (<span
+        key={col}
+        className="table-header__item"
+        data-name="conferenceName"
+      >
+              Conference
+      </span>);
+    default:
+      return (<span
+        key={col}
+        className={`table-header__item table-header__item_${col}-talk`}
+        data-name={`${col}`}
+      >
+        {col}
+      </span>);
+    }
+  })
+);
+const TalksHeader = ({ columns, sortTalks }) => (
   <div
     role="presentation"
     className="data-table__header-block"
@@ -13,43 +46,13 @@ const TalksHeader = ({ coloms, sortTalks }) => (
       >
         <input type="checkbox" />
       </div>
-      {coloms.map((colom) => {
-        switch (colom) {
-        case 'id':
-          return null;
-        case 'name':
-          return (<span
-            key={colom}
-            className="table-header__item
-                  table-header__item_speaker-talk"
-            data-name="speaker"
-          >
-              speaker
-          </span>);
-        case 'conferenceName':
-          return (<span
-            key={colom}
-            className="table-header__item"
-            data-name="conferenceName"
-          >
-              Conference
-          </span>);
-        default:
-          return (<span
-            key={colom}
-            className={`table-header__item table-header__item_${colom}-talk`}
-            data-name={`${colom}`}
-          >
-            {colom}
-          </span>);
-        }
-      })}
+      {renderTalksHeader(columns)}
     </div>
   </div>
 );
 
 TalksHeader.propTypes = {
-  coloms: PropTypes.arrayOf(PropTypes.string).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   sortTalks: PropTypes.func.isRequired };
 
 export default TalksHeader;

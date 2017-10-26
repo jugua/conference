@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
+
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
 import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
-import loadData from '../../actions/load';
+
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
+import loadData from '../../actions/load';
 
 class Talks extends Component {
   constructor(props) {
@@ -39,11 +41,11 @@ class Talks extends Component {
       });
   }
 
-  onChangeFilter = ({ target: { name, value } }) => {
+  onChangeFilter = ({ target }) => {
     this.setState(prevState => ({
       filter: {
         ...prevState.filter,
-        [name]: value,
+        [target.name]: target.value,
       },
     }));
   };
@@ -65,11 +67,11 @@ class Talks extends Component {
   };
 
   sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'SPAN' && name !== undefined) {
+    if (tagName === 'SPAN' && name) {
       const { ASC, SORT_USER_TALKS, SORT_ALL_TALKS } = action;
       const { [name]: sortField } = this.state;
       const { load, sort, talks, userTalks } = this.props;
-      const value = sortField === '' ? ASC : '';
+      const value = sortField || ASC;
       const listForSort = sort === SORT_USER_TALKS ? userTalks : talks;
       const actionType = sort === SORT_USER_TALKS ?
         SORT_USER_TALKS : SORT_ALL_TALKS;
@@ -80,9 +82,9 @@ class Talks extends Component {
 
   render() {
     const { listOfTopics } = this.state;
-    const { talks, coloms, userTalks, sort } = this.props;
-    const { SORT_ALL_TALKS } = action;
-    const talksList = sort === SORT_ALL_TALKS ? talks : userTalks;
+    const { talks, columns, userTalks, sort } = this.props;
+    const talksList = sort === 'talks' ? talks : userTalks;
+
     return (
 
       <div className="tabs-container">
@@ -99,8 +101,8 @@ class Talks extends Component {
           <div
             className="data-table"
           >
-            <TalksHeader coloms={coloms} sortTalks={this.sortTalks} />
-            <DisplayTalks talk={talksList} coloms={coloms} />
+            <TalksHeader columns={columns} sortTalks={this.sortTalks} />
+            <DisplayTalks talk={talksList} columns={columns} />
           </div>
           <div className="pagination">
             <div className="pagination__left-side">
@@ -142,12 +144,12 @@ Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   userTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  coloms: PropTypes.arrayOf(PropTypes.string),
+  columns: PropTypes.arrayOf(PropTypes.string),
   sort: PropTypes.string,
 };
 
 Talks.defaultProps = {
-  coloms: [
+  columns: [
     'id',
     'name',
     'title',
@@ -158,12 +160,10 @@ Talks.defaultProps = {
   sort: action.SORT_ALL_TALKS,
 };
 
-function mapStateToProps(state) {
-  return {
-    talks: state.talks,
-    userTalks: state.userTalks,
-  };
-}
+const mapStateToProps = ({ talks, userTalks }) => (
+  { talks,
+    userTalks,
+  });
 
 const mapDispatchToProps = dispatch => ({
 

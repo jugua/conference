@@ -1,10 +1,5 @@
 import actionTypes from '../constants/actions-types';
-
-const defaultUser = {
-  id: -1,
-  roles: [],
-  fname: '',
-};
+import defaultUser from '../constants/default-user';
 
 const user = (state = defaultUser, { type, payload }) => {
   const { SET_USER, EDIT_USER } = actionTypes;
