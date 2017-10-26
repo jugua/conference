@@ -4,46 +4,39 @@ import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
-import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.nullValue;
 
-/**
- * Created by Mariia_Koltsova on 10/6/2017.
- */
-public class ForgotPasswordTests extends SimpleBaseTest {
-
-    private String validContent  = JsonLoader.asString("ForgotPasswordValidData.json");
-    private String invalidContent  = JsonLoader.asString("ForgotPasswordInvalidData.json");
+public class ListOfTalks extends SimpleBaseTest {
 
     @Test
-    @Jira("6665")
-    public void positiveForgotPasswordTest() {
+    @Jira("6707")
+    public void listOfTalksIfOrganiser(){
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
-                .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
+                .auth().preemptive().basic(config.organiserUser, config.organiserPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body(validContent)
                 .
         when()
-                .post(EndpointUrl.FORGOT_PASSWORD)
+                .get(EndpointUrl.TALK)
                 .
         then().log().all()
                 .statusCode(200)
-        .assertThat()
-        .body(TextConstants.ERROR, nullValue());
+                .assertThat()
+                .body(TextConstants.ID, Matchers.notNullValue(),
+                        TextConstants.TITLE, Matchers.notNullValue(),
+                        TextConstants.DESCRIPTION, Matchers.notNullValue());
     }
 
     @Test
-    @Jira("6697")
-    public void negativeForgotPasswordTest() {
+    @Jira("6706")
+    public void listOfTalksIfSpeaker(){
 
         given()
                 .contentType(ContentType.JSON)
@@ -51,14 +44,15 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
-                .body(invalidContent)
                 .
         when()
-                .post(EndpointUrl.FORGOT_PASSWORD)
+                .get(EndpointUrl.TALK)
                 .
         then().log().all()
-                .statusCode(400)
+                .statusCode(200)
                 .assertThat()
-                .body(TextConstants.ERROR, hasToString(TextConstants.EMAIL_NOT_FOUND));
+                .body(TextConstants.ID, Matchers.notNullValue(),
+                        TextConstants.TITLE, Matchers.notNullValue(),
+                        TextConstants.DESCRIPTION, Matchers.notNullValue());
     }
 }

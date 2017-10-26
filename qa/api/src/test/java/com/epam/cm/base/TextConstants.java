@@ -16,10 +16,24 @@ public class TextConstants {
     public static final String STATUS = "status";
     public static final String TYPE = "type";
 
+    public static final String NEW = "New";
+    public static final String SUCCESS = "success";
+    public static final String ROLES = "roles";
+    public static final String TEST_TITLE = "Test talk ";
+    public static final String TEST_DESCRIPTION = "Test description";
+    public static final String TEST_DATE = "1506419805177";
+    public static final String DATE_PATTERN = "yyyy/MM/dd HH:mm:ss";
+
     public static final String LOGIN_ERROR = "login_auth_err";
     public static final String PASSWORD_ERROR = "password_auth_err";
     public static final String EMAIL_NOT_FOUND = "email_not_found";
     public static final String UNAUTHORIZED = "unauthorized";
+    public static final String USER_NOT_FOUND = "user_not_found";
+    public static final String EXISTING_EMAIL = "email_already_exists";
+    public static final String EMPTY_FIELDS = "empty_fields";
+    public static final String NULL_STATUS = "status_is_null";
+    public static final String TALK_NOT_FOUND = "talk_not_found";
+    public static final String SUCCESSFULLY_UPDATED = "successfully_updated";
 
     public static final String ADVANCED = "Advanced";
     public static final String BEGINNER = "Beginner";
@@ -35,6 +49,7 @@ public class TextConstants {
     public static final String JVM = "JVM Languages and new programming paradigms";
     public static final String SOFTWARE = "Software engineering practices";
     public static final String WEB_DEVELOPMENT= "Web development and Java Enterprise technologies";
+    public static final String NEW_TALK_TOPIC= "New talk topic test";
 
     public static final String LIGHTING= "Lighting Talk";
     public static final String ONLINE= "Online Talk";
@@ -46,5 +61,9 @@ public class TextConstants {
 
     public static final String EXISTING_USER_ID = "1";
     public static final String NON_EXISTING_USER_ID = "99999";
+
+    public static final String EXISTING_TALK_NEW_OR_IN_PROGRESS_ID = "1";
+    public static final String NON_EXISTING_TALK_ID = "99999";
+
 
 }

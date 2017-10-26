@@ -25,13 +25,13 @@ public class GetTypesTest extends SimpleBaseTest{
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
-                .get(EndpointUrl.TYPE)
+                .get(EndpointUrl.TYPES)
                 .
 
         then().log().all()
                 .statusCode(200)
-                .assertThat().body(NAME,
-                    hasItems(REGULAR, ONLINE, LIGHTING, HANDS_ON_LAB));
+                .assertThat()
+                .body(NAME, hasItems(REGULAR, ONLINE, LIGHTING, HANDS_ON_LAB));
     }
 
     @Test
@@ -46,11 +46,12 @@ public class GetTypesTest extends SimpleBaseTest{
                 .
 
         when()
-                .get(EndpointUrl.TYPE)
+                .get(EndpointUrl.TYPES)
                 .
 
-            then().log().all()
+        then().log().all()
                 .statusCode(401)
-                .assertThat().body(ERROR, hasToString(UNAUTHORIZED));
+                .assertThat()
+                .body(ERROR, hasToString(UNAUTHORIZED));
     }
 }

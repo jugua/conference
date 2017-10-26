@@ -9,7 +9,9 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import static io.restassured.RestAssured.when;
 
@@ -23,20 +25,37 @@ public class SimpleBaseTest {
             EnvironmentUtils.getPropertiesFromConfig("/config.properties");
     protected Response response;
 
-    @Rule
-    public TestWatcher watchman = new TestWatcher() {
-        @Override
-        protected void finished(Description description) {
-            System.out.println(Arrays.asList(
-                    description.getAnnotation(Jira.class).value()));
-        }
-    };
+ @Rule
+    public TestWatcher watchman;
+
+    {
+        watchman = new TestWatcher() {
+            @Override
+            protected void finished(Description description) {
+
+                Jira annotation = description.getAnnotation(Jira.class);
+
+                if (annotation == null)
+                    throw  new RuntimeException("Executable test has not been marked by Jira annotation");
+
+                System.out.println(Arrays.asList(
+                        annotation.value()));
+            }
+        };
+    }
 
     @Before
-    public void setup() {
+    public void setup(){
         RestAssured.defaultParser = Parser.JSON;
         RestAssured.registerParser("text/plain", Parser.JSON);
 
         response = when().get(config.baseHost);
+    }
+
+    public static String getCurrentTimeStamp() {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyyMMddHHmmss");//dd/MM/yyyy
+        Date now = new Date();
+        String strDate = sdfDate.format(now);
+        return strDate;
     }
 }

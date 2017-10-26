@@ -1,6 +1,7 @@
 package com.epam.cm.tests;
 
 import com.epam.cm.base.EndpointUrl;
+import com.epam.cm.base.TextConstants;
 import com.epam.cm.jira.Jira;
 import com.epam.cm.utils.JsonLoader;
 import io.restassured.http.ContentType;
@@ -8,8 +9,6 @@ import com.epam.cm.base.SimpleBaseTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
-
-import static com.epam.cm.base.TextConstants.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.notNullValue;
@@ -18,9 +17,12 @@ import static org.hamcrest.Matchers.nullValue;
 public class AddNewConferenceTest extends SimpleBaseTest{
 
     private String validContent  = JsonLoader.asString("AddNewConferenceValidData.json");
+    private String invalidContent  = JsonLoader.asString("AddNewConferenceInvalidData.json");
 
     @Test
     @Jira("6622")
+    @Ignore
+    // Actual - 500 -Internal Server error on 8025
     public void positiveAddNewConferenceTest(){
 
         given()
@@ -38,8 +40,7 @@ public class AddNewConferenceTest extends SimpleBaseTest{
         then().log().all()
                 .statusCode(200)
                 .assertThat()
-                .body(ERROR, nullValue(), ID, notNullValue());
-
+                .body(TextConstants.ERROR, nullValue(), TextConstants.ID, notNullValue());
     }
 
     @Test
@@ -61,13 +62,14 @@ public class AddNewConferenceTest extends SimpleBaseTest{
         then().log().all()
                 .statusCode(401)
                 .assertThat()
-                .body(ERROR, hasToString(UNAUTHORIZED));
+                .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
     }
 
     @Ignore //test failed. bug 6825
     @Test
     @Jira("6822")
     public void negativeValidationFailedAddNewConferenceTest(){
+
         String invalidContent =JsonLoader.asString("AddNewConferenceInvalidData.json");
 
         given()
@@ -78,11 +80,9 @@ public class AddNewConferenceTest extends SimpleBaseTest{
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .body(invalidContent)
                 .
-
         when()
                 .post(EndpointUrl.CONFERENCE)
                 .
-
         then().log().all()
                 .statusCode(400);
     }

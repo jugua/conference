@@ -16,6 +16,7 @@ public class LogoutTests extends SimpleBaseTest {
 
 
     @Test
+    @Ignore
     @Jira("6620")
     public void positiveLogoutTest() {
 
@@ -31,10 +32,11 @@ public class LogoutTests extends SimpleBaseTest {
                 .filter(cookieFilter)
 
                 .
-                        when()
+        when()
                 .post(EndpointUrl.LOGIN)
-                .then().log().all()
-                .statusCode(200).extract().response();
+        .then().log().all()
+                .statusCode(200)
+                .extract().response();
 
 
         given()
@@ -44,8 +46,7 @@ public class LogoutTests extends SimpleBaseTest {
                 .cookie(TOKEN, resp.cookie(TOKEN))
                 .header(X_TOKEN, resp.cookie(TOKEN))
 
-
-                .when()
+        .when()
                 .post(EndpointUrl.LOGOUT)
 
                 .then().log().all()

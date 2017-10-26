@@ -37,14 +37,13 @@ public class LoginTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
+        when()
                 .post(EndpointUrl.LOGIN)
                 .
-                        then().log().all()
+        then().log().all()
                 .statusCode(200)
-                .assertThat().body(Matchers.isEmptyOrNullString());
-
-
+                .assertThat()
+                .body(Matchers.isEmptyOrNullString());
     }
 
     @Test
@@ -59,15 +58,14 @@ public class LoginTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
+        when()
                 .post(EndpointUrl.LOGIN)
 
                 .
-                        then().log().all()
+        then().log().all()
                 .statusCode(401)
                 .assertThat()
                 .body(TextConstants.ERROR, hasToString(TextConstants.LOGIN_ERROR));
-
     }
 
     @Test
@@ -81,10 +79,10 @@ public class LoginTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
 
-                .when()
+        .when()
                 .post(EndpointUrl.LOGIN)
                 .
-                        then().log().all().assertThat()
+        then().log().all().assertThat()
                 .statusCode(401)
                 .assertThat()
                 .body(TextConstants.ERROR, hasToString(TextConstants.PASSWORD_ERROR));

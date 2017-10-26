@@ -26,18 +26,22 @@ public class GetLevelsTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
+        when()
                 .get(EndpointUrl.LEVELS)
                 .
-                        then().log().all()
+        then().log().all()
                 .statusCode(200)
                 .assertThat()
                 .body(TextConstants.NAME,
                         hasItems(TextConstants.ADVANCED, TextConstants.BEGINNER, TextConstants.EXPERT,
                                 TextConstants.INTERMEDIATE))
-                .and().assertThat().body(TextConstants.NAME, hasSize(4))
-                .and().assertThat().body(TextConstants.ID, notNullValue());
+                .and()
+                .assertThat()
+                .body(TextConstants.NAME, hasSize(4))
 
+                .and()
+                .assertThat()
+                .body(TextConstants.ID, notNullValue());
     }
 
     @Test
@@ -50,14 +54,12 @@ public class GetLevelsTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
-                        when()
+        when()
                 .get(EndpointUrl.LEVELS)
                 .
-                        then().log().all()
+        then().log().all()
                 .statusCode(401)
                 .assertThat()
                 .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
-
     }
-
 }
