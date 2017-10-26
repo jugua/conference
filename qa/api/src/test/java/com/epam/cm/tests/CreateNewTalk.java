@@ -39,7 +39,7 @@ public class CreateNewTalk extends SimpleBaseTest {
                 .formParam(TextConstants.STATUS,TextConstants.NEW)
                 .formParam(TextConstants.DATE,TextConstants.TEST_DATE).
         when()
-                .post(EndpointUrl.TALK)
+                .post(EndpointUrl.SUBMIT_TALK)
                 .
         then().log().all()
                 .statusCode(200)

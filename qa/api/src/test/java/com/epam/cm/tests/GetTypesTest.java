@@ -25,7 +25,7 @@ public class GetTypesTest extends SimpleBaseTest{
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
-                .get(EndpointUrl.TYPE)
+                .get(EndpointUrl.TYPES)
                 .
 
         then().log().all()
@@ -46,7 +46,7 @@ public class GetTypesTest extends SimpleBaseTest{
                 .
 
         when()
-                .get(EndpointUrl.TYPE)
+                .get(EndpointUrl.TYPES)
                 .
 
         then().log().all()

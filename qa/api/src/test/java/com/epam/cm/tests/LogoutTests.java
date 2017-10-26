@@ -6,12 +6,14 @@ import com.epam.cm.jira.Jira;
 import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 
 public class LogoutTests extends SimpleBaseTest {
+
 
     @Test
     @Ignore
@@ -28,6 +30,7 @@ public class LogoutTests extends SimpleBaseTest {
                 .cookie(TOKEN, response.cookie(TOKEN))
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .filter(cookieFilter)
+
                 .
         when()
                 .post(EndpointUrl.LOGIN)
@@ -46,7 +49,11 @@ public class LogoutTests extends SimpleBaseTest {
         .when()
                 .post(EndpointUrl.LOGOUT)
 
-        .then().log().all()
-                .statusCode(200);
+                .then().log().all()
+                .assertThat().cookie(TOKEN, Matchers.containsString(""))
+                .extract().response();
+
     }
+
+
 }

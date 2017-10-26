@@ -65,4 +65,5 @@ public class TextConstants {
     public static final String EXISTING_TALK_NEW_OR_IN_PROGRESS_ID = "1";
     public static final String NON_EXISTING_TALK_ID = "99999";
 
+
 }

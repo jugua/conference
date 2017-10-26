@@ -35,7 +35,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .body(validContent)
                 .
         when()
-                .post(EndpointUrl.USER)
+                .post(EndpointUrl.REGISTER)
                 .
         then()
                 .log().all()
@@ -58,7 +58,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .body(inValidContent)
                 .
         when()
-                .post( EndpointUrl.USER)
+                .post( EndpointUrl.REGISTER)
                 .
         then()
                 .log().all()
@@ -79,7 +79,7 @@ public class RegistrationNewUser extends SimpleBaseTest {
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .body(invalidContentExistingUser)
         .when()
-                .post( EndpointUrl.USER)
+                .post( EndpointUrl.REGISTER)
                 .
         then()
                 .log().all()

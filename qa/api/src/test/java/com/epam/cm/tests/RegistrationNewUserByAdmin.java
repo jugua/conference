@@ -30,7 +30,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .body(validContent)
         .when()
-                .post(EndpointUrl.USER_CREATE)
+                .post(EndpointUrl.USER_REGISTER_BY_ADMIN)
                 .
         then()
                 .log().all()
@@ -53,7 +53,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
                 .body(invalidContentAbsentParam)
                 .
         when()
-                .post(EndpointUrl.USER_CREATE)
+                .post(EndpointUrl.USER_REGISTER_BY_ADMIN)
                 .
         then()
                 .log().all()
@@ -75,7 +75,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
 
                 .
         when()
-                .post(EndpointUrl.USER_CREATE)
+                .post(EndpointUrl.USER_REGISTER_BY_ADMIN)
                 .
         then()
                 .log().all()
@@ -97,7 +97,7 @@ public class RegistrationNewUserByAdmin extends SimpleBaseTest {
                 .body(invalidContentExistingUser)
                 .
         when()
-                .post(EndpointUrl.USER_CREATE)
+                .post(EndpointUrl.REGISTER)
                 .
         then()
                 .log().all()

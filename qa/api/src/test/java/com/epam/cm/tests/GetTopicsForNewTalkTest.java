@@ -25,7 +25,7 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
-                .get(EndpointUrl.TOPIC)
+                .get(EndpointUrl.TOPICS)
                 .
 
         then().log().all()
@@ -45,7 +45,7 @@ public class GetTopicsForNewTalkTest extends SimpleBaseTest{
                 .header(X_TOKEN, response.cookie(TOKEN))
                 .
         when()
-                .get(EndpointUrl.TOPIC)
+                .get(EndpointUrl.TOPICS)
                 .
 
         then().log().all()
