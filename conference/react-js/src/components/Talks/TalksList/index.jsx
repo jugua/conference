@@ -4,43 +4,44 @@ import { PropTypes } from 'prop-types';
 const renderTalksList = (data, columns) => (
   columns.map((col) => {
     switch (col) {
-      case 'id':
-        return null;
-      case 'name':
-        return (<div
-          key={col}
-          className="data-table__column
+    case 'id':
+      return null;
+    case 'name':
+      return (<div
+        key={col}
+        className="data-table__column
         data-table__column_speaker-talk"
-        >
-          <a className="link">{data.name}</a></div>);
-      case 'title':
-        return (<div
-          key={col}
-          className="data-table__column
+      >
+        <a className="link">{data.name}</a></div>);
+    case 'title':
+      return (<div
+        key={col}
+        className="data-table__column
         data-table__column_title-talk"
-        >
-          <a className="link">{data.title}</a>
-        </div>);
+      >
+        <a className="link">{data.title}</a>
+      </div>);
 
-      default:
-        return (<div
-          key={col}
-          className={`${'data-table__column' +
+    default:
+      return (<div
+        key={col}
+        className={`${'data-table__column' +
           ' data-table__column_'}${col}-talk`}
-        >
-          {data[col]}
-        </div>);
+      >
+        {data[col]}
+      </div>);
     }
   })
 );
 
-const TalksList = ({ data, columns }) =>
-  (<div className="data-table__row">
+const TalksList = ({ data, columns }) => (
+  <div>
     <div className="data-table__column data-table__column_check-talk">
       <input type="checkbox" />
     </div>
     {renderTalksList(data, columns)}
-  </div>);
+  </div>
+);
 
 TalksList.propTypes = { data: PropTypes.shape({
   date: PropTypes.string.isRequired,
@@ -55,7 +56,7 @@ TalksList.propTypes = { data: PropTypes.shape({
   comment: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
 }).isRequired,
-  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+columns: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default TalksList;

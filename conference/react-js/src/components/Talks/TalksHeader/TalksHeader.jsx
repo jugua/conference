@@ -1,58 +1,54 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+import {
+  TableHeaderColumn,
+  TableRow,
+} from 'material-ui/Table';
+
 const renderTalksHeader = columns => (
   columns.map((col) => {
     switch (col) {
     case 'id':
       return null;
     case 'name':
-      return (<span
-        key={col}
-        className="table-header__item
-                  table-header__item_speaker-talk"
-        data-name="speaker"
-      >
-              speaker
-      </span>);
+      return (
+        <TableHeaderColumn
+          key={col}
+          data-name="speaker"
+        >
+            speaker
+        </TableHeaderColumn>
+      );
     case 'conferenceName':
-      return (<span
-        key={col}
-        className="table-header__item"
-        data-name="conferenceName"
-      >
-              Conference
-      </span>);
+      return (
+        <TableHeaderColumn
+          key={col}
+          data-name="conferenceName"
+        >
+            conference
+        </TableHeaderColumn>
+      );
     default:
-      return (<span
-        key={col}
-        className={`table-header__item table-header__item_${col}-talk`}
-        data-name={`${col}`}
-      >
-        {col}
-      </span>);
+      return (
+        <TableHeaderColumn
+          key={col}
+          data-name={`${col}`}
+        >
+          {col}
+        </TableHeaderColumn>
+      );
     }
   })
 );
-const TalksHeader = ({ columns, sortTalks }) => (
-  <div
-    role="presentation"
-    className="data-table__header-block"
-    onClick={sortTalks}
-  >
-    <div className="table-header">
-      <div className="table-header__item
-                  table-header__item_check-talk"
-      >
-        <input type="checkbox" />
-      </div>
-      {renderTalksHeader(columns)}
-    </div>
-  </div>
+const TalksHeader = ({ columns }) => (
+  <TableRow>
+    {renderTalksHeader(columns)}
+  </TableRow>
 );
 
 TalksHeader.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-  sortTalks: PropTypes.func.isRequired };
+};
 
 export default TalksHeader;

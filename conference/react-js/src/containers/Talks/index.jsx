@@ -4,6 +4,11 @@ import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
 
+import {
+  Table,
+  TableHeader,
+  TableBody,
+} from 'material-ui/Table';
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
 import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
@@ -97,12 +102,20 @@ class Talks extends Component {
             handleFilterClick={this.handleFilterClick}
             handleResetFiltersClick={this.handleResetFiltersClick}
           />
-          <div
+          <Table
             className="data-table"
+            multiSelectable
           >
-            <TalksHeader columns={columns} sortTalks={this.sortTalks} />
-            <DisplayTalks talk={talksList} columns={columns} />
-          </div>
+            <TableHeader
+              displaySelectAll
+              enableSelectAll
+            >
+              <TalksHeader columns={columns} sortTalks={this.sortTalks} />
+            </TableHeader>
+            <TableBody>
+              <DisplayTalks talk={talksList} columns={columns} />
+            </TableBody>
+          </Table>
           <div className="pagination">
             <div className="pagination__left-side">
               <div className="pagination__item-wrapper">
