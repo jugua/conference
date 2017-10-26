@@ -131,7 +131,7 @@ public class TalkControllerTest extends TestUtil {
         speakerUser.setPassword("123456");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(userInfo);
-        speakerUser.setUserRoles(speakerRole);
+        speakerUser.setRoles(speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
         organiserRole.add(new Role(1L, Role.ORGANISER));
@@ -143,7 +143,7 @@ public class TalkControllerTest extends TestUtil {
         organiserUser.setPassword("123456");
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(userInfo);
-        organiserUser.setUserRoles(organiserRole);
+        organiserUser.setRoles(organiserRole);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)

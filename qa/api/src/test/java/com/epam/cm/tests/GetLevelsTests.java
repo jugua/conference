@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 import org.hamcrest.BaseMatcher;
@@ -14,7 +15,8 @@ import static org.hamcrest.Matchers.*;
 
 public class GetLevelsTests extends SimpleBaseTest {
 
-    @Test //6738
+    @Test
+    @Jira("6738")
     public void positiveGetLevelsTest() {
 
         given()
@@ -22,7 +24,7 @@ public class GetLevelsTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.adminUser, config.adminPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(EndpointUrl.LEVELS)
@@ -34,27 +36,27 @@ public class GetLevelsTests extends SimpleBaseTest {
                         hasItems(TextConstants.ADVANCED, TextConstants.BEGINNER, TextConstants.EXPERT,
                                 TextConstants.INTERMEDIATE))
                 .and().assertThat().body(TextConstants.NAME, hasSize(4))
-                .and().assertThat().body(TextConstants.ID, notNullValue())
-                .extract().response();
+                .and().assertThat().body(TextConstants.ID, notNullValue());
 
     }
 
-    @Test //6744
+    @Test
+    @Jira("6744")
     public void negativeGetLevelsTest() {
 
         given()
                 .contentType(ContentType.JSON)
                 .baseUri(config.baseHost)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .
                         when()
                 .get(EndpointUrl.LEVELS)
                 .
                         then().log().all()
                 .statusCode(401)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED))
-                .extract().response();
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.UNAUTHORIZED));
 
     }
 

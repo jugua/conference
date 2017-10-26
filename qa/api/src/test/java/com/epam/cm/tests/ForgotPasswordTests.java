@@ -3,6 +3,7 @@ package com.epam.cm.tests;
 import com.epam.cm.base.EndpointUrl;
 import com.epam.cm.base.SimpleBaseTest;
 import com.epam.cm.base.TextConstants;
+import com.epam.cm.jira.Jira;
 import io.restassured.http.ContentType;
 import org.junit.Test;
 
@@ -14,7 +15,8 @@ import static org.hamcrest.Matchers.hasToString;
  */
 public class ForgotPasswordTests extends SimpleBaseTest {
 
-    @Test //6665
+    @Test
+    @Jira("6665")
     public void positiveForgotPasswordTest() {
 
         given()
@@ -22,18 +24,19 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body("{\"mail\":\"test@test.com\"}")
                 .
                         when()
                 .post(EndpointUrl.FORGOT_PASSWORD)
                 .
                         then().log().all()
-                .statusCode(200).extract().response();
+                .statusCode(200);
 
     }
 
-    @Test //6697
+    @Test
+    @Jira("6697")
     public void negativeForgotPasswordTest() {
 
         given()
@@ -41,7 +44,7 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .baseUri(config.baseHost)
                 .auth().preemptive().basic(config.speakerUser, config.speakerPassword)
                 .cookie(TOKEN, response.cookie(TOKEN))
-                .header(XTOKEN, response.cookie(TOKEN))
+                .header(X_TOKEN, response.cookie(TOKEN))
                 .body("{\"mail\":\"test1@t.com\"}")
                 .
                         when()
@@ -49,8 +52,8 @@ public class ForgotPasswordTests extends SimpleBaseTest {
                 .
                         then().log().all()
                 .statusCode(400)
-                .assertThat().body(TextConstants.ERROR, hasToString(TextConstants.EMAIL_NOT_FOUND))
-                .extract().response();
+                .assertThat()
+                .body(TextConstants.ERROR, hasToString(TextConstants.EMAIL_NOT_FOUND));
 
     }
 

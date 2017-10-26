@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-@DefaultUrl("/#/sign-up")
+@DefaultUrl("/#")
 public class SignUpPage extends AnyPage {
 
     public static final String SUCCESSFULLY_REGISTERED = "You've successfully registered.";

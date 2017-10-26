@@ -1,0 +1,25 @@
+@mixin box-shadow ($top, $left, $blur, $dilation, $color) {
+  -webkit-box-shadow: $top $left $blur $dilation $color;
+  -moz-box-shadow: $top $left $blur $dilation $color;
+  box-shadow: $top $left $blur $dilation $color;
+  }
+
+@mixin my-talk-before-title {
+  width: 80px;
+  display: block;
+  float: left;
+  margin-left: 3px;
+  font-family: Oswald Regular, sans-serif;
+  }
+
+@mixin filter-icon {
+  content: ' ';
+  display: block;
+  float: left;
+  margin: 14px 5px 0 0;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #000
+  }

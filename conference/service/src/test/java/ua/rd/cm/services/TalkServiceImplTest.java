@@ -1,7 +1,15 @@
 package ua.rd.cm.services;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,18 +26,34 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
-import ua.rd.cm.domain.*;
+import ua.rd.cm.domain.Language;
+import ua.rd.cm.domain.Level;
+import ua.rd.cm.domain.Role;
+import ua.rd.cm.domain.Talk;
+import ua.rd.cm.domain.TalkStatus;
+import ua.rd.cm.domain.Topic;
+import ua.rd.cm.domain.Type;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.repository.*;
-import ua.rd.cm.services.businesslogic.TalkService;
-import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.services.businesslogic.impl.TalkServiceImpl;
 import ua.rd.cm.infrastructure.mail.preparator.ChangeTalkBySpeakerPreparator;
+import ua.rd.cm.repository.ConferenceRepository;
+import ua.rd.cm.repository.LanguageRepository;
+import ua.rd.cm.repository.LevelRepository;
+import ua.rd.cm.repository.RoleRepository;
+import ua.rd.cm.repository.TalkRepository;
+import ua.rd.cm.repository.TopicRepository;
+import ua.rd.cm.repository.TypeRepository;
+import ua.rd.cm.repository.UserRepository;
+import ua.rd.cm.services.businesslogic.TalkService;
+import ua.rd.cm.services.businesslogic.impl.TalkServiceImpl;
+import ua.rd.cm.services.exception.TalkValidationException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TalkServiceImplTest {
 
+    public static final long ID = 1L;
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     @Mock
@@ -66,9 +90,10 @@ public class TalkServiceImplTest {
     public void setUp() throws Exception {
         ModelMapper modelMapper = new ModelMapper();
 
-        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository, topicRepository, typeRepository, conferenceRepository, userRepository, roleRepository, mailService);
+        talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository,
+                topicRepository, typeRepository, conferenceRepository, userRepository, roleRepository, mailService);
         UserInfo userInfo = new UserInfo();
-        userInfo.setId(1L);
+        userInfo.setId(ID);
         userInfo.setShortBio("bio");
         userInfo.setJobTitle("job");
         userInfo.setPastConference("pastConference");
@@ -76,31 +101,31 @@ public class TalkServiceImplTest {
         userInfo.setAdditionalInfo("addInfo");
 
         Set<Role> speakerRole = new HashSet<>();
-        speakerRole.add(new Role(2L, Role.SPEAKER));
+        speakerRole.add(new Role(Role.SPEAKER));
         speakerUser = new User();
-        speakerUser.setId(1L);
+        speakerUser.setId(ID);
         speakerUser.setFirstName("Olya");
         speakerUser.setLastName("Ivanova");
         speakerUser.setEmail("ivanova@gmail.com");
         speakerUser.setPassword("123456");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(userInfo);
-        speakerUser.setUserRoles(speakerRole);
+        speakerUser.setRoles(speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
-        organiserRole.add(new Role(1L, Role.ORGANISER));
+        organiserRole.add(new Role(Role.ORGANISER));
         organiserUser = new User();
-        organiserUser.setId(1L);
+        organiserUser.setId(ID);
         organiserUser.setFirstName("Artem");
         organiserUser.setLastName("Trybel");
         organiserUser.setEmail("trybel@gmail.com");
         organiserUser.setPassword("123456");
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(userInfo);
-        organiserUser.setUserRoles(organiserRole);
+        organiserUser.setRoles(organiserRole);
 
-        language = new Language(1L, "English");
-        level = new Level(1L, "Beginner");
+        language = new Language("English");
+        level = new Level("Beginner");
         type = new Type("Regular Talk");
         topic = new Topic("JVM Languages and new programming paradigms");
 
@@ -248,7 +273,7 @@ public class TalkServiceImplTest {
     public void testFindById() throws Exception {
         when(talkRepository.findById(anyLong())).thenReturn(talk);
 
-        TalkDto talkDtoResult = talkService.findById(1L);
+        TalkDto talkDtoResult = talkService.findById(ID);
         talkDto.setSpeakerFullName(talk.getUser().getFullName());
         talkDto.setAssignee(talk.getOrganiser().getFullName());
         assertEquals(talkDto, talkDtoResult);
@@ -258,7 +283,7 @@ public class TalkServiceImplTest {
         LocalDateTime dateTime = LocalDateTime.now();
 
         talk = new Talk();
-        talk.setId(1L);
+        talk.setId(ID);
         talk.setDescription("Description");
         talk.setTitle("Title");
         talk.setLanguage(language);
@@ -273,7 +298,7 @@ public class TalkServiceImplTest {
         talk.setOrganiser(organiserUser);
 
         talkDto = new TalkDto();
-        talkDto.setId(1L);
+        talkDto.setId(ID);
         talkDto.setDescription("Description");
         talkDto.setTitle("Title");
         talkDto.setLanguageName("English");
@@ -284,7 +309,7 @@ public class TalkServiceImplTest {
         talkDto.setDate(dateTime.toString());
         talkDto.setAdditionalInfo("Info");
         talkDto.setOrganiserComment("Org comment");
-        talkDto.setUserId(1L);
+        talkDto.setUserId(ID);
     }
 
     private String createStringWithLength(int length) {
