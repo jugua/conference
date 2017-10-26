@@ -6,6 +6,8 @@ import { bindActionCreators } from 'redux';
 
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
+import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
+
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
 import loadData from '../../actions/load';
@@ -65,20 +67,25 @@ class Talks extends Component {
   };
 
   sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'TH' && name) {
-      const { ASC, SORT_DATA } = action;
-      const { talks, load } = this.props;
-      const value = this.state[name] === '' ? ASC : '';
-      load(SORT_DATA, { talks, direction: value, field: name });
+    if (tagName === 'SPAN' && name) {
+      const { ASC, SORT_USER_TALKS, SORT_ALL_TALKS } = action;
+      const { [name]: sortField } = this.state;
+      const { load, sort, talks, userTalks } = this.props;
+      const value = sortField || ASC;
+      const listForSort = sort === SORT_USER_TALKS ? userTalks : talks;
+      const actionType = sort === SORT_USER_TALKS ?
+        SORT_USER_TALKS : SORT_ALL_TALKS;
+      load(actionType, { talks: listForSort, direction: value, field: name });
       this.setState({ [name]: value });
     }
   };
 
   render() {
     const { listOfTopics } = this.state;
-    const { talks } = this.props;
-
+    const { talks, columns, userTalks, sort } = this.props;
+    const talksList = sort === 'talks' ? talks : userTalks;
     return (
+
       <div className="tabs-container">
         <div className="talks">
           <div className="talks__header">
@@ -90,68 +97,12 @@ class Talks extends Component {
             handleFilterClick={this.handleFilterClick}
             handleResetFiltersClick={this.handleResetFiltersClick}
           />
-          <table
+          <div
             className="data-table"
           >
-            <thead
-              role="presentation"
-              className="data-table__header-block"
-              onClick={this.sortTalks}
-            >
-              <tr className="table-header">
-                <th className="table-header__item
-                  table-header__item_check-talk"
-                >
-                  <input type="checkbox" />
-                </th>
-                <th
-                  className="table-header__item
-                  table-header__item_speaker-talk"
-                  data-name="speaker"
-                >
-                  speaker
-                </th>
-                <th
-                  className="table-header__item
-                  table-header__item_title-talk"
-                  data-name="title"
-                >
-                  title
-                </th>
-                <th
-                  className="table-header__item
-                  table-header__item_topic-talk"
-                  data-name="topic"
-                >
-                  topic
-                </th>
-                <th className="table-header__item table-header__item_date-talk">
-                  submitted date
-                </th>
-                <th
-                  className="table-header__item
-                  table-header__item_status-talk"
-                  data-name="status"
-                >
-                  status
-                </th>
-                <th
-                  className="table-header__item
-                  table-header__item_comments-talk"
-                  data-name="comment"
-                >
-                  organizer comments
-                </th>
-                <th className="table-header__item
-                  table-header__item_assign-talk"
-                >
-                  assigned to
-                </th>
-                <th className="table-header__item table-header__scroll-fix" />
-              </tr>
-            </thead>
-            <DisplayTalks talk={talks} />
-          </table>
+            <TalksHeader columns={columns} sortTalks={this.sortTalks} />
+            <DisplayTalks talk={talksList} columns={columns} />
+          </div>
           <div className="pagination">
             <div className="pagination__left-side">
               <div className="pagination__item-wrapper">
@@ -175,7 +126,7 @@ class Talks extends Component {
                 <option value="100">100</option>
               </select>
               <div className="pagination__per-page">
-                  Items per page
+                Items per page
               </div>
             </div>
             <div className="pagination__right-side">
@@ -191,13 +142,27 @@ class Talks extends Component {
 Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  userTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string),
+  sort: PropTypes.string,
 };
 
-function mapStateToProps(state) {
-  return {
-    talks: state.talks,
-  };
-}
+Talks.defaultProps = {
+  columns: [
+    'id',
+    'name',
+    'title',
+    'topic',
+    'status',
+    'comment',
+  ],
+  sort: 'talks',
+};
+
+const mapStateToProps = ({ talks, userTalks }) => (
+  { talks,
+    userTalks,
+  });
 
 const mapDispatchToProps = dispatch => ({
 
