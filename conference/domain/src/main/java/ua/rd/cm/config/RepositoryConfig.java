@@ -1,7 +1,11 @@
 package ua.rd.cm.config;
 
+import static org.hibernate.cfg.AvailableSettings.DIALECT;
+import static org.hibernate.cfg.AvailableSettings.FORMAT_SQL;
 import static org.hibernate.cfg.AvailableSettings.HBM2DDL_AUTO;
+import static org.hibernate.cfg.AvailableSettings.HBM2DDL_CHARSET_NAME;
 import static org.hibernate.cfg.AvailableSettings.PHYSICAL_NAMING_STRATEGY;
+import static org.hibernate.cfg.AvailableSettings.SHOW_SQL;
 
 import java.sql.SQLException;
 import java.util.Properties;
@@ -100,11 +104,14 @@ public class RepositoryConfig {
 
     private Properties ormProperties(Environment environment) {
         Properties props = new Properties();
+        props.setProperty(DIALECT, environment.getProperty(DIALECT));
         props.setProperty(HBM2DDL_AUTO, environment.getProperty(HBM2DDL_AUTO));
+        props.setProperty(SHOW_SQL, environment.getProperty(SHOW_SQL));
+        props.setProperty(FORMAT_SQL, environment.getProperty(FORMAT_SQL));
+        props.setProperty(HBM2DDL_CHARSET_NAME, environment.getProperty(HBM2DDL_CHARSET_NAME));
         props.setProperty(PHYSICAL_NAMING_STRATEGY, ConferencePhysicalNamingStrategy.class.getName());
         return props;
     }
-
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
