@@ -25,44 +25,46 @@ import {
 } from '../constants/route-url';
 
 const App = () => (
-  <Router>
-    <div>
-      <Header />
-      <Switch>
-        <Route
-          path={baseUrl}
-          exact
-          component={Tabs}
-        />
-        <Route
-          path={settings}
-          exact
-          component={SettingsPage}
-        />
-        <Route
-          path={forgotPassword}
-          exact
-          component={ForgotPassword}
-        />
-        <Route
-          path={signUp}
-          component={SignUp}
-        />
-        <Route
-          path={manageUser}
-          component={ManageUser}
-        />
-        <Route
-          path={talks}
-          component={Talks}
-        />
-        <Route
-          path={history}
-          component={History}
-        />
-      </Switch>
-    </div>
-  </Router>
+  <MuiThemeProvider>
+    <Router>
+      <div>
+        <Header />
+        <Switch>
+          <Route
+            path={baseUrl}
+            exact
+            component={Tabs}
+          />
+          <Route
+            path={settings}
+            exact
+            component={SettingsPage}
+          />
+          <Route
+            path={forgotPassword}
+            exact
+            component={ForgotPassword}
+          />
+          <Route
+            path={signUp}
+            component={SignUp}
+          />
+          <Route
+            path={manageUser}
+            component={ManageUser}
+          />
+          <Route
+            path={talks}
+            component={Talks}
+          />
+          <Route
+            path={history}
+            component={History}
+          />
+        </Switch>
+      </div>
+    </Router>
+  </MuiThemeProvider>
 );
 
 export default App;

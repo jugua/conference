@@ -8,6 +8,7 @@ import AutorizedUserMenu from '../Autorized-user-menu';
 import { upcoming, myTalks, myEvents } from '../../constants/route-url';
 import MyTalks from '../My-talks';
 import MyEvents from '../MyEvents/MyEvents';
+import UpdateTalk from '../UpdateTalk/UpdateTalk';
 
 const Tabs = ({ userTalks: { length } }) => (
   <Router>
@@ -23,6 +24,11 @@ const Tabs = ({ userTalks: { length } }) => (
           path={myTalks}
           exact
           component={MyTalks}
+        />
+        <Route
+          path={`${myTalks}/*`}
+          exact
+          component={UpdateTalk}
         />
         <Route
           path={myEvents}

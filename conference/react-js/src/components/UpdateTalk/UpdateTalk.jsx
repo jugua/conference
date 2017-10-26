@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImageEdit from 'material-ui/svg-icons/image/edit';
@@ -9,17 +12,20 @@ import MenuItem from 'material-ui/MenuItem';
 
 const buttonStyle = {
   background: '#B22746',
-  color: '#FFF',
+  color: '#fff',
 };
 
-function UpdateTalk() {
+function UpdateTalk({ userTalks }) {
+  const url = document.URL;
+  const talkId = url.slice(url.lastIndexOf('/') + 1, url.length);
+  const talk = userTalks.find(({ id }) => (id === Number(talkId)));
   return (
     <div className="update-talk_wrapper">
 
       <div className="update-talk__title">
         <TextField
           floatingLabelText="Title"
-          defaultValue="Why Java sucks"
+          defaultValue={talk.title}
           style={{ flexGrow: 1 }}
         />
 
@@ -41,18 +47,13 @@ function UpdateTalk() {
           className="update-talk__button"
           label="Close"
           buttonStyle={buttonStyle}
+          primary
         />
       </div>
 
       <TextField
         floatingLabelText="Description"
-        defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-        sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum."
+        defaultValue={talk.description}
         multiLine
         rows={2}
         fullWidth
@@ -73,7 +74,7 @@ function UpdateTalk() {
         </SelectField>
 
         <SelectField
-          floatingLabelText="Topic"
+          floatingLabelText="Type"
           value={2}
           autoWidth
           selectedMenuItemStyle={{ color: cyan500 }}
@@ -86,7 +87,7 @@ function UpdateTalk() {
         </SelectField>
 
         <SelectField
-          floatingLabelText="Topic"
+          floatingLabelText="Language"
           value={3}
           autoWidth
           selectedMenuItemStyle={{ color: cyan500 }}
@@ -99,7 +100,7 @@ function UpdateTalk() {
         </SelectField>
 
         <SelectField
-          floatingLabelText="Topic"
+          floatingLabelText="Level"
           value={4}
           autoWidth
           selectedMenuItemStyle={{ color: cyan500 }}
@@ -114,13 +115,7 @@ function UpdateTalk() {
 
       <TextField
         floatingLabelText="Additional info"
-        defaultValue="Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-        enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-        sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum."
+        defaultValue={talk.addon}
         multiLine
         rows={2}
         fullWidth
@@ -130,4 +125,16 @@ function UpdateTalk() {
   );
 }
 
-export default UpdateTalk;
+function mapStateToProps({ userTalks }) {
+  return { userTalks };
+}
+
+UpdateTalk.propTypes = {
+  userTalks: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+// function mapDispatchToProps(dispatch) {
+//   return { edit: () => dispatch({}) }
+// }
+
+export default connect(mapStateToProps)(UpdateTalk);
