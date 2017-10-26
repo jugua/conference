@@ -13,6 +13,7 @@ import SettingsPage from './SettingsPage';
 import History from './History';
 import ManageUser from '../containers/Manage-user/';
 import Talks from '../containers/Talks';
+import MyInfo from './MyInfo/MyInfo';
 import {
   baseUrl,
   forgotPassword,
@@ -21,6 +22,7 @@ import {
   talks,
   settings,
   history,
+  myInfo,
 } from '../constants/route-url';
 
 const App = () => (
@@ -59,6 +61,11 @@ const App = () => (
         <Route
           path={history}
           component={History}
+        />
+        <Route
+          path={myInfo}
+          exact
+          component={MyInfo}
         />
       </Switch>
     </div>

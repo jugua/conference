@@ -14,6 +14,7 @@ const TextareaBlock = props => (
       maxLength={props.maxLen}
       rows={props.rows}
       disabled={props.disabled}
+      value={props.value}
     />
   </div>
 );
@@ -27,6 +28,7 @@ TextareaBlock.propTypes = {
   maxLen: PropTypes.number,
   rows: PropTypes.number,
   disabled: PropTypes.bool,
+  value: PropTypes.string,
 };
 
 TextareaBlock.defaultProps = {
@@ -38,6 +40,7 @@ TextareaBlock.defaultProps = {
   maxLen: null,
   disabled: false,
   rows: null,
+  value: undefined,
 };
 
 export default TextareaBlock;
