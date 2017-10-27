@@ -25,9 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.UserInfoDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.businesslogic.UserInfoService;
 import ua.rd.cm.services.businesslogic.UserService;
@@ -58,8 +57,8 @@ public class MyInfoPageController {
         }
 
         try {
-            UserDto userDto = userService.getUserDtoByEmail(principal.getName());
-            return new ResponseEntity<>(userDto, HttpStatus.ACCEPTED);
+            UserInfoDto userInfoDto = userService.getUserDtoByEmail(principal.getName());
+            return new ResponseEntity<>(userInfoDto, HttpStatus.ACCEPTED);
         } catch (NoSuchUserException ex) {
             log.error("Request for [myinfo] is failed: User entity for current principal is not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,7 +67,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDto dto,
+    public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto,
                                          Principal principal, BindingResult bindingResult) {
         HttpStatus status;
         if (bindingResult.hasFieldErrors()) {

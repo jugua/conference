@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -100,8 +101,6 @@ public class TalkServiceImplTest {
         userInfo.setCompany("EPAM");
         userInfo.setAdditionalInfo("addInfo");
 
-        Set<Role> speakerRole = new HashSet<>();
-        speakerRole.add(new Role(Role.SPEAKER));
         speakerUser = new User();
         speakerUser.setId(ID);
         speakerUser.setFirstName("Olya");
@@ -110,10 +109,8 @@ public class TalkServiceImplTest {
         speakerUser.setPassword("123456");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(userInfo);
-        speakerUser.setRoles(speakerRole);
+        speakerUser.setRoles(Collections.singleton(new Role(Role.SPEAKER)));
 
-        Set<Role> organiserRole = new HashSet<>();
-        organiserRole.add(new Role(Role.ORGANISER));
         organiserUser = new User();
         organiserUser.setId(ID);
         organiserUser.setFirstName("Artem");
@@ -122,7 +119,7 @@ public class TalkServiceImplTest {
         organiserUser.setPassword("123456");
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(userInfo);
-        organiserUser.setRoles(organiserRole);
+        organiserUser.setRoles(Collections.singleton(new Role(Role.ORGANISER)));
 
         language = new Language("English");
         level = new Level("Beginner");
