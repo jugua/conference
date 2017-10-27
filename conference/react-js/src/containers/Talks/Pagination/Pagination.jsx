@@ -1,15 +1,37 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+const renderPaginationNavi = (
+  currentPage,
+  quantityTalks,
+  quantityAllPages) => {
+  const currentCountMaxPages = currentPage * quantityTalks;
+  const maxCountPages = currentCountMaxPages > quantityAllPages ?
+    quantityAllPages : currentCountMaxPages;
+  const minCountPage = ((currentPage - 1) * quantityTalks) + 1;
+  return (
+    <p className="pagination__navi">
+      {minCountPage}
+- {maxCountPages} of {quantityAllPages} items
+    </p>);
+};
+
 const Pagination = ({
   onChangeQuantityTalks,
   onChangeCurrentPage,
   quantityTalks,
-  currentPage }) =>
+  currentPage,
+  quantityAllPages,
+  fastForwardPages }) =>
   (<div className="pagination">
     <div className="pagination__left-side">
       <div className="pagination__item-wrapper">
-        <div className="pagination__item pagination__item_fast-back" />
+        <div
+          tabIndex="-1"
+          role="button"
+          onClick={fastForwardPages}
+          className="pagination__item pagination__item_fast-back"
+        />
         <div
           tabIndex="-1"
           role="button"
@@ -26,6 +48,9 @@ const Pagination = ({
           className="pagination__item pagination__item_forward"
         />
         <div
+          tabIndex="-1"
+          role="button"
+          onClick={fastForwardPages}
           className="pagination__item
                   pagination__item_fast-forward"
         />
@@ -46,15 +71,17 @@ const Pagination = ({
       </div>
     </div>
     <div className="pagination__right-side">
-      <p className="pagination__navi">1 - 4 of 4 items</p>
+      {renderPaginationNavi(currentPage, quantityTalks, quantityAllPages)}
     </div>
   </div>);
 
 Pagination.propTypes = {
-  quantityTalks: PropTypes.string.isRequired,
+  quantityTalks: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
+  quantityAllPages: PropTypes.number.isRequired,
   onChangeQuantityTalks: PropTypes.func.isRequired,
   onChangeCurrentPage: PropTypes.func.isRequired,
+  fastForwardPages: PropTypes.func.isRequired,
 };
 
 export default Pagination;

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
+
 import FilterForm from './FilterForm';
 import DisplayTalks from './DisplayTalks';
 import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
@@ -24,7 +25,8 @@ class Talks extends Component {
       status: '',
       comments: '',
       currentPage: 1,
-      quantityTalks: '20',
+      quantityTalks: 20,
+      quantityAllPages: 0,
     };
   }
 
@@ -40,27 +42,37 @@ class Talks extends Component {
         this.props.load(LOAD, data);
         this.setState({ listOfTalks: data });
         this.doFilter();
+        const countPages = Math.ceil(data.length / this.state.quantityTalks);
+        this.setState({
+          quantityAllPages: data.length,
+          maxPages: countPages,
+        });
       }).catch(() => {
         this.doFilter();
       },
       );
   }
 
-  onChangeFilter = ({ target: { name, value } }) => {
+  onChangeFilter = ({ target }) => {
     this.setState(prevState => ({
       filter: {
         ...prevState.filter,
-        [name]: value,
+        [target.name]: target.value,
       },
     }));
   };
 
   onChangeQuantityTalks = ({ target: { value } }) => {
-    this.setState({ quantityTalks: value },
-      this.doFilter);
+    const { listOfTalks: { length } } = this.state;
+    this.setState({
+      quantityTalks: Number(value),
+      currentPage: 1,
+      maxPages: Math.ceil(length / Number(value)),
+    },
+    this.doFilter);
   };
 
-  onChangecurrentPage = ({ target: { classList: { value } } }) => {
+  onChangeCurrentPage = ({ target: { classList: { value } } }) => {
     if (value.indexOf('back') > -1) {
       if (this.state.currentPage > 1) {
         this.setState(prevValue => (
@@ -72,7 +84,7 @@ class Talks extends Component {
         this.doFilter,
         );
       }
-    } else {
+    } else if (this.state.currentPage < this.state.maxPages) {
       this.setState(prevValue => (
         {
           ...prevValue,
@@ -84,8 +96,21 @@ class Talks extends Component {
     }
   };
 
+  fastForwardPages = ({ target: { classList: { value } } }) => {
+    const { maxPages } = this.state;
+    if (value.indexOf('forward') > -1) {
+      this.setState({ currentPage: maxPages }, this.doFilter);
+    } else {
+      this.setState({ currentPage: 1 }, this.doFilter);
+    }
+  };
+
   doFilter = () => {
-    const { filter, listOfTalks, currentPage, quantityTalks } = this.state;
+    const { filter,
+      listOfTalks,
+      currentPage,
+      quantityTalks,
+    } = this.state;
     const { APPLY_FILTERS } = action;
     this.props.load(APPLY_FILTERS,
       { filter,
@@ -106,24 +131,22 @@ class Talks extends Component {
   };
 
   sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'SPAN' && name !== undefined) {
-      const { ASC, SORT_USER_TALKS, SORT_ALL_TALKS } = action;
+    if (tagName === 'TH' && name) {
+      const { ASC, SORT_ALL_TALKS } = action;
       const { [name]: sortField } = this.state;
-      const { load, sort, talks, userTalks } = this.props;
-      const value = sortField === '' ? ASC : '';
-      const listForSort = sort === SORT_USER_TALKS ? userTalks : talks;
-      const actionType = sort === SORT_USER_TALKS ?
-        SORT_USER_TALKS : SORT_ALL_TALKS;
-      load(actionType, { talks: listForSort, direction: value, field: name });
+      const { load, talks } = this.props;
+      const value = sortField === ASC ? '' : ASC;
+      load(SORT_ALL_TALKS, { talks, direction: value, field: name });
       this.setState({ [name]: value });
     }
   };
 
   render() {
-    const { listOfTopics, quantityTalks, currentPage } = this.state;
-    const { talks, coloms, userTalks, sort } = this.props;
-    const { SORT_ALL_TALKS } = action;
-    const talksList = sort === SORT_ALL_TALKS ? talks : userTalks;
+    const { listOfTopics,
+      quantityTalks,
+      currentPage,
+      quantityAllPages } = this.state;
+    const { talks, columns } = this.props;
     return (
 
       <div className="tabs-container">
@@ -137,17 +160,19 @@ class Talks extends Component {
             handleFilterClick={this.handleFilterClick}
             handleResetFiltersClick={this.handleResetFiltersClick}
           />
-          <div
+          <table
             className="data-table"
           >
-            <TalksHeader coloms={coloms} sortTalks={this.sortTalks} />
-            <DisplayTalks talk={talksList} coloms={coloms} />
-          </div>
+            <TalksHeader columns={columns} sortTalks={this.sortTalks} />
+            <DisplayTalks talk={talks} columns={columns} />
+          </table>
           <Pagination
+            quantityAllPages={quantityAllPages}
             currentPage={currentPage}
-            onChangeCurrentPage={this.onChangecurrentPage}
+            onChangeCurrentPage={this.onChangeCurrentPage}
             quantityTalks={quantityTalks}
             onChangeQuantityTalks={this.onChangeQuantityTalks}
+            fastForwardPages={this.fastForwardPages}
           />
         </div>
       </div>
@@ -158,13 +183,11 @@ class Talks extends Component {
 Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  userTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  coloms: PropTypes.arrayOf(PropTypes.string),
-  sort: PropTypes.string,
+  columns: PropTypes.arrayOf(PropTypes.string),
 };
 
 Talks.defaultProps = {
-  coloms: [
+  columns: [
     'id',
     'name',
     'title',
@@ -172,15 +195,12 @@ Talks.defaultProps = {
     'status',
     'comment',
   ],
-  sort: action.SORT_ALL_TALKS,
 };
 
-function mapStateToProps(state) {
-  return {
-    talks: state.talks,
-    userTalks: state.userTalks,
-  };
-}
+const mapStateToProps = ({ talks, userTalks }) => (
+  { talks,
+    userTalks,
+  });
 
 const mapDispatchToProps = dispatch => ({
 

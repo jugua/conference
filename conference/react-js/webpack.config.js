@@ -111,12 +111,6 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
           title: "Conference",
-          meta: [
-            {
-              name: 'description',
-              content: 'A better default template for html-webpack-plugin.'
-            }
-          ],
           template: 'src/root-react.html'
         })
       ] :

@@ -1,5 +1,8 @@
 package ua.rd.cm.config;
 
+import static org.hibernate.cfg.AvailableSettings.HBM2DDL_AUTO;
+import static org.hibernate.cfg.AvailableSettings.PHYSICAL_NAMING_STRATEGY;
+
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -11,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
@@ -32,33 +34,25 @@ import com.zaxxer.hikari.HikariDataSource;
 @PropertySource("classpath:default/jdbc.properties")
 public class RepositoryConfig {
 
+    private static final String JNDI_DS = "jdbc/conference";
+
     @Bean(destroyMethod = "close")
     public DataSource dataSource(Environment environment) {
-        DataSource dataSource = jndiDataSource();
-        if (dataSource == null) {
-            dataSource = embeddedDataSource(environment);
-        }
-
-        return dataSource;
-    }
-
-    private DataSource jndiDataSource() {
-        DataSource dataSource = null;
-
-        String jndiDs = "jdbc/conference";
-        log().info("Using jndi datasource {}", jndiDs);
-        final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
-        dsLookup.setResourceRef(true);
         try {
-            dataSource = dsLookup.getDataSource(jndiDs);
-        } catch (Exception e) {
-            log().warn("Failed to load datasource {}", jndiDs);
+            return primaryDataSource();
+        } catch (Exception ex) {
+            log().warn("Failed to load JNDI {}, using reserve datasource", JNDI_DS);
+            return reserveDataSource(environment);
         }
-        return dataSource;
     }
 
-    private DataSource embeddedDataSource(Environment environment) {
-        DataSource ds;
+    private DataSource primaryDataSource() {
+        JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
+        dsLookup.setResourceRef(true);
+        return dsLookup.getDataSource(JNDI_DS);
+    }
+
+    private DataSource reserveDataSource(Environment environment) {
         HikariConfig h2Config = new HikariConfig();
         h2Config.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
         h2Config.setJdbcUrl(environment.getProperty("jdbc.url"));
@@ -77,13 +71,12 @@ public class RepositoryConfig {
         if (connectionTestQuery != null) {
             h2Config.setConnectionTestQuery(connectionTestQuery);
         }
-        ds = new HikariDataSource(h2Config);
-        return ds;
+        return new HikariDataSource(h2Config);
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     public org.h2.tools.Server h2WebConsoleServer() throws SQLException {
-        return org.h2.tools.Server.createWebServer("-web", "-webAllowOthers", "-webDaemon", "-webPort", "8083");
+        return org.h2.tools.Server.createWebServer("-web", "-webAllowOthers", "-webDaemon", "-webPort", "8082");
     }
 
     @Bean
@@ -95,18 +88,21 @@ public class RepositoryConfig {
     public AbstractEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
                                                                  JpaVendorAdapter jpaVendorAdapter,
                                                                  Environment environment) {
-        LocalContainerEntityManagerFactoryBean emf =
-                new LocalContainerEntityManagerFactoryBean();
 
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSource);
         emf.setJpaVendorAdapter(jpaVendorAdapter);
         emf.setPackagesToScan("ua.rd.cm.domain");
+        emf.setJpaProperties(ormProperties(environment));
 
-        Properties props = new Properties();
-        props.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
-
-        emf.setJpaProperties(props);
         return emf;
+    }
+
+    private Properties ormProperties(Environment environment) {
+        Properties props = new Properties();
+        props.setProperty(HBM2DDL_AUTO, environment.getProperty(HBM2DDL_AUTO));
+        props.setProperty(PHYSICAL_NAMING_STRATEGY, ConferencePhysicalNamingStrategy.class.getName());
+        return props;
     }
 
 
