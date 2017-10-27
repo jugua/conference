@@ -15,10 +15,7 @@ const buttonStyle = {
   color: '#fff',
 };
 
-function UpdateTalk({ userTalks }) {
-  const url = document.URL;
-  const talkId = url.slice(url.lastIndexOf('/') + 1, url.length);
-  const talk = userTalks.find(({ id }) => (id === Number(talkId)));
+function UpdateTalk({ talk }) {
   return (
     <div className="update-talk_wrapper">
 
@@ -130,7 +127,15 @@ function mapStateToProps({ userTalks }) {
 }
 
 UpdateTalk.propTypes = {
-  userTalks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  talk: PropTypes.PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+    // topic: PropTypes.string,
+    // type: PropTypes.string,
+    // lang: PropTypes.string,
+    // level: PropTypes.string,
+    addon: PropTypes.string,
+  }).isRequired,
 };
 
 // function mapDispatchToProps(dispatch) {

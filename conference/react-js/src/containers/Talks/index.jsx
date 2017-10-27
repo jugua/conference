@@ -146,35 +146,37 @@ class Talks extends Component {
       quantityTalks,
       currentPage,
       quantityAllPages } = this.state;
-    const { talks, columns } = this.props;
+    const { talks, columns, onClick } = this.props;
     return (
-
-      <div className="tabs-container">
-        <div className="talks">
-          <div className="talks__header">
-            <a className="btn talks__button">export to excel </a>
-          </div>
-          <FilterForm
-            topics={listOfTopics}
-            onChangeFilter={this.onChangeFilter}
-            handleFilterClick={this.handleFilterClick}
-            handleResetFiltersClick={this.handleResetFiltersClick}
-          />
-          <table
-            className="data-table"
-          >
-            <TalksHeader columns={columns} sortTalks={this.sortTalks} />
-            <DisplayTalks talk={talks} columns={columns} />
-          </table>
-          <Pagination
-            quantityAllPages={quantityAllPages}
-            currentPage={currentPage}
-            onChangeCurrentPage={this.onChangeCurrentPage}
-            quantityTalks={quantityTalks}
-            onChangeQuantityTalks={this.onChangeQuantityTalks}
-            fastForwardPages={this.fastForwardPages}
-          />
+      <div
+        className="talks tabs-container"
+        onClick={onClick}
+        role="menu"
+        tabIndex="0"
+      >
+        <div className="talks__header">
+          <a className="btn talks__button">export to excel </a>
         </div>
+        <FilterForm
+          topics={listOfTopics}
+          onChangeFilter={this.onChangeFilter}
+          handleFilterClick={this.handleFilterClick}
+          handleResetFiltersClick={this.handleResetFiltersClick}
+        />
+        <table
+          className="data-table"
+        >
+          <TalksHeader columns={columns} sortTalks={this.sortTalks} />
+          <DisplayTalks talk={talks} columns={columns} />
+        </table>
+        <Pagination
+          quantityAllPages={quantityAllPages}
+          currentPage={currentPage}
+          onChangeCurrentPage={this.onChangeCurrentPage}
+          quantityTalks={quantityTalks}
+          onChangeQuantityTalks={this.onChangeQuantityTalks}
+          fastForwardPages={this.fastForwardPages}
+        />
       </div>
     );
   }
@@ -184,6 +186,7 @@ Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string),
+  onClick: PropTypes.func.isRequired,
 };
 
 Talks.defaultProps = {
