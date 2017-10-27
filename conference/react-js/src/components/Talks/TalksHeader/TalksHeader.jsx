@@ -17,7 +17,7 @@ const renderTalksHeader = columns => (
           key={col}
           data-name="speaker"
         >
-            speaker
+          speaker
         </TableHeaderColumn>
       );
     case 'conferenceName':
@@ -26,7 +26,7 @@ const renderTalksHeader = columns => (
           key={col}
           data-name="conferenceName"
         >
-            conference
+          conference
         </TableHeaderColumn>
       );
     default:
@@ -43,6 +43,7 @@ const renderTalksHeader = columns => (
 );
 const TalksHeader = ({ columns }) => (
   <TableRow>
+    <TableHeaderColumn colSpan="3" />
     {renderTalksHeader(columns)}
   </TableRow>
 );

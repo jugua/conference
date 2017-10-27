@@ -8,11 +8,11 @@ import {
   Table,
   TableHeader,
   TableBody,
+  TableRow,
+  TableRowColumn,
 } from 'material-ui/Table';
 import FilterForm from './FilterForm';
-import DisplayTalks from './DisplayTalks';
 import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
-
 import action from '../../constants/actions-types';
 import { topics, talk } from '../../constants/backend-url';
 import loadData from '../../actions/load';
@@ -55,6 +55,14 @@ class Talks extends Component {
     }));
   };
 
+  getRows = (talks, columns) => (
+    talks.map(element => (
+      <TableRow key={element.id}>
+        {this.renderTalksList(element, columns)}
+      </TableRow>),
+    )
+  );
+
   handleResetFiltersClick = () => {
     this.setState({
       filter: { topic: '', status: '' },
@@ -71,19 +79,46 @@ class Talks extends Component {
     this.props.load(APPLY_FILTERS, { filter, listOfTalks });
   };
 
-  sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'SPAN' && name) {
-      const { ASC, SORT_USER_TALKS, SORT_ALL_TALKS } = action;
-      const { [name]: sortField } = this.state;
-      const { load, sort, talks, userTalks } = this.props;
-      const value = sortField || ASC;
-      const listForSort = sort === SORT_USER_TALKS ? userTalks : talks;
-      const actionType = sort === SORT_USER_TALKS ?
-        SORT_USER_TALKS : SORT_ALL_TALKS;
-      load(actionType, { talks: listForSort, direction: value, field: name });
-      this.setState({ [name]: value });
-    }
-  };
+  renderTalksList = (data, columns) => (
+    columns.map((col) => {
+      switch (col) {
+      case 'id':
+        return null;
+      case 'name':
+        return (
+          <TableRowColumn key={col}>
+            <a className="link">{data.name}</a>
+          </TableRowColumn>
+        );
+      case 'title':
+        return (
+          <TableRowColumn key={col}>
+            <a className="link">{data.title}</a>
+          </TableRowColumn>
+        );
+      default:
+        return (
+          <TableRowColumn key={col}>
+            {data[col]}
+          </TableRowColumn>
+        );
+      }
+    })
+  );
+
+  // sortTalks = ({ target: { tagName, dataset: { name } } }) => {
+  //   if (tagName === 'SPAN' && name) {
+  //     const { ASC, SORT_USER_TALKS, SORT_ALL_TALKS } = action;
+  //     const { [name]: sortField } = this.state;
+  //     const { load, sort, talks, userTalks } = this.props;
+  //     const value = sortField || ASC;
+  //     const listForSort = sort === SORT_USER_TALKS ? userTalks : talks;
+  //     const actionType = sort === SORT_USER_TALKS ?
+  //       SORT_USER_TALKS : SORT_ALL_TALKS;
+  //     load(actionType, { talks: listForSort, direction: value, field: name });
+  //     this.setState({ [name]: value });
+  //   }
+  // };
 
   render() {
     const { listOfTopics } = this.state;
@@ -103,17 +138,17 @@ class Talks extends Component {
             handleResetFiltersClick={this.handleResetFiltersClick}
           />
           <Table
-            className="data-table"
-            multiSelectable
+            multiSelectable="true"
           >
             <TableHeader
               displaySelectAll
+              adjustForCheckbox
               enableSelectAll
             >
               <TalksHeader columns={columns} sortTalks={this.sortTalks} />
             </TableHeader>
-            <TableBody>
-              <DisplayTalks talk={talksList} columns={columns} />
+            <TableBody showRowHover>
+              {this.getRows(talksList, columns)}
             </TableBody>
           </Table>
           <div className="pagination">
@@ -131,7 +166,6 @@ class Talks extends Component {
               </div>
               <select className="pagination__select">
                 <option defaultValue="" />
-                <option value="5">5</option>
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
