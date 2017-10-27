@@ -1,24 +1,31 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { conference } from '../../constants/route-url';
 
-function Card({ data: {
-  call_for_paper_end_date: callForPaperEndDate,
-  call_for_paper_start_date: CallForPaperStartDate,
-  cfp_active: cfpActive,
-  description,
-  end_date: endDate,
-  location,
-  id,
-  start_date: startDate,
-  title,
-} }) {
+function Card({ data, setConference }) {
+  const { call_for_paper_end_date: callForPaperEndDate,
+    call_for_paper_start_date: CallForPaperStartDate,
+    cfp_active: cfpActive,
+    description,
+    end_date: endDate,
+    location,
+    id,
+    start_date: startDate,
+    title } = data;
   return (
     <div className="tabs-container conference-card">
-      <div className="conference-card-title">
-        <a
-          href={`#/conference/${id}`}
-          className="conference-card-title__link"
-        >{title}</a>
+      <div
+        className="conference-card-title"
+        onClick={setConference(data)}
+        role="presentation"
+      >
+        <Link
+          className="сonference-card-title__link"
+          to={`${conference}/:${id}`}
+        >
+          {title}
+        </Link>
       </div>
       {cfpActive && (<button
         className="btn btn-right conference-card-title__btn"
@@ -61,7 +68,8 @@ Card.propTypes = { data: PropTypes.shape({
   id: PropTypes.number,
   start_date: PropTypes.string,
   title: PropTypes.string,
-}) };
+}).isRequired,
+setConference: PropTypes.func.isRequired };
 
 Card.defaultProps = {
   data: {},

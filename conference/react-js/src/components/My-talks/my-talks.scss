@@ -157,10 +157,7 @@
     }
     &_topic {
       width: 180px;
-      &-container {
-        position: static;
-        width: 180px;
-      }
+
     }
     @media ($mnw: $xsdmn) and ($mxw: $xsdmx) {
       width: 100%;
