@@ -203,7 +203,6 @@ const mapStateToProps = ({ talks, userTalks }) => (
   });
 
 const mapDispatchToProps = dispatch => ({
-
   load: bindActionCreators(
     loadData, dispatch),
 });
