@@ -101,6 +101,7 @@ public class TalkServiceImplTest {
         userInfo.setCompany("EPAM");
         userInfo.setAdditionalInfo("addInfo");
 
+        speakerUser = new User();
         speakerUser.setId(ID);
         speakerUser.setFirstName("Olya");
         speakerUser.setLastName("Ivanova");
