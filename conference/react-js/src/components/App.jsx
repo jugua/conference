@@ -29,6 +29,7 @@ const App = () => (
     <Router>
       <div>
         <Header />
+        <Talks />
         <Switch>
           <Route
             path={baseUrl}

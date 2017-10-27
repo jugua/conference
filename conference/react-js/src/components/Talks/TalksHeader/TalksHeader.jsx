@@ -54,6 +54,7 @@ const TalksHeader = ({ columns, sortTalks }) => (
 
 TalksHeader.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-  sortTalks: PropTypes.func.isRequired };
+  sortTalks: PropTypes.func.isRequired,
+};
 
 export default TalksHeader;
