@@ -7,16 +7,15 @@ import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-/**
- * @author Yaroslav_Revin
- */
 @Order(2)
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer/*WebApplicationInitializer*/ {
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    public static final String UTF_8 = "UTF-8";
 
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setEncoding(UTF_8);
         characterEncodingFilter.setForceEncoding(true);
         OpenEntityManagerInViewFilter openEntityManagerInViewFilter = new OpenEntityManagerInViewFilter();
         return new Filter[]{characterEncodingFilter, openEntityManagerInViewFilter};

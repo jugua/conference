@@ -8,9 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
 
-/**
- * @author Olha_Melnyk
- */
 @Data
 @ToString
 public class SettingsDto {

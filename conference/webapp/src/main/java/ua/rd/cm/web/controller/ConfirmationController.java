@@ -20,17 +20,15 @@ import ua.rd.cm.infrastructure.mail.preparator.OldEmailMessagePreparator;
 @RequestMapping("/confirmation")
 public class ConfirmationController {
 
-    private final WithTokenGetRequestProcessor withTokenGetRequestProcessor;
-    private final VerificationTokenService tokenService;
-    private final UserService userService;
-    private final MailService mailService;
+    private WithTokenGetRequestProcessor withTokenGetRequestProcessor;
+    private VerificationTokenService tokenService;
+    private UserService userService;
+    private MailService mailService;
 
     @GetMapping("/registrationConfirm/{token}")
     public ResponseEntity confirmRegistration(@PathVariable String token) {
-        return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CONFIRMATION, verificationToken -> {
-            User user = verificationToken.getUser();
-            setUserStatusConfirmed(user);
-        });
+        return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CONFIRMATION,
+                verificationToken -> { User user = verificationToken.getUser(); setUserStatusConfirmed(user); });
     }
 
     @GetMapping("/newEmailConfirm/{token:.+}")

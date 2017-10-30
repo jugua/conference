@@ -6,9 +6,6 @@ import ua.rd.cm.domain.Topic;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.TopicDto;
 
-/**
- * @author Mariia Lapovska
- */
 public interface TopicService {
 
     Topic find(Long id);

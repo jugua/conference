@@ -23,9 +23,6 @@ import ua.rd.cm.repository.ContactTypeRepository;
 import ua.rd.cm.services.businesslogic.ContactTypeService;
 import ua.rd.cm.services.businesslogic.impl.ContactTypeServiceImpl;
 
-/**
- * @author Olha_Melnyk
- */
 @RunWith(MockitoJUnitRunner.class)
 public class ContactTypeServiceTest {
 
