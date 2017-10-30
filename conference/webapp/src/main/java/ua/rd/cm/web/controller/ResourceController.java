@@ -47,5 +47,4 @@ public class ResourceController {
         return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
     }
 
-
 }

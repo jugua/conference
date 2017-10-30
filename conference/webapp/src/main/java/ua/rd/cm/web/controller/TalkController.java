@@ -18,7 +18,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
@@ -28,15 +37,11 @@ import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
+import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import ua.rd.cm.services.businesslogic.TalkService;
-import ua.rd.cm.services.businesslogic.TopicService;
-import ua.rd.cm.services.businesslogic.TypeService;
 import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import ua.rd.cm.services.resources.LanguageService;
-import ua.rd.cm.services.resources.LevelService;
 
 @Log4j
 @RestController
@@ -49,10 +54,6 @@ public class TalkController {
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
-    private final TypeService typeService;
-    private final TopicService topicService;
-    private final LevelService levelService;
-    private final LanguageService languageService;
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex) {
