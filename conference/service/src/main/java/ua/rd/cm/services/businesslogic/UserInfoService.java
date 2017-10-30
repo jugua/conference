@@ -1,7 +1,7 @@
 package ua.rd.cm.services.businesslogic;
 
 import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.UserInfoDto;
 
 /**
  * @author Olha_Melnyk
@@ -11,5 +11,5 @@ public interface UserInfoService {
 
     void save(UserInfo userInfo);
 
-    void update(String email, UserDto userInfo);
+    void update(String email, UserInfoDto userInfo);
 }

@@ -11,13 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import ua.rd.cm.domain.Contact;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.domain.VerificationToken;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserBasicDto;
-import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.UserInfoDto;
 import ua.rd.cm.infrastructure.mail.MailService;
 import ua.rd.cm.infrastructure.mail.preparator.ConfirmAccountPreparator;
 import ua.rd.cm.repository.RoleRepository;
@@ -146,7 +147,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserDtoByEmail(String email) {
+    public UserInfoDto getUserDtoByEmail(String email) {
         User user = getByEmail(email);
 
         if (user == null) {
@@ -157,7 +158,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserDtoById(Long userId) {
+    public UserInfoDto getUserDtoById(Long userId) {
         User user = find(userId);
         return userToDto(user);
     }
@@ -190,12 +191,14 @@ public class UserServiceImpl implements UserService {
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
     }
 
-    private UserDto userToDto(User user) {
-        UserDto dto = mapper.map(user, UserDto.class);
+    private UserInfoDto userToDto(User user) {
+        UserInfoDto dto = mapper.map(user, UserInfoDto.class);
         if (user.getPhoto() != null) {
             dto.setPhoto("myinfo/photo/" + user.getId());
         }
-        user.getUserInfo().getContacts().forEach(dto::setContact);
+        List<Contact> contacts = user.getUserInfo().getContacts();
+        contacts.forEach(dto::setContact);
+        dto.setContacts(contacts);
         dto.setRoles(user.getRoleNames());
         return dto;
     }
