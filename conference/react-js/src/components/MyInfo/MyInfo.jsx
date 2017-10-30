@@ -48,7 +48,7 @@ class MyInfo extends Component {
   }
 
   render() {
-    const { bio, job, company, past, photo, info, contacts } = this.state.user;
+    const { bio, job, company, past, photo, info } = this.state.user;
 
     return (
       <div className="tabs-container">
@@ -100,42 +100,42 @@ class MyInfo extends Component {
             value={past}
             onChange={this.handleInput}
           />
-          <InputBlock
-            id="my-info-linkedin"
-            labelClass="my-info__label"
-            label="LinkedIn"
-            name="linkedin"
-            inputClass="field_border"
-            value={contacts}
-            onChange={this.handleInput}
-          />
-          <InputBlock
-            id="my-info-twitter"
-            labelClass="my-info__label"
-            label="twitter"
-            name="twitter"
-            inputClass="field_border"
-            value={contacts}
-            onChange={this.handleInput}
-          />
-          <InputBlock
-            id="my-info-facebook"
-            labelClass="my-info__label"
-            label="facebook"
-            name="facebook"
-            inputClass="field_border"
-            value={contacts}
-            onChange={this.handleInput}
-          />
-          <InputBlock
-            id="my-info-blog"
-            labelClass="my-info__label"
-            label="blog"
-            name="blog"
-            inputClass="field_border"
-            value={contacts}
-            onChange={this.handleInput}
-          />
+          {/* <InputBlock */}
+          {/* id="my-info-linkedin" */}
+          {/* labelClass="my-info__label" */}
+          {/* label="linkedIn" */}
+          {/* name="linkedin" */}
+          {/* inputClass="field_border" */}
+          {/* value={contacts.linkedin} */}
+          {/* onChange={this.handleContactsInput} */}
+          {/* /> */}
+          {/* <InputBlock */}
+          {/* id="my-info-twitter" */}
+          {/* labelClass="my-info__label" */}
+          {/* label="twitter" */}
+          {/* name="twitter" */}
+          {/* inputClass="field_border" */}
+          {/* value={contacts.twitter} */}
+          {/* onChange={this.handleContactsInput} */}
+          {/* /> */}
+          {/* <InputBlock */}
+          {/* id="my-info-facebook" */}
+          {/* labelClass="my-info__label" */}
+          {/* label="facebook" */}
+          {/* name="facebook" */}
+          {/* inputClass="field_border" */}
+          {/* value={contacts.facebook} */}
+          {/* onChange={this.handleContactsInput} */}
+          {/* /> */}
+          {/* <InputBlock */}
+          {/* id="my-info-blog" */}
+          {/* labelClass="my-info__label" */}
+          {/* label="blog" */}
+          {/* name="blog" */}
+          {/* inputClass="field_border" */}
+          {/* value={contacts.blog} */}
+          {/* onChange={this.handleContactsInput} */}
+          {/* /> */}
           <TextareaBlock
             id="my-additional-info"
             labelClassName="form-label"
