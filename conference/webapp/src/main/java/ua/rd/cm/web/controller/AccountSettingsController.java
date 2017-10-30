@@ -38,7 +38,7 @@ import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
 @RestController
 @RequestMapping("/settings")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class SettingsController {
+public class AccountSettingsController {
 
     private ObjectMapper mapper;
     private UserService userService;

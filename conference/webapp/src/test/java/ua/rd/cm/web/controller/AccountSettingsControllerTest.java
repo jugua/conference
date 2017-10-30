@@ -35,7 +35,7 @@ import ua.rd.cm.services.businesslogic.UserService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
 @WebAppConfiguration
-public class SettingsControllerTest {
+public class AccountSettingsControllerTest {
 
     public static final String API_USER_CURRENT_PASSWORD = "/settings/password";
     public static final String API_USER_CURRENT_EMAIL = "/settings/email";
@@ -43,7 +43,7 @@ public class SettingsControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private SettingsController settingsController;
+    private AccountSettingsController accountSettingsController;
     @Autowired
     private UserService userService;
     private MockMvc mockMvc;
@@ -54,7 +54,7 @@ public class SettingsControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(settingsController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(accountSettingsController).build();
         user = new User();
         user.setId(1L);
         user.setFirstName("Olya");
