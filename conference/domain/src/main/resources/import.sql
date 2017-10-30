@@ -48,10 +48,10 @@ INSERT INTO user_role VALUES (6, 4);
 INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (1, 'JavaDay 1', 'The Very First JavaDay', 'Kiev', '2018-09-15', '2018-09-25', '2018-08-04', '2018-08-22', 'nologo');
 INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (2, 'JavaDay 2', 'Second JavaDay', 'Boston', '2018-11-23', '2018-11-30', '2018-11-01', '2018-11-01', 'nologo');
 INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (3, 'JavaDay 3', 'Third JavaDay', 'New York', '2018-12-04', '2018-12-10', '2018-12-04', '2018-12-10', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (5, 'JavaDay 5', 'Second JavaDay', 'London', '2018-08-22', '2018-08-30', '2018-07-10', '2018-07-25', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (6, 'JavaDay 6', 'Third JavaDay', 'Beijin', '2017-03-25', '2017-04-10', '2017-02-22', '2017-03-15', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (7, 'JavaDay 7', 'Third JavaDay', 'Tel Aviv', '2018-02-15', '2018-02-25', '2018-02-04', '2018-03-27', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (8, 'JavaDay 8', 'Very First JavaDay', 'Beirut', null, null, null, null, 'nologo');
+INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (4, 'JavaDay 4', 'Second JavaDay', 'London', '2018-08-22', '2018-08-30', '2018-07-10', '2018-07-25', 'nologo');
+INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (5, 'JavaDay 5', 'Third JavaDay', 'Beijin', '2017-03-25', '2017-04-10', '2017-02-22', '2017-03-15', 'nologo');
+INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (6, 'JavaDay 6', 'Third JavaDay', 'Tel Aviv', '2018-02-15', '2018-02-25', '2018-02-04', '2018-03-27', 'nologo');
+INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (7, 'JavaDay 7', 'Very First JavaDay', 'Beirut', null, null, null, null, 'nologo');
 
 --
 -- Inserting necessary data into table `level`
@@ -78,17 +78,17 @@ INSERT INTO `user` (`id`, `email`, `first_name`, `last_name`, `password`, `statu
 
 INSERT INTO user_role VALUES (1, 1);
 
-INSERT INTO talk VALUES (1, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:51:00', 'talk #1', null, 1, 1, null, 1, 1, 1);
-INSERT INTO talk VALUES (2, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 23:52:00', 'talk #2', null, 2, 1, null, 1, 1, 1);
-INSERT INTO talk VALUES (3, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:53:00', 'talk #3', null, 3, 1, null, 1, 1, 1);
-INSERT INTO talk VALUES (4, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 23:54:00', 'talk #4', null, 1, 1, null, 2, 1, 1);
+INSERT INTO talk VALUES (1, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:51:00', 'talk #1', 1, 1, 1, null, 1, 1, 1);
+INSERT INTO talk VALUES (2, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 23:52:00', 'talk #2', 2, 2, 1, null, 1, 1, 1);
+INSERT INTO talk VALUES (3, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:53:00', 'talk #3', null, 3, 1, 2, 1, 1, 1);
+INSERT INTO talk VALUES (4, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 23:54:00', 'talk #4', 1, 1, 1, null, 2, 1, 1);
 INSERT INTO talk VALUES (5, 'Additional info', 'Description','',null,'APPROVED', '2016-12-31 23:55:00', 'talk #5', 4, 1, 1, null, 3, 1, 1);
 INSERT INTO talk VALUES (6, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:16:00', 'talk #6', 2, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (7, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:36:00', 'talk #7', null, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (8, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 23:26:00', 'talk #8', null, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (9, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 20:56:00', 'talk #9', null, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (10, 'Additional info', 'Description','',null,'NEW', '2016-12-31 21:56:00', 'talk #10', null, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (11, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 22:56:00', 'talk #11', null, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (7, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:36:00', 'talk #7', 3, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (8, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 23:26:00', 'talk #8', 2, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (9, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 20:56:00', 'talk #9', 1, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (10, 'Additional info', 'Description','',null,'NEW', '2016-12-31 21:56:00', 'talk #10', 4, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (11, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 22:56:00', 'talk #11', 2, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (12, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 23:51:20', 'talk #12', null, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (13, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 23:59:00', 'talk 13', null, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (14, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:54:20', 'talk #14', null, 1, 1, null, 4, 1, 1);
