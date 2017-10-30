@@ -10,6 +10,7 @@ const TextareaBlock = props => (
     <textarea
       name={props.name}
       id={props.id}
+      onChange={props.onChange}
       className={props.className}
       maxLength={props.maxLen}
       rows={props.rows}
@@ -22,6 +23,7 @@ const TextareaBlock = props => (
 TextareaBlock.propTypes = {
   name: PropTypes.string,
   id: PropTypes.string,
+  onChange: PropTypes.func,
   className: PropTypes.string,
   labelClassName: PropTypes.string,
   label: PropTypes.string,
@@ -34,6 +36,7 @@ TextareaBlock.propTypes = {
 TextareaBlock.defaultProps = {
   name: null,
   id: null,
+  onChange: null,
   className: 'textarea',
   labelClassName: '',
   label: null,

@@ -13,18 +13,18 @@ class MyInfo extends Component {
     this.state = {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
-      user: {
-        id: null,
-        bio: null,
-        job: null,
-        company: null,
-        past: null,
-        photo: null,
-        info: null,
-        contacts: null,
-      },
+      user: {},
     };
   }
+
+  componentDidMount() {
+    this.setDefaultValues(this.props);
+    console.log(this.props.user);
+  }
+
+  setDefaultValues = ({ user }) => {
+    this.setState({ user });
+  };
 
   handleOpenModal = (e) => {
     e.preventDefault();
@@ -38,8 +38,18 @@ class MyInfo extends Component {
     });
   };
 
+  handleInput = (e) => {
+    e.preventDefault();
+    const upUser = {
+      ...this.state.user,
+      [e.target.name]: e.target.value,
+    };
+    this.setState(() => ({ user: upUser }));
+  }
+
   render() {
-    const { bio, job, company, past, photo, info, contacts } = this.props.user;
+    const { bio, job, company, past, photo, info, contacts } = this.state.user;
+
     return (
       <div className="tabs-container">
         <div className="my-info__ava-block">
@@ -57,6 +67,7 @@ class MyInfo extends Component {
             name="bio"
             maxLen={2000}
             value={bio}
+            onChange={this.handleInput}
           />
           <InputBlock
             id="my-job-title"
@@ -66,6 +77,7 @@ class MyInfo extends Component {
             inputClass="field_border my-info__field_job"
             maxLength={256}
             value={job}
+            onChange={this.handleInput}
           />
           <InputBlock
             id="my-info-company"
@@ -75,6 +87,7 @@ class MyInfo extends Component {
             inputClass="field_border my-info__field_company"
             maxLength={256}
             value={company}
+            onChange={this.handleInput}
           />
           <TextareaBlock
             id="my-past-conferences"
@@ -85,6 +98,7 @@ class MyInfo extends Component {
             rows={5}
             maxLen={1000}
             value={past}
+            onChange={this.handleInput}
           />
           <InputBlock
             id="my-info-linkedin"
@@ -92,7 +106,8 @@ class MyInfo extends Component {
             label="LinkedIn"
             name="linkedin"
             inputClass="field_border"
-            value={contacts.linkedin}
+            value={contacts}
+            onChange={this.handleInput}
           />
           <InputBlock
             id="my-info-twitter"
@@ -100,7 +115,8 @@ class MyInfo extends Component {
             label="twitter"
             name="twitter"
             inputClass="field_border"
-            value={contacts.twitter}
+            value={contacts}
+            onChange={this.handleInput}
           />
           <InputBlock
             id="my-info-facebook"
@@ -108,7 +124,8 @@ class MyInfo extends Component {
             label="facebook"
             name="facebook"
             inputClass="field_border"
-            value={contacts.facebook}
+            value={contacts}
+            onChange={this.handleInput}
           />
           <InputBlock
             id="my-info-blog"
@@ -116,7 +133,8 @@ class MyInfo extends Component {
             label="blog"
             name="blog"
             inputClass="field_border"
-            value={contacts.blog}
+            value={contacts}
+            onChange={this.handleInput}
           />
           <TextareaBlock
             id="my-additional-info"
@@ -127,6 +145,7 @@ class MyInfo extends Component {
             rows={5}
             maxLen={1000}
             value={info}
+            onChange={this.handleInput}
           />
           <input
             type="submit"
@@ -151,14 +170,16 @@ class MyInfo extends Component {
 }
 
 MyInfo.propTypes = {
-  user: PropTypes.objectOf(PropTypes.shape({})),
-  bio: PropTypes.string,
-  job: PropTypes.string,
-  company: PropTypes.string,
-  past: PropTypes.string,
-  photo: PropTypes.string,
-  contacts: PropTypes.objectOf(PropTypes.shape([])),
-  info: PropTypes.string,
+  user: PropTypes.shape({
+    bio: PropTypes.string,
+    job: PropTypes.string,
+    company: PropTypes.string,
+    past: PropTypes.string,
+    photo: PropTypes.string,
+    contacts: PropTypes.arrayOf(),
+    info: PropTypes.string,
+  }),
+
 };
 
 MyInfo.defaultProps = {

@@ -34,9 +34,9 @@ const InputBlock = ({
       readOnly={readonly}
       required={required}
       type={type}
-      value={value}
       maxLength={maxLength}
       minLength={minLength}
+      value={value}
     />
   </div>
 );
