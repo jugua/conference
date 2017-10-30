@@ -14,6 +14,7 @@ class CardsList extends PureComponent {
   }
 
   componentDidMount() {
+    console.log(this.props);
     const { url } = this.props;
     axios.get(url)
       .then(({ data }) => {
@@ -24,25 +25,29 @@ class CardsList extends PureComponent {
   setConference = (data) => {
     const { SET_CONFERENCE } = action;
     this.props.load(SET_CONFERENCE, data);
+    console.log('setConference');
   }
 
-  setCards = data => (data.map((element) => {
+  setCards = (data, id) => (data.map((element) => {
     const { SET_CONFERENCE } = action;
     this.props.load(SET_CONFERENCE, data);
-    return (
-      <Card
-        data={element}
-        key={element.id}
-        setConference={this.setConference}
-      />
-    );
-  }));
+    return (<Card
+      data={element}
+      key={element.id}
+      id={id}
+      setConference={this.setConference}
+    />);
+  },
+  ));
+
+  componentWillReciveProps(nextProps) { console.log(this.props, nextProps); }
 
   render() {
     const { data } = this.state;
+    const { user: { id } } = this.props;
     return (
       <div className="tabs-container">
-        {this.setCards(data)}
+        {this.setCards(data, id)}
       </div>
     );
   }
@@ -51,11 +56,18 @@ class CardsList extends PureComponent {
 CardsList.propTypes = {
   url: PropTypes.string.isRequired,
   load: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    roles: PropTypes.arrayOf(PropTypes.string),
+    fname: PropTypes.string,
+  }).isRequired,
 };
+
+const mapStateToProps = user => user;
 
 const mapDispatchToProps = dispatch => ({
   load: bindActionCreators(
     loadData, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(CardsList);
+export default connect(mapStateToProps, mapDispatchToProps)(CardsList);

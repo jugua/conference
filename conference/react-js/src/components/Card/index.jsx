@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import { conference } from '../../constants/route-url';
 
 class Card extends PureComponent {
-  setConference = () => (this.props.setConference(this.props.data));
+  setConference = () => { this.props.setConference(this.props.data); };
+
+  // setConference = () => {
+  //   const { data, data: { length }, setConference } = this.props;
+  //   if (length > 0)setConference(data);
+  // };
 
   render() {
     const { call_for_paper_end_date: callForPaperEndDate,
@@ -16,23 +21,33 @@ class Card extends PureComponent {
       id,
       start_date: startDate,
       title } = this.props.data;
+    const { id: userid } = this.props;
     return (
       <div
         className="tabs-container conference-card"
       >
-        <div
-          className="conference-card-title"
-          role="button"
-          tabIndex="0"
-          onClick={this.setConference}
-        >
-          <Link
-            className="сonference-card-title__link"
-            to={`${conference}/:${id}`}
+        {userid > -1 ?
+          <div
+            className="conference-card-title"
+            role="button"
+            tabIndex="0"
+            onClick={this.setConference}
           >
-            {title}
-          </Link>
-        </div>
+            <Link
+              className="сonference-card-title__link"
+              to={`${conference}/:${id}`}
+            >
+              {title}
+            </Link>
+          </div>
+          :
+          <div className="conference-card-title">
+            <p className="сonference-card-title__link">
+              {title}
+            </p>
+          </div>
+        }
+
         {cfpActive && (<button
           className="btn btn-right conference-card-title__btn"
         >
@@ -76,7 +91,8 @@ Card.propTypes = { data: PropTypes.shape({
   start_date: PropTypes.string,
   title: PropTypes.string,
 }).isRequired,
-setConference: PropTypes.func.isRequired };
+setConference: PropTypes.func.isRequired,
+id: PropTypes.number.isRequired };
 
 Card.defaultProps = {
   data: {},
