@@ -197,11 +197,7 @@ Talks.defaultProps = {
     'status',
     'comment',
   ],
-<<<<<<< HEAD
-  sort: 'talks',
   url: null,
-=======
->>>>>>> dev
 };
 
 const mapStateToProps = ({ talks, userTalks }) => (
