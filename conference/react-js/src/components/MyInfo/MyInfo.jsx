@@ -20,11 +20,8 @@ class MyInfo extends Component {
         company: null,
         past: null,
         photo: null,
-        linkedin: null,
-        twitter: null,
-        facebook: null,
-        blog: null,
         info: null,
+        contacts: null,
       },
     };
   }
@@ -42,9 +39,7 @@ class MyInfo extends Component {
   };
 
   render() {
-    const { bio, job, company, past, photo, linkedin, twitter, facebook, blog,
-      info } = this.props.user;
-
+    const { bio, job, company, past, photo, info, contacts } = this.props.user;
     return (
       <div className="tabs-container">
         <div className="my-info__ava-block">
@@ -97,7 +92,7 @@ class MyInfo extends Component {
             label="LinkedIn"
             name="linkedin"
             inputClass="field_border"
-            value={linkedin}
+            value={contacts.linkedin}
           />
           <InputBlock
             id="my-info-twitter"
@@ -105,7 +100,7 @@ class MyInfo extends Component {
             label="twitter"
             name="twitter"
             inputClass="field_border"
-            value={twitter}
+            value={contacts.twitter}
           />
           <InputBlock
             id="my-info-facebook"
@@ -113,7 +108,7 @@ class MyInfo extends Component {
             label="facebook"
             name="facebook"
             inputClass="field_border"
-            value={facebook}
+            value={contacts.facebook}
           />
           <InputBlock
             id="my-info-blog"
@@ -121,7 +116,7 @@ class MyInfo extends Component {
             label="blog"
             name="blog"
             inputClass="field_border"
-            value={blog}
+            value={contacts.blog}
           />
           <TextareaBlock
             id="my-additional-info"
@@ -162,10 +157,7 @@ MyInfo.propTypes = {
   company: PropTypes.string,
   past: PropTypes.string,
   photo: PropTypes.string,
-  linkedin: PropTypes.string,
-  twitter: PropTypes.string,
-  facebook: PropTypes.string,
-  blog: PropTypes.string,
+  contacts: PropTypes.objectOf(PropTypes.shape([])),
   info: PropTypes.string,
 };
 
@@ -176,10 +168,7 @@ MyInfo.defaultProps = {
   company: undefined,
   past: undefined,
   photo: undefined,
-  linkedin: undefined,
-  twitter: undefined,
-  facebook: undefined,
-  blog: undefined,
+  contacts: undefined,
   info: undefined,
 };
 
