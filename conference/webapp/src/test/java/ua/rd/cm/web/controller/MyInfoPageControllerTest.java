@@ -48,7 +48,7 @@ import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.PhotoDto;
-import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.UserInfoDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
 import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
@@ -64,7 +64,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     public static final String SPEAKER_ROLE = "SPEAKER";
     private User user;
-    private UserDto correctUserDto;
+    private UserInfoDto correctUserInfoDto;
 
     @Autowired
     private UserService userService;
@@ -90,7 +90,7 @@ public class MyInfoPageControllerTest extends TestUtil {
                 .apply(springSecurity())
                 .build();
         user = createUser();
-        correctUserDto = setupCorrectUserInfoDto();
+        correctUserInfoDto = setupCorrectUserInfoDto();
         when(userService.getByEmail(SPEAKER_EMAIL)).thenReturn(user);
     }
 
@@ -221,7 +221,7 @@ public class MyInfoPageControllerTest extends TestUtil {
 
         mockMvc.perform(post(API_USER_CURRENT)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctUserDto))
+                .content(convertObjectToJsonBytes(correctUserInfoDto))
                 .principal(correctPrincipal)
         ).andExpect(status().isOk());
     }
@@ -230,57 +230,57 @@ public class MyInfoPageControllerTest extends TestUtil {
     public void incorrectPrincipalFillInfoTest() throws Exception {
         mockMvc.perform(post(API_USER_CURRENT)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(correctUserDto))
+                .content(convertObjectToJsonBytes(correctUserInfoDto))
         ).andExpect(status().isUnauthorized());
     }
 
     @Test
     public void nullBioTest() {
-        correctUserDto.setUserInfoShortBio(null);
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoShortBio(null);
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
     public void tooLongBioTest() {
-        correctUserDto.setUserInfoShortBio(createStringWithLength(2001));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoShortBio(createStringWithLength(2001));
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
     public void nullJobTest() {
-        correctUserDto.setUserInfoJobTitle(null);
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoJobTitle(null);
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
     public void tooLongJobTest() {
-        correctUserDto.setUserInfoJobTitle(createStringWithLength(257));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoJobTitle(createStringWithLength(257));
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
     public void nullCompanyTest() {
-        correctUserDto.setUserInfoCompany(null);
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoCompany(null);
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
 
     @Test
     public void tooLongCompanyTest() {
-        correctUserDto.setUserInfoCompany(createStringWithLength(257));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoCompany(createStringWithLength(257));
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
     public void tooLongPastConferenceTest() {
-        correctUserDto.setUserInfoPastConference(createStringWithLength(1001));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoPastConference(createStringWithLength(1001));
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
     @Test
     public void tooLongAdditionalInfoTest() {
-        correctUserDto.setUserInfoAdditionalInfo(createStringWithLength(1001));
-        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserDto);
+        correctUserInfoDto.setUserInfoAdditionalInfo(createStringWithLength(1001));
+        checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
 
@@ -290,12 +290,12 @@ public class MyInfoPageControllerTest extends TestUtil {
         assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
     }
 
-    private UserDto setupCorrectUserInfoDto() {
-        UserDto userDto = new UserDto();
-        userDto.setUserInfoShortBio("bio");
-        userDto.setUserInfoJobTitle("job");
-        userDto.setUserInfoCompany("company");
-        return userDto;
+    private UserInfoDto setupCorrectUserInfoDto() {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setUserInfoShortBio("bio");
+        userInfoDto.setUserInfoJobTitle("job");
+        userInfoDto.setUserInfoCompany("company");
+        return userInfoDto;
     }
 
     private byte[] convertObjectToJsonBytes(Object object) throws Exception {

@@ -7,48 +7,49 @@ const renderTalksHeader = columns => (
     case 'id':
       return null;
     case 'name':
-      return (<span
+      return (<th
         key={col}
         className="table-header__item
                   table-header__item_speaker-talk"
         data-name="speaker"
       >
               speaker
-      </span>);
+      </th>);
     case 'conferenceName':
-      return (<span
+      return (<th
         key={col}
-        className="table-header__item"
+        className="table-header__item table-header__item_conference"
         data-name="conferenceName"
       >
               Conference
-      </span>);
+      </th>);
     default:
-      return (<span
+      return (<th
         key={col}
         className={`table-header__item table-header__item_${col}-talk`}
         data-name={`${col}`}
       >
         {col}
-      </span>);
+      </th>);
     }
   })
 );
 const TalksHeader = ({ columns, sortTalks }) => (
-  <div
+  <thead
     role="presentation"
     className="data-table__header-block"
     onClick={sortTalks}
   >
-    <div className="table-header">
-      <div className="table-header__item
+    <tr className="table-header">
+      <th className="table-header__item
                   table-header__item_check-talk"
       >
         <input type="checkbox" />
-      </div>
+      </th>
       {renderTalksHeader(columns)}
-    </div>
-  </div>
+      <th className="table-header__item table-header__scroll-fix" />
+    </tr>
+  </thead>
 );
 
 TalksHeader.propTypes = {

@@ -7,40 +7,46 @@ const renderTalksList = (data, columns) => (
     case 'id':
       return null;
     case 'name':
-      return (<div
+      return (<td
         key={col}
         className="data-table__column
         data-table__column_speaker-talk"
       >
-        <a className="link">{data.name}</a></div>);
+        <a className="link">{data.name}</a></td>);
     case 'title':
-      return (<div
+      return (<td
         key={col}
         className="data-table__column
         data-table__column_title-talk"
       >
         <a className="link">{data.title}</a>
-      </div>);
-
+      </td>);
+    case 'conferenceName':
+      return (<td
+        key={col}
+        className="data-table__column
+        data-table__column_conference"
+      >{data.conferenceName}
+      </td>);
     default:
-      return (<div
+      return (<td
         key={col}
         className={`${'data-table__column' +
           ' data-table__column_'}${col}-talk`}
       >
         {data[col]}
-      </div>);
+      </td>);
     }
   })
 );
 
 const TalksList = ({ data, columns }) =>
-  (<div className="data-table__row">
-    <div className="data-table__column data-table__column_check-talk">
+  (<tr className="data-table__row">
+    <td className="data-table__column data-table__column_check-talk">
       <input type="checkbox" />
-    </div>
+    </td>
     {renderTalksList(data, columns)}
-  </div>);
+  </tr>);
 
 TalksList.propTypes = { data: PropTypes.shape({
   date: PropTypes.string.isRequired,

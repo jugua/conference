@@ -1,5 +1,7 @@
 package ua.rd.cm.dto;
 
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -11,7 +13,7 @@ import ua.rd.cm.domain.Contact;
 
 @Data
 @NoArgsConstructor
-public class UserDto extends UserBasicDto {
+public class UserInfoDto extends UserBasicDto {
 
     @NotNull
     @JsonProperty("bio")
@@ -50,6 +52,8 @@ public class UserDto extends UserBasicDto {
     @JsonProperty("info")
     @Size(max = 1000)
     private String userInfoAdditionalInfo;
+
+    private List<Contact> contacts;
 
     public void setContact(Contact contact) {
         String name = contact.getContactType().getName();

@@ -5,7 +5,7 @@ import java.util.List;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserBasicDto;
-import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.UserInfoDto;
 
 public interface UserService {
 
@@ -37,9 +37,9 @@ public interface UserService {
 
     void checkUserRegistrationByAdmin(RegistrationDto dto);
 
-    UserDto getUserDtoByEmail(String email);
+    UserInfoDto getUserDtoByEmail(String email);
 
-    UserDto getUserDtoById(Long userId);
+    UserInfoDto getUserDtoById(Long userId);
 
     List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles);
 
