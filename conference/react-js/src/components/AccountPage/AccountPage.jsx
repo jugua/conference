@@ -12,7 +12,7 @@ const tabsList = [
 ];
 
 const getTabById = (tabs, id) => (
-  tabs.filter(tab => tab.id === id)[0]
+  tabs.find(tab => tab.id === id)
 );
 
 class AccountPage extends PureComponent {
