@@ -233,3 +233,17 @@ INSERT INTO talk VALUES (108, 'Additional info', 'Description','',null,'NEW', '2
 INSERT INTO talk VALUES (109, 'Additional info', 'Description','',null,'REJECTED', '2017-10-30 23:54:00', 'talk #109', 3, 1, 1, null, 2, 1, 1);
 
 UPDATE talk_seq SET next_val = 110 WHERE next_val = 1;
+
+
+
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 4);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
+
+
+
+
+
+
+
+
