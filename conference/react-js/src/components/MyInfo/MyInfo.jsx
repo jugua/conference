@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
+import { myInfo } from '../../constants/backend-url';
 
 import InputBlock from '../InputBlock/index';
 import TextareaBlock from '../TextareaBlock/index';
@@ -14,6 +16,23 @@ class MyInfo extends Component {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
       user: {},
+    };
+
+    const userInfo = ({ bio, job, company }) => {
+      const body = { bio, job, company };
+      return axios.post(myInfo, body);
+    };
+
+    this.handleSaveInfo = (e) => {
+      e.preventDefault();
+      userInfo(this.state.user)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.setState({ showInfoSavedModal: true });
     };
   }
 
@@ -45,7 +64,7 @@ class MyInfo extends Component {
       [e.target.name]: e.target.value,
     };
     this.setState(() => ({ user: upUser }));
-  }
+  };
 
   render() {
     const { bio, job, company, past, photo, info } = this.state.user;
@@ -151,7 +170,7 @@ class MyInfo extends Component {
             type="submit"
             value="save"
             className="btn my-info__button"
-            onClick={this.handleOpenModal}
+            onClick={this.handleSaveInfo}
           />
         </form>
         {this.state.showInfoSavedModal &&
