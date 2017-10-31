@@ -12,4 +12,5 @@ export const talk = '/talk';
 export const topics = '/topics';
 export const types = '/types';
 export const languages = '/languages';
+export const langLevels = '/levels';
 export const registrationUrl = '/registration';

@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
@@ -10,9 +9,11 @@ import { cyan500 } from 'material-ui/styles/colors';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import getTopics from '../../actions/getTopics';
-import getTypes from '../../actions/getTypes';
-import getLanguages from '../../actions/getLanguages';
+import getTopics from '../../actions/getTalksTopics';
+import getTypes from '../../actions/getTalksTypes';
+import getLanguages from '../../actions/getTalksLanguages';
+import getTalksLangLevels from '../../actions/getTalksLangLevels';
+import updateTalk from '../../actions/updateTalk';
 
 const buttonStyle = {
   background: '#B22746',
@@ -26,6 +27,7 @@ class UpdateTalk extends PureComponent {
       listOfTopics: [],
       listOfTypes: [],
       listOfLanguages: [],
+      listOfLangLevels: [],
       title: '',
       description: '',
       topic: '',
@@ -40,30 +42,65 @@ class UpdateTalk extends PureComponent {
     getTopics().then(({ data }) => {
       this.setState({
         listOfTopics: data,
-        topic: data[0].name,
       });
     });
 
     getTypes().then(({ data }) => {
       this.setState({
         listOfTypes: data,
-        type: data[0].name,
       });
     });
 
     getLanguages().then(({ data }) => {
       this.setState({
         listOfLanguages: data,
-        lang: data[0].name,
       });
     });
+
+    getTalksLangLevels().then(({ data }) => {
+      this.setState({
+        listOfLangLevels: data,
+      });
+    });
+
+    this.setDefaultValues();
+  }
+
+  setDefaultValues = () => {
+    this.setState(this.props.talk);
+  }
+
+  topicChange = (event, index, value) => this.setState({ topic: value });
+  typeChange = (event, index, value) => this.setState({ type: value });
+  langChange = (event, index, value) => this.setState({ lang: value });
+  levelChange = (event, index, value) => this.setState({ level: value });
+  titleChange = (event, value) => this.setState({ title: value });
+  descrChange = (event, value) => this.setState({ description: value });
+  addonChange = (event, value) => this.setState({ addon: value });
+
+  updateHandler = () => {
+    const updatedTalk = { ...this.props.talk };
+    Object.keys(updatedTalk).forEach(
+      (key) => { updatedTalk[key] = this.state[key]; },
+    );
+    updateTalk(updatedTalk);
   }
 
   render() {
-    const { talk } = this.props;
-    const { listOfTopics } = this.state;
-    const { listOfTypes } = this.state;
-    const { listOfLanguages } = this.state;
+    const {
+      topic,
+      type,
+      lang,
+      title,
+      level,
+      description,
+      addon,
+      listOfTopics,
+      listOfTypes,
+      listOfLangLevels,
+      listOfLanguages } = this.state;
+
+    const { close } = this.props;
 
     return (
       <div className="update-talk_wrapper">
@@ -71,8 +108,9 @@ class UpdateTalk extends PureComponent {
         <div className="update-talk__title">
           <TextField
             floatingLabelText="Title"
-            defaultValue={talk.title}
             style={{ flexGrow: 1 }}
+            value={title}
+            onChange={this.titleChange}
           />
 
           <RaisedButton
@@ -87,30 +125,33 @@ class UpdateTalk extends PureComponent {
             label="Update"
             icon={<ImageEdit />}
             primary
+            onClick={this.updateHandler}
           />
 
           <RaisedButton
             className="update-talk__button"
             label="Close"
             buttonStyle={buttonStyle}
+            onClick={close}
             primary
           />
         </div>
-
         <TextField
           floatingLabelText="Description"
-          defaultValue={talk.description}
           multiLine
           rows={2}
           fullWidth
+          value={description}
+          onChange={this.descrChange}
         />
 
         <div className="select-field_wrapper">
           <SelectField
             floatingLabelText="Topic"
-            value={this.state.topic}
+            value={topic}
             autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
+            onChange={this.topicChange}
           >
             {
               listOfTopics.map(({ id, name }) => (
@@ -125,9 +166,10 @@ class UpdateTalk extends PureComponent {
 
           <SelectField
             floatingLabelText="Type"
-            value={this.state.type}
+            value={type}
             autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
+            onChange={this.typeChange}
           >
             {
               listOfTypes.map(({ id, name }) => (
@@ -142,9 +184,10 @@ class UpdateTalk extends PureComponent {
 
           <SelectField
             floatingLabelText="Language"
-            value={this.state.lang}
+            value={lang}
             autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
+            onChange={this.langChange}
           >
             {
               listOfLanguages.map(({ id, name }) => (
@@ -159,24 +202,30 @@ class UpdateTalk extends PureComponent {
 
           <SelectField
             floatingLabelText="Level"
-            value={4}
+            value={level}
             autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
+            onChange={this.levelChange}
           >
-            <MenuItem value={1} primaryText="Auto width" />
-            <MenuItem value={2} primaryText="Every Night" />
-            <MenuItem value={3} primaryText="Weeknights" />
-            <MenuItem value={4} primaryText="Weekends" />
-            <MenuItem value={5} primaryText="Weekly" />
+            {
+              listOfLangLevels.map(({ id, name }) => (
+                <MenuItem
+                  value={name}
+                  primaryText={name}
+                  key={id}
+                />),
+              )
+            }
           </SelectField>
         </div>
 
         <TextField
           floatingLabelText="Additional info"
-          defaultValue={talk.addon}
           multiLine
           rows={2}
           fullWidth
+          value={addon}
+          onChange={this.addonChange}
         />
 
       </div>
@@ -184,24 +233,21 @@ class UpdateTalk extends PureComponent {
   }
 }
 
-function mapStateToProps({ userTalks }) {
-  return { userTalks };
-}
-
-UpdateTalk.propTypes = {
-  talk: PropTypes.PropTypes.shape({
-    title: PropTypes.string,
-    description: PropTypes.string,
-    // topic: PropTypes.string,
-    // type: PropTypes.string,
-    // lang: PropTypes.string,
-    // level: PropTypes.string,
-    addon: PropTypes.string,
-  }).isRequired,
+UpdateTalk.defaultProps = {
+  talk: {},
 };
 
-// function mapDispatchToProps(dispatch) {
-//   return { edit: () => dispatch({}) }
-// }
+UpdateTalk.propTypes = {
+  close: PropTypes.func.isRequired,
+  talk: PropTypes.shape({
+    title: PropTypes.string,
+    description: PropTypes.string,
+    topic: PropTypes.string,
+    type: PropTypes.string,
+    lang: PropTypes.string,
+    level: PropTypes.string,
+    addon: PropTypes.string,
+  }),
+};
 
-export default connect(mapStateToProps)(UpdateTalk);
+export default UpdateTalk;

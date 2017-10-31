@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { topics } from '../constants/backend-url';
 
-const getTopics = () => axios.get(topics);
+const getTalksTopics = () => axios.get(topics);
 
-export default getTopics;
+export default getTalksTopics;
