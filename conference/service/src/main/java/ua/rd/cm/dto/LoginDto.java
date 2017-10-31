@@ -1,11 +1,10 @@
 package ua.rd.cm.dto;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
-import ua.rd.cm.domain.Role;
 
 @Data
 @AllArgsConstructor
@@ -16,10 +15,10 @@ public class LoginDto {
 	private String firstName;
 	@JsonProperty("role")
 	@NonNull
-	private Role role;
+	private List<String> role;
 	@JsonProperty("conferenceCount")
-	private int conferenceCount;
+	private long conferenceCount;
 	@JsonProperty("talksCount")
-	private int talksCount;
+	private long talksCount;
 
 }
