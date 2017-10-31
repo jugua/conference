@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.log4j.Log4j;
 import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.ResourceNotFoundException;
 
 @Log4j
@@ -40,6 +41,13 @@ public class ApplicationControllerAdvice {
     public MessageDto defaultHandler(Exception e) {
         log.error(e);
         return messageDtoWithError("internal_error");
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({NoSuchUserException.class})
+    public MessageDto noSuckUserException(Exception e) {
+        log.error(e);
+        return messageDtoWithError(e.getMessage());
     }
 
     private MessageDto messageDtoWithError(String errorMsg) {

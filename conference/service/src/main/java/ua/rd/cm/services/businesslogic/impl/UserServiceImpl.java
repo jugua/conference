@@ -192,6 +192,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserInfoDto userToDto(User user) {
+        if (user == null) {
+            return null;
+        }
+
         UserInfoDto dto = mapper.map(user, UserInfoDto.class);
         if (user.getPhoto() != null) {
             dto.setPhoto("myinfo/photo/" + user.getId());
