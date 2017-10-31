@@ -5,6 +5,14 @@ import PropTypes from 'prop-types';
 import InputBlock from '../../InputBlock/InputBlock';
 
 class PopUpChangePhoto extends PureComponent {
+  checkFileSize = (e) => {
+    e.preventDefault();
+    const test = document.querySelector('#choose-photo__btn');
+    const img = test.files[0].size;
+    console.log(test);
+    console.log(img);
+  }
+
   render() {
     const { showModal, closeModal } = this.props;
     return (
@@ -43,7 +51,10 @@ class PopUpChangePhoto extends PureComponent {
                 labelClass="btn choose-photo__btn"
                 name="file"
                 label="Choose"
+                accept="image/jpeg,image/png,image/gif"
+                size="2MB"
                 required
+                onChange={this.checkFileSize}
               />
             </div>
           </form>

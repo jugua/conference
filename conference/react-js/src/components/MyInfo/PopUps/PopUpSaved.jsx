@@ -14,7 +14,7 @@ class PopUpSaved extends PureComponent {
           onRequestClose={closeModal}
           className={{
             base: classNames({
-              'pop-up pop-up_big': true,
+              'pop-up': true,
               'pop-up_close': !showModal,
             }),
           }}
@@ -33,12 +33,10 @@ class PopUpSaved extends PureComponent {
           <p className="pop-up__notification">
             Changes saved successfully
           </p>
-          <input
-            type="button"
-            value="ok"
+          <button
             className="btn btn_right btn_small"
             onClick={closeModal}
-          />
+          >ok</button>
         </ReactModal>
       </div>
     );
