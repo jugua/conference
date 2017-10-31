@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { myInfo } from '../../constants/backend-url';
 
-import InputBlock from '../InputBlock/index';
+import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/index';
 import PopUpSaved from './PopUps/PopUpSaved';
 import PopUpPreventUnsavedExit from './PopUps/PopUpPreventUnsavedExit';
+import PopUpChangePhoto from './PopUps/PopUpChangePhoto';
 
 class MyInfo extends Component {
   constructor(props) {
@@ -15,24 +16,8 @@ class MyInfo extends Component {
     this.state = {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
+      showChangePhotoModal: false,
       user: {},
-    };
-
-    const userInfo = ({ bio, job, company }) => {
-      const body = { bio, job, company };
-      return axios.post(myInfo, body);
-    };
-
-    this.handleSaveInfo = (e) => {
-      e.preventDefault();
-      userInfo(this.state.user)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      this.setState({ showInfoSavedModal: true });
     };
   }
 
@@ -52,9 +37,12 @@ class MyInfo extends Component {
 
   handleCloseModal = (e) => {
     e.preventDefault();
-    this.setState({
-      showInfoSavedModal: false,
-    });
+    this.setState({ showInfoSavedModal: false });
+  };
+
+  handleCloseModal1 = (e) => {
+    e.preventDefault();
+    this.setState({ showChangePhotoModal: false });
   };
 
   handleInput = (e) => {
@@ -66,15 +54,49 @@ class MyInfo extends Component {
     this.setState(() => ({ user: upUser }));
   };
 
+  handleSaveInfo = (e) => {
+    e.preventDefault();
+
+    const saveUserInfo = ({ bio, job, company }) => {
+      const body = { bio, job, company };
+      return axios.post(myInfo, body);
+    };
+
+    saveUserInfo(this.state.user)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    this.setState({ showInfoSavedModal: true });
+  };
+
+  handleChangePhoto = (e) => {
+    e.preventDefault();
+    this.setState({ showChangePhotoModal: true });
+  }
+
   render() {
     const { bio, job, company, past, photo, info } = this.state.user;
 
     return (
       <div className="tabs-container">
         <div className="my-info__ava-block">
-          <img className="my-info__ava" src={photo} alt="" />
-          <button className="my-info__remove" />
-          <span className="change-photo">Change photo</span>
+          <img
+            className="my-info__ava"
+            src={photo}
+            alt=""
+          />
+          <button
+            className="my-info__remove"
+          />
+          <span
+            className="change-photo"
+            onClick={this.handleChangePhoto}
+            role="button"
+            tabIndex="-1"
+          >Change photo</span>
         </div>
         <form className="my-info" name="" noValidate>
           <TextareaBlock
@@ -183,6 +205,11 @@ class MyInfo extends Component {
           showModal={this.state.showPreventUnsavedExitModal}
           closeModal={this.handleCloseModal}
         />}
+        {this.state.showChangePhotoModal &&
+        <PopUpChangePhoto
+          showModal={this.state.showChangePhotoModal}
+          closeModal={this.handleCloseModal1}
+        />}
       </div>
     );
   }
@@ -195,7 +222,7 @@ MyInfo.propTypes = {
     company: PropTypes.string,
     past: PropTypes.string,
     photo: PropTypes.string,
-    contacts: PropTypes.arrayOf(),
+    contacts: PropTypes.array,
     info: PropTypes.string,
   }),
 

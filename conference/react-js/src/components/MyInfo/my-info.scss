@@ -17,7 +17,6 @@
       position: relative;
 
       &:hover {
-        cursor: pointer;
 
         & .my-info__remove {
           display: block;
@@ -27,12 +26,9 @@
           height: 40px;
         }
       }
-
-
     }
-
-
   }
+
   &__bio {
     width: calc(100% - 190px);
     height: 147px;
@@ -79,6 +75,20 @@
   font-family: Oswald Light,sans-serif;
   -webkit-transition: height .5s;
   transition: height .5s;
+  z-index: 1;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.choose-photo__btn {
+  width: 100px;
+  margin: 50px auto;
 }
 
 

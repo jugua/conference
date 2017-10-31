@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InputBlock from '../../components/InputBlock';
+import InputBlock from '../../components/InputBlock/InputBlock';
 import { namePattern } from '../../constants/patterns';
 
 const NameChangeForm = ({
