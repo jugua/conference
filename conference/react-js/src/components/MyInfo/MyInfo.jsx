@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { myInfo } from '../../constants/backend-url';
@@ -23,7 +22,6 @@ class MyInfo extends Component {
 
   componentDidMount() {
     this.setDefaultValues(this.props);
-    console.log(this.props.user);
   }
 
   setDefaultValues = ({ user }) => {
@@ -62,13 +60,9 @@ class MyInfo extends Component {
       return axios.post(myInfo, body);
     };
 
-    saveUserInfo(this.state.user)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // update myInfo via post request
+    saveUserInfo(this.state.user);
+
     this.setState({ showInfoSavedModal: true });
   };
 
@@ -82,9 +76,9 @@ class MyInfo extends Component {
 
     return (
       <div className="tabs-container">
-        <div className="my-info__ava-block">
+        <div className="my-info__photo-block">
           <img
-            className="my-info__ava"
+            className="my-info__photo"
             src={photo}
             alt=""
           />
@@ -141,42 +135,6 @@ class MyInfo extends Component {
             value={past}
             onChange={this.handleInput}
           />
-          {/* <InputBlock */}
-          {/* id="my-info-linkedin" */}
-          {/* labelClass="my-info__label" */}
-          {/* label="linkedIn" */}
-          {/* name="linkedin" */}
-          {/* inputClass="field_border" */}
-          {/* value={contacts.linkedin} */}
-          {/* onChange={this.handleContactsInput} */}
-          {/* /> */}
-          {/* <InputBlock */}
-          {/* id="my-info-twitter" */}
-          {/* labelClass="my-info__label" */}
-          {/* label="twitter" */}
-          {/* name="twitter" */}
-          {/* inputClass="field_border" */}
-          {/* value={contacts.twitter} */}
-          {/* onChange={this.handleContactsInput} */}
-          {/* /> */}
-          {/* <InputBlock */}
-          {/* id="my-info-facebook" */}
-          {/* labelClass="my-info__label" */}
-          {/* label="facebook" */}
-          {/* name="facebook" */}
-          {/* inputClass="field_border" */}
-          {/* value={contacts.facebook} */}
-          {/* onChange={this.handleContactsInput} */}
-          {/* /> */}
-          {/* <InputBlock */}
-          {/* id="my-info-blog" */}
-          {/* labelClass="my-info__label" */}
-          {/* label="blog" */}
-          {/* name="blog" */}
-          {/* inputClass="field_border" */}
-          {/* value={contacts.blog} */}
-          {/* onChange={this.handleContactsInput} */}
-          {/* /> */}
           <TextareaBlock
             id="my-additional-info"
             labelClassName="form-label"
@@ -214,30 +172,6 @@ class MyInfo extends Component {
     );
   }
 }
-
-MyInfo.propTypes = {
-  user: PropTypes.shape({
-    bio: PropTypes.string,
-    job: PropTypes.string,
-    company: PropTypes.string,
-    past: PropTypes.string,
-    photo: PropTypes.string,
-    contacts: PropTypes.array,
-    info: PropTypes.string,
-  }),
-
-};
-
-MyInfo.defaultProps = {
-  user: undefined,
-  bio: undefined,
-  job: undefined,
-  company: undefined,
-  past: undefined,
-  photo: undefined,
-  contacts: undefined,
-  info: undefined,
-};
 
 const mapStateToProps = user => user;
 
