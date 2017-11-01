@@ -4,15 +4,6 @@ import PropTypes from 'prop-types';
 import { conference } from '../../constants/route-url';
 
 class Card extends PureComponent {
-//   constructor(props) {
-//     super(props);
-//   }
-
-// setConferenceData = () => {
-//   const { data, data: { length }, setConference } = this.props;
-//   if (length > 0) setConference(data);
-// };
-
 setConferenceData = () => {
   this.props.setConference(this.props.data);
 };
