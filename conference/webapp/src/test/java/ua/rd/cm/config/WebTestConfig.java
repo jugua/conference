@@ -15,6 +15,7 @@ import ua.rd.cm.services.resources.LevelService;
 
 @Configuration
 public class WebTestConfig {
+	
     @Bean
     public ConferenceService mockConferenceService() {
         return mock(ConferenceService.class);
@@ -78,6 +79,11 @@ public class WebTestConfig {
     @Bean
     public VerificationTokenService mockVerificationTokenService() {
         return mock(VerificationTokenService.class);
+    }
+    
+    @Bean
+    public SignInService mockSignInService() {
+    	return mock(SignInService.class);
     }
 
 }

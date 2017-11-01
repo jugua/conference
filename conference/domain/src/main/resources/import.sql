@@ -102,7 +102,6 @@ INSERT INTO user_role VALUES (4, 2);
 INSERT INTO user_info (id, company, jobTitle, shortBio)  VALUES (5, '', '', '');
 
 INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (5, 'admin@gmail.com', 'I''m super', 'Admin', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 5);
-INSERT INTO user_role VALUES (5, 2);
 INSERT INTO user_role VALUES (5, 3);
 
 --
@@ -233,3 +232,17 @@ INSERT INTO talk VALUES (108, 'Additional info', 'Description','',null,'NEW', '2
 INSERT INTO talk VALUES (109, 'Additional info', 'Description','',null,'REJECTED', '2017-10-30 23:54:00', 'talk #109', 3, 1, 1, null, 2, 1, 1);
 
 UPDATE talk_seq SET next_val = 110 WHERE next_val = 1;
+
+
+
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 4);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
+
+
+
+
+
+
+
+
