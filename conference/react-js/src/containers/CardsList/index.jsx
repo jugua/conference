@@ -16,25 +16,24 @@ class CardsList extends PureComponent {
   componentDidMount() {
     const { url } = this.props;
     axios.get(url)
-      .then(({ data }) => { this.setState({ data }); });
+      .then(({ data }) => {
+        this.setState({ data });
+      });
   }
 
   setConference = (data) => {
-    console.log(data, 'data');
     const { SET_CONFERENCE } = action;
     this.props.load(SET_CONFERENCE, data);
   }
 
-  setCards = (data, id) => (data.map((element) => {
-    const { SET_CONFERENCE } = action;
-    this.props.load(SET_CONFERENCE, data);
-    return (<Card
+  setCards = (data, id) => (data.map(element =>
+    (<Card
       data={element}
       key={element.id}
       id={id}
       setConference={this.setConference}
-    />);
-  }));
+    />),
+  ));
 
   render() {
     const { data } = this.state;
