@@ -1,6 +1,5 @@
 package ua.rd.cm.dto;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +14,7 @@ public class LoginDto {
 	private String firstName;
 	@JsonProperty("role")
 	@NonNull
-	private List<String> role;
+	private String role;
 	@JsonProperty("conferenceCount")
 	private long conferenceCount;
 	@JsonProperty("talksCount")
