@@ -12,6 +12,7 @@ import SignUp from '../containers/SignUpForm';
 import History from './History';
 import ManageUser from '../containers/Manage-user/';
 import Talks from '../containers/Talks';
+import MyInfo from './MyInfo/MyInfo';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
   baseUrl,
@@ -21,6 +22,7 @@ import {
   talks,
   account,
   history,
+  myInfo,
 } from '../constants/route-url';
 
 const App = () => (
@@ -58,6 +60,11 @@ const App = () => (
         <Route
           path={history}
           component={History}
+        />
+        <Route
+          path={myInfo}
+          exact
+          component={MyInfo}
         />
       </Switch>
     </div>

@@ -1,12 +1,18 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import SettingsPage from '../SettingsPage';
+import MyInfo from '../MyInfo/MyInfo';
 
 const tabsList = [
   {
     id: 1,
     name: 'Settings',
     component: SettingsPage,
+  },
+  {
+    id: 2,
+    name: 'My Info',
+    component: MyInfo,
   },
   // new tabs...
 ];
