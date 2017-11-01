@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import UserMenu from '../User-menu';
 import {
-  settings,
+  account,
   manageUser,
   talks,
-  myInfo,
   root,
   history,
 } from '../../constants/route-url';
@@ -22,8 +21,7 @@ const UserMenuFilter = ({ roles, logout, close }) => {
     );
   }
   data.push(
-    { title: 'My info', link: myInfo },
-    { title: 'Settings', link: settings },
+    { title: 'Account', link: account },
     { title: 'Sign Out', link: root, last: true, click: logout },
   );
   return (
