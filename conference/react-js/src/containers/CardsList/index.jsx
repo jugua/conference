@@ -3,7 +3,7 @@ import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Card from '../../components/Card';
+import Card from '../../components/Card/Card';
 import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
 
@@ -14,18 +14,15 @@ class CardsList extends PureComponent {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const { url } = this.props;
     axios.get(url)
-      .then(({ data }) => {
-        this.setState({ data });
-      });
+      .then(({ data }) => { this.setState({ data }); });
   }
 
   setConference = (data) => {
+    console.log(data, 'data');
     const { SET_CONFERENCE } = action;
     this.props.load(SET_CONFERENCE, data);
-    console.log('setConference');
   }
 
   setCards = (data, id) => (data.map((element) => {
@@ -37,10 +34,7 @@ class CardsList extends PureComponent {
       id={id}
       setConference={this.setConference}
     />);
-  },
-  ));
-
-  componentWillReciveProps(nextProps) { console.log(this.props, nextProps); }
+  }));
 
   render() {
     const { data } = this.state;
