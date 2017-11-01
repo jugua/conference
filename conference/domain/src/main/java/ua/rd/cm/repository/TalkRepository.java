@@ -16,5 +16,7 @@ public interface TalkRepository extends CrudRepository<Talk, Long> {
     Talk findById(Long id);
 
     List<Talk> findByUserId(Long userId);
+    
+    Long countByUserId(Long userId);
 
 }

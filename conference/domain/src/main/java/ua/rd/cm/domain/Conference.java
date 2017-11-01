@@ -90,14 +90,14 @@ public class Conference extends AbstractEntity {
     private Collection<Talk> talks;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
+    @JoinTable(name = "conference_organiser",
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "organiser_id")
     )
     private List<User> organisers;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
+    @JoinTable(name = "conference_speaker",
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "speaker_id")
     )
