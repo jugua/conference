@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Upcoming from '../Upcoming';
 import AutorizedUserMenu from '../Autorized-user-menu';
-import { upcoming,
+import {
+  upcoming,
   myTalks,
   myEvents,
   conference } from '../../constants/route-url';

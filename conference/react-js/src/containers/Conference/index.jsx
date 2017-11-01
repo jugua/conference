@@ -66,6 +66,6 @@ Conference.defaultProps = {
   conference: {},
 };
 
-const mapStateToProps = ({ conference }) => ({ conference });
+const mapStateToProps = conference => conference;
 
 export default connect(mapStateToProps)(Conference);
