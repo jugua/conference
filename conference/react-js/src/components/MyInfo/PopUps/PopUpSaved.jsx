@@ -44,12 +44,13 @@ class PopUpSaved extends PureComponent {
 }
 
 PopUpSaved.propTypes = {
-  showModal: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  showModal: PropTypes.bool,
+  closeModal: PropTypes.func,
 };
 
 PopUpSaved.defaultProps = {
   showModal: false,
+  closeModal: false,
 };
 
 export default PopUpSaved;

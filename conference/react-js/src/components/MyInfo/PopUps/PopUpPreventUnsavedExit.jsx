@@ -1,43 +1,27 @@
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 class PopUpPreventUnsavedExit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showModal: false,
-    };
-  }
-
-  handleOpenModal = () => {
-    this.setState({ showModal: true });
-  };
-
-  handleCloseModal = () => {
-    this.setState({
-      showModal: false,
-    });
-  };
-
   render() {
+    const { showModal, closeModal } = this.props;
     return (
       <div>
-        <button onClick={this.handleOpenModal}>Trigger Modal</button>
         <ReactModal
-          isOpen={this.state.showModal}
+          isOpen={showModal}
           contentLabel="onRequestClose"
           onRequestClose={this.handleCloseModal}
           className={{
             base: classNames({
               'pop-up pop-up_big': true,
-              'pop-up_close': !this.state.showModal,
+              'pop-up_close': !showModal,
             }),
           }}
           overlayClassName={{
             afterOpen: classNames({
               'pop-up-wrapper': true,
-              'pop-up_close': !this.state.showModal,
+              'pop-up_close': !showModal,
             }),
           }}
         >
@@ -50,23 +34,33 @@ class PopUpPreventUnsavedExit extends Component {
               type="button"
               value="yes"
               className="btn"
-              onClick={this.handleCloseModal}
+              onClick={closeModal}
             />
             <input
               type="button"
               value="no"
               className="btn btn_cancel"
-              onClick={this.handleCloseModal}
+              onClick={closeModal}
             />
           </div>
           <button
             className="pop-up__close"
-            onClick={this.handleCloseModal}
+            onClick={closeModal}
           />
         </ReactModal>
       </div>
     );
   }
 }
+
+PopUpPreventUnsavedExit.propTypes = {
+  showModal: PropTypes.bool,
+  closeModal: PropTypes.func,
+};
+
+PopUpPreventUnsavedExit.defaultProps = {
+  showModal: false,
+  closeModal: false,
+};
 
 export default PopUpPreventUnsavedExit;

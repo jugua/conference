@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
 import InputBlock from '../../InputBlock/InputBlock';
-import TextareaBlock from '../../TextareaBlock/index';
+import TextareaBlock from '../../TextareaBlock/TextareaBlock';
 
 class SpeakerInfo extends Component {
   constructor(props) {

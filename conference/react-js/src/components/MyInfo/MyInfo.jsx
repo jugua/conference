@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { myInfo } from '../../constants/backend-url';
 
 import InputBlock from '../InputBlock/InputBlock';
-import TextareaBlock from '../TextareaBlock/index';
+import TextareaBlock from '../TextareaBlock/TextareaBlock';
 import PopUpSaved from './PopUps/PopUpSaved';
 import PopUpPreventUnsavedExit from './PopUps/PopUpPreventUnsavedExit';
 import PopUpChangePhoto from './PopUps/PopUpChangePhoto';
@@ -21,30 +19,26 @@ class MyInfo extends Component {
   }
 
   componentDidMount() {
-    this.setDefaultValues(this.props);
+    this.setUserInfo(this.props);
   }
 
-  setDefaultValues = ({ user }) => {
+  setUserInfo = ({ user }) => {
     this.setState({ user });
   };
 
-  handleOpenModal = (e) => {
-    e.preventDefault();
+  handleOpenModal = () => {
     this.setState({ showInfoSavedModal: true });
   };
 
-  handleCloseModal = (e) => {
-    e.preventDefault();
+  handleCloseModal = () => {
     this.setState({ showInfoSavedModal: false });
   };
 
-  handleCloseModal1 = (e) => {
-    e.preventDefault();
+  handleCloseModal1 = () => {
     this.setState({ showChangePhotoModal: false });
   };
 
   handleInput = (e) => {
-    e.preventDefault();
     const upUser = {
       ...this.state.user,
       [e.target.name]: e.target.value,
@@ -55,21 +49,20 @@ class MyInfo extends Component {
   handleSaveInfo = (e) => {
     e.preventDefault();
 
-    const saveUserInfo = ({ bio, job, company }) => {
-      const body = { bio, job, company };
-      return axios.post(myInfo, body);
-    };
-
     // update myInfo via post request
-    saveUserInfo(this.state.user);
+    // const saveUserInfo = ({ bio, job, company }) => {
+    //   const body = { bio, job, company };
+    //   return axios.post(myInfo, body);
+    // };
+    //
+    // saveUserInfo(this.state.user);
 
-    this.setState({ showInfoSavedModal: true });
+    this.handleOpenModal();
   };
 
-  handleChangePhoto = (e) => {
-    e.preventDefault();
+  handleChangePhoto = () => {
     this.setState({ showChangePhotoModal: true });
-  }
+  };
 
   render() {
     const { bio, job, company, past, photo, info } = this.state.user;
