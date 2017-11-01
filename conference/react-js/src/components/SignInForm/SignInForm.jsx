@@ -1,15 +1,10 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 
-import loadData from '../../actions/load';
 import { forgotPassword, signUp } from '../../constants/route-url';
 import login from '../../actions/login';
-import getUserInfo from '../../actions/get-user-info';
-import getTalks from '../../actions/getTalks';
 import loginValidation from '../../actions/loginVlidation';
 import actionTypes from '../../constants/actions-types';
 
@@ -23,15 +18,9 @@ class SignInForm extends PureComponent {
     };
   }
 
-  onLoginSuccess = () => {
-    const { SET_USER, SET_TALKS } = actionTypes;
-
+  onLoginSuccess = ({ data }) => {
+    this.props.load(actionTypes.SET_USER, data);
     this.close();
-    getUserInfo()
-      .then(res => this.props.load(SET_USER, res.data))
-      .then(getTalks()
-        .then(res => this.props.load(SET_TALKS, res.data)))
-      .catch((err) => { throw err; });
   };
 
   onLoginFail = () => {
@@ -40,20 +29,14 @@ class SignInForm extends PureComponent {
     });
   };
 
-  formChangeHandler = (event) => {
-    const target = event.target;
-
+  onChange = ({ target: { name, value } }) => {
     this.setState({
-      [target.name]: target.value,
+      [name]: value,
       isValidCredentials: true,
     });
   };
 
-  close = () => {
-    this.props.close();
-  }
-
-  submitHandler = (event) => {
+  onSubmit = (event) => {
     event.preventDefault();
     if (loginValidation(this.state)) {
       login(this.state)
@@ -64,13 +47,17 @@ class SignInForm extends PureComponent {
     }
   };
 
+  close = () => {
+    this.props.close();
+  }
+
   render() {
     return (
       <div className="sign-in-wrapper">
         <form
           className="sign-in"
-          onSubmit={this.submitHandler}
-          onChange={this.formChangeHandler}
+          onSubmit={this.onSubmit}
+          onChange={this.onChange}
         >
           <h2 className="form-title sign-in__title">sign in</h2>
           <label
@@ -143,14 +130,9 @@ class SignInForm extends PureComponent {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  load: bindActionCreators(
-    loadData, dispatch),
-});
-
 SignInForm.propTypes = {
   load: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(SignInForm);
+export default SignInForm;
