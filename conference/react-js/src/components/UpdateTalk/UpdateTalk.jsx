@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import ImageEdit from 'material-ui/svg-icons/image/edit';
+import ImageSave from 'material-ui/svg-icons/content/save';
 import AttachFile from 'material-ui/svg-icons/editor/attach-file';
 import { cyan500 } from 'material-ui/styles/colors';
 import SelectField from 'material-ui/SelectField';
@@ -122,15 +122,15 @@ class UpdateTalk extends PureComponent {
 
           <RaisedButton
             className="update-talk__button"
-            label="Update"
-            icon={<ImageEdit />}
+            label="Save"
+            icon={<ImageSave />}
             primary
             onClick={this.updateHandler}
           />
 
           <RaisedButton
             className="update-talk__button"
-            label="Close"
+            label="Back"
             buttonStyle={buttonStyle}
             onClick={close}
             primary
