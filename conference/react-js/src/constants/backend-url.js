@@ -11,3 +11,4 @@ export const allUsers = '/manageUsers/getAllUsersForAdmin';
 export const talk = '/talk';
 export const topics = '/topics';
 export const registrationUrl = '/registration';
+export const myInfo = '/myinfo';

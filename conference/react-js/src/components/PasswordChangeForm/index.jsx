@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InputBlock from '../InputBlock';
+import InputBlock from '../InputBlock/InputBlock';
 import { passwordPattern } from '../../constants/patterns';
 
 const PasswordChangeForm = ({
