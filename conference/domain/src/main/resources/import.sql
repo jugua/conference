@@ -102,7 +102,6 @@ INSERT INTO user_role VALUES (4, 2);
 INSERT INTO user_info (id, company, jobTitle, shortBio)  VALUES (5, '', '', '');
 
 INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (5, 'admin@gmail.com', 'I''m super', 'Admin', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 5);
-INSERT INTO user_role VALUES (5, 2);
 INSERT INTO user_role VALUES (5, 3);
 
 --
