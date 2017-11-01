@@ -21,7 +21,5 @@ public interface ConferenceRepository extends CrudRepository<Conference, Long> {
     List<Conference> findAll();
 
     Conference findById(Long id);
-    
-    @Query("SELECT count(c) FROM Conference c JOIN c.organisers o WHERE o.id = :userId")
-    Long countByOrganiserId(@Param("userId")Long id);
+       
 }
