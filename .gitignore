@@ -195,4 +195,5 @@ fabric.properties
 hs_err_pid*
 coverage
 
+#file for start localhost#
 tomcat.sh

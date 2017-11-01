@@ -1,19 +1,23 @@
 import React from 'react';
-import actions from '../../constants/actions-types';
+import PropTypes from 'prop-types';
 import Talks from '../../containers/Talks';
 
 const columsList = [
+  'conferenceName',
   'id',
   'title',
   'status',
-  'conferenceName',
 ];
 
-const MyTalks = () => (
+const MyTalks = ({ onClick }) => (
   <Talks
     columns={columsList}
-    sort={actions.SORT_USER_TALKS}
+    onClick={onClick}
   />
 );
+
+MyTalks.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 export default MyTalks;

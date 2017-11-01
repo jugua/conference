@@ -15,7 +15,7 @@ import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.dto.UserDto;
+import ua.rd.cm.dto.UserInfoDto;
 import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
@@ -55,8 +55,8 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
 
-        UserDto userDto = userService.getUserDtoById(userId);
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        UserInfoDto userInfoDto = userService.getUserDtoById(userId);
+        return new ResponseEntity<>(userInfoDto, HttpStatus.OK);
     }
 
     private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {

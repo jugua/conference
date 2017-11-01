@@ -2,8 +2,8 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 import {
-  TableHeaderColumn,
   TableRow,
+  TableHeaderColumn,
 } from 'material-ui/Table';
 
 const renderTalksHeader = columns => (
@@ -30,26 +30,25 @@ const renderTalksHeader = columns => (
         </TableHeaderColumn>
       );
     default:
-      return (
-        <TableHeaderColumn
-          key={col}
-          data-name={`${col}`}
-        >
-          {col}
-        </TableHeaderColumn>
-      );
+      return (<TableHeaderColumn
+        key={col}
+        data-name={`${col}`}
+      >
+        {col}
+      </TableHeaderColumn>);
     }
   })
 );
+
 const TalksHeader = ({ columns }) => (
   <TableRow>
-    <TableHeaderColumn colSpan="3" />
     {renderTalksHeader(columns)}
   </TableRow>
 );
 
 TalksHeader.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+  // sortTalks: PropTypes.func.isRequired,
 };
 
 export default TalksHeader;
