@@ -18,8 +18,6 @@ public class SignInServiceImpl implements SignInService {
 	@Autowired
 	private TalkRepository talkRepository;
 	@Autowired
-	private ConferenceRepository conferenceRepository;
-	@Autowired
 	private UserRepository userRepository;
 	
 	@Override
@@ -27,7 +25,7 @@ public class SignInServiceImpl implements SignInService {
 		User user = userRepository.findByEmail(email);
 		String firstName = user.getFirstName();
 		List<String> roles = user.getRoleNames();
-		long conferenceCount = conferenceRepository.countByOrganiserId(user.getId());
+		long conferenceCount = user.getOrganizerConferences().size();
 		long talksCount = talkRepository.countByUserId(user.getId());
 		LoginDto loginDto = new LoginDto(firstName, roles, conferenceCount, talksCount);
 		return loginDto;
