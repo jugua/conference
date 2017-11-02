@@ -107,8 +107,8 @@ class UpdateTalk extends PureComponent {
 
         <div className="update-talk__title">
           <TextField
+            className="update-talk__title-item"
             floatingLabelText="Title"
-            style={{ flexGrow: 1 }}
             value={title}
             onChange={this.titleChange}
           />
