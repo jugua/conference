@@ -14,6 +14,7 @@ const actions = {
   SORT_USER_TALKS: 'sort_user_talks',
   SORT_ALL_TALKS: 'sort_all_talks',
   SET_CONTACTS: 'set_contacts',
+  SET_CONFERENCE: 'set_conference',
 };
 
 export default actions;

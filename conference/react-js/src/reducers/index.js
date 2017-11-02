@@ -6,6 +6,7 @@ import forgotPassword from './forgot-password';
 import forgotPasswordErrorMessage from './forgot-password-error-message';
 import talks from './talks';
 import contacts from './contacts';
+import conference from './conference';
 
 const rootReducers = combineReducers({
   user,
@@ -15,6 +16,7 @@ const rootReducers = combineReducers({
   userTalks,
   talks,
   contacts,
+  conference,
 });
 
 export default rootReducers;

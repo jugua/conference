@@ -11,3 +11,4 @@ export const manageUser = `${baseUrl}/manage-user`;
 export const myTalks = `${baseUrl}/my-talks`;
 export const myEvents = `${baseUrl}/my-events`;
 export const myInfo = `${baseUrl}/my-info`;
+export const conference = `${baseUrl}/conference`;
