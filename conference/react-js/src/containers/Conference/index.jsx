@@ -5,7 +5,7 @@ import Talks from '../Talks';
 
 const Conference = ({ conference: {
   call_for_paper_end_date: callForPaperEndDate,
-  call_for_paper_start_date: CallForPaperStartDate,
+  call_for_paper_start_date: callForPaperStartDate,
   cfp_active: cfpActive,
   description,
   end_date: endDate,
@@ -35,7 +35,7 @@ const Conference = ({ conference: {
       <span className="conference-card-label">Call For Papers:</span>
       {callForPaperEndDate || 'TBD'}
         —
-      {CallForPaperStartDate || 'TBD'}
+      {callForPaperStartDate || 'TBD'}
     </div>
     <div className="conference-card-description">
       {description}
