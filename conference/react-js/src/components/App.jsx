@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import ForgotPassword from './Forgot-password';
 import Tabs from './Tabs';
-import Header from './Header';
+import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm';
 import History from './History';

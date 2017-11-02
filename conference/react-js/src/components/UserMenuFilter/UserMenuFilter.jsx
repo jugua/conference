@@ -12,10 +12,9 @@ import {
   admin,
 } from '../../constants/roles';
 
-const UserMenuFilter = ({ roles, logout, close }) => {
+const UserMenuFilter = ({ role, logout, close }) => {
   const data = [{ title: 'History', link: history }];
-  const adminRole = roles.indexOf(admin);
-  if (adminRole > -1) {
+  if (role === admin) {
     data.push({ title: 'Talks', link: talks },
       { title: 'Manage user', link: manageUser },
     );
@@ -30,10 +29,9 @@ const UserMenuFilter = ({ roles, logout, close }) => {
 };
 
 UserMenuFilter.propTypes = {
-  roles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  role: PropTypes.string.isRequired,
   logout: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
 };
 
 export default UserMenuFilter;
-
