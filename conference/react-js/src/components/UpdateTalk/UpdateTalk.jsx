@@ -9,10 +9,7 @@ import { cyan500 } from 'material-ui/styles/colors';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
-import getTopics from '../../actions/getTalksTopics';
-import getTypes from '../../actions/getTalksTypes';
-import getLanguages from '../../actions/getTalksLanguages';
-import getTalksLangLevels from '../../actions/getTalksLangLevels';
+import getTalkOptions from '../../actions/getTalkOptions';
 import updateTalk from '../../actions/updateTalk';
 
 const buttonStyle = {
@@ -39,31 +36,20 @@ class UpdateTalk extends PureComponent {
   }
 
   componentDidMount() {
-    getTopics().then(({ data }) => {
+    getTalkOptions().then(([
+      topics,
+      types,
+      languages,
+      langLevels,
+    ]) => {
       this.setState({
-        listOfTopics: data,
+        listOfTopics: topics.data,
+        listOfTypes: types.data,
+        listOfLanguages: languages.data,
+        listOfLangLevels: langLevels.data,
       });
+      this.setDefaultValues();
     });
-
-    getTypes().then(({ data }) => {
-      this.setState({
-        listOfTypes: data,
-      });
-    });
-
-    getLanguages().then(({ data }) => {
-      this.setState({
-        listOfLanguages: data,
-      });
-    });
-
-    getTalksLangLevels().then(({ data }) => {
-      this.setState({
-        listOfLangLevels: data,
-      });
-    });
-
-    this.setDefaultValues();
   }
 
   setDefaultValues = () => {

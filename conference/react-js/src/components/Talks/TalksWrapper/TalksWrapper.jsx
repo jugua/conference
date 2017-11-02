@@ -15,7 +15,7 @@ class TalksWrapper extends PureComponent {
   }
 
   getTalkById = (talks, id) => (
-    talks.filter(talk => talk.id === id)[0]
+    talks.find(talk => talk.id === id)
   );
 
   showUpdateTalk = ({ target: { dataset: { talkId } } }) => {
