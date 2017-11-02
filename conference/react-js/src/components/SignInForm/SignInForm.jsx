@@ -19,8 +19,9 @@ class SignInForm extends PureComponent {
   }
 
   onLoginSuccess = ({ data }) => {
-    this.props.load(actionTypes.SET_USER, data);
-    this.close();
+    const { load, close } = this.props;
+    load(actionTypes.SET_USER, data);
+    close();
   };
 
   onLoginFail = () => {
@@ -47,11 +48,8 @@ class SignInForm extends PureComponent {
     }
   };
 
-  close = () => {
-    this.props.close();
-  }
-
   render() {
+    const { close } = this.props;
     return (
       <div className="sign-in-wrapper">
         <form
@@ -84,7 +82,7 @@ class SignInForm extends PureComponent {
             <Link
               id="lnk-forgot-password"
               to={forgotPassword}
-              onClick={this.close}
+              onClick={close}
               className="sign-in__forgot"
               tabIndex="-1"
             >
@@ -119,7 +117,7 @@ class SignInForm extends PureComponent {
         <Link
           className="btn sign-in__create"
           id="lnk-sign-up"
-          onClick={this.close}
+          onClick={close}
           to={signUp}
         >
           create new account
