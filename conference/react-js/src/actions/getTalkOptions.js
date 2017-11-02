@@ -6,16 +6,13 @@ import {
   types,
 } from '../constants/backend-url';
 
-const getTalksLangLevels = () => axios.get(langLevels);
-const getTalksLanguages = () => axios.get(languages);
-const getTalksTopics = () => axios.get(topics);
-const getTalksTypes = () => axios.get(types);
+const getData = url => axios.get(url).then(({ data }) => data);
 
 const getTalkOptions = () => Promise.all([
-  getTalksTopics(),
-  getTalksTypes(),
-  getTalksLanguages(),
-  getTalksLangLevels(),
+  getData(topics),
+  getData(types),
+  getData(languages),
+  getData(langLevels),
 ]);
 
 export default getTalkOptions;

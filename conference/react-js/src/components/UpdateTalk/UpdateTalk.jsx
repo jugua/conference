@@ -37,16 +37,16 @@ class UpdateTalk extends PureComponent {
 
   componentDidMount() {
     getTalkOptions().then(([
-      topics,
-      types,
-      languages,
-      langLevels,
+      listOfTopics,
+      listOfTypes,
+      listOfLanguages,
+      listOfLangLevels,
     ]) => {
       this.setState({
-        listOfTopics: topics.data,
-        listOfTypes: types.data,
-        listOfLanguages: languages.data,
-        listOfLangLevels: langLevels.data,
+        listOfTopics,
+        listOfTypes,
+        listOfLanguages,
+        listOfLangLevels,
       });
       this.setDefaultValues();
     });
