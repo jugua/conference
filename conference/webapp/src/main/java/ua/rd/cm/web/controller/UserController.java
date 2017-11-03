@@ -22,14 +22,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import static java.util.Optional.ofNullable;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
 @RequestMapping("/user")
 @Log4j
 public class UserController {
-    private final UserService userService;
+    
+	private final UserService userService;
 
-
+	@PreAuthorize("isAuthenticated()")
+    @GetMapping("/usersNames")
+    public ResponseEntity<List<String>> getUsersNames(){
+    	List<String> usersNames = userService.findAll().stream().map(m -> m.getFirstName()).collect(Collectors.toList());
+		return new ResponseEntity<>(usersNames,HttpStatus.OK);
+    }
+    
     @PreAuthorize("hasRole(\"ADMIN\")")
     @PostMapping("/registerByAdmin")
     public ResponseEntity registerByAdmin(@Valid @RequestBody RegistrationDto dto,
