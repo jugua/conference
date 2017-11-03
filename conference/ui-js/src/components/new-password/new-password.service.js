@@ -6,7 +6,7 @@ class newPasswordService {
   }
 
   passConfirm(token) {
-    return this.http.get(`/forgotPasswordPage/changePassword/${token}`, {
+    return this.http.get(`/changePassword/${token}`, {
       headers: {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',
@@ -15,7 +15,7 @@ class newPasswordService {
   }
 
   changePassword(passwords, token) {
-    return this.http.post(`/forgotPasswordPage/changePassword/${token}`, passwords, {
+    return this.http.post(`/changePassword/${token}`, passwords, {
       headers: {
         'Cache-Control': 'no-cache, no-store',
         Pragma: 'no-cache',

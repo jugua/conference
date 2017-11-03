@@ -29,9 +29,9 @@ public class SignInController {
     private VerificationTokenService tokenService;
     private UserService userService;
 
-    @PostMapping("/login")
-    public void signIn() {
-    }
+//    @PostMapping("/login")
+//    public void signIn() {
+//    }
 
     @GetMapping("/changePassword/{token}")
     public ResponseEntity changePassword(@PathVariable String token) {
