@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
+import { myInfo } from '../../constants/backend-url';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
@@ -20,6 +22,15 @@ class MyInfo extends Component {
 
   componentDidMount() {
     this.setUserInfo(this.props);
+    axios.get(myInfo)
+      .then((data) => {
+        this.setState({
+          user: data.data,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   setUserInfo = ({ user }) => {
