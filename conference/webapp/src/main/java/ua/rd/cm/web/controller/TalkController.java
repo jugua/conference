@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -75,6 +76,13 @@ public class TalkController {
         return new ResponseEntity<>(message, ex.getHttpStatus());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/talksTitles")
+    public ResponseEntity<List<String>> getTalksTitles(){
+    	List<String> talksTitles = talkService.findAll().stream().map(m -> m.getTitle()).collect(Collectors.toList());
+    	return new ResponseEntity<>(talksTitles, HttpStatus.OK);
+    }
+    
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
