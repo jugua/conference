@@ -16,7 +16,7 @@ class MyInfo extends Component {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
       showChangePhotoModal: false,
-      user: {},
+      userInfo: {},
     };
   }
 
@@ -25,7 +25,7 @@ class MyInfo extends Component {
     axios.get(myInfo)
       .then((data) => {
         this.setState({
-          user: data.data,
+          userInfo: data.data,
         });
       })
       .catch((err) => {
@@ -51,10 +51,10 @@ class MyInfo extends Component {
 
   handleInput = (e) => {
     const upUser = {
-      ...this.state.user,
+      ...this.state.userInfo,
       [e.target.name]: e.target.value,
     };
-    this.setState(() => ({ user: upUser }));
+    this.setState(() => ({ userInfo: upUser }));
   };
 
   handleSaveInfo = (e) => {
@@ -76,7 +76,7 @@ class MyInfo extends Component {
   };
 
   render() {
-    const { bio, job, company, past, photo, info } = this.state.user;
+    const { bio, job, company, past, photo, info } = this.state.userInfo;
 
     return (
       <div className="tabs-container">

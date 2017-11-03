@@ -6,14 +6,15 @@ import MyInfo from '../MyInfo/MyInfo';
 const tabsList = [
   {
     id: 1,
-    name: 'Settings',
-    component: SettingsPage,
-  },
-  {
-    id: 2,
     name: 'My Info',
     component: MyInfo,
   },
+  {
+    id: 2,
+    name: 'Settings',
+    component: SettingsPage,
+  },
+
   // new tabs...
 ];
 
