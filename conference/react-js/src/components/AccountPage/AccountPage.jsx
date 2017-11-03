@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
-import classNames from 'classnames';
-import SettingsPage from '../SettingsPage';
+import classNames from 'classnames'; import axios from 'axios';
+import { myInfo } from '../../constants/backend-url';
+
+import SettingsPage from '../SettingsPage/SettingsPage';
 import MyInfo from '../MyInfo/MyInfo';
 
 const tabsList = [
@@ -27,7 +29,17 @@ class AccountPage extends PureComponent {
     super(props);
     this.state = {
       currentTabIndex: tabsList[0].id,
+      user: {},
     };
+  }
+
+  componentDidMount() {
+    axios.get(myInfo)
+      .then((data) => {
+        this.setState({
+          user: data.data,
+        });
+      });
   }
 
   changeTab = ({ target: { dataset: { index } } }) => {
@@ -63,7 +75,7 @@ class AccountPage extends PureComponent {
           }
         </ul>
         <div className="tabs-container">
-          <CurrentComponent />
+          <CurrentComponent user={this.state.user} />
         </div>
       </div>
     );

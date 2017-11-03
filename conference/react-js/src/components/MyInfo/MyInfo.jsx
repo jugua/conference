@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { myInfo } from '../../constants/backend-url';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
@@ -16,21 +14,12 @@ class MyInfo extends Component {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
       showChangePhotoModal: false,
-      userInfo: {},
+      user: {},
     };
   }
 
   componentDidMount() {
     this.setUserInfo(this.props);
-    axios.get(myInfo)
-      .then((data) => {
-        this.setState({
-          userInfo: data.data,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   setUserInfo = ({ user }) => {
@@ -51,10 +40,10 @@ class MyInfo extends Component {
 
   handleInput = (e) => {
     const upUser = {
-      ...this.state.userInfo,
+      ...this.state.user,
       [e.target.name]: e.target.value,
     };
-    this.setState(() => ({ userInfo: upUser }));
+    this.setState(() => ({ user: upUser }));
   };
 
   handleSaveInfo = (e) => {
@@ -76,7 +65,7 @@ class MyInfo extends Component {
   };
 
   render() {
-    const { bio, job, company, past, photo, info } = this.state.userInfo;
+    const { bio, job, company, past, photo, info } = this.state.user;
 
     return (
       <div className="tabs-container">
