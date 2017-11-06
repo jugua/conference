@@ -4,9 +4,9 @@ import {
 } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { upcoming, myTalks } from '../../constants/route-url';
+import { upcoming, myTalks, myEvents } from '../../constants/route-url';
 
-const AutorizedUserMenu = ({ length }) => (
+const AutorizedUserMenu = ({ conferenceCount, talksCount }) => (
   <ul className="tabs-list">
     <li className="tabs-list__item">
       <NavLink
@@ -18,7 +18,7 @@ const AutorizedUserMenu = ({ length }) => (
         Upcoming
       </NavLink>
     </li>
-    {length > 0 &&
+    {talksCount > 0 &&
       (<li className="tabs-list__item">
         <NavLink
           exact
@@ -28,17 +28,33 @@ const AutorizedUserMenu = ({ length }) => (
         >
         My talks
         </NavLink>
-      </li>)
+      </li>
+      )
+    }
+    {conferenceCount > 0 &&
+    (<li className="tabs-list__item">
+      <NavLink
+        exact
+        className="tabs-list__anchor"
+        to={myEvents}
+        activeClassName="tabs-list__anchor_active"
+      >
+          My Events
+      </NavLink>
+    </li>
+    )
     }
   </ul>
 );
 
 AutorizedUserMenu.propTypes = {
-  length: PropTypes.number,
+  talksCount: PropTypes.number,
+  conferenceCount: PropTypes.number,
 };
 
 AutorizedUserMenu.defaultProps = {
-  length: 0,
+  talksCount: 0,
+  conferenceCount: 0,
 };
 
 export default AutorizedUserMenu;
