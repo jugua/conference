@@ -4,15 +4,8 @@ import { PropTypes } from 'prop-types';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
 
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
 import FilterForm from './FilterForm';
-import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
+import TalksTable from '../../components/Talks/TalksTable/TalksTable';
 import Pagination from './Pagination/Pagination';
 import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
@@ -102,14 +95,6 @@ class Talks extends Component {
     }
   };
 
-  getRows = (talks, columns) => (
-    talks.map(element => (
-      <TableRow key={element.id}>
-        {this.renderTalksList(element, columns)}
-      </TableRow>),
-    )
-  );
-
   fastForwardPages = ({ target: { classList: { value } } }) => {
     const { maxPages } = this.state;
     if (value.indexOf('forward') > -1) {
@@ -146,46 +131,16 @@ class Talks extends Component {
     this.doFilter();
   };
 
-  sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'TH' && name) {
-      const { ASC, SORT_ALL_TALKS } = action;
-      const { [name]: sortField } = this.state;
-      const { load, talks } = this.props;
-      const value = sortField === ASC ? '' : ASC;
-      load(SORT_ALL_TALKS, { talks, direction: value, field: name });
-      this.setState({ [name]: value });
-    }
-  };
-
-  renderTalksList = (data, columns) => (
-    columns.map((col) => {
-      switch (col) {
-      case 'id':
-        return null;
-      case 'name':
-        return (
-          <TableRowColumn key={col}>
-            <a className="link">{data.name}</a>
-          </TableRowColumn>
-        );
-      case 'title':
-        return (
-          <TableRowColumn key={col}>
-            <a
-              className="link"
-              data-talk-id={data.id}
-            >{data.title}</a>
-          </TableRowColumn>
-        );
-      default:
-        return (
-          <TableRowColumn key={col}>
-            {data[col]}
-          </TableRowColumn>
-        );
-      }
-    })
-  );
+  // sortTalks = ({ target: { tagName, dataset: { name } } }) => {
+  //   if (tagName === 'TH' && name) {
+  //     const { ASC, SORT_ALL_TALKS } = action;
+  //     const { [name]: sortField } = this.state;
+  //     const { load, talks } = this.props;
+  //     const value = sortField === ASC ? '' : ASC;
+  //     load(SORT_ALL_TALKS, { talks, direction: value, field: name });
+  //     this.setState({ [name]: value });
+  //   }
+  // };
 
   render() {
     const {
@@ -197,10 +152,8 @@ class Talks extends Component {
     } = this.state;
     const { columns, onClick } = this.props;
     return (
-
       <div
         className="talks tabs-container"
-        onClick={onClick}
         role="menu"
         tabIndex="0"
       >
@@ -213,21 +166,11 @@ class Talks extends Component {
           handleFilterClick={this.handleFilterClick}
           handleResetFiltersClick={this.handleResetFiltersClick}
         />
-        <Table
-          selectable
-          multiSelectable
-        >
-          <TableHeader
-            displaySelectAll
-            adjustForCheckbox
-            enableSelectAll
-          >
-            <TalksHeader columns={columns} sortTalks={this.sortTalks} />
-          </TableHeader>
-          <TableBody showRowHover>
-            {this.getRows(listOfTalks, columns)}
-          </TableBody>
-        </Table>
+        <TalksTable
+          listOfTalks={listOfTalks}
+          columns={columns}
+          onClick={onClick}
+        />
         <Pagination
           quantityAllPages={quantityAllPages}
           currentPage={currentPage}
@@ -243,7 +186,7 @@ class Talks extends Component {
 
 Talks.propTypes = {
   load: PropTypes.func.isRequired,
-  talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  // talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string),
   onClick: PropTypes.func.isRequired,
 };
