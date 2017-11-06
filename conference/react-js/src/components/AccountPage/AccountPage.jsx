@@ -16,7 +16,6 @@ const tabsList = [
     name: 'Settings',
     component: SettingsPage,
   },
-
   // new tabs...
 ];
 
@@ -35,9 +34,9 @@ class AccountPage extends PureComponent {
 
   componentDidMount() {
     axios.get(myInfo)
-      .then((data) => {
+      .then(({ data }) => {
         this.setState({
-          user: data.data,
+          user: data,
         });
       });
   }

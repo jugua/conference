@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
@@ -20,6 +19,10 @@ class MyInfo extends Component {
 
   componentDidMount() {
     this.setUserInfo(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setUserInfo(nextProps);
   }
 
   setUserInfo = ({ user }) => {
@@ -48,7 +51,6 @@ class MyInfo extends Component {
 
   handleSaveInfo = (e) => {
     e.preventDefault();
-
     // update myInfo via post request
     // const saveUserInfo = ({ bio, job, company }) => {
     //   const body = { bio, job, company };
@@ -65,7 +67,7 @@ class MyInfo extends Component {
   };
 
   render() {
-    const { bio, job, company, past, photo, info } = this.state.user;
+    const { user: { bio, job, company, past, photo, info } } = this.state;
 
     return (
       <div className="tabs-container">
@@ -83,6 +85,7 @@ class MyInfo extends Component {
             onClick={this.handleChangePhoto}
             role="button"
             tabIndex="-1"
+            data-type="changePhoto"
           >Change photo</span>
         </div>
         <form className="my-info" name="" noValidate>
@@ -143,6 +146,7 @@ class MyInfo extends Component {
             type="submit"
             value="save"
             className="btn my-info__button"
+            data-type="saveInfo"
             onClick={this.handleSaveInfo}
           />
         </form>
@@ -166,6 +170,4 @@ class MyInfo extends Component {
   }
 }
 
-const mapStateToProps = user => user;
-
-export default connect(mapStateToProps)(MyInfo);
+export default MyInfo;
