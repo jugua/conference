@@ -18,13 +18,13 @@ class Card extends PureComponent {
       id,
       start_date: startDate,
       title } = this.props.data;
-    const { id: userId } = this.props;
+    const { role } = this.props;
 
     return (
       <div
         className="tabs-container conference-card"
       >
-        {userId > -1 ?
+        {role !== '' ?
           <div
             className="conference-card-title"
             role="button"
@@ -90,7 +90,7 @@ Card.propTypes = { data: PropTypes.shape({
   title: PropTypes.string,
 }).isRequired,
 setConference: PropTypes.func.isRequired,
-id: PropTypes.number.isRequired };
+role: PropTypes.string.isRequired };
 
 Card.defaultProps = {
   data: {},
