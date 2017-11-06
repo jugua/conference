@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Upcoming from '../Upcoming';
 import AutorizedUserMenu from '../Autorized-user-menu';
+import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
 import {
   upcoming,
   myTalks,
   myEvents,
   conference } from '../../constants/route-url';
-import MyTalks from '../My-talks';
 import MyEvents from '../MyEvents/MyEvents';
 import Conference from '../../containers/Conference';
 
@@ -27,7 +27,7 @@ const Tabs = ({ userTalks: { length } }) => (
         <Route
           path={myTalks}
           exact
-          component={MyTalks}
+          component={TalksWrapper}
         />
         <Route
           path={myEvents}
