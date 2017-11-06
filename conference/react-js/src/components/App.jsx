@@ -63,6 +63,10 @@ const App = () => (
             path={history}
             component={History}
           />
+          <Route
+            path={myInfo}
+            component={MyInfo}
+          />
         </Switch>
       </div>
     </Router>
