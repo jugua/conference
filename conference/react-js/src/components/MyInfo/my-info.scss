@@ -1,0 +1,115 @@
+.my-info {
+  font-family: "Oswald Light", sans-serif;
+  position: relative;
+
+  &__photo {
+    width: 180px;
+    height: 180px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    float: left;
+    overflow: hidden;
+    background-size: cover;
+    z-index: 1;
+
+    &-block {
+      position: relative;
+
+      &:hover {
+
+        & .my-info__remove {
+          display: block;
+        }
+
+        & .change-photo {
+          height: 40px;
+        }
+      }
+    }
+  }
+
+  &__bio {
+    width: calc(100% - 190px);
+    height: 147px;
+    float: right;
+
+    &:focus {
+      outline: none;
+      border: 2px solid $sharp-blue;
+    }
+  }
+
+  &__button {
+    margin: 20px auto;
+  }
+
+  &__remove {
+    width: 15px;
+    height: 15px;
+    background: transparent;
+    display: none;
+    position: absolute;
+    left: 160px;
+    top: 2px;
+    border: 0;
+    float: right;
+    background-image: url(../images/close-icon.svg);
+    margin: 5px 5px 0 0;
+    z-index: 1;
+  }
+}
+.textarea-focus {
+  height: 147px;
+}
+
+.change-photo {
+  width: 180px;
+  height: 0;
+  color: #fff;
+  position: absolute;
+  bottom: -180px;
+  left: 0;
+  line-height: 40px;
+  text-align: center;
+  background-color: $sharp-blue;
+  font-family: Oswald Light,sans-serif;
+  -webkit-transition: height .5s;
+  transition: height .5s;
+  z-index: 1;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.choose-photo__btn {
+  width: 100px;
+  margin: 50px auto;
+}
+
+
+@media ($mnw: $xsdmn) and ($mxw: $sdmx) {
+  width: 100%;
+
+  &__label {
+    font-family: "Oswald Regular", sans-serif;
+
+    &_bio {
+    }
+  }
+}
+
+@media ($mnw:$sdmx) {
+  .my-info {
+
+    &__label_bio {
+      width: calc(100% - 190px);
+      float: right;
+    }
+  }
+}

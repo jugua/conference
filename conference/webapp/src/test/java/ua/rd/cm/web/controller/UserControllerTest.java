@@ -49,6 +49,7 @@ import ua.rd.cm.domain.Role;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.domain.UserInfo;
 import ua.rd.cm.dto.RegistrationDto;
+import ua.rd.cm.dto.UserInfoDto;
 import ua.rd.cm.services.businesslogic.ContactTypeService;
 import ua.rd.cm.services.businesslogic.UserInfoService;
 import ua.rd.cm.services.businesslogic.UserService;
@@ -158,8 +159,8 @@ public class UserControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void getUserById() throws Exception {
-        User user = createUser();
-        when(userService.find(anyLong())).thenReturn(user);
+        UserInfoDto user = new UserInfoDto();
+        when(userService.getUserDtoById(anyLong())).thenReturn(user);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)
         ).andExpect(status().isOk());
     }

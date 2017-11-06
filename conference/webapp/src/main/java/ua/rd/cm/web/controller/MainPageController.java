@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Role;
+import ua.rd.cm.domain.Talk;
+import ua.rd.cm.dto.*;
 import ua.rd.cm.dto.ConferenceDto;
 import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
@@ -31,7 +32,9 @@ import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.services.businesslogic.ConferenceService;
 import ua.rd.cm.services.businesslogic.TopicService;
 import ua.rd.cm.services.businesslogic.TypeService;
-
+import ua.rd.cm.web.converter.TalksConverter;
+import java.util.Collection;
+import java.util.Collections;
 
 @Log4j
 @RestController
@@ -42,6 +45,7 @@ public class MainPageController {
     private final TypeService typeService;
     private final TopicService topicService;
     private final ConferenceService conferenceService;
+    private final TalksConverter talksConverter;
 
     @GetMapping("conference/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
@@ -60,6 +64,16 @@ public class MainPageController {
     public ResponseEntity getConferenceById(@PathVariable long id) {
         Conference conference = conferenceService.findById(id);
         return new ResponseEntity(conference, HttpStatus.OK);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("conference/{id}/talks")
+    public ResponseEntity getConferenceTalksById(@PathVariable long id) {
+        Conference conference = conferenceService.findById(id);
+        Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
+
+        Collection<TalkDto> talkDtos = talksConverter.toDto(talks);
+        return new ResponseEntity(talkDtos, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -14,3 +14,4 @@ export const types = '/types';
 export const languages = '/languages';
 export const langLevels = '/levels';
 export const registrationUrl = '/registration';
+export const myInfo = '/myinfo';

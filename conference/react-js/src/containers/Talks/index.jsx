@@ -37,7 +37,8 @@ class Talks extends Component {
         this.setState({ listOfTopics: data });
       });
 
-    axios.get(talk)
+    const url = this.props.url || talk;
+    axios.get(url)
       .then(({ data }) => {
         this.props.load(LOAD, data);
         this.setState({ listOfTalks: data });
@@ -187,6 +188,7 @@ Talks.propTypes = {
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string),
   onClick: PropTypes.func.isRequired,
+  url: PropTypes.string,
 };
 
 Talks.defaultProps = {
@@ -198,6 +200,7 @@ Talks.defaultProps = {
     'status',
     'comment',
   ],
+  url: null,
 };
 
 const mapStateToProps = ({ talks, userTalks }) => (
@@ -206,7 +209,6 @@ const mapStateToProps = ({ talks, userTalks }) => (
   });
 
 const mapDispatchToProps = dispatch => ({
-
   load: bindActionCreators(
     loadData, dispatch),
 });

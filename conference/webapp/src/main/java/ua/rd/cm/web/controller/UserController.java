@@ -1,25 +1,26 @@
 package ua.rd.cm.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.User;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.RegistrationDto;
 import ua.rd.cm.dto.UserInfoDto;
 import ua.rd.cm.services.businesslogic.UserService;
 import ua.rd.cm.services.exception.EmailAlreadyExistsException;
+import ua.rd.cm.services.exception.NoSuchUserException;
 import ua.rd.cm.services.exception.PasswordMismatchException;
 import ua.rd.cm.services.exception.WrongRoleException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import static java.util.Optional.ofNullable;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
@@ -55,7 +56,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
 
-        UserInfoDto userInfoDto = userService.getUserDtoById(userId);
+        UserInfoDto userInfoDto = ofNullable(userService.getUserDtoById(userId))
+                .orElseThrow(()->new NoSuchUserException("No User with such id."));
+
         return new ResponseEntity<>(userInfoDto, HttpStatus.OK);
     }
 

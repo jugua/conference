@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
 import { baseUrl } from '../../constants/route-url';
-import SignInForm from '../../containers/SignInForm';
-import UserMenuFilter from '../User-menu-filter';
+import SignInForm from '../../components/SignInForm/SignInForm';
+import UserMenuFilter from '../../components/UserMenuFilter/UserMenuFilter';
 import logout from '../../actions/logout';
+import load from '../../actions/load';
 
 class Header extends PureComponent {
   constructor() {
@@ -60,8 +61,12 @@ class Header extends PureComponent {
     return false;
   };
 
+  load = (actionType, payload) => this.props.dispatch(
+    load(actionType, payload),
+  );
+
   render() {
-    const { user: { roles, fname }, dispatch } = this.props;
+    const { user: { role, firstName }, dispatch } = this.props;
     const logoutAction = bindActionCreators(logout, dispatch);
 
     return (
@@ -79,7 +84,7 @@ class Header extends PureComponent {
             <button
               className="menu-container__button js-dropdown"
               onClick={this.onButtonAccountClick}
-            >{ fname ? `${fname}'s` : 'Your'} Account
+            >{ firstName ? `${firstName}'s` : 'Your'} Account
             </button>
             <div className={classNames({
               'menu-container__content': true,
@@ -87,13 +92,14 @@ class Header extends PureComponent {
             })}
             >
               {
-                roles.length > 0 ?
+                role ?
                   <UserMenuFilter
                     close={this.closeDropDown}
-                    roles={roles}
+                    role={role}
                     logout={logoutAction}
                   /> :
                   <SignInForm
+                    load={this.load}
                     close={this.closeDropDown}
                   />
               }
@@ -108,21 +114,10 @@ class Header extends PureComponent {
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.shape({
-    id: PropTypes.number,
-    roles: PropTypes.array,
-    mail: PropTypes.string,
-    fname: PropTypes.string,
-    lname: PropTypes.string,
-    bio: PropTypes.string,
-    job: PropTypes.string,
-    company: PropTypes.string,
-    past: PropTypes.string,
-    photo: PropTypes.string,
-    linkedin: PropTypes.string,
-    twitter: PropTypes.string,
-    facebook: PropTypes.string,
-    blog: PropTypes.string,
-    info: PropTypes.string,
+    firstName: PropTypes.string,
+    role: PropTypes.string,
+    conferenceCount: PropTypes.number,
+    talksCount: PropTypes.number,
   }).isRequired,
 };
 
