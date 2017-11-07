@@ -67,10 +67,10 @@ class MyInfo extends Component {
   };
 
   render() {
-    const { user: { bio, job, company, past, photo, info } } = this.state;
+    const { user: { bio = '', job = '', company = '', past = '', photo = '', info = '' } } = this.state;
 
     return (
-      <div className="tabs-container">
+      <div>
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
