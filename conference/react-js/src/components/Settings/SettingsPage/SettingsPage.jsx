@@ -4,6 +4,7 @@ import userShape from '../../../constants/user-shape';
 
 import SettingsContainer
   from '../../../containers/SettingsContainer/SettingsContainer';
+import SettingsInfo from '../SettingsInfo/SettingsInfo';
 
 class SettingsPage extends PureComponent {
   constructor(props) {
@@ -26,14 +27,7 @@ class SettingsPage extends PureComponent {
     return (
       <div className="settings-wrapper">
         <h2 className="settings__header">Account settings</h2>
-        { error &&
-          <div className="settings__info settings__error">
-            {error}
-          </div> }
-        { message &&
-          <div className="settings__info settings__success">
-            {message}
-          </div> }
+        <SettingsInfo error={error} message={message} />
         <SettingsContainer
           user={this.props.user}
           setMessage={this.setMessage}
