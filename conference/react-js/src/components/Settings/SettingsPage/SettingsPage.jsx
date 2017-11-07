@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import SettingsContainer from '../../containers/SettingsContainer';
+import SettingsContainer
+  from '../../../containers/SettingsContainer/SettingsContainer';
 
 class SettingsPage extends PureComponent {
   constructor(props) {

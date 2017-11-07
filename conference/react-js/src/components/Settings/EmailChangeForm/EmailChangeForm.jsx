@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InputBlock from '../../components/InputBlock/InputBlock';
-import { emailPattern } from '../../constants/patterns';
+import InputBlock from '../../../components/InputBlock/InputBlock';
+import { emailPattern } from '../../../constants/patterns';
 
 const EmailChangeForm = ({
   oldMail, mail, submit, change, cancel, title,

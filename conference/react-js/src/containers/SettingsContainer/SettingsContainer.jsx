@@ -8,12 +8,16 @@ import changeEmail from '../../actions/change-email';
 import changeUserInfo from '../../actions/change-user-info';
 
 import SlideBlock from '../../components/SlideBlock';
-import NameBrief from '../../components/NameBrief';
-import EmailBrief from '../../components/EmailBrief';
-import PasswordBrief from '../../components/PasswordBrief';
-import NameChangeForm from '../../components/NameChangeForm';
-import EmailChangeForm from '../../components/EmailChangeForm';
-import PasswordChangeForm from '../../components/PasswordChangeForm';
+import NameBrief from '../../components/Settings/NameBrief/NameBrief';
+import EmailBrief from '../../components/Settings/EmailBrief/EmailBrief';
+import PasswordBrief
+  from '../../components/Settings/PasswordBrief/PasswordBrief';
+import NameChangeForm
+  from '../../components/Settings/NameChangeForm/NameChangeForm';
+import EmailChangeForm
+  from '../../components/Settings/EmailChangeForm/EmailChangeForm';
+import PasswordChangeForm
+  from '../../components/Settings/PasswordChangeForm/PasswordChangeForm';
 
 class SettingsContainer extends PureComponent {
   constructor(props) {
