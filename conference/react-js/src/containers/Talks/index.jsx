@@ -134,7 +134,6 @@ class Talks extends Component {
 
   sortTalks = ({ target: { tagName, dataset: { name } } }) => {
     if (tagName === 'TH' && name) {
-      console.log(name);
       const { ASC, SORT_ALL_TALKS } = action;
       const { [name]: sortField } = this.state;
       const { load, talks } = this.props;
