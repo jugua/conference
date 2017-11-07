@@ -6,6 +6,7 @@ import editUser from '../../actions/edit-user';
 import changePassword from '../../actions/change-password';
 import changeEmail from '../../actions/change-email';
 import changeUserInfo from '../../actions/change-user-info';
+import userShape from '../../constants/user-shape';
 
 import SlideBlock from '../../components/SlideBlock';
 import NameBrief from '../../components/Settings/NameBrief/NameBrief';
@@ -42,7 +43,8 @@ class SettingsContainer extends PureComponent {
     this.setDefaultValues(nextProps);
   }
 
-  setDefaultValues = ({ fname, lname, mail }) => {
+  setDefaultValues = ({ user }) => {
+    const { fname, lname, mail } = user;
     this.setState({
       fname,
       lname,
@@ -188,38 +190,15 @@ class SettingsContainer extends PureComponent {
   }
 }
 
-const mapStateToProps = ({
-  user: { fname, lname, mail },
-  user,
-}) => ({
-  fname, lname, mail, user,
-});
-
 SettingsContainer.propTypes = {
   edit: PropTypes.func.isRequired,
   setMessage: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    roles: PropTypes.array,
-    mail: PropTypes.string,
-    fname: PropTypes.string,
-    lname: PropTypes.string,
-    bio: PropTypes.string,
-    job: PropTypes.string,
-    company: PropTypes.string,
-    past: PropTypes.string,
-    photo: PropTypes.string,
-    linkedin: PropTypes.string,
-    twitter: PropTypes.string,
-    facebook: PropTypes.string,
-    blog: PropTypes.string,
-    info: PropTypes.string,
-  }).isRequired,
+  user: PropTypes.shape(userShape).isRequired,
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   { edit: editUser },
 )(SettingsContainer);
