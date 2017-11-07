@@ -18,8 +18,8 @@ class TalksWrapper extends PureComponent {
     talks.find(talk => talk.id === id)
   );
 
-  showUpdateTalk = ({ target: { dataset: { talkId } } }) => {
-    if (!talkId) return;
+  showUpdateTalk = (rowId, colId, { target: { dataset: { talkId } } }) => {
+    if (!talkId || isNaN(rowId) || isNaN(colId)) return;
 
     this.setState({
       isUpdateTalk: true,
