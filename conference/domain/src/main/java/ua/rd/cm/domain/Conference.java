@@ -24,8 +24,9 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = {"topics", "types", "languages", "levels", "talks", "organisers",
-        "speakers"})
+@EqualsAndHashCode(callSuper = true, exclude = {
+        "topics", "types", "languages", "levels", "talks", "organisers", "speakers"
+})
 @ToString(exclude = {"topics", "types", "languages", "levels", "talks", "organisers", "speakers"})
 @Entity
 public class Conference extends AbstractEntity {
