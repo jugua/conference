@@ -82,7 +82,7 @@ const getRows = (talks, columns) => (
   )
 );
 
-const TalksTable = ({ listOfTalks, columns, onClick }) => (
+const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
   <Table
     selectable
     multiSelectable
@@ -93,7 +93,7 @@ const TalksTable = ({ listOfTalks, columns, onClick }) => (
       adjustForCheckbox
       enableSelectAll
     >
-      <TableRow>
+      <TableRow onClick={sortTalks}>
         {renderTalksHeader(columns)}
       </TableRow>
     </TableHeader>
@@ -109,6 +109,7 @@ TalksTable.propTypes = {
   listOfTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClick: PropTypes.func.isRequired,
+  sortTalks: PropTypes.func.isRequired,
 };
 
 export default TalksTable;

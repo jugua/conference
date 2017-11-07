@@ -15,7 +15,7 @@ class Talks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listOfTalks: [],
+      talks: [],
       filter: { topic: '', status: '' },
       listOfTopics: [],
       speaker: '',
@@ -40,7 +40,7 @@ class Talks extends Component {
     axios.get(url)
       .then(({ data }) => {
         this.props.load(LOAD, data);
-        this.setState({ listOfTalks: data });
+        this.setState({ talks: data });
         this.doFilter();
         const countPages = Math.ceil(data.length / this.state.quantityTalks);
         this.setState({
@@ -63,7 +63,7 @@ class Talks extends Component {
   };
 
   onChangeQuantityTalks = ({ target: { value } }) => {
-    const { listOfTalks: { length } } = this.state;
+    const { talks: { length } } = this.state;
     this.setState({
       quantityTalks: Number(value),
       currentPage: 1,
@@ -108,7 +108,7 @@ class Talks extends Component {
   doFilter = () => {
     const {
       filter,
-      listOfTalks,
+      talks,
       currentPage,
       quantityTalks,
     } = this.state;
@@ -116,7 +116,7 @@ class Talks extends Component {
     this.props.load(APPLY_FILTERS,
       {
         filter,
-        listOfTalks,
+        talks,
         page: currentPage,
         quantity: quantityTalks,
       });
@@ -132,20 +132,21 @@ class Talks extends Component {
     this.doFilter();
   };
 
-  // sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-  //   if (tagName === 'TH' && name) {
-  //     const { ASC, SORT_ALL_TALKS } = action;
-  //     const { [name]: sortField } = this.state;
-  //     const { load, talks } = this.props;
-  //     const value = sortField === ASC ? '' : ASC;
-  //     load(SORT_ALL_TALKS, { talks, direction: value, field: name });
-  //     this.setState({ [name]: value });
-  //   }
-  // };
+  sortTalks = ({ target: { tagName, dataset: { name } } }) => {
+    if (tagName === 'TH' && name) {
+      console.log(name);
+      const { ASC, SORT_ALL_TALKS } = action;
+      const { [name]: sortField } = this.state;
+      const { load, talks } = this.props;
+      const value = sortField === ASC ? '' : ASC;
+      load(SORT_ALL_TALKS, { talks, direction: value, field: name });
+      this.setState({ [name]: value });
+    }
+  };
 
   render() {
     const {
-      listOfTalks,
+      talks,
       listOfTopics,
       quantityTalks,
       currentPage,
@@ -168,9 +169,10 @@ class Talks extends Component {
           handleResetFiltersClick={this.handleResetFiltersClick}
         />
         <TalksTable
-          listOfTalks={listOfTalks}
+          listOfTalks={talks}
           columns={columns}
           onClick={onClick}
+          sortTalks={this.sortTalks}
         />
         <Pagination
           quantityAllPages={quantityAllPages}
@@ -187,7 +189,7 @@ class Talks extends Component {
 
 Talks.propTypes = {
   load: PropTypes.func.isRequired,
-  // talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string),
   onClick: PropTypes.func.isRequired,
   url: PropTypes.string,
