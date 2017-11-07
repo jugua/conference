@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Route,
 } from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ForgotPassword from './Forgot-password';
 import Tabs from './Tabs';
 import Header from '../containers/Header/Header';
@@ -26,49 +27,50 @@ import {
 } from '../constants/route-url';
 
 const App = () => (
-  <Router>
-    <div>
-      <Header />
-      <Switch>
-        <Route
-          path={baseUrl}
-          exact
-          component={Tabs}
-        />
-        <Route
-          path={account}
-          exact
-          component={AccountPage}
-        />
-        <Route
-          path={forgotPassword}
-          exact
-          component={ForgotPassword}
-        />
-        <Route
-          path={signUp}
-          component={SignUp}
-        />
-        <Route
-          path={manageUser}
-          component={ManageUser}
-        />
-        <Route
-          path={talks}
-          component={Talks}
-        />
-        <Route
-          path={history}
-          component={History}
-        />
-        <Route
-          path={myInfo}
-          exact
-          component={MyInfo}
-        />
-      </Switch>
-    </div>
-  </Router>
+  <MuiThemeProvider>
+    <Router>
+      <div>
+        <Header />
+        <Switch>
+          <Route
+            path={baseUrl}
+            exact
+            component={Tabs}
+          />
+          <Route
+            path={account}
+            exact
+            component={AccountPage}
+          />
+          <Route
+            path={forgotPassword}
+            exact
+            component={ForgotPassword}
+          />
+          <Route
+            path={signUp}
+            component={SignUp}
+          />
+          <Route
+            path={manageUser}
+            component={ManageUser}
+          />
+          <Route
+            path={talks}
+            component={Talks}
+          />
+          <Route
+            path={history}
+            component={History}
+          />
+          <Route
+            path={myInfo}
+            component={MyInfo}
+          />
+        </Switch>
+      </div>
+    </Router>
+  </MuiThemeProvider>
 );
 
 export default App;

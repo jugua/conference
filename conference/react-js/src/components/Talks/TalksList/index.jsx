@@ -19,7 +19,10 @@ const renderTalksList = (data, columns) => (
         className="data-table__column
         data-table__column_title-talk"
       >
-        <a className="link">{data.title}</a>
+        <a
+          className="link"
+          data-talk-id={data.id}
+        >{data.title}</a>
       </td>);
     case 'conferenceName':
       return (<td
@@ -48,20 +51,21 @@ const TalksList = ({ data, columns }) =>
     {renderTalksList(data, columns)}
   </tr>);
 
-TalksList.propTypes = { data: PropTypes.shape({
-  date: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  lang: PropTypes.string.isRequired,
-  level: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  topic: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  assignee: PropTypes.string,
-  comment: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-}).isRequired,
-columns: PropTypes.arrayOf(PropTypes.string).isRequired,
+TalksList.propTypes = {
+  data: PropTypes.shape({
+    date: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    lang: PropTypes.string.isRequired,
+    level: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    topic: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    assignee: PropTypes.string,
+    comment: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default TalksList;

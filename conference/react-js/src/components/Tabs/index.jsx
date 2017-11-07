@@ -5,20 +5,23 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Upcoming from '../Upcoming';
 import AutorizedUserMenu from '../Autorized-user-menu';
+import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
 import {
   upcoming,
   myTalks,
   myEvents,
   conference } from '../../constants/route-url';
-import MyTalks from '../My-talks';
 import MyEvents from '../MyEvents/MyEvents';
 import Conference from '../../containers/Conference';
 
-const Tabs = ({ userTalks: { length } }) => (
+const Tabs = ({ user: { conferenceCount, talksCount } }) => (
   <Router>
     <div className="tabs-layout">
       <div className="tabs-wrapper">
-        <AutorizedUserMenu length={length} />
+        <AutorizedUserMenu
+          conferenceCount={conferenceCount}
+          talksCount={talksCount}
+        />
         <Route
           path={upcoming}
           exact
@@ -27,7 +30,7 @@ const Tabs = ({ userTalks: { length } }) => (
         <Route
           path={myTalks}
           exact
-          component={MyTalks}
+          component={TalksWrapper}
         />
         <Route
           path={myEvents}
@@ -45,11 +48,9 @@ const Tabs = ({ userTalks: { length } }) => (
 );
 
 Tabs.propTypes = {
-  userTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  user: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = state => ({
-  userTalks: state.userTalks,
-});
+const mapStateToProps = user => user;
 
 export default connect(mapStateToProps)(Tabs);
