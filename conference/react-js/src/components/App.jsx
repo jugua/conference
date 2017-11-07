@@ -9,7 +9,7 @@ import ForgotPassword from './Forgot-password';
 import Tabs from './Tabs';
 import Header from '../containers/Header/Header';
 import '../scss/main.scss';
-import SignUp from '../containers/SignUpForm';
+import SignUp from '../containers/SignUpForm/SignUpForm';
 import History from './History';
 import ManageUser from '../containers/Manage-user/';
 import Talks from '../containers/Talks';
