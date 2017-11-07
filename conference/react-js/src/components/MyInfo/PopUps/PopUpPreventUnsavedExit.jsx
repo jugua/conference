@@ -12,6 +12,7 @@ class PopUpPreventUnsavedExit extends Component {
           isOpen={showModal}
           contentLabel="onRequestClose"
           onRequestClose={this.handleCloseModal}
+          name=""
           className={{
             base: classNames({
               'pop-up pop-up_big': true,

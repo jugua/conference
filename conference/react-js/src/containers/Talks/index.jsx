@@ -5,8 +5,7 @@ import axios from 'axios';
 import { bindActionCreators } from 'redux';
 
 import FilterForm from './FilterForm';
-import DisplayTalks from './DisplayTalks';
-import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
+import TalksTable from '../../components/Talks/TalksTable/TalksTable';
 import Pagination from './Pagination/Pagination';
 import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
@@ -107,14 +106,16 @@ class Talks extends Component {
   };
 
   doFilter = () => {
-    const { filter,
+    const {
+      filter,
       listOfTalks,
       currentPage,
       quantityTalks,
     } = this.state;
     const { APPLY_FILTERS } = action;
     this.props.load(APPLY_FILTERS,
-      { filter,
+      {
+        filter,
         listOfTalks,
         page: currentPage,
         quantity: quantityTalks,
@@ -131,27 +132,29 @@ class Talks extends Component {
     this.doFilter();
   };
 
-  sortTalks = ({ target: { tagName, dataset: { name } } }) => {
-    if (tagName === 'TH' && name) {
-      const { ASC, SORT_ALL_TALKS } = action;
-      const { [name]: sortField } = this.state;
-      const { load, talks } = this.props;
-      const value = sortField === ASC ? '' : ASC;
-      load(SORT_ALL_TALKS, { talks, direction: value, field: name });
-      this.setState({ [name]: value });
-    }
-  };
+  // sortTalks = ({ target: { tagName, dataset: { name } } }) => {
+  //   if (tagName === 'TH' && name) {
+  //     const { ASC, SORT_ALL_TALKS } = action;
+  //     const { [name]: sortField } = this.state;
+  //     const { load, talks } = this.props;
+  //     const value = sortField === ASC ? '' : ASC;
+  //     load(SORT_ALL_TALKS, { talks, direction: value, field: name });
+  //     this.setState({ [name]: value });
+  //   }
+  // };
 
   render() {
-    const { listOfTopics,
+    const {
+      listOfTalks,
+      listOfTopics,
       quantityTalks,
       currentPage,
-      quantityAllPages } = this.state;
-    const { talks, columns, onClick } = this.props;
+      quantityAllPages,
+    } = this.state;
+    const { columns, onClick } = this.props;
     return (
       <div
         className="talks tabs-container"
-        onClick={onClick}
         role="menu"
         tabIndex="0"
       >
@@ -164,12 +167,11 @@ class Talks extends Component {
           handleFilterClick={this.handleFilterClick}
           handleResetFiltersClick={this.handleResetFiltersClick}
         />
-        <table
-          className="data-table"
-        >
-          <TalksHeader columns={columns} sortTalks={this.sortTalks} />
-          <DisplayTalks talk={talks} columns={columns} />
-        </table>
+        <TalksTable
+          listOfTalks={listOfTalks}
+          columns={columns}
+          onClick={onClick}
+        />
         <Pagination
           quantityAllPages={quantityAllPages}
           currentPage={currentPage}
@@ -185,7 +187,7 @@ class Talks extends Component {
 
 Talks.propTypes = {
   load: PropTypes.func.isRequired,
-  talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  // talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string),
   onClick: PropTypes.func.isRequired,
   url: PropTypes.string,
@@ -204,7 +206,8 @@ Talks.defaultProps = {
 };
 
 const mapStateToProps = ({ talks, userTalks }) => (
-  { talks,
+  {
+    talks,
     userTalks,
   });
 
