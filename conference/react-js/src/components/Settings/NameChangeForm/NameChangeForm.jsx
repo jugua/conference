@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import InputBlock from '../../components/InputBlock/InputBlock';
-import { namePattern } from '../../constants/patterns';
+import InputBlock from '../../../components/InputBlock/InputBlock';
+import { namePattern } from '../../../constants/patterns';
 
 const NameChangeForm = ({
   submit, change, fname, lname, cancel, title,

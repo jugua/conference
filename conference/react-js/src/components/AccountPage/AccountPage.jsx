@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import classNames from 'classnames'; import axios from 'axios';
 import { myInfo } from '../../constants/backend-url';
 
-import SettingsPage from '../SettingsPage/SettingsPage';
+import SettingsPage from '../Settings/SettingsPage/SettingsPage';
 import MyInfo from '../MyInfo/MyInfo';
 
 const tabsList = [
