@@ -145,13 +145,12 @@ class Talks extends Component {
 
   render() {
     const {
-      talks,
       listOfTopics,
       quantityTalks,
       currentPage,
       quantityAllPages,
     } = this.state;
-    const { columns, onClick } = this.props;
+    const { talks, columns, onClick } = this.props;
     return (
       <div
         className="talks tabs-container"

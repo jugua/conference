@@ -83,26 +83,28 @@ const getRows = (talks, columns) => (
 );
 
 const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
-  <Table
-    selectable
-    multiSelectable
-    onCellClick={onClick}
-  >
-    <TableHeader
-      displaySelectAll
-      adjustForCheckbox
-      enableSelectAll
+  <div className="table-container">
+    <Table
+      selectable
+      multiSelectable
+      onCellClick={onClick}
     >
-      <TableRow onClick={sortTalks}>
-        {renderTalksHeader(columns)}
-      </TableRow>
-    </TableHeader>
-    <TableBody
-      showRowHover
-    >
-      {getRows(listOfTalks, columns)}
-    </TableBody>
-  </Table>
+      <TableHeader
+        displaySelectAll
+        adjustForCheckbox
+        enableSelectAll
+      >
+        <TableRow onClick={sortTalks}>
+          {renderTalksHeader(columns)}
+        </TableRow>
+      </TableHeader>
+      <TableBody
+        showRowHover
+      >
+        {getRows(listOfTalks, columns)}
+      </TableBody>
+    </Table>
+  </div>
 );
 
 TalksTable.propTypes = {
