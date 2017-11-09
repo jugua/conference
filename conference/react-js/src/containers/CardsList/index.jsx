@@ -24,23 +24,23 @@ class CardsList extends PureComponent {
   setConference = (data) => {
     const { SET_CONFERENCE } = action;
     this.props.load(SET_CONFERENCE, data);
-  }
+  };
 
-  setCards = (data, id) => (data.map(element =>
+  setCards = (data, role) => (data.map(element =>
     (<Card
       data={element}
       key={element.id}
-      id={id}
+      role={role}
       setConference={this.setConference}
     />),
   ));
 
   render() {
     const { data } = this.state;
-    const { user: { id } } = this.props;
+    const { user: { role } } = this.props;
     return (
       <div className="tabs-container">
-        {this.setCards(data, id)}
+        {this.setCards(data, role)}
       </div>
     );
   }

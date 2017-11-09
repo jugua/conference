@@ -5,8 +5,7 @@ import axios from 'axios';
 import { bindActionCreators } from 'redux';
 
 import FilterForm from './FilterForm';
-import DisplayTalks from './DisplayTalks';
-import TalksHeader from '../../components/Talks/TalksHeader/TalksHeader';
+import TalksTable from '../../components/Talks/TalksTable/TalksTable';
 import Pagination from './Pagination/Pagination';
 import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
@@ -16,7 +15,7 @@ class Talks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listOfTalks: [],
+      talks: [],
       filter: { topic: '', status: '' },
       listOfTopics: [],
       speaker: '',
@@ -41,7 +40,7 @@ class Talks extends Component {
     axios.get(url)
       .then(({ data }) => {
         this.props.load(LOAD, data);
-        this.setState({ listOfTalks: data });
+        this.setState({ talks: data });
         this.doFilter();
         const countPages = Math.ceil(data.length / this.state.quantityTalks);
         this.setState({
@@ -64,7 +63,7 @@ class Talks extends Component {
   };
 
   onChangeQuantityTalks = ({ target: { value } }) => {
-    const { listOfTalks: { length } } = this.state;
+    const { talks: { length } } = this.state;
     this.setState({
       quantityTalks: Number(value),
       currentPage: 1,
@@ -107,15 +106,17 @@ class Talks extends Component {
   };
 
   doFilter = () => {
-    const { filter,
-      listOfTalks,
+    const {
+      filter,
+      talks,
       currentPage,
       quantityTalks,
     } = this.state;
     const { APPLY_FILTERS } = action;
     this.props.load(APPLY_FILTERS,
-      { filter,
-        listOfTalks,
+      {
+        filter,
+        talks,
         page: currentPage,
         quantity: quantityTalks,
       });
@@ -143,15 +144,16 @@ class Talks extends Component {
   };
 
   render() {
-    const { listOfTopics,
+    const {
+      listOfTopics,
       quantityTalks,
       currentPage,
-      quantityAllPages } = this.state;
+      quantityAllPages,
+    } = this.state;
     const { talks, columns, onClick } = this.props;
     return (
       <div
         className="talks tabs-container"
-        onClick={onClick}
         role="menu"
         tabIndex="0"
       >
@@ -164,12 +166,12 @@ class Talks extends Component {
           handleFilterClick={this.handleFilterClick}
           handleResetFiltersClick={this.handleResetFiltersClick}
         />
-        <table
-          className="data-table"
-        >
-          <TalksHeader columns={columns} sortTalks={this.sortTalks} />
-          <DisplayTalks talk={talks} columns={columns} />
-        </table>
+        <TalksTable
+          listOfTalks={talks}
+          columns={columns}
+          onClick={onClick}
+          sortTalks={this.sortTalks}
+        />
         <Pagination
           quantityAllPages={quantityAllPages}
           currentPage={currentPage}
@@ -204,7 +206,8 @@ Talks.defaultProps = {
 };
 
 const mapStateToProps = ({ talks, userTalks }) => (
-  { talks,
+  {
+    talks,
     userTalks,
   });
 

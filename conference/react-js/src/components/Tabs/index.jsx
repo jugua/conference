@@ -14,11 +14,14 @@ import {
 import MyEvents from '../MyEvents/MyEvents';
 import Conference from '../../containers/Conference';
 
-const Tabs = ({ userTalks: { length } }) => (
+const Tabs = ({ user: { conferenceCount, talksCount } }) => (
   <Router>
     <div className="tabs-layout">
       <div className="tabs-wrapper">
-        <AutorizedUserMenu length={length} />
+        <AutorizedUserMenu
+          conferenceCount={conferenceCount}
+          talksCount={talksCount}
+        />
         <Route
           path={upcoming}
           exact
@@ -45,11 +48,9 @@ const Tabs = ({ userTalks: { length } }) => (
 );
 
 Tabs.propTypes = {
-  userTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  user: PropTypes.shape({}).isRequired,
 };
 
-const mapStateToProps = state => ({
-  userTalks: state.userTalks,
-});
+const mapStateToProps = user => user;
 
 export default connect(mapStateToProps)(Tabs);

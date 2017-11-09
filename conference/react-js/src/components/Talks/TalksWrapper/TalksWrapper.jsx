@@ -18,12 +18,12 @@ class TalksWrapper extends PureComponent {
     talks.find(talk => talk.id === id)
   );
 
-  showUpdateTalk = ({ target: { dataset: { talkId } } }) => {
-    if (!talkId) return;
+  showUpdateTalk = (rowId, colId, { target: { dataset: { talkId } } }) => {
+    if (!talkId || isNaN(rowId) || isNaN(colId)) return;
 
     this.setState({
       isUpdateTalk: true,
-      talk: this.getTalkById(this.props.userTalks, +talkId),
+      talk: this.getTalkById(this.props.talks, +talkId),
     });
   };
 
@@ -46,9 +46,9 @@ class TalksWrapper extends PureComponent {
 }
 
 TalksWrapper.propTypes = {
-  userTalks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  talks: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(
-  ({ userTalks }) => ({ userTalks }),
+  ({ talks }) => ({ talks }),
 )(TalksWrapper);
