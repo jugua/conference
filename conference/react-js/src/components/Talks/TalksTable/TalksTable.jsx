@@ -82,33 +82,36 @@ const getRows = (talks, columns) => (
   )
 );
 
-const TalksTable = ({ listOfTalks, columns, onClick }) => (
-  <Table
-    selectable
-    multiSelectable
-    onCellClick={onClick}
-  >
-    <TableHeader
-      displaySelectAll
-      adjustForCheckbox
-      enableSelectAll
+const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
+  <div className="table-container">
+    <Table
+      selectable
+      multiSelectable
+      onCellClick={onClick}
     >
-      <TableRow>
-        {renderTalksHeader(columns)}
-      </TableRow>
-    </TableHeader>
-    <TableBody
-      showRowHover
-    >
-      {getRows(listOfTalks, columns)}
-    </TableBody>
-  </Table>
+      <TableHeader
+        displaySelectAll
+        adjustForCheckbox
+        enableSelectAll
+      >
+        <TableRow onClick={sortTalks}>
+          {renderTalksHeader(columns)}
+        </TableRow>
+      </TableHeader>
+      <TableBody
+        showRowHover
+      >
+        {getRows(listOfTalks, columns)}
+      </TableBody>
+    </Table>
+  </div>
 );
 
 TalksTable.propTypes = {
   listOfTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClick: PropTypes.func.isRequired,
+  sortTalks: PropTypes.func.isRequired,
 };
 
 export default TalksTable;

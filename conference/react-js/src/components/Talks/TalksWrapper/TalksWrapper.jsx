@@ -23,7 +23,7 @@ class TalksWrapper extends PureComponent {
 
     this.setState({
       isUpdateTalk: true,
-      talk: this.getTalkById(this.props.userTalks, +talkId),
+      talk: this.getTalkById(this.props.talks, +talkId),
     });
   };
 
@@ -46,9 +46,9 @@ class TalksWrapper extends PureComponent {
 }
 
 TalksWrapper.propTypes = {
-  userTalks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  talks: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(
-  ({ userTalks }) => ({ userTalks }),
+  ({ talks }) => ({ talks }),
 )(TalksWrapper);

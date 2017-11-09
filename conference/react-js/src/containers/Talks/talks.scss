@@ -1,4 +1,5 @@
 .talks-container {
+	width: 100%;
 	margin: 20px auto 0;
 	box-sizing: border-box;
 	padding: 20px;
@@ -15,7 +16,8 @@
 		}
 
 	@media ($mnw: $xmdmx) {
-		height: calc(100vh - 100px)
+		height: calc(100vh - 200px);
+		overflow-y: scroll;
 		}
 	}
 
@@ -36,3 +38,8 @@
 			}
 		}
 	}
+
+.table-container {
+	height: calc(100vh - 200px);
+	overflow-y: scroll;
+}
