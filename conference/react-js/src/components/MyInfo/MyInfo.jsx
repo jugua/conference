@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import changeUserInfo from '../../actions/change-user-info';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
@@ -19,6 +21,7 @@ class MyInfo extends Component {
 
   componentDidMount() {
     this.setUserInfo(this.props);
+    this.props.updateInfo();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,14 +54,7 @@ class MyInfo extends Component {
 
   handleSaveInfo = (e) => {
     e.preventDefault();
-    // update myInfo via post request
-    // const saveUserInfo = ({ bio, job, company }) => {
-    //   const body = { bio, job, company };
-    //   return axios.post(myInfo, body);
-    // };
-    //
-    // saveUserInfo(this.state.user);
-
+    changeUserInfo(this.state.user);
     this.handleOpenModal();
   };
 
@@ -175,5 +171,9 @@ class MyInfo extends Component {
     );
   }
 }
+
+MyInfo.propTypes = {
+  updateInfo: PropTypes.func.isRequired,
+};
 
 export default MyInfo;

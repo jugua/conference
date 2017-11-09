@@ -33,6 +33,10 @@ class AccountPage extends PureComponent {
   }
 
   componentDidMount() {
+    this.updateMyInfo();
+  }
+
+  updateMyInfo = () => {
     axios.get(myInfo)
       .then(({ data }) => {
         this.setState({
@@ -74,7 +78,10 @@ class AccountPage extends PureComponent {
           }
         </ul>
         <div className="tabs-container">
-          <CurrentComponent user={this.state.user} />
+          <CurrentComponent
+            user={this.state.user}
+            updateInfo={this.updateMyInfo}
+          />
         </div>
       </div>
     );
