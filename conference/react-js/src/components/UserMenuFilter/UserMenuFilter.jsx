@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import UserMenu from '../User-menu';
+import UserMenu from '../UserMenu/UserMenu';
 import {
   account,
   manageUser,

@@ -15,6 +15,7 @@ const actions = {
   SORT_ALL_TALKS: 'sort_all_talks',
   SET_CONFERENCE: 'set_conference',
   SET_CONTACTS: 'set_contacts',
+  USER_LOGOUT: 'user_logout',
 };
 
 export default actions;

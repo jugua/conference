@@ -7,8 +7,9 @@ import forgotPasswordErrorMessage from './forgot-password-error-message';
 import talks from './talks';
 import conference from './conference';
 import contacts from './contacts';
+import actionTypes from '../constants/actions-types';
 
-const rootReducers = combineReducers({
+const combinedReducer = combineReducers({
   user,
   forgotPassword,
   forgotPasswordErrorMessage,
@@ -18,5 +19,11 @@ const rootReducers = combineReducers({
   conference,
   contacts,
 });
+
+const rootReducers = (state, action) => (
+  action.type === actionTypes.USER_LOGOUT ?
+    combinedReducer(undefined, action) :
+    combinedReducer(state, action)
+);
 
 export default rootReducers;
