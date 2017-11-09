@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import actionTypes from '../constants/actions-types';
 import { logout as logoutUrl } from '../constants/backend-url';
-// import defaultUser from '../constants/default-user';
 
 const logoutAction = {
   type: actionTypes.USER_LOGOUT,
