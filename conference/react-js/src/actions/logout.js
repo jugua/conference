@@ -4,19 +4,13 @@ import actionTypes from '../constants/actions-types';
 import { logout as logoutUrl } from '../constants/backend-url';
 import defaultUser from '../constants/default-user';
 
-const logoutAction = () => ({
+const logoutAction = {
   type: actionTypes.SET_USER,
   payload: defaultUser,
-});
+};
 
-const logout = () => axios.post(
-  logoutUrl,
-  {
-    headers: {
-      'Cache-Control': 'no-cache, no-store',
-      Pragma: 'no-cache',
-    },
-  },
-).then(logoutAction);
+const logout = dispatch => axios.post(logoutUrl)
+  .then(() => dispatch(logoutAction))
+  .catch(() => console.error('Logout failed'));
 
 export default logout;
