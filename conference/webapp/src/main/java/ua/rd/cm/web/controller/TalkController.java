@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Talk;
+import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.MessageDto;
 import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
@@ -75,6 +78,20 @@ public class TalkController {
         return new ResponseEntity<>(message, ex.getHttpStatus());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/talksTitles")
+    public ResponseEntity<List<String>> getTalksTitles(){
+    	List<String> talksTitles = talkService.findAll().stream().map(m -> m.getTitle()).collect(Collectors.toList());
+    	return new ResponseEntity<>(talksTitles, HttpStatus.OK);
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/talksStatus")
+    public ResponseEntity<List<String>> getTalksStatus(){
+    	List<String> talksStatus = Arrays.asList(TalkStatus.values()).stream().map(m -> m.getName()).collect(Collectors.toList());
+    	return new ResponseEntity<>(talksStatus, HttpStatus.OK);
+    }
+    
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
