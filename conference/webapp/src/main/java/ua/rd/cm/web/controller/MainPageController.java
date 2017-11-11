@@ -78,11 +78,15 @@ public class MainPageController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("conference")
-    public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
-        Long id = conferenceService.save(dto);
+    public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto,BindingResult bindingResult ) {
         MessageDto messageDto = new MessageDto();
+        Long id = conferenceService.save(dto);
+        if (bindingResult.hasErrors()) {
+            messageDto.setError("field_error");
+            return new ResponseEntity<>(messageDto, HttpStatus.BAD_REQUEST);
+        } else {
         messageDto.setId(id);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return new ResponseEntity<>(messageDto, HttpStatus.OK);}
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -91,7 +95,6 @@ public class MainPageController {
         MessageDto messageDto = new MessageDto();
         messageDto.setId(dto.getId());
         Conference conference = conferenceService.conferenceDtoToConference(dto);
-
         if (bindingResult.hasErrors()) {
             messageDto.setError("field_error");
             return new ResponseEntity<>(messageDto, HttpStatus.BAD_REQUEST);
