@@ -3,6 +3,8 @@ package ua.rd.cm.services.businesslogic.impl;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,8 @@ import ua.rd.cm.domain.TalkStatus;
 import ua.rd.cm.dto.ConferenceDto;
 import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
+import ua.rd.cm.dto.TalkDto;
+import ua.rd.cm.dto.converter.TalksConverter;
 import ua.rd.cm.repository.ConferenceRepository;
 import ua.rd.cm.services.businesslogic.ConferenceService;
 import ua.rd.cm.services.exception.ConferenceNotFoundException;
@@ -31,6 +35,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     private final ModelMapper modelMapper;
     private final ConferenceRepository conferenceRepository;
+    private final TalksConverter talksConverter;
 
     @Override
     @Transactional(readOnly = true)
@@ -69,7 +74,6 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Transactional(readOnly = true)
     public List<Conference> findPast() {
         return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now());
-
     }
 
     @Override
@@ -80,9 +84,16 @@ public class ConferenceServiceImpl implements ConferenceService {
         return conferences;
     }
 
-
     public ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
         return modelMapper.map(conference, ConferenceDtoBasic.class);
+    }
+
+    @Override
+    public Collection<TalkDto> findTalksByConferenceId(long id) {
+        Conference conference = findById(id);
+        Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
+
+        return talksConverter.toDto(talks);
     }
 
     public List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences) {

@@ -1,5 +1,6 @@
 package ua.rd.cm.services.businesslogic;
 
+import java.util.Collection;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -7,7 +8,7 @@ import ua.rd.cm.domain.Conference;
 import ua.rd.cm.dto.ConferenceDto;
 import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
-
+import ua.rd.cm.dto.TalkDto;
 
 
 public interface ConferenceService {
@@ -37,4 +38,6 @@ public interface ConferenceService {
     List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences);
 
     ConferenceDtoBasic conferenceToDtoBasic(Conference conference);
+
+    Collection<TalkDto> findTalksByConferenceId(long id);
 }

@@ -26,7 +26,7 @@ import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import ua.rd.cm.infrastructure.mail.MailService;
 
 @Configuration
-@ComponentScan(basePackages = {"ua.rd.cm.services"})
+@ComponentScan(basePackages = {"ua.rd.cm.services", "ua.rd.cm.dto.converter"})
 @PropertySources({
         @PropertySource("classpath:default/app.properties"),
         @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)

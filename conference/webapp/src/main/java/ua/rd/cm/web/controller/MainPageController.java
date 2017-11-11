@@ -1,5 +1,6 @@
 package ua.rd.cm.web.controller;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,24 +18,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.dto.*;
 import ua.rd.cm.dto.ConferenceDto;
 import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.dto.MessageDto;
+import ua.rd.cm.dto.TalkDto;
 import ua.rd.cm.services.businesslogic.ConferenceService;
 import ua.rd.cm.services.businesslogic.TopicService;
 import ua.rd.cm.services.businesslogic.TypeService;
-import ua.rd.cm.web.converter.TalksConverter;
-import java.util.Collection;
-import java.util.Collections;
 
 @Log4j
 @RestController
@@ -45,7 +43,6 @@ public class MainPageController {
     private final TypeService typeService;
     private final TopicService topicService;
     private final ConferenceService conferenceService;
-    private final TalksConverter talksConverter;
 
     @GetMapping("conference/upcoming")
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
@@ -61,19 +58,16 @@ public class MainPageController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("conference/{id}")
-    public ResponseEntity getConferenceById(@PathVariable long id) {
+    public ResponseEntity conferenceById(@PathVariable long id) {
         Conference conference = conferenceService.findById(id);
-        return new ResponseEntity(conference, HttpStatus.OK);
+        return ok(conference);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("conference/{id}/talks")
-    public ResponseEntity getConferenceTalksById(@PathVariable long id) {
-        Conference conference = conferenceService.findById(id);
-        Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
-
-        Collection<TalkDto> talkDtos = talksConverter.toDto(talks);
-        return new ResponseEntity(talkDtos, HttpStatus.OK);
+    public ResponseEntity talksByConferenceId(@PathVariable long id) {
+        Collection<TalkDto> talkDtos = conferenceService.findTalksByConferenceId(id);
+        return ok(talkDtos);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -82,23 +76,23 @@ public class MainPageController {
         Long id = conferenceService.save(dto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return ok(messageDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("conference/update")
-    public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult) {
         MessageDto messageDto = new MessageDto();
         messageDto.setId(dto.getId());
         Conference conference = conferenceService.conferenceDtoToConference(dto);
 
         if (bindingResult.hasErrors()) {
             messageDto.setError("field_error");
-            return new ResponseEntity<>(messageDto, HttpStatus.BAD_REQUEST);
+            return ok(messageDto);
         } else {
             messageDto.setError("successfully_updated");
             conferenceService.update(conference);
-            return new ResponseEntity<>(messageDto, HttpStatus.OK);
+            return ok(messageDto);
         }
     }
 
@@ -108,7 +102,7 @@ public class MainPageController {
         Long id = typeService.save(typeDto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return ok(messageDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -117,7 +111,7 @@ public class MainPageController {
         Long id = topicService.save(topicDto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return ok(messageDto);
     }
 
     private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
@@ -126,9 +120,11 @@ public class MainPageController {
             return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
         }
         List<ConferenceDtoBasic> conferenceDtoBasics = conferenceService.conferenceListToDtoBasic(conferences);
-        return new ResponseEntity<>(conferenceDtoBasics, HttpStatus.OK);
+        return ok(conferenceDtoBasics);
     }
 
+    private <T> ResponseEntity<T> ok(T body) {
+        return new ResponseEntity<>(body, HttpStatus.OK);
+    }
 
 }
-

@@ -1,19 +1,20 @@
-package ua.rd.cm.web.converter;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import ua.rd.cm.domain.Conference;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.dto.TalkDto;
-import lombok.AllArgsConstructor;
+package ua.rd.cm.dto.converter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Service
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import lombok.AllArgsConstructor;
+import ua.rd.cm.domain.Conference;
+import ua.rd.cm.domain.Talk;
+import ua.rd.cm.domain.User;
+import ua.rd.cm.dto.TalkDto;
+
+@Component
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalksConverter {
 
