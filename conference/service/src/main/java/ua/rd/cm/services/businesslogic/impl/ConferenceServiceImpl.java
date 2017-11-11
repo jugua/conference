@@ -2,12 +2,12 @@ package ua.rd.cm.services.businesslogic.impl;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +55,8 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void update(Conference conference) {
-        conferenceRepository.save(conference);
+    public void update(ConferenceDto dto) {
+        conferenceRepository.save(conferenceDtoToConference(dto));
     }
 
     @Override
@@ -72,20 +72,36 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Conference> findPast() {
-        return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now());
+    public List<ConferenceDto> findPast() {
+        return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now())
+                .stream().map(this::conferenceToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ConferenceDtoBasic> findPastBasic() {
+        return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now())
+                .stream().map(this::conferenceToDtoBasic)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ConferenceDtoBasic> findUpcomingBasic() {
+        List<Conference> conferences = conferenceRepository
+                .findAllByStartDateIsGreaterThanEqual(LocalDate.now());
+        fillCallForPaperDatesActive(conferences);
+        return conferences.stream().map(this::conferenceToDtoBasic)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Conference> findUpcoming() {
-        List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
+    public List<ConferenceDto> findUpcoming() {
+        List<Conference> conferences = conferenceRepository
+                .findAllByStartDateIsGreaterThanEqual(LocalDate.now());
         fillCallForPaperDatesActive(conferences);
-        return conferences;
-    }
-
-    public ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
-        return modelMapper.map(conference, ConferenceDtoBasic.class);
+        return conferences.stream().map(this::conferenceToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -96,14 +112,8 @@ public class ConferenceServiceImpl implements ConferenceService {
         return talksConverter.toDto(talks);
     }
 
-    public List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences) {
-        List<ConferenceDtoBasic> conferenceDtoBasics = new ArrayList<>();
-        if (conferences != null) {
-            for (Conference conf : conferences) {
-                conferenceDtoBasics.add(conferenceToDtoBasic(conf));
-            }
-        }
-        return conferenceDtoBasics;
+    private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
+        return modelMapper.map(conference, ConferenceDtoBasic.class);
     }
 
     public ConferenceDto conferenceToDto(Conference conference) {
@@ -137,16 +147,6 @@ public class ConferenceServiceImpl implements ConferenceService {
             return localDate.format(formatter);
         }
         return null;
-    }
-
-    public List<ConferenceDto> conferenceListToDto(List<Conference> conferences) {
-        List<ConferenceDto> conferenceDtos = new ArrayList<>();
-        if (conferences != null) {
-            for (Conference conf : conferences) {
-                conferenceDtos.add(conferenceToDto(conf));
-            }
-        }
-        return conferenceDtos;
     }
 
     public Conference conferenceDtoToConference(ConferenceDto conferenceDto) {

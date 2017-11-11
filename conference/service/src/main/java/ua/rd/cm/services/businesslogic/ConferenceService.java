@@ -1,8 +1,8 @@
 package ua.rd.cm.services.businesslogic;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.time.LocalDate;
 
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.dto.ConferenceDto;
@@ -17,27 +17,26 @@ public interface ConferenceService {
 
     Long save(CreateConferenceDto conference);
 
-    void update(Conference conference);
+    void update(ConferenceDto conference);
 
     void remove(Conference conference);
 
     List<Conference> findAll();
 
-    List<Conference> findPast();
+    List<ConferenceDto> findPast();
 
-    List<Conference> findUpcoming();
+    List<ConferenceDto> findUpcoming();
+
+    List<ConferenceDtoBasic> findPastBasic();
+
+    List<ConferenceDtoBasic> findUpcomingBasic();
 
     Conference conferenceDtoToConference(ConferenceDto conferenceDto);
-
-    List<ConferenceDto> conferenceListToDto(List<Conference> conferences);
 
     String convertDateToString(LocalDate localDate);
 
     ConferenceDto conferenceToDto(Conference conference);
 
-    List<ConferenceDtoBasic> conferenceListToDtoBasic(List<Conference> conferences);
-
-    ConferenceDtoBasic conferenceToDtoBasic(Conference conference);
-
     Collection<TalkDto> findTalksByConferenceId(long id);
+
 }

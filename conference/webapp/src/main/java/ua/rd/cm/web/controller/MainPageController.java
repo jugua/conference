@@ -1,7 +1,6 @@
 package ua.rd.cm.web.controller;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -24,7 +23,6 @@ import lombok.extern.log4j.Log4j;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Role;
 import ua.rd.cm.dto.ConferenceDto;
-import ua.rd.cm.dto.ConferenceDtoBasic;
 import ua.rd.cm.dto.CreateConferenceDto;
 import ua.rd.cm.dto.CreateTopicDto;
 import ua.rd.cm.dto.CreateTypeDto;
@@ -45,15 +43,20 @@ public class MainPageController {
     private final ConferenceService conferenceService;
 
     @GetMapping("conference/upcoming")
+//    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
-        List<Conference> conferences = conferenceService.findUpcoming();
-        return responseEntityConferencesByRole(request, conferences);
+        if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
+            return ok(conferenceService.findUpcoming());
+        }
+        return ok(conferenceService.findUpcomingBasic());
     }
 
     @GetMapping("conference/past")
     public ResponseEntity pastConferences(HttpServletRequest request) {
-        List<Conference> conferences = conferenceService.findPast();
-        return responseEntityConferencesByRole(request, conferences);
+        if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
+            return ok(conferenceService.findPast());
+        }
+        return ok(conferenceService.findPastBasic());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -84,14 +87,13 @@ public class MainPageController {
     public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult) {
         MessageDto messageDto = new MessageDto();
         messageDto.setId(dto.getId());
-        Conference conference = conferenceService.conferenceDtoToConference(dto);
 
         if (bindingResult.hasErrors()) {
             messageDto.setError("field_error");
             return ok(messageDto);
         } else {
             messageDto.setError("successfully_updated");
-            conferenceService.update(conference);
+            conferenceService.update(dto);
             return ok(messageDto);
         }
     }
@@ -112,15 +114,6 @@ public class MainPageController {
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
         return ok(messageDto);
-    }
-
-    private ResponseEntity responseEntityConferencesByRole(HttpServletRequest request, List<Conference> conferences) {
-        if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
-            List<ConferenceDto> conferencesDto = conferenceService.conferenceListToDto(conferences);
-            return new ResponseEntity<>(conferencesDto, HttpStatus.OK);
-        }
-        List<ConferenceDtoBasic> conferenceDtoBasics = conferenceService.conferenceListToDtoBasic(conferences);
-        return ok(conferenceDtoBasics);
     }
 
     private <T> ResponseEntity<T> ok(T body) {

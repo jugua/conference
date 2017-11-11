@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,16 +37,20 @@ import ua.rd.cm.config.WebTestConfig;
 import ua.rd.cm.domain.Conference;
 import ua.rd.cm.domain.Talk;
 import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.dto.*;
+import ua.rd.cm.dto.ConferenceDto;
+import ua.rd.cm.dto.ConferenceDtoBasic;
+import ua.rd.cm.dto.CreateTopicDto;
+import ua.rd.cm.dto.CreateTypeDto;
 import ua.rd.cm.services.businesslogic.ConferenceService;
-import ua.rd.cm.services.resources.LevelService;
 import ua.rd.cm.services.businesslogic.TopicService;
 import ua.rd.cm.services.businesslogic.TypeService;
+import ua.rd.cm.services.resources.LevelService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
 @WebAppConfiguration
 public class MainPageControllerTest extends TestUtil {
+
     public static final String API_CONFERENCE = "/conference";
     public static final String API_LEVEL = "/level";
     public static final String API_TOPIC = "/topic";
@@ -70,8 +73,28 @@ public class MainPageControllerTest extends TestUtil {
     @Autowired
     private Filter springSecurityFilterChain;
 
+    private List<Conference> conferences;
+    private List<ConferenceDto> conferencesDto;
+    private List<ConferenceDtoBasic> conferenceDtoBasics;
+    private Conference conference;
+    private ConferenceDtoBasic conferenceDtoBasic;
+    private ConferenceDto conferenceDto;
+
     @Before
     public void setup() {
+        conferences = new ArrayList<>();
+        conferencesDto = new ArrayList<>();
+        conferenceDtoBasics = new ArrayList<>();
+
+        conference = new Conference();
+        conferences.add(conference);
+
+        conferenceDtoBasic = new ConferenceDtoBasic();
+        conferenceDtoBasics.add(conferenceDtoBasic);
+
+        conferenceDto = new ConferenceDto();
+        conferencesDto.add(conferenceDto);
+
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
@@ -88,15 +111,9 @@ public class MainPageControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ADMIN_ROLE)
     public void getUpcomingConferencesWithNoTalks() throws Exception {
-        List<Conference> conferences = new ArrayList<>();
-        conferences.add(new Conference());
-        List<ConferenceDto> conferencesDto =new ArrayList<>();
-        List<ConferenceDtoBasic> conferenceDtoBasics = new ArrayList<>();
-        conferenceDtoBasics.add(new ConferenceDtoBasic());
-        conferencesDto.add(new ConferenceDto());
-        when(conferenceService.findUpcoming()).thenReturn(conferences);
-        when(conferenceService.conferenceListToDto(conferences)).thenReturn(conferencesDto);
-        when(conferenceService.conferenceListToDtoBasic(conferences)).thenReturn(conferenceDtoBasics);
+        when(conferenceService.findUpcoming()).thenReturn(conferencesDto);
+        when(conferenceService.findPastBasic()).thenReturn(conferenceDtoBasics);
+
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
                 andExpect(status().isOk()).
                 andExpect(jsonPath("$[0].new", is(0))).
@@ -108,11 +125,12 @@ public class MainPageControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void getUpcomingConferencesWithTalks() throws Exception {
-        List<Conference> conferences = new ArrayList<>();
-        Conference conference = createConference();
+        conference = createConference();
         conference.setCallForPaperEndDate(LocalDate.MAX);
         conferences.add(conference);
-        when(conferenceService.findUpcoming()).thenReturn(conferences);
+
+        when(conferenceService.findUpcoming()).thenReturn(conferencesDto);
+
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
                 andExpect(status().isOk());
     }
@@ -127,15 +145,17 @@ public class MainPageControllerTest extends TestUtil {
     @WithMockUser(roles = SPEAKER_ROLE)
     public void getConferenceById() throws Exception {
         mockMvc.perform(prepareGetRequest("/conference/" + anyInt())).
-            andExpect(status().isOk());
+                andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void getPastConferences() throws Exception {
-        List<Conference> conferences = new ArrayList<>();
+        conferences = new ArrayList<>();
         conferences.add(createConference());
-        when(conferenceService.findPast()).thenReturn(conferences);
+
+        when(conferenceService.findPast()).thenReturn(conferencesDto);
+
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
                 andExpect(status().isOk());
     }
@@ -180,7 +200,7 @@ public class MainPageControllerTest extends TestUtil {
                 .content(new ObjectMapper().writeValueAsBytes(dto))
         ).andExpect(status().isUnauthorized());
     }
-  
+
     @WithMockUser(roles = ADMIN_ROLE)
     public void createNewTopicShouldWorkForAdmin() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
