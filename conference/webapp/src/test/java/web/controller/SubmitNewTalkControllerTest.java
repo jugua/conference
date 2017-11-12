@@ -1,5 +1,31 @@
 package web.controller;
 
+import static web.controller.TestUtil.ADMIN_ROLE;
+import static web.controller.TestUtil.ORGANISER_ROLE;
+
+import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.Filter;
+
 import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
@@ -18,45 +44,26 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ua.rd.cm.config.TestSecurityConfig;
+
+import domain.model.Role;
+import domain.model.Talk;
+import domain.model.User;
+import domain.model.UserInfo;
+import service.businesslogic.api.LevelService;
+import service.businesslogic.api.TalkService;
+import service.businesslogic.api.TopicService;
+import service.businesslogic.api.TypeService;
+import service.businesslogic.api.UserInfoService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.LevelDto;
+import service.businesslogic.dto.TalkDto;
+import service.businesslogic.dto.TopicDto;
+import service.businesslogic.dto.TypeDto;
+import service.infrastructure.fileStorage.FileStorageService;
+import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
+import web.config.TestSecurityConfig;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.dto.LevelDto;
-import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.dto.TopicDto;
-import ua.rd.cm.dto.TypeDto;
-import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import ua.rd.cm.services.businesslogic.*;
-import ua.rd.cm.services.resources.LevelService;
-
-import javax.servlet.Filter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static web.controller.TestUtil.ADMIN_ROLE;
-import static web.controller.TestUtil.ORGANISER_ROLE;
+import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})

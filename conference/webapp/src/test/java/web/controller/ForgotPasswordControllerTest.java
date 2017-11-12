@@ -1,6 +1,10 @@
 package web.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,9 +17,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.VerificationToken;
-import ua.rd.cm.dto.NewPasswordDto;
+import domain.model.User;
+import domain.model.VerificationToken;
+import service.businesslogic.dto.NewPasswordDto;
 
 public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     private static final String WRONG_JSON_WITHOUT_MAIL = "{}";

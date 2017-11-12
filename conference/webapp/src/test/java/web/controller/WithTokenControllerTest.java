@@ -1,6 +1,12 @@
 package web.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,14 +30,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import ua.rd.cm.config.TestSecurityConfig;
+import domain.model.User;
+import domain.model.VerificationToken;
+import domain.repository.VerificationTokenRepository;
+import service.businesslogic.api.UserService;
+import service.businesslogic.impl.VerificationTokenService;
+import web.config.TestSecurityConfig;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.VerificationToken;
-import ua.rd.cm.repository.VerificationTokenRepository;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
+import web.config.WebTestConfig;
 import web.security.AuthenticationFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -32,8 +32,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableWebMvc
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan(basePackages = "web", excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
+@ComponentScan(basePackages = "web.controller", excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)
+})
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name = "multipartResolver")

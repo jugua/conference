@@ -9,9 +9,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ua.rd.cm.config.RepositoryConfig;
+import domain.config.RepositoryConfig;
+import service.config.ServiceConfig;
 import web.config.SecurityConfig;
-import ua.rd.cm.config.ServiceConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

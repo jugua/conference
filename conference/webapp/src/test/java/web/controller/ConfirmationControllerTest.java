@@ -1,6 +1,8 @@
 package web.controller;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,10 +10,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import ua.rd.cm.config.TestSecurityConfig;
+import domain.model.VerificationToken;
+import web.config.TestSecurityConfig;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.VerificationToken;
+import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class })

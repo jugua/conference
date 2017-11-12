@@ -5,25 +5,30 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.VerificationToken;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.NewPasswordDto;
-import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
-import ua.rd.cm.infrastructure.mail.preparator.ForgotMessagePreparator;
+import domain.model.User;
+import domain.model.VerificationToken;
+import lombok.AllArgsConstructor;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.NewPasswordDto;
+import service.businesslogic.impl.VerificationTokenService;
+import service.infrastructure.mail.MailService;
+import service.infrastructure.mail.preparator.ForgotMessagePreparator;
 
 @RestController
 @AllArgsConstructor(onConstructor = @__({@Autowired}))

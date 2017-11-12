@@ -1,8 +1,15 @@
 package web.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import javax.servlet.Filter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,27 +28,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
-import ua.rd.cm.config.TestSecurityConfig;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import domain.model.Role;
+import domain.model.User;
+import lombok.extern.log4j.Log4j;
+import service.businesslogic.api.ContactTypeService;
+import service.businesslogic.api.UserInfoService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.RegistrationDto;
+import service.businesslogic.exception.EmailAlreadyExistsException;
+import service.businesslogic.exception.PasswordMismatchException;
+import web.config.TestSecurityConfig;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.services.businesslogic.ContactTypeService;
-import ua.rd.cm.services.businesslogic.UserInfoService;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.PasswordMismatchException;
-
-import javax.servlet.Filter;
-
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})

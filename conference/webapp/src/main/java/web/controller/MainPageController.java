@@ -18,19 +18,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import domain.model.Conference;
+import domain.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.domain.Conference;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.dto.ConferenceDto;
-import ua.rd.cm.dto.CreateConferenceDto;
-import ua.rd.cm.dto.CreateTopicDto;
-import ua.rd.cm.dto.CreateTypeDto;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.services.businesslogic.ConferenceService;
-import ua.rd.cm.services.businesslogic.TopicService;
-import ua.rd.cm.services.businesslogic.TypeService;
+import service.businesslogic.api.ConferenceService;
+import service.businesslogic.api.TopicService;
+import service.businesslogic.api.TypeService;
+import service.businesslogic.dto.ConferenceDto;
+import service.businesslogic.dto.CreateConferenceDto;
+import service.businesslogic.dto.CreateTopicDto;
+import service.businesslogic.dto.CreateTypeDto;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.TalkDto;
 
 @Log4j
 @RestController

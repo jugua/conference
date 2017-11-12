@@ -7,9 +7,9 @@ import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import ua.rd.cm.config.AsyncConfig;
-import ua.rd.cm.config.RepositoryConfig;
-import ua.rd.cm.config.ServiceConfig;
+import domain.config.RepositoryConfig;
+import service.config.AsyncConfig;
+import service.config.ServiceConfig;
 
 /**
  * @author Yaroslav_Revin

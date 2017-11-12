@@ -2,17 +2,17 @@ package web.controller;
 
 import java.util.function.Consumer;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.VerificationToken;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
+import domain.model.User;
+import domain.model.VerificationToken;
+import lombok.AllArgsConstructor;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.impl.VerificationTokenService;
 import web.security.AuthenticationFactory;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))

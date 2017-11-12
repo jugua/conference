@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.services.exception.NoSuchUserException;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.exception.NoSuchUserException;
+import service.businesslogic.exception.ResourceNotFoundException;
 
 @Log4j
 @RestControllerAdvice

@@ -9,12 +9,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ua.rd.cm.domain.Contact;
-import ua.rd.cm.domain.ContactType;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.services.businesslogic.UserService;
+import domain.model.Contact;
+import domain.model.ContactType;
+import domain.model.Role;
+import domain.model.User;
+import domain.model.UserInfo;
+import service.businesslogic.api.UserService;
 
 public class TestUtil {
     public static final String SPEAKER_ROLE = "SPEAKER";

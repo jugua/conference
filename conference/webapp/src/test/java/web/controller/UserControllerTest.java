@@ -39,22 +39,22 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import domain.model.Contact;
+import domain.model.ContactType;
+import domain.model.Role;
+import domain.model.User;
+import domain.model.UserInfo;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.config.TestSecurityConfig;
+import service.businesslogic.api.ContactTypeService;
+import service.businesslogic.api.UserInfoService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.RegistrationDto;
+import service.businesslogic.dto.UserInfoDto;
+import service.businesslogic.exception.ResourceNotFoundException;
+import service.businesslogic.exception.WrongRoleException;
+import web.config.TestSecurityConfig;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.Contact;
-import ua.rd.cm.domain.ContactType;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.dto.UserInfoDto;
-import ua.rd.cm.services.businesslogic.ContactTypeService;
-import ua.rd.cm.services.businesslogic.UserInfoService;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
-import ua.rd.cm.services.exception.WrongRoleException;
+import web.config.WebTestConfig;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

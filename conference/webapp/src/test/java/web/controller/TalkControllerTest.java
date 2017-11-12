@@ -1,17 +1,24 @@
 package web.controller;
 
+import static service.businesslogic.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
+import static service.infrastructure.fileStorage.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
-import static ua.rd.cm.services.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,24 +56,24 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ua.rd.cm.config.TestSecurityConfig;
+import domain.model.Role;
+import domain.model.Talk;
+import domain.model.User;
+import domain.model.UserInfo;
+import service.businesslogic.api.TalkService;
+import service.businesslogic.api.UserInfoService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.TalkDto;
+import service.businesslogic.exception.ResourceNotFoundException;
+import service.businesslogic.exception.TalkNotFoundException;
+import service.businesslogic.exception.TalkValidationException;
+import service.infrastructure.fileStorage.FileStorageService;
+import service.infrastructure.fileStorage.exception.FileValidationException;
+import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
+import web.config.TestSecurityConfig;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.services.businesslogic.TalkService;
-import ua.rd.cm.services.businesslogic.UserInfoService;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
-import ua.rd.cm.services.exception.TalkNotFoundException;
-import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
+import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})

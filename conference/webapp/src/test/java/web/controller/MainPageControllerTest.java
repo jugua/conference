@@ -31,20 +31,20 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ua.rd.cm.config.TestSecurityConfig;
+import domain.model.Conference;
+import domain.model.Talk;
+import domain.model.TalkStatus;
+import service.businesslogic.api.ConferenceService;
+import service.businesslogic.api.LevelService;
+import service.businesslogic.api.TopicService;
+import service.businesslogic.api.TypeService;
+import service.businesslogic.dto.ConferenceDto;
+import service.businesslogic.dto.ConferenceDtoBasic;
+import service.businesslogic.dto.CreateTopicDto;
+import service.businesslogic.dto.CreateTypeDto;
+import web.config.TestSecurityConfig;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.Conference;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.dto.ConferenceDto;
-import ua.rd.cm.dto.ConferenceDtoBasic;
-import ua.rd.cm.dto.CreateTopicDto;
-import ua.rd.cm.dto.CreateTypeDto;
-import ua.rd.cm.services.businesslogic.ConferenceService;
-import ua.rd.cm.services.businesslogic.TopicService;
-import ua.rd.cm.services.businesslogic.TypeService;
-import ua.rd.cm.services.resources.LevelService;
+import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})

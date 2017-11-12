@@ -22,17 +22,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import domain.model.User;
+import domain.model.VerificationToken;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.VerificationToken;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.SettingsDto;
-import ua.rd.cm.infrastructure.mail.MailService;
-import ua.rd.cm.infrastructure.mail.preparator.ChangePasswordPreparator;
-import ua.rd.cm.infrastructure.mail.preparator.NewEmailMessagePreparator;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.businesslogic.impl.VerificationTokenService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.SettingsDto;
+import service.businesslogic.impl.VerificationTokenService;
+import service.infrastructure.mail.MailService;
+import service.infrastructure.mail.preparator.ChangePasswordPreparator;
+import service.infrastructure.mail.preparator.NewEmailMessagePreparator;
 
 @Log4j
 @RestController

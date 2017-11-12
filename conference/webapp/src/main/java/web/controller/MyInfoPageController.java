@@ -1,6 +1,6 @@
 package web.controller;
 
-import static ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
+import static service.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,6 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -20,18 +19,27 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import domain.model.User;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.UserInfoDto;
-import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.services.businesslogic.UserInfoService;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
-import ua.rd.cm.services.exception.NoSuchUserException;
+import service.businesslogic.api.UserInfoService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.UserInfoDto;
+import service.businesslogic.exception.NoSuchUserException;
+import service.infrastructure.fileStorage.FileStorageService;
+import service.infrastructure.fileStorage.exception.FileValidationException;
 
 @RestController
 @RequestMapping("/myinfo")

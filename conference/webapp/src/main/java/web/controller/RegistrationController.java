@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import domain.model.Role;
+import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.domain.Role;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.RegistrationDto;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.exception.EmailAlreadyExistsException;
-import ua.rd.cm.services.exception.PasswordMismatchException;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.RegistrationDto;
+import service.businesslogic.exception.EmailAlreadyExistsException;
+import service.businesslogic.exception.PasswordMismatchException;
 
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))

@@ -14,18 +14,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import domain.model.Talk;
+import domain.model.User;
+import domain.model.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.domain.UserInfo;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.SubmitTalkDto;
-import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import ua.rd.cm.services.businesslogic.TalkService;
-import ua.rd.cm.services.businesslogic.UserService;
+import service.businesslogic.api.TalkService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.SubmitTalkDto;
+import service.businesslogic.dto.TalkDto;
+import service.infrastructure.fileStorage.FileStorageService;
+import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController

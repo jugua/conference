@@ -20,26 +20,35 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import domain.model.Talk;
+import domain.model.TalkStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import ua.rd.cm.domain.Talk;
-import ua.rd.cm.domain.TalkStatus;
-import ua.rd.cm.dto.MessageDto;
-import ua.rd.cm.dto.TalkDto;
-import ua.rd.cm.infrastructure.fileStorage.FileStorageService;
-import ua.rd.cm.infrastructure.fileStorage.exception.FileValidationException;
-import ua.rd.cm.services.businesslogic.TalkService;
-import ua.rd.cm.services.businesslogic.TopicService;
-import ua.rd.cm.services.businesslogic.TypeService;
-import ua.rd.cm.services.businesslogic.UserService;
-import ua.rd.cm.services.exception.ResourceNotFoundException;
-import ua.rd.cm.services.exception.TalkValidationException;
-import ua.rd.cm.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import ua.rd.cm.services.resources.LanguageService;
-import ua.rd.cm.services.resources.LevelService;
+import service.businesslogic.api.LanguageService;
+import service.businesslogic.api.LevelService;
+import service.businesslogic.api.TalkService;
+import service.businesslogic.api.TopicService;
+import service.businesslogic.api.TypeService;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.TalkDto;
+import service.businesslogic.exception.ResourceNotFoundException;
+import service.businesslogic.exception.TalkValidationException;
+import service.infrastructure.fileStorage.FileStorageService;
+import service.infrastructure.fileStorage.exception.FileValidationException;
+import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController
@@ -80,18 +89,18 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talksTitles")
-    public ResponseEntity<List<String>> getTalksTitles(){
-    	List<String> talksTitles = talkService.findAll().stream().map(m -> m.getTitle()).collect(Collectors.toList());
-    	return new ResponseEntity<>(talksTitles, HttpStatus.OK);
+    public ResponseEntity<List<String>> getTalksTitles() {
+        List<String> talksTitles = talkService.findAll().stream().map(m -> m.getTitle()).collect(Collectors.toList());
+        return new ResponseEntity<>(talksTitles, HttpStatus.OK);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talksStatus")
-    public ResponseEntity<List<String>> getTalksStatus(){
-    	List<String> talksStatus = Arrays.asList(TalkStatus.values()).stream().map(m -> m.getName()).collect(Collectors.toList());
-    	return new ResponseEntity<>(talksStatus, HttpStatus.OK);
+    public ResponseEntity<List<String>> getTalksStatus() {
+        List<String> talksStatus = Arrays.asList(TalkStatus.values()).stream().map(m -> m.getName()).collect(Collectors.toList());
+        return new ResponseEntity<>(talksStatus, HttpStatus.OK);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
@@ -178,7 +187,7 @@ public class TalkController {
     public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
                                  @RequestPart(value = "file") MultipartFile file,
                                  HttpServletRequest request) {
-      String filePath = uploadFile(file);
+        String filePath = uploadFile(file);
         TalkDto talkDto = talkService.findById(talkId);
         talkService.addFile(talkDto, filePath);
 

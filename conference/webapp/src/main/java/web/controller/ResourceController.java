@@ -1,6 +1,5 @@
 package web.controller;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,10 +7,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ua.rd.cm.services.businesslogic.TopicService;
-import ua.rd.cm.services.businesslogic.TypeService;
-import ua.rd.cm.services.resources.LanguageService;
-import ua.rd.cm.services.resources.LevelService;
+
+import lombok.AllArgsConstructor;
+import service.businesslogic.api.LanguageService;
+import service.businesslogic.api.LevelService;
+import service.businesslogic.api.TopicService;
+import service.businesslogic.api.TypeService;
 
 @RestController
 @RequestMapping("/")

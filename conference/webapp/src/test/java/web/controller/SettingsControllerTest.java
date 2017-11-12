@@ -26,11 +26,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import domain.model.User;
+import service.businesslogic.api.UserService;
+import service.businesslogic.dto.SettingsDto;
 import web.config.WebMvcConfig;
-import ua.rd.cm.config.WebTestConfig;
-import ua.rd.cm.domain.User;
-import ua.rd.cm.dto.SettingsDto;
-import ua.rd.cm.services.businesslogic.UserService;
+import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
