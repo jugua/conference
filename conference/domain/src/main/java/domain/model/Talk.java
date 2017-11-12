@@ -55,21 +55,21 @@ public class Talk extends AbstractEntity {
     private Level level;
 
     @NonNull
-    @Column(name = "time", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime time;
 
     @NonNull
-    @Column(name = "title", nullable = false, length = 250)
+    @Column(nullable = false, length = 250)
     private String title;
 
     @NonNull
-    @Column(name = "description", nullable = false, length = 3000)
+    @Column(nullable = false, length = 3000)
     private String description;
 
-    @Column(name = "additional_info", length = 1500)
+    @Column(length = 1500)
     private String additionalInfo;
 
-    @Column(name = "organiser_comment", length = 1000)
+    @Column(length = 1000)
     private String organiserComment;
 
     @ManyToOne
@@ -80,7 +80,7 @@ public class Talk extends AbstractEntity {
     @JoinColumn(name = "conference_id")
     private Conference conference;
 
-    @Column(name = "attached_file")
+    @Column
     private String pathToAttachedFile;
 
     @Builder

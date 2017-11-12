@@ -31,22 +31,22 @@ import lombok.ToString;
 public class User extends AbstractEntity {
 
     @NonNull
-    @Column(name = "first_name", nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
     @NonNull
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
     @NonNull
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NonNull
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "photo")
+    @Column
     private String photo;
 
     @NonNull

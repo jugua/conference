@@ -36,7 +36,7 @@ public class VerificationToken extends AbstractEntity {
     private User user;
 
     @NonNull
-    @Column(name = "expiry_date", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime expiryDate;
 
     @NonNull

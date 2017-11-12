@@ -32,28 +32,28 @@ import lombok.ToString;
 public class Conference extends AbstractEntity {
 
     @NonNull
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @Column
     private String description;
 
-    @Column(name = "location")
+    @Column
     private String location;
 
-    @Column(name = "start_date")
+    @Column
     private LocalDate startDate;
 
-    @Column(name = "end_date")
+    @Column
     private LocalDate endDate;
 
-    @Column(name = "call_for_paper_start_date")
+    @Column
     private LocalDate callForPaperStartDate;
 
-    @Column(name = "call_for_paper_end_date")
+    @Column
     private LocalDate callForPaperEndDate;
 
-    @Column(name = "path_to_logo")
+    @Column
     private String pathToLogo;
 
     @Transient

@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class Level extends AbstractEntity {
 
     @NonNull
-    @Column(name = "level_name", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Level(Long id, String name) {
