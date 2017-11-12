@@ -1,5 +1,9 @@
 package domain.config;
 
+import static org.hibernate.cfg.AvailableSettings.PHYSICAL_NAMING_STRATEGY;
+
+import java.util.Properties;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -63,8 +67,15 @@ public class InMemoryRepositoryConfig {
         emf.setDataSource(dataSource);
         emf.setJpaVendorAdapter(jpaVendorAdapter);
         emf.setPackagesToScan("domain.model");
+        emf.setJpaProperties(ormProperties());
 
         return emf;
+    }
+
+    private Properties ormProperties() {
+        Properties props = new Properties();
+        props.setProperty(PHYSICAL_NAMING_STRATEGY, ConferencePhysicalNamingStrategy.class.getName());
+        return props;
     }
 
     @Bean

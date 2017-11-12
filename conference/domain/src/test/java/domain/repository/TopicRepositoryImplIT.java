@@ -41,9 +41,9 @@ public class TopicRepositoryImplIT {
 
     @Test
     @DatabaseSetup("/ds/conf-mgmt.xml")
-    public void testFindAllShouldReturntwo() {
+    public void testFindAllShouldReturnTwoRecords() {
         int expectedSize = 2;
-        Collection<Topic> topics = (Collection<Topic>) testing.findAll();
+        Collection<Topic> topics = testing.findAll();
         assertEquals(topics.size(), expectedSize);
     }
 
