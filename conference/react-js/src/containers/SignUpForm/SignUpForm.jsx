@@ -49,7 +49,7 @@ class SignUp extends Component {
     };
 
     this.checkPassLen = () => {
-      if (this.state.password.length < 6 || this.state.password.length > 30) {
+      if (this.state.password.length < 6) {
         this.setState({
           passLen: true,
         });
@@ -115,7 +115,9 @@ class SignUp extends Component {
             required
           />
           {this.state.passLen &&
-          (<ErrorMessage errorMessage="Must be longer than 6 symbols" />)
+          (<ErrorMessage
+            errorMessage="Must be longer than 6 symbols"
+          />)
           }
           <InputBlock
             id="confirm"
