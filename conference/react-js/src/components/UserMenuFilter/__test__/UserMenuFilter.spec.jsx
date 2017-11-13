@@ -22,4 +22,3 @@ describe('Component: UserMenu', () => {
     expect(wrapper.find('UserMenu').prop('data').length).toEqual(5);
   });
 });
-
