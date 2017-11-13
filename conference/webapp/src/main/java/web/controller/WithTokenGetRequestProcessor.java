@@ -21,7 +21,7 @@ public class WithTokenGetRequestProcessor {
 
     private final VerificationTokenService tokenService;
 
-    public ResponseEntity process(String token, VerificationToken.TokenType tokenType, Consumer<VerificationToken> action) {
+    public ResponseEntity<MessageDto> process(String token, VerificationToken.TokenType tokenType, Consumer<VerificationToken> action) {
         VerificationToken verificationToken = tokenService.getToken(token);
 
         if (!tokenService.isTokenValid(verificationToken, tokenType)) {

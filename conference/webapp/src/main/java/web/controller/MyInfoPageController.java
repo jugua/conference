@@ -59,7 +59,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
-    public ResponseEntity getUser(Principal principal) {
+    public ResponseEntity<UserInfoDto> getUser(Principal principal) {
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -91,7 +91,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/photo/{id}")
-    public ResponseEntity getPhoto(@PathVariable("id") Long userId) {
+    public ResponseEntity<InputStreamResource> getPhoto(@PathVariable("id") Long userId) {
         User user = userService.find(userId);
         File file = fileStorageService.getFile(user.getPhoto());
 
@@ -114,7 +114,7 @@ public class MyInfoPageController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/photo")
-    public ResponseEntity uploadPhoto(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
+    public ResponseEntity<MessageDto> uploadPhoto(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
         String previousPhotoPath = currentUser.getPhoto();

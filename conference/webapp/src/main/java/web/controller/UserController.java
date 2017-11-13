@@ -79,7 +79,7 @@ public class UserController {
         return new ResponseEntity<>(userInfoDto, HttpStatus.OK);
     }
 
-    private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
         MessageDto message = new MessageDto();
 

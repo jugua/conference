@@ -115,14 +115,14 @@ public class TalkController {
 
     @PreAuthorize("hasRole('ORGANISER')")
     @GetMapping("/{talkId}")
-    public ResponseEntity getTalkById(@PathVariable Long talkId) {
+    public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         return new ResponseEntity<>(talkDto, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/{id}")
-    public ResponseEntity updateTalk(@PathVariable("id") Long talkId,
+    public ResponseEntity<MessageDto> updateTalk(@PathVariable("id") Long talkId,
                                      @RequestBody TalkDto dto,
                                      BindingResult bindingResult,
                                      HttpServletRequest request) {
@@ -147,7 +147,7 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/{talk_id}/takeFileName",
             produces = "application/json")
-    public ResponseEntity getFileName(@PathVariable("talk_id") Long talkId) {
+    public ResponseEntity<Map<String,String>> getFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
 
         File file = storageService.getFile(talk.getPathToAttachedFile());
@@ -160,7 +160,7 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
 
     @GetMapping(value = "/{talk_id}/takeFile")
-    public ResponseEntity takeFile(@PathVariable("talk_id") Long talkId) {
+    public ResponseEntity<InputStreamResource> takeFile(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
 
@@ -215,7 +215,7 @@ public class TalkController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    private ResponseEntity prepareResponse(HttpStatus status, MessageDto message) {
+    private ResponseEntity<MessageDto> prepareResponse(HttpStatus status, MessageDto message) {
         return ResponseEntity.status(status).body(message);
     }
 }

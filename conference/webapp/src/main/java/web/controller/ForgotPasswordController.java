@@ -43,7 +43,7 @@ public class ForgotPasswordController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/forgotPassword")
-    public ResponseEntity forgotPassword(@RequestBody String mail, HttpServletRequest request) throws IOException {
+    public ResponseEntity<MessageDto> forgotPassword(@RequestBody String mail, HttpServletRequest request) throws IOException {
         HttpStatus httpStatus;
         MessageDto responseMessage = new MessageDto();
         ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
@@ -70,7 +70,7 @@ public class ForgotPasswordController {
     }
 
     @GetMapping("/changePassword/{token}")
-    public ResponseEntity changePassword(@PathVariable String token) {
+    public ResponseEntity<MessageDto> changePassword(@PathVariable String token) {
         return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.FORGOT_PASS, verificationToken -> {
         });
     }
