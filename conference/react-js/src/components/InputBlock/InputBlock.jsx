@@ -10,6 +10,7 @@ const InputBlock = ({
   name,
   onChange,
   onClick,
+  onBlur,
   pattern,
   readonly,
   required,
@@ -34,6 +35,7 @@ const InputBlock = ({
       name={name}
       onChange={onChange}
       onClick={onClick}
+      onBlur={onBlur}
       pattern={pattern}
       readOnly={readonly}
       required={required}
@@ -56,6 +58,7 @@ InputBlock.propTypes = {
   labelClass: PropTypes.string,
   onChange: PropTypes.func,
   onClick: PropTypes.func,
+  onBlur: PropTypes.func,
   pattern: PropTypes.string,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
@@ -75,6 +78,7 @@ InputBlock.defaultProps = {
   labelClass: null,
   onChange: null,
   onClick: null,
+  onBlur: null,
   pattern: null,
   readonly: false,
   required: false,

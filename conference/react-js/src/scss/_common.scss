@@ -199,10 +199,13 @@ html {
 
     &-user {
       word-wrap: break-word;
-      font-family: "Oswald Bold";
+      font-family: "Oswald Bold", sans-serif;
       display: inline-block;
       max-width: 100%;
       }
+
+    &_small {}
+      margin: 20px 10px;
     }
 
   &__button {
@@ -224,7 +227,7 @@ html {
     box-sizing: border-box;
     background: $light-grey;
     text-align: center;
-    font-family: "Oswald Light";
+    font-family: "Oswald Light", sans-serif;
     font-size: 14px;
     padding: 5px 0;
     }
