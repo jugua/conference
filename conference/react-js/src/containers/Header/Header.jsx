@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { baseUrl } from '../../constants/route-url';
+import { root } from '../../constants/route-url';
 import SignInForm from '../../components/SignInForm/SignInForm';
 import UserMenuFilter from '../../components/UserMenuFilter/UserMenuFilter';
 import logout from '../../actions/logout';
@@ -74,7 +74,7 @@ class Header extends PureComponent {
           <div className="header__title">
             <Link
               className="link_header"
-              to={baseUrl}
+              to={root}
             >
               conference management
             </Link>
