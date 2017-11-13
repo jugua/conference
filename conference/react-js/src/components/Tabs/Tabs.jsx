@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route,
+  Redirect,
   BrowserRouter as Router } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,6 +8,7 @@ import Upcoming from '../Upcoming';
 import AutorizedUserMenu from '../Autorized-user-menu';
 import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
 import {
+  home,
   upcoming,
   myTalks,
   myEvents,
@@ -21,6 +23,11 @@ const Tabs = ({ user: { conferenceCount, talksCount } }) => (
         <AutorizedUserMenu
           conferenceCount={conferenceCount}
           talksCount={talksCount}
+        />
+        <Route
+          path={home}
+          exact
+          render={() => <Redirect to={upcoming} />}
         />
         <Route
           path={upcoming}
