@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
 
 import { baseUrl } from '../../constants/route-url';
 import SignInForm from '../../components/SignInForm/SignInForm';
@@ -67,7 +66,7 @@ class Header extends PureComponent {
 
   render() {
     const { user: { role, firstName }, dispatch } = this.props;
-    const logoutAction = bindActionCreators(logout, dispatch);
+    const logoutAction = () => logout(dispatch);
 
     return (
       <header className="header">
