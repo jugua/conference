@@ -38,7 +38,7 @@ public class SubmitNewTalkController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity submitTalk(
+    public ResponseEntity<MessageDto> submitTalk(
             @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
