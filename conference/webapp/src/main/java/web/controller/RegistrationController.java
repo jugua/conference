@@ -33,7 +33,7 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity register(@Valid @RequestBody RegistrationDto dto,
+    public ResponseEntity<MessageDto> register(@Valid @RequestBody RegistrationDto dto,
                                    BindingResult bindingResult,
                                    HttpServletRequest request
     ) {
@@ -51,7 +51,7 @@ public class RegistrationController {
     }
 
 
-    private ResponseEntity processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
+    private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
         MessageDto message = new MessageDto();
 
