@@ -11,6 +11,7 @@ import domain.model.User;
 import domain.model.VerificationToken;
 import lombok.AllArgsConstructor;
 import service.businesslogic.api.UserService;
+import service.businesslogic.dto.MessageDto;
 import service.businesslogic.impl.VerificationTokenService;
 import service.infrastructure.mail.MailService;
 import service.infrastructure.mail.preparator.OldEmailMessagePreparator;
@@ -26,7 +27,7 @@ public class ConfirmationController {
     private final MailService mailService;
 
     @GetMapping("/registrationConfirm/{token}")
-    public ResponseEntity confirmRegistration(@PathVariable String token) {
+    public ResponseEntity<MessageDto> confirmRegistration(@PathVariable String token) {
         return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CONFIRMATION, verificationToken -> {
             User user = verificationToken.getUser();
             setUserStatusConfirmed(user);
@@ -34,7 +35,7 @@ public class ConfirmationController {
     }
 
     @GetMapping("/newEmailConfirm/{token:.+}")
-    public ResponseEntity confirmNewEmail(@PathVariable String token) {
+    public ResponseEntity<MessageDto> confirmNewEmail(@PathVariable String token) {
         return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CHANGING_EMAIL, verificationToken -> {
             User user = verificationToken.getUser();
             String newEmail = tokenService.getEmail(token);
