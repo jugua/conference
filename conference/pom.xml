@@ -42,6 +42,7 @@
         <mockito.version>1.10.19</mockito.version>
         <junit.version>4.12</junit.version>
         <jsonpath.version>2.4.0</jsonpath.version>
+        <javax.el.version>2.2.4</javax.el.version>
     </properties>
 
     <profiles>
@@ -414,6 +415,18 @@
                 <groupId>com.jayway.jsonpath</groupId>
                 <artifactId>json-path-assert</artifactId>
                 <version>${jsonpath.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.web</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${javax.el.version}</version>
                 <scope>test</scope>
             </dependency>
             <!-- testing end -->
