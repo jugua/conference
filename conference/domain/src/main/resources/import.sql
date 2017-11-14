@@ -60,19 +60,23 @@ INSERT INTO `user` (`id`, `email`, `first_name`, `last_name`, `password`, `statu
 
 INSERT INTO user_role VALUES (1, 1);
 
-INSERT INTO user_info_contact VALUES (1, 'twitter.com', 2);
-INSERT INTO user_info_contact VALUES (1, 'facebook.com', 3);
-INSERT INTO user_info_contact VALUES (1, 'linkedin.com', 1);
-INSERT INTO user_info_contact VALUES (1, 'userblog.com', 4);
+INSERT INTO contact VALUES (1, 'linkedin.com', 1);
+INSERT INTO contact VALUES (2, 'twitter.com', 2);
+INSERT INTO contact VALUES (3, 'facebook.com', 3);
+INSERT INTO contact VALUES (4, 'userblog.com', 4);
 
+INSERT INTO user_info_contact VALUES (1, 1);
+INSERT INTO user_info_contact VALUES (1, 2);
+INSERT INTO user_info_contact VALUES (1, 3);
+INSERT INTO user_info_contact VALUES (1, 4);
 
 --
 -- Setting default user with role SPEAKER with only registration fields
 --
 
-INSERT INTO user_info (id, company, jobTitle, shortBio) VALUES (2, '', '', '');
+INSERT INTO user_info (`id`, company, job_title, short_bio) VALUES (2, '', '', '');
 
-INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (2, 'user@gmail.com', 'User', 'User', 'UNCONFIRMED', '$2a$10$j6MlhWXyU.oSZPZxSwEO3.zHfU9vwsl4Fg1F8nsDR8c9EkOIHXl2O', 2);
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (2, 'user@gmail.com', 'User', 'User', 'UNCONFIRMED', '$2a$10$j6MlhWXyU.oSZPZxSwEO3.zHfU9vwsl4Fg1F8nsDR8c9EkOIHXl2O', 2);
 
 INSERT INTO user_role VALUES (2, 1);
 
@@ -80,9 +84,9 @@ INSERT INTO user_role VALUES (2, 1);
 -- Setting default user with role ORGANIZER with only registration fields
 --
 
-INSERT INTO user_info (id, company, jobTitle, shortBio)  VALUES (3, '', '', '');
+INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (3, '', '', '');
 
-INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (3, 'organiser@gmail.com', 'Organiser', 'Organiser', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC', 3);
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (3, 'organiser@gmail.com', 'Organiser', 'Organiser', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC', 3);
 
 INSERT INTO user_role VALUES (3, 2);
 
@@ -90,36 +94,36 @@ INSERT INTO user_role VALUES (3, 2);
 -- Setting default user with role ORGANIZER with only registration fields
 --
 
-INSERT INTO user_info (id, company, jobTitle, shortBio)  VALUES (4, '', '', '');
+INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (4, '', '', '');
 
-INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (4, 'organiser2@gmail.com', 'Organiser2', 'Organiser2', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC', 4);
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (4, 'organiser2@gmail.com', 'Organiser2', 'Organiser2', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC', 4);
 INSERT INTO user_role VALUES (4, 2);
 
 --
 -- Insert organiser-admin
 --
 
-INSERT INTO user_info (id, company, jobTitle, shortBio)  VALUES (5, '', '', '');
+INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (5, '', '', '');
 
-INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (5, 'admin@gmail.com', 'I''m super', 'Admin', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 5);
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (5, 'admin@gmail.com', 'I''m super', 'Admin', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 5);
 INSERT INTO user_role VALUES (5, 3);
 
 --
 -- Setting default user with role USER with only registration fields
 --
 
-INSERT INTO user_info (id, company, jobTitle, shortBio)  VALUES (6, '', '', '');
+INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (6, '', '', '');
 
-INSERT INTO `user`  (id, email, first_name, last_name, status, password, user_info_id) VALUES (6, 'simple@gmail.com', 'simpleuser', 'simpleuser', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 6);
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (6, 'simple@gmail.com', 'simpleuser', 'simpleuser', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 6);
 INSERT INTO user_role VALUES (6, 4);
 
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (1, 'JavaDay 1', 'The Very First JavaDay', 'Kiev', '2018-09-15', '2018-09-25', '2018-08-04', '2018-08-22', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (2, 'JavaDay 2', 'Second JavaDay', 'Boston', '2018-11-23', '2018-11-30', '2018-11-01', '2018-11-01', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (3, 'JavaDay 3', 'Third JavaDay', 'New York', '2018-12-04', '2018-12-10', '2018-12-04', '2018-12-10', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (5, 'JavaDay 5', 'Second JavaDay', 'London', '2018-08-22', '2018-08-30', '2018-07-10', '2018-07-25', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (6, 'JavaDay 6', 'Third JavaDay', 'Beijin', '2018-03-25', '2018-04-10', '2018-02-22', '2018-03-15', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (7, 'JavaDay 7', 'Third JavaDay', 'Tel Aviv', '2018-02-15', '2018-02-25', '2018-02-04', '2018-03-27', 'nologo');
-INSERT INTO `conference` (id, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (8, 'JavaDay 8', 'Very First JavaDay', 'Beirut', '2018-03-15', '2018-05-03', '2018-03-20', '2018-06-5-01', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (1, 'JavaDay 1', 'The Very First JavaDay', 'Kiev', '2018-09-15', '2018-09-25', '2018-08-04', '2018-08-22', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (2, 'JavaDay 2', 'Second JavaDay', 'Boston', '2018-11-23', '2018-11-30', '2018-11-01', '2018-11-01', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (3, 'JavaDay 3', 'Third JavaDay', 'New York', '2018-12-04', '2018-12-10', '2018-12-04', '2018-12-10', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (5, 'JavaDay 5', 'Second JavaDay', 'London', '2018-08-22', '2018-08-30', '2018-07-10', '2018-07-25', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (6, 'JavaDay 6', 'Third JavaDay', 'Beijin', '2018-03-25', '2018-04-10', '2018-02-22', '2018-03-15', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (7, 'JavaDay 7', 'Third JavaDay', 'Tel Aviv', '2018-02-15', '2018-02-25', '2018-02-04', '2018-03-27', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (8, 'JavaDay 8', 'Very First JavaDay', 'Beirut', '2018-03-15', '2018-05-03', '2018-03-20', '2018-06-05', 'nologo');
 
 INSERT INTO talk VALUES (1, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:51:00', 'talk #1', 1, 1, 1, null, 1, 1, 1);
 INSERT INTO talk VALUES (2, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 23:52:00', 'talk #2', 2, 2, 1, null, 1, 1, 1);
@@ -179,7 +183,7 @@ INSERT INTO talk VALUES (55, 'Additional info', 'Description','',null,'NEW', '20
 INSERT INTO talk VALUES (56, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 22:30:00', 'talk #56', 1, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (57, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 23:29:00', 'talk #57', 1, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (58, 'Additional info', 'Description','',null,'REJECTED', '2016-12-31 23:28:00', 'talk #58', 2, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (59, 'Additional info', 'Description','',null,'NEW', '2015-12-05 23:20:02', 'talk #59' 3, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (59, 'Additional info', 'Description','',null,'NEW', '2015-12-05 23:20:02', 'talk #59', 3, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (60, 'Additional info', 'Description','',null,'APPROVED', '2016-12-31 23:26:03', 'talk #60', 5, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (61, 'Additional info', 'Description','',null,'NEW', '2016-12-31 23:25:00', 'talk #61', 6, 1, 1, null, 1, 1, 1);
 INSERT INTO talk VALUES (62, 'Additional info', 'Description','',null,'IN_PROGRESS', '2016-12-31 23:24:00', 'talk #62', 7, 2, 1, null, 1, 1, 1);
@@ -231,18 +235,6 @@ INSERT INTO talk VALUES (107, 'Additional info', 'Description','',null,'IN_PROGR
 INSERT INTO talk VALUES (108, 'Additional info', 'Description','',null,'NEW', '2017-10-10 23:53:00', 'talk #108', 2, 3, 1, null, 1, 1, 1);
 INSERT INTO talk VALUES (109, 'Additional info', 'Description','',null,'REJECTED', '2017-10-30 23:54:00', 'talk #109', 3, 1, 1, null, 2, 1, 1);
 
-UPDATE talk_seq SET next_val = 110 WHERE next_val = 1;
-
-
-
 INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 4);
 INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
 INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
-
-
-
-
-
-
-
-
