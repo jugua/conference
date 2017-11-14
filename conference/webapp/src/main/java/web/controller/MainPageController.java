@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import domain.model.Conference;
@@ -43,7 +44,7 @@ public class MainPageController {
     private final ConferenceService conferenceService;
 
     @GetMapping("conference/upcoming")
-//    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity upcomingConferences(HttpServletRequest request) {
         if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
             return ok(conferenceService.findUpcoming());
@@ -61,21 +62,21 @@ public class MainPageController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("conference/{id}")
-    public ResponseEntity conferenceById(@PathVariable long id) {
+    public ResponseEntity<Conference> conferenceById(@PathVariable long id) {
         Conference conference = conferenceService.findById(id);
         return ok(conference);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("conference/{id}/talks")
-    public ResponseEntity talksByConferenceId(@PathVariable long id) {
+    public ResponseEntity<Collection<TalkDto>> talksByConferenceId(@PathVariable long id) {
         Collection<TalkDto> talkDtos = conferenceService.findTalksByConferenceId(id);
         return ok(talkDtos);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("conference")
-    public ResponseEntity newConference(@Valid @RequestBody CreateConferenceDto dto) {
+    public ResponseEntity<MessageDto> newConference(@Valid @RequestBody CreateConferenceDto dto) {
         Long id = conferenceService.save(dto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
@@ -84,7 +85,7 @@ public class MainPageController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("conference/update")
-    public ResponseEntity updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult) {
+    public ResponseEntity<MessageDto> updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult) {
         MessageDto messageDto = new MessageDto();
         messageDto.setId(dto.getId());
 
@@ -100,7 +101,7 @@ public class MainPageController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("type")
-    public ResponseEntity createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
+    public ResponseEntity<MessageDto> createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
         Long id = typeService.save(typeDto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
@@ -109,7 +110,7 @@ public class MainPageController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("topic")
-    public ResponseEntity createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
+    public ResponseEntity<MessageDto> createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
         Long id = topicService.save(topicDto);
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);

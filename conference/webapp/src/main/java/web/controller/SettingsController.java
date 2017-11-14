@@ -47,7 +47,7 @@ public class SettingsController {
     private VerificationTokenService tokenService;
 
     @PostMapping("/password")
-    public ResponseEntity changePassword(@Valid @RequestBody SettingsDto dto, Principal principal,
+    public ResponseEntity<MessageDto> changePassword(@Valid @RequestBody SettingsDto dto, Principal principal,
                                          BindingResult bindingResult, HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
         if (principal == null) {
@@ -71,7 +71,8 @@ public class SettingsController {
         if (bindingResult.hasFieldErrors()) {
             log.error("Request for [settings/password] is failed: validation is failed. [HttpServletRequest: " +
                     request.toString() + "]");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("fields_error");
+            messageDto.setError("fields_error");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
         }
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userService.updateUserProfile(user);
@@ -80,7 +81,7 @@ public class SettingsController {
     }
 
     @PostMapping("/email")
-    public ResponseEntity changeEmail(@RequestBody String mail, Principal principal) {
+    public ResponseEntity<MessageDto> changeEmail(@RequestBody String mail, Principal principal) {
         if (principal == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
@@ -108,7 +109,7 @@ public class SettingsController {
     }
 
     @GetMapping("/email")
-    public ResponseEntity getEmailVerificationState(Principal principal) {
+    public ResponseEntity<MessageDto> getEmailVerificationState(Principal principal) {
         if (principal == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
