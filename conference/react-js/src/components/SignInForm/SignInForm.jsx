@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { forgotPassword, signUp } from '../../constants/route-url';
+import { forgotPassword, signUp, root } from '../../constants/route-url';
 import login from '../../actions/login';
 import loginValidation from '../../actions/loginVlidation';
 import actionTypes from '../../constants/actions-types';
@@ -19,8 +19,9 @@ class SignInForm extends PureComponent {
   }
 
   onLoginSuccess = ({ data }) => {
-    const { load, close } = this.props;
+    const { load, close, history } = this.props;
     load(actionTypes.SET_USER, data);
+    history.push(root);
     close();
   };
 
@@ -131,6 +132,7 @@ class SignInForm extends PureComponent {
 SignInForm.propTypes = {
   load: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
-export default SignInForm;
+export default withRouter(SignInForm);

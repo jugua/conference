@@ -6,24 +6,22 @@ import {
 } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ForgotPassword from './Forgot-password';
-import Tabs from './Tabs';
+import Tabs from './Tabs/Tabs';
 import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm/SignUpForm';
 import History from './History';
 import ManageUser from '../containers/Manage-user/';
 import Talks from '../containers/Talks';
-import MyInfo from './MyInfo/MyInfo';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
-  baseUrl,
+  root,
   forgotPassword,
   signUp,
   manageUser,
   talks,
   account,
   history,
-  myInfo,
 } from '../constants/route-url';
 
 const App = () => (
@@ -32,11 +30,6 @@ const App = () => (
       <div>
         <Header />
         <Switch>
-          <Route
-            path={baseUrl}
-            exact
-            component={Tabs}
-          />
           <Route
             path={account}
             exact
@@ -49,23 +42,27 @@ const App = () => (
           />
           <Route
             path={signUp}
+            exact
             component={SignUp}
           />
           <Route
             path={manageUser}
+            exact
             component={ManageUser}
           />
           <Route
             path={talks}
+            exact
             component={Talks}
           />
           <Route
             path={history}
+            exact
             component={History}
           />
           <Route
-            path={myInfo}
-            component={MyInfo}
+            path={root}
+            component={Tabs}
           />
         </Switch>
       </div>

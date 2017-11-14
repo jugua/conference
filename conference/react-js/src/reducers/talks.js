@@ -8,8 +8,12 @@ const talks = (state = [], action) => {
   if (type === LOAD) {
     return payload;
   } else if (type === APPLY_FILTERS) {
-    const { filter: { conferenceName, title, status }, talks: listOfTalks,
-      quantity, page } = payload;
+    const {
+      filter: { conferenceName, title, status },
+      talks: listOfTalks,
+      quantity,
+      page,
+    } = payload;
     const prevValue = (page - 1) * quantity;
     const lastValue = page * quantity;
     const filtered = (elementOfListTopic) => {
