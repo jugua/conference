@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import domain.model.Contact;
 import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -40,6 +41,13 @@ public class UserController {
 
     private final UserService userService;
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}/contacts")
+    public ResponseEntity<List<Contact>> getUserContacts(@PathVariable("id")long id){
+    	List<Contact> contacts = userService.find(id).getUserInfo().getContacts();
+    	return new ResponseEntity<>(contacts,HttpStatus.OK);
+    }
+    
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/usersNames")
     public ResponseEntity<List<String>> getUsersNames() {
