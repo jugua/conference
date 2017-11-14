@@ -8,13 +8,16 @@ const talks = (state = [], action) => {
   if (type === LOAD) {
     return payload;
   } else if (type === APPLY_FILTERS) {
-    const { filter: { topic, status }, talks: listOfTalks, quantity, page } = payload;
+    const { filter: { conferenceName, title, status }, talks: listOfTalks,
+      quantity, page } = payload;
     const prevValue = (page - 1) * quantity;
     const lastValue = page * quantity;
     const filtered = (elementOfListTopic) => {
-      const countExtendTopic = elementOfListTopic.topic.indexOf(topic);
-      const countExtendStatus = elementOfListTopic.status.indexOf(status);
-      return countExtendStatus > -1 && countExtendTopic > -1;
+      const countConference = elementOfListTopic.conferenceName
+        .indexOf(conferenceName);
+      const countTitle = elementOfListTopic.title.indexOf(title);
+      const countStatus = elementOfListTopic.status.indexOf(status);
+      return countConference > -1 && countTitle > -1 && countStatus > -1;
     };
     return listOfTalks.filter(filtered).slice(prevValue, lastValue);
   } else if (type === SORT_ALL_TALKS) {
