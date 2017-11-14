@@ -20,8 +20,9 @@ class SignUp extends Component {
       responseOk: false,
       responseStatus: 0,
     };
+  }
 
-    this.formChangeHandler = (e) => {
+    formChangeHandler = (e) => {
       const target = e.target;
 
       this.setState({
@@ -29,14 +30,14 @@ class SignUp extends Component {
       });
     };
 
-    const registration = ({ mail, password, confirm, fname, lname }) => {
+    registration = ({ mail, password, confirm, fname, lname }) => {
       const body = { mail, password, confirm, fname, lname };
       return axios.post(registrationUrl, body);
     };
 
-    this.submitHandler = (e) => {
+    submitHandler = (e) => {
       e.preventDefault();
-      registration(this.state)
+      this.registration(this.state)
         .then(resp => (this.setState({
           responseOk: true,
           response: resp,
@@ -48,7 +49,7 @@ class SignUp extends Component {
         ));
     };
 
-    this.checkPassLen = () => {
+    checkPassLen = () => {
       if (this.state.password.length < 6) {
         this.setState({
           passLen: true,
@@ -59,94 +60,93 @@ class SignUp extends Component {
         });
       }
     };
-  }
 
-  render() {
-    return (
-      <div className="sign-up-wrapper">
-        <form
-          className="sign-up"
-          onSubmit={this.submitHandler}
-          onChange={this.formChangeHandler}
-        >
-          <h2 className="form-title sign-up__title">create new account</h2>
-          <InputBlock
-            id="name"
-            label="first name:"
-            labelClass="form-label_required"
-            inputClass="sign-up__field"
-            name="fname"
-            maxLength={56}
-            required
-          />
-          <InputBlock
-            id="surname"
-            label="last name:"
-            labelClass="form-label_required"
-            inputClass="sign-up__field"
-            name="lname"
-            maxLength={56}
-            required
-          />
-          <InputBlock
-            id="mail"
-            type="email"
-            label="Email:"
-            labelClass="form-label_required"
-            inputClass="sign-up__field"
-            name="mail"
-            required
-          />
-          {this.state.responseStatus === 409 &&
+    render() {
+      return (
+        <div className="sign-up-wrapper">
+          <form
+            className="sign-up"
+            onSubmit={this.submitHandler}
+            onChange={this.formChangeHandler}
+          >
+            <h2 className="form-title sign-up__title">create new account</h2>
+            <InputBlock
+              id="name"
+              label="first name:"
+              labelClass="form-label_required"
+              inputClass="sign-up__field"
+              name="fname"
+              maxLength={56}
+              required
+            />
+            <InputBlock
+              id="surname"
+              label="last name:"
+              labelClass="form-label_required"
+              inputClass="sign-up__field"
+              name="lname"
+              maxLength={56}
+              required
+            />
+            <InputBlock
+              id="mail"
+              type="email"
+              label="Email:"
+              labelClass="form-label_required"
+              inputClass="sign-up__field"
+              name="mail"
+              required
+            />
+            {this.state.responseStatus === 409 &&
             (<ErrorMessage errorMessage="There is an existing account
                  associated with"
             />)
-          }
-          <InputBlock
-            id="password"
-            type="password"
-            label="password:"
-            labelClass="form-label_required"
-            inputClass="sign-up__field"
-            onBlur={this.checkPassLen}
-            name="password"
-            maxLength={30}
-            minLength={6}
-            required
-          />
-          {this.state.passLen &&
+            }
+            <InputBlock
+              id="password"
+              type="password"
+              label="password:"
+              labelClass="form-label_required"
+              inputClass="sign-up__field"
+              onBlur={this.checkPassLen}
+              name="password"
+              maxLength={30}
+              minLength={6}
+              required
+            />
+            {this.state.passLen &&
           (<ErrorMessage
             errorMessage="Must be longer than 6 symbols"
           />)
-          }
-          <InputBlock
-            id="confirm"
-            type="password"
-            label="confirm password:"
-            labelClass="form-label_required"
-            inputClass="sign-up__field"
-            name="confirm"
-            maxLength={30}
-            minLength={6}
-            required
-          />
-          {this.state.password !== this.state.confirm ?
-            (<ErrorMessage errorMessage="Passwords do not match" />)
-            : null}
-          <input
-            type="submit"
-            id="btn-sign-up"
-            className="sign-up__button btn"
-            value="submit"
-          />
-        </form>
-        {this.state.responseOk && <SignUpPopUp
-          userName={this.state.fname}
-          mail={this.state.mail}
-        /> }
-      </div>
-    );
-  }
+            }
+            <InputBlock
+              id="confirm"
+              type="password"
+              label="confirm password:"
+              labelClass="form-label_required"
+              inputClass="sign-up__field"
+              name="confirm"
+              maxLength={30}
+              minLength={6}
+              required
+            />
+            {this.state.password !== this.state.confirm ?
+              (<ErrorMessage errorMessage="Passwords do not match" />)
+              : null}
+            <input
+              type="submit"
+              id="btn-sign-up"
+              className="sign-up__button btn"
+              value="submit"
+            />
+          </form>
+          {this.state.responseOk && <SignUpPopUp
+            userName={this.state.fname}
+            mail={this.state.mail}
+          /> }
+        </div>
+      );
+    }
 }
 
 export default SignUp;

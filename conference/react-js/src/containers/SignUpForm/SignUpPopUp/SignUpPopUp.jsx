@@ -8,7 +8,8 @@ const SignUpPopUp = () => (
         You&#39;ve successfully registered.
       </h3>
       <p className="pop-up__notification pop-up__notification_small">
-        Please check your email to complete the registration.</p>
+        Please check your email to complete the registration.
+      </p>
       <ShowMainPage />
     </div>
   </div>

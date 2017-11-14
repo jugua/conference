@@ -191,22 +191,23 @@ html {
 
     &_light {
       font-family: "Oswald Light", sans-serif;
-      }
+    }
 
     &_not-margin {
       margin: 0;
-      }
+    }
 
     &-user {
       word-wrap: break-word;
       font-family: "Oswald Bold", sans-serif;
       display: inline-block;
       max-width: 100%;
-      }
+    }
 
-    &_small {}
+    &_small {
       margin: 20px 10px;
     }
+  }
 
   &__button {
     margin: 10px auto 15px;
@@ -288,7 +289,6 @@ html {
 
 .webpack_bundle_images {
   background: url("../images/default_ava.jpg");
-  background: url("../images/favicon.png");
   }
 
 .link {
