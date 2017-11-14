@@ -15,7 +15,7 @@ class SignUp extends Component {
       mail: '',
       password: '',
       confirm: '',
-      passLen: false,
+      passwordLength: false,
       isRegistrated: true,
       responseOk: false,
       responseStatus: 0,
@@ -49,14 +49,14 @@ class SignUp extends Component {
         ));
     };
 
-    checkPassLen = () => {
+    checkPasswordLength = () => {
       if (this.state.password.length < 6) {
         this.setState({
-          passLen: true,
+          passwordLength: true,
         });
       } else {
         this.setState({
-          passLen: false,
+          passwordLength: false,
         });
       }
     };
@@ -108,13 +108,13 @@ class SignUp extends Component {
               label="password:"
               labelClass="form-label_required"
               inputClass="sign-up__field"
-              onBlur={this.checkPassLen}
+              onBlur={this.checkPasswordLength}
               name="password"
               maxLength={30}
               minLength={6}
               required
             />
-            {this.state.passLen &&
+            {this.state.passwordLength &&
           (<ErrorMessage
             errorMessage="Must be longer than 6 symbols"
           />)
