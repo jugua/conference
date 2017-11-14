@@ -18,13 +18,13 @@ class Card extends PureComponent {
       id,
       start_date: startDate,
       title } = this.props.data;
-    const { role } = this.props;
+    const { id: userId } = this.props;
 
     return (
       <div
         className="tabs-container conference-card"
       >
-        {role !== '' ?
+        {userId > -1 ?
           <div
             className="conference-card-title"
             role="button"
