@@ -1,19 +1,15 @@
-import path from 'path';
-
-const { resolve } = path;
-
 export const root = '/react/';
 
 export const upcoming = root;
-export const history = resolve(root, 'history');
-export const forgotPassword = resolve(root, 'forgot-password');
-export const myTalks = resolve(root, 'my-talks');
-export const myEvents = resolve(root, 'my-events');
-export const talks = resolve(root, 'talks');
-export const signUp = resolve(root, 'sign-up');
-export const account = resolve(root, 'account');
-export const manageUser = resolve(root, 'manage-user');
-export const conference = resolve(root, 'conference');
+export const history = `${root}history`;
+export const forgotPassword = `${root}forgot-password`;
+export const myTalks = `${root}my-talks`;
+export const myEvents = `${root}my-events`;
+export const talks = `${root}talks`;
+export const signUp = `${root}sign-up`;
+export const account = `${root}account`;
+export const manageUser = `${root}manage-user`;
+export const conference = `${root}conference`;
 
-export const myInfo = resolve(account, 'my-info');
-export const settings = resolve(account, 'settings');
+export const myInfo = `${account}/my-info`;
+export const settings = `${account}/setting`;
