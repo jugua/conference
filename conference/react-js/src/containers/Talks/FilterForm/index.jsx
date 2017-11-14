@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 
 class FilterForm extends PureComponent {
   setStatus = status => (status.map(element =>
-    (<option key={status.indexOf(element)}>{element}</option>),
+    (<option key={element}>{element}</option>),
   ));
 
   render() {
