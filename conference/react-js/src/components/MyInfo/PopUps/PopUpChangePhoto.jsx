@@ -6,7 +6,7 @@ import InputBlock from '../../InputBlock/InputBlock';
 
 class PopUpChangePhoto extends PureComponent {
   render() {
-    const { showModal, closeModal } = this.props;
+    const { showModal, closeModal, changePhoto } = this.props;
     return (
       <div>
         <ReactModal
@@ -42,6 +42,7 @@ class PopUpChangePhoto extends PureComponent {
                 inputClass="file-upload__uploading"
                 labelClass="btn choose-photo__btn"
                 name="file"
+                onChange={changePhoto}
                 label="Choose"
                 accept="image/jpeg,image/png,image/gif"
                 size="2MB"
@@ -62,10 +63,7 @@ class PopUpChangePhoto extends PureComponent {
 PopUpChangePhoto.propTypes = {
   showModal: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-};
-
-PopUpChangePhoto.defaultProps = {
-  showModal: false,
+  changePhoto: PropTypes.func.isRequired,
 };
 
 export default PopUpChangePhoto;

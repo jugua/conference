@@ -16,6 +16,8 @@ class MyInfo extends Component {
       showInfoSavedModal: false,
       showChangePhotoModal: false,
       user: {},
+      file: '',
+      userPhoto: '',
     };
   }
 
@@ -62,21 +64,45 @@ class MyInfo extends Component {
     this.setState({ showChangePhotoModal: true });
   };
 
+  changeProfilePhoto = (e) => {
+    // this.setState({
+    //   userPhoto: e.target.files[0],
+    //   userPhotoURL: e.target.value,
+    // });
+    e.preventDefault();
+
+    const reader = new FileReader();
+    const file = e.target.files[0];
+
+    console.log(file);
+    reader.onloadend = () => {
+      this.setState({
+        file,
+        userPhoto: reader.result,
+      });
+    };
+
+    console.log(this.state);
+
+    reader.readAsDataURL(file);
+  }
+
   render() {
     const { user: {
       bio = '',
       job = '',
       company = '',
       past = '',
-      photo = '',
       info = '' } } = this.state;
+
+    const { userPhoto } = this.state;
 
     return (
       <div>
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
-            src={photo}
+            src={userPhoto}
             alt=""
           />
           <button
@@ -166,6 +192,7 @@ class MyInfo extends Component {
         <PopUpChangePhoto
           showModal={this.state.showChangePhotoModal}
           closeModal={this.handleCloseModal1}
+          changePhoto={this.changeProfilePhoto}
         />}
       </div>
     );
