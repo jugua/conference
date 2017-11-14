@@ -43,3 +43,20 @@
 	height: calc(100vh - 375px);
 	overflow-y: scroll;
 }
+
+.table-header {
+
+	&__item {
+		cursor: pointer;
+
+		&::after {
+			content: '\2BC5';
+			margin-left: 5px;
+		}
+
+		&:focus::after {
+			content: '\2BC6';
+			margin-left: 5px;
+		}
+	}
+}

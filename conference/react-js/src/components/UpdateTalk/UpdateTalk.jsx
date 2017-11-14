@@ -208,11 +208,8 @@ class UpdateTalk extends PureComponent {
             label="Attach"
             icon={<AttachFile />}
             primary
-            // style={styles.uploadButton}
           >
-            <input
-              type="file"
-            />
+            <input type="file" />
           </RaisedButton>
         </div>
 
