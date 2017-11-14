@@ -4,7 +4,6 @@ const { resolve } = path;
 
 export const root = '/react/';
 
-// root
 export const upcoming = root;
 export const history = resolve(root, 'history');
 export const forgotPassword = resolve(root, 'forgot-password');
@@ -16,6 +15,5 @@ export const account = resolve(root, 'account');
 export const manageUser = resolve(root, 'manage-user');
 export const conference = resolve(root, 'conference');
 
-// account
 export const myInfo = resolve(account, 'my-info');
 export const settings = resolve(account, 'settings');
