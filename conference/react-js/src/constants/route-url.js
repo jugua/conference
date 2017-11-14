@@ -1,14 +1,15 @@
-export const baseUrl = '/react';
-export const root = `${baseUrl}/`;
-export const past = `${baseUrl}/past`;
-export const history = `${baseUrl}/history`;
-export const upcoming = baseUrl;
-export const forgotPassword = `${baseUrl}/forgot-password`;
-export const talks = `${baseUrl}/talks`;
-export const signUp = `${baseUrl}/sign-up`;
-export const account = `${baseUrl}/account`;
-export const manageUser = `${baseUrl}/manage-user`;
-export const myTalks = `${baseUrl}/my-talks`;
-export const myEvents = `${baseUrl}/my-events`;
-export const myInfo = `${baseUrl}/my-info`;
-export const conference = `${baseUrl}/conference`;
+export const root = '/react/';
+
+export const upcoming = root;
+export const history = `${root}history`;
+export const forgotPassword = `${root}forgot-password`;
+export const myTalks = `${root}my-talks`;
+export const myEvents = `${root}my-events`;
+export const talks = `${root}talks`;
+export const signUp = `${root}sign-up`;
+export const account = `${root}account`;
+export const manageUser = `${root}manage-user`;
+export const conference = `${root}conference`;
+
+export const myInfo = `${account}/my-info`;
+export const settings = `${account}/setting`;
