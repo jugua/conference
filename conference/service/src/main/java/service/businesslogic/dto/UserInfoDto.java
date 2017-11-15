@@ -1,5 +1,6 @@
 package service.businesslogic.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -36,19 +37,7 @@ public class UserInfoDto extends UserBasicDto {
 
     @JsonProperty("photo")
     private String photo;
-
-    @JsonProperty("linkedin")
-    private String linkedIn;
-
-    @JsonProperty("twitter")
-    private String twitter;
-
-    @JsonProperty("facebook")
-    private String facebook;
-
-    @JsonProperty("blog")
-    private String blog;
-
+    
     @JsonProperty("info")
     @Size(max = 1000)
     private String userInfoAdditionalInfo;
@@ -56,23 +45,11 @@ public class UserInfoDto extends UserBasicDto {
     private List<Contact> contacts;
 
     public void setContact(Contact contact) {
-        String name = contact.getContactType().getName();
-        String value = contact.getValue();
-        switch (name) {
-            case "LinkedIn":
-                linkedIn = value;
-                break;
-            case "Twitter":
-                twitter = value;
-                break;
-            case "Facebook":
-                facebook = value;
-                break;
-            case "Blog":
-                blog = value;
-                break;
-            default:
-                break;
-        }
+    	
+    	if(contacts == null) {
+    		contacts = new ArrayList<>();
+    	}
+    	contacts.add(contact);
+   
     }
 }
