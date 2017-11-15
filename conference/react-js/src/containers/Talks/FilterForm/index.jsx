@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
+import InputBlock from '../../../components/InputBlock/InputBlock';
 
 class FilterForm extends PureComponent {
-  setStatus = status => (status.map(element =>
+  getOptions = status => (status.map(element =>
     (<option key={element}>{element}</option>),
   ));
 
@@ -14,30 +15,22 @@ class FilterForm extends PureComponent {
         <form className="my-talk-settings__filters">
           <p className="my-talk-settings__title">filter by:</p>
           <div className="my-talk-settings__select-wrapper">
-            <label
-              htmlFor="my-talk-conference"
-              className="form-label my-talk-settings__label"
-            >Conference
-            </label>
-            <input
-              type="text"
-              name="conferenceName"
+            <InputBlock
+              label="Conference"
               id="my-talk-conference"
-              className="my-talk-settings__select"
+              labelClass="form-label my-talk-settings__label"
+              name="conferenceName"
+              inputClass="my-talk-settings__select"
               onBlur={onChangeFilter}
             />
           </div>
           <div className="my-talk-settings__select-wrapper">
-            <label
-              htmlFor="my-talk-title"
-              className="form-label my-talk-settings__label"
-            >Title
-            </label>
-            <input
-              type="text"
-              name="title"
+            <InputBlock
+              label="Title"
               id="my-talk-title"
-              className="my-talk-settings__select"
+              labelClass="form-label my-talk-settings__label"
+              name="title"
+              inputClass="my-talk-settings__select"
               onBlur={onChangeFilter}
             />
           </div>
@@ -54,7 +47,7 @@ class FilterForm extends PureComponent {
               onBlur={onChangeFilter}
             >
               <option defaultValue="" />
-              {this.setStatus(status)}
+              {this.getOptions(status)}
             </select>
           </div>
           <div className="my-talk-settings__button-wrapper">
