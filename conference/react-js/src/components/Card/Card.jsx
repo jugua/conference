@@ -89,8 +89,9 @@ Card.propTypes = { data: PropTypes.shape({
   start_date: PropTypes.string,
   title: PropTypes.string,
 }).isRequired,
+role: PropTypes.string.isRequired,
 setConference: PropTypes.func.isRequired,
-role: PropTypes.string.isRequired };
+};
 
 Card.defaultProps = {
   data: {},
