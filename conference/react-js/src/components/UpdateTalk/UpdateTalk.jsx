@@ -204,7 +204,6 @@ class UpdateTalk extends PureComponent {
         <div className="attach-file_wrapper">
           <RaisedButton
             containerElement="label"
-            // className="update-talk__button"
             label="Attach"
             icon={<AttachFile />}
             primary

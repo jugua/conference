@@ -16,7 +16,7 @@
 		}
 
 	@media ($mnw: $xmdmx) {
-		height: calc(100vh - 375px);
+		height: $table-height;
 		overflow-y: scroll;
 		}
 	}
@@ -40,7 +40,7 @@
 	}
 
 .table-container {
-	height: calc(100vh - 375px);
+	height: $table-height;
 	overflow-y: scroll;
 }
 
