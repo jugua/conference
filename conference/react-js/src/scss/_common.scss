@@ -1,3 +1,9 @@
+* {
+  &:focus {
+    outline: none;
+  }
+}
+
 html {
   font-family: $base-font-family;
   }

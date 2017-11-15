@@ -16,7 +16,7 @@
 		}
 
 	@media ($mnw: $xmdmx) {
-		height: calc(100vh - 200px);
+		height: $table-height;
 		overflow-y: scroll;
 		}
 	}
@@ -40,6 +40,23 @@
 	}
 
 .table-container {
-	height: calc(100vh - 200px);
+	height: $table-height;
 	overflow-y: scroll;
+}
+
+.table-header {
+
+	&__item {
+		cursor: pointer;
+
+		&::after {
+			content: '\2BC5';
+			margin-left: 5px;
+		}
+
+		&:focus::after {
+			content: '\2BC6';
+			margin-left: 5px;
+		}
+	}
 }
