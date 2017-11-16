@@ -11,7 +11,7 @@ import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm/SignUpForm';
 import History from './History';
-import ManageUser from '../containers/Manage-user/';
+import ManageUser from '../containers/ManageUsers/ManageUsers';
 import Talks from '../containers/Talks';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
