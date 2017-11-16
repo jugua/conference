@@ -10,18 +10,12 @@ import Tabs from './Tabs/Tabs';
 import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm/SignUpForm';
-import Past from './Past/Past';
-import ManageUser from '../containers/ManageUsers/ManageUsers';
-import Talks from '../containers/Talks';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
   root,
   forgotPassword,
   signUp,
-  manageUser,
-  talks,
   account,
-  past,
 } from '../constants/route-url';
 
 const App = () => (
@@ -30,11 +24,6 @@ const App = () => (
       <div>
         <Header />
         <Switch>
-          <Route
-            path={account}
-            exact
-            component={AccountPage}
-          />
           <Route
             path={forgotPassword}
             exact
@@ -46,19 +35,9 @@ const App = () => (
             component={SignUp}
           />
           <Route
-            path={manageUser}
+            path={account}
             exact
-            component={ManageUser}
-          />
-          <Route
-            path={talks}
-            exact
-            component={Talks}
-          />
-          <Route
-            path={past}
-            exact
-            component={Past}
+            component={AccountPage}
           />
           <Route
             path={root}
