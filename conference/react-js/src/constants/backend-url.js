@@ -16,3 +16,4 @@ export const langLevels = '/levels';
 export const registrationUrl = '/registration';
 export const myInfo = '/myinfo';
 export const talksStatus = '/talk/talksStatus';
+export const userContacts = '/user/1/contacts';
