@@ -10,7 +10,7 @@ import Tabs from './Tabs/Tabs';
 import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm/SignUpForm';
-import History from './History';
+import Past from './Past/Past';
 import ManageUser from '../containers/ManageUsers/ManageUsers';
 import Talks from '../containers/Talks';
 import AccountPage from '../components/AccountPage/AccountPage';
@@ -21,7 +21,7 @@ import {
   manageUser,
   talks,
   account,
-  history,
+  past,
 } from '../constants/route-url';
 
 const App = () => (
@@ -56,9 +56,9 @@ const App = () => (
             component={Talks}
           />
           <Route
-            path={history}
+            path={past}
             exact
-            component={History}
+            component={Past}
           />
           <Route
             path={root}
