@@ -47,7 +47,7 @@ class Header extends PureComponent {
     this.setState({
       dropdown: false,
     });
-  }
+  };
 
   isDescendant = (parent, child) => {
     let node = child.parentNode;
