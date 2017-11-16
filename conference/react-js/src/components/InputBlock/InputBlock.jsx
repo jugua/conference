@@ -50,7 +50,7 @@ const InputBlock = ({
 );
 
 InputBlock.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   disabled: PropTypes.bool,
   id: PropTypes.string,
   inputClass: PropTypes.string,
@@ -71,6 +71,7 @@ InputBlock.propTypes = {
 };
 
 InputBlock.defaultProps = {
+  name: null,
   disabled: false,
   id: null,
   inputClass: null,

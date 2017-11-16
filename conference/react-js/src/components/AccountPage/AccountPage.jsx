@@ -4,7 +4,7 @@ import { myInfo } from '../../constants/backend-url';
 
 import SettingsPage from '../Settings/SettingsPage/SettingsPage';
 import MyInfo from '../MyInfo/MyInfo';
-import MyContacts from '../MyContacts/MyContacts';
+import MyContactsContainer from '../MyContactsContainer/MyContactsContainer';
 
 const tabsList = [
   {
@@ -14,13 +14,13 @@ const tabsList = [
   },
   {
     id: 2,
-    name: 'Settings',
-    component: SettingsPage,
+    name: 'Contacts',
+    component: MyContactsContainer,
   },
   {
     id: 3,
-    name: 'Contacts',
-    component: MyContacts,
+    name: 'Settings',
+    component: SettingsPage,
   },
   // new tabs...
 ];
