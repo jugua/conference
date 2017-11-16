@@ -7,6 +7,8 @@ import loadData from '../../actions/load';
 import actions from '../../constants/actions-types';
 import { rolesUI } from '../../constants/roles';
 import { allUsers } from '../../constants/backend-url';
+import AddNewOrganizer
+  from '../../components/AddNewOrganizer/AddNewOrganizer';
 
 class ManageUser extends PureComponent {
   componentDidMount() {
@@ -48,9 +50,7 @@ class ManageUser extends PureComponent {
           </ul>
           <div className="tabs-container">
             <div className="my-talks__header">
-              <button className="btn my-talks__button">
-             Add New User
-              </button>
+              <AddNewOrganizer />
             </div>
             <div className="data-table">
               <div className="table-header">
