@@ -120,6 +120,10 @@ public class TalkController {
     		message.setError("fields_error");
 			return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
 		}
+    	if(commentService.findById(commentId)==null) {
+    		message.setError("fields_error");
+    		return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+    	}
     	commentDto.setId(commentId);
 		commentService.update(commentDto);
 		message.setResult("successfully_updated");
