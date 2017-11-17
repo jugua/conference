@@ -13,6 +13,7 @@ import SignUp from '../containers/SignUpForm/SignUpForm';
 import History from './History';
 import ManageUser from '../containers/Manage-user/';
 import Talks from '../containers/Talks';
+import Conference from '../containers/Conference';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
   root,
@@ -22,6 +23,7 @@ import {
   talks,
   account,
   history,
+  conference,
 } from '../constants/route-url';
 
 const App = () => (
@@ -59,6 +61,11 @@ const App = () => (
             path={history}
             exact
             component={History}
+          />
+          <Route
+            path={`${conference}/:id`}
+            exact
+            component={Conference}
           />
           <Route
             path={root}
