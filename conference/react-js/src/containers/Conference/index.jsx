@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 import Talks from '../Talks';
 
 const Conference = ({ conference: {
-  title },
-match: { params } }) => (
+  title,
+  id },
+}) => (
   <div className="tabs-layout tabs-wrapper">
     <h1 className="tabs-title">{title}</h1>
     <Link
@@ -16,18 +17,14 @@ match: { params } }) => (
     >
       back
     </Link>
-    <Talks url={`/conference/${params.id}/talks`} />
+    <Talks url={`/conference/${id}/talks`} />
   </div>
 );
 
 Conference.propTypes = { conference: PropTypes.shape({
   title: PropTypes.string,
+  id: PropTypes.number,
 }),
-match: PropTypes.shape({
-  params: PropTypes.shape({
-    id: PropTypes.string,
-  }).isRequired,
-}).isRequired,
 };
 
 Conference.defaultProps = {
