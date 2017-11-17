@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -36,12 +37,14 @@ import domain.model.Talk;
 import domain.model.TalkStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import service.businesslogic.api.CommentService;
 import service.businesslogic.api.LanguageService;
 import service.businesslogic.api.LevelService;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
 import service.businesslogic.api.UserService;
+import service.businesslogic.dto.CommentDto;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.exception.ResourceNotFoundException;
@@ -52,7 +55,6 @@ import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController
-@RequestMapping("/talk")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalkController {
     private static final String ORGANISER = "ORGANISER";
@@ -65,6 +67,7 @@ public class TalkController {
     private final TopicService topicService;
     private final LevelService levelService;
     private final LanguageService languageService;
+    private CommentService commentService;
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex) {
@@ -88,21 +91,57 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/talksTitles")
+    @GetMapping("/talks/{talkId}/comments")
+    public ResponseEntity<List<CommentDto>> getComments(@PathVariable("talkId")long talkId){
+		List<CommentDto> comments = commentService.getAllByTalkId(talkId);
+		return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/talks/{talkId}/comments")
+    public ResponseEntity<MessageDto> saveComment(@PathVariable("talkId")long talkId,
+    		@RequestBody CommentDto commentDto, BindingResult binding){
+    	MessageDto message = new MessageDto();
+    	if(binding.hasFieldErrors()) {
+    		message.setError("fields_error");
+			return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+		}
+		commentService.save(commentDto);
+		message.setResult("successfully_updated");
+		return new ResponseEntity<>(message,HttpStatus.OK);
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/talks/{talkId}/comments/{commentId}")
+    public ResponseEntity<MessageDto> updateComment(@PathVariable("talkId")long talkId, @PathVariable("commentId")long commentId,
+    		@RequestBody CommentDto commentDto, BindingResult binding){
+    	MessageDto message = new MessageDto();
+    	if(binding.hasFieldErrors()) {
+    		message.setError("fields_error");
+			return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+		}
+    	commentDto.setId(commentId);
+		commentService.update(commentDto);
+		message.setResult("successfully_updated");
+		return new ResponseEntity<>(message,HttpStatus.OK);
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/talk/talksTitles")
     public ResponseEntity<List<String>> getTalksTitles() {
         List<String> talksTitles = talkService.findAll().stream().map(m -> m.getTitle()).collect(Collectors.toList());
         return new ResponseEntity<>(talksTitles, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/talksStatus")
+    @GetMapping("/talk/talksStatus")
     public ResponseEntity<List<String>> getTalksStatus() {
         List<String> talksStatus = Arrays.asList(TalkStatus.values()).stream().map(m -> m.getName()).collect(Collectors.toList());
         return new ResponseEntity<>(talksStatus, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping
+    @GetMapping("/talk")
     public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
         List<TalkDto> userTalkDtoList;
         if (request.isUserInRole(ORGANISER)) {
@@ -114,14 +153,14 @@ public class TalkController {
     }
 
     @PreAuthorize("hasRole('ORGANISER')")
-    @GetMapping("/{talkId}")
+    @GetMapping("/talk/{talkId}")
     public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         return new ResponseEntity<>(talkDto, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/{id}")
+    @PatchMapping("/talk/{id}")
     public ResponseEntity<MessageDto> updateTalk(@PathVariable("id") Long talkId,
                                      @RequestBody TalkDto dto,
                                      BindingResult bindingResult,
@@ -145,7 +184,7 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/{talk_id}/takeFileName",
+    @GetMapping(value = "/talk/{talk_id}/takeFileName",
             produces = "application/json")
     public ResponseEntity<Map<String,String>> getFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
@@ -159,7 +198,7 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
 
-    @GetMapping(value = "/{talk_id}/takeFile")
+    @GetMapping(value = "/talk/{talk_id}/takeFile")
     public ResponseEntity<InputStreamResource> takeFile(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
@@ -183,7 +222,7 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
 
-    @PostMapping("/{talk_id}/uploadFile")
+    @PostMapping("/talk/{talk_id}/uploadFile")
     public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
                                  @RequestPart(value = "file") MultipartFile file,
                                  HttpServletRequest request) {
@@ -204,7 +243,7 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/{talk_id}/deleteFile")
+    @DeleteMapping("/talk/{talk_id}/deleteFile")
     public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
         String filePath = talkService.getFilePath(talkDto);
