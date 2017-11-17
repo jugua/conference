@@ -1,7 +1,6 @@
 package service.businesslogic.impl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
 	private UserRepository userRepository;
 	@Autowired
 	private TalkRepository TalkRepository;
-	
+
 	@Override
 	public Long save(CommentDto commentDto) {
 		Comment comment = commentDtoToComment(commentDto);
@@ -54,23 +53,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public List<CommentDto> getAllByUserId(Long id) {		
-		List<Comment> comments = commentRepository.findAllByUserId(id);
-		return listCommentToListCommentDto(comments);
-	}
-
-	@Override
 	public List<CommentDto> getAllByTalkId(Long id) {
 		List<Comment> comments = commentRepository.findAllByTalkId(id);
 		return listCommentToListCommentDto(comments);
 	}
-	
-	@Override
-	public List<CommentDto> getAllByTalkIdAndUserId(Long talkId, Long userId) {
-		List<Comment> comments = commentRepository.findAllByTalkIdAndUserId(talkId, userId);
-		return listCommentToListCommentDto(comments);
-	}
-	
+
 	private CommentDto commentToCommentDto(Comment comment) {
 		Long id = comment.getId();
 		String message = comment.getMessage();
@@ -79,27 +66,18 @@ public class CommentServiceImpl implements CommentService {
 		LocalDateTime time = comment.getTime();
 		return new CommentDto(id, message, userId, talkId, time);
 	}
-	
+
 	private Comment commentDtoToComment(CommentDto commentDto) {
-		return Comment.builder()
-					  .id(commentDto.getId())
-					  .message(commentDto.getMessage())
-					  .user(userRepository.findOne(commentDto.getUserId()))
-					  .talk(TalkRepository.findOne(commentDto.getTalkId()))
-					  .time(commentDto.getTime())
-					  .build();
+		return Comment.builder().id(commentDto.getId()).message(commentDto.getMessage())
+				.user(userRepository.findOne(commentDto.getUserId()))
+				.talk(TalkRepository.findOne(commentDto.getTalkId())).time(commentDto.getTime()).build();
 	}
 
-	private List<CommentDto> listCommentToListCommentDto(List<Comment> comments){
-		List<CommentDto> commentsDto = comments.stream().map(m -> new CommentDto(
-					  m.getId(),
-					  m.getMessage(),
-					  m.getUser().getId(),
-					  m.getTalk().getId(),
-					  m.getTime())).collect(Collectors.toList());
+	private List<CommentDto> listCommentToListCommentDto(List<Comment> comments) {
+		List<CommentDto> commentsDto = comments.stream().map(
+				m -> new CommentDto(m.getId(), m.getMessage(), m.getUser().getId(), m.getTalk().getId(), m.getTime()))
+				.collect(Collectors.toList());
 		return commentsDto;
 	}
-
-	
 
 }
