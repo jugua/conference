@@ -15,7 +15,6 @@ import lombok.NonNull;
 public class CommentDto {
 
 	@JsonProperty("id")
-	@NonNull
 	private Long id;
 	@JsonProperty("message")
 	@NonNull
