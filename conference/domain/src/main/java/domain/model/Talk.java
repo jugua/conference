@@ -1,13 +1,16 @@
 package domain.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -83,10 +86,13 @@ public class Talk extends AbstractEntity {
     @Column
     private String pathToAttachedFile;
 
+    @OneToMany(mappedBy = "talk", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+    
     @Builder
     public Talk(Long id, User user, TalkStatus status, Topic topic, Type type, Language language, Level level,
                 LocalDateTime time, String title, String description, String additionalInfo, String organiserComment,
-                User organiser, Conference conference, String pathToAttachedFile) {
+                User organiser, Conference conference, String pathToAttachedFile, List<Comment> comments) {
         super(id);
         this.user = user;
         this.status = status;
@@ -102,6 +108,7 @@ public class Talk extends AbstractEntity {
         this.organiser = organiser;
         this.conference = conference;
         this.pathToAttachedFile = pathToAttachedFile;
+        this.comments = comments;
     }
 
     public boolean setStatus(TalkStatus status) {
