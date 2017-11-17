@@ -14,10 +14,6 @@ public interface CommentService {
 	
 	void delete(CommentDto comment);
 	
-	List<CommentDto> getAllByUserId(Long id);
-	
 	List<CommentDto> getAllByTalkId(Long id);
-	
-	List<CommentDto> getAllByTalkIdAndUserId(Long talkId, Long userId);
 	
 }
