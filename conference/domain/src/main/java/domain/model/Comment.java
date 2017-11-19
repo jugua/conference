@@ -17,28 +17,29 @@ import lombok.NonNull;
 @Entity
 public class Comment extends AbstractEntity {
 
-	@Column(nullable = false)
-	@NonNull
-	private String message;
-	@Column(nullable = false)
-	@NonNull
-	private LocalDateTime time; 	
-	@ManyToOne
-	@JoinColumn(name = "user_id",nullable = false)
-	@NonNull
-	private User user;
-	@ManyToOne
-	@JoinColumn(name = "talk_id", nullable = false)
-	@NonNull
-	private Talk talk;
-	
-	@Builder
-	public Comment(Long id, String message, LocalDateTime time, User user, Talk talk) {
-		super(id);
-		this.message = message;
-		this.time = time;
-		this.user = user;
-		this.talk = talk;
-	}
-	
+    @Column(nullable = false)
+    @NonNull
+    private String message;
+
+    @Column(nullable = false)
+    @NonNull
+    private LocalDateTime time;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @NonNull
+    private User user;
+
+    @NonNull
+    private long talkId;
+
+    @Builder
+    public Comment(Long id, String message, LocalDateTime time, User user, long talkId) {
+        super(id);
+        this.message = message;
+        this.time = time;
+        this.user = user;
+        this.talkId = talkId;
+    }
+
 }

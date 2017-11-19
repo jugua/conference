@@ -86,9 +86,9 @@ public class Talk extends AbstractEntity {
     @Column
     private String pathToAttachedFile;
 
-    @OneToMany(mappedBy = "talk", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "talkId", fetch = FetchType.LAZY)
     private List<Comment> comments;
-    
+
     @Builder
     public Talk(Long id, User user, TalkStatus status, Topic topic, Type type, Language language, Level level,
                 LocalDateTime time, String title, String description, String additionalInfo, String organiserComment,
