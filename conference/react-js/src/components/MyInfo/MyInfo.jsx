@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import changeUserInfo from '../../actions/change-user-info';
+import { uploadUserPhoto } from '../../constants/backend-url';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
@@ -17,7 +19,7 @@ class MyInfo extends Component {
       showChangePhotoModal: false,
       user: {},
       file: '',
-      userPhoto: '',
+      userPhotoSrc: '',
     };
   }
 
@@ -65,26 +67,27 @@ class MyInfo extends Component {
   };
 
   changeProfilePhoto = (e) => {
-    // this.setState({
-    //   userPhoto: e.target.files[0],
-    //   userPhotoURL: e.target.value,
-    // });
     e.preventDefault();
 
-    const reader = new FileReader();
     const file = e.target.files[0];
+    const photoURL = window.URL.createObjectURL(file);
 
-    console.log(file);
-    reader.onloadend = () => {
-      this.setState({
-        file,
-        userPhoto: reader.result,
+    this.setState({ userPhotoSrc: photoURL });
+  }
+
+  uploadPhotoToDB = (e) => {
+    e.preventDefault();
+
+    const choosePhotoBtn = document.querySelector('#choose-photo__btn');
+    const userPhoto = choosePhotoBtn.files[0];
+
+    const data = new FormData();
+    data.append('file', userPhoto);
+
+    axios.post(uploadUserPhoto, data)
+      .then((res) => {
+        console.log(res);
       });
-    };
-
-    console.log(this.state);
-
-    reader.readAsDataURL(file);
   }
 
   render() {
@@ -95,14 +98,12 @@ class MyInfo extends Component {
       past = '',
       info = '' } } = this.state;
 
-    const { userPhoto } = this.state;
-
     return (
       <div>
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
-            src={userPhoto}
+            src={this.state.userPhotoSrc}
             alt=""
           />
           <button
@@ -192,7 +193,8 @@ class MyInfo extends Component {
         <PopUpChangePhoto
           showModal={this.state.showChangePhotoModal}
           closeModal={this.handleCloseModal1}
-          changePhoto={this.changeProfilePhoto}
+          changeProfilePhoto={this.changeProfilePhoto}
+          uploadPhotoToDB={this.uploadPhotoToDB}
         />}
       </div>
     );

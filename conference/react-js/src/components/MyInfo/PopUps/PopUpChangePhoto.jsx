@@ -6,7 +6,10 @@ import InputBlock from '../../InputBlock/InputBlock';
 
 class PopUpChangePhoto extends PureComponent {
   render() {
-    const { showModal, closeModal, changePhoto } = this.props;
+    const { showModal,
+      closeModal,
+      changeProfilePhoto,
+      uploadPhotoToDB } = this.props;
     return (
       <div>
         <ReactModal
@@ -27,7 +30,7 @@ class PopUpChangePhoto extends PureComponent {
           }}
         >
           <h3 className="pop-up__title">Upload New Photo</h3>
-          <form noValidate>
+          <form noValidate encType="multipart/form-data">
             <div required name="dragfile">
               <p className="pop-up__notification pop-up__notification_light">
                 It is much easier to identify you if you have a photo.
@@ -42,12 +45,17 @@ class PopUpChangePhoto extends PureComponent {
                 inputClass="file-upload__uploading"
                 labelClass="btn choose-photo__btn"
                 name="file"
-                onChange={changePhoto}
+                onChange={changeProfilePhoto}
                 label="Choose"
                 accept="image/jpeg,image/png,image/gif"
                 size="2MB"
                 required
               />
+              <button
+                className="btn"
+                onClick={uploadPhotoToDB}
+              >
+                Upload Photo</button>
             </div>
           </form>
           <button
@@ -63,7 +71,8 @@ class PopUpChangePhoto extends PureComponent {
 PopUpChangePhoto.propTypes = {
   showModal: PropTypes.bool.isRequired,
   closeModal: PropTypes.func.isRequired,
-  changePhoto: PropTypes.func.isRequired,
+  changeProfilePhoto: PropTypes.func.isRequired,
+  uploadPhotoToDB: PropTypes.func.isRequired,
 };
 
 export default PopUpChangePhoto;
