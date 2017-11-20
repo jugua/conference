@@ -8,10 +8,8 @@ import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
 import {
   upcoming,
   myTalks,
-  myEvents,
-  conference } from '../../constants/route-url';
+  myEvents } from '../../constants/route-url';
 import MyEvents from '../MyEvents/MyEvents';
-import Conference from '../../containers/Conference';
 
 const Tabs = ({ user: { conferenceCount, talksCount } }) => (
   <div className="tabs-layout">
@@ -34,11 +32,6 @@ const Tabs = ({ user: { conferenceCount, talksCount } }) => (
         path={myEvents}
         exact
         component={MyEvents}
-      />
-      <Route
-        path={`${conference}/:id`}
-        exact
-        component={Conference}
       />
     </div>
   </div>

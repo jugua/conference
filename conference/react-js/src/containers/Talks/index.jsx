@@ -154,9 +154,6 @@ class Talks extends Component {
         role="menu"
         tabIndex="0"
       >
-        <div className="talks__header">
-          <a className="btn talks__button">export to excel </a>
-        </div>
         <FilterForm
           status={status}
           onChangeFilter={this.onChangeFilter}
