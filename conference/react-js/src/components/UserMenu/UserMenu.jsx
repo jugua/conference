@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-import MenuItem from './MenuItem';
 import { root, account } from '../../constants/route-url';
 
 const menuItemClass = 'menu-list__item menu menu-list__title';
@@ -16,19 +16,26 @@ const UserMenu = ({ close, logout }) => (
   >
     <div className="menu-arrow" />
     <ul className="menu-list">
-      <MenuItem
-        title="Account"
-        link={account}
-        className={menuItemClass}
-      />
-      <MenuItem
-        title="Sign out"
-        link={root}
-        className={signOutClass}
-        click={logout}
-      />
+      <li>
+        <Link
+          to={account}
+          className={menuItemClass}
+        >
+          Account
+        </Link>
+      </li>
+      <li>
+        <Link
+          to={root}
+          className={signOutClass}
+          onClick={logout}
+        >
+          Sign out
+        </Link>
+      </li>
     </ul>
-  </div>);
+  </div>
+);
 
 UserMenu.propTypes = {
   close: PropTypes.func.isRequired,

@@ -34,7 +34,17 @@ const getLinks = (talksCount, conferenceCount, role) => {
     links.push({ to: manageUsers, title: 'Manage users' });
   }
 
-  return links;
+  return links.map(({ to, title }) => (
+    <NavLink
+      exact
+      to={to}
+      key={to}
+      className="tabs-list__anchor"
+      activeClassName="tabs-list__anchor_active"
+    >
+      {title}
+    </NavLink>
+  ));
 };
 
 const Tabs = ({
@@ -45,17 +55,6 @@ const Tabs = ({
       <NavigationBar>
         {
           getLinks(talksCount, conferenceCount, role)
-            .map(({ to, title }) => (
-              <NavLink
-                exact
-                to={to}
-                key={to}
-                className="tabs-list__anchor"
-                activeClassName="tabs-list__anchor_active"
-              >
-                {title}
-              </NavLink>
-            ))
         }
       </NavigationBar>
       <Switch>

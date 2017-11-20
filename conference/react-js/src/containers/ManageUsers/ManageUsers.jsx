@@ -38,19 +38,19 @@ class ManageUser extends PureComponent {
       <div className="tabs-container">
         <div className="my-talks__header">
           <button className="btn my-talks__button">
-          Add New User
+            Add New User
           </button>
         </div>
         <div className="data-table">
           <div className="table-header">
             <div className="table-header__item table-header__item_role">
-            role
+              role
             </div>
             <div className="table-header__item table-header__item_name">
-            name
+              name
             </div>
             <div className="table-header__item table-header__item_email">
-            email
+              email
             </div>
             <div className="table-header__item table-header__scroll-fix" />
           </div>
