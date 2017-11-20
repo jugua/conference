@@ -20,6 +20,8 @@ const renderTalksHeader = columns => (
         <TableHeaderColumn
           key={col}
           data-name="speaker"
+          className="table-header__item"
+          tabIndex="0"
         >
             speaker
         </TableHeaderColumn>
@@ -29,6 +31,8 @@ const renderTalksHeader = columns => (
         <TableHeaderColumn
           key={col}
           data-name="conferenceName"
+          className="table-header__item"
+          tabIndex="0"
         >
             conference
         </TableHeaderColumn>
@@ -37,6 +41,8 @@ const renderTalksHeader = columns => (
       return (<TableHeaderColumn
         key={col}
         data-name={`${col}`}
+        className="table-header__item"
+        tabIndex="0"
       >
         {col}
       </TableHeaderColumn>);

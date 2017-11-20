@@ -1,50 +1,39 @@
 import React, { PureComponent } from 'react';
 import { PropTypes } from 'prop-types';
-import ReactInputSelect from 'react-input-select/lib/ReactInputSelect';
+import InputBlock from '../../../components/InputBlock/InputBlock';
 
 class FilterForm extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      topicValue: '',
-      listOfTopics: [],
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { topics } = nextProps;
-    const listOfTopics = topics.map(({ name }) => name);
-    this.setState({ listOfTopics });
-  }
-
-  onBlurTopic = (e) => {
-    const name = 'topic';
-    const value = e.target.value;
-    this.props.onChangeFilter({ target: { name, value } });
-  }
-
-  updateTopicValue = (e) => {
-    this.setState({ topicValue: e.target.value });
-  }
-
-  chooseTopic = (item) => {
-    this.setState({ topicValue: item });
-  }
-
-  resetTopics = () => {
-    this.props.handleResetFiltersClick();
-    this.setState({ topicValue: '' });
-  }
+  getOptions = status => (status.map(element =>
+    (<option key={element}>{element}</option>),
+  ));
 
   render() {
-    const { topicValue, listOfTopics } = this.state;
-    const {
-      onChangeFilter,
-      handleFilterClick } = this.props;
+    const { status, onChangeFilter, handleFilterClick,
+      handleResetFiltersClick } = this.props;
     return (
       <div className="my-talk-settings">
         <form className="my-talk-settings__filters">
           <p className="my-talk-settings__title">filter by:</p>
+          <div className="my-talk-settings__select-wrapper">
+            <InputBlock
+              label="Conference"
+              id="my-talk-conference"
+              labelClass="form-label my-talk-settings__label"
+              name="conferenceName"
+              inputClass="my-talk-settings__select"
+              onBlur={onChangeFilter}
+            />
+          </div>
+          <div className="my-talk-settings__select-wrapper">
+            <InputBlock
+              label="Title"
+              id="my-talk-title"
+              labelClass="form-label my-talk-settings__label"
+              name="title"
+              inputClass="my-talk-settings__select"
+              onBlur={onChangeFilter}
+            />
+          </div>
           <div className="my-talk-settings__select-wrapper">
             <label
               htmlFor="my-talk-status"
@@ -57,38 +46,9 @@ class FilterForm extends PureComponent {
               className="my-talk-settings__select"
               onBlur={onChangeFilter}
             >
-              <option
-                defaultValue=""
-              />
-              <option>New</option>
-              <option>In Progress</option>
-              <option>Approved</option>
-              <option>Rejected</option>
+              <option defaultValue="" />
+              {this.getOptions(status)}
             </select>
-          </div>
-          <div className="my-talk-settings__select-wrapper
-          my-talk-settings__select-wrapper_topic"
-          >
-            <label
-              htmlFor="my-talk-topic"
-              className="form-label
-            my-talk-settings__label "
-            >Topic</label>
-            <ReactInputSelect
-              containerClass="my-talk-settings__select
-                my-talk-settings__select_topic-container"
-              dropdownClass="my-talk-settings__select
-                my-talk-settings__select_topic-drop"
-              name="topic"
-              containerId="my-talk-topic"
-              inputClass="my-talk-settings__select
-                my-talk-settings__select_topic"
-              data={listOfTopics}
-              onChange={this.updateTopicValue}
-              value={topicValue}
-              onOptionClick={this.chooseTopic}
-              onBlur={this.onBlurTopic}
-            />
           </div>
           <div className="my-talk-settings__button-wrapper">
             <input
@@ -101,7 +61,7 @@ class FilterForm extends PureComponent {
               type="reset"
               className="my-talk-settings__button"
               value="reset"
-              onClick={this.resetTopics}
+              onClick={handleResetFiltersClick}
             />
           </div>
         </form>
@@ -111,7 +71,7 @@ class FilterForm extends PureComponent {
 }
 
 FilterForm.propTypes = {
-  topics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  status: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChangeFilter: PropTypes.func.isRequired,
   handleFilterClick: PropTypes.func.isRequired,
   handleResetFiltersClick: PropTypes.func.isRequired,

@@ -7,24 +7,25 @@
 		box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .15);
 	}
 
-	&__title {
-		display: flex;
-		align-items: center;
-
-		&-item {
-			flex-grow: 1;
-		}
-	}
-
 	&__button {
-		margin-left: 12px;
+		margin-right: 25px;
 	}
 
 }
 
 .select-field {
-	&_wrapper {
-		display: flex;
-		justify-content: space-between;
+
+	&__item {
+		margin-right: 20px;
+	}
+
+	&__topic {
+		width: 350px !important;
+	}
+
+	&__type,
+	&__lang,
+	&__level {
+		width: 165px !important;
 	}
 }

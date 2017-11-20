@@ -1,3 +1,9 @@
+* {
+  &:focus {
+    outline: none;
+  }
+}
+
 html {
   font-family: $base-font-family;
   }
@@ -191,19 +197,23 @@ html {
 
     &_light {
       font-family: "Oswald Light", sans-serif;
-      }
+    }
 
     &_not-margin {
       margin: 0;
-      }
+    }
 
     &-user {
       word-wrap: break-word;
-      font-family: "Oswald Bold";
+      font-family: "Oswald Bold", sans-serif;
       display: inline-block;
       max-width: 100%;
-      }
     }
+
+    &_small {
+      margin: 20px 10px;
+    }
+  }
 
   &__button {
     margin: 10px auto 15px;
@@ -224,7 +234,7 @@ html {
     box-sizing: border-box;
     background: $light-grey;
     text-align: center;
-    font-family: "Oswald Light";
+    font-family: "Oswald Light", sans-serif;
     font-size: 14px;
     padding: 5px 0;
     }
@@ -285,7 +295,6 @@ html {
 
 .webpack_bundle_images {
   background: url("../images/default_ava.jpg");
-  background: url("../images/favicon.png");
   }
 
 .link {

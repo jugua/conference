@@ -9,19 +9,16 @@ import TalksTable from '../../components/Talks/TalksTable/TalksTable';
 import Pagination from './Pagination/Pagination';
 import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
-import { topics, talk } from '../../constants/backend-url';
+import { talk, talksStatus } from '../../constants/backend-url';
 
 class Talks extends Component {
   constructor(props) {
     super(props);
     this.state = {
       talks: [],
-      filter: { topic: '', status: '' },
-      listOfTopics: [],
+      filter: { conferenceName: '', title: '', status: '' },
       speaker: '',
-      title: '',
-      topic: '',
-      status: '',
+      status: [],
       comments: '',
       currentPage: 1,
       quantityTalks: 20,
@@ -31,9 +28,9 @@ class Talks extends Component {
 
   componentDidMount() {
     const { LOAD } = action;
-    axios.get(topics)
+    axios.get(talksStatus)
       .then(({ data }) => {
-        this.setState({ listOfTopics: data });
+        this.setState({ status: data });
       });
 
     const url = this.props.url || talk;
@@ -124,7 +121,7 @@ class Talks extends Component {
 
   handleResetFiltersClick = () => {
     this.setState({
-      filter: { topic: '', status: '' },
+      filter: { conferenceName: '', title: '', status: '' },
     }, this.doFilter);
   };
 
@@ -145,7 +142,7 @@ class Talks extends Component {
 
   render() {
     const {
-      listOfTopics,
+      status,
       quantityTalks,
       currentPage,
       quantityAllPages,
@@ -161,7 +158,7 @@ class Talks extends Component {
           <a className="btn talks__button">export to excel </a>
         </div>
         <FilterForm
-          topics={listOfTopics}
+          status={status}
           onChangeFilter={this.onChangeFilter}
           handleFilterClick={this.handleFilterClick}
           handleResetFiltersClick={this.handleResetFiltersClick}
@@ -189,7 +186,7 @@ Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string),
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   url: PropTypes.string,
 };
 
@@ -199,10 +196,12 @@ Talks.defaultProps = {
     'name',
     'title',
     'topic',
+    'conference',
     'status',
     'comment',
   ],
   url: null,
+  onClick() {},
 };
 
 const mapStateToProps = ({ talks, userTalks }) => (

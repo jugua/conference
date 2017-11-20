@@ -12,11 +12,6 @@ import MenuItem from 'material-ui/MenuItem';
 import getTalkOptions from '../../actions/getTalkOptions';
 import updateTalk from '../../actions/updateTalk';
 
-const buttonStyle = {
-  background: '#B22746',
-  color: '#fff',
-};
-
 class UpdateTalk extends PureComponent {
   constructor(props) {
     super(props);
@@ -90,22 +85,7 @@ class UpdateTalk extends PureComponent {
 
     return (
       <div className="update-talk_wrapper">
-
-        <div className="update-talk__title">
-          <TextField
-            className="update-talk__title-item"
-            floatingLabelText="Title"
-            value={title}
-            onChange={this.titleChange}
-          />
-
-          <RaisedButton
-            className="update-talk__button"
-            label="File"
-            icon={<AttachFile />}
-            primary
-          />
-
+        <div>
           <RaisedButton
             className="update-talk__button"
             label="Save"
@@ -117,15 +97,22 @@ class UpdateTalk extends PureComponent {
           <RaisedButton
             className="update-talk__button"
             label="Back"
-            buttonStyle={buttonStyle}
             onClick={close}
             primary
           />
         </div>
+
+        <TextField
+          className="update-talk__title"
+          floatingLabelText="Title"
+          value={title}
+          onChange={this.titleChange}
+        />
+
         <TextField
           floatingLabelText="Description"
           multiLine
-          rows={2}
+          rows={3}
           fullWidth
           value={description}
           onChange={this.descrChange}
@@ -133,9 +120,9 @@ class UpdateTalk extends PureComponent {
 
         <div className="select-field_wrapper">
           <SelectField
+            className="select-field__item select-field__topic"
             floatingLabelText="Topic"
             value={topic}
-            autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
             onChange={this.topicChange}
           >
@@ -151,9 +138,9 @@ class UpdateTalk extends PureComponent {
           </SelectField>
 
           <SelectField
+            className="select-field__item select-field__type"
             floatingLabelText="Type"
             value={type}
-            autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
             onChange={this.typeChange}
           >
@@ -169,9 +156,9 @@ class UpdateTalk extends PureComponent {
           </SelectField>
 
           <SelectField
+            className="select-field__item select-field__lang"
             floatingLabelText="Language"
             value={lang}
-            autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
             onChange={this.langChange}
           >
@@ -187,9 +174,9 @@ class UpdateTalk extends PureComponent {
           </SelectField>
 
           <SelectField
+            className="select-field__item select-field__level"
             floatingLabelText="Level"
             value={level}
-            autoWidth
             selectedMenuItemStyle={{ color: cyan500 }}
             onChange={this.levelChange}
           >
@@ -213,6 +200,17 @@ class UpdateTalk extends PureComponent {
           value={addon}
           onChange={this.addonChange}
         />
+
+        <div className="attach-file_wrapper">
+          <RaisedButton
+            containerElement="label"
+            label="Attach"
+            icon={<AttachFile />}
+            primary
+          >
+            <input type="file" />
+          </RaisedButton>
+        </div>
 
       </div>
     );
