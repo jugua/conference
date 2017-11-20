@@ -41,7 +41,7 @@ const renderTalksHeader = columns => (
       return (<TableHeaderColumn
         key={col}
         data-name={`${col}`}
-        className="table-header__item "
+        className="table-header__item"
         tabIndex="0"
       >
         {col}
@@ -108,7 +108,6 @@ const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
         showRowHover
         deselectOnClickaway={false}
         preScanRows={false}
-
       >
         {getRows(listOfTalks, columns)}
       </TableBody>
