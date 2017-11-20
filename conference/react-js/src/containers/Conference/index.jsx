@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { root } from '../../constants/route-url';
 
 import Talks from '../Talks';
 
@@ -12,7 +13,7 @@ const Conference = ({ conference: {
   <div className="tabs-layout tabs-wrapper">
     <h1 className="tabs-title">{title}</h1>
     <Link
-      to="/react/"
+      to={root}
       className="conference_button"
     >
       back
