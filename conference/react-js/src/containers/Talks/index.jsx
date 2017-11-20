@@ -148,7 +148,6 @@ class Talks extends Component {
       const { load, talks } = this.props;
       const value = sortField === ASC ? '' : ASC;
       load(SORT_ALL_TALKS, { talks, direction: value, field: name });
-      console.log(name, value);
       this.setState({ [name]: value });
     }
   };

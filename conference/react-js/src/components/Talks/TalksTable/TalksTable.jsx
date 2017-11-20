@@ -41,7 +41,7 @@ const renderTalksHeader = columns => (
       return (<TableHeaderColumn
         key={col}
         data-name={`${col}`}
-        className="table-header__item"
+        className="table-header__item "
         tabIndex="0"
       >
         {col}
