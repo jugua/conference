@@ -26,11 +26,11 @@ const getRoutes = () => {
     { path: signUp, component: SignUp },
     { path: account, component: AccountPage },
     { path: `${conference}/:id`, component: Conference },
-    { path: root, component: Tabs },
+    { path: root, component: Tabs, exact: false },
   ];
 
-  return routes.map(({ path, component }) => (
-    <Route key={path} path={path} component={component} exact />
+  return routes.map(({ path, component, exact = true }) => (
+    <Route key={path} path={path} component={component} exact={exact} />
   ));
 };
 
