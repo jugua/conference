@@ -47,52 +47,32 @@ const getLinks = (talksCount, conferenceCount, role) => {
   ));
 };
 
+const getRoutes = () => {
+  const routes = [
+    { path: upcoming, component: Upcoming },
+    { path: past, component: Past },
+    { path: myTalks, component: TalksWrapper },
+    { path: myEvents, component: MyEvents },
+    { path: `${conference}/:id`, component: Conference },
+    { path: manageUsers, component: ManageUsers },
+    { path: talks, component: Talks },
+  ];
+
+  return routes.map(({ path, component }) => (
+    <Route key={path} path={path} component={component} exact />
+  ));
+};
+
 const Tabs = ({
   talksCount, conferenceCount, role,
 }) => (
   <div className="tabs-layout">
     <div className="tabs-wrapper">
       <NavigationBar>
-        {
-          getLinks(talksCount, conferenceCount, role)
-        }
+        { getLinks(talksCount, conferenceCount, role) }
       </NavigationBar>
       <Switch>
-        <Route
-          path={upcoming}
-          exact
-          component={Upcoming}
-        />
-        <Route
-          path={past}
-          exact
-          component={Past}
-        />
-        <Route
-          path={myTalks}
-          exact
-          component={TalksWrapper}
-        />
-        <Route
-          path={myEvents}
-          exact
-          component={MyEvents}
-        />
-        <Route
-          path={`${conference}/:id`}
-          exact
-          component={Conference}
-        />
-        <Route
-          path={manageUsers}
-          exact
-          component={ManageUsers}
-        />
-        <Route
-          path={talks}
-          exact
-          component={Talks}
-        />
+        { getRoutes() }
       </Switch>
     </div>
   </div>
