@@ -81,6 +81,11 @@
   &:hover {
     cursor: pointer;
   }
+
+  &__successful {
+    color: red;
+    margin: 10px auto;
+  }
 }
 
 input[type="file"] {

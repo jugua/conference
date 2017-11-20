@@ -17,6 +17,7 @@ class MyInfo extends Component {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
       showChangePhotoModal: false,
+      photoUpdateIsSuccessful: false,
       user: {},
       file: '',
       userPhotoSrc: '',
@@ -88,6 +89,8 @@ class MyInfo extends Component {
       .then((res) => {
         console.log(res);
       });
+
+    this.setState({ photoUpdateIsSuccessful: true });
   }
 
   render() {
@@ -195,6 +198,7 @@ class MyInfo extends Component {
           closeModal={this.handleCloseModal1}
           changeProfilePhoto={this.changeProfilePhoto}
           uploadPhotoToDB={this.uploadPhotoToDB}
+          photoUpdateIsSuccessful={this.state.photoUpdateIsSuccessful}
         />}
       </div>
     );
