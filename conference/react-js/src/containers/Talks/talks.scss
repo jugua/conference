@@ -54,9 +54,19 @@
 			margin-left: 5px;
 		}
 
-		&:focus::after {
-			content: '\2BC6';
-			margin-left: 5px;
+		&__active {
+			font-weight: bold !important;
+
+			&::after {
+				content: '\2BC6';
+				margin-left: 5px;
+			}
 		}
+	}
+}
+
+.desc {
+	&::after {
+		content: '\2BC5';
 	}
 }

@@ -106,6 +106,9 @@ const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
       </TableHeader>
       <TableBody
         showRowHover
+        deselectOnClickaway={false}
+        preScanRows={false}
+
       >
         {getRows(listOfTalks, columns)}
       </TableBody>
