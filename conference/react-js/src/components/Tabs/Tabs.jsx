@@ -15,11 +15,9 @@ import {
   myEvents,
   manageUsers,
   talks,
-  past,
-  conference } from '../../constants/route-url';
+  past } from '../../constants/route-url';
 import { admin } from '../../constants/roles';
 import MyEvents from '../MyEvents/MyEvents';
-import Conference from '../../containers/Conference';
 
 const getLinks = (talksCount, conferenceCount, role) => {
   const links = [];
@@ -53,7 +51,6 @@ const getRoutes = () => {
     { path: past, component: Past },
     { path: myTalks, component: TalksWrapper },
     { path: myEvents, component: MyEvents },
-    { path: `${conference}/:id`, component: Conference },
     { path: manageUsers, component: ManageUsers },
     { path: talks, component: Talks },
   ];

@@ -10,13 +10,29 @@ import Tabs from './Tabs/Tabs';
 import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm/SignUpForm';
+import Conference from '../containers/Conference';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
   root,
   forgotPassword,
   signUp,
   account,
+  conference,
 } from '../constants/route-url';
+
+const getRoutes = () => {
+  const routes = [
+    { path: forgotPassword, component: ForgotPassword },
+    { path: signUp, component: SignUp },
+    { path: account, component: AccountPage },
+    { path: `${conference}/:id`, component: Conference },
+    { path: root, component: Tabs },
+  ];
+
+  return routes.map(({ path, component }) => (
+    <Route key={path} path={path} component={component} exact />
+  ));
+};
 
 const App = () => (
   <MuiThemeProvider>
@@ -24,25 +40,7 @@ const App = () => (
       <div>
         <Header />
         <Switch>
-          <Route
-            path={forgotPassword}
-            exact
-            component={ForgotPassword}
-          />
-          <Route
-            path={signUp}
-            exact
-            component={SignUp}
-          />
-          <Route
-            path={account}
-            exact
-            component={AccountPage}
-          />
-          <Route
-            path={root}
-            component={Tabs}
-          />
+          { getRoutes() }
         </Switch>
       </div>
     </Router>
