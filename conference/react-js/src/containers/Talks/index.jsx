@@ -129,8 +129,20 @@ class Talks extends Component {
     this.doFilter();
   };
 
-  sortTalks = ({ target: { tagName, dataset: { name } } }) => {
+  sortTalks = ({ target }) => {
+    const { classList, tagName, dataset: { name } } = target;
+    const currentEl = classList.value;
     if (tagName === 'TH' && name) {
+      if (currentEl.indexOf('table-header__item_active') !== -1) {
+        classList.toggle('desc');
+      } else {
+        const prevActive = document.querySelector('.table-header__item_active');
+        if (prevActive) {
+          document.querySelector('.table-header_item__active').classList.remove('table-header__item_active');
+        }
+        target.classList.add('table-header__item_active');
+      }
+
       const { ASC, SORT_ALL_TALKS } = action;
       const { [name]: sortField } = this.state;
       const { load, talks } = this.props;
