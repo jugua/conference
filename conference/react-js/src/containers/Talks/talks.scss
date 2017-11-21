@@ -3,70 +3,70 @@
   margin: 20px auto 0;
   box-sizing: border-box;
   padding: 20px;
-	@include box-shadow (0, 0, 5px, 0, $color-shadow);
+  @include box-shadow (0, 0, 5px, 0, $color-shadow);
 
-	@media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
-		padding: 5px;
-		margin: 0;
-		width: 100%;
-		}
+  @media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
+    padding: 5px;
+    margin: 0;
+    width: 100%;
+  }
 
-	@media ($mnw: $ldmn) {
-		width: 90%;
-		}
+  @media ($mnw: $ldmn) {
+    width: 90%;
+  }
 
-	@media ($mnw: $xmdmx) {
-		height: $table-height;
-		overflow-y: scroll;
-		}
-	}
+  @media ($mnw: $xmdmx) {
+    height: $table-height;
+    overflow-y: scroll;
+  }
+}
 
 .talks {
-	height: 100%;
+  height: 100%;
 
-	&__header {
-		height: 45px;
-		border-bottom: 1px solid $sharp-blue;
-		}
+  &__header {
+    height: 45px;
+    border-bottom: 1px solid $sharp-blue;
+  }
 
-	&__button {
-		width: 140px;
-		margin: 0 10px 10px 0;
+  &__button {
+    width: 140px;
+    margin: 0 10px 10px 0;
 
-		@media ($mnw: $xsdmn) and ($mxw: $mdmx) {
-			margin: 10px auto
-			}
-		}
-	}
+    @media ($mnw: $xsdmn) and ($mxw: $mdmx) {
+      margin: 10px auto
+    }
+  }
+}
 
 .table-container {
-	height: $table-height;
-	overflow-y: scroll;
+  height: $table-height;
+  overflow-y: scroll;
 }
 
 .table-header {
 
-	&__item {
-		cursor: pointer;
+  &__item {
+    cursor: pointer;
+    &::after {
+      content: '\2BC5';
+      margin-left: 5px;
+    }
 
-		&::after {
-			content: '\2BC5';
-			margin-left: 5px;
-		}
+    &__active {
+      font-weight: bold !important;
 
-		&__active {
-			font-weight: bold !important;
-
-			&::after {
-				content: '\2BC6';
-				margin-left: 5px;
-			}
-		}
-	}
+      &::after {
+        content: '\2BC6';
+        margin-left: 5px;
+      }
+    }
+  }
 }
 
 .desc {
-	&::after {
-		content: '\2BC5';
-	}
+
+  &::after {
+    content: '\2BC5';
+  }
 }
