@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import changeUserInfo from '../../actions/change-user-info';
 import { uploadUserPhoto } from '../../constants/backend-url';
+import userShape from '../../constants/user-shape';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
 import PopUpSaved from './PopUps/PopUpSaved';
 import PopUpPreventUnsavedExit from './PopUps/PopUpPreventUnsavedExit';
 import PopUpChangePhoto from './PopUps/PopUpChangePhoto';
+import PopUpRemovePhotoConfirmation from './PopUps/PopUpRemovePhotoConfirmation';
 
 class MyInfo extends Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class MyInfo extends Component {
       showInfoSavedModal: false,
       showChangePhotoModal: false,
       photoUpdateIsSuccessful: false,
+      showRemovePhotoConfirmationModal: false,
       user: {},
       file: '',
       userPhotoSrc: '',
@@ -31,10 +34,18 @@ class MyInfo extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setUserInfo(nextProps);
+    this.getUserPhoto(nextProps.user.id);
   }
 
   setUserInfo = ({ user }) => {
     this.setState({ user });
+  };
+
+  getUserPhoto = (id) => {
+    axios.get(`${uploadUserPhoto}/${id}`)
+      .then((res) => {
+        console.log(res);
+      });
   };
 
   handleOpenModal = () => {
@@ -47,6 +58,10 @@ class MyInfo extends Component {
 
   handleCloseModal1 = () => {
     this.setState({ showChangePhotoModal: false });
+  };
+
+  closeDeletePhotoModal = () => {
+    this.setState({ showRemovePhotoConfirmationModal: false });
   };
 
   handleInput = (e) => {
@@ -74,7 +89,7 @@ class MyInfo extends Component {
     const photoURL = window.URL.createObjectURL(file);
 
     this.setState({ userPhotoSrc: photoURL });
-  }
+  };
 
   uploadPhotoToDB = (e) => {
     e.preventDefault();
@@ -91,7 +106,22 @@ class MyInfo extends Component {
       });
 
     this.setState({ photoUpdateIsSuccessful: true });
-  }
+  };
+
+  removePhotoPopUp = () => {
+    this.setState({ showRemovePhotoConfirmationModal: true });
+  };
+
+  removePhoto = () => {
+    axios.delete(uploadUserPhoto)
+      .then((res) => {
+        console.log(res, 'photo was deleted');
+      });
+
+    this.setState({ showRemovePhotoConfirmationModal: false,
+      userPhotoSrc: '',
+    });
+  };
 
   render() {
     const { user: {
@@ -111,6 +141,7 @@ class MyInfo extends Component {
           />
           <button
             className="my-info__remove"
+            onClick={this.removePhotoPopUp}
           />
           <span
             className="change-photo"
@@ -200,6 +231,12 @@ class MyInfo extends Component {
           uploadPhotoToDB={this.uploadPhotoToDB}
           photoUpdateIsSuccessful={this.state.photoUpdateIsSuccessful}
         />}
+        {this.state.showRemovePhotoConfirmationModal &&
+        <PopUpRemovePhotoConfirmation
+          showModal={this.state.showRemovePhotoConfirmationModal}
+          closeModal={this.closeDeletePhotoModal}
+          removePhoto={this.removePhoto}
+        />}
       </div>
     );
   }
@@ -207,6 +244,7 @@ class MyInfo extends Component {
 
 MyInfo.propTypes = {
   updateInfo: PropTypes.func.isRequired,
+  user: PropTypes.shape(userShape).isRequired,
 };
 
 export default MyInfo;
