@@ -8,7 +8,7 @@ import changeVisibilityComponent from '../../actions/forgot-password';
 import ErrorText
   from '../../components/Forgot-password/forgot-password-error-text';
 import { forgotPassword } from '../../constants/backend-url';
-import { baseUrl } from '../../constants/route-url';
+import { root } from '../../constants/route-url';
 
 class ForgotPasswordForm extends PureComponent {
   constructor(props) {
@@ -80,7 +80,7 @@ class ForgotPasswordForm extends PureComponent {
             <Link
               className="btn pop-up__button btn_cancel"
               id="lnk-forgot-password-cancel"
-              to={baseUrl}
+              to={root}
             >
               Cancel
             </Link >
@@ -88,7 +88,7 @@ class ForgotPasswordForm extends PureComponent {
         </form>
         <Link
           className="pop-up__close"
-          to={baseUrl}
+          to={root}
         />
       </div>
     );
