@@ -4,6 +4,7 @@ import axios from 'axios';
 import changeUserInfo from '../../actions/change-user-info';
 import { uploadUserPhoto } from '../../constants/backend-url';
 import userShape from '../../constants/user-shape';
+import defaultUserPhoto from './default_ava.jpg';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
@@ -23,7 +24,7 @@ class MyInfo extends Component {
       showRemovePhotoConfirmationModal: false,
       user: {},
       file: '',
-      userPhotoSrc: '',
+      userPhotoSrc: defaultUserPhoto,
     };
   }
 
@@ -129,14 +130,15 @@ class MyInfo extends Component {
       job = '',
       company = '',
       past = '',
-      info = '' } } = this.state;
+      info = '' },
+    userPhotoSrc } = this.state;
 
     return (
       <div>
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
-            src={this.state.userPhotoSrc}
+            src={userPhotoSrc}
             alt=""
           />
           <button
