@@ -1,8 +1,8 @@
 .talks-container {
-	width: 100%;
-	margin: 20px auto 0;
-	box-sizing: border-box;
-	padding: 20px;
+  width: 100%;
+  margin: 20px auto 0;
+  box-sizing: border-box;
+  padding: 20px;
 	@include box-shadow (0, 0, 5px, 0, $color-shadow);
 
 	@media ($mnw: $xsdmn) and ($mxw: $xmdmx) {
