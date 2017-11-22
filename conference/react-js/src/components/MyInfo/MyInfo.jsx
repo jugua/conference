@@ -208,7 +208,7 @@ class MyInfo extends Component {
             type="submit"
             value="save"
             className="btn my-info__button"
-            data-type="saveInfo"
+            datatype="saveInfo"
             onClick={this.handleSaveInfo}
           />
         </form>
