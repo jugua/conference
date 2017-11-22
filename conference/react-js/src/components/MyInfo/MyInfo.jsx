@@ -4,7 +4,6 @@ import axios from 'axios';
 import changeUserInfo from '../../actions/change-user-info';
 import { uploadUserPhoto } from '../../constants/backend-url';
 import userShape from '../../constants/user-shape';
-import defaultUserPhoto from './default_ava.jpg';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
@@ -24,7 +23,7 @@ class MyInfo extends Component {
       showRemovePhotoConfirmationModal: false,
       user: {},
       file: '',
-      userPhotoSrc: defaultUserPhoto,
+      userPhotoSrc: '',
     };
   }
 
@@ -44,8 +43,8 @@ class MyInfo extends Component {
 
   getUserPhoto = (id) => {
     axios.get(`${uploadUserPhoto}/${id}`)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        this.setState({ userPhotoSrc: `${uploadUserPhoto}/${id}` });
       });
   };
 
@@ -130,15 +129,14 @@ class MyInfo extends Component {
       job = '',
       company = '',
       past = '',
-      info = '' },
-    userPhotoSrc } = this.state;
+      info = '' } } = this.state;
 
     return (
       <div>
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
-            src={userPhotoSrc}
+            src={this.state.userPhotoSrc || './images/default_ava.jpg'}
             alt=""
           />
           <button
@@ -150,7 +148,6 @@ class MyInfo extends Component {
             onClick={this.handleChangePhoto}
             role="button"
             tabIndex="-1"
-            data-type="changePhoto"
           >Change photo</span>
         </div>
         <form className="my-info" name="" noValidate>

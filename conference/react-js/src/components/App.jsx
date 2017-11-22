@@ -10,7 +10,7 @@ import Tabs from './Tabs/Tabs';
 import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm/SignUpForm';
-import Conference from '../containers/Conference';
+import Conference from '../containers/Conference/Conference';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
   root,
