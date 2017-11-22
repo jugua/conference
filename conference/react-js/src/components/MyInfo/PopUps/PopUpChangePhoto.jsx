@@ -10,6 +10,7 @@ class PopUpChangePhoto extends PureComponent {
       closeModal,
       changeProfilePhoto,
       uploadPhotoToDB,
+      photoIsSelected,
       photoUpdateIsSuccessful } = this.props;
     return (
       <div>
@@ -53,12 +54,14 @@ class PopUpChangePhoto extends PureComponent {
                 required
               />
               <button
-                className="btn"
+                className="btn my-info__button"
                 onClick={uploadPhotoToDB}
               >
                 Save Photo</button>
             </div>
           </form>
+          {photoIsSelected && <p className="change-photo__successful">
+            *Please choose photo</p>}
           {photoUpdateIsSuccessful && <p className="change-photo__successful">
             *The photo has been saved</p>}
           <button
@@ -76,6 +79,7 @@ PopUpChangePhoto.propTypes = {
   closeModal: PropTypes.func.isRequired,
   changeProfilePhoto: PropTypes.func.isRequired,
   uploadPhotoToDB: PropTypes.func.isRequired,
+  photoIsSelected: PropTypes.bool.isRequired,
   photoUpdateIsSuccessful: PropTypes.bool.isRequired,
 };
 

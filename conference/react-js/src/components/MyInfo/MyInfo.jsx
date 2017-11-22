@@ -22,7 +22,7 @@ class MyInfo extends Component {
       photoUpdateIsSuccessful: false,
       showRemovePhotoConfirmationModal: false,
       user: {},
-      file: '',
+      photoIsSelected: false,
       userPhotoSrc: '',
     };
   }
@@ -57,7 +57,8 @@ class MyInfo extends Component {
   };
 
   handleCloseModal1 = () => {
-    this.setState({ showChangePhotoModal: false });
+    this.setState({ showChangePhotoModal: false,
+      photoUpdateIsSuccessful: false });
   };
 
   closeDeletePhotoModal = () => {
@@ -98,14 +99,17 @@ class MyInfo extends Component {
     const userPhoto = choosePhotoBtn.files[0];
 
     const data = new FormData();
-    data.append('file', userPhoto);
+    data.append('userPhoto', userPhoto);
 
-    axios.post(uploadUserPhoto, data)
-      .then((res) => {
-        console.log(res);
-      });
-
-    this.setState({ photoUpdateIsSuccessful: true });
+    if (choosePhotoBtn.files.length > 0) {
+      axios.post(uploadUserPhoto, data)
+        .then((res) => {
+          console.log(res);
+        });
+      this.setState({ photoUpdateIsSuccessful: true, photoIsSelected: false });
+    } else {
+      this.setState({ photoIsSelected: true });
+    }
   };
 
   removePhotoPopUp = () => {
@@ -228,6 +232,7 @@ class MyInfo extends Component {
           closeModal={this.handleCloseModal1}
           changeProfilePhoto={this.changeProfilePhoto}
           uploadPhotoToDB={this.uploadPhotoToDB}
+          photoIsSelected={this.state.photoIsSelected}
           photoUpdateIsSuccessful={this.state.photoUpdateIsSuccessful}
         />}
         {this.state.showRemovePhotoConfirmationModal &&
