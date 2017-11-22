@@ -23,7 +23,6 @@ class MyInfo extends Component {
       showRemovePhotoConfirmationModal: false,
       user: {},
       photoIsSelected: false,
-      userPhotoSrc: '',
     };
   }
 
@@ -44,7 +43,13 @@ class MyInfo extends Component {
   getUserPhoto = (id) => {
     axios.get(`${uploadUserPhoto}/${id}`)
       .then(() => {
-        this.setState({ userPhotoSrc: `${uploadUserPhoto}/${id}` });
+        this.setState(prevState => ({
+          user: {
+            ...prevState.user,
+            photo: `${uploadUserPhoto}/${id}`,
+          },
+        }
+        ));
       });
   };
 
@@ -89,7 +94,12 @@ class MyInfo extends Component {
     const file = e.target.files[0];
     const photoURL = window.URL.createObjectURL(file);
 
-    this.setState({ userPhotoSrc: photoURL });
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        photo: photoURL,
+      },
+    }));
   };
 
   uploadPhotoToDB = (e) => {
@@ -99,7 +109,7 @@ class MyInfo extends Component {
     const userPhoto = choosePhotoBtn.files[0];
 
     const data = new FormData();
-    data.append('userPhoto', userPhoto);
+    data.append('file', userPhoto);
 
     if (choosePhotoBtn.files.length > 0) {
       axios.post(uploadUserPhoto, data)
@@ -122,9 +132,13 @@ class MyInfo extends Component {
         console.log(res, 'photo was deleted');
       });
 
-    this.setState({ showRemovePhotoConfirmationModal: false,
-      userPhotoSrc: '',
-    });
+    this.setState(prevState => ({
+      showRemovePhotoConfirmationModal: false,
+      user: {
+        ...prevState.user,
+        photo: '',
+      },
+    }));
   };
 
   render() {
@@ -133,14 +147,16 @@ class MyInfo extends Component {
       job = '',
       company = '',
       past = '',
-      info = '' } } = this.state;
+      info = '',
+      photo = '',
+    } } = this.state;
 
     return (
       <div>
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
-            src={this.state.userPhotoSrc || './images/default_ava.jpg'}
+            src={photo || './images/default_ava.jpg'}
             alt=""
           />
           <button
@@ -222,25 +238,25 @@ class MyInfo extends Component {
             closeModal={this.handleCloseModal}
           />}
         {this.state.showPreventUnsavedExitModal &&
-        <PopUpPreventUnsavedExit
-          showModal={this.state.showPreventUnsavedExitModal}
-          closeModal={this.handleCloseModal}
-        />}
+          <PopUpPreventUnsavedExit
+            showModal={this.state.showPreventUnsavedExitModal}
+            closeModal={this.handleCloseModal}
+          />}
         {this.state.showChangePhotoModal &&
-        <PopUpChangePhoto
-          showModal={this.state.showChangePhotoModal}
-          closeModal={this.handleCloseModal1}
-          changeProfilePhoto={this.changeProfilePhoto}
-          uploadPhotoToDB={this.uploadPhotoToDB}
-          photoIsSelected={this.state.photoIsSelected}
-          photoUpdateIsSuccessful={this.state.photoUpdateIsSuccessful}
-        />}
+          <PopUpChangePhoto
+            showModal={this.state.showChangePhotoModal}
+            closeModal={this.handleCloseModal1}
+            changeProfilePhoto={this.changeProfilePhoto}
+            uploadPhotoToDB={this.uploadPhotoToDB}
+            photoIsSelected={this.state.photoIsSelected}
+            photoUpdateIsSuccessful={this.state.photoUpdateIsSuccessful}
+          />}
         {this.state.showRemovePhotoConfirmationModal &&
-        <PopUpRemovePhotoConfirmation
-          showModal={this.state.showRemovePhotoConfirmationModal}
-          closeModal={this.closeDeletePhotoModal}
-          removePhoto={this.removePhoto}
-        />}
+          <PopUpRemovePhotoConfirmation
+            showModal={this.state.showRemovePhotoConfirmationModal}
+            closeModal={this.closeDeletePhotoModal}
+            removePhoto={this.removePhoto}
+          />}
       </div>
     );
   }
