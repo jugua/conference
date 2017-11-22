@@ -20,6 +20,7 @@ class Talks extends Component {
       speaker: '',
       status: [],
       comments: '',
+      sorting: { conferenceName: '', title: '', status: '' },
       currentPage: 1,
       quantityTalks: 20,
       quantityAllPages: 0,
@@ -144,11 +145,16 @@ class Talks extends Component {
       }
 
       const { ASC, SORT_ALL_TALKS } = action;
-      const { [name]: sortField } = this.state;
+      const { [name]: sortField } = this.state.sorting;
       const { load, talks } = this.props;
       const value = sortField === ASC ? '' : ASC;
       load(SORT_ALL_TALKS, { talks, direction: value, field: name });
-      this.setState({ [name]: value });
+      this.setState(prevState => ({
+        sorting: {
+          ...prevState.sorting,
+          [name]: value,
+        },
+      }));
     }
   };
 
@@ -213,10 +219,9 @@ Talks.defaultProps = {
   onClick() {},
 };
 
-const mapStateToProps = ({ talks, userTalks }) => (
+const mapStateToProps = ({ talks }) => (
   {
     talks,
-    userTalks,
   });
 
 const mapDispatchToProps = dispatch => ({
