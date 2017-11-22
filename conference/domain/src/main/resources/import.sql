@@ -62,15 +62,10 @@ INSERT INTO user_info VALUES (1, 'Additional info', 'EPAM', 'Jun', 'Past confere
 
 INSERT INTO user_role VALUES (1, 1);
 
-INSERT INTO contact VALUES (1, 'linkedin.com', 1);
-INSERT INTO contact VALUES (2, 'twitter.com', 2);
-INSERT INTO contact VALUES (3, 'facebook.com', 3);
-INSERT INTO contact VALUES (4, 'userblog.com', 4);
-
-INSERT INTO user_info_contact VALUES (1, 1);
-INSERT INTO user_info_contact VALUES (1, 2);
-INSERT INTO user_info_contact VALUES (1, 3);
-INSERT INTO user_info_contact VALUES (1, 4);
+INSERT INTO contact VALUES (1, 1, 'linkedin.com', 1);
+INSERT INTO contact VALUES (2, 1, 'twitter.com', 2);
+INSERT INTO contact VALUES (3, 1, 'facebook.com', 3);
+INSERT INTO contact VALUES (4, 1, 'userblog.com', 4);
 
 --
 -- Setting default user with role SPEAKER with only registration fields
