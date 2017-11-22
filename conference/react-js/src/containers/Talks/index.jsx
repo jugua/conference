@@ -138,7 +138,7 @@ class Talks extends Component {
       } else {
         const prevActive = document.querySelector('.table-header__item_active');
         if (prevActive) {
-          document.querySelector('.table-header_item_active').classList.remove('table-header__item_active');
+          document.querySelector('.table-header__item_active').classList.remove('table-header__item_active');
         }
         target.classList.add('table-header__item_active');
       }
