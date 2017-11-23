@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import editUser from '../../actions/edit-user';
-import changePassword from '../../actions/change-password';
-import changeEmail from '../../actions/change-email';
-import changeUserInfo from '../../actions/change-user-info';
+import changePassword from '../../actions/changePassword';
+import changeEmail from '../../actions/changeEmail';
 import userShape from '../../constants/user-shape';
 
 import SlideBlock from '../../components/SlideBlock';
@@ -89,14 +86,11 @@ class SettingsContainer extends PureComponent {
   submitName = (e) => {
     e.preventDefault();
     const { fname, lname } = this.state;
-    const { edit, user } = this.props;
+    const { editUser, user } = this.props;
 
-    changeUserInfo({ ...user, fname, lname })
+    editUser({ ...user, fname, lname })
       .then((res) => {
         this.showInfo(res);
-        if (!res.error) {
-          edit({ fname, lname });
-        }
       });
   };
 
@@ -191,14 +185,11 @@ class SettingsContainer extends PureComponent {
 }
 
 SettingsContainer.propTypes = {
-  edit: PropTypes.func.isRequired,
+  editUser: PropTypes.func.isRequired,
   setMessage: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   user: PropTypes.shape(userShape).isRequired,
 };
 
-export default connect(
-  null,
-  { edit: editUser },
-)(SettingsContainer);
+export default (SettingsContainer);

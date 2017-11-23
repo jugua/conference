@@ -6,15 +6,16 @@ import PropTypes from 'prop-types';
 
 // import { myInfo } from '../../constants/backend-url';
 import SettingsPage from '../Settings/SettingsPage/SettingsPage';
-import MyInfo from '../MyInfo/MyInfo';
+// import MyInfo from '../MyInfo/MyInfo';
 import getUserInfo from '../../actions/getUserInfo';
+import changeUserInfo from '../../actions/changeUserInfo';
 
 const tabsList = [
-  {
-    id: 1,
-    name: 'My Info',
-    component: MyInfo,
-  },
+  // {
+  //   id: 1,
+  //   name: 'My Info',
+  //   component: MyInfo,
+  // },
   {
     id: 2,
     name: 'Settings',
@@ -37,18 +38,12 @@ class AccountPage extends PureComponent {
   }
 
   componentDidMount() {
-    this.updateMyInfo();
+    this.props.getUser();
   }
 
-  updateMyInfo = () => {
-    this.props.getUserInfo();
-    // axios.get(myInfo)
-    //   .then(({ data }) => {
-    //     this.setState({
-    //       user: data,
-    //     });
-    //   });
-  }
+  // updateMyInfo = () => {
+  //   this.props.getUserInfo();
+  // }
 
   changeTab = ({ target: { dataset: { index } } }) => {
     this.setState({
@@ -58,6 +53,7 @@ class AccountPage extends PureComponent {
 
   render() {
     const { currentTabIndex } = this.state;
+    const { editUser, user } = this.props;
     const CurrentComponent = getTabById(tabsList, currentTabIndex).component;
 
     return (
@@ -84,8 +80,8 @@ class AccountPage extends PureComponent {
         </ul>
         <div className="tabs-container">
           <CurrentComponent
-            user={this.props.user}
-            updateInfo={this.updateMyInfo}
+            user={user}
+            editUser={editUser}
           />
         </div>
       </div>
@@ -94,13 +90,15 @@ class AccountPage extends PureComponent {
 }
 
 AccountPage.propTypes = {
-  getUserInfo: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
+  editUser: PropTypes.func.isRequired,
   user: PropTypes.shape({}).isRequired,
 };
 
 const mapStateToProps = ({ user }) => ({ user });
 const mapDispatchToProps = dispatch => ({
-  getUserInfo: () => dispatch(getUserInfo),
+  getUser: () => dispatch(getUserInfo),
+  editUser: updatedUser => dispatch(changeUserInfo(updatedUser)),
 });
 
 export default connect(
