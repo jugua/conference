@@ -49,9 +49,7 @@ class ManageUser extends PureComponent {
             </li>
           </ul>
           <div className="tabs-container">
-            <div className="my-talks__header">
-              <AddNewOrganizer />
-            </div>
+            <AddNewOrganizer />
             <div className="data-table">
               <div className="table-header">
                 <div className="table-header__item table-header__item_role">
