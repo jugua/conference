@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import userShape from '../../../constants/user-shape';
 import SettingsContainer
   from '../../../containers/SettingsContainer/SettingsContainer';
-// import SettingsInfo from '../SettingsInfo/SettingsInfo';
 
 class SettingsPage extends PureComponent {
   constructor(props) {
@@ -37,7 +34,6 @@ class SettingsPage extends PureComponent {
           { error || message }
         </div>
         <SettingsContainer
-          user={this.props.user}
           setMessage={this.setMessage}
           setError={this.setError}
           reset={this.reset}
@@ -46,9 +42,5 @@ class SettingsPage extends PureComponent {
     );
   }
 }
-
-SettingsPage.propTypes = {
-  user: PropTypes.shape(userShape).isRequired,
-};
 
 export default SettingsPage;

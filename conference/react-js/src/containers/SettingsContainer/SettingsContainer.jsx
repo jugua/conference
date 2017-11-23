@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import changePassword from '../../actions/changePassword';
 import changeEmail from '../../actions/changeEmail';
 import userShape from '../../constants/user-shape';
+import changeUserInfo from '../../actions/changeUserInfo';
 
 import SlideBlock from '../../components/SlideBlock';
 import NameBrief from '../../components/Settings/NameBrief/NameBrief';
@@ -19,11 +21,11 @@ import PasswordChangeForm
 
 class SettingsContainer extends PureComponent {
   constructor(props) {
+    const { user } = props;
     super(props);
     this.state = {
-      fname: '',
-      lname: '',
-      oldMail: '',
+      ...user,
+      oldMail: user.mail,
       mail: '',
       currentPassword: '',
       newPassword: '',
@@ -41,11 +43,9 @@ class SettingsContainer extends PureComponent {
   }
 
   setDefaultValues = ({ user }) => {
-    const { fname, lname, mail } = user;
     this.setState({
-      fname,
-      lname,
-      oldMail: mail,
+      ...user,
+      oldMail: user.mail,
       mail: '',
       currentPassword: '',
       newPassword: '',
@@ -192,4 +192,9 @@ SettingsContainer.propTypes = {
   user: PropTypes.shape(userShape).isRequired,
 };
 
-export default (SettingsContainer);
+export default connect(
+  ({ user }) => ({ user }),
+  dispatch => ({
+    editUser: updatedUser => dispatch(changeUserInfo(updatedUser)),
+  }),
+)(SettingsContainer);

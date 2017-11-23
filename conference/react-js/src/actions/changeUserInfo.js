@@ -4,7 +4,7 @@ import { expiredSession, technicalError } from '../constants/errors';
 import actionTypes from '../constants/actions-types';
 
 const editUser = update => ({
-  type: actionTypes.SET_USER,
+  type: actionTypes.EDIT_USER,
   payload: update,
 });
 
@@ -20,7 +20,7 @@ const success = (dispatch, updatedUser) => {
   return { message: 'Your info updated' };
 };
 
-const changeUserInfo = dispatch => updatedUser => (
+const changeUserInfo = updatedUser => dispatch => (
   axios.post(userInfo, updatedUser)
     .then(() => success(dispatch, updatedUser))
     .catch(res => ({ error: errorHandler(res) }))

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import changeUserInfo from '../../actions/changeUserInfo';
 
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
 import PopUpSaved from './PopUps/PopUpSaved';
 import PopUpPreventUnsavedExit from './PopUps/PopUpPreventUnsavedExit';
 import PopUpChangePhoto from './PopUps/PopUpChangePhoto';
+import userShape from '../../constants/default-user';
 
 class MyInfo extends Component {
   constructor(props) {
@@ -15,22 +15,13 @@ class MyInfo extends Component {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
       showChangePhotoModal: false,
-      user: {},
+      user: props.user,
     };
   }
 
-  componentDidMount() {
-    this.setUserInfo(this.props);
-    this.props.updateInfo();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setUserInfo(nextProps);
-  }
-
-  setUserInfo = ({ user }) => {
+  componentWillReceiveProps({ user }) {
     this.setState({ user });
-  };
+  }
 
   handleOpenModal = () => {
     this.setState({ showInfoSavedModal: true });
@@ -54,7 +45,7 @@ class MyInfo extends Component {
 
   handleSaveInfo = (e) => {
     e.preventDefault();
-    changeUserInfo(this.state.user);
+    this.props.editUser(this.state.user);
     this.handleOpenModal();
   };
 
@@ -173,7 +164,8 @@ class MyInfo extends Component {
 }
 
 MyInfo.propTypes = {
-  updateInfo: PropTypes.func.isRequired,
+  editUser: PropTypes.func.isRequired,
+  user: PropTypes.shape(userShape).isRequired,
 };
 
 export default MyInfo;

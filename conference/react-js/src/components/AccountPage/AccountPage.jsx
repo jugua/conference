@@ -1,21 +1,20 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-// import axios from 'axios';
 import PropTypes from 'prop-types';
 
-// import { myInfo } from '../../constants/backend-url';
 import SettingsPage from '../Settings/SettingsPage/SettingsPage';
-// import MyInfo from '../MyInfo/MyInfo';
+import MyInfo from '../MyInfo/MyInfo';
 import getUserInfo from '../../actions/getUserInfo';
 import changeUserInfo from '../../actions/changeUserInfo';
+import defaultUserShape from '../../constants/default-user';
 
 const tabsList = [
-  // {
-  //   id: 1,
-  //   name: 'My Info',
-  //   component: MyInfo,
-  // },
+  {
+    id: 1,
+    name: 'My Info',
+    component: MyInfo,
+  },
   {
     id: 2,
     name: 'Settings',
@@ -40,10 +39,6 @@ class AccountPage extends PureComponent {
   componentDidMount() {
     this.props.getUser();
   }
-
-  // updateMyInfo = () => {
-  //   this.props.getUserInfo();
-  // }
 
   changeTab = ({ target: { dataset: { index } } }) => {
     this.setState({
@@ -92,10 +87,11 @@ class AccountPage extends PureComponent {
 AccountPage.propTypes = {
   getUser: PropTypes.func.isRequired,
   editUser: PropTypes.func.isRequired,
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape(defaultUserShape).isRequired,
 };
 
 const mapStateToProps = ({ user }) => ({ user });
+
 const mapDispatchToProps = dispatch => ({
   getUser: () => dispatch(getUserInfo),
   editUser: updatedUser => dispatch(changeUserInfo(updatedUser)),
