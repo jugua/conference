@@ -40,17 +40,24 @@ class MyInfo extends Component {
     this.setState({ user });
   };
 
+  setDefaultUserImage = () => {
+    const defaultUserImage = './images/default_ava.jpg';
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        photo: defaultUserImage,
+      },
+    }));
+  };
+
   getUserPhoto = (id) => {
-    axios.get(`${uploadUserPhoto}/${id}`)
-      .then(() => {
-        this.setState(prevState => ({
-          user: {
-            ...prevState.user,
-            photo: `${uploadUserPhoto}/${id}`,
-          },
-        }
-        ));
-      });
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        photo: `${uploadUserPhoto}/${id}`,
+      },
+    }
+    ));
   };
 
   handleOpenModal = () => {
@@ -93,7 +100,6 @@ class MyInfo extends Component {
 
     const file = e.target.files[0];
     const photoURL = window.URL.createObjectURL(file);
-
     this.setState(prevState => ({
       user: {
         ...prevState.user,
@@ -112,10 +118,7 @@ class MyInfo extends Component {
     data.append('file', userPhoto);
 
     if (choosePhotoBtn.files.length > 0) {
-      axios.post(uploadUserPhoto, data)
-        .then((res) => {
-          console.log(res);
-        });
+      axios.post(uploadUserPhoto, data);
       this.setState({ photoUpdateIsSuccessful: true, photoIsSelected: false });
     } else {
       this.setState({ photoIsSelected: true });
@@ -127,11 +130,7 @@ class MyInfo extends Component {
   };
 
   removePhoto = () => {
-    axios.delete(uploadUserPhoto)
-      .then((res) => {
-        console.log(res, 'photo was deleted');
-      });
-
+    axios.delete(uploadUserPhoto);
     this.setState(prevState => ({
       showRemovePhotoConfirmationModal: false,
       user: {
@@ -156,7 +155,8 @@ class MyInfo extends Component {
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
-            src={photo || './images/default_ava.jpg'}
+            src={photo}
+            onError={this.setDefaultUserImage}
             alt=""
           />
           <button

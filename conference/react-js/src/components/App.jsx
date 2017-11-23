@@ -35,7 +35,7 @@ const getRoutes = () => {
 };
 
 const App = () => (
-  <MuiThemeProvider>
+  <MuiThemeProvider >
     <Router>
       <div>
         <Header />
