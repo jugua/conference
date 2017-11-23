@@ -38,7 +38,7 @@ public class UserInfo extends AbstractEntity {
     @Column(nullable = false, length = 256)
     private String company = "";
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userInfoId", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Contact> contacts = new ArrayList<>();
 
     @Column(length = 1000)
