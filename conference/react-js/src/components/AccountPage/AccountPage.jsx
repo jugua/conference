@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react';
-import classNames from 'classnames'; import axios from 'axios';
-import { myInfo } from '../../constants/backend-url';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+// import axios from 'axios';
+import PropTypes from 'prop-types';
 
+// import { myInfo } from '../../constants/backend-url';
 import SettingsPage from '../Settings/SettingsPage/SettingsPage';
 import MyInfo from '../MyInfo/MyInfo';
+import getUserInfo from '../../actions/getUserInfo';
 
 const tabsList = [
   {
@@ -37,12 +41,13 @@ class AccountPage extends PureComponent {
   }
 
   updateMyInfo = () => {
-    axios.get(myInfo)
-      .then(({ data }) => {
-        this.setState({
-          user: data,
-        });
-      });
+    this.props.getUserInfo();
+    // axios.get(myInfo)
+    //   .then(({ data }) => {
+    //     this.setState({
+    //       user: data,
+    //     });
+    //   });
   }
 
   changeTab = ({ target: { dataset: { index } } }) => {
@@ -79,7 +84,7 @@ class AccountPage extends PureComponent {
         </ul>
         <div className="tabs-container">
           <CurrentComponent
-            user={this.state.user}
+            user={this.props.user}
             updateInfo={this.updateMyInfo}
           />
         </div>
@@ -88,4 +93,17 @@ class AccountPage extends PureComponent {
   }
 }
 
-export default AccountPage;
+AccountPage.propTypes = {
+  getUserInfo: PropTypes.func.isRequired,
+  user: PropTypes.shape({}).isRequired,
+};
+
+const mapStateToProps = ({ user }) => ({ user });
+const mapDispatchToProps = dispatch => ({
+  getUserInfo: () => dispatch(getUserInfo),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountPage);
