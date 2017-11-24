@@ -26,16 +26,11 @@ class SettingsContainer extends PureComponent {
     this.state = {
       ...user,
       oldMail: user.mail,
-      mail: '',
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
       currentBlock: null,
     };
-  }
-
-  componentDidMount() {
-    this.setDefaultValues(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,7 +41,6 @@ class SettingsContainer extends PureComponent {
     this.setState({
       ...user,
       oldMail: user.mail,
-      mail: '',
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
@@ -54,8 +48,8 @@ class SettingsContainer extends PureComponent {
   };
 
   showBlock = (title) => {
-    this.setState({ currentBlock: title });
     this.setDefaultValues(this.props);
+    this.setState({ currentBlock: title });
     this.props.reset();
   };
 
@@ -85,10 +79,9 @@ class SettingsContainer extends PureComponent {
 
   submitName = (e) => {
     e.preventDefault();
-    const { fname, lname } = this.state;
-    const { editUser, user } = this.props;
+    const { editUser, userKeys } = this.props;
 
-    editUser({ ...user, fname, lname })
+    editUser(this.state, userKeys)
       .then((res) => {
         this.showInfo(res);
       });
@@ -111,8 +104,8 @@ class SettingsContainer extends PureComponent {
   };
 
   hideBlocks = () => {
-    this.setState({ currentBlock: null });
     this.setDefaultValues(this.props);
+    this.setState({ currentBlock: null });
   };
 
   cancel = () => {
@@ -190,11 +183,14 @@ SettingsContainer.propTypes = {
   setError: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   user: PropTypes.shape(userShape).isRequired,
+  userKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(
-  ({ user }) => ({ user }),
+  ({ user, userKeys }) => ({ user, userKeys }),
   dispatch => ({
-    editUser: updatedUser => dispatch(changeUserInfo(updatedUser)),
+    editUser: (updatedUser, userKeys) => (
+      dispatch(changeUserInfo(updatedUser, userKeys))
+    ),
   }),
 )(SettingsContainer);

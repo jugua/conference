@@ -46,9 +46,14 @@ class AccountPage extends PureComponent {
     });
   }
 
+  editUser = (updatedUser) => {
+    const { editUser, userKeys } = this.props;
+    editUser(updatedUser, userKeys);
+  }
+
   render() {
     const { currentTabIndex } = this.state;
-    const { editUser, user } = this.props;
+    const { user } = this.props;
     const CurrentComponent = getTabById(tabsList, currentTabIndex).component;
 
     return (
@@ -76,7 +81,7 @@ class AccountPage extends PureComponent {
         <div className="tabs-container">
           <CurrentComponent
             user={user}
-            editUser={editUser}
+            editUser={this.editUser}
           />
         </div>
       </div>
@@ -88,13 +93,16 @@ AccountPage.propTypes = {
   getUser: PropTypes.func.isRequired,
   editUser: PropTypes.func.isRequired,
   user: PropTypes.shape(defaultUserShape).isRequired,
+  userKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = ({ user, userKeys }) => ({ user, userKeys });
 
 const mapDispatchToProps = dispatch => ({
   getUser: () => dispatch(getUserInfo),
-  editUser: updatedUser => dispatch(changeUserInfo(updatedUser)),
+  editUser: (updatedUser, userKeys) => (
+    dispatch(changeUserInfo(updatedUser, userKeys))
+  ),
 });
 
 export default connect(

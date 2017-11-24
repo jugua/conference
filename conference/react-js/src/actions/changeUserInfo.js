@@ -20,8 +20,16 @@ const success = (dispatch, updatedUser) => {
   return { message: 'Your info updated' };
 };
 
-const changeUserInfo = updatedUser => dispatch => (
-  axios.post(userInfo, updatedUser)
+const userToDefaultShape = (user, keys) => {
+  const res = {};
+  keys.forEach((key) => {
+    res[key] = user[key];
+  });
+  return res;
+};
+
+const changeUserInfo = (updatedUser, userKeys) => dispatch => (
+  axios.post(userInfo, userToDefaultShape(updatedUser, userKeys))
     .then(() => success(dispatch, updatedUser))
     .catch(res => ({ error: errorHandler(res) }))
 );
