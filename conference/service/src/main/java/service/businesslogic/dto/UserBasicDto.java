@@ -11,13 +11,10 @@ public class UserBasicDto {
 
     private Long id;
 
-    @JsonProperty("mail")
     private String email;
 
-    @JsonProperty("firstName")
     private String firstName;
 
-    @JsonProperty("lastName")
     private String lastName;
 
     private String role;

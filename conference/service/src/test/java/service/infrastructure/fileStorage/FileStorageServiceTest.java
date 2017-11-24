@@ -194,15 +194,6 @@ public class FileStorageServiceTest {
         fileStorageService.deleteFile(FOLDER + "fileNameId.jpg");
     }
 
-    //getFile
-
-    @Ignore
-    @Test
-    public void getFileByNullThrowsException() {
-        exception.expect(ResourceNotFoundException.class);
-        exception.expectMessage(ResourceNotFoundException.FILE_NOT_FOUND);
-        fileStorageService.getFile(null);
-    }
 
     @Test
     public void getFileByEmptyStringThrowsException() {
