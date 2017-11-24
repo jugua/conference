@@ -1,7 +1,5 @@
 package service.businesslogic.dto;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -16,11 +14,11 @@ public class UserBasicDto {
     @JsonProperty("mail")
     private String email;
 
-    @JsonProperty("fname")
+    @JsonProperty("firstName")
     private String firstName;
 
-    @JsonProperty("lname")
+    @JsonProperty("lastName")
     private String lastName;
 
-    private List<String> roles;
+    private String role;
 }
