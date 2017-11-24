@@ -12,6 +12,7 @@ import java.nio.file.Files;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -193,14 +194,6 @@ public class FileStorageServiceTest {
         fileStorageService.deleteFile(FOLDER + "fileNameId.jpg");
     }
 
-    //getFile
-
-    @Test
-    public void getFileByNullThrowsException() {
-        exception.expect(ResourceNotFoundException.class);
-        exception.expectMessage(ResourceNotFoundException.FILE_NOT_FOUND);
-        fileStorageService.getFile(null);
-    }
 
     @Test
     public void getFileByEmptyStringThrowsException() {
