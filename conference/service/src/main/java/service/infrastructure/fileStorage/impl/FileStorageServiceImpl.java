@@ -34,8 +34,7 @@ import service.infrastructure.fileStorage.exception.FileValidationException;
 
 @Log4j
 public class FileStorageServiceImpl implements FileStorageService {
-   
-	@Autowired
+    @Autowired
 	private Environment environment;
 	private static final int MAX_FILE_VERSION_TO_CREATE = 100;
     private static final int MAX_LENGTH_OF_VERSION_SUBSTR = 3;
@@ -74,7 +73,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public File getFile(String fileAbsolutePath) {
         if (fileAbsolutePath == null) {
-        	return new File(environment.getProperty("fileStorage.default.avatar"));
+        	return new File(System.getProperty("catalina.base") + environment.getProperty("fileStorage.default.avatar"));
         }
         File searchFile = new File(fileAbsolutePath);
         if (!searchFile.isFile()) {
