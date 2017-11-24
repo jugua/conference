@@ -203,13 +203,13 @@ public class UserServiceImpl implements UserService {
         List<Contact> contacts = user.getUserInfo().getContacts();
         contacts.forEach(dto::setContact);
         dto.setContacts(contacts);
-        dto.setRoles(user.getRoleNames());
+        dto.setRole(user.getRoleNames().get(0));
         return dto;
     }
 
     private UserBasicDto userToUserBasicDto(User user) {
         UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
-        userBasicDto.setRoles(user.getRoleNames());
+        userBasicDto.setRole(user.getRoleNames().get(0));
         return userBasicDto;
     }
 
