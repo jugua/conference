@@ -54,29 +54,28 @@ INSERT INTO `language` VALUES (1, 'English'), (2, 'Ukrainian'), (3, 'Russian');
 -- Setting default user with role SPEAKER with all fields
 --
 
-INSERT INTO user_info VALUES (1, 'Additional info', 'EPAM', 'Jun', 'Past conference', 'Short bio');
+INSERT INTO `user` (`id`, `email`, `first_name`, `last_name`, `password`, `status`) VALUES (1, 'speaker@speaker.com', 'Master', 'Trybel', '$2a$10$OLtqxD4e0UWymWn7MF7x3e6RVX5RxaDxXGT1FjmTbUkdgyZY3.EKG', 'CONFIRMED');
 
-INSERT INTO `user` (`id`, `email`, `first_name`, `last_name`, `password`, `status`, `user_info_id`) VALUES (1, 'speaker@speaker.com', 'Master', 'Trybel', '$2a$10$OLtqxD4e0UWymWn7MF7x3e6RVX5RxaDxXGT1FjmTbUkdgyZY3.EKG', 'CONFIRMED', 1);
+
+INSERT INTO user_info VALUES (1, 'Additional info', 'EPAM', 'Jun', 'Past conference', 'Short bio',1);
+
 
 INSERT INTO user_role VALUES (1, 1);
 
-INSERT INTO contact VALUES (1, 'linkedin.com', 1);
-INSERT INTO contact VALUES (2, 'twitter.com', 2);
-INSERT INTO contact VALUES (3, 'facebook.com', 3);
-INSERT INTO contact VALUES (4, 'userblog.com', 4);
-
-INSERT INTO user_info_contact VALUES (1, 1);
-INSERT INTO user_info_contact VALUES (1, 2);
-INSERT INTO user_info_contact VALUES (1, 3);
-INSERT INTO user_info_contact VALUES (1, 4);
+INSERT INTO contact VALUES (1, 1, 'linkedin.com', 1);
+INSERT INTO contact VALUES (2, 1, 'twitter.com', 2);
+INSERT INTO contact VALUES (3, 1, 'facebook.com', 3);
+INSERT INTO contact VALUES (4, 1, 'userblog.com', 4);
 
 --
 -- Setting default user with role SPEAKER with only registration fields
 --
 
-INSERT INTO user_info (`id`, company, job_title, short_bio) VALUES (2, '', '', '');
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUES (2, 'user@gmail.com', 'User', 'User', 'UNCONFIRMED', '$2a$10$j6MlhWXyU.oSZPZxSwEO3.zHfU9vwsl4Fg1F8nsDR8c9EkOIHXl2O');
 
-INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (2, 'user@gmail.com', 'User', 'User', 'UNCONFIRMED', '$2a$10$j6MlhWXyU.oSZPZxSwEO3.zHfU9vwsl4Fg1F8nsDR8c9EkOIHXl2O', 2);
+
+INSERT INTO user_info (`id`, company, job_title, short_bio, user_id) VALUES (2, '', '', '',2);
+
 
 INSERT INTO user_role VALUES (2, 1);
 
@@ -84,9 +83,11 @@ INSERT INTO user_role VALUES (2, 1);
 -- Setting default user with role ORGANIZER with only registration fields
 --
 
-INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (3, '', '', '');
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUES (3, 'organiser@gmail.com', 'Organiser', 'Organiser', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC');
 
-INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (3, 'organiser@gmail.com', 'Organiser', 'Organiser', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC', 3);
+
+INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (3, '', '', '',3);
+
 
 INSERT INTO user_role VALUES (3, 2);
 
@@ -94,27 +95,32 @@ INSERT INTO user_role VALUES (3, 2);
 -- Setting default user with role ORGANIZER with only registration fields
 --
 
-INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (4, '', '', '');
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUES (4, 'organiser2@gmail.com', 'Organiser2', 'Organiser2', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC');
 
-INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (4, 'organiser2@gmail.com', 'Organiser2', 'Organiser2', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC', 4);
+
+INSERT INTO user_info (`id`, company, job_title, short_bio, user_id)  VALUES (4, '', '', '', 4);
+
 INSERT INTO user_role VALUES (4, 2);
 
 --
 -- Insert organiser-admin
 --
 
-INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (5, '', '', '');
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUES (5, 'admin@gmail.com', 'I''m super', 'Admin', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.');
 
-INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (5, 'admin@gmail.com', 'I''m super', 'Admin', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 5);
+
+INSERT INTO user_info (`id`, company, job_title, short_bio, user_id)  VALUES (5, '', '', '', 5);
+
 INSERT INTO user_role VALUES (5, 3);
 
 --
 -- Setting default user with role USER with only registration fields
 --
 
-INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (6, '', '', '');
+INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUES (6, 'simple@gmail.com', 'simpleuser', 'simpleuser', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.');
 
-INSERT INTO `user`  (`id`, email, first_name, last_name, status, password, user_info_id) VALUES (6, 'simple@gmail.com', 'simpleuser', 'simpleuser', 'CONFIRMED','$2a$10$ASFKX9KVHmSEShdBFpCskORriCNRMUYGMy7y7PSRuPhaV5hHSaBU.', 6);
+INSERT INTO user_info (`id`, company, job_title, short_bio, user_id)  VALUES (6, '', '', '',6);
+
 INSERT INTO user_role VALUES (6, 4);
 
 INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, path_to_logo) VALUES (1, 'JavaDay 1', 'The Very First JavaDay', 'Kiev', '2018-09-15', '2018-09-25', '2018-08-04', '2018-08-22', 'nologo');

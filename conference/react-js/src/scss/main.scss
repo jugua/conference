@@ -8,9 +8,10 @@
 @import 'common';
 @import '../containers/CardsList/style';
 @import '../containers/SignUpForm/sign-up';
+@import '../containers/Conference/conference';
 @import '../containers/Forgot-password/forgot-password';
 @import '../containers/New-talk/new-talk';
-@import '../containers/Manage-user/manage-users';
+@import '../containers/ManageUsers/manage-users';
 @import '../containers/Talks/talks';
 @import '../components/UpdateTalk/update-talk';
 @import '../containers/Header/header';

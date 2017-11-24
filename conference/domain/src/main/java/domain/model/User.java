@@ -54,8 +54,7 @@ public class User extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @OneToOne(orphanRemoval = true, cascade = {CascadeType.ALL})
-    @JoinColumn(name = "user_info_id", unique = true)
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private UserInfo userInfo;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -21,7 +21,7 @@ public class ConfirmAccountPreparator extends CustomMimeMessagePreparator {
         model = new HashMap<>();
         model.put("name", receiver.getFirstName());
         model.put("email", receiver.getEmail());
-        model.put("link", url + "/#/registrationConfirm/" + token.getToken());
+        model.put("link", url + "/react/registrationConfirm/" + token.getToken());
         model.put("subject", "Confirm Your Account");
     }
 

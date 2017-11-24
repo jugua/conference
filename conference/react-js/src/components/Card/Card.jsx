@@ -33,7 +33,7 @@ class Card extends PureComponent {
           >
             <Link
               className="сonference-card-title__link"
-              to={`${conference}/:${id}`}
+              to={`${conference}/${id}`}
             >
               {title}
             </Link>
@@ -85,9 +85,9 @@ Card.propTypes = { data: PropTypes.shape({
   description: PropTypes.string,
   end_date: PropTypes.string,
   location: PropTypes.string,
-  id: PropTypes.number,
   start_date: PropTypes.string,
   title: PropTypes.string,
+  id: PropTypes.number,
 }).isRequired,
 role: PropTypes.string.isRequired,
 setConference: PropTypes.func.isRequired,
