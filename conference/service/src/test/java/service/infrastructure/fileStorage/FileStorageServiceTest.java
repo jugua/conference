@@ -12,6 +12,7 @@ import java.nio.file.Files;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -195,6 +196,7 @@ public class FileStorageServiceTest {
 
     //getFile
 
+    @Ignore
     @Test
     public void getFileByNullThrowsException() {
         exception.expect(ResourceNotFoundException.class);
