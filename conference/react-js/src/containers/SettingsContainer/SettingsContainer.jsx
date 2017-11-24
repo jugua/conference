@@ -115,7 +115,7 @@ class SettingsContainer extends PureComponent {
 
   render() {
     const {
-      fname, lname, mail, oldMail,
+      firstName, lastName, mail, oldMail,
       currentPassword, newPassword, confirmNewPassword,
       currentBlock,
     } = this.state;
@@ -130,16 +130,16 @@ class SettingsContainer extends PureComponent {
           <NameBrief
             title={nameTitle}
             show={() => this.showBlock(nameTitle)}
-            fname={fname}
-            lname={lname}
+            firstName={firstName}
+            lastName={lastName}
           />
           <NameChangeForm
             title={nameTitle}
             cancel={this.cancel}
             submit={this.submitName}
             change={this.change}
-            fname={fname}
-            lname={lname}
+            firstName={firstName}
+            lastName={lastName}
           />
         </SlideBlock>
         <SlideBlock isOpened={currentBlock === emailTitle}>
