@@ -60,7 +60,7 @@ class AddNewOrganizer extends Component {
           onClick={this.handleOpen}
         />
         <Dialog
-          title="Dialog With Actions"
+          title="Invite Organizer"
           actions={actions}
           modal={false}
           open={this.state.open}
