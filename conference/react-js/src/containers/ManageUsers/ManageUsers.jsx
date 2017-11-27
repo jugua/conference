@@ -67,6 +67,10 @@ class ManageUser extends PureComponent {
                 {this.ShowListUsers(users)}
               </div>
             </div>
+            <div className="table-header__item table-header__scroll-fix" />
+          </div>
+          <div className="data-table__inner-wrapper">
+            {this.ShowListUsers(users)}
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import service.businesslogic.api.CommentService;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.api.ContactTypeService;
 import service.businesslogic.api.SignInService;
@@ -91,6 +92,11 @@ public class WebTestConfig {
     @Bean
     public SignInService mockSignInService() {
     	return mock(SignInService.class);
+    }
+    
+    @Bean
+    public CommentService mockCommentController() {
+    	return mock(CommentService.class);
     }
 
 }

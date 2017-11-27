@@ -17,13 +17,17 @@ public class BasicAuthFilterImpl extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+    protected void onSuccessfulAuthentication(HttpServletRequest request,
+                                              HttpServletResponse response,
                                               Authentication authResult) {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override
-    protected void onUnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+    protected void onUnsuccessfulAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response,
+                                                AuthenticationException failed) throws IOException {
+
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(failed.getMessage());
         response.getWriter().flush();

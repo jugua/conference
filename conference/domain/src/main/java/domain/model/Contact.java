@@ -23,6 +23,9 @@ public class Contact extends AbstractEntity {
     private String value;
 
     @NonNull
+    private long userInfoId;
+    
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "contact_type_id", nullable = false)
     private ContactType contactType;
@@ -33,4 +36,9 @@ public class Contact extends AbstractEntity {
         this.contactType = contactType;
     }
 
+    public Contact(String value, ContactType contactType) {
+        this.value = value;
+        this.contactType = contactType;
+    }
+    
 }

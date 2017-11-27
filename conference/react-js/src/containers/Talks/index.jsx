@@ -20,6 +20,7 @@ class Talks extends Component {
       speaker: '',
       status: [],
       comments: '',
+      sorting: { conferenceName: '', title: '', status: '' },
       currentPage: 1,
       quantityTalks: 20,
       quantityAllPages: 0,
@@ -129,14 +130,31 @@ class Talks extends Component {
     this.doFilter();
   };
 
-  sortTalks = ({ target: { tagName, dataset: { name } } }) => {
+  sortTalks = ({ target }) => {
+    const { classList, tagName, dataset: { name } } = target;
+    const currentEl = classList.value;
     if (tagName === 'TH' && name) {
+      if (currentEl.indexOf('table-header__item_active') !== -1) {
+        classList.toggle('desc');
+      } else {
+        const prevActive = document.querySelector('.table-header__item_active');
+        if (prevActive) {
+          document.querySelector('.table-header__item_active').classList.remove('table-header__item_active');
+        }
+        target.classList.add('table-header__item_active');
+      }
+
       const { ASC, SORT_ALL_TALKS } = action;
-      const { [name]: sortField } = this.state;
+      const { [name]: sortField } = this.state.sorting;
       const { load, talks } = this.props;
       const value = sortField === ASC ? '' : ASC;
       load(SORT_ALL_TALKS, { talks, direction: value, field: name });
-      this.setState({ [name]: value });
+      this.setState(prevState => ({
+        sorting: {
+          ...prevState.sorting,
+          [name]: value,
+        },
+      }));
     }
   };
 
@@ -154,9 +172,6 @@ class Talks extends Component {
         role="menu"
         tabIndex="0"
       >
-        <div className="talks__header">
-          <a className="btn talks__button">export to excel </a>
-        </div>
         <FilterForm
           status={status}
           onChangeFilter={this.onChangeFilter}
@@ -204,10 +219,9 @@ Talks.defaultProps = {
   onClick() {},
 };
 
-const mapStateToProps = ({ talks, userTalks }) => (
+const mapStateToProps = ({ talks }) => (
   {
     talks,
-    userTalks,
   });
 
 const mapDispatchToProps = dispatch => ({

@@ -91,14 +91,11 @@ const getRows = (talks, columns) => (
 const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
   <div className="table-container">
     <Table
-      selectable
-      multiSelectable
       onCellClick={onClick}
     >
       <TableHeader
-        displaySelectAll
-        adjustForCheckbox
-        enableSelectAll
+        displaySelectAll={false}
+        adjustForCheckbox={false}
       >
         <TableRow onClick={sortTalks}>
           {renderTalksHeader(columns)}
@@ -106,6 +103,7 @@ const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
       </TableHeader>
       <TableBody
         showRowHover
+        displayRowCheckbox={false}
       >
         {getRows(listOfTalks, columns)}
       </TableBody>

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { root } from '../../constants/route-url';
 import SignInForm from '../../components/SignInForm/SignInForm';
-import UserMenuFilter from '../../components/UserMenuFilter/UserMenuFilter';
+import UserMenu from '../../components/UserMenu/UserMenu';
 import logout from '../../actions/logout';
 import load from '../../actions/load';
 
@@ -92,9 +92,8 @@ class Header extends PureComponent {
             >
               {
                 role ?
-                  <UserMenuFilter
+                  <UserMenu
                     close={this.closeDropDown}
-                    role={role}
                     logout={logoutAction}
                   /> :
                   <SignInForm

@@ -10,19 +10,29 @@ import Tabs from './Tabs/Tabs';
 import Header from '../containers/Header/Header';
 import '../scss/main.scss';
 import SignUp from '../containers/SignUpForm/SignUpForm';
-import History from './History';
-import ManageUser from '../containers/Manage-user/';
-import Talks from '../containers/Talks';
+import Conference from '../containers/Conference';
 import AccountPage from '../components/AccountPage/AccountPage';
 import {
   root,
   forgotPassword,
   signUp,
-  manageUser,
-  talks,
   account,
-  history,
+  conference,
 } from '../constants/route-url';
+
+const getRoutes = () => {
+  const routes = [
+    { path: forgotPassword, component: ForgotPassword },
+    { path: signUp, component: SignUp },
+    { path: account, component: AccountPage },
+    { path: `${conference}/:id`, component: Conference },
+    { path: root, component: Tabs, exact: false },
+  ];
+
+  return routes.map(({ path, component, exact = true }) => (
+    <Route key={path} path={path} component={component} exact={exact} />
+  ));
+};
 
 const App = () => (
   <MuiThemeProvider>
@@ -30,40 +40,7 @@ const App = () => (
       <div>
         <Header />
         <Switch>
-          <Route
-            path={account}
-            exact
-            component={AccountPage}
-          />
-          <Route
-            path={forgotPassword}
-            exact
-            component={ForgotPassword}
-          />
-          <Route
-            path={signUp}
-            exact
-            component={SignUp}
-          />
-          <Route
-            path={manageUser}
-            exact
-            component={ManageUser}
-          />
-          <Route
-            path={talks}
-            exact
-            component={Talks}
-          />
-          <Route
-            path={history}
-            exact
-            component={History}
-          />
-          <Route
-            path={root}
-            component={Tabs}
-          />
+          { getRoutes() }
         </Switch>
       </div>
     </Router>
