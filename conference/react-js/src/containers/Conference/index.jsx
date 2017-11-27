@@ -16,8 +16,8 @@ const Conference = ({ conference: {
       to={root}
       className="conference_button"
     >
-    back
-+    </Link>
+      back
+    </Link>
     <Talks
       url={`/conference/${id}/talks`}
       columns={[
