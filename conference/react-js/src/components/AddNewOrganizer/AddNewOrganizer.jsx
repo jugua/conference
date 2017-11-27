@@ -24,15 +24,21 @@ class AddNewOrganizer extends Component {
       });
   }
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+  setMenuItems = () => (
+    this.state.conferenceList.map(name => (
+      <MenuItem
+        value={name}
+        primaryText={name}
+        key={name}
+      />),
+    )
+  )
 
   handleChange = (event, index, value) => this.setState({ value });
+
+  toggleInput = () => {
+    this.setState({ open: !this.state.open });
+  }
 
   render() {
     const actions = [
@@ -41,14 +47,14 @@ class AddNewOrganizer extends Component {
         label="Cancel"
         keyboardFocused
         primary
-        onClick={this.handleClose}
+        onClick={this.toggleInput}
       />,
       <RaisedButton
         className="update-talk__button"
         label="Submit"
         keyboardFocused
         primary
-        onClick={this.handleClose}
+        onClick={this.toggleInput}
       />,
     ];
 
@@ -57,7 +63,7 @@ class AddNewOrganizer extends Component {
         <RaisedButton
           label="Invite Organizer"
           primary
-          onClick={this.handleOpen}
+          onClick={this.toggleInput}
         />
         <Dialog
           title="Invite Organizer"
@@ -77,15 +83,7 @@ class AddNewOrganizer extends Component {
             onChange={this.handleChange}
           >
             <MenuItem value={null} primaryText="" />
-            {
-              this.state.conferenceList.map(name => (
-                <MenuItem
-                  value={name}
-                  primaryText={name}
-                  key={name}
-                />),
-              )
-            }
+            {this.setMenuItems()}
           </SelectField>
         </Dialog>
       </div>
