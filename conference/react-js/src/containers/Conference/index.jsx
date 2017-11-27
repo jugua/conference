@@ -46,7 +46,16 @@ const Conference = ({ conference: {
       >Location:</span>
       {location}
     </div>
-    <Talks url={`/conference/${id}/talks`} />
+    <Talks
+      url={`/conference/${id}/talks`}
+      columns={[
+        'id',
+        'name',
+        'title',
+        'topic',
+        'status',
+      ]}
+    />
   </div>
 );
 
