@@ -9,6 +9,7 @@ import Past from '../Past/Past';
 import ManageUsers from '../../containers/ManageUsers/ManageUsers';
 import Talks from '../../containers/Talks';
 import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
+import Conference from '../../containers/Conference';
 import {
   upcoming,
   myTalks,
@@ -53,6 +54,7 @@ const getRoutes = () => {
     { path: myEvents, component: MyEvents },
     { path: manageUsers, component: ManageUsers },
     { path: talks, component: Talks },
+    { path: `${myEvents}/:id`, component: Conference },
   ];
 
   return routes.map(({ path, component }) => (
