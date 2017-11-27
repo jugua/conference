@@ -86,7 +86,7 @@ INSERT INTO user_role VALUES (2, 1);
 INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUES (3, 'organiser@gmail.com', 'Organiser', 'Organiser', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC');
 
 
-INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (3, '', '', '',3);
+INSERT INTO user_info (`id`, company, job_title, short_bio, user_id)  VALUES (3, '', '', '',3);
 
 
 INSERT INTO user_role VALUES (3, 2);

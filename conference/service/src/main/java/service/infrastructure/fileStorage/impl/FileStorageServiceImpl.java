@@ -20,6 +20,8 @@ import java.util.regex.Pattern;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +34,9 @@ import service.infrastructure.fileStorage.exception.FileValidationException;
 
 @Log4j
 public class FileStorageServiceImpl implements FileStorageService {
-    private static final int MAX_FILE_VERSION_TO_CREATE = 100;
+    @Autowired
+	private Environment environment;
+	private static final int MAX_FILE_VERSION_TO_CREATE = 100;
     private static final int MAX_LENGTH_OF_VERSION_SUBSTR = 3;
     private static final long MAX_SIZE_FILE = 314_572_800;
     private static final long MAX_SIZE_PHOTO = 2097152;
@@ -69,7 +73,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     @Override
     public File getFile(String fileAbsolutePath) {
         if (fileAbsolutePath == null) {
-            throw new ResourceNotFoundException(FILE_NOT_FOUND);
+        	return new File(System.getProperty("catalina.base") + environment.getProperty("fileStorage.default.avatar"));
         }
         File searchFile = new File(fileAbsolutePath);
         if (!searchFile.isFile()) {
