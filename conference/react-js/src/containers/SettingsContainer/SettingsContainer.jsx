@@ -25,7 +25,7 @@ class SettingsContainer extends PureComponent {
     super(props);
     this.state = {
       ...user,
-      oldMail: user.mail,
+      oldMail: user.email,
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
@@ -40,7 +40,7 @@ class SettingsContainer extends PureComponent {
   setDefaultValues = ({ user }) => {
     this.setState({
       ...user,
-      oldMail: user.mail,
+      oldMail: user.email,
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
@@ -71,9 +71,9 @@ class SettingsContainer extends PureComponent {
 
   submitEmail = (e) => {
     e.preventDefault();
-    const { mail } = this.state;
+    const { email } = this.state;
 
-    changeEmail(mail)
+    changeEmail(email)
       .then(this.showInfo);
   };
 
@@ -115,7 +115,7 @@ class SettingsContainer extends PureComponent {
 
   render() {
     const {
-      firstName, lastName, mail, oldMail,
+      firstName, lastName, email, oldMail,
       currentPassword, newPassword, confirmNewPassword,
       currentBlock,
     } = this.state;
@@ -153,7 +153,7 @@ class SettingsContainer extends PureComponent {
             cancel={this.cancel}
             submit={this.submitEmail}
             change={this.change}
-            mail={mail}
+            email={email}
             oldMail={oldMail}
           />
         </SlideBlock>
