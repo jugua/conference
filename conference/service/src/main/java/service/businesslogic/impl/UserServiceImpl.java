@@ -28,6 +28,7 @@ import service.businesslogic.exception.PasswordMismatchException;
 import service.businesslogic.exception.WrongRoleException;
 import service.infrastructure.mail.MailService;
 import service.infrastructure.mail.preparator.ConfirmAccountPreparator;
+import service.infrastructure.mail.preparator.InvitePreparator;
 
 
 @Service
@@ -212,5 +213,13 @@ public class UserServiceImpl implements UserService {
         userBasicDto.setRoles(user.getRoleNames());
         return userBasicDto;
     }
+
+	@Override
+	public void inviteUser(String email, String name) {
+		User user = new User();
+		user.setEmail(email);
+		user.setFirstName(name);
+		mailService.sendEmail(user, new InvitePreparator(mailService.getUrl()));
+	}
 
 }
