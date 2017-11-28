@@ -1,6 +1,7 @@
 package web.controller;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import domain.model.Conference;
 import domain.model.Role;
+import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
+import service.businesslogic.api.UserService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.CreateConferenceDto;
 import service.businesslogic.dto.CreateTopicDto;
@@ -42,6 +45,7 @@ public class MainPageController {
     private final TypeService typeService;
     private final TopicService topicService;
     private final ConferenceService conferenceService;
+    private UserService userService;
 
     @GetMapping("conference/upcoming")
     @ResponseStatus(HttpStatus.OK)
@@ -66,6 +70,17 @@ public class MainPageController {
         Conference conference = conferenceService.findById(id);
         return ok(conference);
     }
+    
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("conference")
+    public ResponseEntity<List<ConferenceDto>> conferenceById(HttpServletRequest request) {
+    	User user = userService.getByEmail(request.getRemoteUser());
+       	List<ConferenceDto> conferences = conferenceService.conferenceToDto(user.getOrganizerConferences());
+       	return new ResponseEntity<>(conferences,HttpStatus.OK);
+    	
+    
+    }
+    
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("conference/{id}/talks")

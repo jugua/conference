@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -172,4 +173,9 @@ public class ConferenceServiceImpl implements ConferenceService {
             }
         }
     }
+
+	@Override
+	public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
+		return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
+	}
 }
