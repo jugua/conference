@@ -5,14 +5,15 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
-import { conferencesNames } from '../../constants/backend-url';
+import { conferencesNames, organizerInvite } from '../../constants/backend-url';
 
 class AddNewOrganizer extends Component {
   constructor(prop) {
     super(prop);
     this.state = {
       open: false,
-      value: false,
+      conferenceName: '',
+      userEmail: '',
       conferenceList: [],
     };
   }
@@ -34,14 +35,27 @@ class AddNewOrganizer extends Component {
     )
   )
 
-  handleChange = (event, index, value) => this.setState({ value });
+  handleConference = (event, index, value) => (
+    this.setState({ conferenceName: value }));
+
+  handleEmail = (event, value) => this.setState({ userEmail: value });
 
   toggleInput = () => {
     this.setState({ open: !this.state.open });
   }
 
   send = () => {
-  console.log("res");
+    console.log('HERE');
+    const { userEmail, conferenceName } = this.state;
+    axios.post(`${organizerInvite}?email=${userEmail}&name=${conferenceName}`,
+      { email: userEmail,
+        name: conferenceName })
+      .then(() => {
+        console.log('success');
+      }).catch((
+        { response: { data: { error } } }) => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -80,11 +94,13 @@ class AddNewOrganizer extends Component {
             id="text-field-default"
             hintText="Enter email adress"
             type="email"
+            value={this.state.userEmail}
+            onChange={this.handleEmail}
           /><br />
           <SelectField
             floatingLabelText="Choose Conference"
-            value={this.state.value}
-            onChange={this.handleChange}
+            value={this.state.conferenceName}
+            onChange={this.handleConference}
           >
             <MenuItem value={null} primaryText="" />
             {this.setMenuItems()}

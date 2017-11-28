@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import domain.model.Role;
@@ -49,7 +50,13 @@ public class RegistrationController {
     public void confirmationProcess() {
 
     }
-
+    
+    @PostMapping("/invitation")
+    public ResponseEntity<MessageDto> sendInvite(@RequestParam("email")String email, @RequestParam("name")String name){
+    	userService.inviteUser(email, name);
+    	return new ResponseEntity<MessageDto>(HttpStatus.OK);
+    }
+    
 
     private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;
