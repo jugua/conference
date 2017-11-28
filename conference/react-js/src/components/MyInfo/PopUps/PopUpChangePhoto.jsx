@@ -20,7 +20,7 @@ class PopUpChangePhoto extends PureComponent {
           onRequestClose={closeModal}
           className={{
             base: classNames({
-              'pop-up': true,
+              'pop-up pop-up__change-photo': true,
               'pop-up_close': !showModal,
             }),
           }}
@@ -38,26 +38,29 @@ class PopUpChangePhoto extends PureComponent {
                 It is much easier to identify you if you have a photo.
               </p>
               <p className="pop-up__notification pop-up__notification_light">
-                You can upload an image in JPG, PNG or GIF format.
-                The maximum allowed size for uploads is 2 Mb
+                You can upload an image in JPG, PNG or GIF formats.
+                The maximum allowed size for uploads is 2 Mb.
               </p>
-              <InputBlock
-                id="choose-photo__btn"
-                type="file"
-                inputClass="file-upload__uploading"
-                labelClass="btn choose-photo__btn"
-                name="file"
-                onChange={changeProfilePhoto}
-                label="Choose"
-                accept="image/jpeg,image/png,image/gif"
-                size="2MB"
-                required
-              />
-              <button
-                className="btn my-info__button"
-                onClick={uploadPhotoToDB}
-              >
-                Save Photo</button>
+              <div className="internal-wrapper">
+                <InputBlock
+                  divClass="choose-photo__block"
+                  id="choose-photo__btn"
+                  type="file"
+                  inputClass="file-upload__uploading"
+                  labelClass="btn choose-photo__btn"
+                  name="file"
+                  onChange={changeProfilePhoto}
+                  label="Choose"
+                  accept="image/jpeg,image/png,image/gif"
+                  size="2MB"
+                  required
+                />
+                <button
+                  className="btn my-info__save-button"
+                  onClick={uploadPhotoToDB}
+                >
+                  Save Photo</button>
+              </div>
             </div>
           </form>
           {photoIsSelected && <p className="change-photo__successful">

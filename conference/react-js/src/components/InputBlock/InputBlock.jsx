@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const InputBlock = ({
+  divClass,
   disabled,
   id,
   inputClass,
@@ -21,7 +22,7 @@ const InputBlock = ({
   accept,
   size,
 }) => (
-  <div>
+  <div className={divClass}>
     <label
       className={`form-label ${labelClass}`}
       htmlFor={id}
@@ -51,6 +52,7 @@ const InputBlock = ({
 
 InputBlock.propTypes = {
   name: PropTypes.string.isRequired,
+  divClass: PropTypes.string,
   disabled: PropTypes.bool,
   id: PropTypes.string,
   inputClass: PropTypes.string,
@@ -71,6 +73,7 @@ InputBlock.propTypes = {
 };
 
 InputBlock.defaultProps = {
+  divClass: '',
   disabled: false,
   id: null,
   inputClass: null,

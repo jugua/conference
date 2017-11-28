@@ -70,7 +70,9 @@ class MyInfo extends Component {
 
   handleCloseModal1 = () => {
     this.setState({ showChangePhotoModal: false,
-      photoUpdateIsSuccessful: false });
+      photoUpdateIsSuccessful: false,
+      photoIsSelected: false,
+    });
   };
 
   closeDeletePhotoModal = () => {
