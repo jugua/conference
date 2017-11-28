@@ -7,6 +7,7 @@ import forgotPasswordErrorMessage from './forgot-password-error-message';
 import talks from './talks';
 import conference from './conference';
 import contacts from './contacts';
+import userKeys from './userKeys';
 import actionTypes from '../constants/actions-types';
 
 const combinedReducer = combineReducers({
@@ -18,6 +19,7 @@ const combinedReducer = combineReducers({
   talks,
   conference,
   contacts,
+  userKeys,
 });
 
 const rootReducers = (state, action) => (

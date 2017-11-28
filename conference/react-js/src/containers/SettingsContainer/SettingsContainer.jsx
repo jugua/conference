@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import editUser from '../../actions/edit-user';
-import changePassword from '../../actions/change-password';
-import changeEmail from '../../actions/change-email';
-import changeUserInfo from '../../actions/change-user-info';
+import changePassword from '../../actions/changePassword';
+import changeEmail from '../../actions/changeEmail';
 import userShape from '../../constants/user-shape';
+import changeUserInfo from '../../actions/changeUserInfo';
 
 import SlideBlock from '../../components/SlideBlock';
 import NameBrief from '../../components/Settings/NameBrief/NameBrief';
@@ -22,12 +21,11 @@ import PasswordChangeForm
 
 class SettingsContainer extends PureComponent {
   constructor(props) {
+    const { user } = props;
     super(props);
     this.state = {
-      fname: '',
-      lname: '',
-      oldMail: '',
-      mail: '',
+      ...user,
+      oldMail: user.email,
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
@@ -35,21 +33,14 @@ class SettingsContainer extends PureComponent {
     };
   }
 
-  componentDidMount() {
-    this.setDefaultValues(this.props);
-  }
-
   componentWillReceiveProps(nextProps) {
     this.setDefaultValues(nextProps);
   }
 
   setDefaultValues = ({ user }) => {
-    const { fname, lname, mail } = user;
     this.setState({
-      fname,
-      lname,
-      oldMail: mail,
-      mail: '',
+      ...user,
+      oldMail: user.email,
       currentPassword: '',
       newPassword: '',
       confirmNewPassword: '',
@@ -57,8 +48,8 @@ class SettingsContainer extends PureComponent {
   };
 
   showBlock = (title) => {
-    this.setState({ currentBlock: title });
     this.setDefaultValues(this.props);
+    this.setState({ currentBlock: title });
     this.props.reset();
   };
 
@@ -80,23 +71,19 @@ class SettingsContainer extends PureComponent {
 
   submitEmail = (e) => {
     e.preventDefault();
-    const { mail } = this.state;
+    const { email } = this.state;
 
-    changeEmail(mail)
+    changeEmail(email)
       .then(this.showInfo);
   };
 
   submitName = (e) => {
     e.preventDefault();
-    const { fname, lname } = this.state;
-    const { edit, user } = this.props;
+    const { editUser, userKeys } = this.props;
 
-    changeUserInfo({ ...user, fname, lname })
+    editUser(this.state, userKeys)
       .then((res) => {
         this.showInfo(res);
-        if (!res.error) {
-          edit({ fname, lname });
-        }
       });
   };
 
@@ -117,8 +104,8 @@ class SettingsContainer extends PureComponent {
   };
 
   hideBlocks = () => {
-    this.setState({ currentBlock: null });
     this.setDefaultValues(this.props);
+    this.setState({ currentBlock: null });
   };
 
   cancel = () => {
@@ -128,7 +115,7 @@ class SettingsContainer extends PureComponent {
 
   render() {
     const {
-      fname, lname, mail, oldMail,
+      firstName, lastName, email, oldMail,
       currentPassword, newPassword, confirmNewPassword,
       currentBlock,
     } = this.state;
@@ -143,16 +130,16 @@ class SettingsContainer extends PureComponent {
           <NameBrief
             title={nameTitle}
             show={() => this.showBlock(nameTitle)}
-            fname={fname}
-            lname={lname}
+            firstName={firstName}
+            lastName={lastName}
           />
           <NameChangeForm
             title={nameTitle}
             cancel={this.cancel}
             submit={this.submitName}
             change={this.change}
-            fname={fname}
-            lname={lname}
+            firstName={firstName}
+            lastName={lastName}
           />
         </SlideBlock>
         <SlideBlock isOpened={currentBlock === emailTitle}>
@@ -166,7 +153,7 @@ class SettingsContainer extends PureComponent {
             cancel={this.cancel}
             submit={this.submitEmail}
             change={this.change}
-            mail={mail}
+            email={email}
             oldMail={oldMail}
           />
         </SlideBlock>
@@ -191,14 +178,19 @@ class SettingsContainer extends PureComponent {
 }
 
 SettingsContainer.propTypes = {
-  edit: PropTypes.func.isRequired,
+  editUser: PropTypes.func.isRequired,
   setMessage: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   user: PropTypes.shape(userShape).isRequired,
+  userKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(
-  null,
-  { edit: editUser },
+  ({ user, userKeys }) => ({ user, userKeys }),
+  dispatch => ({
+    editUser: (updatedUser, userKeys) => (
+      dispatch(changeUserInfo(updatedUser, userKeys))
+    ),
+  }),
 )(SettingsContainer);

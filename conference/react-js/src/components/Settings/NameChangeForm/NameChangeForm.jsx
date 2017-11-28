@@ -5,7 +5,7 @@ import InputBlock from '../../../components/InputBlock/InputBlock';
 import { namePattern } from '../../../constants/patterns';
 
 const NameChangeForm = ({
-  submit, change, fname, lname, cancel, title,
+  submit, change, firstName, lastName, cancel, title,
 }) => (
   <div className="settings__row settings__details">
     <div className="settings__title">{title}</div>
@@ -14,17 +14,17 @@ const NameChangeForm = ({
       className="settings__row-content"
     >
       <InputBlock
-        value={fname}
+        value={firstName}
         label="First name"
-        name="fname"
+        name="firstName"
         required
         pattern={namePattern.source}
         onChange={change}
       />
       <InputBlock
-        value={lname}
+        value={lastName}
         label="Last name"
-        name="lname"
+        name="lastName"
         required
         pattern={namePattern.source}
         onChange={change}
@@ -49,8 +49,8 @@ NameChangeForm.propTypes = {
   cancel: PropTypes.func.isRequired,
   change: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
-  fname: PropTypes.string.isRequired,
-  lname: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
 };
 
 export default NameChangeForm;
