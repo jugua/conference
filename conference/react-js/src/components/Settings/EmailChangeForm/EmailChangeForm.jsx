@@ -5,7 +5,7 @@ import InputBlock from '../../../components/InputBlock/InputBlock';
 import { emailPattern } from '../../../constants/patterns';
 
 const EmailChangeForm = ({
-  oldMail, mail, submit, change, cancel, title,
+  oldMail, email, submit, change, cancel, title,
 }) => (
   <div className="settings__row settings__details">
     <div className="settings__title">{title}</div>
@@ -24,7 +24,7 @@ const EmailChangeForm = ({
         label="New email"
         name="mail"
         onChange={change}
-        value={mail}
+        value={email}
         required
         pattern={emailPattern.source}
       />
@@ -32,7 +32,7 @@ const EmailChangeForm = ({
         type="submit"
         value="Save"
         className="btn btn__inline"
-        disabled={mail === oldMail}
+        disabled={email === oldMail}
       />
       <input
         type="button"
@@ -46,7 +46,7 @@ const EmailChangeForm = ({
 
 EmailChangeForm.propTypes = {
   title: PropTypes.string.isRequired,
-  mail: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   oldMail: PropTypes.string.isRequired,
   submit: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired,

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import changeUserInfo from '../../actions/change-user-info';
 import { uploadUserPhoto, defaultUserPhoto } from '../../constants/backend-url';
 import userShape from '../../constants/user-shape';
-
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
 import PopUpSaved from './PopUps/PopUpSaved';
@@ -21,24 +19,21 @@ class MyInfo extends Component {
       showChangePhotoModal: false,
       photoUpdateIsSuccessful: false,
       showRemovePhotoConfirmationModal: false,
-      user: {},
+      user: props.user,
       photoIsSelected: false,
     };
   }
 
   componentDidMount() {
-    this.setUserInfo(this.props);
-    this.props.updateInfo();
+    this.setDefaultUserPhoto();
+    this.getUserPhoto(this.props.user.id);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setUserInfo(nextProps);
-    this.getUserPhoto(nextProps.user.id);
-  }
-
-  setUserInfo = ({ user }) => {
+  componentWillReceiveProps({ user }) {
     this.setState({ user });
-  };
+    this.setDefaultUserPhoto();
+    // this.getUserPhoto(this.props.user.id);
+  }
 
   setDefaultUserPhoto = () => {
     axios.get(defaultUserPhoto)
@@ -53,17 +48,16 @@ class MyInfo extends Component {
   };
 
   getUserPhoto = (id) => {
-    if (this.props.user.photo === null) {
-      this.setDefaultUserPhoto();
-    } else {
-      this.setState(prevState => ({
-        user: {
-          ...prevState.user,
-          photo: `${uploadUserPhoto}/${id}`,
-        },
-      }
-      ));
-    }
+    axios.get(`${uploadUserPhoto}/${id}`)
+      .then(() => {
+        this.setState(prevState => ({
+          user: {
+            ...prevState.user,
+            photo: `${uploadUserPhoto}/${id}`,
+          },
+        }
+        ));
+      });
   };
 
   handleOpenModal = () => {
@@ -95,7 +89,7 @@ class MyInfo extends Component {
 
   handleSaveInfo = (e) => {
     e.preventDefault();
-    changeUserInfo(this.state.user);
+    this.props.editUser(this.state.user);
     this.handleOpenModal();
   };
 
@@ -270,7 +264,7 @@ class MyInfo extends Component {
 }
 
 MyInfo.propTypes = {
-  updateInfo: PropTypes.func.isRequired,
+  editUser: PropTypes.func.isRequired,
   user: PropTypes.shape(userShape).isRequired,
 };
 

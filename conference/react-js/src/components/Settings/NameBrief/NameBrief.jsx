@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const NameBrief = ({ fname, lname, show, title }) => (
+const NameBrief = ({ firstName, lastName, show, title }) => (
   <div
     role="button"
     tabIndex={0}
@@ -9,14 +9,14 @@ const NameBrief = ({ fname, lname, show, title }) => (
     className="settings__brief settings__row"
   >
     <div className="settings__title">{title}</div>
-    <div className="settings__row-content">{fname} {lname}</div>
+    <div className="settings__row-content">{firstName} {lastName}</div>
   </div>
 );
 
 NameBrief.propTypes = {
   title: PropTypes.string.isRequired,
-  fname: PropTypes.string.isRequired,
-  lname: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
   show: PropTypes.func.isRequired,
 };
 
