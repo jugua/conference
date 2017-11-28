@@ -40,6 +40,10 @@ class AddNewOrganizer extends Component {
     this.setState({ open: !this.state.open });
   }
 
+  send = () => {
+  console.log("res");
+  }
+
   render() {
     const actions = [
       <RaisedButton
@@ -54,7 +58,7 @@ class AddNewOrganizer extends Component {
         label="Submit"
         keyboardFocused
         primary
-        onClick={this.toggleInput}
+        onClick={this.send}
       />,
     ];
 
