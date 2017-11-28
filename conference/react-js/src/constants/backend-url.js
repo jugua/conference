@@ -17,3 +17,5 @@ export const registrationUrl = '/registration';
 export const myInfo = '/myinfo';
 export const talksStatus = '/talk/talksStatus';
 export const uploadUserPhoto = '/myinfo/photo';
+export const defaultUserPhoto = '/resources/default_ava.jpg';
+

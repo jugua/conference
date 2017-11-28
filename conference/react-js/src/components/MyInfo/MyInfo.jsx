@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import changeUserInfo from '../../actions/change-user-info';
-import { uploadUserPhoto } from '../../constants/backend-url';
+import { uploadUserPhoto, defaultUserPhoto } from '../../constants/backend-url';
 import userShape from '../../constants/user-shape';
 
 import InputBlock from '../InputBlock/InputBlock';
@@ -40,24 +40,30 @@ class MyInfo extends Component {
     this.setState({ user });
   };
 
-  setDefaultUserImage = () => {
-    const defaultUserImage = './images/default_ava.jpg';
-    this.setState(prevState => ({
-      user: {
-        ...prevState.user,
-        photo: defaultUserImage,
-      },
-    }));
+  setDefaultUserPhoto = () => {
+    axios.get(defaultUserPhoto)
+      .then(() => {
+        this.setState(prevState => ({
+          user: {
+            ...prevState.user,
+            photo: defaultUserPhoto,
+          },
+        }));
+      });
   };
 
   getUserPhoto = (id) => {
-    this.setState(prevState => ({
-      user: {
-        ...prevState.user,
-        photo: `${uploadUserPhoto}/${id}`,
-      },
+    if (this.props.user.photo === null) {
+      this.setDefaultUserPhoto();
+    } else {
+      this.setState(prevState => ({
+        user: {
+          ...prevState.user,
+          photo: `${uploadUserPhoto}/${id}`,
+        },
+      }
+      ));
     }
-    ));
   };
 
   handleOpenModal = () => {
@@ -137,7 +143,7 @@ class MyInfo extends Component {
       showRemovePhotoConfirmationModal: false,
       user: {
         ...prevState.user,
-        photo: '',
+        photo: defaultUserPhoto,
       },
     }));
   };
@@ -158,7 +164,6 @@ class MyInfo extends Component {
           <img
             className="my-info__photo"
             src={photo}
-            onError={this.setDefaultUserImage}
             alt=""
           />
           <button
