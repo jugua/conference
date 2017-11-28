@@ -1,0 +1,67 @@
+.review-talk {
+	box-sizing: border-box;
+	width: 800px;
+	max-width: 100%;
+	padding: 50px;
+	font-size: 16px;
+
+	&__topic {
+		text-align: end;
+	}
+
+	&__title {
+		font-size: 30px;
+		color: $dark-blue;
+	}
+
+	&__description {
+		margin: 15px 0;
+		padding: 10px 15px;
+		background: #F2F2F2;
+		font-family: "Oswald Light", sans-serif;
+	}
+
+	&__additional-info {
+		margin: 15px 0;
+	}
+
+	&__button {
+
+		&-group {
+			display: flex;
+			justify-content: flex-end;
+
+		}
+
+		width: 100px;
+		margin-left: 10px;
+		text-decoration: none;
+		background: $dark-blue;
+
+		color: white;
+		border: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+
+		&:hover,
+		&:focus {
+			background: darken($dark-blue, 20%)
+		}
+
+		&_reject {
+			background: $raspberry;
+
+			&:hover {
+				background: darken($raspberry, 20%);
+			}
+		}
+	}
+}
+
+//.additional-info {
+//	&__text {
+//		display: block;
+//		transition: all 0.3s ease;
+//	}
+//
+//}

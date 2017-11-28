@@ -9,7 +9,7 @@ import Past from '../Past/Past';
 import ManageUsers from '../../containers/ManageUsers/ManageUsers';
 import Talks from '../../containers/Talks';
 import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
-import Conference from '../../containers/Conference';
+// import EventTalksWrapper from '../myEvents/EventTalksWrapper/EventTalksWrapper';
 import {
   upcoming,
   myTalks,
@@ -27,7 +27,7 @@ const getLinks = (talksCount, conferenceCount, role) => {
   links.push({ to: past, title: 'Past' });
 
   if (talksCount) links.push({ to: myTalks, title: 'My talks' });
-  if (conferenceCount) links.push({ to: myEvents, title: 'MyEvents' });
+  if (conferenceCount) links.push({ to: myEvents, title: 'My Events' });
   if (role === admin) {
     links.push({ to: talks, title: 'Talks' });
     links.push({ to: manageUsers, title: 'Manage users' });
@@ -54,7 +54,7 @@ const getRoutes = () => {
     { path: myEvents, component: MyEvents },
     { path: manageUsers, component: ManageUsers },
     { path: talks, component: Talks },
-    { path: `${myEvents}/:id`, component: Conference },
+    { path: `${myEvents}/:id`, component: TalksWrapper },
   ];
 
   return routes.map(({ path, component }) => (
