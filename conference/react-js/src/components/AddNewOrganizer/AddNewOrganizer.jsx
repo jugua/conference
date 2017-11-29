@@ -6,7 +6,6 @@ import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import { conferencesNames, organizerInvite } from '../../constants/backend-url';
-import SuccessMessage from './SuccessMessage';
 
 class AddNewOrganizer extends Component {
   constructor(prop) {
@@ -22,7 +21,9 @@ class AddNewOrganizer extends Component {
   componentDidMount() {
     axios.get(conferencesNames)
       .then(({ data }) => {
-        this.setState({ conferenceList: data });
+        this.setState({
+          conferenceList: data,
+        });
       });
   }
 
@@ -36,26 +37,23 @@ class AddNewOrganizer extends Component {
     )
   )
 
-  handleConference = (event, index, conferenceName) => (
-    this.setState({ conferenceName }));
+  handleConference = (event, index, conferenceName) => {
+    this.setState({ conferenceName });
+  };
 
   handleEmail = (event, userEmail) => this.setState({ userEmail });
 
-  toggleInput = () => {
+  togglePopUp = () => {
     this.setState({ open: !this.state.open });
-    return <SuccessMessage />;
   }
 
   sendInvite = () => {
     const { userEmail, conferenceName } = this.state;
-    axios.post(`${organizerInvite}?email=${userEmail}&name=${conferenceName}`,
+    axios.post(`${organizerInvite}`,
       { email: userEmail,
-        name: conferenceName })
+        conferenceName })
       .then(() => {
-        this.toggleInput();
-      }).catch((
-        { response: { data: { error } } }) => {
-        console.log(error);
+        this.togglePopUp();
       });
   }
 
@@ -66,7 +64,7 @@ class AddNewOrganizer extends Component {
         label="Cancel"
         keyboardFocused
         primary
-        onClick={this.toggleInput}
+        onClick={this.togglePopUp}
       />,
       <RaisedButton
         className="update-talk__button"
@@ -76,20 +74,19 @@ class AddNewOrganizer extends Component {
         onClick={this.sendInvite}
       />,
     ];
-
     return (
       <div>
         <RaisedButton
           label="Invite Organizer"
           primary
-          onClick={this.toggleInput}
+          onClick={this.togglePopUp}
         />
         <Dialog
           title="Invite Organizer"
           actions={actions}
           modal={false}
           open={this.state.open}
-          onRequestClose={this.handleClose}
+          onRequestClose={this.togglePopUp}
         >
           <TextField
             id="text-field-default"
