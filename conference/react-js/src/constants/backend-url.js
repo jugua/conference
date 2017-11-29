@@ -18,3 +18,4 @@ export const myInfo = '/myinfo';
 export const talksStatus = '/talk/talksStatus';
 export const conferencesNames = '/conference/conferencesNames';
 export const organizerInvite = '/registration/invitation';
+export const myEvents = '/conference';

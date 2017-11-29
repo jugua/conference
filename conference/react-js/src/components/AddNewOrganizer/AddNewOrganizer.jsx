@@ -27,7 +27,7 @@ class AddNewOrganizer extends Component {
       });
   }
 
-  setMenuItems = () => (
+  getMenuItems = () => (
     this.state.conferenceList.map(name => (
       <MenuItem
         value={name}
@@ -101,7 +101,7 @@ class AddNewOrganizer extends Component {
             onChange={this.handleConference}
           >
             <MenuItem value={null} primaryText="" />
-            {this.setMenuItems()}
+            {this.getMenuItems()}
           </SelectField>
         </Dialog>
       </div>

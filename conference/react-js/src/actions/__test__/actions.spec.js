@@ -1,4 +1,3 @@
-
 import applyFilters from '../filter';
 
 describe('Actions', () => {
