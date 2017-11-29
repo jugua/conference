@@ -18,7 +18,16 @@ const Conference = ({ conference: {
     >
       back
     </Link>
-    <Talks url={`/conference/${id}/talks`} />
+    <Talks
+      url={`/conference/${id}/talks`}
+      columns={[
+        'id',
+        'name',
+        'title',
+        'topic',
+        'status',
+      ]}
+    />
   </div>
 );
 
