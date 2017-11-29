@@ -39,8 +39,8 @@ const EventTalks = ({
 EventTalks.propTypes = {
   conference: PropTypes.shape({
     id: PropTypes.number,
-}),
-onClick: PropTypes.func.isRequired,
+  }),
+  onClick: PropTypes.func.isRequired,
 };
 
 EventTalks.defaultProps = {
