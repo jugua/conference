@@ -22,9 +22,10 @@ public class SignInServiceImpl implements SignInService {
         User user = userRepository.findByEmail(email);
         String firstName = user.getFirstName();
         String role = user.getRoleNames().get(0);
+        long id = user.getId();
         long conferenceCount = user.getOrganizerConferences().size();
         long talksCount = talkRepository.countByUserId(user.getId());
-        LoginDto loginDto = new LoginDto(firstName, role, conferenceCount, talksCount);
+        LoginDto loginDto = new LoginDto(id, firstName, role, conferenceCount, talksCount);
         return loginDto;
     }
 
