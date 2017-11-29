@@ -36,8 +36,9 @@ const EventTalks = ({
   </div>
 );
 
-EventTalks.propTypes = { conference: PropTypes.shape({
-  id: PropTypes.number,
+EventTalks.propTypes = {
+  conference: PropTypes.shape({
+    id: PropTypes.number,
 }),
 onClick: PropTypes.func.isRequired,
 };

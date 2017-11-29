@@ -11,7 +11,7 @@ const ReviewTalk = ({ close }) => (
         Regular Talk:
       </div>
       <div className="review-talk__title">
-        Why Java Sucks
+        Why Java
       </div>
       <p className="review-talk__description">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
