@@ -121,8 +121,11 @@ class MyInfo extends Component {
     data.append('file', userPhoto);
 
     if (choosePhotoBtn.files.length > 0) {
-      axios.post(uploadUserPhoto, data);
-      this.setState({ photoUpdateIsSuccessful: true, photoIsSelected: false });
+      axios.post(uploadUserPhoto, data)
+        .then(() => {
+          this.setState({ photoUpdateIsSuccessful: true,
+            photoIsSelected: false });
+        });
     } else {
       this.setState({ photoIsSelected: true });
     }

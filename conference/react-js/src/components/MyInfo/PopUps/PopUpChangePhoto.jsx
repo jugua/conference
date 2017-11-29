@@ -43,7 +43,7 @@ class PopUpChangePhoto extends PureComponent {
               </p>
               <div className="internal-wrapper">
                 <InputBlock
-                  divClass="choose-photo__block"
+                  wrapperClass="choose-photo__block"
                   id="choose-photo__btn"
                   type="file"
                   inputClass="file-upload__uploading"
