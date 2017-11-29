@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Talks from '../../containers/Talks';
+import Talks from '../../containers/Talks/Talks';
 
 const columsList = [
   'conferenceName',

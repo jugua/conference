@@ -7,7 +7,7 @@ import Upcoming from '../Upcoming';
 import NavigationBar from '../NavigationBar/NavigationBar';
 import Past from '../Past/Past';
 import ManageUsers from '../../containers/ManageUsers/ManageUsers';
-import Talks from '../../containers/Talks';
+import Talks from '../../containers/Talks/Talks';
 import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
 import EventTalksWrapper from '../MyEvents/EventTalksWrapper/EventTalksWrapper';
 import {

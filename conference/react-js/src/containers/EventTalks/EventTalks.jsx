@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { myEvents } from '../../constants/route-url';
-import Talks from '../Talks';
+import Talks from '../Talks/Talks';
 
 const columnsList = [
   'name',
