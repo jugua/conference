@@ -44,12 +44,12 @@ class AccountPage extends PureComponent {
     this.setState({
       currentTabIndex: +index,
     });
-  }
+  };
 
   editUser = (updatedUser) => {
     const { editUser, userKeys } = this.props;
     editUser(updatedUser, userKeys);
-  }
+  };
 
   render() {
     const { currentTabIndex } = this.state;

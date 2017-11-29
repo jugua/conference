@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+
 import { uploadUserPhoto, defaultUserPhoto } from '../../constants/backend-url';
 import userShape from '../../constants/user-shape';
 import InputBlock from '../InputBlock/InputBlock';
@@ -32,7 +33,6 @@ class MyInfo extends Component {
   componentWillReceiveProps({ user }) {
     this.setState({ user });
     this.setDefaultUserPhoto();
-    // this.getUserPhoto(this.props.user.id);
   }
 
   setDefaultUserPhoto = () => {
@@ -91,6 +91,7 @@ class MyInfo extends Component {
     e.preventDefault();
     this.props.editUser(this.state.user);
     this.handleOpenModal();
+    this.getUserPhoto(this.props.user.id);
   };
 
   handleChangePhoto = () => {
