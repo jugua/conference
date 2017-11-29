@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const ReviewTalk = () => (
+const ReviewTalk = ({ close }) => (
   <div className="pop-up-wrapper">
     <div className="pop-up review-talk">
       <div className="review-talk__topic">
@@ -36,10 +37,19 @@ const ReviewTalk = () => (
       <div className="review-talk__button-group">
         <button className="review-talk__button">Approve</button>
         <button className="review-talk__button review-talk__button_reject">Reject</button>
-        <button className="review-talk__button">Cancel</button>
+        <button
+          className="review-talk__button"
+          onClick={close}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </div>
 );
+
+ReviewTalk.propTypes = {
+  close: PropTypes.func.isRequired,
+};
 
 export default ReviewTalk;

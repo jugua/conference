@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import EventTalks from '../../../containers/EventTalks/EventTalks';
-import ReviewTalk from '../../Talks/ReviewTalk';
+import ReviewTalk from '../../Talks/ReviewTalk/ReviewTalk';
 import SlideBlock from '../../SlideBlock';
 
 class EventTalksWrapper extends PureComponent {

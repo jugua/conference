@@ -9,7 +9,7 @@ import Past from '../Past/Past';
 import ManageUsers from '../../containers/ManageUsers/ManageUsers';
 import Talks from '../../containers/Talks';
 import TalksWrapper from '../Talks/TalksWrapper/TalksWrapper';
-// import EventTalksWrapper from '../myEvents/EventTalksWrapper/EventTalksWrapper';
+import EventTalksWrapper from '../MyEvents/EventTalksWrapper/EventTalksWrapper';
 import {
   upcoming,
   myTalks,
@@ -54,7 +54,7 @@ const getRoutes = () => {
     { path: myEvents, component: MyEvents },
     { path: manageUsers, component: ManageUsers },
     { path: talks, component: Talks },
-    { path: `${myEvents}/:id`, component: TalksWrapper },
+    { path: `${myEvents}/:id`, component: EventTalksWrapper },
   ];
 
   return routes.map(({ path, component }) => (
