@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import { conferencesNames, organizerInvite } from '../../constants/backend-url';
+import SuccessMessage from './SuccessMessage';
 
 class AddNewOrganizer extends Component {
   constructor(prop) {
@@ -35,23 +36,23 @@ class AddNewOrganizer extends Component {
     )
   )
 
-  handleConference = (event, index, value) => (
-    this.setState({ conferenceName: value }));
+  handleConference = (event, index, conferenceName) => (
+    this.setState({ conferenceName }));
 
-  handleEmail = (event, value) => this.setState({ userEmail: value });
+  handleEmail = (event, userEmail) => this.setState({ userEmail });
 
   toggleInput = () => {
     this.setState({ open: !this.state.open });
+    return <SuccessMessage />;
   }
 
-  send = () => {
-    console.log('HERE');
+  sendInvite = () => {
     const { userEmail, conferenceName } = this.state;
     axios.post(`${organizerInvite}?email=${userEmail}&name=${conferenceName}`,
       { email: userEmail,
         name: conferenceName })
       .then(() => {
-        console.log('success');
+        this.toggleInput();
       }).catch((
         { response: { data: { error } } }) => {
         console.log(error);
@@ -72,7 +73,7 @@ class AddNewOrganizer extends Component {
         label="Submit"
         keyboardFocused
         primary
-        onClick={this.send}
+        onClick={this.sendInvite}
       />,
     ];
 
