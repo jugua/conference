@@ -18,6 +18,7 @@ import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.UserService;
+import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
@@ -52,8 +53,8 @@ public class RegistrationController {
     }
     
     @PostMapping("/invitation")
-    public ResponseEntity<MessageDto> sendInvite(@RequestParam("email")String email, @RequestParam("name")String name){
-    	userService.inviteUser(email, name);
+    public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite){
+    	userService.inviteUser(invite);
     	return new ResponseEntity<MessageDto>(HttpStatus.OK);
     }
     

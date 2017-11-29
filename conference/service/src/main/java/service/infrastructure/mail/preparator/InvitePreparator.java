@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class InvitePreparator extends CustomMimeMessagePreparator{
 
+	private String conferenceName;
     private String url;
 	
 	@Override
@@ -15,13 +16,13 @@ public class InvitePreparator extends CustomMimeMessagePreparator{
 		return "registration-process.ftl";
 	}
 
-	@Override
+	
 	public void prepareModel(User receiver) {
 		 model = new HashMap<>();
-	     model.put("name", receiver.getFirstName());
 	     model.put("email", receiver.getEmail());
 	     model.put("link",url);
 	     model.put("subject", "Registration page");
+	     model.put("conference", conferenceName);
 	}
 
 }
