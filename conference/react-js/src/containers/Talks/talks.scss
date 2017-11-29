@@ -49,7 +49,7 @@
   &__item {
     cursor: pointer;
     &::after {
-      content: '\2BC5';
+      content: '\2BC6';
       margin-left: 5px;
     }
 
@@ -57,7 +57,7 @@
       font-weight: bold !important;
 
       &::after {
-        content: '\2BC6';
+        content: '\2BC5';
         margin-left: 5px;
       }
     }
@@ -67,6 +67,6 @@
 .desc {
 
   &::after {
-    content: '\2BC5';
+    content: '\2BC6';
   }
 }
