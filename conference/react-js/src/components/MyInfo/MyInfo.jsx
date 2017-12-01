@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { TextField, RaisedButton } from 'material-ui';
 
 import { uploadUserPhoto, defaultUserPhoto } from '../../constants/backend-url';
 import userShape from '../../constants/user-shape';
-import InputBlock from '../InputBlock/InputBlock';
-import TextareaBlock from '../TextareaBlock/TextareaBlock';
 import PopUpSaved from './PopUps/PopUpSaved';
 import PopUpPreventUnsavedExit from './PopUps/PopUpPreventUnsavedExit';
 import PopUpChangePhoto from './PopUps/PopUpChangePhoto';
@@ -156,6 +155,15 @@ class MyInfo extends Component {
       photo = '',
     } } = this.state;
 
+    const styles = {
+      textarea: {
+        width: '85%',
+      },
+      input: {
+        width: '45%',
+      },
+    };
+
     return (
       <div>
         <div className="my-info__photo-block">
@@ -175,65 +183,67 @@ class MyInfo extends Component {
             tabIndex="-1"
           >Change photo</span>
         </div>
-        <form className="my-info" name="" noValidate>
-          <TextareaBlock
+        <form className="my-info">
+          <TextField
             id="my-info-bio"
-            labelClassName="form-label_required my-info__label
-              my-info__label_bio"
-            className="textarea textarea-focus my-info__bio"
-            label="Short Bio"
             name="bio"
-            maxLen={2000}
+            floatingLabelText="Short Bio*"
+            multiLine
+            rows={5}
+            maxLength={2000}
             value={bio}
+            style={styles.textarea}
             onChange={this.handleInput}
+            required
           />
-          <InputBlock
-            id="my-job-title"
-            labelClass="form-label_required my-info__label"
-            label="Job Title"
-            name="job"
-            inputClass="field_border my-info__field_job"
-            maxLength={256}
-            value={job}
-            onChange={this.handleInput}
-          />
-          <InputBlock
-            id="my-info-company"
-            labelClass="form-label_required my-info__label"
-            label="Company"
-            name="company"
-            inputClass="field_border my-info__field_company"
-            maxLength={256}
-            value={company}
-            onChange={this.handleInput}
-          />
-          <TextareaBlock
+          <div className="input-wrapper">
+            <TextField
+              id="my-job-title"
+              name="job"
+              floatingLabelText="Job Title*"
+              style={styles.input}
+              maxLength={256}
+              value={job}
+              onChange={this.handleInput}
+              required
+            />
+            <TextField
+              id="my-info-company"
+              name="company"
+              floatingLabelText="Company*"
+              style={styles.input}
+              maxLength={256}
+              value={company}
+              onChange={this.handleInput}
+              required
+            />
+          </div>
+          <TextField
             id="my-past-conferences"
-            labelClassName="my-info__label"
-            className="textarea textarea-focus"
-            label="Past Conferences"
             name="past"
+            floatingLabelText="Past Conferences"
+            multiLine
             rows={5}
-            maxLen={1000}
+            maxLength={1000}
             value={past}
+            fullWidth
             onChange={this.handleInput}
           />
-          <TextareaBlock
+          <TextField
             id="my-additional-info"
-            labelClassName="form-label"
-            className="textarea textarea-focus"
-            label="Additional Info"
             name="info"
+            floatingLabelText="Additional Info"
+            multiLine
             rows={5}
-            maxLen={1000}
+            maxLength={1000}
             value={info}
+            fullWidth
             onChange={this.handleInput}
           />
-          <input
+          <RaisedButton
             type="submit"
-            value="save"
-            className="btn my-info__button"
-            datatype="saveInfo"
+            label="save"
+            primary
             onClick={this.handleSaveInfo}
           />
         </form>
