@@ -171,7 +171,7 @@ class Talks extends Component {
     const { talks, columns, onClick } = this.props;
     return (
       <div
-        className="talks tabs-container"
+        className="tabs-container"
         role="menu"
         tabIndex="0"
       >
