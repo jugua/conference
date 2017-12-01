@@ -129,7 +129,7 @@ public class TalkServiceImpl implements TalkService {
         talkRepository.save(talk);
         List<User> receivers = userRepository.findAllByRolesIsIn(roleRepository.findByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
-        if (!(talk.getStatus() == TalkStatus.IN_PROGRESS && talk.isValidComment())) {
+        if (!(talk.getStatus() == TalkStatus.PENDING && talk.isValidComment())) {
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
         }
     }
@@ -248,7 +248,7 @@ public class TalkServiceImpl implements TalkService {
             throw new TalkValidationException(STATUS_IS_NULL);
         } else if (TalkStatus.getStatusByName(talkDto.getStatusName()) == null) {
             throw new TalkValidationException(STATUS_IS_WRONG);
-        } else if (talkDto.getStatusName().equals(TalkStatus.REJECTED.getName()) && (talkDto.getOrganiserComment() == null || talkDto.getOrganiserComment().isEmpty())) {
+        } else if (talkDto.getStatusName().equals(TalkStatus.NOT_ACCEPTED.getName()) && (talkDto.getOrganiserComment() == null || talkDto.getOrganiserComment().isEmpty())) {
             throw new TalkValidationException(ORG_COMMENT_IS_EMPTY);
         }
 
@@ -269,7 +269,7 @@ public class TalkServiceImpl implements TalkService {
 
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         boolean isUsersTalk = talk.getUser().getId() != user.getId();
-        return isUsersTalk || talk.getStatus() == TalkStatus.REJECTED || talk.getStatus() == TalkStatus.APPROVED;
+        return isUsersTalk || talk.getStatus() == TalkStatus.NOT_ACCEPTED || talk.getStatus() == TalkStatus.ACCEPTED;
     }
 
 }

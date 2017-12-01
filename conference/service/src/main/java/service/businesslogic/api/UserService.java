@@ -44,5 +44,9 @@ public interface UserService {
     List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles);
     
     void inviteUser(String email, String name);
+    
+    boolean isTalkOrganiser(String userMail, Long talkId);
+    
+    boolean isTalkSpeaker(String userMail, Long talkId);
 
 }

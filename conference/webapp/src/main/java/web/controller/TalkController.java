@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import domain.model.Talk;
 import domain.model.TalkStatus;
+import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.CommentService;
@@ -171,15 +173,21 @@ public class TalkController {
                                      HttpServletRequest request) {
         MessageDto message = new MessageDto();
         dto.setId(talkId);
+        String userMail = request.getRemoteUser();
+        
         if (bindingResult.hasFieldErrors()) {
             message.setError("fields_error");
             return prepareResponse(HttpStatus.BAD_REQUEST, message);
         }
-        if (request.isUserInRole("ORGANISER")) {
-            talkService.updateAsOrganiser(dto, userService.getByEmail(request.getRemoteUser()));
-        } else if (request.isUserInRole("SPEAKER")) {
-            talkService.updateAsSpeaker(dto, userService.getByEmail(request.getRemoteUser()));
+        
+        if(userService.isTalkOrganiser(userMail, talkId)) {
+        	User user = userService.getByEmail(userMail);
+        	talkService.updateAsOrganiser(dto, user);	
         } else {
+        if(userService.isTalkSpeaker(userMail, talkId)) {
+        	User user = userService.getByEmail(userMail);
+        	talkService.updateAsSpeaker(dto, user);
+        }
             message.setError("unauthorized");
             return prepareResponse(HttpStatus.UNAUTHORIZED, message);
         }

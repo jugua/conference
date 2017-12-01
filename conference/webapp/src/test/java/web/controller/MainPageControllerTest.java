@@ -255,15 +255,17 @@ public class MainPageControllerTest extends TestUtil {
         conference.setCallForPaperEndDate(LocalDate.MIN);
         List<Talk> talks = new ArrayList<>();
         Talk talk1 = new Talk();
-        talk1.setStatus(TalkStatus.APPROVED);
+        talk1.setStatus(TalkStatus.ACCEPTED);
         talks.add(talk1);
         talk1 = new Talk();
-        talk1.setStatus(TalkStatus.APPROVED);
+        talk1.setStatus(TalkStatus.ACCEPTED);
         talks.add(talk1);
         talk1 = new Talk();
-        talk1.setStatus(TalkStatus.IN_PROGRESS);
+        talk1.setStatus(TalkStatus.ACCEPTED);
         talks.add(talk1);
         conference.setTalks(talks);
+        for(int i = 0 ; i < 1000; i++)
+        System.out.println(conference);
         return conference;
     }
 }
