@@ -1,9 +1,7 @@
 .my-talks-container {
-
-  @media ($mnw: $xmdmx) {
-    height: calc(100vh - 215px);
-    }
-  }
+  height: calc(100vh - 210px);
+  overflow-y: scroll;
+}
 
 .my-talks {
   height: 100%;
