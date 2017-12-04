@@ -8,10 +8,11 @@ import java.util.Set;
 
 public enum TalkStatus {
 
-    NEW("New"),
-    IN_PROGRESS("In Progress"),
-    APPROVED("Approved"),
-    REJECTED("Rejected");
+    DRAFT("Draft"),
+    SUBMITTED("Submitted"),
+    PENDING("Pending"),
+    ACCEPTED("Accepted"),
+    NOT_ACCEPTED("Not Accepted");
 
     private String name;
 
@@ -42,10 +43,10 @@ public enum TalkStatus {
 
     private enum Transition {
 
-        FROM_NEW(NEW, IN_PROGRESS, APPROVED, REJECTED),
-        FROM_IN_PROGRESS(IN_PROGRESS, IN_PROGRESS, APPROVED, REJECTED),
-        FROM_APPROVED(APPROVED),
-        FROM_REJECTED(REJECTED);
+        FROM_NEW(DRAFT, SUBMITTED, PENDING, ACCEPTED, NOT_ACCEPTED),
+        FROM_IN_PROGRESS(PENDING, PENDING, ACCEPTED, NOT_ACCEPTED),
+        FROM_APPROVED(ACCEPTED),
+        FROM_REJECTED(NOT_ACCEPTED);
 
         static final Map<TalkStatus, Set<TalkStatus>> transitions = new EnumMap<>(TalkStatus.class);
 
