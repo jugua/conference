@@ -11,6 +11,7 @@ public enum TalkStatus {
     DRAFT("Draft"),
     SUBMITTED("Submitted"),
     PENDING("Pending"),
+    UPDATE_REQUEST("Update Request"),
     ACCEPTED("Accepted"),
     NOT_ACCEPTED("Not Accepted");
 
@@ -43,8 +44,8 @@ public enum TalkStatus {
 
     private enum Transition {
 
-        FROM_NEW(DRAFT, SUBMITTED, PENDING, ACCEPTED, NOT_ACCEPTED),
-        FROM_IN_PROGRESS(PENDING, PENDING, ACCEPTED, NOT_ACCEPTED),
+        FROM_NEW(DRAFT, SUBMITTED, PENDING, UPDATE_REQUEST, ACCEPTED, NOT_ACCEPTED),
+        FROM_IN_PROGRESS(PENDING, PENDING, UPDATE_REQUEST, ACCEPTED, NOT_ACCEPTED),
         FROM_APPROVED(ACCEPTED),
         FROM_REJECTED(NOT_ACCEPTED);
 
