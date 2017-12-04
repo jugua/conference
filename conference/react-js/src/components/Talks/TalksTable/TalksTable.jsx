@@ -88,8 +88,8 @@ const getRows = (talks, columns) => (
   )
 );
 
-const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
-  <div className="table-container">
+const TalksTable = ({ styleClass, listOfTalks, columns, onClick, sortTalks }) => (
+  <div className={styleClass}>
     <Table
       onCellClick={onClick}
     >
@@ -112,10 +112,15 @@ const TalksTable = ({ listOfTalks, columns, onClick, sortTalks }) => (
 );
 
 TalksTable.propTypes = {
+  styleClass: PropTypes.string,
   listOfTalks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string).isRequired,
   onClick: PropTypes.func.isRequired,
   sortTalks: PropTypes.func.isRequired,
+};
+
+TalksTable.defaultProps = {
+  styleClass: 'table-container',
 };
 
 export default TalksTable;
