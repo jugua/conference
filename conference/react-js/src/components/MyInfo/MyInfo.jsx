@@ -177,10 +177,14 @@ class MyInfo extends Component {
       textarea: {
         width: '85%',
       },
-      saveButton: {
+      centeredButton: {
         display: 'block',
         width: '100px',
         margin: '10px auto',
+      },
+      rightButton: {
+        float: 'right',
+        margin: '15px',
       },
     };
 
@@ -275,7 +279,7 @@ class MyInfo extends Component {
           <RaisedButton
             type="submit"
             label="save"
-            style={styles.button}
+            style={styles.centeredButton}
             primary
             disabled={this.state.bioFieldEmpty || this.state.jobFieldEmpty || this.state.companyFieldEmpty}
             onClick={this.handleSaveInfo}
@@ -285,6 +289,7 @@ class MyInfo extends Component {
           <PopUpSaved
             showModal={this.state.showInfoSavedModal}
             closeModal={this.handleCloseModal}
+            buttonStyles={styles.rightButton}
           />}
         {this.state.showPreventUnsavedExitModal &&
           <PopUpPreventUnsavedExit
@@ -299,12 +304,14 @@ class MyInfo extends Component {
             uploadPhotoToDB={this.uploadPhotoToDB}
             photoIsSelected={this.state.photoIsSelected}
             photoUpdateIsSuccessful={this.state.photoUpdateIsSuccessful}
+            buttonStyles={styles.rightButton}
           />}
         {this.state.showRemovePhotoConfirmationModal &&
           <PopUpRemovePhotoConfirmation
             showModal={this.state.showRemovePhotoConfirmationModal}
             closeModal={this.closeDeletePhotoModal}
             removePhoto={this.removePhoto}
+            buttonStyles={styles.rightButton}
           />}
       </div>
     );

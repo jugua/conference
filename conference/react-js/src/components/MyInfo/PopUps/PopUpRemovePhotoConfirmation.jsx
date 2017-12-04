@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import ReactModal from 'react-modal';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { RaisedButton } from 'material-ui';
 
 class PopUpRemovePhotoConfirmation extends PureComponent {
   render() {
     const { showModal,
       closeModal,
-      removePhoto } = this.props;
+      removePhoto,
+      buttonStyles } = this.props;
     return (
       <div>
         <ReactModal
@@ -35,14 +37,18 @@ class PopUpRemovePhotoConfirmation extends PureComponent {
           <p className="pop-up__notification">
             Do you want to delete your profile photo?
           </p>
-          <button
-            className="btn btn_right btn_small"
+          <RaisedButton
+            label="confirm"
+            primary
+            style={buttonStyles}
             onClick={removePhoto}
-          >confirm</button>
-          <button
-            className="btn btn_right btn_small"
+          />
+          <RaisedButton
+            label="cancel"
+            secondary
+            style={buttonStyles}
             onClick={closeModal}
-          >cancel</button>
+          />
         </ReactModal>
       </div>
     );
@@ -53,12 +59,20 @@ PopUpRemovePhotoConfirmation.propTypes = {
   showModal: PropTypes.bool,
   closeModal: PropTypes.func,
   removePhoto: PropTypes.func,
+  buttonStyles: PropTypes.shape({
+    float: PropTypes.string,
+    margin: PropTypes.string,
+  }),
 };
 
 PopUpRemovePhotoConfirmation.defaultProps = {
   showModal: false,
   closeModal: false,
   removePhoto: false,
+  buttonStyles: PropTypes.shape({
+    float: 'right',
+    margin: '15px',
+  }),
 };
 
 export default PopUpRemovePhotoConfirmation;
