@@ -86,6 +86,24 @@ class MyInfo extends Component {
     this.setState(() => ({ user: upUser }));
   };
 
+  requiredInput = (e) => {
+    const inputName = e.target.name;
+    const errorMsg = document.querySelector(`span[data-requiredInput=${inputName}]`);
+    if (e.target.value === '' || e.target.value === ' ') {
+      errorMsg.style.visibility = 'visible';
+      this.setState({
+        ...this.state,
+        [`${inputName}FieldEmpty`]: true,
+      });
+    } else {
+      errorMsg.style.visibility = 'hidden';
+      this.setState({
+        ...this.state,
+        [`${inputName}FieldEmpty`]: false,
+      });
+    }
+  };
+
   handleSaveInfo = (e) => {
     e.preventDefault();
     this.props.editUser(this.state.user);
@@ -147,20 +165,22 @@ class MyInfo extends Component {
 
   render() {
     const { user: {
-      bio = '',
-      job = '',
-      company = '',
-      past = '',
-      info = '',
-      photo = '',
+      bio,
+      job,
+      company,
+      past,
+      info,
+      photo,
     } } = this.state;
 
     const styles = {
       textarea: {
         width: '85%',
       },
-      input: {
-        width: '45%',
+      saveButton: {
+        display: 'block',
+        width: '100px',
+        margin: '10px auto',
       },
     };
 
@@ -169,7 +189,7 @@ class MyInfo extends Component {
         <div className="my-info__photo-block">
           <img
             className="my-info__photo"
-            src={photo}
+            src={photo || ''}
             alt=""
           />
           <button
@@ -184,39 +204,51 @@ class MyInfo extends Component {
           >Change photo</span>
         </div>
         <form className="my-info">
-          <TextField
-            id="my-info-bio"
-            name="bio"
-            floatingLabelText="Short Bio*"
-            multiLine
-            rows={5}
-            maxLength={2000}
-            value={bio}
-            style={styles.textarea}
-            onChange={this.handleInput}
-            required
-          />
+          <div className="input-required input-required__bio">
+            <TextField
+              id="my-info-bio"
+              name="bio"
+              floatingLabelText="Short Bio*"
+              multiLine
+              fullWidth
+              rows={5}
+              maxLength={2000}
+              value={bio || ''}
+              onChange={this.handleInput}
+              onBlur={this.requiredInput}
+              required
+            />
+            <span data-requiredInput="bio" className="my-info__required-message">* this field is required</span>
+          </div>
           <div className="input-wrapper">
-            <TextField
-              id="my-job-title"
-              name="job"
-              floatingLabelText="Job Title*"
-              style={styles.input}
-              maxLength={256}
-              value={job}
-              onChange={this.handleInput}
-              required
-            />
-            <TextField
-              id="my-info-company"
-              name="company"
-              floatingLabelText="Company*"
-              style={styles.input}
-              maxLength={256}
-              value={company}
-              onChange={this.handleInput}
-              required
-            />
+            <div className="input-required">
+              <TextField
+                id="my-job-title"
+                name="job"
+                floatingLabelText="Job Title*"
+                fullWidth
+                maxLength={256}
+                value={job || ''}
+                onChange={this.handleInput}
+                onBlur={this.requiredInput}
+                required
+              />
+              <span data-requiredInput="job" className="my-info__required-message">* this field is required</span>
+            </div>
+            <div className="input-required">
+              <TextField
+                id="my-info-company"
+                name="company"
+                floatingLabelText="Company*"
+                fullWidth
+                maxLength={256}
+                value={company || ''}
+                onChange={this.handleInput}
+                onBlur={this.requiredInput}
+                required
+              />
+              <span data-requiredInput="company" className="my-info__required-message">* this field is required</span>
+            </div>
           </div>
           <TextField
             id="my-past-conferences"
@@ -225,7 +257,7 @@ class MyInfo extends Component {
             multiLine
             rows={5}
             maxLength={1000}
-            value={past}
+            value={past || ''}
             fullWidth
             onChange={this.handleInput}
           />
@@ -236,14 +268,16 @@ class MyInfo extends Component {
             multiLine
             rows={5}
             maxLength={1000}
-            value={info}
+            value={info || ''}
             fullWidth
             onChange={this.handleInput}
           />
           <RaisedButton
             type="submit"
             label="save"
+            style={styles.button}
             primary
+            disabled={this.state.bioFieldEmpty || this.state.jobFieldEmpty || this.state.companyFieldEmpty}
             onClick={this.handleSaveInfo}
           />
         </form>
