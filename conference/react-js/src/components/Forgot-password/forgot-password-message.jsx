@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { baseUrl } from '../../constants/route-url';
+import { root } from '../../constants/route-url';
 
 const ForgotPasswordMessage = () => (
   <div className="pop-up" >
@@ -13,9 +13,8 @@ const ForgotPasswordMessage = () => (
       link.
     </p>
     <Link
-
       className="btn pop-up__button"
-      to={baseUrl}
+      to={root}
     >
       Close
     </Link >
