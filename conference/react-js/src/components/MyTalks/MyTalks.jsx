@@ -14,7 +14,12 @@ class MyTalks extends Component {
     super(props);
     this.state = {
       talks: [],
-      sorting: { conferenceName: '', title: '', status: '' },
+      sorting: {
+        title: '',
+        conferenceName: '',
+        eventDate: '',
+        status: '',
+      },
     };
   }
 
@@ -63,7 +68,7 @@ class MyTalks extends Component {
     const { columns, onClick } = this.props;
     const className = 'my-talks-container';
     return (
-      <div className="talks tabs-container">
+      <div className="tabs-container">
         <TalksTable
           styleClass={className}
           listOfTalks={talks}
@@ -85,9 +90,12 @@ MyTalks.propTypes = {
 
 MyTalks.defaultProps = {
   columns: [
-    'conferenceName',
     'id',
     'title',
+    'conferenceName',
+    'eventDate',
+    'cfpDate',
+    'notificationDue',
     'status',
   ],
 };
