@@ -123,6 +123,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
         conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
         conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
+        conferenceDto.setNotificationDue(convertDateToString(conference.getNotificationDue()));
         if (conference.getTalks() != null) {
             Map<String, Integer> talks = new HashMap<>();
             for (Talk talk : conference.getTalks()) {
