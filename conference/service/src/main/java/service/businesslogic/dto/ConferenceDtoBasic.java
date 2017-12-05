@@ -36,6 +36,9 @@ public class ConferenceDtoBasic {
     @JsonProperty("end_date")
     private String endDate;
 
+    @JsonProperty("notification_due")
+    private String notificationDue;
+    
     @JsonProperty("call_for_paper_start_date")
     private String callForPaperStartDate;
 
