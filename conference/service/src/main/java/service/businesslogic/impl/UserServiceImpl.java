@@ -19,6 +19,7 @@ import domain.repository.RoleRepository;
 import domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import service.businesslogic.api.UserService;
+import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.dto.UserBasicDto;
 import service.businesslogic.dto.UserInfoDto;
@@ -214,11 +215,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void inviteUser(String email, String name) {
+	public void inviteUser(InviteDto invite) {
 		User user = new User();
-		user.setEmail(email);
-		user.setFirstName(name);
-		mailService.sendEmail(user, new InvitePreparator(mailService.getUrl()));
+		user.setEmail(invite.getEmail());
+		String conferenceName = invite.getConferenceName();
+		mailService.sendEmail(user, new InvitePreparator(conferenceName,mailService.getUrl()));
 	}
 
 	@Transactional

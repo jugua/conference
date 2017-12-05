@@ -16,6 +16,7 @@ const actions = {
   SET_CONFERENCE: 'set_conference',
   SET_CONTACTS: 'set_contacts',
   USER_LOGOUT: 'user_logout',
+  SET_USER_KEYS: 'set_user_keys',
 };
 
 export default actions;

@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import changeUserInfo from '../../actions/change-user-info';
+import axios from 'axios';
 
+import { uploadUserPhoto, defaultUserPhoto } from '../../constants/backend-url';
+import userShape from '../../constants/user-shape';
 import InputBlock from '../InputBlock/InputBlock';
 import TextareaBlock from '../TextareaBlock/TextareaBlock';
 import PopUpSaved from './PopUps/PopUpSaved';
 import PopUpPreventUnsavedExit from './PopUps/PopUpPreventUnsavedExit';
 import PopUpChangePhoto from './PopUps/PopUpChangePhoto';
+import PopUpRemovePhotoConfirmation from './PopUps/PopUpRemovePhotoConfirmation';
 
 class MyInfo extends Component {
   constructor(props) {
@@ -15,21 +18,46 @@ class MyInfo extends Component {
       showPreventUnsavedExitModal: false,
       showInfoSavedModal: false,
       showChangePhotoModal: false,
-      user: {},
+      photoUpdateIsSuccessful: false,
+      showRemovePhotoConfirmationModal: false,
+      user: props.user,
+      photoIsSelected: false,
     };
   }
 
   componentDidMount() {
-    this.setUserInfo(this.props);
-    this.props.updateInfo();
+    this.setDefaultUserPhoto();
+    this.getUserPhoto(this.props.user.id);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setUserInfo(nextProps);
-  }
-
-  setUserInfo = ({ user }) => {
+  componentWillReceiveProps({ user }) {
     this.setState({ user });
+    this.setDefaultUserPhoto();
+  }
+
+  setDefaultUserPhoto = () => {
+    axios.get(defaultUserPhoto)
+      .then(() => {
+        this.setState(prevState => ({
+          user: {
+            ...prevState.user,
+            photo: defaultUserPhoto,
+          },
+        }));
+      });
+  };
+
+  getUserPhoto = (id) => {
+    axios.get(`${uploadUserPhoto}/${id}`)
+      .then(() => {
+        this.setState(prevState => ({
+          user: {
+            ...prevState.user,
+            photo: `${uploadUserPhoto}/${id}`,
+          },
+        }
+        ));
+      });
   };
 
   handleOpenModal = () => {
@@ -41,7 +69,14 @@ class MyInfo extends Component {
   };
 
   handleCloseModal1 = () => {
-    this.setState({ showChangePhotoModal: false });
+    this.setState({ showChangePhotoModal: false,
+      photoUpdateIsSuccessful: false,
+      photoIsSelected: false,
+    });
+  };
+
+  closeDeletePhotoModal = () => {
+    this.setState({ showRemovePhotoConfirmationModal: false });
   };
 
   handleInput = (e) => {
@@ -54,12 +89,61 @@ class MyInfo extends Component {
 
   handleSaveInfo = (e) => {
     e.preventDefault();
-    changeUserInfo(this.state.user);
+    this.props.editUser(this.state.user);
     this.handleOpenModal();
+    this.getUserPhoto(this.props.user.id);
   };
 
   handleChangePhoto = () => {
     this.setState({ showChangePhotoModal: true });
+  };
+
+  changeProfilePhoto = (e) => {
+    e.preventDefault();
+
+    const file = e.target.files[0];
+    const photoURL = window.URL.createObjectURL(file);
+    this.setState(prevState => ({
+      user: {
+        ...prevState.user,
+        photo: photoURL,
+      },
+    }));
+  };
+
+  uploadPhotoToDB = (e) => {
+    e.preventDefault();
+
+    const choosePhotoBtn = document.querySelector('#choose-photo__btn');
+    const userPhoto = choosePhotoBtn.files[0];
+
+    const data = new FormData();
+    data.append('file', userPhoto);
+
+    if (choosePhotoBtn.files.length > 0) {
+      axios.post(uploadUserPhoto, data)
+        .then(() => {
+          this.setState({ photoUpdateIsSuccessful: true,
+            photoIsSelected: false });
+        });
+    } else {
+      this.setState({ photoIsSelected: true });
+    }
+  };
+
+  removePhotoPopUp = () => {
+    this.setState({ showRemovePhotoConfirmationModal: true });
+  };
+
+  removePhoto = () => {
+    axios.delete(uploadUserPhoto);
+    this.setState(prevState => ({
+      showRemovePhotoConfirmationModal: false,
+      user: {
+        ...prevState.user,
+        photo: defaultUserPhoto,
+      },
+    }));
   };
 
   render() {
@@ -68,8 +152,9 @@ class MyInfo extends Component {
       job = '',
       company = '',
       past = '',
+      info = '',
       photo = '',
-      info = '' } } = this.state;
+    } } = this.state;
 
     return (
       <div>
@@ -81,13 +166,13 @@ class MyInfo extends Component {
           />
           <button
             className="my-info__remove"
+            onClick={this.removePhotoPopUp}
           />
           <span
             className="change-photo"
             onClick={this.handleChangePhoto}
             role="button"
             tabIndex="-1"
-            data-type="changePhoto"
           >Change photo</span>
         </div>
         <form className="my-info" name="" noValidate>
@@ -148,7 +233,7 @@ class MyInfo extends Component {
             type="submit"
             value="save"
             className="btn my-info__button"
-            data-type="saveInfo"
+            datatype="saveInfo"
             onClick={this.handleSaveInfo}
           />
         </form>
@@ -158,22 +243,33 @@ class MyInfo extends Component {
             closeModal={this.handleCloseModal}
           />}
         {this.state.showPreventUnsavedExitModal &&
-        <PopUpPreventUnsavedExit
-          showModal={this.state.showPreventUnsavedExitModal}
-          closeModal={this.handleCloseModal}
-        />}
+          <PopUpPreventUnsavedExit
+            showModal={this.state.showPreventUnsavedExitModal}
+            closeModal={this.handleCloseModal}
+          />}
         {this.state.showChangePhotoModal &&
-        <PopUpChangePhoto
-          showModal={this.state.showChangePhotoModal}
-          closeModal={this.handleCloseModal1}
-        />}
+          <PopUpChangePhoto
+            showModal={this.state.showChangePhotoModal}
+            closeModal={this.handleCloseModal1}
+            changeProfilePhoto={this.changeProfilePhoto}
+            uploadPhotoToDB={this.uploadPhotoToDB}
+            photoIsSelected={this.state.photoIsSelected}
+            photoUpdateIsSuccessful={this.state.photoUpdateIsSuccessful}
+          />}
+        {this.state.showRemovePhotoConfirmationModal &&
+          <PopUpRemovePhotoConfirmation
+            showModal={this.state.showRemovePhotoConfirmationModal}
+            closeModal={this.closeDeletePhotoModal}
+            removePhoto={this.removePhoto}
+          />}
       </div>
     );
   }
 }
 
 MyInfo.propTypes = {
-  updateInfo: PropTypes.func.isRequired,
+  editUser: PropTypes.func.isRequired,
+  user: PropTypes.shape(userShape).isRequired,
 };
 
 export default MyInfo;

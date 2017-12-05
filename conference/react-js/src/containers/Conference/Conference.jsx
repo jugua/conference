@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { root } from '../../constants/route-url';
 
-import Talks from '../Talks';
+import Talks from '../Talks/Talks';
 
 const Conference = ({ conference: {
   title,
@@ -18,7 +18,16 @@ const Conference = ({ conference: {
     >
       back
     </Link>
-    <Talks url={`/conference/${id}/talks`} />
+    <Talks
+      url={`/conference/${id}/talks`}
+      columns={[
+        'id',
+        'name',
+        'title',
+        'topic',
+        'status',
+      ]}
+    />
   </div>
 );
 

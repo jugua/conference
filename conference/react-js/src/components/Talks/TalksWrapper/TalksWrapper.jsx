@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import MyTalks from '../../../components/My-talks';
+import MyTalks from '../../../components/MyTalks/MyTalks';
 import UpdateTalk from '../../../components/UpdateTalk/UpdateTalk';
 import SlideBlock from '../../../components/SlideBlock';
 

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`REDUCER onference SET_CONFERENCE 1`] = `
+Object {
+  "id": 1,
+  "title": "some",
+}
+`;
+
+exports[`REDUCER onference initialState 1`] = `Object {}`;
