@@ -45,6 +45,7 @@ import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.CommentDto;
+import service.businesslogic.dto.SubmissionDto;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.exception.ResourceNotFoundException;
@@ -146,13 +147,10 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk")
-    public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
-        List<TalkDto> userTalkDtoList;
-        if (request.isUserInRole(ORGANISER)) {
-            userTalkDtoList = talkService.getTalksForOrganiser();
-        } else {
-            userTalkDtoList = talkService.getTalksForSpeaker(request.getRemoteUser());
-        }
+    public ResponseEntity<List<SubmissionDto>> getTalks(HttpServletRequest request) {
+        List<SubmissionDto> userTalkDtoList = talkService.getTalksForSpeaker(request.getRemoteUser());
+        System.out.println(userTalkDtoList);
+        
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
     }
 

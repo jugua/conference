@@ -9,6 +9,7 @@ import static service.businesslogic.exception.TalkValidationException.STATUS_IS_
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -31,6 +32,8 @@ import domain.repository.TypeRepository;
 import domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import service.businesslogic.api.TalkService;
+import service.businesslogic.dto.ConferenceDateDto;
+import service.businesslogic.dto.SubmissionDto;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.exception.TalkNotFoundException;
 import service.businesslogic.exception.TalkValidationException;
@@ -192,20 +195,34 @@ public class TalkServiceImpl implements TalkService {
     }
 
     @Override
-    public List<TalkDto> getTalksForSpeaker(String userEmail) {
+    public List<SubmissionDto> getTalksForSpeaker(String userEmail) {
         User currentUser = userRepository.findByEmail(userEmail);
         return findByUserId(currentUser.getId())
                 .stream()
-                .map(this::entityToDto)
+                .map(this::entityToExDto)
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<TalkDto> getTalksForOrganiser() {
-        return findAll()
-                .stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toList());
+    private SubmissionDto entityToExDto(Talk talk) {
+    	Conference conference = talk.getConference();
+    	String startDate = conference.getStartDate().toString();
+    	String endDate = conference.getEndDate().toString();
+    	String cfpStartDate = conference.getCallForPaperStartDate().toString();
+    	String cfpEndDate = conference.getCallForPaperEndDate().toString();
+    	String notificationDue = conference.getNotificationDue().toString();
+    	ConferenceDateDto conferenceDateDto = ConferenceDateDto.builder()
+				   											   .startDate(startDate)
+				   											   .endDate(endDate)
+				   											   .cfpStartDate(cfpStartDate)
+				   											   .cfpEndDate(cfpEndDate)
+				   											   .notificationDue(notificationDue)
+				   											   .build();
+    	TalkDto talkDto = entityToDto(talk);
+        SubmissionDto dto = SubmissionDto.builder()
+        								 .talk(talkDto)
+        								 .conference(conferenceDateDto)
+        								 .build();    
+        return dto;
     }
 
     /**

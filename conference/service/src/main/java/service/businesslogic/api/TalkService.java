@@ -4,6 +4,7 @@ import java.util.List;
 
 import domain.model.Talk;
 import domain.model.User;
+import service.businesslogic.dto.SubmissionDto;
 import service.businesslogic.dto.TalkDto;
 
 public interface TalkService {
@@ -26,9 +27,7 @@ public interface TalkService {
 
     TalkDto findById(Long id);
 
-    List<TalkDto> getTalksForSpeaker(String userEmail);
-
-    List<TalkDto> getTalksForOrganiser();
+    List<SubmissionDto> getTalksForSpeaker(String userEmail);
 
     String getFilePath(TalkDto talkDto);
 }
