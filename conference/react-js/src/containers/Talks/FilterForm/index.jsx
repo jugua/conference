@@ -3,23 +3,22 @@ import { PropTypes } from 'prop-types';
 import InputBlock from '../../../components/InputBlock/InputBlock';
 
 class FilterForm extends PureComponent {
-  getOptions = status => (status.map(element =>
+  getOptions = data => (data.map(element =>
     (<option key={element}>{element}</option>),
   ));
 
   render() {
-    const { status, onChangeFilter, handleFilterClick,
+    const { status, topics, onChangeFilter, handleFilterClick,
       handleResetFiltersClick } = this.props;
     return (
       <div className="my-talk-settings">
         <form className="my-talk-settings__filters">
-          <p className="my-talk-settings__title">filter by:</p>
           <div className="my-talk-settings__select-wrapper">
             <InputBlock
-              label="Conference"
+              label="Speaker"
               id="my-talk-conference"
               labelClass="form-label my-talk-settings__label"
-              name="conferenceName"
+              name="name"
               inputClass="my-talk-settings__select"
               onBlur={onChangeFilter}
             />
@@ -33,6 +32,22 @@ class FilterForm extends PureComponent {
               inputClass="my-talk-settings__select"
               onBlur={onChangeFilter}
             />
+          </div>
+          <div className="my-talk-settings__select-wrapper">
+            <label
+              htmlFor="my-talk-topic"
+              className="form-label my-talk-settings__label"
+            >Topic
+            </label>
+            <select
+              name="topic"
+              id="my-talk-topic"
+              className="my-talk-settings__select"
+              onBlur={onChangeFilter}
+            >
+              <option defaultValue="" />
+              {this.getOptions(topics)}
+            </select>
           </div>
           <div className="my-talk-settings__select-wrapper">
             <label
@@ -72,6 +87,7 @@ class FilterForm extends PureComponent {
 
 FilterForm.propTypes = {
   status: PropTypes.arrayOf(PropTypes.string).isRequired,
+  listOfTopics: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChangeFilter: PropTypes.func.isRequired,
   handleFilterClick: PropTypes.func.isRequired,
   handleResetFiltersClick: PropTypes.func.isRequired,

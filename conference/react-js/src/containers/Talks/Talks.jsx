@@ -9,16 +9,17 @@ import TalksTable from '../../components/Talks/TalksTable/TalksTable';
 import Pagination from './Pagination/Pagination';
 import loadData from '../../actions/load';
 import action from '../../constants/actions-types';
-import { talk, talksStatus } from '../../constants/backend-url';
+import { talk, talksStatus, topics } from '../../constants/backend-url';
 
 class Talks extends Component {
   constructor(props) {
     super(props);
     this.state = {
       talks: [],
-      filter: { conferenceName: '', title: '', status: '' },
+      filter: { name: '', title: '', topic: '', status: '' },
       speaker: '',
       status: [],
+      listOfTopics: [],
       comments: '',
       sorting: { conferenceName: '', title: '', status: '' },
       currentPage: 1,
@@ -28,11 +29,18 @@ class Talks extends Component {
   }
 
   componentDidMount() {
-    const { LOAD } = action;
     axios.get(talksStatus)
       .then(({ data }) => {
         this.setState({ status: data });
       });
+
+    axios.get(topics)
+      .then(({ data }) => {
+        console.log(data);
+        this.setState({ listOfTopics: data });
+      });
+
+    const { LOAD } = action;
 
     const url = this.props.url || talk;
     axios.get(url)
@@ -122,7 +130,7 @@ class Talks extends Component {
 
   handleResetFiltersClick = () => {
     this.setState({
-      filter: { conferenceName: '', title: '', status: '' },
+      filter: { name: '', title: '', topic: '', status: '' },
     }, this.doFilter);
   };
 
@@ -164,6 +172,7 @@ class Talks extends Component {
   render() {
     const {
       status,
+      listOfTopics,
       quantityTalks,
       currentPage,
       quantityAllPages,
@@ -177,6 +186,7 @@ class Talks extends Component {
       >
         <FilterForm
           status={status}
+          topics={listOfTopics}
           onChangeFilter={this.onChangeFilter}
           handleFilterClick={this.handleFilterClick}
           handleResetFiltersClick={this.handleResetFiltersClick}

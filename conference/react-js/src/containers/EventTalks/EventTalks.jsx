@@ -1,11 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import RaisedButton from 'material-ui/RaisedButton';
-
-import { myEvents } from '../../constants/route-url';
 import Talks from '../Talks/Talks';
 
 const columnsList = [
@@ -22,12 +18,6 @@ const EventTalks = ({
   onClick,
 }) => (
   <div className="tabs-layout">
-    <Link to={myEvents} >
-      <RaisedButton
-        label="Back"
-        primary
-      />
-    </Link>
     <Talks
       columns={columnsList}
       onClick={onClick}
