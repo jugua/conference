@@ -5,6 +5,7 @@ import java.util.List;
 import domain.model.Talk;
 import domain.model.User;
 import service.businesslogic.dto.TalkDto;
+import service.businesslogic.dto.TalkStatusDto;
 
 public interface TalkService {
 
@@ -14,6 +15,8 @@ public interface TalkService {
 
     void deleteFile(TalkDto talkDto, boolean deleteFile);
 
+    void updateStatus(TalkStatusDto dto);
+    
     void updateAsOrganiser(TalkDto talkDto, User user);
 
     void updateAsSpeaker(TalkDto talkDto, User user);
@@ -31,4 +34,6 @@ public interface TalkService {
     List<TalkDto> getTalksForOrganiser();
 
     String getFilePath(TalkDto talkDto);
+
+	
 }

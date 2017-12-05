@@ -135,10 +135,10 @@ public class ConferenceServiceImpl implements ConferenceService {
                 talks.put(status, ++count);
             }
 
-            conferenceDto.setNewTalkCount(talks.get(TalkStatus.NEW.getName()));
-            conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.APPROVED.getName()));
-            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.REJECTED.getName()));
-            conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.IN_PROGRESS.getName()));
+            conferenceDto.setNewTalkCount(talks.get(TalkStatus.DRAFT.getName()));
+            conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.ACCEPTED.getName()));
+            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.NOT_ACCEPTED.getName()));
+            conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.PENDING.getName()));
         }
         return conferenceDto;
     }

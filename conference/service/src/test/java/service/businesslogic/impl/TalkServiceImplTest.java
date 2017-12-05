@@ -215,7 +215,7 @@ public class TalkServiceImplTest {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("empty_comment");
 
-        talkDto.setStatusName(TalkStatus.REJECTED.getName());
+        talkDto.setStatusName(TalkStatus.NOT_ACCEPTED.getName());
         talkDto.setOrganiserComment(null);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
@@ -227,9 +227,9 @@ public class TalkServiceImplTest {
     public void testUpdateAsOrganiserWrongStatusChange() throws Exception {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("wrong_status");
-        talk.setStatus(TalkStatus.REJECTED);
+        talk.setStatus(TalkStatus.NOT_ACCEPTED);
         when(talkRepository.findById(anyLong())).thenReturn(talk);
-        talkDto.setStatusName(TalkStatus.NEW.getName());
+        talkDto.setStatusName(TalkStatus.DRAFT.getName());
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
         verify(talkRepository, never()).save(talk);
@@ -284,7 +284,7 @@ public class TalkServiceImplTest {
         talk.setLevel(level);
         talk.setType(type);
         talk.setTopic(topic);
-        talk.setStatus(TalkStatus.NEW);
+        talk.setStatus(TalkStatus.DRAFT);
         talk.setTime(dateTime);
         talk.setAdditionalInfo("Info");
         talk.setOrganiserComment("Org comment");
@@ -297,7 +297,7 @@ public class TalkServiceImplTest {
         talkDto.setTitle("Title");
         talkDto.setLanguageName("English");
         talkDto.setLevelName("Beginner");
-        talkDto.setStatusName(TalkStatus.NEW.getName());
+        talkDto.setStatusName(TalkStatus.DRAFT.getName());
         talkDto.setTypeName("Regular Talk");
         talkDto.setTopicName("JVM Languages and new programming paradigms");
         talkDto.setDate(dateTime.toString());

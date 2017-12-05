@@ -32,6 +32,7 @@ import domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.dto.TalkDto;
+import service.businesslogic.dto.TalkStatusDto;
 import service.businesslogic.exception.TalkNotFoundException;
 import service.businesslogic.exception.TalkValidationException;
 import service.infrastructure.mail.MailService;
@@ -117,7 +118,18 @@ public class TalkServiceImpl implements TalkService {
         Talk talk = findTalkById(talkDto.getId());
         return talk.getPathToAttachedFile();
     }
-
+    
+	@Override
+	@Transactional
+	public void updateStatus(TalkStatusDto talkStatusDto) {
+		Talk talk = talkRepository.findById(talkStatusDto.getId());
+		String status = talkStatusDto.getStatus();
+		if (talk != null && isCorrectStatus(status)) {
+			talk.setStatus(TalkStatus.valueOf(status));
+			talkRepository.save(talk);
+		}
+	}
+    
     @Override
     @Transactional
     public void updateAsOrganiser(TalkDto talkDto, User user) {
@@ -129,7 +141,7 @@ public class TalkServiceImpl implements TalkService {
         talkRepository.save(talk);
         List<User> receivers = userRepository.findAllByRolesIsIn(roleRepository.findByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
-        if (!(talk.getStatus() == TalkStatus.IN_PROGRESS && talk.isValidComment())) {
+        if (!(talk.getStatus() == TalkStatus.PENDING && talk.isValidComment())) {
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
         }
     }
@@ -248,7 +260,7 @@ public class TalkServiceImpl implements TalkService {
             throw new TalkValidationException(STATUS_IS_NULL);
         } else if (TalkStatus.getStatusByName(talkDto.getStatusName()) == null) {
             throw new TalkValidationException(STATUS_IS_WRONG);
-        } else if (talkDto.getStatusName().equals(TalkStatus.REJECTED.getName()) && (talkDto.getOrganiserComment() == null || talkDto.getOrganiserComment().isEmpty())) {
+        } else if (talkDto.getStatusName().equals(TalkStatus.NOT_ACCEPTED.getName()) && (talkDto.getOrganiserComment() == null || talkDto.getOrganiserComment().isEmpty())) {
             throw new TalkValidationException(ORG_COMMENT_IS_EMPTY);
         }
 
@@ -269,7 +281,16 @@ public class TalkServiceImpl implements TalkService {
 
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         boolean isUsersTalk = talk.getUser().getId() != user.getId();
-        return isUsersTalk || talk.getStatus() == TalkStatus.REJECTED || talk.getStatus() == TalkStatus.APPROVED;
+        return isUsersTalk || talk.getStatus() == TalkStatus.NOT_ACCEPTED || talk.getStatus() == TalkStatus.ACCEPTED;
     }
+    
+    private boolean isCorrectStatus(String status) {
+		try {
+			TalkStatus.valueOf(status);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+		return true;
+	}
 
 }

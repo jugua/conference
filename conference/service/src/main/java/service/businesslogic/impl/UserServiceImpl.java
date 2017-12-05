@@ -222,4 +222,12 @@ public class UserServiceImpl implements UserService {
 		mailService.sendEmail(user, new InvitePreparator(conferenceName,mailService.getUrl()));
 	}
 
+	@Transactional
+	@Override
+	public boolean isTalkOrganiser(String userMail, Long talkId) {
+		User user = userRepository.findByEmail(userMail);
+		boolean result  = user.getOrganizerConferences().stream().flatMap(m -> m.getTalks().stream()).mapToLong(m -> m.getId()).anyMatch(m -> m == talkId);
+		return result;
+	}
+
 }
