@@ -52,7 +52,6 @@ public class TopicServiceTest {
         topic.setId(1L);
 
         TopicDto topicDto = new TopicDto();
-        topicDto.setId(1L);
         topicDto.setName("name");
 
         List<TopicDto> topics = new ArrayList<>();
