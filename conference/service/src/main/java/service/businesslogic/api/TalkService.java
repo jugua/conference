@@ -30,7 +30,7 @@ public interface TalkService {
 
     TalkDto findById(Long id);
 
-    List<Submission> getTalksForSpeaker(String userEmail);
+    List<Submission> getSumbissions(String userEmail);
 
     String getFilePath(TalkDto talkDto);
 

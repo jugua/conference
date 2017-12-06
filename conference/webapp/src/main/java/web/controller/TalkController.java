@@ -148,8 +148,8 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk")
-    public ResponseEntity<List<Submission>> getTalks(HttpServletRequest request) {
-        List<Submission> userTalkDtoList = talkService.getTalksForSpeaker(request.getRemoteUser());
+    public ResponseEntity<List<Submission>> getSumbissions(HttpServletRequest request) {
+        List<Submission> userTalkDtoList = talkService.getSumbissions(request.getRemoteUser());
         System.out.println(userTalkDtoList);
         
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
