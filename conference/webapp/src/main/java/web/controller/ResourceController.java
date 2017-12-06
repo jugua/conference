@@ -38,8 +38,9 @@ public class ResourceController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("topics")
-    public ResponseEntity<TopicDto[]> getTopics() {
-        return new ResponseEntity<>(topicService.findAll().toArray(new TopicDto[0]), HttpStatus.OK);
+    public ResponseEntity<String[]> getTopics() {
+    	String[] topics = topicService.findAll().stream().map(m -> m.getName()).toArray(String[]::new);
+        return new ResponseEntity<>(topics, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")

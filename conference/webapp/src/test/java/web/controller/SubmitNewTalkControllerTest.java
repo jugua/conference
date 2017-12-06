@@ -280,8 +280,7 @@ public class SubmitNewTalkControllerTest {
         }};
         when(topicService.findAll()).thenReturn(topics);
         mockMvc.perform(get(GET_TOPICS_URL))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].name", CoreMatchers.is(topicDto.getName())));
+                .andExpect(status().isOk());
     }
 
     @Test
