@@ -17,13 +17,11 @@ const EventTalks = ({
     id },
   onClick,
 }) => (
-  <div className="tabs-layout">
-    <Talks
-      columns={columnsList}
-      onClick={onClick}
-      url={`/conference/${id}/talks`}
-    />
-  </div>
+  <Talks
+    columns={columnsList}
+    onClick={onClick}
+    url={`/conference/${id}/talks`}
+  />
 );
 
 EventTalks.propTypes = {

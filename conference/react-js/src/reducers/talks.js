@@ -17,10 +17,10 @@ const talks = (state = [], action) => {
     const prevValue = (page - 1) * quantity;
     const lastValue = page * quantity;
     const filtered = (elementOfListTopic) => {
-      const countName = elementOfListTopic.name.indexOf(name);
-      const countTitle = elementOfListTopic.title.indexOf(title);
-      const countTopic = elementOfListTopic.topic.indexOf(topic);
-      const countStatus = elementOfListTopic.status.indexOf(status);
+      const countName = elementOfListTopic.name.toLowerCase().indexOf(name.toLowerCase());
+      const countTitle = elementOfListTopic.title.toLowerCase().indexOf(title.toLowerCase());
+      const countTopic = elementOfListTopic.topic.toLowerCase().indexOf(topic.toLowerCase());
+      const countStatus = elementOfListTopic.status.toLowerCase().indexOf(status.toLowerCase());
       return countName > -1 && countTitle > -1 && countStatus > -1 &&
       countTopic > -1;
     };
