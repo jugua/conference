@@ -16,7 +16,7 @@ class FilterForm extends PureComponent {
           <div className="my-talk-settings__select-wrapper">
             <InputBlock
               label="Speaker"
-              id="my-talk-conference"
+              id="my-talk-name"
               labelClass="form-label my-talk-settings__label"
               name="name"
               inputClass="my-talk-settings__select"

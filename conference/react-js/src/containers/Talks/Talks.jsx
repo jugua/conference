@@ -36,7 +36,6 @@ class Talks extends Component {
 
     axios.get(topics)
       .then(({ data }) => {
-        console.log(data);
         this.setState({ listOfTopics: data });
       });
 
