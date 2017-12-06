@@ -87,7 +87,7 @@ class FilterForm extends PureComponent {
 
 FilterForm.propTypes = {
   status: PropTypes.arrayOf(PropTypes.string).isRequired,
-  listOfTopics: PropTypes.arrayOf(PropTypes.string).isRequired,
+  topics: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChangeFilter: PropTypes.func.isRequired,
   handleFilterClick: PropTypes.func.isRequired,
   handleResetFiltersClick: PropTypes.func.isRequired,
