@@ -141,8 +141,11 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk/talksStatus")
-    public ResponseEntity<List<String>> getTalksStatus() {
-        List<String> talksStatus = Arrays.asList(TalkStatus.values()).stream().map(m -> m.getName()).collect(Collectors.toList());
+    public ResponseEntity<List<TalkStatusDto>> getTalksStatus() {
+        List<TalkStatusDto> talksStatus = Arrays.asList(TalkStatus.values())
+        										.stream()
+        										.map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()),m.name()))
+        										.collect(Collectors.toList());
         return new ResponseEntity<>(talksStatus, HttpStatus.OK);
     }
 
