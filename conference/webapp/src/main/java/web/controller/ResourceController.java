@@ -22,38 +22,35 @@ import service.businesslogic.dto.TypeDto;
 
 @RestController
 @RequestMapping("/")
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor(onConstructor = @__({ @Autowired }))
 public class ResourceController {
-    private final TypeService typeService;
-    private final TopicService topicService;
-    private final LevelService levelService;
-    private final LanguageService languageService;
+	private final TypeService typeService;
+	private final TopicService topicService;
+	private final LevelService levelService;
+	private final LanguageService languageService;
 
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("types")
+	public ResponseEntity<List<TypeDto>> getTypes() {
+		return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
+	}
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("types")
-    public ResponseEntity<List<TypeDto>> getTypes() {
-        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
-    }
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("topics")
+	public ResponseEntity<List<TopicDto>> getTopics() {
+		return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
+	}
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("topics")
-    public ResponseEntity<String[]> getTopics() {
-    	String[] topics = topicService.findAll().stream().map(m -> m.getName()).toArray(String[]::new);
-        return new ResponseEntity<>(topics, HttpStatus.OK);
-    }
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("levels")
+	public ResponseEntity<List<LevelDto>> getLevels() {
+		return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
+	}
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("levels")
-    public ResponseEntity<List<LevelDto>> getLevels() {
-        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("languages")
-    public ResponseEntity<List<Language>> getLanguages() {
-        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
-    }
-
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("languages")
+	public ResponseEntity<List<Language>> getLanguages() {
+		return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
+	}
 
 }
