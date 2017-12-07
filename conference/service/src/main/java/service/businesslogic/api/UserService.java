@@ -46,4 +46,6 @@ public interface UserService {
     
     void inviteUser(InviteDto invite);
 
+	boolean isTalkOrganiser(String userMail, Long talkId);
+
 }
