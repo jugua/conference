@@ -18,6 +18,8 @@ class MyTalks extends Component {
         title: '',
         conferenceName: '',
         eventDate: '',
+        cfpDate: '',
+        notificationDue: '',
         status: '',
       },
     };
