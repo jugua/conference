@@ -4,12 +4,15 @@ import PropTypes from 'prop-types';
 import EventTalks from '../../../containers/EventTalks/EventTalks';
 import ReviewTalk from '../../Talks/ReviewTalk/ReviewTalk';
 import SlideBlock from '../../SlideBlock';
+import MyInfo from '../../MyInfo/MyInfo';
 
 class EventTalksWrapper extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       isReviewTalk: false,
+      isReviewSpeakerInfo: false,
+      showInfoSavedModal: false,
       talk: null,
     };
   }
@@ -27,6 +30,18 @@ class EventTalksWrapper extends PureComponent {
     });
   };
 
+  showSpeakerInfo = (rowId, colId) => {
+    if (isNaN(rowId) || isNaN(colId)) return;
+
+    this.setState({
+      isReviewSpeakerInfo: true,
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ showInfoSavedModal: false });
+  };
+
   closeReviewTalk = () => {
     this.setState({
       isReviewTalk: false,
@@ -39,6 +54,7 @@ class EventTalksWrapper extends PureComponent {
     return (
       <SlideBlock isOpened={isReviewTalk}>
         <EventTalks onClick={this.showReviewTalk} />
+        <MyInfo onClick={this.showReviewTalk} />
         <ReviewTalk talk={talk} close={this.closeReviewTalk} />
       </SlideBlock>
     );
