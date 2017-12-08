@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import ImageSave from 'material-ui/svg-icons/content/save';
-import AttachFile from 'material-ui/svg-icons/editor/attach-file';
 import { cyan500 } from 'material-ui/styles/colors';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
+import AttachFile from '../AttachFile/AttachFile';
 import getTalkOptions from '../../actions/getTalkOptions';
 import updateTalk from '../../actions/updateTalk';
 
@@ -201,16 +201,7 @@ class UpdateTalk extends PureComponent {
           onChange={this.addonChange}
         />
 
-        <div className="attach-file_wrapper">
-          <RaisedButton
-            containerElement="label"
-            label="Attach"
-            icon={<AttachFile />}
-            primary
-          >
-            <input type="file" />
-          </RaisedButton>
-        </div>
+        <AttachFile talk={this.props.talk} />
 
       </div>
     );
