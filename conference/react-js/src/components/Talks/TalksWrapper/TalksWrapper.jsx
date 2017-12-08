@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MyTalks from '../../../components/MyTalks/MyTalks';
 import UpdateTalk from '../../../components/UpdateTalk/UpdateTalk';
-import SlideBlock from '../../../components/SlideBlock';
+import SlideBlock from '../../../components/SlideBlock/SlideBlock';
 
 class TalksWrapper extends PureComponent {
   constructor(props) {

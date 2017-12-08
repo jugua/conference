@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import EventTalks from '../../../containers/EventTalks/EventTalks';
 import ReviewTalk from '../../Talks/ReviewTalk/ReviewTalk';
-import SlideBlock from '../../SlideBlock';
-import MyInfo from '../../MyInfo/MyInfo';
+import SlideBlock from '../../SlideBlock/SlideBlock';
+import SpeakerInfo from '../../Talks/SpeakerInfo/SpeakerInfo';
 
 class EventTalksWrapper extends PureComponent {
   constructor(props) {
@@ -12,7 +12,7 @@ class EventTalksWrapper extends PureComponent {
     this.state = {
       isReviewTalk: false,
       isReviewSpeakerInfo: false,
-      showInfoSavedModal: false,
+      isOpened: 0,
       talk: null,
     };
   }
@@ -21,40 +21,43 @@ class EventTalksWrapper extends PureComponent {
     talks.find(talk => talk.id === id)
   );
 
-  showReviewTalk = (rowId, colId, { target: { dataset: { talkId } } }) => {
-    if (!talkId || isNaN(rowId) || isNaN(colId)) return;
-
-    this.setState({
-      isReviewTalk: true,
-      talk: this.getTalkById(this.props.talks, +talkId),
-    });
+  showReviewTalk = (rowId, colId, { target: { dataset: { talkId, speakerId } } }) => {
+    if (talkId) {
+      this.setState({
+        isReviewTalk: true,
+        talk: this.getTalkById(this.props.talks, +talkId),
+        isOpened: 2,
+      });
+    } else if (speakerId) {
+      this.setState({
+        isReviewSpeakerInfo: true,
+        isOpened: 1,
+      });
+    } else if (!speakerId || !talkId || isNaN(rowId) || isNaN(colId)) {
+      return null;
+    }
+    return null;
   };
 
-  showSpeakerInfo = (rowId, colId) => {
-    if (isNaN(rowId) || isNaN(colId)) return;
-
+  closeSpeakerInfo = () => {
     this.setState({
-      isReviewSpeakerInfo: true,
+      isOpened: 0,
     });
-  };
-
-  handleCloseModal = () => {
-    this.setState({ showInfoSavedModal: false });
   };
 
   closeReviewTalk = () => {
     this.setState({
-      isReviewTalk: false,
+      isOpened: 0,
       talk: null,
     });
   };
 
   render() {
-    const { isReviewTalk, talk } = this.state;
+    const { talk, isOpened } = this.state;
     return (
-      <SlideBlock isOpened={isReviewTalk}>
+      <SlideBlock isOpened={isOpened}>
         <EventTalks onClick={this.showReviewTalk} />
-        <MyInfo onClick={this.showReviewTalk} />
+        <SpeakerInfo close={this.closeSpeakerInfo} />
         <ReviewTalk talk={talk} close={this.closeReviewTalk} />
       </SlideBlock>
     );

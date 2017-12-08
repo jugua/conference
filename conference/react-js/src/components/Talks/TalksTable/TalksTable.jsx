@@ -87,9 +87,7 @@ const renderTalksList = (data, columns) => (
         <TableRowColumn key={col}>
           <a
             className="link"
-            role="button"
-            tabIndex="0"
-            onClick={console.log(`speaker info ${data.name}`)}
+            data-speaker-id={data.speakerId}
           >
             {data.name}</a>
         </TableRowColumn>
