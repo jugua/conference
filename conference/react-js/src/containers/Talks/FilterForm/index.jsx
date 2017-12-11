@@ -3,8 +3,12 @@ import { PropTypes } from 'prop-types';
 import InputBlock from '../../../components/InputBlock/InputBlock';
 
 class FilterForm extends PureComponent {
-  getOptions = data => (data.map(element =>
-    (<option key={element}>{element}</option>),
+  setTopics = data => (data.map(({ id, name }) =>
+    (<option key={id}>{name}</option>),
+  ));
+
+  setStatus = data => (data.map(({ id, status }) =>
+    (<option key={id}>{status}</option>),
   ));
 
   render() {
@@ -46,7 +50,7 @@ class FilterForm extends PureComponent {
               onBlur={onChangeFilter}
             >
               <option defaultValue="" />
-              {this.getOptions(topics)}
+              {this.setTopics(topics)}
             </select>
           </div>
           <div className="my-talk-settings__select-wrapper">
@@ -62,7 +66,7 @@ class FilterForm extends PureComponent {
               onBlur={onChangeFilter}
             >
               <option defaultValue="" />
-              {this.getOptions(status)}
+              {this.setStatus(status)}
             </select>
           </div>
           <div className="my-talk-settings__button-wrapper">
@@ -86,8 +90,8 @@ class FilterForm extends PureComponent {
 }
 
 FilterForm.propTypes = {
-  status: PropTypes.arrayOf(PropTypes.string).isRequired,
-  topics: PropTypes.arrayOf(PropTypes.string).isRequired,
+  status: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  topics: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onChangeFilter: PropTypes.func.isRequired,
   handleFilterClick: PropTypes.func.isRequired,
   handleResetFiltersClick: PropTypes.func.isRequired,
