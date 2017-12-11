@@ -222,7 +222,11 @@ class MyInfo extends Component {
               onBlur={this.requiredInput}
               required
             />
-            <span data-requiredInput="bio" className="my-info__required-message">* this field is required</span>
+            <span
+              data-requiredInput="bio"
+              className="my-info__required-message"
+            >
+              * this field is required</span>
           </div>
           <div className="input-wrapper">
             <div className="input-required">
@@ -237,7 +241,11 @@ class MyInfo extends Component {
                 onBlur={this.requiredInput}
                 required
               />
-              <span data-requiredInput="job" className="my-info__required-message">* this field is required</span>
+              <span
+                data-requiredInput="job"
+                className="my-info__required-message"
+              >
+                * this field is required</span>
             </div>
             <div className="input-required">
               <TextField
@@ -251,7 +259,11 @@ class MyInfo extends Component {
                 onBlur={this.requiredInput}
                 required
               />
-              <span data-requiredInput="company" className="my-info__required-message">* this field is required</span>
+              <span
+                data-requiredInput="company"
+                className="my-info__required-message"
+              >
+                * this field is required</span>
             </div>
           </div>
           <TextField
@@ -281,7 +293,9 @@ class MyInfo extends Component {
             label="save"
             style={styles.centeredButton}
             primary
-            disabled={this.state.bioFieldEmpty || this.state.jobFieldEmpty || this.state.companyFieldEmpty}
+            disabled={this.state.bioFieldEmpty ||
+            this.state.jobFieldEmpty ||
+            this.state.companyFieldEmpty}
             onClick={this.handleSaveInfo}
           />
         </form>

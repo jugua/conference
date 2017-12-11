@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { TextField } from 'material-ui';
+import { TextField, RaisedButton } from 'material-ui';
 
 import { uploadUserPhoto, defaultUserPhoto } from
   '../../../constants/backend-url';
@@ -58,6 +58,8 @@ class SpeakerInfo extends Component {
         info,
         photo,
       } } = this.state;
+
+      const { close } = this.props;
 
       return (
         <div>
@@ -128,6 +130,12 @@ class SpeakerInfo extends Component {
               fullWidth
               disabled
             />
+            <RaisedButton
+              type="button"
+              label="back"
+              primary
+              onClick={close}
+            />
           </form>
         </div>
       );
@@ -136,6 +144,7 @@ class SpeakerInfo extends Component {
 
 SpeakerInfo.propTypes = {
   speaker: PropTypes.shape(userShape).isRequired,
+  close: PropTypes.func.isRequired,
 };
 
 export default SpeakerInfo;
