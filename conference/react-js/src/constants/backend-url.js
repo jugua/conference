@@ -21,3 +21,4 @@ export const defaultUserPhoto = '/resources/default_ava.jpg';
 export const conferencesNames = '/conference/conferencesNames';
 export const organizerInvite = '/registration/invitation';
 export const myEvents = '/conference';
+export const speakerInfoForOrganiser = '/user/';

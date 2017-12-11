@@ -1,21 +1,141 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import { TextField } from 'material-ui';
+
+import { uploadUserPhoto, defaultUserPhoto } from
+  '../../../constants/backend-url';
+import userShape from '../../../constants/user-shape';
 
 class SpeakerInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      test: '',
+      speaker: props.speaker,
     };
   }
 
-  render() {
-    return (
-      <div>
-        <h3 className="pop-up__title talks-user-info-popup__title">
-                    User&#39;s info</h3>
-      </div>
-    );
+  componentDidMount() {
+    this.setDefaultUserPhoto();
   }
+
+  componentWillReceiveProps({ speaker }) {
+    this.setState({ speaker });
+    this.setDefaultUserPhoto();
+  }
+
+    setDefaultUserPhoto = () => {
+      axios.get(defaultUserPhoto)
+        .then(() => {
+          this.setState(prevState => ({
+            speaker: {
+              ...prevState.speaker,
+              photo: defaultUserPhoto,
+            },
+          }));
+        });
+    };
+
+    getUserPhoto = (id) => {
+      axios.get(`${uploadUserPhoto}/${id}`)
+        .then(() => {
+          this.setState(prevState => ({
+            speaker: {
+              ...prevState.speaker,
+              photo: `${uploadUserPhoto}/${id}`,
+            },
+          }
+          ));
+        });
+    };
+
+    render() {
+      const { speaker: {
+        bio,
+        job,
+        company,
+        past,
+        info,
+        photo,
+      } } = this.state;
+
+      return (
+        <div>
+          <div className="my-info__photo-block">
+            <img
+              className="my-info__photo"
+              src={photo || ''}
+              alt=""
+            />
+          </div>
+          <form className="my-info">
+            <div className="input-required input-required__bio">
+              <TextField
+                id="my-info-bio"
+                name="bio"
+                floatingLabelText="Short Bio*"
+                multiLine
+                fullWidth
+                rows={5}
+                maxLength={2000}
+                value={bio || ''}
+                disabled
+              />
+            </div>
+            <div className="input-wrapper">
+              <div className="input-required">
+                <TextField
+                  id="my-job-title"
+                  name="job"
+                  floatingLabelText="Job Title*"
+                  fullWidth
+                  maxLength={256}
+                  value={job || ''}
+                  disabled
+                />
+              </div>
+              <div className="input-required">
+                <TextField
+                  id="my-info-company"
+                  name="company"
+                  floatingLabelText="Company*"
+                  fullWidth
+                  maxLength={256}
+                  value={company || ''}
+                  disabled
+                />
+              </div>
+            </div>
+            <TextField
+              id="my-past-conferences"
+              name="past"
+              floatingLabelText="Past Conferences"
+              multiLine
+              rows={5}
+              maxLength={1000}
+              value={past || ''}
+              fullWidth
+              disabled
+            />
+            <TextField
+              id="my-additional-info"
+              name="info"
+              floatingLabelText="Additional Info"
+              multiLine
+              rows={5}
+              maxLength={1000}
+              value={info || ''}
+              fullWidth
+              disabled
+            />
+          </form>
+        </div>
+      );
+    }
 }
+
+SpeakerInfo.propTypes = {
+  speaker: PropTypes.shape(userShape).isRequired,
+};
 
 export default SpeakerInfo;
