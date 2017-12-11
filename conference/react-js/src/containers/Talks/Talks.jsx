@@ -233,7 +233,7 @@ Talks.defaultProps = {
 
 const mapStateToProps = ({ talks }) => (
   {
-    talks,
+    talks
   });
 
 const mapDispatchToProps = dispatch => ({
