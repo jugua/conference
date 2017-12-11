@@ -168,66 +168,6 @@ public class TalkControllerTest extends TestUtil {
     }
 
     /**
-
-     * Test getTalks() method for correct data return to speaker
-     *
-     * @throws Exception
-     */
-    @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
-    public void testSuccessfulGetTalksAsSpeaker() throws Exception {
-        TalkDto talkDto = correctTalkDto;
-        List<TalkDto> talks = new ArrayList<>();
-        talks.add(talkDto);
-
-        when(talkService.getTalksForSpeaker(speakerUser.getEmail())).thenReturn(talks);
-        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].title", is(talkDto.getTitle())))
-                .andExpect(jsonPath("$[0].description", is(talkDto.getDescription())))
-                .andExpect(jsonPath("$[0].topic", is(talkDto.getTopicName())))
-                .andExpect(jsonPath("$[0].type", is(talkDto.getTypeName())))
-                .andExpect(jsonPath("$[0].lang", is(talkDto.getLanguageName())))
-                .andExpect(jsonPath("$[0].level", is(talkDto.getLevelName())))
-                .andExpect(jsonPath("$[0].addon", is(talkDto.getAdditionalInfo())))
-                .andExpect(jsonPath("$[0].status", is(talkDto.getStatusName())))
-                .andExpect(jsonPath("$[0].assignee", is(talkDto.getAssignee())));
-    }
-
-    /**
-     * Test getTalks() method for correct data return to organiser
-     *
-     * @throws Exception
-     */
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
-    public void testSuccessfulGetTalksAsOrganiser() throws Exception {
-        List<TalkDto> talkDtos = new ArrayList<>();
-        correctTalkDto.setUserId(speakerUser.getId());
-        correctTalkDto.setSpeakerFullName(speakerUser.getFullName());
-        talkDtos.add(correctTalkDto);
-
-        when(talkService.getTalksForOrganiser()).thenReturn(talkDtos);
-        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].title", is(correctTalkDto.getTitle())))
-                .andExpect(jsonPath("$[0].speakerId", is(Integer.parseInt(correctTalkDto.getUserId().toString()))))
-                .andExpect(jsonPath("$[0].name", is(correctTalkDto.getSpeakerFullName())))
-                .andExpect(jsonPath("$[0].description", is(correctTalkDto.getDescription())))
-                .andExpect(jsonPath("$[0].topic", is(correctTalkDto.getTopicName())))
-                .andExpect(jsonPath("$[0].type", is(correctTalkDto.getTypeName())))
-                .andExpect(jsonPath("$[0].lang", is(correctTalkDto.getLanguageName())))
-                .andExpect(jsonPath("$[0].level", is(correctTalkDto.getLevelName())))
-                .andExpect(jsonPath("$[0].addon", is(correctTalkDto.getAdditionalInfo())))
-                .andExpect(jsonPath("$[0].status", is(correctTalkDto.getStatusName())))
-                .andExpect(jsonPath("$[0].date", is(correctTalkDto.getDate())))
-                .andExpect(jsonPath("$[0].comment", is(correctTalkDto.getOrganiserComment())))
-                .andExpect(jsonPath("$[0].assignee", is(correctTalkDto.getAssignee())));
-    }
-
-    /**
      * Test getTalks() method for unauthorized access
      *
      * @throws Exception

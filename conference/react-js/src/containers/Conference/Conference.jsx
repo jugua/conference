@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { root } from '../../constants/route-url';
+import RaisedButton from 'material-ui/RaisedButton';
 
+import { root } from '../../constants/route-url';
 import Talks from '../Talks/Talks';
 
 const Conference = ({ conference: {
@@ -16,7 +17,10 @@ const Conference = ({ conference: {
       to={root}
       className="conference_button"
     >
-      back
+      <RaisedButton
+        label="Back"
+        primary
+      />
     </Link>
     <Talks
       url={`/conference/${id}/talks`}

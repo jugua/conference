@@ -21,9 +21,8 @@ const renderTalksHeader = columns => (
           key={col}
           data-name="speaker"
           className="table-header__item"
-          tabIndex="0"
         >
-            speaker
+            Speaker
         </TableHeaderColumn>
       );
     case 'conferenceName':
@@ -32,9 +31,38 @@ const renderTalksHeader = columns => (
           key={col}
           data-name="conferenceName"
           className="table-header__item"
-          tabIndex="0"
         >
-            conference
+            Event
+        </TableHeaderColumn>
+      );
+    case 'eventDate':
+      return (
+        <TableHeaderColumn
+          key={col}
+          data-name="eventDate"
+          className="table-header__item"
+        >
+            Event Date
+        </TableHeaderColumn>
+      );
+    case 'cfpDate':
+      return (
+        <TableHeaderColumn
+          key={col}
+          data-name="cfpDate"
+          className="table-header__item"
+        >
+            Call for Paper
+        </TableHeaderColumn>
+      );
+    case 'notificationDue':
+      return (
+        <TableHeaderColumn
+          key={col}
+          data-name="notificationDue"
+          className="table-header__item"
+        >
+            Notification Due
         </TableHeaderColumn>
       );
     default:
@@ -42,7 +70,6 @@ const renderTalksHeader = columns => (
         key={col}
         data-name={`${col}`}
         className="table-header__item"
-        tabIndex="0"
       >
         {col}
       </TableHeaderColumn>);
@@ -68,6 +95,24 @@ const renderTalksList = (data, columns) => (
             className="link"
             data-talk-id={data.id}
           >{data.title}</a>
+        </TableRowColumn>
+      );
+    case 'eventDate':
+      return (
+        <TableRowColumn key={col}>
+          {data.startDate} - {data.endDate}
+        </TableRowColumn>
+      );
+    case 'cfpDate':
+      return (
+        <TableRowColumn key={col}>
+          {data.cfpStartDate} - {data.cfpEndDate}
+        </TableRowColumn>
+      );
+    case 'notificationDue':
+      return (
+        <TableRowColumn key={col}>
+          {data.notificationDue}
         </TableRowColumn>
       );
     default:
