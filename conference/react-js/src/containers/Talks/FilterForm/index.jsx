@@ -3,8 +3,8 @@ import { PropTypes } from 'prop-types';
 import InputBlock from '../../../components/InputBlock/InputBlock';
 
 class FilterForm extends PureComponent {
-  getOptions = status => (status.map(element =>
-    (<option key={element}>{element}</option>),
+  getOptions = data => (data.map(({ id, status }) =>
+    (<option key={id}>{status}</option>),
   ));
 
   render() {
@@ -71,7 +71,7 @@ class FilterForm extends PureComponent {
 }
 
 FilterForm.propTypes = {
-  status: PropTypes.arrayOf(PropTypes.string).isRequired,
+  status: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   onChangeFilter: PropTypes.func.isRequired,
   handleFilterClick: PropTypes.func.isRequired,
   handleResetFiltersClick: PropTypes.func.isRequired,
