@@ -53,15 +53,7 @@
                 <module>webapp</module>
             </modules>
         </profile>
-
-        <profile>
-            <id>legacy</id>
-            <modules>
-                <module>ui-js</module>
-                <module>webapp</module>
-            </modules>
-        </profile>
-
+        
         <profile>
             <id>java</id>
             <modules>
@@ -79,7 +71,6 @@
             <modules>
                 <module>domain</module>
                 <module>service</module>
-                <module>ui-js</module>
                 <module>react-js</module>
                 <module>webapp</module>
             </modules>
@@ -176,13 +167,7 @@
                 <artifactId>service</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>ua.rd.cm</groupId>
-                <artifactId>ui-js</artifactId>
-                <version>${project.version}</version>
-                <type>war</type>
-            </dependency>
-
+            
             <!-- utility -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
