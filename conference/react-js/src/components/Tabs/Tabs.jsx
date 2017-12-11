@@ -26,7 +26,7 @@ const getLinks = (talksCount, conferenceCount, role) => {
   links.push({ to: upcoming, title: 'Upcoming' });
   links.push({ to: past, title: 'Past' });
 
-  if (talksCount) links.push({ to: myTalks, title: 'My talks' });
+  if (talksCount) links.push({ to: myTalks, title: 'My Submissions' });
   if (conferenceCount) links.push({ to: myEvents, title: 'My Events' });
   if (role === admin) {
     links.push({ to: talks, title: 'Talks' });

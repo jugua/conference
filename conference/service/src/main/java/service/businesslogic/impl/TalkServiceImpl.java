@@ -7,12 +7,15 @@ import static service.businesslogic.exception.TalkValidationException.ORG_COMMEN
 import static service.businesslogic.exception.TalkValidationException.STATUS_IS_NULL;
 import static service.businesslogic.exception.TalkValidationException.STATUS_IS_WRONG;
 
+import java.io.FileInputStream;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +33,11 @@ import domain.repository.TopicRepository;
 import domain.repository.TypeRepository;
 import domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.TalkService;
+import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.TalkDto;
+import service.businesslogic.dto.TalkStatusDto;
 import service.businesslogic.exception.TalkNotFoundException;
 import service.businesslogic.exception.TalkValidationException;
 import service.infrastructure.mail.MailService;
@@ -41,9 +47,11 @@ import service.infrastructure.mail.preparator.ChangeTalkStatusSpeakerPreparator;
 import service.infrastructure.mail.preparator.SubmitNewTalkOrganiserPreparator;
 import service.infrastructure.mail.preparator.SubmitNewTalkSpeakerPreparator;
 
+@Log4j
 @Service
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor(onConstructor = @__({ @Autowired }))
 public class TalkServiceImpl implements TalkService {
+
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
     private static final int MAX_ADDITIONAL_INFO_LENGTH = 1500;
     private TalkRepository talkRepository;
@@ -117,7 +125,18 @@ public class TalkServiceImpl implements TalkService {
         Talk talk = findTalkById(talkDto.getId());
         return talk.getPathToAttachedFile();
     }
-
+    
+	@Override
+	@Transactional
+	public void updateStatus(TalkStatusDto talkStatusDto) {
+		Talk talk = talkRepository.findById(talkStatusDto.getId());
+		String status = talkStatusDto.getStatus();
+		if (talk != null && isCorrectStatus(status)) {
+			talk.setStatus(TalkStatus.valueOf(status));
+			talkRepository.save(talk);
+		}
+	}
+    
     @Override
     @Transactional
     public void updateAsOrganiser(TalkDto talkDto, User user) {
@@ -129,7 +148,7 @@ public class TalkServiceImpl implements TalkService {
         talkRepository.save(talk);
         List<User> receivers = userRepository.findAllByRolesIsIn(roleRepository.findByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
-        if (!(talk.getStatus() == TalkStatus.IN_PROGRESS && talk.isValidComment())) {
+        if (!(talk.getStatus() == TalkStatus.PENDING && talk.isValidComment())) {
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));
         }
     }
@@ -192,21 +211,43 @@ public class TalkServiceImpl implements TalkService {
     }
 
     @Override
-    public List<TalkDto> getTalksForSpeaker(String userEmail) {
-        User currentUser = userRepository.findByEmail(userEmail);
-        return findByUserId(currentUser.getId())
-                .stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toList());
-    }
+	public List<Submission> getSumbissions(String userEmail) {
+		User currentUser = userRepository.findByEmail(userEmail);
+		return findByUserId(currentUser.getId()).stream().map(this::entityToExDto).collect(Collectors.toList());
+	}
 
-    @Override
-    public List<TalkDto> getTalksForOrganiser() {
-        return findAll()
-                .stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toList());
-    }
+	private Submission entityToExDto(Talk talk) {
+		Conference conference = talk.getConference();
+		String startDate = conference.getStartDate().toString();
+		String endDate = conference.getEndDate().toString();
+		String cfpStartDate = conference.getCallForPaperStartDate().toString();
+		String cfpEndDate = conference.getCallForPaperEndDate().toString();
+		String notificationDue = conference.getNotificationDue().toString();
+		Submission submission = Submission.builder()
+				.id(talk.getId()).title(talk.getTitle())
+				.speakerId(talk.getUser().getId())
+				.conferenceId(conference.getId())
+				.conferenceName(conference.getTitle())
+				.name(talk.getUser().getFullName())
+				.description(talk.getDescription())
+				.topic(talk.getTopic().getName())
+				.type(talk.getType().getName())
+				.lang(talk.getLanguage().getName())
+				.level(talk.getLevel().getName())
+				.addon(talk.getAdditionalInfo())
+				.status(talk.getStatus().getName())
+				.date(talk.getTime().toString())
+				.comment(talk.getOrganiserComment())
+				.file(getFile(talk.getPathToAttachedFile()))
+				.startDate(startDate)
+				.endDate(endDate)
+				.cfpStartDate(cfpStartDate)
+				.cfpEndDate(cfpEndDate)
+				.notificationDue(notificationDue)
+				.build();
+		return submission;
+	}
+
 
     /**
      * @param talk
@@ -248,7 +289,7 @@ public class TalkServiceImpl implements TalkService {
             throw new TalkValidationException(STATUS_IS_NULL);
         } else if (TalkStatus.getStatusByName(talkDto.getStatusName()) == null) {
             throw new TalkValidationException(STATUS_IS_WRONG);
-        } else if (talkDto.getStatusName().equals(TalkStatus.REJECTED.getName()) && (talkDto.getOrganiserComment() == null || talkDto.getOrganiserComment().isEmpty())) {
+        } else if (talkDto.getStatusName().equals(TalkStatus.NOT_ACCEPTED.getName()) && (talkDto.getOrganiserComment() == null || talkDto.getOrganiserComment().isEmpty())) {
             throw new TalkValidationException(ORG_COMMENT_IS_EMPTY);
         }
 
@@ -269,7 +310,26 @@ public class TalkServiceImpl implements TalkService {
 
     private boolean isForbiddenToChangeTalk(User user, Talk talk) {
         boolean isUsersTalk = talk.getUser().getId() != user.getId();
-        return isUsersTalk || talk.getStatus() == TalkStatus.REJECTED || talk.getStatus() == TalkStatus.APPROVED;
+        return isUsersTalk || talk.getStatus() == TalkStatus.NOT_ACCEPTED || talk.getStatus() == TalkStatus.ACCEPTED;
     }
+    
+    private boolean isCorrectStatus(String status) {
+		try {
+			TalkStatus.valueOf(status);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+		return true;
+	}
 
+    private InputStreamResource getFile(String path) {
+		InputStreamResource file = null;
+		try {
+			file = new InputStreamResource(new FileInputStream(path));
+		} catch (Exception e) {
+			log.info(e);
+		}
+		return file;
+    
+    }
 }

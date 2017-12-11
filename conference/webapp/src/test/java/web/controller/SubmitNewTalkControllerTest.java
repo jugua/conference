@@ -274,16 +274,13 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = SPEAKER_ROLE)
     public void getTopicsShouldWorkForSpeaker() throws Exception {
         TopicDto topicDto = new TopicDto();
-        topicDto.setId(1L);
         topicDto.setName("SomeName");
         List<TopicDto> topics = new ArrayList<TopicDto>() {{
             add(topicDto);
         }};
         when(topicService.findAll()).thenReturn(topics);
         mockMvc.perform(get(GET_TOPICS_URL))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("[0].id", CoreMatchers.is(topicDto.getId().intValue())))
-                .andExpect(jsonPath("[0].name", CoreMatchers.is(topicDto.getName())));
+                .andExpect(status().isOk());
     }
 
     @Test
