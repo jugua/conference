@@ -40,19 +40,23 @@ class AttachFile extends PureComponent {
   uploadFile = (e) => {
     e.preventDefault();
 
-    // const { id } = this.props.talk;
+    const { id } = this.props.talk;
     const attachedFileBtn = document.querySelector('#attached-file');
     const attachedFile = attachedFileBtn.files[0];
+    console.log(attachedFile);
 
-    const data = new FormData();
-    data.append('file', attachedFile);
-    console.log(data);
-    // if (attachedFileBtn.files.length > 0) {
-    //   axios.post(`/talk/${id}/uploadFile`, data)
-    //     .then((res) => {
-    //       console.log(res);
-    //     });
-    // }
+    const fileData = new FormData();
+    fileData.append('file', attachedFile);
+    console.log(fileData);
+    if (attachedFileBtn.files.length > 0) {
+      axios.post(`/talk/${id}/uploadFile`, fileData)
+        .then((res) => {
+          console.log(res);
+          this.setState({
+            file: attachedFile,
+          });
+        });
+    }
   };
 
   render() {
@@ -60,26 +64,28 @@ class AttachFile extends PureComponent {
 
     return (
       <div className="attach-file_wrapper">
-        <RaisedButton
-          containerElement="label"
-          label="Attach"
-          icon={<AttachImg />}
-          primary
-        >
-          <input
-            type="file"
-            id="attached-file"
-            onChange={this.getName}
+        <form encType="multipart/form-data">
+          <RaisedButton
+            containerElement="label"
+            label="Attach"
+            icon={<AttachImg />}
+            primary
+          >
+            <input
+              type="file"
+              id="attached-file"
+              onChange={this.getName}
+            />
+          </RaisedButton>
+          <span>
+            {fileName}
+          </span> <br />
+          <RaisedButton
+            label="Save"
+            primary
+            onClick={this.uploadFile}
           />
-        </RaisedButton>
-        <span>
-          {fileName}
-        </span>
-        <RaisedButton
-          label="Save"
-          primary
-          onClick={this.uploadFile}
-        />
+        </form>
       </div>
     );
   }
