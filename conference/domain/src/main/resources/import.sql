@@ -137,11 +137,11 @@ INSERT INTO talk VALUES (3, 'Additional info', 'Description','',null,'DRAFT', '2
 INSERT INTO talk VALUES (4, 'Additional info', 'Description','',null,'NOT_ACCEPTED', '2016-12-31 23:54:00', 'talk #4', 3, 1, 1, null, 2, 1, 1);
 INSERT INTO talk VALUES (5, 'Additional info', 'Description','',null,'ACCEPTED', '2016-12-31 23:55:00', 'talk #5', 3, 1, 1, null, 3, 1, 1);
 INSERT INTO talk VALUES (6, 'Additional info', 'Description','',null,'DRAFT', '2016-12-31 23:16:00', 'talk #6', 2, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (7, 'Additional info', 'Description','',null,'DRAFT', '2016-12-31 23:36:00', 'talk #7', 1, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (7, 'Additional info', 'Description','',null,'DRAFT', '2016-12-31 23:36:00', 'talk #7', 1, 1, 1, null, 4, 1, 2);
 INSERT INTO talk VALUES (8, 'Additional info', 'Description','',null,'PENDING', '2016-12-31 23:26:00', 'talk #8', 3, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (9, 'Additional info', 'Description','',null,'NOT_ACCEPTED', '2016-12-31 20:56:00', 'talk #9', 6, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (10, 'Additional info', 'Description','',null,'DRAFT', '2016-12-31 21:56:00', 'talk #10', 3, 1, 1, null, 4, 1, 1);
-INSERT INTO talk VALUES (11, 'Additional info', 'Description','',null,'PENDING', '2016-12-31 22:56:00', 'talk #11', 1, 1, 1, null, 4, 1, 1);
+INSERT INTO talk VALUES (11, 'Additional info', 'Description','',null,'PENDING', '2016-12-31 22:56:00', 'talk #11', 1, 1, 1, null, 4, 1, 2);
 INSERT INTO talk VALUES (12, 'Additional info', 'Description','',null,'NOT_ACCEPTED', '2015-12-31 23:51:07', 'talk #12', 2, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (13, 'Additional info', 'Description','',null,'NOT_ACCEPTED', '2016-10-31 23:32:00', 'talk #13', 3, 1, 1, null, 4, 1, 1);
 INSERT INTO talk VALUES (14, 'Additional info', 'Description','',null,'DRAFT', '2016-01-31 23:54:13', 'talk #14', 3, 1, 1, null, 4, 1, 1);
