@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -45,11 +46,23 @@ class UpdateTalk extends PureComponent {
       });
       this.setDefaultValues();
     });
+
+    this.getTalkFile(this.props.talk.id);
   }
 
   setDefaultValues = () => {
     this.setState(this.props.talk);
   }
+
+  getTalkFile = (id) => {
+    axios.get(`/talk/${id}/takeFileName`)
+      .then((file) => {
+        this.setState(prevState => ({
+          ...prevState,
+          file,
+        }));
+      });
+  };
 
   topicChange = (event, index, value) => this.setState({ topic: value });
   typeChange = (event, index, value) => this.setState({ type: value });
@@ -215,6 +228,7 @@ UpdateTalk.defaultProps = {
 UpdateTalk.propTypes = {
   close: PropTypes.func.isRequired,
   talk: PropTypes.shape({
+    id: PropTypes.number,
     title: PropTypes.string,
     description: PropTypes.string,
     topic: PropTypes.string,

@@ -14,20 +14,6 @@ class AttachFile extends PureComponent {
     };
   }
 
-  componentDidMount() {
-    this.getTalkFile(this.props.talk.id);
-  }
-
-  getTalkFile = (id) => {
-    axios.get(`/talk/${id}/takeFileName`)
-      .then((file) => {
-        this.setState(prevState => ({
-          ...prevState,
-          file,
-        }));
-      });
-  };
-
   getName = (e) => {
     e.preventDefault();
 
@@ -48,6 +34,7 @@ class AttachFile extends PureComponent {
     const fileData = new FormData();
     fileData.append('file', attachedFile);
     console.log(fileData);
+
     if (attachedFileBtn.files.length > 0) {
       axios.post(`/talk/${id}/uploadFile`, fileData)
         .then((res) => {
@@ -73,6 +60,7 @@ class AttachFile extends PureComponent {
           >
             <input
               type="file"
+              name="file"
               id="attached-file"
               onChange={this.getName}
             />
