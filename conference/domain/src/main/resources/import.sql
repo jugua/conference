@@ -2,8 +2,6 @@
 -- Inserting necessary data into table `role`
 --
 
-INSERT INTO role VALUES (1, 'ROLE_SPEAKER');
-INSERT INTO role VALUES (2, 'ROLE_ORGANISER');
 INSERT INTO role VALUES (3, 'ROLE_ADMIN');
 INSERT INTO role VALUES (4, 'ROLE_USER');
 
@@ -60,7 +58,7 @@ INSERT INTO `user` (`id`, `email`, `first_name`, `last_name`, `password`, `statu
 INSERT INTO user_info VALUES (1, 'Additional info', 'EPAM', 'Jun', 'Past conference', 'Short bio',1);
 
 
-INSERT INTO user_role VALUES (1, 1);
+INSERT INTO user_role VALUES (1, 4);
 
 INSERT INTO contact VALUES (1, 1, 'linkedin.com', 1);
 INSERT INTO contact VALUES (2, 1, 'twitter.com', 2);
@@ -77,7 +75,7 @@ INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUE
 INSERT INTO user_info (`id`, company, job_title, short_bio, user_id) VALUES (2, '', '', '',2);
 
 
-INSERT INTO user_role VALUES (2, 1);
+INSERT INTO user_role VALUES (2, 4);
 
 --
 -- Setting default user with role ORGANIZER with only registration fields
@@ -89,7 +87,7 @@ INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUE
 INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (3, '', '', '',3);
 
 
-INSERT INTO user_role VALUES (3, 2);
+INSERT INTO user_role VALUES (3, 4);
 
 --
 -- Setting default user with role ORGANIZER with only registration fields
@@ -100,7 +98,7 @@ INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUE
 
 INSERT INTO user_info (`id`, company, job_title, short_bio, user_id)  VALUES (4, '', '', '', 4);
 
-INSERT INTO user_role VALUES (4, 2);
+INSERT INTO user_role VALUES (4, 4);
 
 --
 -- Insert organiser-admin
