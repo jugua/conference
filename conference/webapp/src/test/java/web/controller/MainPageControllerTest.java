@@ -15,6 +15,7 @@ import java.util.List;
 import javax.servlet.Filter;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,20 +107,6 @@ public class MainPageControllerTest extends TestUtil {
     public void getUpcomingConferencesUnauthorized() throws Exception {
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
                 andExpect(status().isOk());
-    }
-
-    @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ADMIN_ROLE)
-    public void getUpcomingConferencesWithNoTalks() throws Exception {
-        when(conferenceService.findUpcoming()).thenReturn(conferencesDto);
-        when(conferenceService.findPastBasic()).thenReturn(conferenceDtoBasics);
-
-        mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
-                andExpect(status().isOk()).
-                andExpect(jsonPath("$[0].new", is(0))).
-                andExpect(jsonPath("$[0].approved", is(0))).
-                andExpect(jsonPath("$[0].in-progress", is(0))).
-                andExpect(jsonPath("$[0].rejected", is(0)));
     }
 
     @Test
