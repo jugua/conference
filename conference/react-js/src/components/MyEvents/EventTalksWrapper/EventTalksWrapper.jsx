@@ -31,9 +31,6 @@ getUserInfo = (id) => {
       this.setState({
         speaker: res.data,
       });
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };
 
