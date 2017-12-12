@@ -238,7 +238,6 @@ public class TalkServiceImpl implements TalkService {
 				.status(talk.getStatus().getName())
 				.date(talk.getTime().toString())
 				.comment(talk.getOrganiserComment())
-				.file(getFile(talk.getPathToAttachedFile()))
 				.startDate(startDate)
 				.endDate(endDate)
 				.cfpStartDate(cfpStartDate)
@@ -322,14 +321,4 @@ public class TalkServiceImpl implements TalkService {
 		return true;
 	}
 
-    private InputStreamResource getFile(String path) {
-		InputStreamResource file = null;
-		try {
-			file = new InputStreamResource(new FileInputStream(path));
-		} catch (Exception e) {
-			log.info(e);
-		}
-		return file;
-    
-    }
 }

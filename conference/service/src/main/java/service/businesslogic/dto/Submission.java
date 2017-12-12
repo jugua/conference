@@ -65,8 +65,6 @@ public class Submission {
 
     private String assignee;
 
-    private InputStreamResource file;
-
     private String startDate;
     
 	private String endDate;
