@@ -28,6 +28,7 @@ class UpdateTalk extends PureComponent {
       lang: '',
       level: '',
       addon: '',
+      file: '',
     };
   }
 
@@ -89,6 +90,7 @@ class UpdateTalk extends PureComponent {
       level,
       description,
       addon,
+      file,
       listOfTopics,
       listOfTypes,
       listOfLangLevels,
@@ -214,7 +216,7 @@ class UpdateTalk extends PureComponent {
           onChange={this.addonChange}
         />
 
-        <AttachFile talk={this.props.talk} />
+        <AttachFile fileName={file} talk={this.props.talk} />
 
       </div>
     );

@@ -9,8 +9,7 @@ class AttachFile extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fileName: '',
-      file: null,
+      fileNameToSave: '',
     };
   }
 
@@ -19,7 +18,7 @@ class AttachFile extends PureComponent {
 
     const file = e.target.files[0];
     this.setState({
-      fileName: file.name,
+      fileNameToSave: file.name,
     });
   };
 
@@ -47,7 +46,8 @@ class AttachFile extends PureComponent {
   };
 
   render() {
-    const { fileName } = this.state;
+    const { fileNameToSave } = this.state;
+    const { fileName } = this.props;
 
     return (
       <div className="attach-file_wrapper">
@@ -66,7 +66,7 @@ class AttachFile extends PureComponent {
             />
           </RaisedButton>
           <span>
-            {fileName}
+            {fileNameToSave}
           </span> <br />
           <RaisedButton
             label="Save"
@@ -74,15 +74,21 @@ class AttachFile extends PureComponent {
             onClick={this.uploadFile}
           />
         </form>
+        <span> {fileName} </span>
       </div>
     );
   }
 }
 
+AttachFile.defaultProps = {
+  fileName: '',
+};
+
 AttachFile.propTypes = {
   talk: PropTypes.shape({
     id: PropTypes.number.isRequired,
   }).isRequired,
+  fileName: PropTypes.string,
 };
 
 export default AttachFile;
