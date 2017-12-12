@@ -188,7 +188,7 @@ public class TalkControllerTest extends TestUtil {
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void testSuccessfulGetTalkByIdAsOrganiser() throws Exception {
         correctTalkDto.setAssignee(organiserUser.getFullName());
-
+        when(userService.isTalkOrganiser(Mockito.anyString(),anyLong())).thenReturn(true);
         when(talkService.findById((anyLong()))).thenReturn(correctTalkDto);
 
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1))
@@ -218,8 +218,7 @@ public class TalkControllerTest extends TestUtil {
     @Test
     public void testUnauthorizedErrorGetTalkById() throws Exception {
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1))
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
+                .andExpect(status().isUnauthorized());
     }
 
     /**
@@ -230,6 +229,7 @@ public class TalkControllerTest extends TestUtil {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
     public void testTalkNotFoundExceptionGetTalkById() throws Exception {
+    	when(userService.isTalkOrganiser(Mockito.anyString(),anyLong())).thenReturn(true);
         when(talkService.findById(anyLong())).thenThrow(new TalkNotFoundException());
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1)).
                 andExpect(status().isNotFound())
