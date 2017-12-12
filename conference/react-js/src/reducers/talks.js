@@ -9,7 +9,7 @@ const talks = (state = [], action) => {
     return payload;
   } else if (type === APPLY_FILTERS) {
     const {
-      filter: { conferenceName, title, status },
+      filter: { name, title, topic, status },
       talks: listOfTalks,
       quantity,
       page,
@@ -17,11 +17,15 @@ const talks = (state = [], action) => {
     const prevValue = (page - 1) * quantity;
     const lastValue = page * quantity;
     const filtered = (elementOfListTopic) => {
-      const countConference = elementOfListTopic.conferenceName
-        .indexOf(conferenceName);
-      const countTitle = elementOfListTopic.title.indexOf(title);
-      const countStatus = elementOfListTopic.status.indexOf(status);
-      return countConference > -1 && countTitle > -1 && countStatus > -1;
+      const countName = elementOfListTopic.name.toLowerCase()
+        .includes(name.toLowerCase());
+      const countTitle = elementOfListTopic.title.toLowerCase()
+        .includes(title.toLowerCase());
+      const countTopic = elementOfListTopic.topic.toLowerCase()
+        .includes(topic.toLowerCase());
+      const countStatus = elementOfListTopic.status.toLowerCase()
+        .includes(status.toLowerCase());
+      return countName && countTitle && countStatus && countTopic;
     };
     return listOfTalks.filter(filtered).slice(prevValue, lastValue);
   } else if (type === SORT_ALL_TALKS) {

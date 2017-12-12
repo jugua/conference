@@ -1,4 +1,4 @@
-export const root = '/react/';
+export const root = '/';
 
 export const upcoming = root;
 export const past = `${root}past`;
