@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import AttachImg from 'material-ui/svg-icons/editor/attach-file';
+import Chip from 'material-ui/Chip';
 
 class AttachFile extends PureComponent {
   constructor(props) {
@@ -19,6 +20,15 @@ class AttachFile extends PureComponent {
     const file = e.target.files[0];
     this.setState({
       fileNameToSave: file.name,
+    });
+  };
+
+  handleRequestDelete = () => {
+    const file = document.querySelector('#attached-file');
+    file.value = '';
+
+    this.setState({
+      fileNameToSave: '',
     });
   };
 
@@ -65,9 +75,14 @@ class AttachFile extends PureComponent {
               onChange={this.getName}
             />
           </RaisedButton>
-          <span>
-            {fileNameToSave}
-          </span> <br />
+          { fileNameToSave !== '' ?
+            <Chip
+              onRequestDelete={this.handleRequestDelete}
+            >
+              {fileNameToSave}
+            </Chip>
+            : null
+          }
           <RaisedButton
             label="Save"
             primary
