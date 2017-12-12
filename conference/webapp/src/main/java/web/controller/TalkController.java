@@ -144,7 +144,7 @@ public class TalkController {
     public ResponseEntity<List<TalkStatusDto>> getTalksStatus() {
         List<TalkStatusDto> talksStatus = Arrays.asList(TalkStatus.values())
         										.stream()
-        										.map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()),m.name()))
+        										.map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()),m.getName()))
         										.collect(Collectors.toList());
         return new ResponseEntity<>(talksStatus, HttpStatus.OK);
     }
