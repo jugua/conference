@@ -29,8 +29,11 @@ class Talks extends Component {
   }
 
   componentDidMount() {
+    const { LOAD, LOAD_STATUS_LIST } = action;
+
     axios.get(talksStatus)
       .then(({ data }) => {
+        this.props.load(LOAD_STATUS_LIST, data);
         this.setState({ status: data });
       });
 
@@ -38,8 +41,6 @@ class Talks extends Component {
       .then(({ data }) => {
         this.setState({ listOfTopics: data });
       });
-
-    const { LOAD } = action;
 
     const url = this.props.url || talk;
     axios.get(url)
@@ -170,13 +171,12 @@ class Talks extends Component {
 
   render() {
     const {
-      status,
       listOfTopics,
       quantityTalks,
       currentPage,
       quantityAllPages,
     } = this.state;
-    const { talks, columns, onClick } = this.props;
+    const { talks, columns, onClick, status } = this.props;
     return (
       <div
         className="tabs-container"
@@ -212,6 +212,7 @@ class Talks extends Component {
 Talks.propTypes = {
   load: PropTypes.func.isRequired,
   talks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  status: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   columns: PropTypes.arrayOf(PropTypes.string),
   onClick: PropTypes.func,
   url: PropTypes.string,
@@ -231,9 +232,9 @@ Talks.defaultProps = {
   onClick() {},
 };
 
-const mapStateToProps = ({ talks }) => (
+const mapStateToProps = ({ talks, status }) => (
   {
-    talks
+    talks, status,
   });
 
 const mapDispatchToProps = dispatch => ({
