@@ -144,7 +144,7 @@ public class TalkController {
     public ResponseEntity<List<TalkStatusDto>> getTalksStatus() {
         List<TalkStatusDto> talksStatus = Arrays.asList(TalkStatus.values())
         										.stream()
-        										.map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()),m.name()))
+        										.map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()),m.getName()))
         										.collect(Collectors.toList());
         return new ResponseEntity<>(talksStatus, HttpStatus.OK);
     }
@@ -158,11 +158,16 @@ public class TalkController {
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ORGANISER')")
     @GetMapping("/talk/{talkId}")
-    public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId) {
-        TalkDto talkDto = talkService.findById(talkId);
-        return new ResponseEntity<>(talkDto, HttpStatus.OK);
+    public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
+    	String userMail = request.getRemoteUser();
+    	boolean isTalkOrganiser = userService.isTalkOrganiser(userMail, talkId);
+    	if(isTalkOrganiser) {
+    		TalkDto talkDto = talkService.findById(talkId);
+            return new ResponseEntity<>(talkDto, HttpStatus.OK);
+    	}
+    	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -132,7 +132,7 @@ public class TalkServiceImpl implements TalkService {
 		Talk talk = talkRepository.findById(talkStatusDto.getId());
 		String status = talkStatusDto.getStatus();
 		if (talk != null && isCorrectStatus(status)) {
-			talk.setStatus(TalkStatus.valueOf(status));
+			talk.setStatus(TalkStatus.getStatusByName(status));
 			talkRepository.save(talk);
 		}
 	}
@@ -238,7 +238,6 @@ public class TalkServiceImpl implements TalkService {
 				.status(talk.getStatus().getName())
 				.date(talk.getTime().toString())
 				.comment(talk.getOrganiserComment())
-				.file(getFile(talk.getPathToAttachedFile()))
 				.startDate(startDate)
 				.endDate(endDate)
 				.cfpStartDate(cfpStartDate)
@@ -314,22 +313,10 @@ public class TalkServiceImpl implements TalkService {
     }
     
     private boolean isCorrectStatus(String status) {
-		try {
-			TalkStatus.valueOf(status);
-		} catch (IllegalArgumentException e) {
+		if(TalkStatus.getStatusByName(status) == null) {
 			return false;
 		}
 		return true;
 	}
 
-    private InputStreamResource getFile(String path) {
-		InputStreamResource file = null;
-		try {
-			file = new InputStreamResource(new FileInputStream(path));
-		} catch (Exception e) {
-			log.info(e);
-		}
-		return file;
-    
-    }
 }

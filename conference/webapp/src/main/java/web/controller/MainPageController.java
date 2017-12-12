@@ -30,6 +30,7 @@ import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.ConferenceDto;
+import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
 import service.businesslogic.dto.CreateTopicDto;
 import service.businesslogic.dto.CreateTypeDto;
@@ -49,18 +50,12 @@ public class MainPageController {
 
     @GetMapping("conference/upcoming")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity upcomingConferences(HttpServletRequest request) {
-        if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
-            return ok(conferenceService.findUpcoming());
-        }
+    public ResponseEntity<List<ConferenceDtoBasic>> upcomingConferences(HttpServletRequest request) {
         return ok(conferenceService.findUpcomingBasic());
     }
 
     @GetMapping("conference/past")
-    public ResponseEntity pastConferences(HttpServletRequest request) {
-        if (request.isUserInRole(Role.ADMIN) || request.isUserInRole(Role.ORGANISER)) {
-            return ok(conferenceService.findPast());
-        }
+    public ResponseEntity<List<ConferenceDtoBasic>> pastConferences(HttpServletRequest request) {
         return ok(conferenceService.findPastBasic());
     }
 
