@@ -132,7 +132,7 @@ public class TalkServiceImpl implements TalkService {
 		Talk talk = talkRepository.findById(talkStatusDto.getId());
 		String status = talkStatusDto.getStatus();
 		if (talk != null && isCorrectStatus(status)) {
-			talk.setStatus(TalkStatus.valueOf(status));
+			talk.setStatus(TalkStatus.getStatusByName(status));
 			talkRepository.save(talk);
 		}
 	}
@@ -314,9 +314,7 @@ public class TalkServiceImpl implements TalkService {
     }
     
     private boolean isCorrectStatus(String status) {
-		try {
-			TalkStatus.valueOf(status);
-		} catch (IllegalArgumentException e) {
+		if(TalkStatus.getStatusByName(status) == null) {
 			return false;
 		}
 		return true;
