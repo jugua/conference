@@ -3,6 +3,7 @@ package service.businesslogic.api;
 import java.util.List;
 
 import domain.model.User;
+import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.dto.UserBasicDto;
 import service.businesslogic.dto.UserInfoDto;
@@ -42,5 +43,9 @@ public interface UserService {
     UserInfoDto getUserDtoById(Long userId);
 
     List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles);
+    
+    void inviteUser(InviteDto invite);
+
+	boolean isTalkOrganiser(String userMail, Long talkId);
 
 }

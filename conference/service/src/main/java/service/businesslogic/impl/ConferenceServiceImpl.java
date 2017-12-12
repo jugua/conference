@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -122,6 +123,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
         conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
         conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
+        conferenceDto.setNotificationDue(convertDateToString(conference.getNotificationDue()));
         if (conference.getTalks() != null) {
             Map<String, Integer> talks = new HashMap<>();
             for (Talk talk : conference.getTalks()) {
@@ -133,10 +135,10 @@ public class ConferenceServiceImpl implements ConferenceService {
                 talks.put(status, ++count);
             }
 
-            conferenceDto.setNewTalkCount(talks.get(TalkStatus.NEW.getName()));
-            conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.APPROVED.getName()));
-            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.REJECTED.getName()));
-            conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.IN_PROGRESS.getName()));
+            conferenceDto.setNewTalkCount(talks.get(TalkStatus.DRAFT.getName()));
+            conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.ACCEPTED.getName()));
+            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.NOT_ACCEPTED.getName()));
+            conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.PENDING.getName()));
         }
         return conferenceDto;
     }
@@ -172,4 +174,9 @@ public class ConferenceServiceImpl implements ConferenceService {
             }
         }
     }
+
+	@Override
+	public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
+		return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
+	}
 }

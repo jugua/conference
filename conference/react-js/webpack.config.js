@@ -154,5 +154,5 @@ module.exports = {
     compress: true,
     port: 7070,
     hot: true,
-  },
+  }
 };

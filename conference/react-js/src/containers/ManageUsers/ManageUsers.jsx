@@ -7,6 +7,8 @@ import loadData from '../../actions/load';
 import actions from '../../constants/actions-types';
 import { rolesUI } from '../../constants/roles';
 import { allUsers } from '../../constants/backend-url';
+import AddNewOrganizer
+  from '../../components/AddNewOrganizer/AddNewOrganizer';
 
 class ManageUser extends PureComponent {
   componentDidMount() {
@@ -17,16 +19,16 @@ class ManageUser extends PureComponent {
   }
 
   ShowListUsers = data => (
-    data.map(({ fname, roles: [roles], mail }) => (
-      <div className="data-table__row" key={mail}>
+    data.map(({ firstName, role, email }) => (
+      <div className="data-table__row" key={email}>
         <div className="data-table__column data-table__column_role">
-          {[rolesUI[roles]]}
+          {rolesUI[role]}
         </div>
         <div className="data-table__column data-table__column_name">
-          {fname}
+          {firstName}
         </div>
         <div className="data-table__column data-table__column_email">
-          {mail}
+          {email}
         </div>
       </div>
     ))
@@ -36,11 +38,7 @@ class ManageUser extends PureComponent {
     const { users } = this.props;
     return (
       <div className="tabs-container">
-        <div className="my-talks__header">
-          <button className="btn my-talks__button">
-            Add New User
-          </button>
-        </div>
+        <AddNewOrganizer />
         <div className="data-table">
           <div className="table-header">
             <div className="table-header__item table-header__item_role">

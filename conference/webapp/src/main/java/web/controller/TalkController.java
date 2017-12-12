@@ -45,8 +45,10 @@ import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.CommentDto;
+import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.TalkDto;
+import service.businesslogic.dto.TalkStatusDto;
 import service.businesslogic.exception.ResourceNotFoundException;
 import service.businesslogic.exception.TalkValidationException;
 import service.infrastructure.fileStorage.FileStorageService;
@@ -139,20 +141,20 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk/talksStatus")
-    public ResponseEntity<List<String>> getTalksStatus() {
-        List<String> talksStatus = Arrays.asList(TalkStatus.values()).stream().map(m -> m.getName()).collect(Collectors.toList());
+    public ResponseEntity<List<TalkStatusDto>> getTalksStatus() {
+        List<TalkStatusDto> talksStatus = Arrays.asList(TalkStatus.values())
+        										.stream()
+        										.map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()),m.name()))
+        										.collect(Collectors.toList());
         return new ResponseEntity<>(talksStatus, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk")
-    public ResponseEntity<List<TalkDto>> getTalks(HttpServletRequest request) {
-        List<TalkDto> userTalkDtoList;
-        if (request.isUserInRole(ORGANISER)) {
-            userTalkDtoList = talkService.getTalksForOrganiser();
-        } else {
-            userTalkDtoList = talkService.getTalksForSpeaker(request.getRemoteUser());
-        }
+    public ResponseEntity<List<Submission>> getSumbissions(HttpServletRequest request) {
+        List<Submission> userTalkDtoList = talkService.getSumbissions(request.getRemoteUser());
+        System.out.println(userTalkDtoList);
+        
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
     }
 
@@ -163,6 +165,25 @@ public class TalkController {
         return new ResponseEntity<>(talkDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/talk")
+    public ResponseEntity<MessageDto> updateTalkStatus(@RequestBody TalkStatusDto dto,
+    									   			   BindingResult bindingResult,
+    									   			   HttpServletRequest request){
+    	String userMail = request.getRemoteUser();
+		MessageDto message = new MessageDto();
+    	if(bindingResult.hasFieldErrors()) {
+			message.setError("fields_error");
+			return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+		}
+    	if(userService.isTalkOrganiser(userMail,dto.getId())) {
+        	talkService.updateStatus(dto);
+        	message.setResult("successfully_updated");
+        	return new ResponseEntity<>(message,HttpStatus.OK);
+        } 
+    	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/talk/{id}")
     public ResponseEntity<MessageDto> updateTalk(@PathVariable("id") Long talkId,

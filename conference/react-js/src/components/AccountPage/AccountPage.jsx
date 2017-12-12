@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
-import classNames from 'classnames'; import axios from 'axios';
-import { myInfo } from '../../constants/backend-url';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 import SettingsPage from '../Settings/SettingsPage/SettingsPage';
 import MyInfo from '../MyInfo/MyInfo';
 import MyContactsContainer from '../MyContactsContainer/MyContactsContainer';
+import getUserInfo from '../../actions/getUserInfo';
+import changeUserInfo from '../../actions/changeUserInfo';
+import defaultUserShape from '../../constants/default-user';
 
 const tabsList = [
   {
@@ -39,26 +43,23 @@ class AccountPage extends PureComponent {
   }
 
   componentDidMount() {
-    this.updateMyInfo();
-  }
-
-  updateMyInfo = () => {
-    axios.get(myInfo)
-      .then(({ data }) => {
-        this.setState({
-          user: data,
-        });
-      });
+    this.props.getUser();
   }
 
   changeTab = ({ target: { dataset: { index } } }) => {
     this.setState({
       currentTabIndex: +index,
     });
-  }
+  };
+
+  editUser = (updatedUser) => {
+    const { editUser, userKeys } = this.props;
+    editUser(updatedUser, userKeys);
+  };
 
   render() {
     const { currentTabIndex } = this.state;
+    const { user } = this.props;
     const CurrentComponent = getTabById(tabsList, currentTabIndex).component;
 
     return (
@@ -85,8 +86,8 @@ class AccountPage extends PureComponent {
         </ul>
         <div className="tabs-container">
           <CurrentComponent
-            user={this.state.user}
-            updateInfo={this.updateMyInfo}
+            user={user}
+            editUser={this.editUser}
           />
         </div>
       </div>
@@ -94,4 +95,23 @@ class AccountPage extends PureComponent {
   }
 }
 
-export default AccountPage;
+AccountPage.propTypes = {
+  getUser: PropTypes.func.isRequired,
+  editUser: PropTypes.func.isRequired,
+  user: PropTypes.shape(defaultUserShape).isRequired,
+  userKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+const mapStateToProps = ({ user, userKeys }) => ({ user, userKeys });
+
+const mapDispatchToProps = dispatch => ({
+  getUser: () => dispatch(getUserInfo),
+  editUser: (updatedUser, userKeys) => (
+    dispatch(changeUserInfo(updatedUser, userKeys))
+  ),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountPage);

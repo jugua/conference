@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import domain.model.Role;
@@ -17,6 +18,7 @@ import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.UserService;
+import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
@@ -49,7 +51,13 @@ public class RegistrationController {
     public void confirmationProcess() {
 
     }
-
+    
+    @PostMapping("/invitation")
+    public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite){
+    	userService.inviteUser(invite);
+    	return new ResponseEntity<MessageDto>(HttpStatus.OK);
+    }
+    
 
     private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
         HttpStatus status;

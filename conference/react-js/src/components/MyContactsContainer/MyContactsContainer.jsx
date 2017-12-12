@@ -7,7 +7,7 @@ class MyContactsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      arr: [],
+      contacts: [],
     };
   }
   componentDidMount() {
@@ -17,7 +17,7 @@ class MyContactsContainer extends Component {
     const contactsURL = `/user/${this.props.user.id}/contacts`;
     axios.get(contactsURL)
       .then((data) => {
-        this.setState({ arr: data.data });
+        this.setState({ contacts: data.data });
       });
   };
 
@@ -42,17 +42,19 @@ class MyContactsContainer extends Component {
   // };
 
   handleInput = (e, i) => {
-    const items = this.state.arr;
+    const items = this.state.contacts;
     items[i - 1].value = e.target.value;
     this.setState({
-      arr: [...this.state.arr, ...this.state.arr[i - 1], { value: e.target.value }],
+      contacts: [...this.state.contacts, ...this.state.contacts[i - 1], { value: e.target.value }],
     });
   };
 
-  renderElement = arr => arr.map(({ id, value }) => (
+  renderElement = contacts => contacts.map(({ id, value, contactType: { name } }) => (
     <InputBlock
       key={id}
-      label="name"
+      id={name}
+      htmlFor={name}
+      label={name}
       labelClass="form-label"
       inputClass="sign-up__field"
       value={value}
@@ -67,7 +69,7 @@ class MyContactsContainer extends Component {
         <form
           className="sign-up"
         >
-          {this.renderElement(this.state.arr)}
+          {this.renderElement(this.state.contacts)}
         </form>
       </div>
     );
