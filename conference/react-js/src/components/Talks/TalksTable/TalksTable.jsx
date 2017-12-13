@@ -32,7 +32,7 @@ const renderTalksHeader = columns => (
           data-name="conferenceName"
           className="table-header__item"
         >
-            Event
+            Event Name
         </TableHeaderColumn>
       );
     case 'eventDate':

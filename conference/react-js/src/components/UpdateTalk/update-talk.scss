@@ -29,3 +29,16 @@
 		width: 165px !important;
 	}
 }
+
+.attach-file {
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: inherit;
+    color: $medium-grey;
+  }
+
+  &__form {
+    margin-top: 20px;
+  }
+}
