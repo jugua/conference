@@ -52,16 +52,13 @@ class AttachFile extends PureComponent {
     const { id } = this.props.talk;
     const attachedFileBtn = document.querySelector('#attached-file');
     const attachedFile = attachedFileBtn.files[0];
-    console.log(attachedFile);
 
     const fileData = new FormData();
     fileData.append('file', attachedFile);
-    console.log(fileData);
 
     if (attachedFileBtn.files.length > 0) {
       axios.post(`/talk/${id}/uploadFile`, fileData)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           this.handleRequestDelete();
           this.getTalkFileName(id);
         });
