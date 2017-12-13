@@ -10,16 +10,30 @@ class AttachFile extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fileNameToSave: '',
+      fileToSave: '',
+      fileName: '',
     };
   }
+
+  componentDidMount() {
+    this.getTalkFileName(this.props.talk.id);
+  }
+
+  getTalkFileName = (id) => {
+    axios.get(`/talk/${id}/takeFileName`)
+      .then(({ data }) => {
+        this.setState({
+          fileName: data.fileName,
+        });
+      });
+  };
 
   getName = (e) => {
     e.preventDefault();
 
     const file = e.target.files[0];
     this.setState({
-      fileNameToSave: file.name,
+      fileToSave: file.name,
     });
   };
 
@@ -28,7 +42,7 @@ class AttachFile extends PureComponent {
     file.value = '';
 
     this.setState({
-      fileNameToSave: '',
+      fileToSave: '',
     });
   };
 
@@ -48,20 +62,25 @@ class AttachFile extends PureComponent {
       axios.post(`/talk/${id}/uploadFile`, fileData)
         .then((res) => {
           console.log(res);
-          this.setState({
-            file: attachedFile,
-          });
+          this.handleRequestDelete();
+          this.getTalkFileName(id);
         });
     }
   };
 
   render() {
-    const { fileNameToSave } = this.state;
-    const { fileName } = this.props;
+    const { fileToSave, fileName } = this.state;
 
     return (
       <div className="attach-file_wrapper">
-        <form encType="multipart/form-data">
+        <h1 className="attach-file__title">Attached file</h1>
+        <Chip>
+          {fileName}
+        </Chip>
+        <form
+          encType="multipart/form-data"
+          className="attach-file__form"
+        >
           <RaisedButton
             containerElement="label"
             label="Attach"
@@ -75,35 +94,31 @@ class AttachFile extends PureComponent {
               onChange={this.getName}
             />
           </RaisedButton>
-          { fileNameToSave !== '' ?
-            <Chip
-              onRequestDelete={this.handleRequestDelete}
-            >
-              {fileNameToSave}
-            </Chip>
+          { fileToSave !== '' ?
+            <div>
+              <Chip
+                onRequestDelete={this.handleRequestDelete}
+              >
+                {fileToSave}
+              </Chip>
+              <RaisedButton
+                label="Save"
+                primary
+                onClick={this.uploadFile}
+              />
+            </div>
             : null
           }
-          <RaisedButton
-            label="Save"
-            primary
-            onClick={this.uploadFile}
-          />
         </form>
-        <span> {fileName} </span>
       </div>
     );
   }
 }
 
-AttachFile.defaultProps = {
-  fileName: '',
-};
-
 AttachFile.propTypes = {
   talk: PropTypes.shape({
     id: PropTypes.number.isRequired,
   }).isRequired,
-  fileName: PropTypes.string,
 };
 
 export default AttachFile;

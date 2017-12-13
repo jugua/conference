@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -28,7 +27,6 @@ class UpdateTalk extends PureComponent {
       lang: '',
       level: '',
       addon: '',
-      file: '',
     };
   }
 
@@ -47,23 +45,11 @@ class UpdateTalk extends PureComponent {
       });
       this.setDefaultValues();
     });
-
-    this.getTalkFile(this.props.talk.id);
   }
 
   setDefaultValues = () => {
     this.setState(this.props.talk);
   }
-
-  getTalkFile = (id) => {
-    axios.get(`/talk/${id}/takeFileName`)
-      .then((file) => {
-        this.setState(prevState => ({
-          ...prevState,
-          file,
-        }));
-      });
-  };
 
   topicChange = (event, index, value) => this.setState({ topic: value });
   typeChange = (event, index, value) => this.setState({ type: value });
@@ -90,7 +76,6 @@ class UpdateTalk extends PureComponent {
       level,
       description,
       addon,
-      file,
       listOfTopics,
       listOfTypes,
       listOfLangLevels,
@@ -216,7 +201,7 @@ class UpdateTalk extends PureComponent {
           onChange={this.addonChange}
         />
 
-        <AttachFile fileName={file} talk={this.props.talk} />
+        <AttachFile talk={this.props.talk} />
 
       </div>
     );
