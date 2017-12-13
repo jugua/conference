@@ -13,7 +13,6 @@ const ForgotPasswordMessage = () => (
       link.
     </p>
     <Link
-
       className="btn pop-up__button"
       to={root}
     >
