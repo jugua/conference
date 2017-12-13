@@ -89,7 +89,7 @@ class MyInfo extends Component {
   requiredInput = (e) => {
     const inputName = e.target.name;
     const errorMsg = document.querySelector(`span[data-requiredInput=${inputName}]`);
-    if (e.target.value === '' || e.target.value === ' ') {
+    if (!e.target.value.trim()) {
       errorMsg.style.visibility = 'visible';
       this.setState({
         ...this.state,

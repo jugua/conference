@@ -47,8 +47,6 @@ getUserInfo = (id) => {
         isOpened: 1,
       });
       this.getUserInfo(+speakerId);
-    } else if (!speakerId || !talkId || isNaN(rowId) || isNaN(colId)) {
-      return null;
     }
     return null;
   };
