@@ -85,7 +85,11 @@ const renderTalksList = (data, columns) => (
     case 'name':
       return (
         <TableRowColumn key={col}>
-          <a className="link">{data.name}</a>
+          <a
+            className="link"
+            data-speaker-id={data.speakerId}
+          >
+            {data.name}</a>
         </TableRowColumn>
       );
     case 'title':

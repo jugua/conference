@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MyTalks from '../../../components/MyTalks/MyTalks';
 import UpdateTalk from '../../../components/UpdateTalk/UpdateTalk';
-import SlideBlock from '../../../components/SlideBlock';
+import SlideBlock from '../../../components/SlideBlock/SlideBlock';
 
 class TalksWrapper extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isUpdateTalk: false,
+      isOpened: 0,
       talk: null,
     };
   }
@@ -22,22 +22,22 @@ class TalksWrapper extends PureComponent {
     if (!talkId || isNaN(rowId) || isNaN(colId)) return;
 
     this.setState({
-      isUpdateTalk: true,
+      isOpened: 1,
       talk: this.getTalkById(this.props.talks, +talkId),
     });
   };
 
   closeUpdateTalk = () => {
     this.setState({
-      isUpdateTalk: false,
+      isOpened: 0,
       talk: null,
     });
   };
 
   render() {
-    const { isUpdateTalk, talk } = this.state;
+    const { talk, isOpened } = this.state;
     return (
-      <SlideBlock isOpened={isUpdateTalk}>
+      <SlideBlock isOpened={isOpened}>
         <MyTalks onClick={this.showUpdateTalk} />
         <UpdateTalk talk={talk} close={this.closeUpdateTalk} />
       </SlideBlock>

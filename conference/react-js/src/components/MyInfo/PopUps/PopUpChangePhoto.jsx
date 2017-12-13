@@ -11,7 +11,8 @@ class PopUpChangePhoto extends PureComponent {
       changeProfilePhoto,
       uploadPhotoToDB,
       photoIsSelected,
-      photoUpdateIsSuccessful } = this.props;
+      photoUpdateIsSuccessful,
+    } = this.props;
     return (
       <div>
         <ReactModal

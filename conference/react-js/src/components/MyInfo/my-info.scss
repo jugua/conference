@@ -58,6 +58,11 @@
     margin: 5px 5px 0 0;
     z-index: 1;
   }
+
+  &__required-message {
+    visibility: hidden;
+    color: red;
+  }
 }
 .textarea-focus {
   height: 147px;
@@ -108,6 +113,21 @@ input[type="file"] {
 .internal-wrapper {
   display: flex;
   justify-content: space-around;
+}
+
+.input-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 22px;
+}
+
+.input-required {
+  width: 45%;
+
+  &__bio {
+    margin-left: 190px;
+    width: 85%;
+  }
 }
 
 

@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 const SlideBlock = ({ isOpened, children }) => (
   <div>
     {
-      children[+isOpened]
+      children[isOpened]
     }
   </div>
 );
 
 SlideBlock.propTypes = {
-  isOpened: PropTypes.bool.isRequired,
+  isOpened: PropTypes.number.isRequired,
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
 };
 

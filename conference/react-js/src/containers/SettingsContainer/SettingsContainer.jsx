@@ -7,7 +7,7 @@ import changeEmail from '../../actions/changeEmail';
 import userShape from '../../constants/user-shape';
 import changeUserInfo from '../../actions/changeUserInfo';
 
-import SlideBlock from '../../components/SlideBlock';
+import SlideBlock from '../../components/SlideBlock/SlideBlock';
 import NameBrief from '../../components/Settings/NameBrief/NameBrief';
 import EmailBrief from '../../components/Settings/EmailBrief/EmailBrief';
 import PasswordBrief
