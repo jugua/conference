@@ -8,6 +8,7 @@ import talks from './talks';
 import conference from './conference';
 import contacts from './contacts';
 import userKeys from './userKeys';
+import status from './status';
 import actionTypes from '../constants/actions-types';
 
 const combinedReducer = combineReducers({
@@ -20,6 +21,7 @@ const combinedReducer = combineReducers({
   conference,
   contacts,
   userKeys,
+  status,
 });
 
 const rootReducers = (state, action) => (

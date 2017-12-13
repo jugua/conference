@@ -1,55 +1,121 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import PopUpMessage from '../../PopUpMessage/PopUpMessage';
+import { myEvents } from '../../../constants/route-url';
 
-const ReviewTalk = ({ close }) => (
-  <div className="pop-up-wrapper">
-    <div className="pop-up review-talk">
-      <div className="review-talk__topic">
-        JVM Languages and new programming paradigms
-      </div>
-      <div className="review-talk__type">
-        Regular Talk:
-      </div>
-      <div className="review-talk__title">
-        Why Java
-      </div>
-      <p className="review-talk__description">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-      <p className="review-talk__language">
-        Language: English
-      </p>
-      <p className="review-talk__level">
-        Level: Begginer
-      </p>
-      <div className="review-talk__additional-info">
-        <a className="additional-info__title link">
-          Additional info
-        </a>
-        <p className="additional-info__text">
-          Additional info Additional info Additional info Additional info
+class ReviewTalk extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      newStatus: '',
+      result: false,
+    };
+  }
+
+  setStatus = data => (data.map(({ id, status }) =>
+    (<option key={id}>{status}</option>),
+  ));
+
+  selectStatus = (e) => {
+    this.setState({ newStatus: e.target.value });
+  }
+
+  changeStatus = () => {
+    const id = this.props.talk.id;
+    const status = this.state.newStatus;
+
+    axios.patch('/talk',
+      { id,
+        status })
+      .then(() => {
+        this.setState({ result: true });
+      });
+  };
+
+  render() {
+    const { close, talk, status } = this.props;
+    const header = 'Status';
+    const body = 'Status was changed';
+    const url = myEvents;
+    return (
+      <div className="tabs-container">
+        <div className="review-talk__topic">
+          {talk.topic}
+        </div>
+        <div className="review-talk__type">
+          {talk.type}
+        </div>
+        <div className="review-talk__title">
+          {talk.title}
+        </div>
+        <p className="review-talk__description">
+          {talk.description}
         </p>
+        <p className="review-talk__language">
+          Language: {talk.lang}
+        </p>
+        <p className="review-talk__level">
+          Level: {talk.level}
+        </p>
+        <div className="review-talk__additional-info">
+          <a className="additional-info__title link">
+            Additional info
+          </a>
+          <p className="additional-info__text">
+            {talk.addon}
+          </p>
+        </div>
+        <div className="review-talk__comments" />
+        <div className="review-talk__button-group">
+          <div className="my-talk-settings__select-wrapper">
+            <select
+              name="status"
+              id="my-talk-status"
+              className="my-talk-settings__select"
+              onChange={this.selectStatus}
+            >
+              <option defaultValue="" />
+              {this.setStatus(status)}
+            </select>
+          </div>
+          <button className="review-talk__button" onClick={this.changeStatus}>Submit</button>
+          <button
+            className="review-talk__button review-talk__button_reject"
+            onClick={close}
+          >
+            Cancel
+          </button>
+        </div>
+        {this.state.result && (
+          <PopUpMessage header={header} body={body} url={url} />
+        )}
       </div>
-      <div className="review-talk__comments" />
-      <div className="review-talk__button-group">
-        <button className="review-talk__button">Approve</button>
-        <button className="review-talk__button review-talk__button_reject">Reject</button>
-        <button
-          className="review-talk__button"
-          onClick={close}
-        >
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-);
+    );
+  }
+}
+
+ReviewTalk.defaultProps = {
+  talk: {},
+  status: [],
+};
 
 ReviewTalk.propTypes = {
   close: PropTypes.func.isRequired,
+  talk: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    topic: PropTypes.string,
+    type: PropTypes.string,
+    lang: PropTypes.string,
+    level: PropTypes.string,
+    addon: PropTypes.string,
+  }),
+  status: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
-export default ReviewTalk;
+const mapStateToProps = status => status;
+
+export default connect(mapStateToProps)(ReviewTalk);

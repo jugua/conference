@@ -83,7 +83,6 @@ public class FileStorageServiceImpl implements FileStorageService {
         if (file == null) {
             return null;
         }
-        checkFileValidation(file, fileType);
 
         String serverFileName = getSuitableVersionedFilename(file.getOriginalFilename());
         if ("".equals(serverFileName)) {
@@ -157,15 +156,6 @@ public class FileStorageServiceImpl implements FileStorageService {
     public void checkFileValidation(MultipartFile file, FileType fileType) {
         ifFileIsEmpty(file);
         isFileSizeGreaterThanMaxSize(file, fileType);
-        isTypeSupported(file, fileType);
-    }
-
-    private void isTypeSupported(MultipartFile file, FileType fileType) {
-        if (fileType == FileType.FILE) {
-            isAttachedFileTypeSupported(file);
-        } else {
-            isAttachedPhotoTypeSupported(file);
-        }
     }
 
     private void ifFileIsEmpty(MultipartFile file) {
@@ -174,27 +164,13 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
-    private void isAttachedFileTypeSupported(MultipartFile file) {
-        if (!(file.getOriginalFilename().matches("^.+(\\.(?i)(docx|ppt|pptx|pdf|odp))$"))) {
-            throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
-        }
-        String mimeType = file.getContentType();
-
-        if (mimeType == null || !SUPPORTED_ATTACHED_FILE_TYPES.contains(mimeType)) {
-            throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
-        }
-    }
-
     @Override
     public String getFileTypeIfSupported(File file) {
         String mimeType = new MimetypesFileTypeMap().getContentType(file);
-
         if (mimeType == null) {
             throw new FileValidationException(UNSUPPORTED_MEDIA_TYPE);
         }
-
         return mimeType;
-
     }
 
     @Override
