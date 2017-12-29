@@ -242,4 +242,7 @@ INSERT INTO talk VALUES (109, 'Additional info', 'Description','',null,'NOT_ACCE
 
 INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 4);
 INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
-INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 1);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (1, 3);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (2, 3);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (3, 3);
+INSERT INTO `conference_organiser` (`conference_id`, `organiser_id`) VALUES (4, 3);
