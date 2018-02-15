@@ -2,6 +2,6 @@
   "name": "chromedriver",
   "platform": "windows",
   "bit": "32",
-  "version": "2.25.0",
-  "url": "http://chromedriver.storage.googleapis.com/2.25/chromedriver_win32.zip"
+  "version": "2.35",
+  "url": "http://chromedriver.storage.googleapis.com/2.35/chromedriver_win32.zip"
 }
