@@ -32,7 +32,6 @@ public class Comment extends AbstractEntity {
     @NonNull
     private User user;
 
-    @NonNull
     private long talkId;
 
     @Builder
