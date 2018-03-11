@@ -7,15 +7,12 @@ import static service.businesslogic.exception.TalkValidationException.ORG_COMMEN
 import static service.businesslogic.exception.TalkValidationException.STATUS_IS_NULL;
 import static service.businesslogic.exception.TalkValidationException.STATUS_IS_WRONG;
 
-import java.io.FileInputStream;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,7 +92,7 @@ public class TalkServiceImpl implements TalkService {
 
         talkRepository.save(talk);
 
-        List<User> organisersUsers = userRepository.findAllByRolesIsIn(roleRepository.findByName(Role.ORGANISER));
+        List<User> organisersUsers = userRepository.findAllByRolesIsIn(roleRepository.findByName(Role.ROLE_ORGANISER));
 
         mailService.notifyUsers(organisersUsers, new SubmitNewTalkOrganiserPreparator(talk, mailService.getUrl()));
         mailService.sendEmail(user, new SubmitNewTalkSpeakerPreparator());
@@ -146,7 +143,7 @@ public class TalkServiceImpl implements TalkService {
         talk.setOrganiser(user);
         talk.setOrganiserComment(talkDto.getOrganiserComment());
         talkRepository.save(talk);
-        List<User> receivers = userRepository.findAllByRolesIsIn(roleRepository.findByName(Role.ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
+        List<User> receivers = userRepository.findAllByRolesIsIn(roleRepository.findByName(Role.ROLE_ORGANISER)).stream().filter(u -> u != user).collect(Collectors.toList());
         mailService.notifyUsers(receivers, new ChangeTalkStatusOrganiserPreparator(user, talk));
         if (!(talk.getStatus() == TalkStatus.PENDING && talk.isValidComment())) {
             mailService.sendEmail(talk.getUser(), new ChangeTalkStatusSpeakerPreparator(talk));

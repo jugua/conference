@@ -37,12 +37,12 @@ public class ManageUsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
         }
         List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRoleExpectCurrent(
-                currentUser, Role.ORGANISER, Role.SPEAKER);
+                currentUser, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
     private User getAuthorizedUser(HttpServletRequest request) {
-        boolean inRole = request.isUserInRole(Role.ADMIN);
+        boolean inRole = request.isUserInRole(Role.ROLE_ADMIN);
         if (inRole) {
             String userEmail = request.getUserPrincipal().getName();
             User user = userService.getByEmail(userEmail);

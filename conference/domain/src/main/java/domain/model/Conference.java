@@ -49,7 +49,7 @@ public class Conference extends AbstractEntity {
 
     @Column
     private LocalDate notificationDue;
-    
+
     @Column
     private LocalDate callForPaperStartDate;
 
@@ -109,10 +109,10 @@ public class Conference extends AbstractEntity {
 
     @Builder
     public Conference(Long id, String title, String description, String location, LocalDate startDate,
-                      LocalDate endDate,LocalDate notificationDue, LocalDate callForPaperStartDate, LocalDate callForPaperEndDate,
-                      String pathToLogo, Boolean callForPaperActive, Collection<Topic> topics,
-                      Collection<Type> types, Collection<Language> languages, Collection<Level> levels,
-                      Collection<Talk> talks, List<User> organisers, List<User> speakers) {
+                      LocalDate endDate, LocalDate notificationDue, LocalDate callForPaperStartDate,
+                      LocalDate callForPaperEndDate, String pathToLogo, Boolean callForPaperActive,
+                      Collection<Topic> topics, Collection<Type> types, Collection<Language> languages,
+                      Collection<Level> levels, Collection<Talk> talks, List<User> organisers, List<User> speakers) {
         super(id);
         this.title = title;
         this.description = description;

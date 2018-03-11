@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void save(User user) {
 		if (user.getRoles().size() == 0) {
-			user.addRole(roleRepository.findByName(Role.SPEAKER));
+			user.addRole(roleRepository.findByName(Role.ROLE_SPEAKER));
 		}
 		if (user.getUserInfo() == null) {
 			user.setUserInfo(new UserInfo());
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void checkUserRegistrationByAdmin(RegistrationDto dto) {
-		if (dto.getRoleName().equals(Role.ADMIN)) {
+		if (dto.getRoleName().equals(Role.ROLE_ADMIN)) {
 			throw new WrongRoleException("wrong_role_name");
 		}
 
