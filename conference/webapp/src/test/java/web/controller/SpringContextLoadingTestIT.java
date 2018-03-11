@@ -13,9 +13,12 @@ import domain.config.RepositoryConfig;
 import service.config.ServiceConfig;
 import web.config.SecurityConfig;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {RepositoryConfig.class, ServiceConfig.class, SecurityConfig.class})
+@ContextConfiguration(classes = {
+        RepositoryConfig.class,
+        ServiceConfig.class,
+        SecurityConfig.class
+})
 public class SpringContextLoadingTestIT {
     @Autowired
     private ApplicationContext applicationContext;

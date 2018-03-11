@@ -1,37 +1,43 @@
 package web.config;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import static web.util.TestData.ORGANISER_EMAIL;
+import static web.util.TestData.SPEAKER_EMAIL;
+import static web.util.TestData.organizer;
+import static web.util.TestData.speaker;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import service.businesslogic.api.CommentService;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.api.ContactTypeService;
+import service.businesslogic.api.LanguageService;
+import service.businesslogic.api.LevelService;
 import service.businesslogic.api.SignInService;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
 import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
-import service.infrastructure.fileStorage.FileStorageService;
-import service.infrastructure.mail.MailService;
-import service.businesslogic.impl.VerificationTokenService;
-import service.businesslogic.api.LanguageService;
-import service.businesslogic.api.LevelService;
 
 @Configuration
-public class WebTestConfig {
-	
+public class ServiceMockConfig {
+
     @Bean
     public ConferenceService mockConferenceService() {
         return mock(ConferenceService.class);
     }
 
     @Bean
-    public UserService mockUserService() {
-        return mock(UserService.class);
+    public UserService userServiceMock() {
+        UserService mock = mock(UserService.class);
+        when(mock.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speaker());
+        when(mock.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organizer());
+        return mock;
     }
 
     @Bean
@@ -70,33 +76,13 @@ public class WebTestConfig {
     }
 
     @Bean
-    public FileStorageService mockPhotoService() {
-        return mock(FileStorageService.class);
-    }
-
-    @Bean
-    public MailService mockMailService() {
-        return mock(MailService.class);
-    }
-
-    @Bean
-    public PasswordEncoder mockPasswordEncoder() {
-        return mock(PasswordEncoder.class);
-    }
-
-    @Bean
-    public VerificationTokenService mockVerificationTokenService() {
-        return mock(VerificationTokenService.class);
-    }
-    
-    @Bean
     public SignInService mockSignInService() {
-    	return mock(SignInService.class);
+        return mock(SignInService.class);
     }
-    
+
     @Bean
     public CommentService mockCommentController() {
-    	return mock(CommentService.class);
+        return mock(CommentService.class);
     }
 
 }

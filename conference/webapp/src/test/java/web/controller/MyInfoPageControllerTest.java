@@ -1,10 +1,9 @@
 package web.controller;
 
-import static service.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -17,6 +16,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static domain.model.Role.SPEAKER;
+import static service.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
+import static web.util.TestData.SPEAKER_EMAIL;
+import static web.util.TestData.speaker;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,9 +51,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import domain.model.Role;
 import domain.model.User;
-import domain.model.UserInfo;
 import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
@@ -57,29 +59,24 @@ import service.businesslogic.dto.PhotoDto;
 import service.businesslogic.dto.UserInfoDto;
 import service.infrastructure.fileStorage.FileStorageService;
 import service.infrastructure.fileStorage.exception.FileValidationException;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 @Log4j
-public class MyInfoPageControllerTest extends TestUtil {
+public class MyInfoPageControllerTest {
     private static final String API_PHOTO = "/myinfo/photo";
-    public static final String API_USER_CURRENT = "/myinfo";
-    private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
-    public static final String SPEAKER_ROLE = "SPEAKER";
+    private static final String API_USER_CURRENT = "/myinfo";
+
     private User user;
     private UserInfoDto correctUserInfoDto;
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private FileStorageService fileStorageService;
-
     @Autowired
     private MyInfoPageController myInfoPageController;
 
@@ -97,7 +94,7 @@ public class MyInfoPageControllerTest extends TestUtil {
                 .addFilter(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
-        user = createUser();
+        user = speaker();
         correctUserInfoDto = setupCorrectUserInfoDto();
         when(userService.getByEmail(SPEAKER_EMAIL)).thenReturn(user);
     }
@@ -108,7 +105,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testSuccessfulUploadPhoto() throws Exception {
         MockMultipartFile multipartFile = setupCorrectMultipartFile();
         String previousPhotoPath = "previous photo pass";
@@ -125,11 +122,11 @@ public class MyInfoPageControllerTest extends TestUtil {
 
         verify(fileStorageService, times(1)).deleteFile(previousPhotoPath);
         verify(userService, times(1)).updateUserProfile(user);
-        assertTrue(user.getPhoto().equals(newPhotoPath));
+        assertEquals(user.getPhoto(), newPhotoPath);
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testUnsuccessfulUploadPhoto() throws Exception {
         MockMultipartFile multipartFile = setupCorrectMultipartFile();
         String previousPhotoPath = "previous photo pass";
@@ -146,7 +143,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testSuccessfulDeletePhoto() throws Exception {
         user.setPhoto("photo");
 
@@ -154,12 +151,12 @@ public class MyInfoPageControllerTest extends TestUtil {
                 .andExpect(status().isOk());
 
         verify(fileStorageService, times(1)).deleteFile("photo");
-        assertTrue(user.getPhoto() == null);
+        assertNull(user.getPhoto());
         verify(userService, times(1)).updateUserProfile(user);
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testGet() throws Exception {
         when(userService.find(anyLong())).thenReturn(user);
 
@@ -174,7 +171,7 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testGetFileNotFound() throws Exception {
         when(userService.find(anyLong())).thenReturn(user);
 
@@ -202,12 +199,10 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void correctPrincipalGetCurrentUserTest() throws Exception {
-        Role speaker = createSpeakerRole();
-        UserInfo info = createUserInfo();
-        User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
+        User user = speaker();
+        Principal correctPrincipal = user::getEmail;
 
         when(userService.getUserDtoByEmail(correctPrincipal.getName()))
                 .thenReturn(setupCorrectUserInfoDto());
@@ -218,12 +213,10 @@ public class MyInfoPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void correctFillUserInfoTest() throws Exception {
-        Role speaker = createSpeakerRole();
-        UserInfo info = createUserInfo();
-        User user = createUser(speaker, info);
-        Principal correctPrincipal = () -> user.getEmail();
+        User user = speaker();
+        Principal correctPrincipal = user::getEmail;
 
         when(userService.getByEmail(user.getEmail())).thenReturn(user);
 
@@ -291,9 +284,8 @@ public class MyInfoPageControllerTest extends TestUtil {
         checkForBadRequest(API_USER_CURRENT, RequestMethod.POST, correctUserInfoDto);
     }
 
-
     @Test
-    public void handleTalkNotFoundCorrectStatus() throws Exception {
+    public void handleTalkNotFoundCorrectStatus() {
         ResponseEntity<MessageDto> response = myInfoPageController.handleFileValidationException(new FileValidationException(FileValidationException.UNSUPPORTED_MEDIA_TYPE));
         assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
     }

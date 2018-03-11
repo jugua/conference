@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static web.util.TestData.ORGANISER_EMAIL;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,6 @@ import java.util.List;
 import javax.servlet.Filter;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,24 +34,23 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import domain.model.Conference;
+import domain.model.Role;
 import domain.model.Talk;
 import domain.model.TalkStatus;
 import service.businesslogic.api.ConferenceService;
-import service.businesslogic.api.LevelService;
 import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateTopicDto;
 import service.businesslogic.dto.CreateTypeDto;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
-public class MainPageControllerTest extends TestUtil {
+public class MainPageControllerTest {
 
     public static final String API_CONFERENCE = "/conference";
     public static final String API_LEVEL = "/level";
@@ -69,8 +69,6 @@ public class MainPageControllerTest extends TestUtil {
     private TypeService typeService;
     @Autowired
     private TopicService topicService;
-    @Autowired
-    private LevelService levelService;
     @Autowired
     private Filter springSecurityFilterChain;
 
@@ -110,7 +108,7 @@ public class MainPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void getUpcomingConferencesWithTalks() throws Exception {
         conference = createConference();
         conference.setCallForPaperEndDate(LocalDate.MAX);
@@ -129,14 +127,14 @@ public class MainPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = Role.SPEAKER)
     public void getConferenceById() throws Exception {
         mockMvc.perform(prepareGetRequest("/conference/" + anyInt())).
                 andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void getPastConferences() throws Exception {
         conferences = new ArrayList<>();
         conferences.add(createConference());
@@ -147,7 +145,7 @@ public class MainPageControllerTest extends TestUtil {
                 andExpect(status().isOk());
     }
 
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void createNewTypeShouldWorkForAdmin() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
         when(typeService.save(dto)).thenReturn(1L);
@@ -169,7 +167,7 @@ public class MainPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
+    @WithMockUser(roles = Role.ORGANISER)
     public void createNewTypeShouldNotWorkForOrganiser() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
         mockMvc.perform(post(API_TYPE)
@@ -179,7 +177,7 @@ public class MainPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = Role.SPEAKER)
     public void createNewTypeShouldNotWorkForSpeaker() throws Exception {
         CreateTypeDto dto = new CreateTypeDto("schweine");
         mockMvc.perform(post(API_TYPE)
@@ -188,7 +186,7 @@ public class MainPageControllerTest extends TestUtil {
         ).andExpect(status().isUnauthorized());
     }
 
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void createNewTopicShouldWorkForAdmin() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
         when(topicService.save(dto)).thenReturn(1L);
@@ -210,7 +208,7 @@ public class MainPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
+    @WithMockUser(roles = Role.ORGANISER)
     public void createNewTopicShouldNotWorkForOrganiser() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
         mockMvc.perform(post(API_TOPIC)
@@ -220,7 +218,7 @@ public class MainPageControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = Role.SPEAKER)
     public void createNewTopicShouldNotWorkForSpeaker() throws Exception {
         CreateTopicDto dto = new CreateTopicDto("schweine");
         mockMvc.perform(post(API_TOPIC)

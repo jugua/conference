@@ -11,6 +11,8 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static web.util.TestData.speaker;
+
 import javax.servlet.Filter;
 
 import org.junit.After;
@@ -35,15 +37,14 @@ import domain.model.VerificationToken;
 import domain.repository.VerificationTokenRepository;
 import service.businesslogic.api.UserService;
 import service.businesslogic.impl.VerificationTokenService;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
 import web.security.AuthenticationFactory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
-public abstract class WithTokenControllerTest extends TestUtil {
+public abstract class WithTokenControllerTest {
 
     protected User user;
 
@@ -76,7 +77,7 @@ public abstract class WithTokenControllerTest extends TestUtil {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         realTokenService = new VerificationTokenService(tokenRepository);
-        user = createUser();
+        user = speaker();
 
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);

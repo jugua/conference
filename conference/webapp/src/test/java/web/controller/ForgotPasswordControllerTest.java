@@ -21,7 +21,7 @@ import domain.model.User;
 import domain.model.VerificationToken;
 import service.businesslogic.dto.NewPasswordDto;
 
-public class ForgotPasswordControllerTest extends WithTokenControllerTest{
+public class ForgotPasswordControllerTest extends WithTokenControllerTest {
     private static final String WRONG_JSON_WITHOUT_MAIL = "{}";
     private static final String WRONG_JSON_WITH_WRONG_MAIL = "{\"mail\":\"wrong@email\"}";
     private static final String JSON_WITH_CORRECT_MAIL = "{ \"mail\": \"user@gmail.com\"  }";
@@ -33,7 +33,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
 
     @Test
     public void testForgotPasswordWithBadRequestWithoutMail()
-            throws Exception{
+            throws Exception {
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST).contentType(MediaType.APPLICATION_JSON)
                 .content(WRONG_JSON_WITHOUT_MAIL))
                 .andExpect(status().isBadRequest());
@@ -41,7 +41,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
 
     @Test
     public void testForgotPasswordWithBadRequestWithWrongEmail()
-            throws Exception{
+            throws Exception {
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(WRONG_JSON_WITH_WRONG_MAIL))
@@ -50,7 +50,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
 
     @Test
     public void testForgotPasswordWithCorrectRequest()
-            throws Exception{
+            throws Exception {
         when(userService.isEmailExist(anyString())).thenReturn(true);
 
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST)
@@ -60,7 +60,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     }
 
     @Test
-    public void testChangePasswordWithCorrectToken() throws Exception{
+    public void testChangePasswordWithCorrectToken() throws Exception {
         VerificationToken correctToken = createToken();
         VerificationToken.TokenType tokenType = VerificationToken.TokenType.FORGOT_PASS;
         correctToken.setType(tokenType);
@@ -70,7 +70,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     }
 
     @Test
-    public void testChangePasswordWithExpiredToken() throws Exception{
+    public void testChangePasswordWithExpiredToken() throws Exception {
         VerificationToken correctToken = createToken();
         correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
         String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
@@ -79,15 +79,15 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     }
 
     @Test
-    public void testChangePasswordWithWrongToken() throws Exception{
+    public void testChangePasswordWithWrongToken() throws Exception {
         String url = "/forgotPasswordPage/changePassword/";
         testForWrongToken(url);
     }
 
     @Test
-    public void testChangePasswordAndUpdatingUserProfileWithConfirmedPassword() throws Exception{
+    public void testChangePasswordAndUpdatingUserProfileWithConfirmedPassword() throws Exception {
         VerificationToken correctToken = createToken();
-        String correctUrl = "/forgotPasswordPage/changePassword/" +correctToken.getToken();
+        String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
         String correctPassword = "password";
         NewPasswordDto dto = new NewPasswordDto(correctPassword);
         dto.setConfirm(correctPassword);
@@ -105,7 +105,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest{
     @Test
     public void testChangePasswordWithUnconfirmedPassword() throws Exception {
         VerificationToken correctToken = createToken();
-        String correctUrl = "/forgotPasswordPage/changePassword/" +correctToken.getToken();
+        String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
         String correctPassword = "password";
         NewPasswordDto dto = new NewPasswordDto(correctPassword);
         dto.setConfirm(correctPassword);

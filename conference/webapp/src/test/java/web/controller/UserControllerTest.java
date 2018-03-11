@@ -9,6 +9,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static web.util.TestData.ORGANISER_EMAIL;
+import static web.util.TestData.speaker;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +22,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,39 +54,33 @@ import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.dto.UserInfoDto;
 import service.businesslogic.exception.ResourceNotFoundException;
 import service.businesslogic.exception.WrongRoleException;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 @Log4j
-public class UserControllerTest extends TestUtil {
+public class UserControllerTest {
+
     public static final String USER_URL = "/user";
     public static final String USER_CREATE_URL = "/user/registerByAdmin";
+
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
 
     @Autowired
     private WebApplicationContext context;
-
     @Autowired
     private Filter springSecurityFilterChain;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private UserInfoService userInfoService;
-
     @Autowired
     private ContactTypeService contactTypeService;
-
     @Autowired
     private UserController userController;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -92,20 +88,17 @@ public class UserControllerTest extends TestUtil {
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
-        createSpeakerAndOrganiser(userService);
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
 
-        when(passwordEncoder.encode(anyString())).then(new Answer<String>() {
-            @Override
-            public String answer(InvocationOnMock invocation) throws Throwable {
-                Object[] args = invocation.getArguments();
-                return (String) args[0];
-            }
-        });
+        when(passwordEncoder.encode(anyString())).then(
+                (Answer<String>) invocation -> {
+                    Object[] args = invocation.getArguments();
+                    return (String) args[0];
+                });
     }
 
     @After
@@ -114,50 +107,50 @@ public class UserControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void correctRegistrationNewOrganiserByAdmin() throws Exception {
-        correctRegistrationDto.setRoleName(Role.ORGANISER);
+        correctRegistrationDto.setRoleName(Role.ROLE_ORGANISER);
         performRegistration(USER_CREATE_URL, HttpStatus.ACCEPTED.value());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void correctRegistrationNewSpeakerByAdmin() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.ACCEPTED.value());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void registrationNewAdminByAdmin() throws Exception {
-        correctRegistrationDto.setRoleName(Role.ADMIN);
+        correctRegistrationDto.setRoleName(Role.ROLE_ADMIN);
         doThrow(new WrongRoleException("wrong_role_name")).
                 when(userService).checkUserRegistrationByAdmin(correctRegistrationDto);
         performRegistration(USER_CREATE_URL, HttpStatus.FORBIDDEN.value());
     }
 
     @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
+    @WithMockUser(roles = Role.ORGANISER)
     public void registrationNewUserByAdminAsOrganiser() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = Role.SPEAKER)
     public void registrationNewUserByAdminAsSpeaker() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
     public void registrationNewUserByAdminWithoutRole() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void getUserById() throws Exception {
         UserInfoDto user = new UserInfoDto();
         when(userService.getUserDtoById(anyLong())).thenReturn(user);
@@ -167,14 +160,14 @@ public class UserControllerTest extends TestUtil {
 
     @Test
     public void incorrectGetUserById() throws Exception {
-        User user = createUser();
+        User user = speaker();
         when(userService.find(1L)).thenReturn(user);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)).
                 andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void notFoundUserById() throws Exception {
 
         when(userService.getUserDtoById(1L)).thenThrow(ResourceNotFoundException.class);
@@ -237,8 +230,7 @@ public class UserControllerTest extends TestUtil {
         return builder.toString();
     }
 
-    @Override
-    protected UserInfo createUserInfo() {
+    protected UserInfo userInfo() {
         ContactType contactType = new ContactType(1L, "LinkedIn");
         ContactType contactType2 = new ContactType(2L, "Twitter");
         ContactType contactType3 = new ContactType(3L, "Facebook");

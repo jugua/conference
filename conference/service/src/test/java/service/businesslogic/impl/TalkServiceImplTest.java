@@ -106,7 +106,7 @@ public class TalkServiceImplTest {
         speakerUser.setPassword("123456");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(userInfo);
-        speakerUser.setRoles(Collections.singleton(new Role(Role.SPEAKER)));
+        speakerUser.setRoles(Collections.singleton(new Role(Role.ROLE_SPEAKER)));
 
         organiserUser = new User();
         organiserUser.setId(ID);
@@ -116,7 +116,7 @@ public class TalkServiceImplTest {
         organiserUser.setPassword("123456");
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(userInfo);
-        organiserUser.setRoles(Collections.singleton(new Role(Role.ORGANISER)));
+        organiserUser.setRoles(Collections.singleton(new Role(Role.ROLE_ORGANISER)));
 
         language = new Language("English");
         level = new Level("Beginner");

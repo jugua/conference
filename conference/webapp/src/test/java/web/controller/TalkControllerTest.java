@@ -1,10 +1,6 @@
 package web.controller;
 
-import static service.businesslogic.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
-import static service.infrastructure.fileStorage.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
@@ -20,14 +16,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static service.businesslogic.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
+import static service.infrastructure.fileStorage.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.Filter;
@@ -71,18 +68,19 @@ import service.businesslogic.exception.TalkValidationException;
 import service.infrastructure.fileStorage.FileStorageService;
 import service.infrastructure.fileStorage.exception.FileValidationException;
 import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
-public class TalkControllerTest extends TestUtil {
+public class TalkControllerTest {
+
     private static final String MY_TALKS_PAGE_URL = "/talk";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
-    public static final String APPROVED = "Approved";
+    private static final String APPROVED = "Approved";
+
     @Autowired
     private WebApplicationContext context;
     @Autowired
@@ -129,7 +127,7 @@ public class TalkControllerTest extends TestUtil {
         userInfo.setAdditionalInfo("addInfo");
 
         Set<Role> speakerRole = new HashSet<>();
-        speakerRole.add(new Role(2L, Role.SPEAKER));
+        speakerRole.add(new Role(2L, Role.ROLE_SPEAKER));
         speakerUser = new User();
         speakerUser.setId(1L);
         speakerUser.setFirstName("Olya");
@@ -141,7 +139,7 @@ public class TalkControllerTest extends TestUtil {
         speakerUser.setRoles(speakerRole);
 
         Set<Role> organiserRole = new HashSet<>();
-        organiserRole.add(new Role(1L, Role.ORGANISER));
+        organiserRole.add(new Role(1L, Role.ROLE_ORGANISER));
         organiserUser = new User();
         organiserUser.setId(1L);
         organiserUser.setFirstName("Artem");
@@ -185,10 +183,10 @@ public class TalkControllerTest extends TestUtil {
      * @throws Exception
      */
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testSuccessfulGetTalkByIdAsOrganiser() throws Exception {
         correctTalkDto.setAssignee(organiserUser.getFullName());
-        when(userService.isTalkOrganiser(Mockito.anyString(),anyLong())).thenReturn(true);
+        when(userService.isTalkOrganiser(Mockito.anyString(), anyLong())).thenReturn(true);
         when(talkService.findById((anyLong()))).thenReturn(correctTalkDto);
 
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1))
@@ -227,9 +225,9 @@ public class TalkControllerTest extends TestUtil {
      * @throws Exception
      */
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testTalkNotFoundExceptionGetTalkById() throws Exception {
-    	when(userService.isTalkOrganiser(Mockito.anyString(),anyLong())).thenReturn(true);
+        when(userService.isTalkOrganiser(Mockito.anyString(), anyLong())).thenReturn(true);
         when(talkService.findById(anyLong())).thenThrow(new TalkNotFoundException());
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1)).
                 andExpect(status().isNotFound())
@@ -242,7 +240,7 @@ public class TalkControllerTest extends TestUtil {
      * @throws Exception
      */
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testSuccessfulUpdateTalkAsOrganiser() throws Exception {
         TalkDto talkDto = correctTalkDto;
         talkDto.setOrganiserComment("comment");
@@ -260,7 +258,7 @@ public class TalkControllerTest extends TestUtil {
      * @throws Exception
      */
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testSuccessfulUpdateTalkAsSpeaker() throws Exception {
         TalkDto talkDto = correctTalkDto;
         talkDto.setOrganiserComment("comment");
@@ -290,7 +288,7 @@ public class TalkControllerTest extends TestUtil {
      * @throws Exception
      */
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testTalkValidationExceptionActionOnTalkAsSpeaker() throws Exception {
         TalkDto talkDto = correctTalkDto;
         talkDto.setOrganiserComment("comment");
@@ -309,7 +307,7 @@ public class TalkControllerTest extends TestUtil {
      * @throws Exception
      */
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testTalkNotFoundExceptionUserActionOnTalkAsOrganiser() throws Exception {
         doThrow(new TalkNotFoundException()).when(talkService).updateAsOrganiser(correctTalkDto, organiserUser);
 
@@ -319,7 +317,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testTakeFile() throws Exception {
         when(talkService.findById(1L)).thenReturn(correctTalkDto);
 
@@ -338,7 +336,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testTakeFileWithIOException() throws Exception {
         when(talkService.findById(1L)).thenReturn(correctTalkDto);
 
@@ -357,7 +355,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testFileUpload() throws Exception {
         when(talkService.findById(1L)).thenReturn(correctTalkDto);
 
@@ -372,7 +370,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testFileDelete() throws Exception {
         when(talkService.findById(1L)).thenReturn(correctTalkDto);
 
@@ -387,7 +385,7 @@ public class TalkControllerTest extends TestUtil {
     }
 
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testFindFileName() throws Exception {
         Talk talk = new Talk();
         String filePath = "file path";

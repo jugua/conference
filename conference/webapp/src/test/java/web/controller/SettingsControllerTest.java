@@ -29,11 +29,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.model.User;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.SettingsDto;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 public class SettingsControllerTest {
 
