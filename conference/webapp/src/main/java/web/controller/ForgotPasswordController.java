@@ -20,9 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import lombok.AllArgsConstructor;
+
 import domain.model.User;
 import domain.model.VerificationToken;
-import lombok.AllArgsConstructor;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.NewPasswordDto;
@@ -71,12 +72,15 @@ public class ForgotPasswordController {
 
     @GetMapping("/changePassword/{token}")
     public ResponseEntity<MessageDto> changePassword(@PathVariable String token) {
-        return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.FORGOT_PASS, verificationToken -> {
-        });
+        return withTokenGetRequestProcessor.process(
+                token, VerificationToken.TokenType.FORGOT_PASS, verificationToken -> {
+                    //NOP
+                });
     }
 
     @PostMapping("/changePassword/{token}")
-    public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto, BindingResult bindingResult) {
+    public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto,
+                                         BindingResult bindingResult) {
         VerificationToken verificationToken = tokenService.getToken(token);
         if (!isPasswordConfirmed(dto))
             return ResponseEntity.badRequest().build();

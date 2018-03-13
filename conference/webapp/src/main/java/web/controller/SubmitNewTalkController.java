@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
 import domain.model.Talk;
 import domain.model.User;
 import domain.model.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
@@ -32,6 +33,7 @@ import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @RequestMapping("/submitTalk")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class SubmitNewTalkController {
+
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
@@ -42,7 +44,8 @@ public class SubmitNewTalkController {
             @Valid SubmitTalkDto submitTalkDto,
             HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
+        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(),
+                null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
                 submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
                 submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 

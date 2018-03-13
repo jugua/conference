@@ -37,8 +37,8 @@ import web.config.WebMvcConfig;
 @WebAppConfiguration
 public class SettingsControllerTest {
 
-    public static final String API_USER_CURRENT_PASSWORD = "/settings/password";
-    public static final String API_USER_CURRENT_EMAIL = "/settings/email";
+    private static final String API_USER_CURRENT_PASSWORD = "/settings/password";
+    private static final String API_USER_CURRENT_EMAIL = "/settings/email";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -207,6 +207,5 @@ public class SettingsControllerTest {
                 .content(convertObjectToJsonBytes(settingsDto))
         ).andExpect(status().isBadRequest());
     }
-
 
 }

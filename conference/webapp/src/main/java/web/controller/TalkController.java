@@ -28,25 +28,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import domain.model.Talk;
-import domain.model.TalkStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.Talk;
+import domain.model.TalkStatus;
 import service.businesslogic.api.CommentService;
-import service.businesslogic.api.LanguageService;
-import service.businesslogic.api.LevelService;
 import service.businesslogic.api.TalkService;
-import service.businesslogic.api.TopicService;
-import service.businesslogic.api.TypeService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.CommentDto;
-import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.MessageDto;
+import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.dto.TalkStatusDto;
 import service.businesslogic.exception.ResourceNotFoundException;
@@ -59,16 +55,11 @@ import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @RestController
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalkController {
-    private static final String ORGANISER = "ORGANISER";
 
-    public static final String DEFAULT_TALK_STATUS = "New";
+    protected static final String DEFAULT_TALK_STATUS = "New";
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
-    private final TypeService typeService;
-    private final TopicService topicService;
-    private final LevelService levelService;
-    private final LanguageService languageService;
     private CommentService commentService;
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -94,48 +85,49 @@ public class TalkController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talks/{talkId}/comments")
-    public ResponseEntity<List<CommentDto>> getComments(@PathVariable("talkId")long talkId){
-		List<CommentDto> comments = commentService.getAllByTalkId(talkId);
-		return new ResponseEntity<>(comments, HttpStatus.OK);
+    public ResponseEntity<List<CommentDto>> getComments(@PathVariable("talkId") long talkId) {
+        List<CommentDto> comments = commentService.getAllByTalkId(talkId);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/talks/{talkId}/comments")
-    public ResponseEntity<MessageDto> saveComment(@PathVariable("talkId")long talkId,
-    		@RequestBody CommentDto commentDto, BindingResult binding){
-    	MessageDto message = new MessageDto();
-    	if(binding.hasFieldErrors()) {
-    		message.setError("fields_error");
-			return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
-		}
-		commentService.save(commentDto);
-		message.setResult("successfully_updated");
-		return new ResponseEntity<>(message,HttpStatus.OK);
+    public ResponseEntity<MessageDto> saveComment(@PathVariable("talkId") long talkId,
+                                                  @RequestBody CommentDto commentDto, BindingResult binding) {
+        MessageDto message = new MessageDto();
+        if (binding.hasFieldErrors()) {
+            message.setError("fields_error");
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        commentService.save(commentDto);
+        message.setResult("successfully_updated");
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/talks/{talkId}/comments/{commentId}")
-    public ResponseEntity<MessageDto> updateComment(@PathVariable("talkId")long talkId, @PathVariable("commentId")long commentId,
-    		@RequestBody CommentDto commentDto, BindingResult binding){
-    	MessageDto message = new MessageDto();
-    	if(binding.hasFieldErrors()) {
-    		message.setError("fields_error");
-			return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
-		}
-    	if(commentService.findById(commentId)==null) {
-    		message.setError("fields_error");
-    		return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
-    	}
-    	commentDto.setId(commentId);
-		commentService.update(commentDto);
-		message.setResult("successfully_updated");
-		return new ResponseEntity<>(message,HttpStatus.OK);
+    public ResponseEntity<MessageDto> updateComment(@PathVariable("talkId") long talkId,
+                                                    @PathVariable("commentId") long commentId,
+                                                    @RequestBody CommentDto commentDto, BindingResult binding) {
+        MessageDto message = new MessageDto();
+        if (binding.hasFieldErrors()) {
+            message.setError("fields_error");
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        if (commentService.findById(commentId) == null) {
+            message.setError("fields_error");
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        commentDto.setId(commentId);
+        commentService.update(commentDto);
+        message.setResult("successfully_updated");
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk/talksTitles")
     public ResponseEntity<List<String>> getTalksTitles() {
-        List<String> talksTitles = talkService.findAll().stream().map(m -> m.getTitle()).collect(Collectors.toList());
+        List<String> talksTitles = talkService.findAll().stream().map(Talk::getTitle).collect(Collectors.toList());
         return new ResponseEntity<>(talksTitles, HttpStatus.OK);
     }
 
@@ -143,59 +135,59 @@ public class TalkController {
     @GetMapping("/talk/talksStatus")
     public ResponseEntity<List<TalkStatusDto>> getTalksStatus() {
         List<TalkStatusDto> talksStatus = Arrays.asList(TalkStatus.values())
-        										.stream()
-        										.map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()),m.getName()))
-        										.collect(Collectors.toList());
+                .stream()
+                .map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()), m.getName()))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(talksStatus, HttpStatus.OK);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk")
     public ResponseEntity<List<Submission>> getSumbissions(HttpServletRequest request) {
-	
+
         List<Submission> userTalkDtoList = talkService.getSumbissions(request.getRemoteUser());
-        System.out.println(userTalkDtoList);
-        
+        log.debug(userTalkDtoList);
+
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/talk/{talkId}")
     public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
-    	String userMail = request.getRemoteUser();
-    	boolean isTalkOrganiser = userService.isTalkOrganiser(userMail, talkId);
-    	if(isTalkOrganiser) {
-    		TalkDto talkDto = talkService.findById(talkId);
+        String userMail = request.getRemoteUser();
+        boolean isTalkOrganiser = userService.isTalkOrganiser(userMail, talkId);
+        if (isTalkOrganiser) {
+            TalkDto talkDto = talkService.findById(talkId);
             return new ResponseEntity<>(talkDto, HttpStatus.OK);
-    	}
-    	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
     }
 
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/talk")
     public ResponseEntity<MessageDto> updateTalkStatus(@RequestBody TalkStatusDto dto,
-    									   			   BindingResult bindingResult,
-    									   			   HttpServletRequest request){
-    	String userMail = request.getRemoteUser();
-		MessageDto message = new MessageDto();
-    	if(bindingResult.hasFieldErrors()) {
-			message.setError("fields_error");
-			return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
-		}
-    	if(userService.isTalkOrganiser(userMail,dto.getId())) {
-        	talkService.updateStatus(dto);
-        	message.setResult("successfully_updated");
-        	return new ResponseEntity<>(message,HttpStatus.OK);
-        } 
-    	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+                                                       BindingResult bindingResult,
+                                                       HttpServletRequest request) {
+        String userMail = request.getRemoteUser();
+        MessageDto message = new MessageDto();
+        if (bindingResult.hasFieldErrors()) {
+            message.setError("fields_error");
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
+        if (userService.isTalkOrganiser(userMail, dto.getId())) {
+            talkService.updateStatus(dto);
+            message.setResult("successfully_updated");
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @PatchMapping("/talk/{id}")
     public ResponseEntity<MessageDto> updateTalk(@PathVariable("id") Long talkId,
-                                     @RequestBody TalkDto dto,
-                                     BindingResult bindingResult,
-                                     HttpServletRequest request) {
+                                                 @RequestBody TalkDto dto,
+                                                 BindingResult bindingResult,
+                                                 HttpServletRequest request) {
         MessageDto message = new MessageDto();
         dto.setId(talkId);
         if (bindingResult.hasFieldErrors()) {
@@ -217,7 +209,7 @@ public class TalkController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/talk/{talk_id}/takeFileName",
             produces = "application/json")
-    public ResponseEntity<Map<String,String>> getFileName(@PathVariable("talk_id") Long talkId) {
+    public ResponseEntity<Map<String, String>> getFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
 
         File file = storageService.getFile(talk.getPathToAttachedFile());
@@ -226,9 +218,7 @@ public class TalkController {
         return new ResponseEntity(map, HttpStatus.OK);
     }
 
-
     @PreAuthorize("isAuthenticated()")
-
     @GetMapping(value = "/talk/{talk_id}/takeFile")
     public ResponseEntity<InputStreamResource> takeFile(@PathVariable("talk_id") Long talkId) {
         TalkDto talkDto = talkService.findById(talkId);
@@ -252,7 +242,6 @@ public class TalkController {
     }
 
     @PreAuthorize("isAuthenticated()")
-
     @PostMapping("/talk/{talk_id}/uploadFile")
     public ResponseEntity upload(@PathVariable("talk_id") Long talkId,
                                  @RequestPart(value = "file") MultipartFile file,

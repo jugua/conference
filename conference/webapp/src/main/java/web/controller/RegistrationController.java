@@ -35,9 +35,8 @@ public class RegistrationController {
 
     @PostMapping
     public ResponseEntity<MessageDto> register(@Valid @RequestBody RegistrationDto dto,
-                                   BindingResult bindingResult,
-                                   HttpServletRequest request
-    ) {
+                                               BindingResult bindingResult,
+                                               HttpServletRequest request) {
         dto.setUserStatus(User.UserStatus.UNCONFIRMED);
         dto.setRoleName(Role.ROLE_SPEAKER);
         return processUserRegistration(dto, bindingResult, request);
@@ -52,13 +51,14 @@ public class RegistrationController {
     }
     
     @PostMapping("/invitation")
-    public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite){
-    	userService.inviteUser(invite);
-    	return new ResponseEntity<MessageDto>(HttpStatus.OK);
+    public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite) {
+        userService.inviteUser(invite);
+        return new ResponseEntity<MessageDto>(HttpStatus.OK);
     }
-    
 
-    private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
+
+    private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult,
+                                                               HttpServletRequest request) {
         HttpStatus status;
         MessageDto message = new MessageDto();
 
@@ -82,7 +82,8 @@ public class RegistrationController {
             status = HttpStatus.CONFLICT;
             message.setError(ex.getMessage());
             log.error("Registration failed: " + dto.toString() +
-                    ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
+                    ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: "
+                    + request.toString() + "]");
         }
 
         return ResponseEntity.status(status).body(message);
