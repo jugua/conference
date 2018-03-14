@@ -2,14 +2,12 @@ package web.controller;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +42,7 @@ public class ForgotPasswordController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/forgotPassword")
-    public ResponseEntity<MessageDto> forgotPassword(@RequestBody String mail, HttpServletRequest request) throws IOException {
+    public ResponseEntity<MessageDto> forgotPassword(@RequestBody String mail) throws IOException {
         HttpStatus httpStatus;
         MessageDto responseMessage = new MessageDto();
         ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
@@ -80,8 +78,7 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/changePassword/{token}")
-    public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto,
-                                         BindingResult bindingResult) {
+    public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto) {
         VerificationToken verificationToken = tokenService.getToken(token);
         if (!isPasswordConfirmed(dto))
             return ResponseEntity.badRequest().build();
