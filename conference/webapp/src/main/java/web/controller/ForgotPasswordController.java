@@ -55,7 +55,8 @@ public class ForgotPasswordController {
                 responseMessage.setError("email_not_found");
             } else {
                 User currentUser = userService.getByEmail(node.get("mail").textValue());
-                VerificationToken token = tokenService.createToken(currentUser, VerificationToken.TokenType.FORGOT_PASS);
+                VerificationToken token = tokenService.createToken(
+                        currentUser, VerificationToken.TokenType.FORGOT_PASS);
                 tokenService.setPreviousTokensExpired(token);
                 tokenService.saveToken(token);
                 mailService.sendEmail(currentUser, new ForgotMessagePreparator(token, mailService.getUrl()));
