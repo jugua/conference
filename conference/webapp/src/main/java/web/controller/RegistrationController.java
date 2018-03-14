@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
 import domain.model.Role;
 import domain.model.User;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.MessageDto;
@@ -23,15 +25,15 @@ import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
 import service.businesslogic.exception.PasswordMismatchException;
 
-
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
 @RequestMapping("/registration")
 @Log4j
 public class RegistrationController {
 
 
-    private final UserService userService;
+    @NonNull
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<MessageDto> register(@Valid @RequestBody RegistrationDto dto,
