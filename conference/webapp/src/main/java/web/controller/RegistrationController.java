@@ -46,14 +46,6 @@ public class RegistrationController {
         return processUserRegistration(dto, bindingResult, request);
     }
 
-    public void registration() {
-
-    }
-
-    public void confirmationProcess() {
-
-    }
-    
     @PostMapping("/invitation")
     public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite) {
         userService.inviteUser(invite);
