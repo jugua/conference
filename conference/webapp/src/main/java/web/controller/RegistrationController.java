@@ -31,6 +31,8 @@ import service.businesslogic.exception.PasswordMismatchException;
 @Log4j
 public class RegistrationController {
 
+    private static final String VALIDATION_IS_FAILED = "Request for [registration] is failed: validation is failed. " +
+            "[HttpServletRequest:";
 
     @NonNull
     private UserService userService;
@@ -69,7 +71,7 @@ public class RegistrationController {
             if (bindingResult.hasFieldErrors()) {
                 status = HttpStatus.BAD_REQUEST;
                 message.setError("empty_fields");
-                log.error("Request for [registration] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+                log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
             } else {
                 userService.checkUserRegistration(dto);
                 userService.registerNewUser(dto);
@@ -79,7 +81,7 @@ public class RegistrationController {
         } catch (PasswordMismatchException ex) {
             status = HttpStatus.BAD_REQUEST;
             message.setError(ex.getMessage());
-            log.error("Request for [registration] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
         } catch (EmailAlreadyExistsException ex) {
             status = HttpStatus.CONFLICT;
             message.setError(ex.getMessage());
