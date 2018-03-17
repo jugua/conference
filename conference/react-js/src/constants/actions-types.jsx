@@ -18,6 +18,7 @@ const actions = {
   USER_LOGOUT: 'user_logout',
   SET_USER_KEYS: 'set_user_keys',
   LOAD_STATUS_LIST: 'load_status_list',
+  SET_UPCOMING_CONFERENCES: 'SET_UPCOMING_CONFERENCES',
 };
 
 export default actions;
