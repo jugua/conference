@@ -1,116 +1,83 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import axios from 'axios';
-import changeVisibilityComponent from '../../actions/forgot-password';
+import forgotPasswordActions from '../../actions/forgot-password';
 import ErrorText
   from '../../components/Forgot-password/forgot-password-error-text';
-import { forgotPassword } from '../../constants/backend-url';
-import { root } from '../../constants/route-url';
 
 class ForgotPasswordForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = { email: '' };
   }
+
   componentWillUnmount() {
-    const {
-      HIDE_EMAIL_ERROR,
-      changeVisibilityComponent: changeVisibility } = this.props;
-    changeVisibility(HIDE_EMAIL_ERROR);
+    this.clearError();
   }
+
+  sendEmail = () => this.props.dispatch(
+    forgotPasswordActions.sendForgotPasswordEmail(this.state.email),
+  );
+
+  close = () => this.props.dispatch(
+    forgotPasswordActions.setForgotPasswordVisibility(false),
+  );
 
   handleChange = ({ target: { value } }) => {
     this.setState({ email: value });
+    this.clearError();
   };
 
-  sendMail =(e) => {
-    e.preventDefault();
-    const { email } = this.state;
-    const {
-      EMAIL_IS_EMPTY,
-      show,
-      changeVisibilityComponent: changeVisibility } = this.props;
-    if (email.length !== 0) {
-      axios.post(`${forgotPassword}`,
-        { mail: email })
-        .then(() => {
-          changeVisibility(show);
-        }).catch((
-          { response: { data: { error } } }) => {
-          changeVisibility(error);
-        });
-    } else {
-      changeVisibility(EMAIL_IS_EMPTY);
-    }
-  };
+  clearError = () => this.props.dispatch(
+    forgotPasswordActions.clearForgotPasswordError(),
+  );
 
   render() {
-    const { forgotPasswordErrorMessage } = this.props;
     return (
-      <div className="pop-up">
-        <h3
-          className="pop-up__title"
-        >Forgot password?</h3>
-        <form
-          noValidate
-          name="userForm"
-        >
-          <p className="pop-up__notification">Please enter your email:</p>
-
-          <input
-            onChange={this.handleChange}
-            id="forgot-password-email"
-            type="email"
-            className="field pop-up__input"
-            name="mail"
-            required
-            value={this.state.email}
-          />
-          <ErrorText data={forgotPasswordErrorMessage} />
-          <div className="pop-up-button-wrapper">
-            <button
-              className="btn pop-up__button"
-              id="btn-forgot-password-send"
-              onClick={this.sendMail}
-            >Continue
-            </button>
-            <Link
-              className="btn pop-up__button btn_cancel"
-              id="lnk-forgot-password-cancel"
-              to={root}
-            >
-              Cancel
-            </Link >
-          </div>
-        </form>
-        <Link
-          className="pop-up__close"
-          to={root}
+      <form noValidate name="userForm">
+        <p className="pop-up__notification">Please enter your email:</p>
+        <input
+          onChange={this.handleChange}
+          id="forgot-password-email"
+          type="email"
+          className="field pop-up__input"
+          name="mail"
+          required
+          value={this.state.email}
         />
-      </div>
+        <ErrorText data={this.props.error} />
+        <div className="pop-up-button-wrapper">
+          <button
+            type="button"
+            className="btn pop-up__button"
+            id="btn-forgot-password-send"
+            onClick={this.sendEmail}
+          >
+            Continue
+          </button>
+          <button
+            type="button"
+            className="btn pop-up__button btn_cancel"
+            id="lnk-forgot-password-cancel"
+            onClick={this.close}
+          >
+            Cancel
+          </button >
+        </div>
+      </form>
     );
   }
 }
 
-ForgotPasswordForm.propTypes = {
-  show: PropTypes.string.isRequired,
-  EMAIL_IS_EMPTY: PropTypes.string.isRequired,
-  HIDE_EMAIL_ERROR: PropTypes.string.isRequired,
-  changeVisibilityComponent: PropTypes.func.isRequired,
-  forgotPasswordErrorMessage: PropTypes.string.isRequired,
+ForgotPasswordForm.defaultProps = {
+  error: '',
 };
 
-const mapDispatchToProps = dispatch => ({
+ForgotPasswordForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
 
-  changeVisibilityComponent: bindActionCreators(
-    changeVisibilityComponent, dispatch),
-});
-
-const mapStateToProps = state => (
-  { forgotPasswordErrorMessage: state.forgotPasswordErrorMessage }
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordForm);
+export default connect(
+  ({ forgotPassword: { error } }) => ({ error }),
+)(ForgotPasswordForm);
