@@ -1,7 +1,5 @@
 package web.config;
 
-import java.io.IOException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,7 +36,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver getResolver() throws IOException {
+    public CommonsMultipartResolver getResolver() {
         return new CommonsMultipartResolver();
     }
 
@@ -61,7 +59,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/resources/**")
-				.addResourceLocations("/react/images/");
+                .addResourceLocations("/react/images/");
     }
 
     @Override

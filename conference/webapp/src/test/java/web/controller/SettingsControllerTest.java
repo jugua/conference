@@ -53,7 +53,7 @@ public class SettingsControllerTest {
     private Principal principal;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(settingsController).build();
         user = new User();
         user.setId(1L);
