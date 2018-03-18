@@ -49,7 +49,7 @@ public class RegistrationController {
     @PostMapping("/invitation")
     public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite) {
         userService.inviteUser(invite);
-        return new ResponseEntity<MessageDto>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
