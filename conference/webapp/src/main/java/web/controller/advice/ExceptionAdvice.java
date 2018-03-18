@@ -1,4 +1,4 @@
-package web.controller;
+package web.controller.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.log4j.Log4j;
+
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.exception.NoSuchUserException;
 import service.businesslogic.exception.ResourceNotFoundException;
 
 @Log4j
 @RestControllerAdvice
-public class ApplicationControllerAdvice {
+public class ExceptionAdvice {
     public static final String UNAUTHORIZED_MSG = "unauthorized";
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -45,7 +46,7 @@ public class ApplicationControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({NoSuchUserException.class})
-    public MessageDto noSuckUserException(Exception e) {
+    public MessageDto noSuchUserException(Exception e) {
         log.error(e);
         return messageDtoWithError(e.getMessage());
     }

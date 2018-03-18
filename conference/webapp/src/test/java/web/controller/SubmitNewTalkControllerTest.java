@@ -63,6 +63,7 @@ import service.infrastructure.fileStorage.FileStorageService;
 import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import web.config.TestConfig;
 import web.config.WebMvcConfig;
+import web.controller.advice.ExceptionAdvice;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
@@ -197,7 +198,7 @@ public class SubmitNewTalkControllerTest {
     @Test
     public void testUnauthorizedErrorWhenSubmitTalk() throws Exception {
         mockMvc.perform(requestBuilder).andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
+                .andExpect(jsonPath("error", is(ExceptionAdvice.UNAUTHORIZED_MSG)));
     }
 
     @Test

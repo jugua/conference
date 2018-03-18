@@ -70,6 +70,7 @@ import service.infrastructure.fileStorage.exception.FileValidationException;
 import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import web.config.TestConfig;
 import web.config.WebMvcConfig;
+import web.controller.advice.ExceptionAdvice;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
@@ -174,7 +175,7 @@ public class TalkControllerTest {
     public void testUnauthorizedErrorGetMyTalks() throws Exception {
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
+                .andExpect(jsonPath("error", is(ExceptionAdvice.UNAUTHORIZED_MSG)));
     }
 
     /**
@@ -279,7 +280,7 @@ public class TalkControllerTest {
     public void testUnauthorizedErrorWhenUpdateTalk() throws Exception {
         mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1, correctTalkDto))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
+                .andExpect(jsonPath("error", is(ExceptionAdvice.UNAUTHORIZED_MSG)));
     }
 
     /**
