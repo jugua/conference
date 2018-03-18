@@ -84,7 +84,7 @@ INSERT INTO user_role VALUES (2, 4);
 INSERT INTO `user`  (`id`, email, first_name, last_name, status, password) VALUES (3, 'organiser@gmail.com', 'Organiser', 'Organiser', 'CONFIRMED','$2a$10$C08knHEu64PED9wU1lKtMeSNELBwOqP0q59r9I/inBVcWWdLI9BPC');
 
 
-INSERT INTO user_info (`id`, company, job_title, short_bio)  VALUES (3, '', '', '',3);
+INSERT INTO user_info (`id`, company, job_title, short_bio, user_id)  VALUES (3, '', '', '',3);
 
 
 INSERT INTO user_role VALUES (3, 4);
@@ -124,6 +124,7 @@ INSERT INTO user_role VALUES (6, 4);
 INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, notification_due, path_to_logo) VALUES (1, 'JavaDay 1', 'The Very First JavaDay', 'Kiev', '2018-09-15', '2018-09-25', '2018-08-04', '2018-08-22', '2018-08-22', 'nologo');
 INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, notification_due, path_to_logo) VALUES (2, 'JavaDay 2', 'Second JavaDay', 'Boston', '2018-11-23', '2018-11-30', '2018-11-01', '2018-11-01', '2018-08-22', 'nologo');
 INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, notification_due, path_to_logo) VALUES (3, 'JavaDay 3', 'Third JavaDay', 'New York', '2018-12-04', '2018-12-10', '2018-12-04', '2018-12-10', '2018-08-22', 'nologo');
+INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, notification_due, path_to_logo) VALUES (4, 'JavaDay 4', 'Fourth JavaDay', 'Kiev', '2017-08-22', '2018-08-30', '2018-07-10', '2018-07-25', '2018-08-22', 'nologo');
 INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, notification_due, path_to_logo) VALUES (5, 'JavaDay 5', 'Second JavaDay', 'London', '2018-08-22', '2018-08-30', '2018-07-10', '2018-07-25', '2018-08-22', 'nologo');
 INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, notification_due, path_to_logo) VALUES (6, 'JavaDay 6', 'Third JavaDay', 'Beijin', '2018-03-25', '2018-04-10', '2018-02-22', '2018-03-15', '2018-08-22', 'nologo');
 INSERT INTO `conference` (`id`, title, description, location, start_date, end_date, call_for_paper_start_date, call_for_paper_end_date, notification_due, path_to_logo) VALUES (7, 'JavaDay 7', 'Third JavaDay', 'Tel Aviv', '2018-02-15', '2018-02-25', '2018-02-04', '2018-03-27', '2018-08-22', 'nologo');
