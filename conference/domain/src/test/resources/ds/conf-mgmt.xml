@@ -10,7 +10,7 @@
           password="ctrhtnbr" status="CONFIRMED"/>
     <user id="-2" first_name="Dread2" last_name="Musk2" email="Elon_Musk2@"
           password="ctrhtnbr" status="CONFIRMED"/>
-    <user_info id="-1" company="test" job_title="junior" short_bio="pfitk gjccfnm"/>
+    <user_info id="-1" company="test" job_title="junior" short_bio="pfitk gjccfnm" user_id="-1"/>
     <topic id="-1" name="RNN"/>
     <topic id="2" name="PNN"/>
     <type id="-1" name="name"/>
