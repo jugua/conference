@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 
+import domain.model.AbstractEntity;
 import domain.model.Contact;
 import domain.model.Role;
 import domain.model.User;
@@ -235,7 +236,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(userMail)
                 .getOrganizerConferences().stream()
                 .flatMap(m -> m.getTalks().stream())
-                .mapToLong(m -> m.getId())
+                .mapToLong(AbstractEntity::getId)
                 .anyMatch(m -> m == talkId);
     }
 
