@@ -1,15 +1,14 @@
-import actions from '../constants/actions-types';
+import ACTIONS_TYPES from '../constants/actions-types';
 
-const { SHOW_SUCCESS_RESET_PASSWORD_MESSAGE,
-  HIDE_SUCCESS_RESET_PASSWORD_MESSAGE,
-} = actions;
-const results = {
-  [SHOW_SUCCESS_RESET_PASSWORD_MESSAGE]: true,
-  [HIDE_SUCCESS_RESET_PASSWORD_MESSAGE]: false,
+export default (forgotPasswordState = {}, { type, payload }) => {
+  switch (type) {
+  case ACTIONS_TYPES.SET_FORGOT_PASSWORD_VISIBILITY:
+    return { ...forgotPasswordState, ...{ visibility: payload } };
+  case ACTIONS_TYPES.SET_FORGOT_PASSWORD_MESSAGE:
+    return { ...forgotPasswordState, ...{ message: payload } };
+  case ACTIONS_TYPES.SET_FORGOT_PASSWORD_ERROR:
+    return { ...forgotPasswordState, ...{ error: payload } };
+  default:
+    return forgotPasswordState;
+  }
 };
-
-const forgotPassword = (isPasswordForgottenSent = false, action) => (
-  Object.prototype.hasOwnProperty.call(results, action.type) ?
-    results[action.type] : isPasswordForgottenSent
-);
-export default forgotPassword;

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import actions from '../../constants/actions-types';
 
+// TODO: maybe it can be integrated to InputBlock component
+// Error message should come from higher order component
 const ErrorText = ({ data }) => {
   if (data === actions.EMAIL_IS_EMPTY) {
     return (<span
@@ -17,7 +19,11 @@ const ErrorText = ({ data }) => {
         We can not find an account with that email address
     </span>);
   }
-  return null;
+  return (
+    <span className="field-error error-title_pop-up">
+      {data}
+    </span>
+  );
 };
 
 ErrorText.propTypes = { data: PropTypes.string.isRequired };

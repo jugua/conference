@@ -1,52 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import Form from '../../containers/Forgot-password/forgot-password-form';
-import Message from
-  './forgot-password-message';
-import actions from '../../constants/actions-types';
-import changeVisibilityComponent from '../../actions/forgot-password';
 
-class ForgotPassword extends Component {
-  componentWillUnmount() {
-    const { changeVisibilityComponent: changeVisibility } = this.props;
-    const { HIDE_SUCCESS_RESET_PASSWORD_MESSAGE } = actions;
-    changeVisibility(HIDE_SUCCESS_RESET_PASSWORD_MESSAGE);
-  }
+import ForgotPasswordWrapper from '../ForgotPassword/ForgotPasswordWrapper';
+import forgotPasswordActions from '../../actions/forgot-password';
 
-  render() {
-    const {
-      SHOW_SUCCESS_RESET_PASSWORD_MESSAGE,
-      EMAIL_IS_EMPTY, HIDE_EMAIL_ERROR,
-    } = actions;
-    return (
-      <div className="pop-up-wrapper">
-        {this.props.forgotPassword || <Form
-          show={SHOW_SUCCESS_RESET_PASSWORD_MESSAGE}
-          EMAIL_IS_EMPTY={EMAIL_IS_EMPTY}
-          HIDE_EMAIL_ERROR={HIDE_EMAIL_ERROR}
-        />}
-        {this.props.forgotPassword && (
-          <Message />
-        )}
-      </div>);
-  }
-}
+const ForgotPassword = ({
+  visibility,
+  message,
+  dispatch,
+}) => {
+  const close = () => dispatch(
+    forgotPasswordActions.setForgotPasswordVisibility(false),
+  );
 
-const mapDispatchToProps = dispatch => ({
-
-  changeVisibilityComponent: bindActionCreators(
-    changeVisibilityComponent, dispatch),
-});
-
-const mapStateToProps = state => ({
-  forgotPassword: state.forgotPassword,
-});
-
-ForgotPassword.propTypes = {
-  forgotPassword: PropTypes.bool.isRequired,
-  changeVisibilityComponent: PropTypes.func.isRequired,
+  return visibility
+    ? <ForgotPasswordWrapper close={close} message={message} />
+    : <div />;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
+ForgotPassword.defaultProps = {
+  visibility: false,
+  message: '',
+};
+
+ForgotPassword.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  visibility: PropTypes.bool,
+  message: PropTypes.string,
+};
+
+export default connect(
+  ({ forgotPassword: { visibility, message } }) => ({ visibility, message }),
+)(ForgotPassword);

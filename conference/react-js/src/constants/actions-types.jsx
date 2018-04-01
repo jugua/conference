@@ -1,6 +1,4 @@
-const actions = {
-  SHOW_SUCCESS_RESET_PASSWORD_MESSAGE: 'show',
-  HIDE_SUCCESS_RESET_PASSWORD_MESSAGE: 'hide',
+export default {
   EMAIL_IS_EMPTY: 'email_is_empty',
   EMAIL_NOT_FOUND: 'email_not_found',
   HIDE_EMAIL_ERROR: 'hide_email_error',
@@ -18,6 +16,9 @@ const actions = {
   USER_LOGOUT: 'user_logout',
   SET_USER_KEYS: 'set_user_keys',
   LOAD_STATUS_LIST: 'load_status_list',
-};
 
-export default actions;
+  /* forgot password */
+  SET_FORGOT_PASSWORD_VISIBILITY: 'SET_FORGOT_PASSWORD_VISIBILITY',
+  SET_FORGOT_PASSWORD_MESSAGE: 'SET_FORGOT_PASSWORD_MESSAGE',
+  SET_FORGOT_PASSWORD_ERROR: 'SET_FORGOT_PASSWORD_ERROR',
+};
