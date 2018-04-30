@@ -23,8 +23,8 @@ import lombok.AllArgsConstructor;
 import domain.model.User;
 import domain.model.VerificationToken;
 import service.businesslogic.api.UserService;
+import service.businesslogic.dto.ConfirmPasswordPair;
 import service.businesslogic.dto.MessageDto;
-import service.businesslogic.dto.NewPasswordDto;
 import service.businesslogic.impl.VerificationTokenService;
 import service.infrastructure.mail.MailService;
 import service.infrastructure.mail.preparator.ForgotMessagePreparator;
@@ -78,7 +78,7 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/changePassword/{token}")
-    public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody NewPasswordDto dto) {
+    public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody ConfirmPasswordPair dto) {
         VerificationToken verificationToken = tokenService.getToken(token);
         if (!isPasswordConfirmed(dto))
             return ResponseEntity.badRequest().build();
@@ -90,7 +90,7 @@ public class ForgotPasswordController {
         return ResponseEntity.ok().build();
     }
 
-    private boolean isPasswordConfirmed(NewPasswordDto dto) {
+    private boolean isPasswordConfirmed(ConfirmPasswordPair dto) {
         return dto.getPassword().equals(dto.getConfirm());
     }
 

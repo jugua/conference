@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import domain.model.User;
 import domain.model.VerificationToken;
-import service.businesslogic.dto.NewPasswordDto;
+import service.businesslogic.dto.ConfirmPasswordPair;
 
 public class ForgotPasswordControllerTest extends WithTokenControllerTest {
     private static final String WRONG_JSON_WITHOUT_MAIL = "{}";
@@ -89,7 +89,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
         VerificationToken correctToken = createToken();
         String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
         String correctPassword = "password";
-        NewPasswordDto dto = new NewPasswordDto(correctPassword);
+        ConfirmPasswordPair dto = new ConfirmPasswordPair(correctPassword);
         dto.setConfirm(correctPassword);
         dto.setPassword(correctPassword);
 
@@ -107,7 +107,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
         VerificationToken correctToken = createToken();
         String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
         String correctPassword = "password";
-        NewPasswordDto dto = new NewPasswordDto(correctPassword);
+        ConfirmPasswordPair dto = new ConfirmPasswordPair(correctPassword);
         dto.setConfirm(correctPassword);
         dto.setPassword("unconfirmed password!!!");
         when(tokenService.getToken(correctToken.getToken())).thenReturn(correctToken);

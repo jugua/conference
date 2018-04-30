@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class NewPasswordDto {
+public class ConfirmPasswordPair {
 
     @JsonProperty("newPassword")
     @NonNull
