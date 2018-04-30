@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import service.businesslogic.impl.VerificationTokenService;
+import web.security.WithTokenGetRequestProcessor;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +21,12 @@ public class SecurityMockConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+    }
+
+    @Bean
+    public WithTokenGetRequestProcessor withTokenGetRequestProcessor(VerificationTokenService tokenService) {
+        //TODO: probably we have to use mock here
+        return new WithTokenGetRequestProcessor(tokenService);
     }
 
     @Bean

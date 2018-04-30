@@ -28,6 +28,7 @@ import service.businesslogic.dto.MessageDto;
 import service.businesslogic.impl.VerificationTokenService;
 import service.infrastructure.mail.MailService;
 import service.infrastructure.mail.preparator.ForgotMessagePreparator;
+import web.security.WithTokenGetRequestProcessor;
 
 @RestController
 @AllArgsConstructor(onConstructor = @__({@Autowired}))

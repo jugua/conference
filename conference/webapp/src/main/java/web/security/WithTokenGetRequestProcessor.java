@@ -1,4 +1,4 @@
-package web.controller;
+package web.security;
 
 import java.util.function.Consumer;
 
@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import lombok.AllArgsConstructor;
+
 import domain.model.User;
 import domain.model.VerificationToken;
-import lombok.AllArgsConstructor;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.impl.VerificationTokenService;
-import web.security.AuthenticationFactory;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @Component

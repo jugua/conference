@@ -7,14 +7,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
+
 import domain.model.User;
 import domain.model.VerificationToken;
-import lombok.AllArgsConstructor;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.impl.VerificationTokenService;
 import service.infrastructure.mail.MailService;
 import service.infrastructure.mail.preparator.OldEmailMessagePreparator;
+import web.security.WithTokenGetRequestProcessor;
 
 @RestController
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
