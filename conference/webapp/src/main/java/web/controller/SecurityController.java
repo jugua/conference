@@ -16,7 +16,7 @@ import service.businesslogic.dto.LoginDto;
 
 @RestController
 @RequestMapping
-public class SignInController {
+public class SecurityController {
 
     @Autowired
     private SignInService signInService;
