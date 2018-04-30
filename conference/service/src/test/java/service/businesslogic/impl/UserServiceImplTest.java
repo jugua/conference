@@ -28,18 +28,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import domain.model.Role;
 import domain.model.User;
 import domain.model.UserInfo;
-import service.businesslogic.dto.RegistrationDto;
-import service.infrastructure.mail.MailService;
 import domain.repository.RoleRepository;
 import domain.repository.UserRepository;
 import service.businesslogic.api.UserService;
+import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
 import service.businesslogic.exception.NoSuchUserException;
 import service.businesslogic.exception.PasswordMismatchException;
 import service.businesslogic.exception.WrongRoleException;
+import service.infrastructure.mail.MailService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserServiceTest {
+public class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
