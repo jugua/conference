@@ -56,10 +56,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private Comment toEntity(CommentDto commentDto) {
+        User one = userRepository.findOne(commentDto.getUserId());
         return Comment.builder()
                 .id(commentDto.getId())
                 .message(commentDto.getMessage())
-                .user(userRepository.findOne(commentDto.getUserId()))
+                .user(one)
                 .talkId(commentDto.getTalkId())
                 .time(commentDto.getTime())
                 .build();
