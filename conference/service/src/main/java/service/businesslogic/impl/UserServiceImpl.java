@@ -61,6 +61,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void confirm(User user) {
+        user.setStatus(User.UserStatus.CONFIRMED);
+        updateUserProfile(user);
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }

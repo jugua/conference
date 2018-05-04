@@ -31,8 +31,7 @@ public class ConfirmationController {
     @GetMapping("/registrationConfirm/{token}")
     public ResponseEntity<MessageDto> confirmRegistration(@PathVariable String token) {
         return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CONFIRMATION, verificationToken -> {
-            User user = verificationToken.getUser();
-            setUserStatusConfirmed(user);
+            userService.confirm(verificationToken.getUser());
         });
     }
 
@@ -48,8 +47,4 @@ public class ConfirmationController {
         });
     }
 
-    private void setUserStatusConfirmed(User user) {
-        user.setStatus(User.UserStatus.CONFIRMED);
-        userService.updateUserProfile(user);
-    }
 }

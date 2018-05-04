@@ -1,6 +1,5 @@
 package web.controller;
 
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,7 +40,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest {
         testForCorrectToken(correctToken, correctUrl,
                 VerificationToken.TokenType.CONFIRMATION);
         testForUpdatingSecurityContext(user);
-        verify(userService).updateUserProfile(any());
+        verify(userService).confirm(user);
     }
 
     @Test
@@ -53,7 +52,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest {
         when(tokenService.getEmail(correctToken.getToken())).thenReturn(user.getEmail());
         testForCorrectToken(correctToken, correctUrl, tokenType);
         testForUpdatingSecurityContext(user);
-        verify(userService).updateUserProfile(any());
+        verify(userService).confirm(user);
     }
 
     @Test
