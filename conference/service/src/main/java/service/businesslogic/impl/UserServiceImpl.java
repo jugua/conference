@@ -226,9 +226,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean isTalkOrganiser(String userMail, Long talkId) {
-        User user = userRepository.findByEmail(userMail);
-        boolean result = user.getOrganizerConferences().stream().flatMap(m -> m.getTalks().stream()).mapToLong(m -> m.getId()).anyMatch(m -> m == talkId);
-        return result;
+        return userRepository.findByEmail(userMail)
+                .getOrganizerConferences().stream()
+                .flatMap(m -> m.getTalks().stream())
+                .mapToLong(m -> m.getId())
+                .anyMatch(m -> m == talkId);
     }
 
 }
