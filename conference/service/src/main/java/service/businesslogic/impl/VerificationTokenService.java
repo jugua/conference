@@ -69,11 +69,6 @@ public class VerificationTokenService {
         return token;
     }
 
-    public String getEmail(String token) {
-        int index = token.indexOf('|');
-        return (index == -1) ? null : token.substring(index + 1);
-    }
-
     @Transactional
     public void updateToken(VerificationToken token) {
         tokenRepository.save(token);

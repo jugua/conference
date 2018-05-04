@@ -13,7 +13,6 @@ import domain.model.User;
 import domain.model.VerificationToken;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
-import service.businesslogic.impl.VerificationTokenService;
 import service.infrastructure.mail.MailService;
 import service.infrastructure.mail.preparator.OldEmailMessagePreparator;
 import web.security.WithTokenGetRequestProcessor;
@@ -24,7 +23,6 @@ import web.security.WithTokenGetRequestProcessor;
 public class ConfirmationController {
 
     private final WithTokenGetRequestProcessor withTokenGetRequestProcessor;
-    private final VerificationTokenService tokenService;
     private final UserService userService;
     private final MailService mailService;
 
@@ -39,7 +37,7 @@ public class ConfirmationController {
     public ResponseEntity<MessageDto> confirmNewEmail(@PathVariable String token) {
         return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CHANGING_EMAIL, verificationToken -> {
             User user = verificationToken.getUser();
-            String newEmail = tokenService.getEmail(token);
+            String newEmail = extractEmailOf(token);
             String oldEmail = user.getEmail();
             user.setEmail(newEmail);
             userService.updateUserProfile(user);
@@ -47,4 +45,8 @@ public class ConfirmationController {
         });
     }
 
+    private static String extractEmailOf(String token) {
+        int index = token.indexOf('|');
+        return (index == -1) ? null : token.substring(index + 1);
+    }
 }

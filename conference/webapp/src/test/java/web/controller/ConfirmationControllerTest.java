@@ -1,15 +1,18 @@
 package web.controller;
 
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import domain.model.VerificationToken;
+import service.infrastructure.mail.MailService;
+import service.infrastructure.mail.preparator.OldEmailMessagePreparator;
 import web.config.TestConfig;
 import web.config.WebMvcConfig;
 
@@ -18,6 +21,9 @@ import web.config.WebMvcConfig;
 @WebAppConfiguration
 public class ConfirmationControllerTest extends WithTokenControllerTest {
     private static final String REGISTRATION_CONFIRM_REQUEST = "/confirmation/registrationConfirm/";
+
+    @Autowired
+    private MailService mailService;
 
     @Test
     public void testConfirmRegistrationWithWrongToken() throws Exception {
@@ -44,15 +50,32 @@ public class ConfirmationControllerTest extends WithTokenControllerTest {
     }
 
     @Test
-    public void testConfirmNewEmailWithCorrectToken() throws Exception {
-        VerificationToken correctToken = createToken();
+    @DirtiesContext
+    public void successfulEmailConfirmationShouldUpdateUserProfile() throws Exception {
+        VerificationToken correctToken = VerificationToken.createChangeEmailToken(
+                user, VerificationToken.TokenType.CONFIRMATION, "newEmail@gmail.com");
         VerificationToken.TokenType tokenType = VerificationToken.TokenType.CHANGING_EMAIL;
         correctToken.setType(tokenType);
         String correctUrl = "/confirmation/newEmailConfirm/" + correctToken.getToken();
-        when(tokenService.getEmail(correctToken.getToken())).thenReturn(user.getEmail());
         testForCorrectToken(correctToken, correctUrl, tokenType);
         testForUpdatingSecurityContext(user);
-        verify(userService).confirm(user);
+        verify(userService).updateUserProfile(user);
+    }
+
+    @Test
+    @DirtiesContext
+    public void successfulEmailConfirmationShouldSendEmailToUser() throws Exception {
+        String oldEmail = user.getEmail();
+        VerificationToken correctToken = VerificationToken.createChangeEmailToken(
+                user, VerificationToken.TokenType.CONFIRMATION, "newEmail@gmail.com");
+
+        VerificationToken.TokenType tokenType = VerificationToken.TokenType.CHANGING_EMAIL;
+        correctToken.setType(tokenType);
+        String correctUrl = "/confirmation/newEmailConfirm/" + correctToken.getToken();
+        testForCorrectToken(correctToken, correctUrl, tokenType);
+        testForUpdatingSecurityContext(user);
+
+        verify(mailService).sendEmail(user, new OldEmailMessagePreparator(oldEmail));
     }
 
     @Test
