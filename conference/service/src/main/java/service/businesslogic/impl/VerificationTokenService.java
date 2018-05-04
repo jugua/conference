@@ -1,14 +1,11 @@
 package service.businesslogic.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.model.User;
 import domain.model.VerificationToken;
 import domain.repository.VerificationTokenRepository;
 
@@ -20,23 +17,6 @@ public class VerificationTokenService {
     @Autowired
     public VerificationTokenService(VerificationTokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
-    }
-
-    public VerificationToken createToken(User user, VerificationToken.TokenType tokenType) {
-        VerificationToken token = new VerificationToken();
-        token.setUser(user);
-        token.setExpiryDate(calculateExpiryDate(VerificationToken.EXPIRATION_IN_MINUTES));
-        token.setToken(UUID.randomUUID().toString());
-        token.setType(tokenType);
-        token.setStatus(VerificationToken.TokenStatus.VALID);
-        return token;
-    }
-
-    public VerificationToken createNewEmailToken(User user, VerificationToken
-            .TokenType tokenType, String newEmail) {
-        VerificationToken token = createToken(user, tokenType);
-        token.setToken(token.getToken() + "|" + newEmail);
-        return token;
     }
 
     @Transactional
@@ -99,11 +79,6 @@ public class VerificationTokenService {
         tokenRepository.save(token);
     }
 
-    private LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
-        LocalDateTime currentTime = LocalDateTime.now();
-        return currentTime.plusMinutes(expiryTimeInMinutes);
-    }
-
     private VerificationToken loadFromDatabase(Long userId, VerificationToken.TokenType tokenType) {
         List<VerificationToken> tokens = tokenRepository.
                 findByUserIdAndStatusAndType(userId,
@@ -111,4 +86,5 @@ public class VerificationTokenService {
                         tokenType);
         return tokens.isEmpty() ? null : tokens.get(0);
     }
+
 }

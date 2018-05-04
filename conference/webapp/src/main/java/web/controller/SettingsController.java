@@ -22,10 +22,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import domain.model.User;
-import domain.model.VerificationToken;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.User;
+import domain.model.VerificationToken;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.SettingsDto;
@@ -48,7 +49,7 @@ public class SettingsController {
 
     @PostMapping("/password")
     public ResponseEntity<MessageDto> changePassword(@Valid @RequestBody SettingsDto dto, Principal principal,
-                                         BindingResult bindingResult, HttpServletRequest request) {
+                                                     BindingResult bindingResult, HttpServletRequest request) {
         MessageDto messageDto = new MessageDto();
         if (principal == null) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
@@ -97,11 +98,8 @@ public class SettingsController {
             messageDto.setError("email_already_exists");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(messageDto);
         }
-        VerificationToken token = tokenService.createNewEmailToken(
-                user,
-                VerificationToken.TokenType.CHANGING_EMAIL,
-                email
-        );
+        VerificationToken token = VerificationToken.createChangeEmailToken(
+                user, VerificationToken.TokenType.CHANGING_EMAIL, email);
         tokenService.setPreviousTokensExpired(token);
         tokenService.saveToken(token);
         mailService.sendEmail(user, new NewEmailMessagePreparator(token, mailService.getUrl()));

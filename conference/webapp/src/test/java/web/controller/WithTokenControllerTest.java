@@ -148,7 +148,7 @@ public abstract class WithTokenControllerTest {
     }
 
     public VerificationToken createToken() {
-        return realTokenService.createToken(user, VerificationToken.TokenType.CONFIRMATION);
+        return VerificationToken.of(user, VerificationToken.TokenType.CONFIRMATION);
     }
 
     private Authentication getAuthentication(User user) {

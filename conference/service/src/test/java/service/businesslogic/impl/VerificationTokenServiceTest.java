@@ -1,6 +1,11 @@
 package service.businesslogic.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -138,7 +143,7 @@ public class VerificationTokenServiceTest {
     }
 
     private VerificationToken createTokenUsingService() {
-        return tokenService.createToken(user, VerificationToken.TokenType.FORGOT_PASS);
+        return VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
     }
 
     private LocalDateTime createExpiredDate(int decreasingTimeInMinutes) {

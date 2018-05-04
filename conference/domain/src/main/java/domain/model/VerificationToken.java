@@ -2,6 +2,7 @@ package domain.model;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,6 +60,28 @@ public class VerificationToken extends AbstractEntity {
         this.expiryDate = expiryDate;
         this.type = type;
         this.status = status;
+    }
+
+    public static VerificationToken of(User user, VerificationToken.TokenType tokenType) {
+        return VerificationToken.builder()
+                .user(user)
+                .expiryDate(calculateExpiryDate(VerificationToken.EXPIRATION_IN_MINUTES))
+                .token(UUID.randomUUID().toString())
+                .type(tokenType)
+                .status(VerificationToken.TokenStatus.VALID)
+                .build();
+    }
+
+    public static VerificationToken createChangeEmailToken(
+            User user, VerificationToken.TokenType tokenType, String newEmail) {
+        VerificationToken token = VerificationToken.of(user, tokenType);
+        token.setToken(token.getToken() + "|" + newEmail);
+        return token;
+    }
+
+    private static LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        return currentTime.plusMinutes(expiryTimeInMinutes);
     }
 
     public long calculateSecondsToExpiry() {

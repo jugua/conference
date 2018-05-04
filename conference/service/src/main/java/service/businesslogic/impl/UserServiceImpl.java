@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.AllArgsConstructor;
+
 import domain.model.Contact;
 import domain.model.Role;
 import domain.model.User;
@@ -17,7 +19,6 @@ import domain.model.UserInfo;
 import domain.model.VerificationToken;
 import domain.repository.RoleRepository;
 import domain.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.RegistrationDto;
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 		User newUser = mapRegistrationDtoToUser(dto);
 		save(newUser);
 		if (User.UserStatus.UNCONFIRMED.equals(dto.getUserStatus())) {
-			VerificationToken token = tokenService.createToken(newUser, VerificationToken.TokenType.CONFIRMATION);
+            VerificationToken token = VerificationToken.of(newUser, VerificationToken.TokenType.CONFIRMATION);
 			tokenService.saveToken(token);
 			mailService.sendEmail(newUser, new ConfirmAccountPreparator(token, mailService.getUrl()));
 		}
