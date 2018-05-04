@@ -22,7 +22,7 @@ public class WithTokenGetRequestProcessor {
     private final VerificationTokenService tokenService;
 
     public ResponseEntity<MessageDto> process(String token, VerificationToken.TokenType tokenType, Consumer<VerificationToken> action) {
-        VerificationToken verificationToken = tokenService.getToken(token);
+        VerificationToken verificationToken = tokenService.findTokenBy(token);
 
         if (!tokenService.isTokenValid(verificationToken, tokenType)) {
             return ResponseEntity.badRequest().body(prepareMessageDto("invalid_link"));

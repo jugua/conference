@@ -94,7 +94,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
         dto.setPassword(correctPassword);
 
         when(passwordEncoder.encode(anyString())).thenReturn(user.getPassword());
-        when(tokenService.getToken(correctToken.getToken())).thenReturn(correctToken);
+        when(tokenService.findTokenBy(correctToken.getToken())).thenReturn(correctToken);
         mockMvc.perform(post(correctUrl)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(dto)))
@@ -110,7 +110,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
         ConfirmPasswordPair dto = new ConfirmPasswordPair(correctPassword);
         dto.setConfirm(correctPassword);
         dto.setPassword("unconfirmed password!!!");
-        when(tokenService.getToken(correctToken.getToken())).thenReturn(correctToken);
+        when(tokenService.findTokenBy(correctToken.getToken())).thenReturn(correctToken);
         mockMvc.perform(post(correctUrl)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(dto)))

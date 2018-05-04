@@ -80,7 +80,7 @@ public class ForgotPasswordController {
 
     @PostMapping("/changePassword/{token}")
     public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody ConfirmPasswordPair dto) {
-        VerificationToken verificationToken = tokenService.getToken(token);
+        VerificationToken verificationToken = tokenService.findTokenBy(token);
         if (!isPasswordConfirmed(dto))
             return ResponseEntity.badRequest().build();
 

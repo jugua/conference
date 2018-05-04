@@ -97,14 +97,14 @@ public class VerificationTokenServiceTest {
         List<VerificationToken> resultedList = new ArrayList<>();
         resultedList.add(verificationToken);
         when(tokenRepository.findByToken(anyString())).thenReturn(resultedList);
-        assertEquals(verificationToken, tokenService.getToken("TOKEN"));
+        assertEquals(verificationToken, tokenService.findTokenBy("TOKEN"));
     }
 
     @Test
     public void testGetTokenForUnExistingToken() {
         List<VerificationToken> resultedList = new ArrayList<>();
         when(tokenRepository.findByToken(anyString())).thenReturn(resultedList);
-        assertNull(tokenService.getToken("TOKEN"));
+        assertNull(tokenService.findTokenBy("TOKEN"));
     }
 
     @Test

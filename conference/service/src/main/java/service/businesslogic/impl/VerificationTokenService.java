@@ -73,7 +73,7 @@ public class VerificationTokenService {
         return verificationToken.calculateSecondsToExpiry() <= 0;
     }
 
-    public VerificationToken getToken(String token) {
+    public VerificationToken findTokenBy(String token) {
         List<VerificationToken> tokens = tokenRepository.findByToken(token);
         return tokens.isEmpty() ? null : tokens.get(0);
     }

@@ -102,7 +102,7 @@ public abstract class WithTokenControllerTest {
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.CHANGING_EMAIL)).thenReturn(true);
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.FORGOT_PASS)).thenReturn(true);
         when(tokenService.isTokenExpired(correctToken)).thenReturn(false);
-        when(tokenService.getToken(correctToken.getToken())).thenReturn(correctToken);
+        when(tokenService.findTokenBy(correctToken.getToken())).thenReturn(correctToken);
 
         mockMvc.perform(get(correctUrl))
                 .andExpect(status().isOk());
@@ -118,7 +118,7 @@ public abstract class WithTokenControllerTest {
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.CHANGING_EMAIL)).thenReturn(true);
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.FORGOT_PASS)).thenReturn(true);
         when(tokenService.isTokenExpired(correctToken)).thenReturn(true);
-        when(tokenService.getToken(correctToken.getToken())).thenReturn(correctToken);
+        when(tokenService.findTokenBy(correctToken.getToken())).thenReturn(correctToken);
 
         mockMvc.perform(get(correctUrl))
                 .andExpect(status().isGone());
@@ -131,8 +131,8 @@ public abstract class WithTokenControllerTest {
     public void testForWrongToken(String baseUrl) throws Exception {
         String wrongToken = "gasf1";
         when(tokenService.isTokenValid(any(VerificationToken.class), any(VerificationToken.TokenType.class))).thenReturn(false);
-        when(tokenService.getToken(anyString())).thenReturn(null);
-        doReturn(null).when(tokenService).getToken(wrongToken);
+        when(tokenService.findTokenBy(anyString())).thenReturn(null);
+        doReturn(null).when(tokenService).findTokenBy(wrongToken);
         mockMvc.perform(get(baseUrl + wrongToken))
                 .andExpect(status().isBadRequest());
 
