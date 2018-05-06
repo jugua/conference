@@ -79,6 +79,10 @@ public class VerificationToken extends AbstractEntity {
         return token;
     }
 
+    public boolean isExpiredByTime() {
+        return secondsToExpiry() <= 0;
+    }
+
     public long secondsToExpiry() {
         return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }

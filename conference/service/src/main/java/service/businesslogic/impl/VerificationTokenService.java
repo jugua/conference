@@ -41,12 +41,8 @@ public class VerificationTokenService {
     }
 
     public boolean isTokenExpired(VerificationToken verificationToken) {
-        return (verificationToken.getStatus().equals(VerificationToken.TokenStatus.EXPIRED)) ||
-                isExpiredByTime(verificationToken);
-    }
-
-    public boolean isExpiredByTime(VerificationToken verificationToken) {
-        return verificationToken.secondsToExpiry() <= 0;
+        return (verificationToken.getStatus().equals(VerificationToken.TokenStatus.EXPIRED))
+                || verificationToken.isExpiredByTime();
     }
 
     public VerificationToken findTokenBy(String token) {
@@ -57,7 +53,7 @@ public class VerificationTokenService {
     @Transactional
     public VerificationToken getValidTokenByUserIdAndType(Long userId, VerificationToken.TokenType tokenType) {
         VerificationToken token = findTokenBy(userId, tokenType);
-        if (token != null && isExpiredByTime(token)) {
+        if (token != null && token.isExpiredByTime()) {
             token.expire();
             tokenRepository.save(token);
             return null;
