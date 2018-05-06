@@ -31,7 +31,7 @@ public class VerificationTokenService {
 
         for (VerificationToken token : tokens) {
             token.expire();
-            updateToken(token);
+            tokenRepository.save(token);
         }
     }
 
@@ -59,15 +59,10 @@ public class VerificationTokenService {
         VerificationToken token = findTokenBy(userId, tokenType);
         if (token != null && isExpiredByTime(token)) {
             token.expire();
-            updateToken(token);
+            tokenRepository.save(token);
             return null;
         }
         return token;
-    }
-
-    @Transactional
-    public void updateToken(VerificationToken token) {
-        tokenRepository.save(token);
     }
 
     private VerificationToken findTokenBy(Long userId, VerificationToken.TokenType tokenType) {

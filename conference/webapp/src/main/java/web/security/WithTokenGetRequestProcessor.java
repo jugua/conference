@@ -38,7 +38,7 @@ public class WithTokenGetRequestProcessor {
 
     private void setTokenStatusExpired(VerificationToken verificationToken) {
         verificationToken.expire();
-        tokenService.updateToken(verificationToken);
+        tokenService.saveToken(verificationToken);
     }
 
     private MessageDto prepareMessageDto(String message) {
