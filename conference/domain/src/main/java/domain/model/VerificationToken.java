@@ -79,13 +79,13 @@ public class VerificationToken extends AbstractEntity {
         return token;
     }
 
+    public long secondsToExpiry() {
+        return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
+    }
+
     private static LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
         LocalDateTime currentTime = LocalDateTime.now();
         return currentTime.plusMinutes(expiryTimeInMinutes);
-    }
-
-    public long secondsToExpiry() {
-        return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }
 
     public void expire() {
