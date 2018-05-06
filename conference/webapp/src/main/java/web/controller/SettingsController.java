@@ -100,6 +100,7 @@ public class SettingsController {
         }
         VerificationToken token = VerificationToken.createChangeEmailToken(
                 user, VerificationToken.TokenType.CHANGING_EMAIL, email);
+
         tokenService.setPreviousTokensExpired(token);
         tokenService.saveToken(token);
         mailService.sendEmail(user, new NewEmailMessagePreparator(token, mailService.getUrl()));
@@ -114,8 +115,8 @@ public class SettingsController {
 
         User user = userService.getByEmail(principal.getName());
 
-        VerificationToken token = tokenService.getValidTokenByUserIdAndType
-                (user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);
+        VerificationToken token = tokenService.getValidTokenByUserIdAndType(
+                user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);
         MessageDto messageDto = new MessageDto();
 
         if (token == null) {

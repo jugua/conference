@@ -56,7 +56,7 @@ public class VerificationTokenService {
 
     @Transactional
     public VerificationToken getValidTokenByUserIdAndType(Long userId, VerificationToken.TokenType tokenType) {
-        VerificationToken token = loadFromDatabase(userId, tokenType);
+        VerificationToken token = findTokenBy(userId, tokenType);
         if (token != null && isExpiredByTime(token)) {
             token.setStatus(VerificationToken.TokenStatus.EXPIRED);
             updateToken(token);
@@ -70,7 +70,7 @@ public class VerificationTokenService {
         tokenRepository.save(token);
     }
 
-    private VerificationToken loadFromDatabase(Long userId, VerificationToken.TokenType tokenType) {
+    private VerificationToken findTokenBy(Long userId, VerificationToken.TokenType tokenType) {
         List<VerificationToken> tokens = tokenRepository.
                 findByUserIdAndStatusAndType(userId,
                         VerificationToken.TokenStatus.VALID,
