@@ -124,7 +124,7 @@ public class SettingsController {
         }
 
         messageDto.setResult("pending_email_change_found");
-        messageDto.setSecondsToExpiry(String.valueOf(token.calculateSecondsToExpiry()));
+        messageDto.setSecondsToExpiry(String.valueOf(token.secondsToExpiry()));
         return ResponseEntity.ok(messageDto);
     }
 

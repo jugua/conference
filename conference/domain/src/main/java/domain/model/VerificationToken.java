@@ -84,7 +84,7 @@ public class VerificationToken extends AbstractEntity {
         return currentTime.plusMinutes(expiryTimeInMinutes);
     }
 
-    public long calculateSecondsToExpiry() {
+    public long secondsToExpiry() {
         return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }
 

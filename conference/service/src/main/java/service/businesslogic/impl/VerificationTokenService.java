@@ -26,16 +26,12 @@ public class VerificationTokenService {
 
     @Transactional
     public void setPreviousTokensExpired(VerificationToken newToken) {
-        List<VerificationToken> tokens = tokenRepository.
-                findByUserIdAndStatusAndType(newToken.getUser().getId(),
-                        VerificationToken.TokenStatus.VALID,
-                        newToken.getType());
+        List<VerificationToken> tokens = tokenRepository.findByUserIdAndStatusAndType(
+                newToken.getUser().getId(), VerificationToken.TokenStatus.VALID, newToken.getType());
 
-        if (!tokens.isEmpty()) {
-            for (VerificationToken token : tokens) {
-                token.setStatus(VerificationToken.TokenStatus.EXPIRED);
-                updateToken(token);
-            }
+        for (VerificationToken token : tokens) {
+            token.setStatus(VerificationToken.TokenStatus.EXPIRED);
+            updateToken(token);
         }
     }
 
@@ -50,7 +46,7 @@ public class VerificationTokenService {
     }
 
     public boolean isExpiredByTime(VerificationToken verificationToken) {
-        return verificationToken.calculateSecondsToExpiry() <= 0;
+        return verificationToken.secondsToExpiry() <= 0;
     }
 
     public VerificationToken findTokenBy(String token) {
