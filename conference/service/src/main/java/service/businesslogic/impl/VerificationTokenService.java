@@ -40,11 +40,6 @@ public class VerificationTokenService {
                 && verificationToken.getStatus().equals(VerificationToken.TokenStatus.VALID));
     }
 
-    public boolean isTokenExpired(VerificationToken verificationToken) {
-        return (verificationToken.getStatus().equals(VerificationToken.TokenStatus.EXPIRED))
-                || verificationToken.isExpiredByTime();
-    }
-
     public VerificationToken findTokenBy(String token) {
         List<VerificationToken> tokens = tokenRepository.findByToken(token);
         return tokens.isEmpty() ? null : tokens.get(0);

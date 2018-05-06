@@ -27,7 +27,7 @@ public class WithTokenGetRequestProcessor {
         if (!tokenService.isTokenValid(verificationToken, tokenType)) {
             return ResponseEntity.badRequest().body(prepareMessageDto("invalid_link"));
         }
-        if (tokenService.isTokenExpired(verificationToken)) {
+        if (verificationToken.isExpired()) {
             return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
         }
         action.accept(verificationToken);

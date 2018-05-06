@@ -101,14 +101,12 @@ public abstract class WithTokenControllerTest {
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.CONFIRMATION)).thenReturn(true);
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.CHANGING_EMAIL)).thenReturn(true);
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.FORGOT_PASS)).thenReturn(true);
-        when(tokenService.isTokenExpired(correctToken)).thenReturn(false);
         when(tokenService.findTokenBy(correctToken.getToken())).thenReturn(correctToken);
 
         mockMvc.perform(get(correctUrl))
                 .andExpect(status().isOk());
 
         verify(tokenService).isTokenValid(correctToken, type);
-        verify(tokenService).isTokenExpired(correctToken);
     }
 
     public void testForExpiredToken(VerificationToken correctToken,
@@ -117,28 +115,25 @@ public abstract class WithTokenControllerTest {
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.CONFIRMATION)).thenReturn(true);
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.CHANGING_EMAIL)).thenReturn(true);
         when(tokenService.isTokenValid(correctToken, VerificationToken.TokenType.FORGOT_PASS)).thenReturn(true);
-        when(tokenService.isTokenExpired(correctToken)).thenReturn(true);
         when(tokenService.findTokenBy(correctToken.getToken())).thenReturn(correctToken);
 
         mockMvc.perform(get(correctUrl))
                 .andExpect(status().isGone());
 
         verify(tokenService).isTokenValid(correctToken, type);
-        verify(tokenService).isTokenExpired(correctToken);
         verify(userService, never()).updateUserProfile(any());
     }
 
     public void testForWrongToken(String baseUrl) throws Exception {
         String wrongToken = "gasf1";
-        when(tokenService.isTokenValid(any(VerificationToken.class), any(VerificationToken.TokenType.class))).thenReturn(false);
+        when(tokenService.isTokenValid(any(VerificationToken.class), any(VerificationToken.TokenType.class)))
+                .thenReturn(false);
         when(tokenService.findTokenBy(anyString())).thenReturn(null);
         doReturn(null).when(tokenService).findTokenBy(wrongToken);
         mockMvc.perform(get(baseUrl + wrongToken))
                 .andExpect(status().isBadRequest());
 
-        verify(tokenService).isTokenValid(any(VerificationToken.class),
-                any(VerificationToken.TokenType.class));
-        verify(tokenService, never()).isTokenExpired(anyObject());
+        verify(tokenService).isTokenValid(any(VerificationToken.class), any(VerificationToken.TokenType.class));
         verify(userService, never()).updateUserProfile(anyObject());
     }
 

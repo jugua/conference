@@ -82,19 +82,19 @@ public class VerificationTokenServiceTest {
 
     @Test
     public void testUnExpiredTokenIsTokenExpired() {
-        assertFalse(tokenService.isTokenExpired(verificationToken));
+        assertFalse(verificationToken.isExpired());
     }
 
     @Test
     public void testExpiredByDateTokenIsTokenExpired() {
         verificationToken.setExpiryDate(createExpiredDate(61));
-        assertTrue(tokenService.isTokenExpired(verificationToken));
+        assertTrue(verificationToken.isExpired());
     }
 
     @Test
     public void testExpiredTokenIsTokenExpired() {
         verificationToken.expire();
-        assertTrue(tokenService.isTokenExpired(verificationToken));
+        assertTrue(verificationToken.isExpired());
     }
 
     @Test
