@@ -31,12 +31,12 @@ public class WithTokenGetRequestProcessor {
             return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
         }
         action.accept(verificationToken);
-        setTokenStatusExpired(verificationToken);
+        expireToken(verificationToken);
         authenticateUser(verificationToken.getUser());
         return ResponseEntity.ok().build();
     }
 
-    private void setTokenStatusExpired(VerificationToken verificationToken) {
+    private void expireToken(VerificationToken verificationToken) {
         verificationToken.expire();
         tokenService.saveToken(verificationToken);
     }
