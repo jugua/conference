@@ -30,7 +30,7 @@ public class VerificationTokenService {
                 newToken.getUser().getId(), VerificationToken.TokenStatus.VALID, newToken.getType());
 
         for (VerificationToken token : tokens) {
-            token.setStatus(VerificationToken.TokenStatus.EXPIRED);
+            token.expire();
             updateToken(token);
         }
     }
@@ -58,7 +58,7 @@ public class VerificationTokenService {
     public VerificationToken getValidTokenByUserIdAndType(Long userId, VerificationToken.TokenType tokenType) {
         VerificationToken token = findTokenBy(userId, tokenType);
         if (token != null && isExpiredByTime(token)) {
-            token.setStatus(VerificationToken.TokenStatus.EXPIRED);
+            token.expire();
             updateToken(token);
             return null;
         }

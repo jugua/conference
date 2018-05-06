@@ -93,7 +93,7 @@ public class VerificationTokenServiceTest {
 
     @Test
     public void testExpiredTokenIsTokenExpired() {
-        verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+        verificationToken.expire();
         assertTrue(tokenService.isTokenExpired(verificationToken));
     }
 

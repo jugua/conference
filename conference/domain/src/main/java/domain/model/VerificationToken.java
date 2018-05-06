@@ -88,6 +88,10 @@ public class VerificationToken extends AbstractEntity {
         return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }
 
+    public void expire() {
+        setStatus(TokenStatus.EXPIRED);
+    }
+
     public enum TokenType {
         CONFIRMATION, FORGOT_PASS, CHANGING_EMAIL
     }

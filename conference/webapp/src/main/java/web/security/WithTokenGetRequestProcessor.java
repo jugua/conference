@@ -37,7 +37,7 @@ public class WithTokenGetRequestProcessor {
     }
 
     private void setTokenStatusExpired(VerificationToken verificationToken) {
-        verificationToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+        verificationToken.expire();
         tokenService.updateToken(verificationToken);
     }
 

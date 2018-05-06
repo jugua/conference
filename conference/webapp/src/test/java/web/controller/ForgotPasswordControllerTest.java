@@ -72,7 +72,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
     @Test
     public void testChangePasswordWithExpiredToken() throws Exception {
         VerificationToken correctToken = createToken();
-        correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+        correctToken.expire();
         String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
                 VerificationToken.TokenType.FORGOT_PASS);

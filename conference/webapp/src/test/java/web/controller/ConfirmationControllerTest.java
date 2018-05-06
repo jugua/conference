@@ -33,7 +33,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest {
     @Test
     public void testConfirmRegistrationWithExpiredToken() throws Exception {
         VerificationToken correctToken = createToken();
-        correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+        correctToken.expire();
         String correctUrl = REGISTRATION_CONFIRM_REQUEST + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
                 VerificationToken.TokenType.CONFIRMATION);
@@ -87,7 +87,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest {
     @Test
     public void testConfirmNewEmailWithExpiredToken() throws Exception {
         VerificationToken correctToken = createToken();
-        correctToken.setStatus(VerificationToken.TokenStatus.EXPIRED);
+        correctToken.expire();
         String correctUrl = "/confirmation/newEmailConfirm/" + correctToken.getToken();
         testForExpiredToken(correctToken, correctUrl,
                 VerificationToken.TokenType.CHANGING_EMAIL);
