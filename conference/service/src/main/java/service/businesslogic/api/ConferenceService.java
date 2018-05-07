@@ -19,8 +19,6 @@ public interface ConferenceService {
 
     void update(ConferenceDto conference);
 
-    void remove(Conference conference);
-
     List<Conference> findAll();
 
     List<ConferenceDto> findPast();
@@ -30,10 +28,6 @@ public interface ConferenceService {
     List<ConferenceDtoBasic> findPastBasic();
 
     List<ConferenceDtoBasic> findUpcomingBasic();
-
-    Conference conferenceDtoToConference(ConferenceDto conferenceDto);
-
-    ConferenceDto conferenceToDto(Conference conference);
 
     List<ConferenceDto> conferenceToDto(Set<Conference> conferences);
 

@@ -58,11 +58,6 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void remove(Conference conference) {
-        conferenceRepository.delete(conference);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<Conference> findAll() {
         return conferenceRepository.findAll();
