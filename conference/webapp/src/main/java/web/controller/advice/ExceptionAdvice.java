@@ -1,6 +1,7 @@
 package web.controller.advice;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
@@ -14,16 +15,27 @@ import lombok.extern.log4j.Log4j;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.exception.NoSuchUserException;
 import service.businesslogic.exception.ResourceNotFoundException;
+import service.businesslogic.exception.TalkValidationException;
+import service.infrastructure.fileStorage.exception.FileValidationException;
 
 @Log4j
 @RestControllerAdvice
 public class ExceptionAdvice {
     public static final String UNAUTHORIZED_MSG = "unauthorized";
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(TalkValidationException.class)
+    public ResponseEntity<MessageDto> handleTalkValidationException(TalkValidationException ex) {
+        return new ResponseEntity<>(messageDtoWithError(ex.getMessage()), ex.getHttpStatus());
+    }
+
+    @ExceptionHandler(FileValidationException.class)
+    public ResponseEntity<MessageDto> handleFileValidationException(FileValidationException ex) {
+        return new ResponseEntity<>(messageDtoWithError(ex.getMessage()), ex.getHttpStatus());
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public MessageDto notFoundHandler(ResourceNotFoundException exception) {
-        return messageDtoWithError(exception.getMessage());
+    public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(messageDtoWithError(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

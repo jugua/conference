@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,10 +44,7 @@ import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.dto.TalkStatusDto;
-import service.businesslogic.exception.ResourceNotFoundException;
-import service.businesslogic.exception.TalkValidationException;
 import service.infrastructure.fileStorage.FileStorageService;
-import service.infrastructure.fileStorage.exception.FileValidationException;
 import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
@@ -61,27 +57,6 @@ public class TalksController {
     private final TalkService talkService;
     private final FileStorageService storageService;
     private CommentService commentService;
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex) {
-        MessageDto message = new MessageDto();
-        message.setError(ex.getMessage());
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(TalkValidationException.class)
-    public ResponseEntity<MessageDto> handleTalkValidationException(TalkValidationException ex) {
-        MessageDto message = new MessageDto();
-        message.setError(ex.getMessage());
-        return new ResponseEntity<>(message, ex.getHttpStatus());
-    }
-
-    @ExceptionHandler(FileValidationException.class)
-    public ResponseEntity<MessageDto> handleFileValidationException(FileValidationException ex) {
-        MessageDto message = new MessageDto();
-        message.setError(ex.getMessage());
-        return new ResponseEntity<>(message, ex.getHttpStatus());
-    }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talks/{talkId}/comments")

@@ -1,6 +1,5 @@
 package web.controller;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
@@ -15,9 +14,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static service.businesslogic.exception.TalkValidationException.NOT_ALLOWED_TO_UPDATE;
-import static service.infrastructure.fileStorage.exception.FileValidationException.UNSUPPORTED_MEDIA_TYPE;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,9 +31,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -60,13 +54,11 @@ import domain.model.UserInfo;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
-import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.exception.ResourceNotFoundException;
 import service.businesslogic.exception.TalkNotFoundException;
 import service.businesslogic.exception.TalkValidationException;
 import service.infrastructure.fileStorage.FileStorageService;
-import service.infrastructure.fileStorage.exception.FileValidationException;
 import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 import web.config.TestConfig;
 import web.config.WebMvcConfig;
@@ -89,8 +81,6 @@ public class TalksControllerTest {
 
     @Autowired
     private TalkService talkService;
-    @Autowired
-    private TalksController talksController;
     @Autowired
     private UserInfoService userInfoService;
     @Autowired
@@ -399,30 +389,6 @@ public class TalksControllerTest {
 
         mockMvc.perform(get(MY_TALKS_PAGE_URL + "/1/takeFileName"))
                 .andExpect(status().isOk());
-
-    }
-
-    @Test
-    public void handleTalkNotFoundCorrectStatusAndMessage() throws Exception {
-        ResponseEntity<MessageDto> response = talksController.handleResourceNotFound(new TalkNotFoundException());
-        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
-        assertThat(response.getBody().getError(), is(ResourceNotFoundException.TALK_NOT_FOUND));
-
-    }
-
-    @Test
-    public void handleTalkValidExceptionCorrectStatusAndMessage() throws Exception {
-        ResponseEntity<MessageDto> response = talksController.handleTalkValidationException(new TalkValidationException(NOT_ALLOWED_TO_UPDATE));
-        assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
-        assertThat(response.getBody().getError(), is(NOT_ALLOWED_TO_UPDATE));
-
-    }
-
-    @Test
-    public void handleFileValidExceptionCorrectStatusAndMessage() throws Exception {
-        ResponseEntity<MessageDto> response = talksController.handleFileValidationException(new FileValidationException(UNSUPPORTED_MEDIA_TYPE));
-        assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
-        assertThat(response.getBody().getError(), is(UNSUPPORTED_MEDIA_TYPE));
 
     }
 
