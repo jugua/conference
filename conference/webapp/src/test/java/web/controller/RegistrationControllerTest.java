@@ -69,14 +69,14 @@ public class RegistrationControllerTest {
     private ContactTypeService contactTypeService;
 
     @Autowired
-    private UserController userController;
+    private UsersController usersController;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(usersController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)

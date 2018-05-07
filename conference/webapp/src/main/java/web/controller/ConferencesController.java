@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+
 import service.businesslogic.api.ConferenceService;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 @RestController
 @RequestMapping("/conference")
-public class ConferenceController {
+public class ConferencesController {
 
     private ConferenceService conferenceService;
 

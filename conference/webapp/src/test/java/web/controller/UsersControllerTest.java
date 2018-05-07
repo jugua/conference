@@ -61,7 +61,7 @@ import web.config.WebMvcConfig;
 @ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 @Log4j
-public class UserControllerTest {
+public class UsersControllerTest {
 
     public static final String USER_URL = "/user";
     public static final String USER_CREATE_URL = "/user/registerByAdmin";
@@ -80,13 +80,13 @@ public class UserControllerTest {
     @Autowired
     private ContactTypeService contactTypeService;
     @Autowired
-    private UserController userController;
+    private UsersController usersController;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(usersController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)

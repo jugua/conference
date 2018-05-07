@@ -75,7 +75,7 @@ import web.controller.advice.ExceptionAdvice;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
-public class TalkControllerTest {
+public class TalksControllerTest {
 
     private static final String MY_TALKS_PAGE_URL = "/talk";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
@@ -90,7 +90,7 @@ public class TalkControllerTest {
     @Autowired
     private TalkService talkService;
     @Autowired
-    private TalkController talkController;
+    private TalksController talksController;
     @Autowired
     private UserInfoService userInfoService;
     @Autowired
@@ -404,7 +404,7 @@ public class TalkControllerTest {
 
     @Test
     public void handleTalkNotFoundCorrectStatusAndMessage() throws Exception {
-        ResponseEntity<MessageDto> response = talkController.handleResourceNotFound(new TalkNotFoundException());
+        ResponseEntity<MessageDto> response = talksController.handleResourceNotFound(new TalkNotFoundException());
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(response.getBody().getError(), is(ResourceNotFoundException.TALK_NOT_FOUND));
 
@@ -412,7 +412,7 @@ public class TalkControllerTest {
 
     @Test
     public void handleTalkValidExceptionCorrectStatusAndMessage() throws Exception {
-        ResponseEntity<MessageDto> response = talkController.handleTalkValidationException(new TalkValidationException(NOT_ALLOWED_TO_UPDATE));
+        ResponseEntity<MessageDto> response = talksController.handleTalkValidationException(new TalkValidationException(NOT_ALLOWED_TO_UPDATE));
         assertThat(response.getStatusCode(), is(HttpStatus.FORBIDDEN));
         assertThat(response.getBody().getError(), is(NOT_ALLOWED_TO_UPDATE));
 
@@ -420,7 +420,7 @@ public class TalkControllerTest {
 
     @Test
     public void handleFileValidExceptionCorrectStatusAndMessage() throws Exception {
-        ResponseEntity<MessageDto> response = talkController.handleFileValidationException(new FileValidationException(UNSUPPORTED_MEDIA_TYPE));
+        ResponseEntity<MessageDto> response = talksController.handleFileValidationException(new FileValidationException(UNSUPPORTED_MEDIA_TYPE));
         assertThat(response.getStatusCode(), is(HttpStatus.UNSUPPORTED_MEDIA_TYPE));
         assertThat(response.getBody().getError(), is(UNSUPPORTED_MEDIA_TYPE));
 
@@ -445,7 +445,7 @@ public class TalkControllerTest {
         correctTalkDto.setTitle("Title");
         correctTalkDto.setLanguageName("English");
         correctTalkDto.setLevelName("Beginner");
-        correctTalkDto.setStatusName(TalkController.DEFAULT_TALK_STATUS);
+        correctTalkDto.setStatusName(TalksController.DEFAULT_TALK_STATUS);
         correctTalkDto.setTypeName("Regular Talk");
         correctTalkDto.setTopicName("JVM Languages and new programming paradigms");
         correctTalkDto.setDate(LocalDateTime.now().toString());

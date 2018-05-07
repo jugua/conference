@@ -21,11 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
 import domain.model.Contact;
 import domain.model.User;
 import domain.model.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
@@ -40,37 +41,37 @@ import service.businesslogic.exception.WrongRoleException;
 @RestController
 @RequestMapping("/user")
 @Log4j
-public class UserController {
+public class UsersController {
 
     private final UserService userService;
     private UserInfoService userInfoService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/contacts")
-    public ResponseEntity<List<Contact>> getUserContacts(@PathVariable("id")long id){
-    	List<Contact> contacts = userService.find(id).getUserInfo().getContacts();
-    	return new ResponseEntity<>(contacts,HttpStatus.OK);
+    public ResponseEntity<List<Contact>> getUserContacts(@PathVariable("id") long id) {
+        List<Contact> contacts = userService.find(id).getUserInfo().getContacts();
+        return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/{id}/contacts")
-    public ResponseEntity<MessageDto> updateUserContacts(@PathVariable("id")long id,
-    		@RequestBody List<Contact> contacts, BindingResult bindingResult){
-    	MessageDto message = new MessageDto();
-    	HttpStatus status = HttpStatus.OK;
-    	if(bindingResult.hasFieldErrors()) {
-    		status = HttpStatus.BAD_REQUEST;
+    public ResponseEntity<MessageDto> updateUserContacts(@PathVariable("id") long id,
+                                                         @RequestBody List<Contact> contacts, BindingResult bindingResult) {
+        MessageDto message = new MessageDto();
+        HttpStatus status = HttpStatus.OK;
+        if (bindingResult.hasFieldErrors()) {
+            status = HttpStatus.BAD_REQUEST;
             message.setError("empty_fields");
-            return new ResponseEntity<>(message,status);
-    	}
-    	User user = userService.find(id);
-    	UserInfo userInfo = user.getUserInfo();
-    	userInfo.setContacts(contacts);
-    	userInfoService.save(userInfo);
-      	message.setResult("success");
-    	return new ResponseEntity<>(message,status);
+            return new ResponseEntity<>(message, status);
+        }
+        User user = userService.find(id);
+        UserInfo userInfo = user.getUserInfo();
+        userInfo.setContacts(contacts);
+        userInfoService.save(userInfo);
+        message.setResult("success");
+        return new ResponseEntity<>(message, status);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/usersNames")
     public ResponseEntity<List<String>> getUsersNames() {
