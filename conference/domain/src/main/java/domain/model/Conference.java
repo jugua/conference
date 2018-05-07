@@ -109,11 +109,11 @@ public class Conference extends AbstractEntity {
     private List<User> speakers = new ArrayList<>();
 
     @Builder
-    public Conference(Long id, String title, String description, String location, LocalDate startDate,
-                      LocalDate endDate, LocalDate notificationDue, LocalDate callForPaperStartDate,
-                      LocalDate callForPaperEndDate, String pathToLogo, Boolean callForPaperActive,
-                      Collection<Topic> topics, Collection<Type> types, Collection<Language> languages,
-                      Collection<Level> levels, Collection<Talk> talks, List<User> organisers, List<User> speakers) {
+    private Conference(Long id, String title, String description, String location, LocalDate startDate,
+                       LocalDate endDate, LocalDate notificationDue, LocalDate callForPaperStartDate,
+                       LocalDate callForPaperEndDate, String pathToLogo, Boolean callForPaperActive,
+                       Collection<Topic> topics, Collection<Type> types, Collection<Language> languages,
+                       Collection<Level> levels, Collection<Talk> talks, List<User> organisers, List<User> speakers) {
         super(id);
         this.title = title;
         this.description = description;
