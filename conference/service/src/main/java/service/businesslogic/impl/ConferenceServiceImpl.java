@@ -15,11 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.AllArgsConstructor;
+
 import domain.model.Conference;
 import domain.model.Talk;
 import domain.model.TalkStatus;
 import domain.repository.ConferenceRepository;
-import lombok.AllArgsConstructor;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
@@ -27,7 +28,6 @@ import service.businesslogic.dto.CreateConferenceDto;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.dto.converter.TalksConverter;
 import service.businesslogic.exception.ConferenceNotFoundException;
-
 
 @Service
 @Transactional
@@ -113,10 +113,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         return talksConverter.toDto(talks);
     }
 
-    private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
-        return modelMapper.map(conference, ConferenceDtoBasic.class);
-    }
-
     public ConferenceDto conferenceToDto(Conference conference) {
         ConferenceDto conferenceDto = modelMapper.map(conference, ConferenceDto.class);
         conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
@@ -155,6 +151,11 @@ public class ConferenceServiceImpl implements ConferenceService {
         return modelMapper.map(conferenceDto, Conference.class);
     }
 
+    @Override
+    public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
+        return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
+    }
+
     private void fillCallForPaperDatesActive(List<Conference> conferences) {
         if (conferences != null) {
             for (Conference conference : conferences) {
@@ -175,8 +176,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         }
     }
 
-	@Override
-	public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
-		return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
-	}
+    private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
+        return modelMapper.map(conference, ConferenceDtoBasic.class);
+    }
 }
