@@ -1,5 +1,7 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.io.IOException;
 
 import javax.validation.Valid;
@@ -81,17 +83,21 @@ public class ForgotPasswordController {
     public ResponseEntity changePassword(@PathVariable String token,
                                          @Valid @RequestBody ConfirmPasswordPair passwordPair) {
 
-        VerificationToken verificationToken = tokenService.findTokenBy(token);
         // TODO: we definitely should check passwords are same on the frontend
         if (passwordPair.isNotEqual()) {
             return ResponseEntity.badRequest().build();
         }
 
-        User currentUser = verificationToken.getUser();
+        User currentUser = getCurrentUser(token);
         currentUser.setPassword(passwordEncoder.encode(passwordPair.getPassword()));
         userService.updateUserProfile(currentUser);
 
-        return ResponseEntity.ok().build();
+        return ok().build();
+    }
+
+    private User getCurrentUser(@PathVariable String token) {
+        VerificationToken verificationToken = tokenService.findTokenBy(token);
+        return verificationToken.getUser();
     }
 
 }
