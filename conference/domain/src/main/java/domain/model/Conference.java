@@ -140,4 +140,10 @@ public class Conference extends AbstractEntity {
                 .count());
     }
 
+    public int pendingCount() {
+        return Math.toIntExact(talks.stream()
+                .filter(Talk::isPending)
+                .count());
+    }
+
 }
