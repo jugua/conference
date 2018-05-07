@@ -1,6 +1,5 @@
 package service.businesslogic.api;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -34,10 +33,8 @@ public interface ConferenceService {
 
     Conference conferenceDtoToConference(ConferenceDto conferenceDto);
 
-    String convertDateToString(LocalDate localDate);
-
     ConferenceDto conferenceToDto(Conference conference);
-    
+
     List<ConferenceDto> conferenceToDto(Set<Conference> conferences);
 
     Collection<TalkDto> findTalksByConferenceId(long id);

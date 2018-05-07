@@ -126,14 +126,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         return conferenceDto;
     }
 
-    public String convertDateToString(LocalDate localDate) {
-        if (localDate != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return localDate.format(formatter);
-        }
-        return null;
-    }
-
     public Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
         return modelMapper.map(conferenceDto, Conference.class);
     }
@@ -141,6 +133,14 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
         return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
+    }
+
+    private String convertDateToString(LocalDate localDate) {
+        if (localDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return localDate.format(formatter);
+        }
+        return null;
     }
 
     private void fillCallForPaperDatesActive(List<Conference> conferences) {
