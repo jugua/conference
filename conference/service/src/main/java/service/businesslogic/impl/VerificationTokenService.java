@@ -35,11 +35,6 @@ public class VerificationTokenService {
         }
     }
 
-    public VerificationToken findTokenBy(String token) {
-        List<VerificationToken> tokens = tokenRepository.findByToken(token);
-        return tokens.isEmpty() ? null : tokens.get(0);
-    }
-
     @Transactional
     public VerificationToken getValidTokenByUserIdAndType(Long userId, VerificationToken.TokenType tokenType) {
         VerificationToken token = findTokenBy(userId, tokenType);
@@ -49,6 +44,11 @@ public class VerificationTokenService {
             return null;
         }
         return token;
+    }
+
+    public VerificationToken findTokenBy(String token) {
+        List<VerificationToken> tokens = tokenRepository.findByToken(token);
+        return tokens.isEmpty() ? null : tokens.get(0);
     }
 
     private VerificationToken findTokenBy(Long userId, VerificationToken.TokenType tokenType) {

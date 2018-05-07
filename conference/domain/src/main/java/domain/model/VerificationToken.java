@@ -84,7 +84,7 @@ public class VerificationToken extends AbstractEntity {
     }
 
     public boolean isExpired() {
-        return status.equals(TokenStatus.EXPIRED) || isExpiredByTime();
+        return TokenStatus.EXPIRED.equals(status) || isExpiredByTime();
     }
 
     public boolean isExpiredByTime() {
