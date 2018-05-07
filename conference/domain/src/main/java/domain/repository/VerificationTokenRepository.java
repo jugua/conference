@@ -10,7 +10,7 @@ import domain.model.VerificationToken;
 @Repository
 public interface VerificationTokenRepository extends CrudRepository<VerificationToken, Long> {
 
-    List<VerificationToken> findByToken(String token);
+    VerificationToken findFirstByToken(String token);
 
     List<VerificationToken> findByUserIdAndStatusAndType(Long userId,
                                                          VerificationToken.TokenStatus status,

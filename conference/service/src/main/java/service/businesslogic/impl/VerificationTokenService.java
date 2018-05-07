@@ -47,8 +47,7 @@ public class VerificationTokenService {
     }
 
     public VerificationToken findTokenBy(String token) {
-        List<VerificationToken> tokens = tokenRepository.findByToken(token);
-        return tokens.isEmpty() ? null : tokens.get(0);
+        return tokenRepository.findFirstByToken(token);
     }
 
     public void expire(VerificationToken token) {

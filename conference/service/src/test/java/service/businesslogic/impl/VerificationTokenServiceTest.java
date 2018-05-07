@@ -6,9 +6,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +25,6 @@ public class VerificationTokenServiceTest {
 
     private VerificationTokenService testing;
 
-    private List<VerificationToken> tokens;
     private VerificationToken verificationToken;
 
     @Before
@@ -36,19 +32,17 @@ public class VerificationTokenServiceTest {
         testing = new VerificationTokenService(tokenRepository);
 
         verificationToken = createVerificationToken();
-        tokens = new ArrayList<>();
-        tokens.add(verificationToken);
     }
 
     @Test
     public void testGetTokenForExistingToken() {
-        when(tokenRepository.findByToken(anyString())).thenReturn(tokens);
+        when(tokenRepository.findFirstByToken(anyString())).thenReturn(verificationToken);
         assertEquals(testing.findTokenBy("TOKEN"), verificationToken);
     }
 
     @Test
     public void testGetTokenForUnExistingToken() {
-        when(tokenRepository.findByToken(anyString())).thenReturn(Collections.emptyList());
+        when(tokenRepository.findFirstByToken(anyString())).thenReturn(null);
         assertNull(testing.findTokenBy("TOKEN"));
     }
 
