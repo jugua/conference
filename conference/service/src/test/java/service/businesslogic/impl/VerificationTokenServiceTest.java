@@ -1,11 +1,7 @@
 package service.businesslogic.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -14,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -28,122 +23,45 @@ import domain.repository.VerificationTokenRepository;
 @RunWith(MockitoJUnitRunner.class)
 public class VerificationTokenServiceTest {
 
-    private static User user;
     @Mock
     private VerificationTokenRepository tokenRepository;
-    private VerificationTokenService tokenService;
+
+    private VerificationTokenService testing;
+
+    private List<VerificationToken> tokens;
     private VerificationToken verificationToken;
-    private VerificationToken testedToken;
-
-    @BeforeClass
-    public static void init() {
-        user = createUser();
-    }
-
-    private static User createUser() {
-        User result = new User();
-        result.setFirstName("FName");
-        result.setLastName("LName");
-        result.setEmail("test@gmail.com");
-        result.setPassword("password");
-        result.setPhoto("testUrl3");
-        result.setStatus(User.UserStatus.CONFIRMED);
-        return result;
-    }
 
     @Before
     public void setUp() {
-        tokenService = new VerificationTokenService(tokenRepository);
-        testedToken = createTokenUsingService();
-        verificationToken = new VerificationToken();
-        verificationToken.setId(1L);
-        verificationToken.setToken("TOKEN");
-        verificationToken.setUser(new User());
-        verificationToken.setExpiryDate(createExpiredDate(0));
-        verificationToken.setStatus(VerificationToken.TokenStatus.VALID);
-        verificationToken.setType(VerificationToken.TokenType.CONFIRMATION);
-    }
+        testing = new VerificationTokenService(tokenRepository);
 
-    @Test
-    public void testCorrectTokenIsTokenValid() {
-        assertTrue(tokenService.isTokenValid(verificationToken, VerificationToken.TokenType.CONFIRMATION));
-    }
-
-    @Test
-    public void testNullTokenIsTokenValid() {
-        assertFalse(tokenService.isTokenValid(null, VerificationToken.TokenType.CONFIRMATION));
-    }
-
-    @Test
-    public void testUnCorrectTokenTypeIsTokenValid() {
-        verificationToken.setType(VerificationToken.TokenType.CHANGING_EMAIL);
-        assertFalse(tokenService.isTokenValid(verificationToken, VerificationToken.TokenType.CONFIRMATION));
-    }
-
-    @Test
-    public void testUnExpiredTokenIsTokenExpired() {
-        assertFalse(verificationToken.isExpired());
-    }
-
-    @Test
-    public void testExpiredByDateTokenIsTokenExpired() {
-        verificationToken.setExpiryDate(createExpiredDate(61));
-        assertTrue(verificationToken.isExpired());
-    }
-
-    @Test
-    public void testExpiredTokenIsTokenExpired() {
-        verificationToken.expire();
-        assertTrue(verificationToken.isExpired());
+        verificationToken = createVerificationToken();
+        tokens = new ArrayList<>();
+        tokens.add(verificationToken);
     }
 
     @Test
     public void testGetTokenForExistingToken() {
-        List<VerificationToken> resultedList = new ArrayList<>();
-        resultedList.add(verificationToken);
-        when(tokenRepository.findByToken(anyString())).thenReturn(resultedList);
-        assertEquals(verificationToken, tokenService.findTokenBy("TOKEN"));
+        when(tokenRepository.findByToken(anyString())).thenReturn(tokens);
+        assertEquals(verificationToken, testing.findTokenBy("TOKEN"));
     }
 
     @Test
     public void testGetTokenForUnExistingToken() {
         List<VerificationToken> resultedList = new ArrayList<>();
         when(tokenRepository.findByToken(anyString())).thenReturn(resultedList);
-        assertNull(tokenService.findTokenBy("TOKEN"));
+        assertNull(testing.findTokenBy("TOKEN"));
     }
 
-    @Test
-    public void testCheckUserSettingCreateToken() {
-        assertEquals(user, testedToken.getUser());
-    }
-
-    @Test
-    public void testCheckTypeSettingCreateToken() {
-        assertEquals(VerificationToken.TokenType.FORGOT_PASS, testedToken.getType());
-    }
-
-    @Test
-    public void testCheckExpiredDateSettingCreateToken() {
-        LocalDateTime expectedDate = createExpiredDate(0);
-        assertEquals(expectedDate.getYear(), testedToken.getExpiryDate().getYear());
-        assertEquals(expectedDate.getDayOfYear(), testedToken.getExpiryDate().getDayOfYear());
-        assertEquals(expectedDate.getHour(), testedToken.getExpiryDate().getHour());
-        assertEquals(expectedDate.getMinute(), testedToken.getExpiryDate().getMinute());
-    }
-
-    @Test
-    public void testCheckCreatingTokenSettingCreateToken() {
-        assertNotNull(testedToken.getToken());
-    }
-
-    @Test
-    public void testTokensForUniqueValues() {
-        VerificationToken testedTokenTwo = createTokenUsingService();
-        assertNotEquals(testedToken.getToken(), testedTokenTwo.getToken());
-    }
-
-    private VerificationToken createTokenUsingService() {
-        return VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
+    private VerificationToken createVerificationToken() {
+        VerificationToken result = new VerificationToken();
+        result.setId(1L);
+        result.setToken("TOKEN");
+        result.setUser(new User());
+        result.setExpiryDate(createExpiredDate(0));
+        result.setStatus(VerificationToken.TokenStatus.VALID);
+        result.setType(VerificationToken.TokenType.CONFIRMATION);
+        return result;
     }
 
     private LocalDateTime createExpiredDate(int decreasingTimeInMinutes) {

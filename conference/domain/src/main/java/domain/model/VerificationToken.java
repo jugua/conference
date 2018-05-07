@@ -79,6 +79,10 @@ public class VerificationToken extends AbstractEntity {
         return token;
     }
 
+    public boolean isInvalid(TokenType tokenType) {
+        return !(type.equals(tokenType) && TokenStatus.VALID.equals(status));
+    }
+
     public boolean isExpired() {
         return status.equals(TokenStatus.EXPIRED) || isExpiredByTime();
     }

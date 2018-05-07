@@ -32,16 +32,14 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    public void testForgotPasswordWithBadRequestWithoutMail()
-            throws Exception {
+    public void testForgotPasswordWithBadRequestWithoutMail() throws Exception {
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST).contentType(MediaType.APPLICATION_JSON)
                 .content(WRONG_JSON_WITHOUT_MAIL))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testForgotPasswordWithBadRequestWithWrongEmail()
-            throws Exception {
+    public void testForgotPasswordWithBadRequestWithWrongEmail() throws Exception {
         mockMvc.perform(post(FORGOT_PASSWORD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(WRONG_JSON_WITH_WRONG_MAIL))
@@ -65,7 +63,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
         VerificationToken.TokenType tokenType = VerificationToken.TokenType.FORGOT_PASS;
         correctToken.setType(tokenType);
         String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
-        testForCorrectToken(correctToken, correctUrl, tokenType);
+        testForCorrectToken(correctToken, correctUrl);
         testForUpdatingSecurityContext(user);
     }
 
@@ -74,8 +72,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
         VerificationToken correctToken = createToken();
         correctToken.expire();
         String correctUrl = "/forgotPasswordPage/changePassword/" + correctToken.getToken();
-        testForExpiredToken(correctToken, correctUrl,
-                VerificationToken.TokenType.FORGOT_PASS);
+        testForExpiredToken(correctToken, correctUrl);
     }
 
     @Test

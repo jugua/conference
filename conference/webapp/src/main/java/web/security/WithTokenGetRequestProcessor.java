@@ -1,5 +1,8 @@
 package web.security;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +27,18 @@ public class WithTokenGetRequestProcessor {
     public ResponseEntity<MessageDto> process(String token, VerificationToken.TokenType tokenType, Consumer<VerificationToken> action) {
         VerificationToken verificationToken = tokenService.findTokenBy(token);
 
-        if (!tokenService.isTokenValid(verificationToken, tokenType)) {
-            return ResponseEntity.badRequest().body(prepareMessageDto("invalid_link"));
-        }
-        if (verificationToken.isExpired()) {
+        if (verificationToken == null) {
+            return badRequest().body(prepareMessageDto("invalid_link"));
+        } else if (verificationToken.isExpired()) {
             return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
+        } else if (verificationToken.isInvalid(tokenType)) {
+            return badRequest().body(prepareMessageDto("invalid_link"));
         }
+
         action.accept(verificationToken);
         expireToken(verificationToken);
         authenticateUser(verificationToken.getUser());
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 
     private void expireToken(VerificationToken verificationToken) {

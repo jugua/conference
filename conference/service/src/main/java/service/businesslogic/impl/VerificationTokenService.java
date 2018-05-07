@@ -35,11 +35,6 @@ public class VerificationTokenService {
         }
     }
 
-    public boolean isTokenValid(VerificationToken verificationToken, VerificationToken.TokenType currentType) {
-        return (verificationToken != null && verificationToken.getType().equals(currentType)
-                && verificationToken.getStatus().equals(VerificationToken.TokenStatus.VALID));
-    }
-
     public VerificationToken findTokenBy(String token) {
         List<VerificationToken> tokens = tokenRepository.findByToken(token);
         return tokens.isEmpty() ? null : tokens.get(0);
