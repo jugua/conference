@@ -133,4 +133,11 @@ public class Conference extends AbstractEntity {
         this.organisers = organisers;
         this.speakers = speakers;
     }
+
+    public int draftCount() {
+        return Math.toIntExact(talks.stream()
+                .filter(Talk::isDraft)
+                .count());
+    }
+
 }

@@ -127,4 +127,8 @@ public class Talk extends AbstractEntity {
         return organiserComment != null && organiserComment.length() > 0;
     }
 
+    public boolean isDraft() {
+        return TalkStatus.DRAFT == status;
+    }
+
 }
