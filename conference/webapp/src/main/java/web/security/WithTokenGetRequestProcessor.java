@@ -24,26 +24,28 @@ public class WithTokenGetRequestProcessor {
 
     private final VerificationTokenService tokenService;
 
-    public ResponseEntity<MessageDto> process(String token, VerificationToken.TokenType tokenType, Consumer<VerificationToken> action) {
-        VerificationToken verificationToken = tokenService.findTokenBy(token);
+    public ResponseEntity<MessageDto> process(String tokenString,
+                                              VerificationToken.TokenType tokenType,
+                                              Consumer<VerificationToken> action) {
 
-        if (verificationToken == null) {
+        VerificationToken token = tokenService.findTokenBy(tokenString);
+        if (token == null) {
             return badRequest().body(prepareMessageDto("invalid_link"));
-        } else if (verificationToken.isExpired()) {
+        } else if (token.isExpired()) {
             return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
-        } else if (verificationToken.isInvalid(tokenType)) {
+        } else if (token.isInvalid(tokenType)) {
             return badRequest().body(prepareMessageDto("invalid_link"));
         }
 
-        action.accept(verificationToken);
-        expireToken(verificationToken);
-        authenticateUser(verificationToken.getUser());
+        action.accept(token);
+        expireToken(token);
+        authenticateUser(token.getUser());
         return ok().build();
     }
 
-    private void expireToken(VerificationToken verificationToken) {
-        verificationToken.expire();
-        tokenService.saveToken(verificationToken);
+    private void expireToken(VerificationToken token) {
+        token.expire();
+        tokenService.saveToken(token);
     }
 
     private MessageDto prepareMessageDto(String message) {
