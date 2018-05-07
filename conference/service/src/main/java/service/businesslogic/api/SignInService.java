@@ -4,6 +4,6 @@ import service.businesslogic.dto.LoginDto;
 
 public interface SignInService {
 
-    public LoginDto login(String email, String password);
+    LoginDto login(String email, String password);
 
 }
