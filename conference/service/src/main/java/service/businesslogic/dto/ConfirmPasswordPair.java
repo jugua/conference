@@ -24,4 +24,9 @@ public class ConfirmPasswordPair {
     @NotNull
     @Size(min = 1, max = 30)
     private String confirm;
+
+    public boolean isNotEqual() {
+        return password == null || !password.equals(confirm);
+    }
+
 }

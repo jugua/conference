@@ -78,20 +78,20 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/changePassword/{token}")
-    public ResponseEntity changePassword(@PathVariable String token, @Valid @RequestBody ConfirmPasswordPair dto) {
+    public ResponseEntity changePassword(@PathVariable String token,
+                                         @Valid @RequestBody ConfirmPasswordPair passwordPair) {
+
         VerificationToken verificationToken = tokenService.findTokenBy(token);
-        if (!isPasswordConfirmed(dto))
+        // TODO: we definitely should check passwords are same on the frontend
+        if (passwordPair.isNotEqual()) {
             return ResponseEntity.badRequest().build();
+        }
 
         User currentUser = verificationToken.getUser();
-        currentUser.setPassword(passwordEncoder.encode(dto.getPassword()));
+        currentUser.setPassword(passwordEncoder.encode(passwordPair.getPassword()));
         userService.updateUserProfile(currentUser);
 
         return ResponseEntity.ok().build();
-    }
-
-    private boolean isPasswordConfirmed(ConfirmPasswordPair dto) {
-        return dto.getPassword().equals(dto.getConfirm());
     }
 
 }
