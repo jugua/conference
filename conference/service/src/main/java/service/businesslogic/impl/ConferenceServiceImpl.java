@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,7 +17,6 @@ import lombok.AllArgsConstructor;
 
 import domain.model.Conference;
 import domain.model.Talk;
-import domain.model.TalkStatus;
 import domain.repository.ConferenceRepository;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.dto.ConferenceDto;
@@ -120,23 +117,11 @@ public class ConferenceServiceImpl implements ConferenceService {
         conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
         conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
         conferenceDto.setNotificationDue(convertDateToString(conference.getNotificationDue()));
-        if (conference.getTalks() != null) {
-            Map<String, Integer> talks = new HashMap<>();
-            for (Talk talk : conference.getTalks()) {
-                String status = talk.getStatus().getName();
-                Integer count = 0;
-                if (talks.get(status) != null) {
-                    count = talks.get(status);
-                }
-                talks.put(status, ++count);
-            }
-
-            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.NOT_ACCEPTED.getName()));
-        }
 
         conferenceDto.setNewTalkCount(conference.draftCount());
         conferenceDto.setInProgressTalkCount(conference.pendingCount());
         conferenceDto.setApprovedTalkCount(conference.acceptedCount());
+        conferenceDto.setRejectedTalkCount(conference.notAcceptedCount());
 
         return conferenceDto;
     }

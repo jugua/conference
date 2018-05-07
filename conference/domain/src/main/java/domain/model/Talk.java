@@ -139,4 +139,8 @@ public class Talk extends AbstractEntity {
         return TalkStatus.ACCEPTED == status;
     }
 
+    public boolean isNotAccepted() {
+        return TalkStatus.NOT_ACCEPTED == status;
+    }
+
 }

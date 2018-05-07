@@ -152,4 +152,10 @@ public class Conference extends AbstractEntity {
                 .count());
     }
 
+    public int notAcceptedCount() {
+        return Math.toIntExact(talks.stream()
+                .filter(Talk::isNotAccepted)
+                .count());
+    }
+
 }
