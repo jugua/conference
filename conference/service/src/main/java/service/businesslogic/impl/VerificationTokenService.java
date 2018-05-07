@@ -51,6 +51,11 @@ public class VerificationTokenService {
         return tokens.isEmpty() ? null : tokens.get(0);
     }
 
+    public void expire(VerificationToken token) {
+        token.expire();
+        saveToken(token);
+    }
+
     private VerificationToken findTokenBy(Long userId, VerificationToken.TokenType tokenType) {
         List<VerificationToken> tokens = tokenRepository.
                 findByUserIdAndStatusAndType(userId, VerificationToken.TokenStatus.VALID, tokenType);

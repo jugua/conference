@@ -38,14 +38,9 @@ public class WithTokenGetRequestProcessor {
         }
 
         action.accept(token);
-        expireToken(token);
+        tokenService.expire(token);
         authenticateUser(token.getUser());
         return ok().build();
-    }
-
-    private void expireToken(VerificationToken token) {
-        token.expire();
-        tokenService.saveToken(token);
     }
 
     private MessageDto prepareMessageDto(String message) {
