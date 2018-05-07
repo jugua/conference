@@ -1,6 +1,7 @@
 package domain.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -67,45 +68,45 @@ public class Conference extends AbstractEntity {
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "topic_id")
     )
-    private Collection<Topic> topics;
+    private Collection<Topic> topics = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "type_id")
     )
-    private Collection<Type> types;
+    private Collection<Type> types = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
-    private Collection<Language> languages;
+    private Collection<Language> languages = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "level_id")
     )
-    private Collection<Level> levels;
+    private Collection<Level> levels = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "conference")
-    private Collection<Talk> talks;
+    private Collection<Talk> talks = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "conference_organiser",
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "organiser_id")
     )
-    private List<User> organisers;
+    private List<User> organisers = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "conference_speaker",
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "speaker_id")
     )
-    private List<User> speakers;
+    private List<User> speakers = new ArrayList<>();
 
     @Builder
     public Conference(Long id, String title, String description, String location, LocalDate startDate,

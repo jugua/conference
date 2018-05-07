@@ -1,6 +1,7 @@
 package domain.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -87,7 +88,7 @@ public class Talk extends AbstractEntity {
     private String pathToAttachedFile;
 
     @OneToMany(mappedBy = "talkId", fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Talk(Long id, User user, TalkStatus status, Topic topic, Type type, Language language, Level level,
