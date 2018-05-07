@@ -112,11 +112,11 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     public ConferenceDto conferenceToDto(Conference conference) {
         ConferenceDto conferenceDto = modelMapper.map(conference, ConferenceDto.class);
-        conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
-        conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
-        conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
-        conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
-        conferenceDto.setNotificationDue(convertDateToString(conference.getNotificationDue()));
+        conferenceDto.setCallForPaperStartDate(stringOf(conference.getCallForPaperStartDate()));
+        conferenceDto.setCallForPaperEndDate(stringOf(conference.getCallForPaperEndDate()));
+        conferenceDto.setStartDate(stringOf(conference.getStartDate()));
+        conferenceDto.setEndDate(stringOf(conference.getEndDate()));
+        conferenceDto.setNotificationDue(stringOf(conference.getNotificationDue()));
 
         conferenceDto.setNewTalkCount(conference.draftCount());
         conferenceDto.setInProgressTalkCount(conference.pendingCount());
@@ -133,14 +133,6 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
         return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
-    }
-
-    private String convertDateToString(LocalDate localDate) {
-        if (localDate != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            return localDate.format(formatter);
-        }
-        return null;
     }
 
     private void fillCallForPaperDatesActive(List<Conference> conferences) {
@@ -166,4 +158,13 @@ public class ConferenceServiceImpl implements ConferenceService {
     private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
         return modelMapper.map(conference, ConferenceDtoBasic.class);
     }
+
+    private String stringOf(LocalDate localDate) {
+        if (localDate != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return localDate.format(formatter);
+        }
+        return null;
+    }
+
 }
