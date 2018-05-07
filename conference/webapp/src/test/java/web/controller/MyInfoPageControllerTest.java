@@ -121,7 +121,7 @@ public class MyInfoPageControllerTest {
                 .andExpect(jsonPath("result", is("/photo/" + user.getId())));
 
         verify(fileStorageService, times(1)).deleteFile(previousPhotoPath);
-        verify(userService, times(1)).updateUserProfile(user);
+        verify(userService, times(1)).updateUser(user);
         assertEquals(user.getPhoto(), newPhotoPath);
     }
 
@@ -139,7 +139,7 @@ public class MyInfoPageControllerTest {
         ).andExpect(status().isNotFound());
 
         verify(fileStorageService, never()).deleteFile(previousPhotoPath);
-        verify(userService, never()).updateUserProfile(user);
+        verify(userService, never()).updateUser(user);
     }
 
     @Test
@@ -152,7 +152,7 @@ public class MyInfoPageControllerTest {
 
         verify(fileStorageService, times(1)).deleteFile("photo");
         assertNull(user.getPhoto());
-        verify(userService, times(1)).updateUserProfile(user);
+        verify(userService, times(1)).updateUser(user);
     }
 
     @Test

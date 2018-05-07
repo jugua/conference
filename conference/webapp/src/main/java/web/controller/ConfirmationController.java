@@ -40,7 +40,7 @@ public class ConfirmationController {
             String newEmail = extractEmailOf(token);
             String oldEmail = user.getEmail();
             user.setEmail(newEmail);
-            userService.updateUserProfile(user);
+            userService.updateUser(user);
             mailService.sendEmail(user, new OldEmailMessagePreparator(oldEmail));
         });
     }

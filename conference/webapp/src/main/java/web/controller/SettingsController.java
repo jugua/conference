@@ -76,7 +76,7 @@ public class SettingsController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
         }
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
-        userService.updateUserProfile(user);
+        userService.updateUser(user);
         mailService.sendEmail(user, new ChangePasswordPreparator());
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -126,7 +126,7 @@ public class MyInfoPageController {
                     fileStorageService.deleteFile(previousPhotoPath);
                 }
                 currentUser.setPhoto(newPhotoPath);
-                userService.updateUserProfile(currentUser);
+                userService.updateUser(currentUser);
 
                 MessageDto messageDto = new MessageDto();
                 messageDto.setResult("/photo/" + currentUser.getId());
@@ -147,7 +147,7 @@ public class MyInfoPageController {
         fileStorageService.deleteFile(currentUser.getPhoto());
 
         currentUser.setPhoto(null);
-        userService.updateUserProfile(currentUser);
+        userService.updateUser(currentUser);
 
         return new ResponseEntity(HttpStatus.OK);
     }

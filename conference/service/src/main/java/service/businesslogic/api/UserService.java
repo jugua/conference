@@ -16,7 +16,7 @@ public interface UserService {
 
     void confirm(User user);
 
-    void updateUserProfile(User user);
+    void updateUser(User user);
 
     List<User> findAll();
 

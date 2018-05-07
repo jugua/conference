@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void confirm(User user) {
         user.setStatus(User.UserStatus.CONFIRMED);
-        updateUserProfile(user);
+        updateUser(user);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserProfile(User user) {
+    public void updateUser(User user) {
         userRepository.save(user);
     }
 

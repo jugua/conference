@@ -104,7 +104,7 @@ public abstract class WithTokenControllerTest {
 
         mockMvc.perform(get(correctUrl)).andExpect(status().isGone());
 
-        verify(userService, never()).updateUserProfile(any());
+        verify(userService, never()).updateUser(any());
     }
 
     public void testForWrongToken(String baseUrl) throws Exception {
@@ -113,7 +113,7 @@ public abstract class WithTokenControllerTest {
 
         mockMvc.perform(get(baseUrl + wrongToken)).andExpect(status().isBadRequest());
 
-        verify(userService, never()).updateUserProfile(anyObject());
+        verify(userService, never()).updateUser(anyObject());
     }
 
     public void testForUpdatingSecurityContext(User user) {

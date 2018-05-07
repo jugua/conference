@@ -62,7 +62,7 @@ public class ConfirmationControllerTest extends WithTokenControllerTest {
         String correctUrl = "/confirmation/newEmailConfirm/" + correctToken.getToken();
         testForCorrectToken(correctToken, correctUrl);
         testForUpdatingSecurityContext(user);
-        verify(userService).updateUserProfile(user);
+        verify(userService).updateUser(user);
     }
 
     @Test

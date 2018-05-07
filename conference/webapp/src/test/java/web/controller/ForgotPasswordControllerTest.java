@@ -96,7 +96,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(dto)))
                 .andExpect(status().isOk());
-        verify(userService).updateUserProfile(user);
+        verify(userService).updateUser(user);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ForgotPasswordControllerTest extends WithTokenControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(dto)))
                 .andExpect(status().isBadRequest());
-        verify(userService, never()).updateUserProfile(any(User.class));
+        verify(userService, never()).updateUser(any(User.class));
     }
 
     private byte[] convertObjectToJsonBytes(Object object) throws JsonProcessingException {

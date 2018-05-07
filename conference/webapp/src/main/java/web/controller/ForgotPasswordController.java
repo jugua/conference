@@ -90,7 +90,7 @@ public class ForgotPasswordController {
 
         User currentUser = getCurrentUser(token);
         currentUser.setPassword(passwordEncoder.encode(passwordPair.getPassword()));
-        userService.updateUserProfile(currentUser);
+        userService.updateUser(currentUser);
 
         return ok().build();
     }
