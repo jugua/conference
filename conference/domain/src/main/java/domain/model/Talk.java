@@ -135,4 +135,8 @@ public class Talk extends AbstractEntity {
         return TalkStatus.PENDING == status;
     }
 
+    public boolean isAccepted() {
+        return TalkStatus.ACCEPTED == status;
+    }
+
 }
