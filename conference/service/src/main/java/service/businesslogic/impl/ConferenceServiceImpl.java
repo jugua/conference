@@ -80,9 +80,10 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public List<ConferenceDtoBasic> findUpcomingBasic() {
-        List<Conference> conferences = conferenceRepository
-                .findAllByStartDateIsGreaterThanEqual(LocalDate.now());
+        List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
+
         fillCallForPaperDatesActive(conferences);
+
         return conferences.stream().map(this::conferenceToDtoBasic)
                 .collect(Collectors.toList());
     }
@@ -90,11 +91,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Override
     @Transactional(readOnly = true)
     public List<ConferenceDto> findUpcoming() {
-        List<Conference> conferences = conferenceRepository
-                .findAllByStartDateIsGreaterThanEqual(LocalDate.now());
+        List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
         fillCallForPaperDatesActive(conferences);
-        return conferences.stream().map(this::conferenceToDto)
-                .collect(Collectors.toList());
+        return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -131,23 +130,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     private void fillCallForPaperDatesActive(List<Conference> conferences) {
-        if (conferences != null) {
-            for (Conference conference : conferences) {
-                LocalDate now = LocalDate.now();
-                LocalDate callForPaperEndDate = conference.getCallForPaperEndDate();
-
-                boolean isActive;
-                if (callForPaperEndDate != null && conference.getCallForPaperStartDate() != null) {
-                    isActive = (callForPaperEndDate.isAfter(now) || callForPaperEndDate.isEqual(now))
-                            && (conference.getCallForPaperStartDate().isBefore(now)
-                            || conference.getCallForPaperStartDate().isEqual(now));
-                } else {
-                    isActive = true;
-                }
-
-                conference.setCallForPaperActive(isActive);
-            }
-        }
+        conferences.stream()
+                .filter(Conference::callForPapersShouldBeStarted)
+                .forEach(Conference::startCallForPaper);
     }
 
     private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {

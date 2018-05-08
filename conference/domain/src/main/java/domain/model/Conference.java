@@ -158,4 +158,18 @@ public class Conference extends AbstractEntity {
                 .count());
     }
 
+    public boolean callForPapersShouldBeStarted() {
+        return callForPaperStartDate == null || callForPaperEndDate == null
+                || isBetween(LocalDate.now(), callForPaperStartDate, callForPaperEndDate);
+    }
+
+    public void startCallForPaper() {
+        callForPaperActive = true;
+    }
+
+    private static boolean isBetween(LocalDate date, LocalDate start, LocalDate end) {
+        return (start.isBefore(date) || start.isEqual(date))
+                && (end.isAfter(date) || end.isEqual(date));
+    }
+
 }
