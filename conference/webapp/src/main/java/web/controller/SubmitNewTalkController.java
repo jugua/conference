@@ -21,7 +21,6 @@ import lombok.extern.log4j.Log4j;
 
 import domain.model.Talk;
 import domain.model.User;
-import domain.model.UserInfo;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
@@ -53,19 +52,12 @@ public class SubmitNewTalkController {
 
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-        if (userInfoNotFilled(currentUser)) {
+        if (currentUser.getUserInfo().isNotFilled()) {
             return new ResponseEntity<>(new MessageDto(), HttpStatus.FORBIDDEN);
         }
 
         Talk talk = talkService.save(dto, currentUser, uploadFile(dto.getMultipartFile()));
         return ok(new MessageDto(talk.getId()));
-    }
-
-    private boolean userInfoNotFilled(User currentUser) {
-        UserInfo currentUserInfo = currentUser.getUserInfo();
-        return currentUserInfo.getShortBio().isEmpty() ||
-                currentUserInfo.getJobTitle().isEmpty() ||
-                currentUserInfo.getCompany().isEmpty();
     }
 
     private String uploadFile(MultipartFile file) {
