@@ -19,18 +19,21 @@ public class VerificationTokenTest {
 
     @Before
     public void setUp() {
-        testing = createVerificationToken();
+        user = createUser();
+        testing = createVerificationToken(user);
     }
 
     @Test
     public void testCorrectTokenIsTokenValid() {
-        assertTrue(!testing.isInvalid(VerificationToken.TokenType.CONFIRMATION));
+        testing.setType(VerificationToken.TokenType.CONFIRMATION);
+
+        assertFalse(testing.isInvalid(VerificationToken.TokenType.CONFIRMATION));
     }
 
     @Test
     public void testUnCorrectTokenTypeIsTokenValid() {
         testing.setType(VerificationToken.TokenType.CHANGING_EMAIL);
-        assertFalse(!testing.isInvalid(VerificationToken.TokenType.CONFIRMATION));
+        assertTrue(testing.isInvalid(VerificationToken.TokenType.CONFIRMATION));
     }
 
     @Test
@@ -48,6 +51,12 @@ public class VerificationTokenTest {
     public void testExpiredTokenIsTokenExpired() {
         testing.expire();
         assertTrue(testing.isExpired());
+    }
+
+    @Test
+    public void testCheckCreatingTokenSettingCreateToken() {
+        testing = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
+        assertNotNull(testing.getToken());
     }
 
     @Test
@@ -73,12 +82,6 @@ public class VerificationTokenTest {
     }
 
     @Test
-    public void testCheckCreatingTokenSettingCreateToken() {
-        testing = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-        assertNotNull(testing.getToken());
-    }
-
-    @Test
     public void testTokensForUniqueValues() {
         VerificationToken tokenOne = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
         VerificationToken tokenTwo = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
@@ -96,14 +99,14 @@ public class VerificationTokenTest {
         return result;
     }
 
-    private VerificationToken createVerificationToken() {
+    private VerificationToken createVerificationToken(User user) {
         VerificationToken result = new VerificationToken();
         result.setId(1L);
         result.setToken("TOKEN");
-        result.setUser(new User());
         result.setExpiryDate(expiredDate(0));
         result.setStatus(VerificationToken.TokenStatus.VALID);
         result.setType(VerificationToken.TokenType.CONFIRMATION);
+        result.setUser(user);
         return result;
     }
 
