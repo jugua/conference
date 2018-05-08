@@ -99,6 +99,13 @@ public class User extends AbstractEntity {
         return roles.stream().map(Role::getName).collect(Collectors.toList());
     }
 
+    public boolean isOrganizerForTalk(Long talkId) {
+        return getOrganizerConferences().stream()
+                .flatMap(m -> m.getTalks().stream())
+                .mapToLong(AbstractEntity::getId)
+                .anyMatch(m -> m == talkId);
+    }
+
     public enum UserStatus {
         CONFIRMED, UNCONFIRMED
     }

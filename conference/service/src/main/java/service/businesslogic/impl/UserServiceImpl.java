@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 
-import domain.model.AbstractEntity;
 import domain.model.Contact;
 import domain.model.Role;
 import domain.model.User;
@@ -232,12 +231,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean isTalkOrganiser(String userMail, Long talkId) {
-        return userRepository.findByEmail(userMail)
-                .getOrganizerConferences().stream()
-                .flatMap(m -> m.getTalks().stream())
-                .mapToLong(AbstractEntity::getId)
-                .anyMatch(m -> m == talkId);
+    public boolean isTalkOrganiser(String userEmail, Long talkId) {
+        User user = userRepository.findByEmail(userEmail);
+        return user.isOrganizerForTalk(talkId);
     }
 
 }
