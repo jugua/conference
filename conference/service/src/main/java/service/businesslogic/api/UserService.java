@@ -28,7 +28,7 @@ public interface UserService {
 
     boolean isEmailExist(String email);
 
-    void registerNewUser(RegistrationDto dto);
+    void registerSpeaker(RegistrationDto dto);
 
     List<User> getByRoleExceptCurrent(User currentUser, String roleName);
 

@@ -113,8 +113,7 @@ public class UsersController {
                 log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
                 return badRequest().body(new MessageDto("empty_fields"));
             } else {
-                userService.checkUserRegistration(dto);
-                userService.registerNewUser(dto);
+                userService.registerSpeaker(dto);
                 MessageDto messageDto = new MessageDto();
                 messageDto.setResult("success");
                 return ResponseEntity.status(HttpStatus.ACCEPTED).body(messageDto);
@@ -128,4 +127,5 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto(ex.getMessage()));
         }
     }
+
 }

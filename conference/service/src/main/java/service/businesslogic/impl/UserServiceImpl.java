@@ -93,9 +93,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void registerNewUser(RegistrationDto dto) {
+    public void registerSpeaker(RegistrationDto dto) {
+        checkUserRegistration(dto);
+        registerNewUser(dto);
+    }
+
+    private void registerNewUser(RegistrationDto dto) {
         User newUser = mapRegistrationDtoToUser(dto);
         createSpeaker(newUser);
+
         if (User.UserStatus.UNCONFIRMED.equals(dto.getUserStatus())) {
             VerificationToken token = VerificationToken.of(newUser, VerificationToken.TokenType.CONFIRMATION);
             tokenService.saveToken(token);

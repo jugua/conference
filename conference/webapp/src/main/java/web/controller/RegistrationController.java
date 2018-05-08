@@ -63,8 +63,7 @@ public class RegistrationController {
                 log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
                 return badRequest().body(new MessageDto("empty_fields"));
             } else {
-                userService.checkUserRegistration(dto);
-                userService.registerNewUser(dto);
+                userService.registerSpeaker(dto);
                 MessageDto messageDto = new MessageDto();
                 messageDto.setResult("success");
                 return accepted().body(messageDto);
