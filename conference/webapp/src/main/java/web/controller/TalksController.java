@@ -120,7 +120,7 @@ public class TalksController {
     @GetMapping("/talk")
     public ResponseEntity<List<Submission>> getSumbissions(HttpServletRequest request) {
 
-        List<Submission> userTalkDtoList = talkService.getSumbissions(request.getRemoteUser());
+        List<Submission> userTalkDtoList = talkService.getSubmissions(request.getRemoteUser());
         log.debug(userTalkDtoList);
 
         return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);

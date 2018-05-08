@@ -208,7 +208,7 @@ public class TalkServiceImpl implements TalkService {
     }
 
     @Override
-	public List<Submission> getSumbissions(String userEmail) {
+	public List<Submission> getSubmissions(String userEmail) {
 		User currentUser = userRepository.findByEmail(userEmail);
 		return findByUserId(currentUser.getId()).stream().map(this::entityToExDto).collect(Collectors.toList());
 	}
