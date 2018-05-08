@@ -65,7 +65,7 @@ public class VerificationToken extends AbstractEntity {
     public static VerificationToken of(User user, VerificationToken.TokenType tokenType) {
         return VerificationToken.builder()
                 .user(user)
-                .expiryDate(expiryDateFor(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES))
+                .expiryDate(generateDefaultExpiryDate())
                 .token(UUID.randomUUID().toString())
                 .type(tokenType)
                 .status(VerificationToken.TokenStatus.VALID)
@@ -95,7 +95,11 @@ public class VerificationToken extends AbstractEntity {
         return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }
 
-    public static LocalDateTime expiryDateFor(int minutes) {
+    public static LocalDateTime generateDefaultExpiryDate() {
+        return VerificationToken.generateExpiryDateFor(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES);
+    }
+
+    public static LocalDateTime generateExpiryDateFor(int minutes) {
         LocalDateTime currentTime = LocalDateTime.now();
         return currentTime.plusMinutes(minutes);
     }

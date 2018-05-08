@@ -43,7 +43,7 @@ public class VerificationTokenTest {
 
     @Test
     public void testExpiredByDateTokenIsTokenExpired() {
-        testing.setExpiryDate(expiredDate(61));
+        testing.setExpiryDate(expiredDate());
         assertTrue(testing.isExpired());
     }
 
@@ -74,7 +74,7 @@ public class VerificationTokenTest {
     @Test
     public void testCheckExpiredDateSettingCreateToken() {
         testing = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-        LocalDateTime expectedDate = expiredDate(0);
+        LocalDateTime expectedDate = VerificationToken.generateDefaultExpiryDate();
         assertEquals(expectedDate.getYear(), testing.getExpiryDate().getYear());
         assertEquals(expectedDate.getDayOfYear(), testing.getExpiryDate().getDayOfYear());
         assertEquals(expectedDate.getHour(), testing.getExpiryDate().getHour());
@@ -103,16 +103,15 @@ public class VerificationTokenTest {
         VerificationToken result = new VerificationToken();
         result.setId(1L);
         result.setToken("TOKEN");
-        result.setExpiryDate(expiredDate(0));
+        result.setExpiryDate(VerificationToken.generateDefaultExpiryDate());
         result.setStatus(VerificationToken.TokenStatus.VALID);
         result.setType(VerificationToken.TokenType.CONFIRMATION);
         result.setUser(user);
         return result;
     }
 
-    private LocalDateTime expiredDate(int decreasingTimeInMinutes) {
-        LocalDateTime currentTime = LocalDateTime.now();
-        return currentTime.plusMinutes(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES - decreasingTimeInMinutes);
+    private LocalDateTime expiredDate() {
+        return VerificationToken.generateExpiryDateFor(-1);
     }
 
 }
