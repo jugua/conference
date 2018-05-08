@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void checkUserRegistration(RegistrationDto dto) {
-        if (!isPasswordConfirmed(dto)) {
+        if (dto.passwordsDoNotMatch()) {
             throw new PasswordMismatchException("empty_fields");
         } else if (isEmailExist(dto.getEmail().toLowerCase())) {
             throw new EmailAlreadyExistsException("email_already_exists");
@@ -189,10 +189,6 @@ public class UserServiceImpl implements UserService {
         user.setEmail(user.getEmail().toLowerCase());
         user.addRole(roleRepository.findByName(dto.getRoleName()));
         return user;
-    }
-
-    private boolean isPasswordConfirmed(RegistrationDto dto) {
-        return dto.getPassword().equals(dto.getConfirm());
     }
 
     private void encodePassword(RegistrationDto dto) {

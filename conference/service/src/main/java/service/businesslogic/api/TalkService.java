@@ -17,7 +17,7 @@ public interface TalkService {
     void deleteFile(TalkDto talkDto, boolean deleteFile);
 
     void updateStatus(TalkStatusDto dto);
-    
+
     void updateAsOrganiser(TalkDto talkDto, User user);
 
     void updateAsSpeaker(TalkDto talkDto, User user);
@@ -34,5 +34,4 @@ public interface TalkService {
 
     String getFilePath(TalkDto talkDto);
 
-	
 }
