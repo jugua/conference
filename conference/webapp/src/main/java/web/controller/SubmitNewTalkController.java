@@ -41,14 +41,7 @@ public class SubmitNewTalkController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity<MessageDto> submitTalk(
-            @Valid SubmitTalkDto submitTalkDto,
-            HttpServletRequest request) {
-
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(),
-                null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
-                submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
-                submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
+    public ResponseEntity<MessageDto> submitTalk(@Valid SubmitTalkDto submitTalkDto, HttpServletRequest request) {
 
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
@@ -56,8 +49,31 @@ public class SubmitNewTalkController {
             return new ResponseEntity<>(new MessageDto(), HttpStatus.FORBIDDEN);
         }
 
+        TalkDto dto = talkDto(submitTalkDto);
         Talk talk = talkService.save(dto, currentUser, uploadFile(dto.getMultipartFile()));
         return ok(new MessageDto(talk.getId()));
+    }
+
+    private TalkDto talkDto(@Valid SubmitTalkDto submitTalkDto) {
+        return TalkDto.builder()
+                .id(null)
+                .title(submitTalkDto.getTitle())
+                .userId(null)
+                .conferenceId(submitTalkDto.getConferenceId())
+                .conferenceName(null)
+                .speakerFullName(null)
+                .description(submitTalkDto.getDescription())
+                .topicName(submitTalkDto.getTopic())
+                .typeName(submitTalkDto.getType())
+                .languageName(submitTalkDto.getLang())
+                .levelName(submitTalkDto.getLevel())
+                .additionalInfo(submitTalkDto.getAddon())
+                .statusName(submitTalkDto.getStatus())
+                .date(null)
+                .organiserComment(null)
+                .assignee(null)
+                .multipartFile(submitTalkDto.getFile())
+                .build();
     }
 
     private String uploadFile(MultipartFile file) {
