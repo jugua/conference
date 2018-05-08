@@ -118,7 +118,7 @@ public class UserServiceImplTest {
     public void testSave() {
         User user = mock(User.class);
         when(roleRepository.findByName("ROLE_SPEAKER")).thenReturn(new Role("ROLE_SPEAKER"));
-        testing.save(user);
+        testing.createSpeaker(user);
         verify(userRepository, times(1)).save(user);
     }
 

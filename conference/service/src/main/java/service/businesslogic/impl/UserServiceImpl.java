@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(User user) {
+    public void createSpeaker(User user) {
         if (user.getRoles().isEmpty()) {
             user.addRole(roleRepository.findByName(Role.ROLE_SPEAKER));
         }
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void registerNewUser(RegistrationDto dto) {
         User newUser = mapRegistrationDtoToUser(dto);
-        save(newUser);
+        createSpeaker(newUser);
         if (User.UserStatus.UNCONFIRMED.equals(dto.getUserStatus())) {
             VerificationToken token = VerificationToken.of(newUser, VerificationToken.TokenType.CONFIRMATION);
             tokenService.saveToken(token);

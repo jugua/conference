@@ -12,7 +12,7 @@ public interface UserService {
 
     User find(Long id);
 
-    void save(User user);
+    void createSpeaker(User user);
 
     void confirm(User user);
 
