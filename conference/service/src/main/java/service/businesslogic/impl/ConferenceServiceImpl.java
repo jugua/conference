@@ -82,7 +82,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     public List<ConferenceDtoBasic> findUpcomingBasic() {
         List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
 
-        fillCallForPaperDatesActive(conferences);
+        startCallForPapers(conferences);
 
         return conferences.stream().map(this::conferenceToDtoBasic)
                 .collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Transactional(readOnly = true)
     public List<ConferenceDto> findUpcoming() {
         List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
-        fillCallForPaperDatesActive(conferences);
+        startCallForPapers(conferences);
         return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
     }
 
@@ -129,7 +129,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
     }
 
-    private void fillCallForPaperDatesActive(List<Conference> conferences) {
+    private void startCallForPapers(List<Conference> conferences) {
         conferences.stream()
                 .filter(Conference::callForPapersShouldBeStarted)
                 .forEach(Conference::startCallForPaper);
