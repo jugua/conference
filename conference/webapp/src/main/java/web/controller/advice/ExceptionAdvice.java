@@ -25,17 +25,17 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(TalkValidationException.class)
     public ResponseEntity<MessageDto> handleTalkValidationException(TalkValidationException ex) {
-        return new ResponseEntity<>(messageDtoWithError(ex.getMessage()), ex.getHttpStatus());
+        return new ResponseEntity<>(new MessageDto(ex.getMessage()), ex.getHttpStatus());
     }
 
     @ExceptionHandler(FileValidationException.class)
     public ResponseEntity<MessageDto> handleFileValidationException(FileValidationException ex) {
-        return new ResponseEntity<>(messageDtoWithError(ex.getMessage()), ex.getHttpStatus());
+        return new ResponseEntity<>(new MessageDto(ex.getMessage()), ex.getHttpStatus());
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<MessageDto> handleResourceNotFound(ResourceNotFoundException ex) {
-        return new ResponseEntity<>(messageDtoWithError(ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new MessageDto(ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -46,26 +46,21 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({AccessDeniedException.class, AuthenticationException.class})
     public MessageDto authenticationHandler() {
-        return messageDtoWithError(UNAUTHORIZED_MSG);
+        return new MessageDto(UNAUTHORIZED_MSG);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
     public MessageDto defaultHandler(Exception e) {
         log.error(e);
-        return messageDtoWithError("internal_error");
+        return new MessageDto("internal_error");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({NoSuchUserException.class})
     public MessageDto noSuchUserException(Exception e) {
         log.error(e);
-        return messageDtoWithError(e.getMessage());
+        return new MessageDto(e.getMessage());
     }
 
-    private MessageDto messageDtoWithError(String errorMsg) {
-        MessageDto message = new MessageDto();
-        message.setError(errorMsg);
-        return message;
-    }
 }

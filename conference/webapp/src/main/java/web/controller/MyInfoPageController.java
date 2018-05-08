@@ -1,5 +1,9 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.ok;
+
 import static service.infrastructure.fileStorage.impl.FileStorageServiceImpl.FileType.PHOTO;
 
 import java.io.File;
@@ -30,9 +34,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.User;
 import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
@@ -52,9 +57,7 @@ public class MyInfoPageController {
 
     @ExceptionHandler(FileValidationException.class)
     public ResponseEntity<MessageDto> handleFileValidationException(FileValidationException ex) {
-        MessageDto message = new MessageDto();
-        message.setError(ex.getMessage());
-        return new ResponseEntity<>(message, ex.getHttpStatus());
+        return new ResponseEntity<>(new MessageDto(ex.getMessage()), ex.getHttpStatus());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -77,16 +80,14 @@ public class MyInfoPageController {
     @PostMapping
     public ResponseEntity updateUserInfo(@Valid @RequestBody UserInfoDto dto,
                                          Principal principal, BindingResult bindingResult) {
-        HttpStatus status;
         if (bindingResult.hasFieldErrors()) {
-            status = HttpStatus.BAD_REQUEST;
+            return badRequest().build();
         } else if (principal == null) {
-            status = HttpStatus.UNAUTHORIZED;
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         } else {
             userInfoService.update(principal.getName(), dto);
-            status = HttpStatus.OK;
+            return ok().build();
         }
-        return new ResponseEntity(status);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -108,7 +109,7 @@ public class MyInfoPageController {
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
             log.debug(e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return badRequest().build();
         }
     }
 
@@ -130,13 +131,12 @@ public class MyInfoPageController {
 
                 MessageDto messageDto = new MessageDto();
                 messageDto.setResult("/photo/" + currentUser.getId());
-                return ResponseEntity.status(HttpStatus.OK).body(messageDto);
+                return ok(messageDto);
             }
         } catch (IOException e) {
             log.info(e);
         }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
-
+        return notFound().build();
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -149,7 +149,7 @@ public class MyInfoPageController {
         currentUser.setPhoto(null);
         userService.updateUser(currentUser);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ok().build();
     }
 
 

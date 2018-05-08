@@ -1,5 +1,8 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -69,14 +72,13 @@ public class TalksController {
     @PostMapping("/talks/{talkId}/comments")
     public ResponseEntity<MessageDto> saveComment(@PathVariable("talkId") long talkId,
                                                   @RequestBody CommentDto commentDto, BindingResult binding) {
-        MessageDto message = new MessageDto();
         if (binding.hasFieldErrors()) {
-            message.setError("fields_error");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            return badRequest().body(new MessageDto("fields_error"));
         }
         commentService.save(commentDto);
-        message.setResult("successfully_updated");
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setResult("successfully_updated");
+        return ok(messageDto);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -84,26 +86,24 @@ public class TalksController {
     public ResponseEntity<MessageDto> updateComment(@PathVariable("talkId") long talkId,
                                                     @PathVariable("commentId") long commentId,
                                                     @RequestBody CommentDto commentDto, BindingResult binding) {
-        MessageDto message = new MessageDto();
         if (binding.hasFieldErrors()) {
-            message.setError("fields_error");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            return badRequest().body(new MessageDto("fields_error"));
         }
         if (commentService.findById(commentId) == null) {
-            message.setError("fields_error");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            return badRequest().body(new MessageDto("fields_error"));
         }
         commentDto.setId(commentId);
         commentService.update(commentDto);
-        message.setResult("successfully_updated");
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setResult("successfully_updated");
+        return ok(messageDto);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk/talksTitles")
     public ResponseEntity<List<String>> getTalksTitles() {
         List<String> talksTitles = talkService.findAll().stream().map(Talk::getTitle).collect(Collectors.toList());
-        return new ResponseEntity<>(talksTitles, HttpStatus.OK);
+        return ok(talksTitles);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -113,7 +113,7 @@ public class TalksController {
                 .stream()
                 .map(m -> new TalkStatusDto(Long.valueOf(m.ordinal()), m.getName()))
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(talksStatus, HttpStatus.OK);
+        return ok(talksStatus);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -123,7 +123,7 @@ public class TalksController {
         List<Submission> userTalkDtoList = talkService.getSubmissions(request.getRemoteUser());
         log.debug(userTalkDtoList);
 
-        return new ResponseEntity<>(userTalkDtoList, HttpStatus.OK);
+        return ok(userTalkDtoList);
     }
 
     @GetMapping("/talk/{talkId}")
@@ -132,7 +132,7 @@ public class TalksController {
         boolean isTalkOrganiser = userService.isTalkOrganiser(userMail, talkId);
         if (isTalkOrganiser) {
             TalkDto talkDto = talkService.findById(talkId);
-            return new ResponseEntity<>(talkDto, HttpStatus.OK);
+            return ok(talkDto);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
@@ -144,15 +144,14 @@ public class TalksController {
                                                        BindingResult bindingResult,
                                                        HttpServletRequest request) {
         String userMail = request.getRemoteUser();
-        MessageDto message = new MessageDto();
         if (bindingResult.hasFieldErrors()) {
-            message.setError("fields_error");
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            return badRequest().body(new MessageDto("fields_error"));
         }
         if (userService.isTalkOrganiser(userMail, dto.getId())) {
             talkService.updateStatus(dto);
-            message.setResult("successfully_updated");
-            return new ResponseEntity<>(message, HttpStatus.OK);
+            MessageDto messageDto = new MessageDto();
+            messageDto.setResult("successfully_updated");
+            return ok(messageDto);
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
@@ -163,22 +162,20 @@ public class TalksController {
                                                  @RequestBody TalkDto dto,
                                                  BindingResult bindingResult,
                                                  HttpServletRequest request) {
-        MessageDto message = new MessageDto();
         dto.setId(talkId);
         if (bindingResult.hasFieldErrors()) {
-            message.setError("fields_error");
-            return prepareResponse(HttpStatus.BAD_REQUEST, message);
+            return badRequest().body(new MessageDto("fields_error"));
         }
         if (request.isUserInRole("ORGANISER")) {
             talkService.updateAsOrganiser(dto, userService.getByEmail(request.getRemoteUser()));
         } else if (request.isUserInRole("SPEAKER")) {
             talkService.updateAsSpeaker(dto, userService.getByEmail(request.getRemoteUser()));
         } else {
-            message.setError("unauthorized");
-            return prepareResponse(HttpStatus.UNAUTHORIZED, message);
+            return new ResponseEntity<>(new MessageDto("unauthorized"), HttpStatus.UNAUTHORIZED);
         }
-        message.setResult("successfully_updated");
-        return prepareResponse(HttpStatus.OK, message);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setResult("successfully_updated");
+        return ok(messageDto);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -190,7 +187,7 @@ public class TalksController {
         File file = storageService.getFile(talk.getPathToAttachedFile());
         Map<String, String> map = new HashMap<>();
         map.put("fileName", file.getName());
-        return new ResponseEntity(map, HttpStatus.OK);
+        return ok(map);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -212,7 +209,7 @@ public class TalksController {
             return new ResponseEntity<>(inputStreamResource, header, HttpStatus.OK);
         } catch (IOException e) {
             log.debug(e);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return badRequest().build();
         }
     }
 
@@ -225,7 +222,7 @@ public class TalksController {
         TalkDto talkDto = talkService.findById(talkId);
         talkService.addFile(talkDto, filePath);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ok().build();
     }
 
     private String uploadFile(MultipartFile file) {
@@ -246,10 +243,7 @@ public class TalksController {
         storageService.deleteFile(filePath);
         talkService.deleteFile(talkDto, true);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return ok().build();
     }
 
-    private ResponseEntity<MessageDto> prepareResponse(HttpStatus status, MessageDto message) {
-        return ResponseEntity.status(status).body(message);
-    }
 }

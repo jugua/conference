@@ -1,5 +1,7 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,16 +51,14 @@ public class SubmitNewTalkController {
                 submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
                 submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
 
-        MessageDto messageDto = new MessageDto();
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
         if (userInfoNotFilled(currentUser)) {
-            return new ResponseEntity<>(messageDto, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new MessageDto(), HttpStatus.FORBIDDEN);
         }
 
         Talk talk = talkService.save(dto, currentUser, uploadFile(dto.getMultipartFile()));
-        messageDto.setId(talk.getId());
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return ok(new MessageDto(talk.getId()));
     }
 
     private boolean userInfoNotFilled(User currentUser) {

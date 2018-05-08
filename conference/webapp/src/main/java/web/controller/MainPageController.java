@@ -1,5 +1,7 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -20,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import domain.model.Conference;
-import domain.model.Role;
-import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.Conference;
+import domain.model.User;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.api.TopicService;
 import service.businesslogic.api.TypeService;
@@ -65,17 +67,14 @@ public class MainPageController {
         Conference conference = conferenceService.findById(id);
         return ok(conference);
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("conference")
     public ResponseEntity<List<ConferenceDto>> conferenceById(HttpServletRequest request) {
-    	User user = userService.getByEmail(request.getRemoteUser());
-       	List<ConferenceDto> conferences = conferenceService.conferenceToDto(user.getOrganizerConferences());
-       	return new ResponseEntity<>(conferences,HttpStatus.OK);
-    	
-    
+        User user = userService.getByEmail(request.getRemoteUser());
+        List<ConferenceDto> conferences = conferenceService.conferenceToDto(user.getOrganizerConferences());
+        return ok(conferences);
     }
-    
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("conference/{id}/talks")
@@ -88,24 +87,18 @@ public class MainPageController {
     @PostMapping("conference")
     public ResponseEntity<MessageDto> newConference(@Valid @RequestBody CreateConferenceDto dto) {
         Long id = conferenceService.save(dto);
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(id);
-        return ok(messageDto);
+        return ok(new MessageDto(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("conference/update")
     public ResponseEntity<MessageDto> updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult) {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(dto.getId());
 
         if (bindingResult.hasErrors()) {
-            messageDto.setError("field_error");
-            return ok(messageDto);
+            return ok(new MessageDto(dto.getId(), "field_error"));
         } else {
-            messageDto.setError("successfully_updated");
             conferenceService.update(dto);
-            return ok(messageDto);
+            return ok(new MessageDto(dto.getId(), "successfully_updated"));
         }
     }
 
@@ -113,22 +106,14 @@ public class MainPageController {
     @PostMapping("type")
     public ResponseEntity<MessageDto> createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
         Long id = typeService.save(typeDto);
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(id);
-        return ok(messageDto);
+        return ok(new MessageDto(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("topic")
     public ResponseEntity<MessageDto> createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
         Long id = topicService.save(topicDto);
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(id);
-        return ok(messageDto);
-    }
-
-    private <T> ResponseEntity<T> ok(T body) {
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        return ok(new MessageDto(id));
     }
 
 }

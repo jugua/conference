@@ -2,6 +2,9 @@ package web.controller;
 
 import static java.util.Optional.ofNullable;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,26 +60,23 @@ public class UsersController {
     @PutMapping("/{id}/contacts")
     public ResponseEntity<MessageDto> updateUserContacts(@PathVariable("id") long id,
                                                          @RequestBody List<Contact> contacts, BindingResult bindingResult) {
-        MessageDto message = new MessageDto();
-        HttpStatus status = HttpStatus.OK;
         if (bindingResult.hasFieldErrors()) {
-            status = HttpStatus.BAD_REQUEST;
-            message.setError("empty_fields");
-            return new ResponseEntity<>(message, status);
+            return badRequest().body(new MessageDto("empty_fields"));
         }
         User user = userService.find(id);
         UserInfo userInfo = user.getUserInfo();
         userInfo.setContacts(contacts);
         userInfoService.save(userInfo);
-        message.setResult("success");
-        return new ResponseEntity<>(message, status);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setResult("success");
+        return ok(messageDto);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/usersNames")
     public ResponseEntity<List<String>> getUsersNames() {
         List<String> usersNames = userService.findAll().stream().map(m -> m.getFirstName()).collect(Collectors.toList());
-        return new ResponseEntity<>(usersNames, HttpStatus.OK);
+        return ok(usersNames);
     }
 
     @PreAuthorize("hasRole(\"ADMIN\")")
@@ -90,54 +90,42 @@ public class UsersController {
             dto.setUserStatus(User.UserStatus.CONFIRMED);
             return processUserRegistration(dto, bindingResult, request);
         } catch (WrongRoleException ex) {
-            MessageDto message = new MessageDto();
-            message.setError(ex.getMessage());
-            return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new MessageDto(ex.getMessage()), HttpStatus.FORBIDDEN);
         }
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ResponseEntity getUserById(@PathVariable("id") Long userId, HttpServletRequest request) {
-        MessageDto message = new MessageDto();
         if (!request.isUserInRole("ORGANISER")) {
-            message.setError("unauthorized");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDto("unauthorized"));
         }
 
         UserInfoDto userInfoDto = ofNullable(userService.getUserDtoById(userId))
                 .orElseThrow(() -> new NoSuchUserException("No User with such id."));
 
-        return new ResponseEntity<>(userInfoDto, HttpStatus.OK);
+        return ok(userInfoDto);
     }
 
     private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
-        HttpStatus status;
-        MessageDto message = new MessageDto();
-
         try {
-
             if (bindingResult.hasFieldErrors()) {
-                status = HttpStatus.BAD_REQUEST;
-                message.setError("empty_fields");
                 log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+                return badRequest().body(new MessageDto("empty_fields"));
             } else {
                 userService.checkUserRegistration(dto);
                 userService.registerNewUser(dto);
-                status = HttpStatus.ACCEPTED;
-                message.setResult("success");
+                MessageDto messageDto = new MessageDto();
+                messageDto.setResult("success");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(messageDto);
             }
         } catch (PasswordMismatchException ex) {
-            status = HttpStatus.BAD_REQUEST;
-            message.setError(ex.getMessage());
             log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            return badRequest().body(new MessageDto(ex.getMessage()));
         } catch (EmailAlreadyExistsException ex) {
-            status = HttpStatus.CONFLICT;
-            message.setError(ex.getMessage());
             log.error("Registration failed: " + dto.toString() +
                     ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto(ex.getMessage()));
         }
-
-        return ResponseEntity.status(status).body(message);
     }
 }

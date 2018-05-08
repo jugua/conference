@@ -1,5 +1,9 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.accepted;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -49,41 +53,31 @@ public class RegistrationController {
     @PostMapping("/invitation")
     public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite) {
         userService.inviteUser(invite);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ok().build();
     }
-
 
     private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult,
                                                                HttpServletRequest request) {
-        HttpStatus status;
-        MessageDto message = new MessageDto();
-
         try {
-
             if (bindingResult.hasFieldErrors()) {
-                status = HttpStatus.BAD_REQUEST;
-                message.setError("empty_fields");
                 log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
+                return badRequest().body(new MessageDto("empty_fields"));
             } else {
                 userService.checkUserRegistration(dto);
                 userService.registerNewUser(dto);
-                status = HttpStatus.ACCEPTED;
-                message.setResult("success");
+                MessageDto messageDto = new MessageDto();
+                messageDto.setResult("success");
+                return accepted().body(messageDto);
             }
         } catch (PasswordMismatchException ex) {
-            status = HttpStatus.BAD_REQUEST;
-            message.setError(ex.getMessage());
             log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
+            return badRequest().body(new MessageDto(ex.getMessage()));
         } catch (EmailAlreadyExistsException ex) {
-            status = HttpStatus.CONFLICT;
-            message.setError(ex.getMessage());
             log.error("Registration failed: " + dto.toString() +
                     ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: "
                     + request.toString() + "]");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto(ex.getMessage()));
         }
-
-        return ResponseEntity.status(status).body(message);
     }
-
 
 }

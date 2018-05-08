@@ -30,23 +30,17 @@ public class WithTokenGetRequestProcessor {
 
         VerificationToken token = tokenService.findTokenBy(tokenString);
         if (token == null) {
-            return badRequest().body(prepareMessageDto("invalid_link"));
+            return badRequest().body(new MessageDto("invalid_link"));
         } else if (token.isExpired()) {
-            return ResponseEntity.status(HttpStatus.GONE).body(prepareMessageDto("expired_link"));
+            return ResponseEntity.status(HttpStatus.GONE).body(new MessageDto("expired_link"));
         } else if (token.isInvalid(tokenType)) {
-            return badRequest().body(prepareMessageDto("invalid_link"));
+            return badRequest().body(new MessageDto("invalid_link"));
         }
 
         action.accept(token);
         tokenService.expire(token);
         authenticateUser(token.getUser());
         return ok().build();
-    }
-
-    private MessageDto prepareMessageDto(String message) {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setError(message);
-        return messageDto;
     }
 
     private void authenticateUser(User user) {

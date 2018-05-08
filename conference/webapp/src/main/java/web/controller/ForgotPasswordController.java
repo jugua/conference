@@ -1,5 +1,6 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 import java.io.IOException;
@@ -7,7 +8,6 @@ import java.io.IOException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,29 +46,25 @@ public class ForgotPasswordController {
 
     @PostMapping("/forgotPassword")
     public ResponseEntity<MessageDto> forgotPassword(@RequestBody String mail) throws IOException {
-        HttpStatus httpStatus;
-        MessageDto responseMessage = new MessageDto();
         ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
 
         if (node.get("mail") != null) {
             if (!userService.isEmailExist(node.get("mail").textValue())) {
-                httpStatus = HttpStatus.BAD_REQUEST;
-                responseMessage.setError("email_not_found");
+                return badRequest().body(new MessageDto("email_not_found"));
             } else {
                 User currentUser = userService.getByEmail(node.get("mail").textValue());
                 VerificationToken token = VerificationToken.of(currentUser, VerificationToken.TokenType.FORGOT_PASS);
                 tokenService.setPreviousTokensExpired(token);
                 tokenService.saveToken(token);
                 mailService.sendEmail(currentUser, new ForgotMessagePreparator(token, mailService.getUrl()));
-                httpStatus = HttpStatus.OK;
+                MessageDto responseMessage = new MessageDto();
                 responseMessage.setResult("success");
+                return ok().body(responseMessage);
             }
         } else {
-            httpStatus = HttpStatus.BAD_REQUEST;
-            responseMessage.setError("email_is_empty");
+            return badRequest().body(new MessageDto("email_is_empty"));
         }
 
-        return ResponseEntity.status(httpStatus).body(responseMessage);
     }
 
     @GetMapping("/changePassword/{token}")
@@ -85,7 +81,7 @@ public class ForgotPasswordController {
 
         // TODO: we definitely should check passwords are same on the frontend
         if (passwordPair.isNotEqual()) {
-            return ResponseEntity.badRequest().build();
+            return badRequest().build();
         }
 
         User currentUser = getCurrentUser(token);

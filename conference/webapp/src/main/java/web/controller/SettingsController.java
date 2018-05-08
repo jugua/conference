@@ -1,5 +1,8 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
@@ -50,35 +53,34 @@ public class SettingsController {
     @PostMapping("/password")
     public ResponseEntity<MessageDto> changePassword(@Valid @RequestBody SettingsDto dto, Principal principal,
                                                      BindingResult bindingResult, HttpServletRequest request) {
-        MessageDto messageDto = new MessageDto();
         if (principal == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         User user = userService.getByEmail(principal.getName());
 
         if (!userService.isAuthenticated(user, dto.getCurrentPassword())) {
             log.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest:" +
                     " " + request.toString() + "]");
-            messageDto.setError("wrong_password");
+            MessageDto messageDto = new MessageDto("wrong_password");
             messageDto.setFields(Arrays.asList("currentPassword"));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
+            return badRequest().body(messageDto);
         }
         if (!checkPasswordConfirmed(dto)) {
             log.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " +
                     "" + request.toString() + "]");
+            MessageDto messageDto = new MessageDto();
             messageDto.setResult("password_math");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDto);
         }
         if (bindingResult.hasFieldErrors()) {
             log.error("Request for [settings/password] is failed: validation is failed. [HttpServletRequest: " +
                     request.toString() + "]");
-            messageDto.setError("fields_error");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
+            return badRequest().body(new MessageDto("fields_error"));
         }
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userService.updateUser(user);
         mailService.sendEmail(user, new ChangePasswordPreparator());
-        return new ResponseEntity(HttpStatus.OK);
+        return ok().build();
     }
 
     @PostMapping("/email")
@@ -91,12 +93,10 @@ public class SettingsController {
 
         String email = parseMail(mail);
         if (email == null || !email.matches("(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return badRequest().build();
         }
         if (userService.getByEmail(email) != null) {
-            MessageDto messageDto = new MessageDto();
-            messageDto.setError("email_already_exists");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(messageDto);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto("email_already_exists"));
         }
         VerificationToken token = VerificationToken.createChangeEmailToken(
                 user, VerificationToken.TokenType.CHANGING_EMAIL, email);
@@ -104,7 +104,7 @@ public class SettingsController {
         tokenService.setPreviousTokensExpired(token);
         tokenService.saveToken(token);
         mailService.sendEmail(user, new NewEmailMessagePreparator(token, mailService.getUrl()));
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 
     @GetMapping("/email")
@@ -121,12 +121,12 @@ public class SettingsController {
 
         if (token == null) {
             messageDto.setResult("no_pending_email_changes");
-            return ResponseEntity.ok(messageDto);
+            return ok(messageDto);
         }
 
         messageDto.setResult("pending_email_change_found");
         messageDto.setSecondsToExpiry(String.valueOf(token.secondsToExpiry()));
-        return ResponseEntity.ok(messageDto);
+        return ok(messageDto);
     }
 
     private String parseMail(String mail) {
