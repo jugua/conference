@@ -112,7 +112,7 @@ public class VerificationTokenTest {
 
     private LocalDateTime expiredDate(int decreasingTimeInMinutes) {
         LocalDateTime currentTime = LocalDateTime.now();
-        return currentTime.plusMinutes(VerificationToken.EXPIRATION_IN_MINUTES - decreasingTimeInMinutes);
+        return currentTime.plusMinutes(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES - decreasingTimeInMinutes);
     }
 
 }

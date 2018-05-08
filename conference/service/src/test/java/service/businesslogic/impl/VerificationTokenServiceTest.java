@@ -51,7 +51,7 @@ public class VerificationTokenServiceTest {
         result.setId(1L);
         result.setToken("TOKEN");
         result.setUser(new User());
-        result.setExpiryDate(LocalDateTime.now().plusMinutes(VerificationToken.EXPIRATION_IN_MINUTES));
+        result.setExpiryDate(LocalDateTime.now().plusMinutes(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES));
         result.setStatus(VerificationToken.TokenStatus.VALID);
         result.setType(VerificationToken.TokenType.CONFIRMATION);
         return result;

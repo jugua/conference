@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 public class VerificationToken extends AbstractEntity {
 
-    public static final int EXPIRATION_IN_MINUTES = 60;
+    public static final int DEFAULT_EXPIRATION_TIME_IN_MINUTES = 60;
 
     @NonNull
     @Column(nullable = false)
@@ -65,7 +65,7 @@ public class VerificationToken extends AbstractEntity {
     public static VerificationToken of(User user, VerificationToken.TokenType tokenType) {
         return VerificationToken.builder()
                 .user(user)
-                .expiryDate(calculateExpiryDate(VerificationToken.EXPIRATION_IN_MINUTES))
+                .expiryDate(expiryDateFor(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES))
                 .token(UUID.randomUUID().toString())
                 .type(tokenType)
                 .status(VerificationToken.TokenStatus.VALID)
@@ -95,9 +95,9 @@ public class VerificationToken extends AbstractEntity {
         return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
     }
 
-    private static LocalDateTime calculateExpiryDate(int expiryTimeInMinutes) {
+    public static LocalDateTime expiryDateFor(int minutes) {
         LocalDateTime currentTime = LocalDateTime.now();
-        return currentTime.plusMinutes(expiryTimeInMinutes);
+        return currentTime.plusMinutes(minutes);
     }
 
     public void expire() {
