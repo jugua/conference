@@ -141,8 +141,7 @@ public class UserServiceImpl implements UserService {
         return passwordEncoder.matches(password, hashedPassword);
     }
 
-    @Override
-    public void checkUserRegistration(RegistrationDto dto) {
+    void checkUserRegistration(RegistrationDto dto) {
         if (dto.passwordsDoNotMatch()) {
             throw new PasswordMismatchException("empty_fields");
         } else if (isEmailExist(dto.getEmail().toLowerCase())) {

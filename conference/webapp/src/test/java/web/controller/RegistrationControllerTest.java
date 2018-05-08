@@ -31,9 +31,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.log4j.Log4j;
+
 import domain.model.Role;
 import domain.model.User;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.ContactTypeService;
 import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
@@ -204,7 +205,7 @@ public class RegistrationControllerTest {
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
         correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         doThrow(new EmailAlreadyExistsException("email_already_exists")).
-                when(userService).checkUserRegistration(correctRegistrationDto);
+                when(userService).registerSpeaker(correctRegistrationDto);
         performRegistration(REGISTER_USER_URL, HttpStatus.CONFLICT.value());
     }
 
@@ -214,7 +215,7 @@ public class RegistrationControllerTest {
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
         correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         doThrow(new PasswordMismatchException("email_already_exists")).
-                when(userService).checkUserRegistration(correctRegistrationDto);
+                when(userService).registerSpeaker(correctRegistrationDto);
         checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 

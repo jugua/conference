@@ -30,7 +30,6 @@ import domain.model.User;
 import domain.model.UserInfo;
 import domain.repository.RoleRepository;
 import domain.repository.UserRepository;
-import service.businesslogic.api.UserService;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
 import service.businesslogic.exception.NoSuchUserException;
@@ -54,7 +53,7 @@ public class UserServiceImplTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    private UserService testing;
+    private UserServiceImpl testing;
 
     @Before
     public void initialize() {

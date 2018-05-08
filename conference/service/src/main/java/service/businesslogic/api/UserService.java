@@ -36,8 +36,6 @@ public interface UserService {
 
     boolean isAuthenticated(User user, String password);
 
-    void checkUserRegistration(RegistrationDto dto);
-
     void checkUserRegistrationByAdmin(RegistrationDto dto);
 
     UserInfoDto getUserDtoByEmail(String email);
