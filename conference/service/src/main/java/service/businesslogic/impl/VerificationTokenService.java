@@ -26,17 +26,6 @@ public class VerificationTokenService {
     }
 
     @Transactional
-    public void expirePreviousTokens(VerificationToken newToken) {
-        List<VerificationToken> tokens = tokenRepository.findByUserIdAndStatusAndType(
-                newToken.getUser().getId(), VerificationToken.TokenStatus.VALID, newToken.getType());
-
-        if (!tokens.isEmpty()) {
-            tokens.forEach(VerificationToken::expire);
-            tokenRepository.save(tokens);
-        }
-    }
-
-    @Transactional
     public VerificationToken generateNewToken(User user, VerificationToken.TokenType tokenType) {
         VerificationToken newToken = VerificationToken.of(user, tokenType);
         expirePreviousTokens(newToken);
@@ -70,6 +59,16 @@ public class VerificationTokenService {
     public void expire(VerificationToken token) {
         token.expire();
         saveToken(token);
+    }
+
+    private void expirePreviousTokens(VerificationToken newToken) {
+        List<VerificationToken> tokens = tokenRepository.findByUserIdAndStatusAndType(
+                newToken.getUser().getId(), VerificationToken.TokenStatus.VALID, newToken.getType());
+
+        if (!tokens.isEmpty()) {
+            tokens.forEach(VerificationToken::expire);
+            tokenRepository.save(tokens);
+        }
     }
 
     private VerificationToken findTokenBy(Long userId, VerificationToken.TokenType tokenType) {
