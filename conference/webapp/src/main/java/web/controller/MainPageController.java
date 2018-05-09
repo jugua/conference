@@ -103,13 +103,6 @@ public class MainPageController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("type")
-    public ResponseEntity<MessageDto> createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
-        Long id = typeService.save(typeDto);
-        return ok(new MessageDto(id));
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("topic")
     public ResponseEntity<MessageDto> createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
         Long id = topicService.save(topicDto);

@@ -39,11 +39,9 @@ import domain.model.Talk;
 import domain.model.TalkStatus;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.api.TopicService;
-import service.businesslogic.api.TypeService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateTopicDto;
-import service.businesslogic.dto.CreateTypeDto;
 import web.config.TestConfig;
 import web.config.WebMvcConfig;
 
@@ -55,7 +53,6 @@ public class MainPageControllerTest {
     public static final String API_CONFERENCE = "/conference";
     public static final String API_LEVEL = "/level";
     public static final String API_TOPIC = "/topic";
-    public static final String API_TYPE = "/type";
 
     private MockMvc mockMvc;
 
@@ -65,8 +62,6 @@ public class MainPageControllerTest {
     @Autowired
     private ConferenceService conferenceService;
 
-    @Autowired
-    private TypeService typeService;
     @Autowired
     private TopicService topicService;
     @Autowired
@@ -143,47 +138,6 @@ public class MainPageControllerTest {
 
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
                 andExpect(status().isOk());
-    }
-
-    @WithMockUser(roles = Role.ADMIN)
-    public void createNewTypeShouldWorkForAdmin() throws Exception {
-        CreateTypeDto dto = new CreateTypeDto("schweine");
-        when(typeService.save(dto)).thenReturn(1L);
-        mockMvc.perform(post(API_TYPE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1)));
-    }
-
-    @Test
-    public void createNewTypeShouldNotWorkForUnauthorized() throws Exception {
-        CreateTypeDto dto = new CreateTypeDto("schweine");
-        mockMvc.perform(post(API_TYPE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        ).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = Role.ORGANISER)
-    public void createNewTypeShouldNotWorkForOrganiser() throws Exception {
-        CreateTypeDto dto = new CreateTypeDto("schweine");
-        mockMvc.perform(post(API_TYPE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        ).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = Role.SPEAKER)
-    public void createNewTypeShouldNotWorkForSpeaker() throws Exception {
-        CreateTypeDto dto = new CreateTypeDto("schweine");
-        mockMvc.perform(post(API_TYPE)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        ).andExpect(status().isUnauthorized());
     }
 
     @WithMockUser(roles = Role.ADMIN)
