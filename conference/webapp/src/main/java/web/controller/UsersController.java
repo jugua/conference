@@ -28,8 +28,6 @@ import lombok.extern.log4j.Log4j;
 
 import domain.model.Contact;
 import domain.model.User;
-import domain.model.UserInfo;
-import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.RegistrationDto;
@@ -46,7 +44,6 @@ import service.businesslogic.exception.WrongRoleException;
 public class UsersController {
 
     private final UserService userService;
-    private UserInfoService userInfoService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/contacts")
@@ -62,7 +59,7 @@ public class UsersController {
         if (bindingResult.hasFieldErrors()) {
             return badRequest().body(new MessageDto("empty_fields"));
         }
-        updateContacts(id, contacts);
+        userService.updateContacts(id, contacts);
         MessageDto messageDto = new MessageDto();
         messageDto.setResult("success");
         return ok(messageDto);
@@ -111,13 +108,6 @@ public class UsersController {
                 .orElseThrow(() -> new NoSuchUserException("No User with such id."));
 
         return ok(userInfoDto);
-    }
-
-    private void updateContacts(long id, List<Contact> contacts) {
-        User user = userService.find(id);
-        UserInfo userInfo = user.getUserInfo();
-        userInfo.setContacts(contacts);
-        userInfoService.save(userInfo);
     }
 
     private void registerSpeaker(RegistrationDto dto) {

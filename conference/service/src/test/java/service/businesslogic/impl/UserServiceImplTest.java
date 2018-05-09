@@ -29,6 +29,7 @@ import domain.model.Role;
 import domain.model.User;
 import domain.model.UserInfo;
 import domain.repository.RoleRepository;
+import domain.repository.UserInfoRepository;
 import domain.repository.UserRepository;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
@@ -45,6 +46,8 @@ public class UserServiceImplTest {
     @Mock
     private RoleRepository roleRepository;
     @Mock
+    private UserInfoRepository userInfoRepository;
+    @Mock
     private MailService mailService;
     @Mock
     private VerificationTokenService tokenService;
@@ -57,7 +60,7 @@ public class UserServiceImplTest {
 
     @Before
     public void initialize() {
-        testing = new UserServiceImpl(userRepository, roleRepository, mailService,
+        testing = new UserServiceImpl(userRepository, roleRepository, userInfoRepository, mailService,
                 mapper, tokenService, passwordEncoder);
     }
 

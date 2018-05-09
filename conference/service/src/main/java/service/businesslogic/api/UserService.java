@@ -2,6 +2,7 @@ package service.businesslogic.api;
 
 import java.util.List;
 
+import domain.model.Contact;
 import domain.model.User;
 import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.RegistrationDto;
@@ -21,6 +22,8 @@ public interface UserService {
     List<User> findAll();
 
     List<String> getUserNames();
+
+    void updateContacts(long id, List<Contact> contacts);
 
     List<User> getByFirstName(String name);
 

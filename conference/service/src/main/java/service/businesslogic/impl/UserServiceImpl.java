@@ -18,6 +18,7 @@ import domain.model.User;
 import domain.model.UserInfo;
 import domain.model.VerificationToken;
 import domain.repository.RoleRepository;
+import domain.repository.UserInfoRepository;
 import domain.repository.UserRepository;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.InviteDto;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private UserInfoRepository userInfoRepository;
     private MailService mailService;
     private ModelMapper mapper;
     private VerificationTokenService tokenService;
@@ -74,6 +76,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> getUserNames() {
         return findAll().stream().map(User::getFirstName).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateContacts(long id, List<Contact> contacts) {
+        User user = find(id);
+        UserInfo userInfo = user.getUserInfo();
+        userInfo.setContacts(contacts);
+        userInfoRepository.save(userInfo);
     }
 
     @Override

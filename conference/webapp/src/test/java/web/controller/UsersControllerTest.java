@@ -41,14 +41,14 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.log4j.Log4j;
+
 import domain.model.Contact;
 import domain.model.ContactType;
 import domain.model.Role;
 import domain.model.User;
 import domain.model.UserInfo;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.ContactTypeService;
-import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.dto.UserInfoDto;
@@ -76,8 +76,6 @@ public class UsersControllerTest {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserInfoService userInfoService;
-    @Autowired
     private ContactTypeService contactTypeService;
     @Autowired
     private UsersController usersController;
@@ -103,7 +101,7 @@ public class UsersControllerTest {
 
     @After
     public void after() {
-        Mockito.reset(userService, userInfoService, contactTypeService);
+        Mockito.reset(userService, contactTypeService);
     }
 
     @Test
