@@ -75,7 +75,7 @@ public class UsersController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/usersNames")
     public ResponseEntity<List<String>> getUsersNames() {
-        List<String> usersNames = userService.findAll().stream().map(m -> m.getFirstName()).collect(Collectors.toList());
+        List<String> usersNames = userService.findAll().stream().map(User::getFirstName).collect(Collectors.toList());
         return ok(usersNames);
     }
 
@@ -83,14 +83,25 @@ public class UsersController {
     @PostMapping("/registerByAdmin")
     public ResponseEntity registerByAdmin(@Valid @RequestBody RegistrationDto dto,
                                           BindingResult bindingResult,
-                                          HttpServletRequest request
-    ) {
+                                          HttpServletRequest request) {
+        if (bindingResult.hasFieldErrors()) {
+            log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            return badRequest().body(new MessageDto("empty_fields"));
+        }
         try {
-            userService.checkUserRegistrationByAdmin(dto);
-            dto.setUserStatus(User.UserStatus.CONFIRMED);
-            return processUserRegistration(dto, bindingResult, request);
+            registerSpeaker(dto);
+            MessageDto messageDto = new MessageDto();
+            messageDto.setResult("success");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(messageDto);
         } catch (WrongRoleException ex) {
             return new ResponseEntity<>(new MessageDto(ex.getMessage()), HttpStatus.FORBIDDEN);
+        } catch (PasswordMismatchException ex) {
+            log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
+            return badRequest().body(new MessageDto(ex.getMessage()));
+        } catch (EmailAlreadyExistsException ex) {
+            log.error("Registration failed: " + dto.toString() +
+                    ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto(ex.getMessage()));
         }
     }
 
@@ -107,25 +118,10 @@ public class UsersController {
         return ok(userInfoDto);
     }
 
-    private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult, HttpServletRequest request) {
-        try {
-            if (bindingResult.hasFieldErrors()) {
-                log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
-                return badRequest().body(new MessageDto("empty_fields"));
-            } else {
-                userService.registerSpeaker(dto);
-                MessageDto messageDto = new MessageDto();
-                messageDto.setResult("success");
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body(messageDto);
-            }
-        } catch (PasswordMismatchException ex) {
-            log.error("Request for [user/registerByAdmin] is failed: validation is failed. [HttpServletRequest: " + request.toString() + "]");
-            return badRequest().body(new MessageDto(ex.getMessage()));
-        } catch (EmailAlreadyExistsException ex) {
-            log.error("Registration failed: " + dto.toString() +
-                    ". Email '" + dto.getEmail() + "' is already in use. [HttpServletRequest: " + request.toString() + "]");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto(ex.getMessage()));
-        }
+    private void registerSpeaker(RegistrationDto dto) {
+        userService.checkUserRegistrationByAdmin(dto);
+        dto.setUserStatus(User.UserStatus.CONFIRMED);
+        userService.registerSpeaker(dto);
     }
 
 }
