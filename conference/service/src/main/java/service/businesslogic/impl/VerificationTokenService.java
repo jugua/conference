@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import domain.model.User;
 import domain.model.VerificationToken;
 import domain.repository.VerificationTokenRepository;
 
@@ -33,6 +34,14 @@ public class VerificationTokenService {
             tokens.forEach(VerificationToken::expire);
             tokenRepository.save(tokens);
         }
+    }
+
+    @Transactional
+    public VerificationToken generateNewToken(User user, VerificationToken.TokenType tokenType) {
+        VerificationToken newToken = VerificationToken.of(user, tokenType);
+        expirePreviousTokens(newToken);
+        saveToken(newToken);
+        return newToken;
     }
 
     @Transactional

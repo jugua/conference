@@ -60,7 +60,7 @@ public class ForgotPasswordController {
 
         User user = userService.getByEmail(email);
 
-        VerificationToken token = generateNewToken(user);
+        VerificationToken token = tokenService.generateNewToken(user, VerificationToken.TokenType.FORGOT_PASS);
         mailService.sendEmail(user, new ForgotMessagePreparator(token, mailService.getUrl()));
 
         MessageDto responseMessage = new MessageDto();
@@ -91,13 +91,6 @@ public class ForgotPasswordController {
         userService.updateUser(currentUser);
 
         return ok().build();
-    }
-
-    private VerificationToken generateNewToken(User user) {
-        VerificationToken token = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-        tokenService.expirePreviousTokens(token);
-        tokenService.saveToken(token);
-        return token;
     }
 
     private User getCurrentUser(@PathVariable String token) {
