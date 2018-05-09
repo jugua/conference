@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -46,24 +47,25 @@ public class ForgotPasswordController {
 
     @PostMapping("/forgotPassword")
     public ResponseEntity<MessageDto> forgotPassword(@RequestBody String mail) throws IOException {
-        ObjectNode node = objectMapper.readValue(mail, ObjectNode.class);
+        JsonNode mailNode = objectMapper.readValue(mail, ObjectNode.class).get("mail");
 
-        if (node.get("mail") != null) {
-            if (!userService.isEmailExist(node.get("mail").textValue())) {
-                return badRequest().body(new MessageDto("email_not_found"));
-            } else {
-                User currentUser = userService.getByEmail(node.get("mail").textValue());
-                VerificationToken token = VerificationToken.of(currentUser, VerificationToken.TokenType.FORGOT_PASS);
-                tokenService.setPreviousTokensExpired(token);
-                tokenService.saveToken(token);
-                mailService.sendEmail(currentUser, new ForgotMessagePreparator(token, mailService.getUrl()));
-                MessageDto responseMessage = new MessageDto();
-                responseMessage.setResult("success");
-                return ok().body(responseMessage);
-            }
-        } else {
+        if (mailNode == null) {
             return badRequest().body(new MessageDto("email_is_empty"));
         }
+
+        String email = mailNode.textValue();
+        if (!userService.isEmailExist(email)) {
+            return badRequest().body(new MessageDto("email_not_found"));
+        }
+
+        User user = userService.getByEmail(email);
+
+        VerificationToken token = generateNewToken(user);
+        mailService.sendEmail(user, new ForgotMessagePreparator(token, mailService.getUrl()));
+
+        MessageDto responseMessage = new MessageDto();
+        responseMessage.setResult("success");
+        return ok().body(responseMessage);
 
     }
 
@@ -89,6 +91,13 @@ public class ForgotPasswordController {
         userService.updateUser(currentUser);
 
         return ok().build();
+    }
+
+    private VerificationToken generateNewToken(User user) {
+        VerificationToken token = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
+        tokenService.setPreviousTokensExpired(token);
+        tokenService.saveToken(token);
+        return token;
     }
 
     private User getCurrentUser(@PathVariable String token) {

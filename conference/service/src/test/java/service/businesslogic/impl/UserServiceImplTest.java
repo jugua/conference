@@ -60,8 +60,10 @@ public class UserServiceImplTest {
 
     @Before
     public void initialize() {
-        testing = new UserServiceImpl(userRepository, roleRepository, userInfoRepository, mailService,
-                mapper, tokenService, passwordEncoder);
+        testing = new UserServiceImpl(
+                userRepository, roleRepository,
+                userInfoRepository, mailService, mapper,
+                tokenService, passwordEncoder);
     }
 
     @Test
