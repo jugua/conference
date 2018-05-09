@@ -45,29 +45,15 @@ public class RegistrationController {
     public ResponseEntity<MessageDto> register(@Valid @RequestBody RegistrationDto dto,
                                                BindingResult bindingResult,
                                                HttpServletRequest request) {
-        dto.setUserStatus(User.UserStatus.UNCONFIRMED);
-        dto.setRoleName(Role.ROLE_SPEAKER);
-        return processUserRegistration(dto, bindingResult, request);
-    }
-
-    @PostMapping("/invitation")
-    public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite) {
-        userService.inviteUser(invite);
-        return ok().build();
-    }
-
-    private ResponseEntity<MessageDto> processUserRegistration(RegistrationDto dto, BindingResult bindingResult,
-                                                               HttpServletRequest request) {
+        if (bindingResult.hasFieldErrors()) {
+            log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
+            return badRequest().body(new MessageDto("empty_fields"));
+        }
         try {
-            if (bindingResult.hasFieldErrors()) {
-                log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
-                return badRequest().body(new MessageDto("empty_fields"));
-            } else {
-                userService.registerSpeaker(dto);
-                MessageDto messageDto = new MessageDto();
-                messageDto.setResult("success");
-                return accepted().body(messageDto);
-            }
+            registerSpeaker(dto);
+            MessageDto messageDto = new MessageDto();
+            messageDto.setResult("success");
+            return accepted().body(messageDto);
         } catch (PasswordMismatchException ex) {
             log.error(VALIDATION_IS_FAILED + " " + request.toString() + "]");
             return badRequest().body(new MessageDto(ex.getMessage()));
@@ -77,6 +63,18 @@ public class RegistrationController {
                     + request.toString() + "]");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto(ex.getMessage()));
         }
+    }
+
+    @PostMapping("/invitation")
+    public ResponseEntity<MessageDto> sendInvite(@RequestBody InviteDto invite) {
+        userService.inviteUser(invite);
+        return ok().build();
+    }
+
+    private void registerSpeaker(RegistrationDto dto) {
+        dto.setUserStatus(User.UserStatus.UNCONFIRMED);
+        dto.setRoleName(Role.ROLE_SPEAKER);
+        userService.registerSpeaker(dto);
     }
 
 }
