@@ -1,5 +1,7 @@
 package domain.model;
 
+import static java.time.LocalDateTime.now;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
@@ -92,16 +94,11 @@ public class VerificationToken extends AbstractEntity {
     }
 
     public long secondsToExpiry() {
-        return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
+        return ChronoUnit.SECONDS.between(now(), expiryDate);
     }
 
     public static LocalDateTime generateDefaultExpiryDate() {
-        return VerificationToken.generateExpiryDateFor(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES);
-    }
-
-    public static LocalDateTime generateExpiryDateFor(int minutes) {
-        LocalDateTime currentTime = LocalDateTime.now();
-        return currentTime.plusMinutes(minutes);
+        return now().plusMinutes(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES);
     }
 
     public void expire() {

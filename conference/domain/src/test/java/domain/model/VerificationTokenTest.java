@@ -1,5 +1,7 @@
 package domain.model;
 
+import static java.time.LocalDateTime.now;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -114,7 +116,7 @@ public class VerificationTokenTest {
     }
 
     private LocalDateTime expiredDate() {
-        return VerificationToken.generateExpiryDateFor(-1);
+        return now().minusMinutes(1);
     }
 
 }
