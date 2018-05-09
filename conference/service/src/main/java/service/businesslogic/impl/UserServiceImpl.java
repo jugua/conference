@@ -189,6 +189,21 @@ public class UserServiceImpl implements UserService {
         return userDtoList;
     }
 
+    @Override
+    public void inviteUser(InviteDto invite) {
+        User user = new User();
+        user.setEmail(invite.getEmail());
+        String conferenceName = invite.getConferenceName();
+        mailService.sendEmail(user, new InvitePreparator(conferenceName, mailService.getUrl()));
+    }
+
+    @Transactional
+    @Override
+    public boolean isTalkOrganiser(String userEmail, Long talkId) {
+        User user = userRepository.findByEmail(userEmail);
+        return user.isOrganizerForTalk(talkId);
+    }
+
     private User mapRegistrationDtoToUser(RegistrationDto dto) {
         User user = mapper.map(dto, User.class);
         user.setEmail(user.getEmail().toLowerCase());
@@ -220,21 +235,6 @@ public class UserServiceImpl implements UserService {
         UserBasicDto userBasicDto = mapper.map(user, UserBasicDto.class);
         userBasicDto.setRole(user.getRoleNames().get(0));
         return userBasicDto;
-    }
-
-    @Override
-    public void inviteUser(InviteDto invite) {
-        User user = new User();
-        user.setEmail(invite.getEmail());
-        String conferenceName = invite.getConferenceName();
-        mailService.sendEmail(user, new InvitePreparator(conferenceName, mailService.getUrl()));
-    }
-
-    @Transactional
-    @Override
-    public boolean isTalkOrganiser(String userEmail, Long talkId) {
-        User user = userRepository.findByEmail(userEmail);
-        return user.isOrganizerForTalk(talkId);
     }
 
 }
