@@ -63,10 +63,7 @@ public class UsersController {
         if (bindingResult.hasFieldErrors()) {
             return badRequest().body(new MessageDto("empty_fields"));
         }
-        User user = userService.find(id);
-        UserInfo userInfo = user.getUserInfo();
-        userInfo.setContacts(contacts);
-        userInfoService.save(userInfo);
+        updateContacts(id, contacts);
         MessageDto messageDto = new MessageDto();
         messageDto.setResult("success");
         return ok(messageDto);
@@ -116,6 +113,13 @@ public class UsersController {
                 .orElseThrow(() -> new NoSuchUserException("No User with such id."));
 
         return ok(userInfoDto);
+    }
+
+    private void updateContacts(long id, List<Contact> contacts) {
+        User user = userService.find(id);
+        UserInfo userInfo = user.getUserInfo();
+        userInfo.setContacts(contacts);
+        userInfoService.save(userInfo);
     }
 
     private void registerSpeaker(RegistrationDto dto) {
