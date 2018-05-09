@@ -28,21 +28,25 @@ public class ConfirmationController {
 
     @GetMapping("/registrationConfirm/{token}")
     public ResponseEntity<MessageDto> confirmRegistration(@PathVariable String token) {
-        return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CONFIRMATION, verificationToken -> {
-            userService.confirm(verificationToken.getUser());
-        });
+        return withTokenGetRequestProcessor.process(
+                token,
+                VerificationToken.TokenType.CONFIRMATION,
+                verificationToken -> userService.confirm(verificationToken.getUser()));
     }
 
     @GetMapping("/newEmailConfirm/{token:.+}")
     public ResponseEntity<MessageDto> confirmNewEmail(@PathVariable String token) {
-        return withTokenGetRequestProcessor.process(token, VerificationToken.TokenType.CHANGING_EMAIL, verificationToken -> {
-            User user = verificationToken.getUser();
-            String newEmail = extractEmailOf(token);
-            String oldEmail = user.getEmail();
-            user.setEmail(newEmail);
-            userService.updateUser(user);
-            mailService.sendEmail(user, new OldEmailMessagePreparator(oldEmail));
-        });
+        return withTokenGetRequestProcessor.process(
+                token,
+                VerificationToken.TokenType.CHANGING_EMAIL,
+                verificationToken -> {
+                    User user = verificationToken.getUser();
+                    String newEmail = extractEmailOf(token);
+                    String oldEmail = user.getEmail();
+                    user.setEmail(newEmail);
+                    userService.updateUser(user);
+                    mailService.sendEmail(user, new OldEmailMessagePreparator(oldEmail));
+                });
     }
 
     private static String extractEmailOf(String token) {
