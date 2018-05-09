@@ -25,13 +25,13 @@ public class VerificationTokenService {
     }
 
     @Transactional
-    public void setPreviousTokensExpired(VerificationToken newToken) {
+    public void expirePreviousTokens(VerificationToken newToken) {
         List<VerificationToken> tokens = tokenRepository.findByUserIdAndStatusAndType(
                 newToken.getUser().getId(), VerificationToken.TokenStatus.VALID, newToken.getType());
 
-        for (VerificationToken token : tokens) {
-            token.expire();
-            tokenRepository.save(token);
+        if (!tokens.isEmpty()) {
+            tokens.forEach(VerificationToken::expire);
+            tokenRepository.save(tokens);
         }
     }
 

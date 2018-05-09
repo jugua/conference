@@ -95,7 +95,7 @@ public class ForgotPasswordController {
 
     private VerificationToken generateNewToken(User user) {
         VerificationToken token = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-        tokenService.setPreviousTokensExpired(token);
+        tokenService.expirePreviousTokens(token);
         tokenService.saveToken(token);
         return token;
     }

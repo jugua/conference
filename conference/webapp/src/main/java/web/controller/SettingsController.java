@@ -101,7 +101,7 @@ public class SettingsController {
         VerificationToken token = VerificationToken.createChangeEmailToken(
                 user, VerificationToken.TokenType.CHANGING_EMAIL, email);
 
-        tokenService.setPreviousTokensExpired(token);
+        tokenService.expirePreviousTokens(token);
         tokenService.saveToken(token);
         mailService.sendEmail(user, new NewEmailMessagePreparator(token, mailService.getUrl()));
         return ok().build();
