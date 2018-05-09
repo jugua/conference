@@ -15,7 +15,7 @@ public class VerificationTokenTest {
 
     private VerificationToken testing;
 
-    private User user = createUser();
+    private User user;
 
     @Before
     public void setUp() {
@@ -61,24 +61,27 @@ public class VerificationTokenTest {
 
     @Test
     public void testCheckUserSettingCreateToken() {
-        VerificationToken testedToken = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-        assertEquals(user, testedToken.getUser());
+        VerificationToken actual = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
+        assertEquals(user, actual.getUser());
     }
 
     @Test
     public void testCheckTypeSettingCreateToken() {
-        VerificationToken testedToken = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-        assertEquals(VerificationToken.TokenType.FORGOT_PASS, testedToken.getType());
+        VerificationToken actual = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
+        assertEquals(VerificationToken.TokenType.FORGOT_PASS, actual.getType());
     }
 
     @Test
     public void testCheckExpiredDateSettingCreateToken() {
         testing = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-        LocalDateTime expectedDate = VerificationToken.generateDefaultExpiryDate();
-        assertEquals(expectedDate.getYear(), testing.getExpiryDate().getYear());
-        assertEquals(expectedDate.getDayOfYear(), testing.getExpiryDate().getDayOfYear());
-        assertEquals(expectedDate.getHour(), testing.getExpiryDate().getHour());
-        assertEquals(expectedDate.getMinute(), testing.getExpiryDate().getMinute());
+
+        LocalDateTime expected = VerificationToken.generateDefaultExpiryDate();
+        LocalDateTime actual = testing.getExpiryDate();
+
+        assertEquals(expected.getYear(), actual.getYear());
+        assertEquals(expected.getDayOfYear(), actual.getDayOfYear());
+        assertEquals(expected.getHour(), actual.getHour());
+        assertEquals(expected.getMinute(), actual.getMinute());
     }
 
     @Test
