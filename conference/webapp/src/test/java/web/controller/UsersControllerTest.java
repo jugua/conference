@@ -5,15 +5,11 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static web.util.TestData.ORGANISER_EMAIL;
 import static web.util.TestData.speaker;
-
-import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.Filter;
 
@@ -35,7 +31,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -43,11 +38,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.log4j.Log4j;
 
-import domain.model.Contact;
-import domain.model.ContactType;
 import domain.model.Role;
 import domain.model.User;
-import domain.model.UserInfo;
 import service.businesslogic.api.ContactTypeService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.RegistrationDto;
@@ -185,24 +177,6 @@ public class UsersControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
 
-    private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
-        try {
-            if (method == RequestMethod.GET) {
-                mockMvc.perform(get(uri)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(dto))
-                ).andExpect(status().isBadRequest());
-            } else if (method == RequestMethod.POST) {
-                mockMvc.perform(post(uri)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(dto))
-                ).andExpect(status().isBadRequest());
-            }
-        } catch (Exception e) {
-            log.info(e);
-        }
-    }
-
     private RegistrationDto setupCorrectRegistrationDto() {
         RegistrationDto registrationDto = new RegistrationDto();
         registrationDto.setPassword("123456");
@@ -220,40 +194,4 @@ public class UsersControllerTest {
         return mapper.writeValueAsBytes(object);
     }
 
-    private String createStringWithLength(int length) {
-        StringBuilder builder = new StringBuilder();
-        for (int index = 0; index < length; index++) {
-            builder.append("a");
-        }
-        return builder.toString();
-    }
-
-    protected UserInfo userInfo() {
-        ContactType contactType = new ContactType(1L, "LinkedIn");
-        ContactType contactType2 = new ContactType(2L, "Twitter");
-        ContactType contactType3 = new ContactType(3L, "Facebook");
-        ContactType contactType4 = new ContactType(4L, "Blog");
-
-        when(contactTypeService.findByName(anyString()))
-                .thenReturn(contactType)
-                .thenReturn(contactType2)
-                .thenReturn(contactType3)
-                .thenReturn(contactType4);
-
-        List<Contact> contacts = Arrays.asList(
-                new Contact(1L, "url1", contactType),
-                new Contact(2L, "url2", contactType2),
-                new Contact(3L, "url3", contactType3),
-                new Contact(4L, "url4", contactType4));
-
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(1L);
-        userInfo.setShortBio("bio");
-        userInfo.setJobTitle("job");
-        userInfo.setPastConference("pastConference");
-        userInfo.setCompany("EPAM");
-        userInfo.setContacts(contacts);
-        userInfo.setAdditionalInfo("addInfo");
-        return userInfo;
-    }
 }
