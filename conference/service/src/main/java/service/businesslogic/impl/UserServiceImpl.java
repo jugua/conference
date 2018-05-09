@@ -72,6 +72,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<String> getUserNames() {
+        return findAll().stream().map(User::getFirstName).collect(Collectors.toList());
+    }
+
+    @Override
     public List<User> getByFirstName(String name) {
         return userRepository.findAllByFirstName(name);
     }

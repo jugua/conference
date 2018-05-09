@@ -6,7 +6,6 @@ import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -72,8 +71,7 @@ public class UsersController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/usersNames")
     public ResponseEntity<List<String>> getUsersNames() {
-        List<String> usersNames = userService.findAll().stream().map(User::getFirstName).collect(Collectors.toList());
-        return ok(usersNames);
+        return ok(userService.getUserNames());
     }
 
     @PreAuthorize("hasRole(\"ADMIN\")")
