@@ -47,7 +47,7 @@ public interface UserService {
 
     UserInfoDto getUserDtoById(Long userId);
 
-    List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles);
+    List<UserBasicDto> getUserBasicDtoByRolesExpectCurrent(User currentUser, String... roles);
 
     void inviteUser(InviteDto invite);
 
