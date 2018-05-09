@@ -127,7 +127,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testUpdateUserProfile() {
+    public void testUpdateUser() {
         User user = mock(User.class);
         testing.updateUser(user);
         verify(userRepository, times(1)).save(user);
