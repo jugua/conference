@@ -55,7 +55,6 @@ import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalksController {
 
-    protected static final String DEFAULT_TALK_STATUS = "New";
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;

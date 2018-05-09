@@ -411,7 +411,7 @@ public class TalksControllerTest {
         correctTalkDto.setTitle("Title");
         correctTalkDto.setLanguageName("English");
         correctTalkDto.setLevelName("Beginner");
-        correctTalkDto.setStatusName(TalksController.DEFAULT_TALK_STATUS);
+        correctTalkDto.setStatusName("New");
         correctTalkDto.setTypeName("Regular Talk");
         correctTalkDto.setTopicName("JVM Languages and new programming paradigms");
         correctTalkDto.setDate(LocalDateTime.now().toString());
