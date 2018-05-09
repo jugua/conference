@@ -59,7 +59,7 @@ public class TalksController {
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
-    private CommentService commentService;
+    private final CommentService commentService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talks/{talkId}/comments")
