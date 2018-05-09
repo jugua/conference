@@ -45,6 +45,14 @@ public class VerificationTokenService {
     }
 
     @Transactional
+    public VerificationToken generateNewChangeEmailToken(User user, VerificationToken.TokenType tokenType, String email) {
+        VerificationToken token = VerificationToken.createChangeEmailToken(user, tokenType, email);
+        expirePreviousTokens(token);
+        saveToken(token);
+        return token;
+    }
+
+    @Transactional
     public VerificationToken getValidTokenByUserIdAndType(Long userId, VerificationToken.TokenType tokenType) {
         VerificationToken token = findTokenBy(userId, tokenType);
         if (token != null && token.isExpiredByTime()) {

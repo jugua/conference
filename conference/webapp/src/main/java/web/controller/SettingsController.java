@@ -98,16 +98,10 @@ public class SettingsController {
         if (userService.getByEmail(email) != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto("email_already_exists"));
         }
-        VerificationToken token = generateNewChangeEmailToken(user, VerificationToken.TokenType.CHANGING_EMAIL, email);
+        VerificationToken token = tokenService.generateNewChangeEmailToken(
+                user, VerificationToken.TokenType.CHANGING_EMAIL, email);
         mailService.sendEmail(user, new NewEmailMessagePreparator(token, mailService.getUrl()));
         return ok().build();
-    }
-
-    private VerificationToken generateNewChangeEmailToken(User user, VerificationToken.TokenType tokenType, String email) {
-        VerificationToken token = VerificationToken.createChangeEmailToken(user, tokenType, email);
-        tokenService.expirePreviousTokens(token);
-        tokenService.saveToken(token);
-        return token;
     }
 
     @GetMapping("/email")
