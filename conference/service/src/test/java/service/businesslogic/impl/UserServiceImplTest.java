@@ -67,7 +67,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testGetByRoleExceptCurrent() throws Exception {
+    public void testGetByRoleExceptCurrent() {
         User user1 = createDefaultUser();
         user1.setFirstName("Test1");
 
@@ -91,7 +91,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testGetByRoleExceptCurrentWithRoleList() throws Exception {
+    public void testGetByRoleExceptCurrentWithRoleList() {
         User user1 = createDefaultUser();
         user1.setFirstName("Test1");
 
