@@ -35,9 +35,9 @@ public interface UserService {
 
     void registerSpeaker(RegistrationDto dto);
 
-    List<User> getByRoleExceptCurrent(User currentUser, String roleName);
+    List<User> findOtherUsersWithSameRole(User currentUser, String roleName);
 
-    List<User> getByRolesExceptCurrent(User currentUser, String... rolesNames);
+    List<User> findOtherUsersByRoles(User currentUser, String... rolesNames);
 
     boolean isAuthenticated(User user, String password);
 

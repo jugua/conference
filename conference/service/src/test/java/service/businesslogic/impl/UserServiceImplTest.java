@@ -81,7 +81,7 @@ public class UserServiceImplTest {
         when(roleRepository.findByName(Role.ROLE_ORGANISER)).thenReturn(role);
         when(userRepository.findAllByRolesIsIn(role)).thenReturn(users);
 
-        List<User> resultUsersList = testing.getByRoleExceptCurrent(user1, Role.ROLE_ORGANISER);
+        List<User> resultUsersList = testing.findOtherUsersWithSameRole(user1, Role.ROLE_ORGANISER);
         assertTrue(resultUsersList.contains(user2));
         assertTrue(resultUsersList.contains(user3));
         assertFalse(resultUsersList.contains(user1));
@@ -110,7 +110,7 @@ public class UserServiceImplTest {
         when(userRepository.findAllByRolesIsIn(Arrays.asList(roleOrganiser, roleSpeaker)))
                 .thenReturn(users);
 
-        List<User> resultUsersList = testing.getByRolesExceptCurrent(user1, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
+        List<User> resultUsersList = testing.findOtherUsersByRoles(user1, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
         assertTrue(resultUsersList.contains(user2));
         assertTrue(resultUsersList.contains(user3));
         assertFalse(resultUsersList.contains(user1));

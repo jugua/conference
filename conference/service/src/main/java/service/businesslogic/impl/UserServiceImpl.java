@@ -131,14 +131,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getByRoleExceptCurrent(User currentUser, String roleName) {
+    public List<User> findOtherUsersWithSameRole(User currentUser, String roleName) {
         Role role = roleRepository.findByName(roleName);
         return userRepository.findAllByRolesIsIn(role).stream().filter(user -> user != currentUser)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<User> getByRolesExceptCurrent(User currentUser, String... roleNames) {
+    public List<User> findOtherUsersByRoles(User currentUser, String... roleNames) {
         List<Role> roles = new ArrayList<>();
         for (String roleName : roleNames) {
             Role role = roleRepository.findByName(roleName);
@@ -193,7 +193,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserBasicDto> getUserBasicDtoByRolesExpectCurrent(User currentUser, String... roles) {
-        List<User> users = getByRolesExceptCurrent(currentUser, roles);
+        List<User> users = findOtherUsersByRoles(currentUser, roles);
         List<UserBasicDto> userDtoList = new ArrayList<>();
         if (users != null) {
             for (User user : users) {
