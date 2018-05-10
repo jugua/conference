@@ -15,4 +15,8 @@ public interface VerificationTokenRepository extends CrudRepository<Verification
     List<VerificationToken> findByUserIdAndStatusAndType(Long userId,
                                                          VerificationToken.TokenStatus status,
                                                          VerificationToken.TokenType type);
+
+    VerificationToken findFirstByUserIdAndStatusAndType(Long userId,
+                                                        VerificationToken.TokenStatus valid,
+                                                        VerificationToken.TokenType tokenType);
 }
