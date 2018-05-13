@@ -93,8 +93,8 @@ public class TalksControllerTest {
 
     private MockMvc mockMvc;
 
-    private User speakerUser;
-    private User organiserUser;
+    private User speaker;
+    private User organizer;
     private TalkDto correctTalkDto;
     private MockMultipartFile multipartFile;
 
@@ -112,48 +112,17 @@ public class TalksControllerTest {
                 param("lang", "English").
                 param("level", "Beginner");
 
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(1L);
-        userInfo.setShortBio("bio");
-        userInfo.setJobTitle("job");
-        userInfo.setPastConference("pastConference");
-        userInfo.setCompany("EPAM");
-        userInfo.setAdditionalInfo("addInfo");
-
-        Set<Role> speakerRole = new HashSet<>();
-        speakerRole.add(new Role(2L, Role.ROLE_SPEAKER));
-        speakerUser = new User();
-        speakerUser.setId(1L);
-        speakerUser.setFirstName("Olya");
-        speakerUser.setLastName("Ivanova");
-        speakerUser.setEmail("ivanova@gmail.com");
-        speakerUser.setPassword("123456");
-        speakerUser.setStatus(User.UserStatus.CONFIRMED);
-        speakerUser.setUserInfo(userInfo);
-        speakerUser.setRoles(speakerRole);
-
-        Set<Role> organiserRole = new HashSet<>();
-        organiserRole.add(new Role(1L, Role.ROLE_ORGANISER));
-        organiserUser = new User();
-        organiserUser.setId(1L);
-        organiserUser.setFirstName("Artem");
-        organiserUser.setLastName("Trybel");
-        organiserUser.setEmail("trybel@gmail.com");
-        organiserUser.setPassword("123456");
-        organiserUser.setStatus(User.UserStatus.CONFIRMED);
-        organiserUser.setUserInfo(userInfo);
-        organiserUser.setRoles(organiserRole);
-        HashSet<Conference> organizerConferences = new HashSet<>();
-        organizerConferences.add(createConference());
-        organiserUser.setOrganizerConferences(organizerConferences);
+        UserInfo userInfo = createUserInfo();
+        speaker = createSpeaker(userInfo);
+        organizer = createOrganizer(userInfo);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
-        when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speakerUser);
-        when(userService.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organiserUser);
+        when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speaker);
+        when(userService.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organizer);
         when(userInfoService.find(anyLong())).thenReturn(userInfo);
     }
 
@@ -182,8 +151,8 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testSuccessfulGetTalkByIdAsOrganiser() throws Exception {
-        correctTalkDto.setAssignee(organiserUser.getFullName());
-        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organiserUser);
+        correctTalkDto.setAssignee(organizer.getFullName());
+        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organizer);
         when(talkService.findById((TEST_TALK_ID))).thenReturn(correctTalkDto);
 
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID))
@@ -224,7 +193,7 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testTalkNotFoundExceptionGetTalkById() throws Exception {
-        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organiserUser);
+        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organizer);
         when(talkService.findById(TEST_TALK_ID)).thenThrow(new TalkNotFoundException());
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID)).
                 andExpect(status().isNotFound())
@@ -246,7 +215,7 @@ public class TalksControllerTest {
         mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
-        verify(talkService, atLeastOnce()).updateAsOrganiser(talkDto, organiserUser);
+        verify(talkService, atLeastOnce()).updateAsOrganiser(talkDto, organizer);
     }
 
     /**
@@ -264,7 +233,7 @@ public class TalksControllerTest {
         mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
-        verify(talkService, atLeastOnce()).updateAsSpeaker(talkDto, speakerUser);
+        verify(talkService, atLeastOnce()).updateAsSpeaker(talkDto, speaker);
     }
 
     /**
@@ -292,7 +261,7 @@ public class TalksControllerTest {
         talkDto.setStatusName(APPROVED);
 
         doThrow(new TalkValidationException(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG))
-                .when(talkService).updateAsSpeaker(talkDto, speakerUser);
+                .when(talkService).updateAsSpeaker(talkDto, speaker);
 
         mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, talkDto))
                 .andExpect(status().isPayloadTooLarge())
@@ -307,7 +276,7 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testTalkNotFoundExceptionUserActionOnTalkAsOrganiser() throws Exception {
-        doThrow(new TalkNotFoundException()).when(talkService).updateAsOrganiser(correctTalkDto, organiserUser);
+        doThrow(new TalkNotFoundException()).when(talkService).updateAsOrganiser(correctTalkDto, organizer);
 
         mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, correctTalkDto))
                 .andExpect(status().isNotFound())
@@ -399,6 +368,55 @@ public class TalksControllerTest {
 
     }
 
+    private UserInfo createUserInfo() {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(1L);
+        userInfo.setShortBio("bio");
+        userInfo.setJobTitle("job");
+        userInfo.setPastConference("pastConference");
+        userInfo.setCompany("EPAM");
+        userInfo.setAdditionalInfo("addInfo");
+        return userInfo;
+    }
+
+    private User createOrganizer(UserInfo userInfo) {
+        User result = new User();
+        result.setId(1L);
+        result.setFirstName("Artem");
+        result.setLastName("Trybel");
+        result.setEmail("trybel@gmail.com");
+        result.setPassword("123456");
+        result.setStatus(User.UserStatus.CONFIRMED);
+        result.setUserInfo(userInfo);
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(new Role(1L, Role.ROLE_ORGANISER));
+        result.setRoles(roles);
+
+        HashSet<Conference> organizerConferences = new HashSet<>();
+        organizerConferences.add(createConference());
+        result.setOrganizerConferences(organizerConferences);
+
+        return result;
+    }
+
+    private User createSpeaker(UserInfo userInfo) {
+        User result = new User();
+        result.setId(1L);
+        result.setFirstName("Olya");
+        result.setLastName("Ivanova");
+        result.setEmail("ivanova@gmail.com");
+        result.setPassword("123456");
+        result.setStatus(User.UserStatus.CONFIRMED);
+        result.setUserInfo(userInfo);
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(new Role(2L, Role.ROLE_SPEAKER));
+        result.setRoles(roles);
+
+        return result;
+    }
+
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
@@ -410,6 +428,20 @@ public class TalksControllerTest {
                 .content(convertObjectToJsonBytes(dto));
     }
 
+
+    private Conference createConference() {
+        Conference conference = new Conference();
+        ArrayList<Talk> talks = new ArrayList<>();
+        talks.add(createTalk());
+        conference.setTalks(talks);
+        return conference;
+    }
+
+    private Talk createTalk() {
+        Talk talk = new Talk();
+        talk.setId(TEST_TALK_ID);
+        return talk;
+    }
 
     private TalkDto setupCorrectTalkDto() {
         TalkDto correctTalkDto = new TalkDto();
@@ -445,20 +477,6 @@ public class TalksControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsBytes(object);
-    }
-
-    private Conference createConference() {
-        Conference conference = new Conference();
-        ArrayList<Talk> talks = new ArrayList<>();
-        talks.add(createTalk());
-        conference.setTalks(talks);
-        return conference;
-    }
-
-    private Talk createTalk() {
-        Talk talk = new Talk();
-        talk.setId(TEST_TALK_ID);
-        return talk;
     }
 
 }
