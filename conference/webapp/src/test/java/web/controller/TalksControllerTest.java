@@ -291,7 +291,8 @@ public class TalksControllerTest {
         talkDto.setOrganiserComment("comment");
         talkDto.setStatusName(APPROVED);
 
-        doThrow(new TalkValidationException(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG)).when(talkService).updateAsSpeaker(talkDto, speakerUser);
+        doThrow(new TalkValidationException(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG))
+                .when(talkService).updateAsSpeaker(talkDto, speakerUser);
 
         mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, talkDto))
                 .andExpect(status().isPayloadTooLarge())
