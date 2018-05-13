@@ -3,36 +3,24 @@ package web.controller;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -48,7 +36,6 @@ import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.dto.TalkStatusDto;
 import service.infrastructure.fileStorage.FileStorageService;
-import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 
 @Log4j
 @RestController
@@ -128,13 +115,12 @@ public class TalksController {
     @GetMapping("/talk/{talkId}")
     public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
         String userMail = request.getRemoteUser();
-        boolean isTalkOrganiser = userService.isTalkOrganiser(userMail, talkId);
-        if (isTalkOrganiser) {
-            TalkDto talkDto = talkService.findById(talkId);
-            return ok(talkDto);
+        if (!userService.isTalkOrganiser(userMail, talkId)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
+        TalkDto talkDto = talkService.findById(talkId);
+        return ok(talkDto);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -146,13 +132,14 @@ public class TalksController {
         if (bindingResult.hasFieldErrors()) {
             return badRequest().body(new MessageDto("fields_error"));
         }
-        if (userService.isTalkOrganiser(userMail, dto.getId())) {
-            talkService.updateStatus(dto);
-            MessageDto messageDto = new MessageDto();
-            messageDto.setResult("successfully_updated");
-            return ok(messageDto);
+        if (!userService.isTalkOrganiser(userMail, dto.getId())) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        talkService.updateStatus(dto);
+        MessageDto messageDto = new MessageDto();
+        messageDto.setResult("successfully_updated");
+        return ok(messageDto);
     }
 
     @PreAuthorize("isAuthenticated()")
