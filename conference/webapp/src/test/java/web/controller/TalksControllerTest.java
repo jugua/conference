@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,6 +48,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import domain.model.Conference;
 import domain.model.Role;
 import domain.model.Talk;
 import domain.model.User;
@@ -73,6 +75,7 @@ public class TalksControllerTest {
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
     private static final String ORGANISER_EMAIL = "trybel@gmail.com";
     private static final String APPROVED = "Approved";
+    public static final long TEST_TALK_ID = 1L;
 
     @Autowired
     private WebApplicationContext context;
@@ -140,6 +143,9 @@ public class TalksControllerTest {
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(userInfo);
         organiserUser.setRoles(organiserRole);
+        HashSet<Conference> organizerConferences = new HashSet<>();
+        organizerConferences.add(createConference());
+        organiserUser.setOrganizerConferences(organizerConferences);
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
@@ -177,10 +183,10 @@ public class TalksControllerTest {
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testSuccessfulGetTalkByIdAsOrganiser() throws Exception {
         correctTalkDto.setAssignee(organiserUser.getFullName());
-        when(userService.isTalkOrganiser(Mockito.anyString(), anyLong())).thenReturn(true);
-        when(talkService.findById((anyLong()))).thenReturn(correctTalkDto);
+        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organiserUser);
+        when(talkService.findById((TEST_TALK_ID))).thenReturn(correctTalkDto);
 
-        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id", is(Integer.parseInt(correctTalkDto.getId().toString()))))
                 .andExpect(jsonPath("title", is(correctTalkDto.getTitle())))
@@ -206,7 +212,7 @@ public class TalksControllerTest {
      */
     @Test
     public void testUnauthorizedErrorGetTalkById() throws Exception {
-        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1))
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -218,9 +224,9 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testTalkNotFoundExceptionGetTalkById() throws Exception {
-        when(userService.isTalkOrganiser(Mockito.anyString(), anyLong())).thenReturn(true);
-        when(talkService.findById(anyLong())).thenThrow(new TalkNotFoundException());
-        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + 1)).
+        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organiserUser);
+        when(talkService.findById(TEST_TALK_ID)).thenThrow(new TalkNotFoundException());
+        mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID)).
                 andExpect(status().isNotFound())
                 .andExpect(jsonPath("error", is(ResourceNotFoundException.TALK_NOT_FOUND)));
     }
@@ -237,7 +243,7 @@ public class TalksControllerTest {
         talkDto.setOrganiserComment("comment");
         talkDto.setStatusName(APPROVED);
 
-        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1L, talkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
         verify(talkService, atLeastOnce()).updateAsOrganiser(talkDto, organiserUser);
@@ -255,7 +261,7 @@ public class TalksControllerTest {
         talkDto.setOrganiserComment("comment");
         talkDto.setStatusName(APPROVED);
 
-        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1L, talkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, talkDto))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("result", is("successfully_updated")));
         verify(talkService, atLeastOnce()).updateAsSpeaker(talkDto, speakerUser);
@@ -268,7 +274,7 @@ public class TalksControllerTest {
      */
     @Test
     public void testUnauthorizedErrorWhenUpdateTalk() throws Exception {
-        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1, correctTalkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, correctTalkDto))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("error", is(ExceptionAdvice.UNAUTHORIZED_MSG)));
     }
@@ -287,7 +293,7 @@ public class TalksControllerTest {
 
         doThrow(new TalkValidationException(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG)).when(talkService).updateAsSpeaker(talkDto, speakerUser);
 
-        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1L, talkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, talkDto))
                 .andExpect(status().isPayloadTooLarge())
                 .andExpect(jsonPath("error", is(TalkValidationException.ADDITIONAL_COMMENT_TOO_LONG)));
     }
@@ -302,7 +308,7 @@ public class TalksControllerTest {
     public void testTalkNotFoundExceptionUserActionOnTalkAsOrganiser() throws Exception {
         doThrow(new TalkNotFoundException()).when(talkService).updateAsOrganiser(correctTalkDto, organiserUser);
 
-        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + 1, correctTalkDto))
+        mockMvc.perform(preparePatchRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID, correctTalkDto))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("error", is(ResourceNotFoundException.TALK_NOT_FOUND)));
     }
@@ -310,7 +316,7 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testTakeFile() throws Exception {
-        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+        when(talkService.findById(TEST_TALK_ID)).thenReturn(correctTalkDto);
 
         String filePath = "file path";
         when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
@@ -329,7 +335,7 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testTakeFileWithIOException() throws Exception {
-        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+        when(talkService.findById(TEST_TALK_ID)).thenReturn(correctTalkDto);
 
         String filePath = "file path";
         when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
@@ -348,7 +354,7 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testFileUpload() throws Exception {
-        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+        when(talkService.findById(TEST_TALK_ID)).thenReturn(correctTalkDto);
 
         String filePath = "file path";
         when(fileStorageService.saveFile(multipartFile, FileStorageServiceImpl.FileType.FILE)).thenReturn(filePath);
@@ -363,7 +369,7 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = Role.SPEAKER)
     public void testFileDelete() throws Exception {
-        when(talkService.findById(1L)).thenReturn(correctTalkDto);
+        when(talkService.findById(TEST_TALK_ID)).thenReturn(correctTalkDto);
 
         String filePath = "file path";
         when(talkService.getFilePath(correctTalkDto)).thenReturn(filePath);
@@ -382,7 +388,7 @@ public class TalksControllerTest {
         String filePath = "file path";
 
         talk.setPathToAttachedFile(filePath);
-        when(talkService.findTalkById(1L)).thenReturn(talk);
+        when(talkService.findTalkById(TEST_TALK_ID)).thenReturn(talk);
 
         File file = new File("wrong path");
         when(fileStorageService.getFile(filePath)).thenReturn(file);
@@ -406,7 +412,7 @@ public class TalksControllerTest {
 
     private TalkDto setupCorrectTalkDto() {
         TalkDto correctTalkDto = new TalkDto();
-        correctTalkDto.setId(1L);
+        correctTalkDto.setId(TEST_TALK_ID);
         correctTalkDto.setDescription("Description");
         correctTalkDto.setTitle("Title");
         correctTalkDto.setLanguageName("English");
@@ -417,7 +423,7 @@ public class TalksControllerTest {
         correctTalkDto.setDate(LocalDateTime.now().toString());
         correctTalkDto.setAdditionalInfo("Info");
         correctTalkDto.setOrganiserComment("Org comment");
-        correctTalkDto.setUserId(1L);
+        correctTalkDto.setUserId(TEST_TALK_ID);
         return correctTalkDto;
     }
 
@@ -438,6 +444,20 @@ public class TalksControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         return mapper.writeValueAsBytes(object);
+    }
+
+    private Conference createConference() {
+        Conference conference = new Conference();
+        ArrayList<Talk> talks = new ArrayList<>();
+        talks.add(createTalk());
+        conference.setTalks(talks);
+        return conference;
+    }
+
+    private Talk createTalk() {
+        Talk talk = new Talk();
+        talk.setId(TEST_TALK_ID);
+        return talk;
     }
 
 }

@@ -212,11 +212,9 @@ public class UserServiceImpl implements UserService {
         mailService.sendEmail(user, new InvitePreparator(conferenceName, mailService.getUrl()));
     }
 
-    @Transactional
     @Override
-    public boolean isTalkOrganiser(String userEmail, Long talkId) {
-        User user = userRepository.findByEmail(userEmail);
-        return user.isOrganizerForTalk(talkId);
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     private User mapRegistrationDtoToUser(RegistrationDto dto) {

@@ -27,6 +27,7 @@ import lombok.extern.log4j.Log4j;
 
 import domain.model.Talk;
 import domain.model.TalkStatus;
+import domain.model.User;
 import service.businesslogic.api.CommentService;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.api.UserService;
@@ -114,8 +115,8 @@ public class TalksController {
 
     @GetMapping("/talk/{talkId}")
     public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
-        String userMail = request.getRemoteUser();
-        if (!userService.isTalkOrganiser(userMail, talkId)) {
+        User user = userService.findUserByEmail(request.getRemoteUser());
+        if (user == null || !user.isOrganizerForTalk(talkId)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
@@ -128,11 +129,11 @@ public class TalksController {
     public ResponseEntity<MessageDto> updateTalkStatus(@RequestBody TalkStatusDto dto,
                                                        BindingResult bindingResult,
                                                        HttpServletRequest request) {
-        String userMail = request.getRemoteUser();
         if (bindingResult.hasFieldErrors()) {
             return badRequest().body(new MessageDto("fields_error"));
         }
-        if (!userService.isTalkOrganiser(userMail, dto.getId())) {
+        User user = userService.findUserByEmail(request.getRemoteUser());
+        if (user == null || !user.isOrganizerForTalk(dto.getId())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
