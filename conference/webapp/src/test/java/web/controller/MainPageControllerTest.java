@@ -1,11 +1,8 @@
 package web.controller;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static web.util.TestData.ORGANISER_EMAIL;
@@ -31,17 +28,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import domain.model.Conference;
 import domain.model.Role;
 import domain.model.Talk;
 import domain.model.TalkStatus;
 import service.businesslogic.api.ConferenceService;
-import service.businesslogic.api.TopicService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
-import service.businesslogic.dto.CreateTopicDto;
 import web.config.TestConfig;
 import web.config.WebMvcConfig;
 
@@ -50,9 +43,8 @@ import web.config.WebMvcConfig;
 @WebAppConfiguration
 public class MainPageControllerTest {
 
-    public static final String API_CONFERENCE = "/conference";
+    private static final String API_CONFERENCE = "/conference";
     public static final String API_LEVEL = "/level";
-    public static final String API_TOPIC = "/topic";
 
     private MockMvc mockMvc;
 
@@ -62,8 +54,6 @@ public class MainPageControllerTest {
     @Autowired
     private ConferenceService conferenceService;
 
-    @Autowired
-    private TopicService topicService;
     @Autowired
     private Filter springSecurityFilterChain;
 
@@ -138,47 +128,6 @@ public class MainPageControllerTest {
 
         mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
                 andExpect(status().isOk());
-    }
-
-    @WithMockUser(roles = Role.ADMIN)
-    public void createNewTopicShouldWorkForAdmin() throws Exception {
-        CreateTopicDto dto = new CreateTopicDto("schweine");
-        when(topicService.save(dto)).thenReturn(1L);
-        mockMvc.perform(post(API_TOPIC)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1)));
-    }
-
-    @Test
-    public void createNewTopicShouldNotWorkForUnauthorized() throws Exception {
-        CreateTopicDto dto = new CreateTopicDto("schweine");
-        mockMvc.perform(post(API_TOPIC)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        ).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = Role.ORGANISER)
-    public void createNewTopicShouldNotWorkForOrganiser() throws Exception {
-        CreateTopicDto dto = new CreateTopicDto("schweine");
-        mockMvc.perform(post(API_TOPIC)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        ).andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(roles = Role.SPEAKER)
-    public void createNewTopicShouldNotWorkForSpeaker() throws Exception {
-        CreateTopicDto dto = new CreateTopicDto("schweine");
-        mockMvc.perform(post(API_TOPIC)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(new ObjectMapper().writeValueAsBytes(dto))
-        ).andExpect(status().isUnauthorized());
     }
 
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) {

@@ -102,11 +102,4 @@ public class MainPageController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("topic")
-    public ResponseEntity<MessageDto> createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
-        Long id = topicService.save(topicDto);
-        return ok(new MessageDto(id));
-    }
-
 }
