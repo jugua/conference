@@ -31,9 +31,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 import domain.model.Talk;
-import service.businesslogic.api.CommentService;
 import service.businesslogic.api.TalkService;
-import service.businesslogic.api.UserService;
 import service.businesslogic.dto.TalkDto;
 import service.infrastructure.fileStorage.FileStorageService;
 import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
@@ -43,10 +41,8 @@ import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class FilesController {
 
-    private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
-    private final CommentService commentService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/talk/{talk_id}/takeFileName",
