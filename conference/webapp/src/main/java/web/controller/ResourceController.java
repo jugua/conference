@@ -16,26 +16,17 @@ import domain.model.Language;
 import service.businesslogic.api.LanguageService;
 import service.businesslogic.api.LevelService;
 import service.businesslogic.api.TopicService;
-import service.businesslogic.api.TypeService;
 import service.businesslogic.dto.LevelDto;
 import service.businesslogic.dto.TopicDto;
-import service.businesslogic.dto.TypeDto;
 
 @RestController
 @RequestMapping("/")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ResourceController {
 
-    private final TypeService types;
     private final TopicService topics;
     private final LevelService levels;
     private final LanguageService languages;
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("types")
-    public ResponseEntity<List<TypeDto>> getTypes() {
-        return new ResponseEntity<>(types.findAll(), HttpStatus.OK);
-    }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("topics")
