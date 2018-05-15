@@ -28,14 +28,10 @@ import lombok.extern.log4j.Log4j;
 import domain.model.Conference;
 import domain.model.User;
 import service.businesslogic.api.ConferenceService;
-import service.businesslogic.api.TopicService;
-import service.businesslogic.api.TypeService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
-import service.businesslogic.dto.CreateTopicDto;
-import service.businesslogic.dto.CreateTypeDto;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.TalkDto;
 
@@ -45,8 +41,6 @@ import service.businesslogic.dto.TalkDto;
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class MainPageController {
 
-    private final TypeService typeService;
-    private final TopicService topicService;
     private final ConferenceService conferenceService;
     private UserService userService;
 
