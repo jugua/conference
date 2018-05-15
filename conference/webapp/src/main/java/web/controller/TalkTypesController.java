@@ -33,7 +33,7 @@ public class TalkTypesController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/types")
     public ResponseEntity<List<TypeDto>> getTypes() {
-        return new ResponseEntity<>(typeService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(typeService.getAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

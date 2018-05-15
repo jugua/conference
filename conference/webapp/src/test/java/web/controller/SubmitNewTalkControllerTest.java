@@ -204,7 +204,7 @@ public class SubmitNewTalkControllerTest {
     @Test
     public void getTypesShouldNotWorkForUnauthorized() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isUnauthorized());
     }
@@ -213,7 +213,7 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = ORGANISER)
     public void getTypesShouldWorkForOrganiser() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
@@ -222,7 +222,7 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = SPEAKER)
     public void getTypesShouldWorkForSpeaker() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
@@ -231,7 +231,7 @@ public class SubmitNewTalkControllerTest {
     @WithMockUser(roles = ADMIN)
     public void getTypesShouldWorkForAdmin() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
@@ -246,7 +246,7 @@ public class SubmitNewTalkControllerTest {
             add(typeDto);
         }};
 
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk()).
                 andExpect(jsonPath("[0].id", CoreMatchers.is(typeDto.getId().intValue()))).

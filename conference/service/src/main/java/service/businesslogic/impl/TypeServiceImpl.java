@@ -24,7 +24,7 @@ public class TypeServiceImpl implements TypeService {
     private ModelMapper modelMapper;
 
     @Override
-    public Type find(Long id) {
+    public Type getById(Long id) {
         Type type = typeRepository.findById(id);
         if (type == null) {
             throw new TypeNotFoundException();
@@ -45,7 +45,7 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public List<TypeDto> findAll() {
+    public List<TypeDto> getAll() {
         return typeRepository.findAll().stream()
                 .map(t -> modelMapper.map(t, TypeDto.class))
                 .collect(Collectors.toList());

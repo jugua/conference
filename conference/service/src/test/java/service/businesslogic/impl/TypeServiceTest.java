@@ -54,7 +54,7 @@ public class TypeServiceTest {
     public void testFindByIdType() throws Exception {
         type.setId(3L);
         when(typeRepository.findById(anyLong())).thenReturn(type);
-        Type type = testing.find(3L);
+        Type type = testing.getById(3L);
         assertThat(type.getId(), is(3L));
     }
 
@@ -69,7 +69,7 @@ public class TypeServiceTest {
         List<Type> list = new ArrayList<>();
         list.add(type);
         when(typeRepository.findAll()).thenReturn(list);
-        List<TypeDto> types = testing.findAll();
+        List<TypeDto> types = testing.getAll();
         assertEquals(types.get(0).getName(), list.get(0).getName());
     }
 
