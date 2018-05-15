@@ -192,7 +192,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserBasicDto> getUserBasicDtoByRolesExpectCurrent(User currentUser, String... roles) {
+    public List<UserBasicDto> getUserBasicDtoByRolesExceptCurrent(User currentUser, String... roles) {
         List<User> users = findOtherUsersByRoles(currentUser, roles);
         List<UserBasicDto> userDtoList = new ArrayList<>();
         if (users != null) {

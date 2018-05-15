@@ -37,7 +37,7 @@ public class ManageUsersController {
         if (currentUser == null) {
             return new ResponseEntity<>(new MessageDto("unauthorized"), HttpStatus.UNAUTHORIZED);
         }
-        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRolesExpectCurrent(
+        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRolesExceptCurrent(
                 currentUser, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
         return ok(userDtoList);
     }
