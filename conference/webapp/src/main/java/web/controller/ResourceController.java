@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 
-import domain.model.Language;
-import service.businesslogic.api.LanguageService;
 import service.businesslogic.api.LevelService;
 import service.businesslogic.dto.LevelDto;
 
@@ -23,18 +21,11 @@ import service.businesslogic.dto.LevelDto;
 public class ResourceController {
 
     private final LevelService levels;
-    private final LanguageService languages;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("levels")
     public ResponseEntity<List<LevelDto>> getLevels() {
         return new ResponseEntity<>(levels.findAll(), HttpStatus.OK);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("languages")
-    public ResponseEntity<List<Language>> getLanguages() {
-        return new ResponseEntity<>(languages.findAll(), HttpStatus.OK);
     }
 
 }
