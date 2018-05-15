@@ -64,7 +64,7 @@ public class TestData {
         return new Role(2L, Role.ROLE_ORGANISER);
     }
 
-    protected static UserInfo userInfo() {
+    private static UserInfo userInfo() {
         UserInfo userInfo = new UserInfo();
         userInfo.setId(1L);
         userInfo.setShortBio("bio");
@@ -76,7 +76,7 @@ public class TestData {
         return userInfo;
     }
 
-    public static Talk talk(TalkStatus status) {
+    private static Talk talk(TalkStatus status) {
         Talk talk1 = new Talk();
         talk1.setStatus(status);
         return talk1;
