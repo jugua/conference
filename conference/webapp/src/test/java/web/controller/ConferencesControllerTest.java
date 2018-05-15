@@ -95,7 +95,7 @@ public class ConferencesControllerTest {
         conference.setCallForPaperEndDate(LocalDate.MAX);
         conferences.add(conference);
 
-        when(conferenceService.findUpcoming()).thenReturn(conferencesDto);
+        when(conferenceService.getUpcoming()).thenReturn(conferencesDto);
 
         mockMvc.perform(getRequest(BASE_URL + "/upcoming"))
                 .andExpect(status().isOk());
@@ -120,7 +120,7 @@ public class ConferencesControllerTest {
         conferences = new ArrayList<>();
         conferences.add(TestData.conference());
 
-        when(conferenceService.findPast()).thenReturn(conferencesDto);
+        when(conferenceService.getPast()).thenReturn(conferencesDto);
 
         mockMvc.perform(getRequest(BASE_URL + "/past")).
                 andExpect(status().isOk());

@@ -37,7 +37,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional(readOnly = true)
-    public Conference findById(Long id) {
+    public Conference getById(Long id) {
         Conference conference = conferenceRepository.findById(id);
         if (conference == null) {
             throw new ConferenceNotFoundException();
@@ -59,27 +59,27 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Conference> findAll() {
+    public List<Conference> getAll() {
         return conferenceRepository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ConferenceDto> findPast() {
+    public List<ConferenceDto> getPast() {
         return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now())
                 .stream().map(this::conferenceToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ConferenceDtoBasic> findPastBasic() {
+    public List<ConferenceDtoBasic> getPastBasic() {
         return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now())
                 .stream().map(this::conferenceToDtoBasic)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ConferenceDtoBasic> findUpcomingBasic() {
+    public List<ConferenceDtoBasic> getUpcomingBasic() {
         List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
 
         startCallForPapers(conferences);
@@ -90,7 +90,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ConferenceDto> findUpcoming() {
+    public List<ConferenceDto> getUpcoming() {
         List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
         startCallForPapers(conferences);
         return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
@@ -98,7 +98,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public Collection<TalkDto> findTalksByConferenceId(long id) {
-        Conference conference = findById(id);
+        Conference conference = getById(id);
         Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
 
         return talksConverter.toDto(talks);

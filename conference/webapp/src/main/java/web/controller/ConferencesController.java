@@ -48,7 +48,7 @@ public class ConferencesController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/conferencesNames")
     public ResponseEntity<List<String>> getConferenceNames() {
-        List<String> conferencesNames = conferenceService.findAll()
+        List<String> conferencesNames = conferenceService.getAll()
                 .stream()
                 .map(Conference::getTitle)
                 .collect(Collectors.toList());
@@ -58,18 +58,18 @@ public class ConferencesController {
     @GetMapping("/upcoming")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ConferenceDtoBasic>> upcomingConferences(HttpServletRequest request) {
-        return ok(conferenceService.findUpcomingBasic());
+        return ok(conferenceService.getUpcomingBasic());
     }
 
     @GetMapping("/past")
     public ResponseEntity<List<ConferenceDtoBasic>> pastConferences(HttpServletRequest request) {
-        return ok(conferenceService.findPastBasic());
+        return ok(conferenceService.getPastBasic());
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}")
     public ResponseEntity<Conference> conferenceById(@PathVariable long id) {
-        Conference conference = conferenceService.findById(id);
+        Conference conference = conferenceService.getById(id);
         return ok(conference);
     }
 
