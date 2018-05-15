@@ -147,20 +147,26 @@ public class TalksController {
                                                  @RequestBody TalkDto dto,
                                                  BindingResult bindingResult,
                                                  HttpServletRequest request) {
-        dto.setId(talkId);
         if (bindingResult.hasFieldErrors()) {
             return badRequest().body(new MessageDto("fields_error"));
         }
+        if (userHasNoRequiredRoles(request)) {
+            return new ResponseEntity<>(new MessageDto("unauthorized"), HttpStatus.UNAUTHORIZED);
+        }
+
+        dto.setId(talkId);
         if (request.isUserInRole("ORGANISER")) {
             talkService.updateAsOrganiser(dto, userService.getByEmail(request.getRemoteUser()));
-        } else if (request.isUserInRole("SPEAKER")) {
-            talkService.updateAsSpeaker(dto, userService.getByEmail(request.getRemoteUser()));
         } else {
-            return new ResponseEntity<>(new MessageDto("unauthorized"), HttpStatus.UNAUTHORIZED);
+            talkService.updateAsSpeaker(dto, userService.getByEmail(request.getRemoteUser()));
         }
         MessageDto messageDto = new MessageDto();
         messageDto.setResult("successfully_updated");
         return ok(messageDto);
+    }
+
+    private boolean userHasNoRequiredRoles(HttpServletRequest request) {
+        return !request.isUserInRole("ORGANISER") && !request.isUserInRole("SPEAKER");
     }
 
 }
