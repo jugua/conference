@@ -36,7 +36,6 @@ import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.dto.TalkStatusDto;
-import service.infrastructure.fileStorage.FileStorageService;
 
 @Log4j
 @RestController
@@ -45,7 +44,6 @@ public class TalksController {
 
     private final UserService userService;
     private final TalkService talkService;
-    private final FileStorageService storageService;
     private final CommentService commentService;
 
     @PreAuthorize("isAuthenticated()")
