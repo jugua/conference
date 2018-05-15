@@ -16,16 +16,16 @@ import service.businesslogic.api.LevelService;
 import service.businesslogic.dto.LevelDto;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/levels")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
-public class ResourceController {
+public class LevelsController {
 
-    private final LevelService levels;
+    private final LevelService levelService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("levels")
+    @GetMapping
     public ResponseEntity<List<LevelDto>> getLevels() {
-        return new ResponseEntity<>(levels.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
     }
 
 }
