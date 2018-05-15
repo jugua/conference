@@ -151,7 +151,7 @@ public class FilesControllerTest {
         String filePath = "file path";
 
         talk.setPathToAttachedFile(filePath);
-        when(talkService.findTalkById(TEST_TALK_ID)).thenReturn(talk);
+        when(talkService.getById(TEST_TALK_ID)).thenReturn(talk);
 
         File file = new File("wrong path");
         when(fileStorageService.getFile(filePath)).thenReturn(file);

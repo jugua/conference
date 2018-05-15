@@ -86,7 +86,7 @@ public class ConferencesController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/talks")
     public ResponseEntity<Collection<TalkDto>> talksByConferenceId(@PathVariable long id) {
-        Collection<TalkDto> talkDtos = talkService.findTalksByConferenceId(id);
+        Collection<TalkDto> talkDtos = talkService.getByConferenceId(id);
         return ok(talkDtos);
     }
 

@@ -11,10 +11,20 @@ import service.businesslogic.dto.TalkStatusDto;
 
 public interface TalkService {
 
+    List<Talk> getAll();
+
+    Talk getById(Long id);
+
+    List<Talk> getByUserId(Long id);
+
+    Collection<TalkDto> getByConferenceId(long id);
+
     Talk save(TalkDto talkDto, User user, String multipartFilePath);
 
+    //TODO: this method should be probably part of FileService
     void addFile(TalkDto talkDto, String multipartFilePath);
 
+    //TODO: this method should be probably part of FileService
     void deleteFile(TalkDto talkDto, boolean deleteFile);
 
     void updateStatus(TalkStatusDto dto);
@@ -23,18 +33,18 @@ public interface TalkService {
 
     void updateAsSpeaker(TalkDto talkDto, User user);
 
-    List<Talk> findAll();
-
-    List<Talk> findByUserId(Long id);
-
-    Talk findTalkById(Long id);
-
-    TalkDto findById(Long id);
-
+    //TODO: this method return projection of Talk object and should not be part of service, but some view logic instead
+    @Deprecated
     List<Submission> getSubmissions(String userEmail);
 
+    //TODO: this method should be probably part of FileService or should not be exposed like this
     String getFilePath(TalkDto talkDto);
 
-    Collection<TalkDto> findTalksByConferenceId(long id);
+    /**
+     * Consider using {@link #getById(Long)} instead.
+     */
+    @Deprecated
+    //TODO: this method return projection of Talk object and should not be part of service, but some view logic instead
+    TalkDto findById(Long id);
 
 }

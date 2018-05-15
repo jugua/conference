@@ -87,7 +87,7 @@ public class TalksController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talk/talksTitles")
     public ResponseEntity<List<String>> getTalksTitles() {
-        List<String> talksTitles = talkService.findAll().stream().map(Talk::getTitle).collect(Collectors.toList());
+        List<String> talksTitles = talkService.getAll().stream().map(Talk::getTitle).collect(Collectors.toList());
         return ok(talksTitles);
     }
 

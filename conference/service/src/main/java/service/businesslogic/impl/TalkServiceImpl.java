@@ -68,7 +68,7 @@ public class TalkServiceImpl implements TalkService {
     private MailService mailService;
 
     @Override
-    public Collection<TalkDto> findTalksByConferenceId(long id) {
+    public Collection<TalkDto> getByConferenceId(long id) {
         Conference conference = conferenceRepository.findById(id);
         Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
 
@@ -115,7 +115,7 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public void addFile(TalkDto talkDto, String multipartFilePath) {
-        Talk talk = findTalkById(talkDto.getId());
+        Talk talk = getById(talkDto.getId());
         if (multipartFilePath != null) {
             talk.setPathToAttachedFile(multipartFilePath);
         }
@@ -124,14 +124,14 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public void deleteFile(TalkDto talkDto, boolean deleteFile) {
-        Talk talk = findTalkById(talkDto.getId());
+        Talk talk = getById(talkDto.getId());
         talk.setPathToAttachedFile(null);
         talkRepository.save(talk);
     }
 
     @Override
     public String getFilePath(TalkDto talkDto) {
-        Talk talk = findTalkById(talkDto.getId());
+        Talk talk = getById(talkDto.getId());
         return talk.getPathToAttachedFile();
     }
 
@@ -150,7 +150,7 @@ public class TalkServiceImpl implements TalkService {
     @Transactional
     public void updateAsOrganiser(TalkDto talkDto, User user) {
         checkDtoBeforeUpdateAsOrganiser(talkDto);
-        Talk talk = findTalkById(talkDto.getId());
+        Talk talk = getById(talkDto.getId());
         checkIfAllowedToChangeStatus(talk, talkDto.getStatusName());
         talk.setOrganiser(user);
         talk.setOrganiserComment(talkDto.getOrganiserComment());
@@ -166,7 +166,7 @@ public class TalkServiceImpl implements TalkService {
     @Transactional
     public void updateAsSpeaker(TalkDto talkDto, User user) {
         checkDtoBeforeUpdateAsSpeaker(talkDto);
-        Talk talk = findTalkById(talkDto.getId());
+        Talk talk = getById(talkDto.getId());
         if (isForbiddenToChangeTalk(user, talk)) {
             throw new TalkValidationException(NOT_ALLOWED_TO_UPDATE);
         }
@@ -192,12 +192,12 @@ public class TalkServiceImpl implements TalkService {
     }
 
     @Override
-    public List<Talk> findAll() {
+    public List<Talk> getAll() {
         return talkRepository.findAll();
     }
 
     @Override
-    public List<Talk> findByUserId(Long id) {
+    public List<Talk> getByUserId(Long id) {
         List<Talk> talks = talkRepository.findByUserId(id);
         if (talks.isEmpty()) {
             throw new TalkNotFoundException();
@@ -206,7 +206,7 @@ public class TalkServiceImpl implements TalkService {
     }
 
     @Override
-    public Talk findTalkById(Long id) {
+    public Talk getById(Long id) {
         Talk talk = talkRepository.findById(id);
         if (talk == null) {
             throw new TalkNotFoundException();
@@ -216,13 +216,13 @@ public class TalkServiceImpl implements TalkService {
 
     @Override
     public TalkDto findById(Long id) {
-        return entityToDto(findTalkById(id));
+        return entityToDto(getById(id));
     }
 
     @Override
     public List<Submission> getSubmissions(String userEmail) {
         User currentUser = userRepository.findByEmail(userEmail);
-        return findByUserId(currentUser.getId()).stream().map(this::entityToExDto).collect(Collectors.toList());
+        return getByUserId(currentUser.getId()).stream().map(this::entityToExDto).collect(Collectors.toList());
     }
 
     private Submission entityToExDto(Talk talk) {

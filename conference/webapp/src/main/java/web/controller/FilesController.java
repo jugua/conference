@@ -47,7 +47,7 @@ public class FilesController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/talk/{talk_id}/takeFileName", produces = "application/json")
     public ResponseEntity<Map<String, String>> getFileName(@PathVariable("talk_id") Long talkId) {
-        Talk talk = talkService.findTalkById(talkId);
+        Talk talk = talkService.getById(talkId);
 
         File file = storageService.getFile(talk.getPathToAttachedFile());
         Map<String, String> map = new HashMap<>();
