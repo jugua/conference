@@ -25,7 +25,7 @@ public class LevelsController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<LevelDto>> getLevels() {
-        return new ResponseEntity<>(levelService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(levelService.getAll(), HttpStatus.OK);
     }
 
 }

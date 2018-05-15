@@ -303,7 +303,7 @@ public class SubmitNewTalkControllerTest {
         List<LevelDto> levels = new ArrayList<LevelDto>() {{
             add(levelDto);
         }};
-        when(levelService.findAll()).thenReturn(levels);
+        when(levelService.getAll()).thenReturn(levels);
         mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0].id", CoreMatchers.is(levelDto.getId().intValue())))
@@ -313,7 +313,7 @@ public class SubmitNewTalkControllerTest {
     @Test
     @WithMockUser(roles = ORGANISER)
     public void getLevelsShouldWorkForOrganiser() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
+        when(levelService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk());
     }
@@ -321,7 +321,7 @@ public class SubmitNewTalkControllerTest {
     @Test
     @WithMockUser(roles = ADMIN)
     public void getLevelsShouldWorkForAdmin() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
+        when(levelService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk());
     }

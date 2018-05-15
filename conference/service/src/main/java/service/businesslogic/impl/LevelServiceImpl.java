@@ -20,7 +20,7 @@ public class LevelServiceImpl implements LevelService {
     private LevelRepository levelRepository;
 
     @Override
-    public List<LevelDto> findAll() {
+    public List<LevelDto> getAll() {
         return levelRepository.findAll().stream()
                 .map(l -> modelMapper.map(l, LevelDto.class))
                 .collect(Collectors.toList());
