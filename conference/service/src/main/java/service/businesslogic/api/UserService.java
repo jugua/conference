@@ -11,7 +11,19 @@ import service.businesslogic.dto.UserInfoDto;
 
 public interface UserService {
 
-    User find(Long id);
+    List<User> getAll();
+
+    User getById(Long id);
+
+    User getByEmail(String email);
+
+    List<User> getByFirstName(String firstName);
+
+    List<User> getByLastName(String lastName);
+
+    List<User> getOtherUsersWithSameRole(User currentUser, String roleName);
+
+    List<User> getOtherUsersByRoles(User currentUser, String... rolesNames);
 
     void createSpeaker(User user);
 
@@ -19,38 +31,29 @@ public interface UserService {
 
     void updateUser(User user);
 
-    List<User> findAll();
-
-    List<String> getUserNames();
-
     void updateContacts(long id, List<Contact> contacts);
-
-    List<User> getByFirstName(String name);
-
-    User getByEmail(String email);
-
-    List<User> getByLastName(String lastName);
 
     boolean isEmailExist(String email);
 
+    void inviteUser(InviteDto invite);
+
     void registerSpeaker(RegistrationDto dto);
-
-    List<User> findOtherUsersWithSameRole(User currentUser, String roleName);
-
-    List<User> findOtherUsersByRoles(User currentUser, String... rolesNames);
-
-    boolean isAuthenticated(User user, String password);
 
     void checkUserRegistrationByAdmin(RegistrationDto dto);
 
-    UserInfoDto getUserDtoByEmail(String email);
+    @Deprecated //TODO: this method is part of representation. Move it on upper level.
+    List<String> getUserNames();
 
-    UserInfoDto getUserDtoById(Long userId);
+    @Deprecated //TODO: this method should be part of SecurityService or similar.
+    boolean isAuthenticated(User user, String password);
 
+    @Deprecated //TODO: this method should be moved to UserInfoService or must not exposed like this.
+    UserInfoDto getUserInfoDtoByEmail(String email);
+
+    @Deprecated //TODO: this method should be moved to UserInfoService or must not exposed like this.
+    UserInfoDto getUserInfoDtoById(Long userId);
+
+    @Deprecated //TODO: this method is part of representation. Move it on upper level.
     List<UserBasicDto> getUserBasicDtoByRolesExceptCurrent(User currentUser, String... roles);
-
-    void inviteUser(InviteDto invite);
-
-    User findUserByEmail(String email);
 
 }

@@ -158,7 +158,7 @@ public class MyInfoPageControllerTest {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testGet() throws Exception {
-        when(userService.find(anyLong())).thenReturn(user);
+        when(userService.getById(anyLong())).thenReturn(user);
 
         File file = new File("src/test/resources/trybel_master.JPG");
         String mimeType = MediaType.IMAGE_PNG_VALUE;
@@ -173,7 +173,7 @@ public class MyInfoPageControllerTest {
     @Test
     @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testGetFileNotFound() throws Exception {
-        when(userService.find(anyLong())).thenReturn(user);
+        when(userService.getById(anyLong())).thenReturn(user);
 
         File file = new File("wrong path");
         String mimeType = MediaType.IMAGE_PNG_VALUE;
@@ -204,7 +204,7 @@ public class MyInfoPageControllerTest {
         User user = speaker();
         Principal correctPrincipal = user::getEmail;
 
-        when(userService.getUserDtoByEmail(correctPrincipal.getName()))
+        when(userService.getUserInfoDtoByEmail(correctPrincipal.getName()))
                 .thenReturn(setupCorrectUserInfoDto());
 
         mockMvc.perform(get(API_USER_CURRENT)

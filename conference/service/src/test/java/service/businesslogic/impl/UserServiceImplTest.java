@@ -83,7 +83,7 @@ public class UserServiceImplTest {
         when(roleRepository.findByName(Role.ROLE_ORGANISER)).thenReturn(role);
         when(userRepository.findAllByRolesIsIn(role)).thenReturn(users);
 
-        List<User> resultUsersList = testing.findOtherUsersWithSameRole(user1, Role.ROLE_ORGANISER);
+        List<User> resultUsersList = testing.getOtherUsersWithSameRole(user1, Role.ROLE_ORGANISER);
         assertTrue(resultUsersList.contains(user2));
         assertTrue(resultUsersList.contains(user3));
         assertFalse(resultUsersList.contains(user1));
@@ -112,7 +112,7 @@ public class UserServiceImplTest {
         when(userRepository.findAllByRolesIsIn(Arrays.asList(roleOrganiser, roleSpeaker)))
                 .thenReturn(users);
 
-        List<User> resultUsersList = testing.findOtherUsersByRoles(user1, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
+        List<User> resultUsersList = testing.getOtherUsersByRoles(user1, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
         assertTrue(resultUsersList.contains(user2));
         assertTrue(resultUsersList.contains(user3));
         assertFalse(resultUsersList.contains(user1));
@@ -139,7 +139,7 @@ public class UserServiceImplTest {
 
         when(userRepository.findOne(anyLong())).thenReturn(expected);
 
-        User user = testing.find(30L);
+        User user = testing.getById(30L);
         assertThat(user.getId(), is(30L));
         assertEquals("test", user.getFirstName());
     }
@@ -150,7 +150,7 @@ public class UserServiceImplTest {
         when(list.size()).thenReturn(5);
         when(userRepository.findAll()).thenReturn(list);
 
-        assertEquals(5, testing.findAll().size());
+        assertEquals(5, testing.getAll().size());
         verify(userRepository, times(1)).findAll();
     }
 
@@ -227,7 +227,7 @@ public class UserServiceImplTest {
         String testEmail = "123@mail";
         when(userRepository.findByEmail(testEmail)).thenReturn(null);
 
-        testing.getUserDtoByEmail(testEmail);
+        testing.getUserInfoDtoByEmail(testEmail);
     }
 
 

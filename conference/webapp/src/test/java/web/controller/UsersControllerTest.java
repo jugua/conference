@@ -143,7 +143,7 @@ public class UsersControllerTest {
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void getUserById() throws Exception {
         UserInfoDto user = new UserInfoDto();
-        when(userService.getUserDtoById(anyLong())).thenReturn(user);
+        when(userService.getUserInfoDtoById(anyLong())).thenReturn(user);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)
         ).andExpect(status().isOk());
     }
@@ -151,7 +151,7 @@ public class UsersControllerTest {
     @Test
     public void incorrectGetUserById() throws Exception {
         User user = speaker();
-        when(userService.find(1L)).thenReturn(user);
+        when(userService.getById(1L)).thenReturn(user);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)).
                 andExpect(status().isUnauthorized());
     }
@@ -160,7 +160,7 @@ public class UsersControllerTest {
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void notFoundUserById() throws Exception {
 
-        when(userService.getUserDtoById(1L)).thenThrow(ResourceNotFoundException.class);
+        when(userService.getUserInfoDtoById(1L)).thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)).
                 andExpect(status().isNotFound());
     }

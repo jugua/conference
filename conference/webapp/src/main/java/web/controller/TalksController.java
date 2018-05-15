@@ -113,7 +113,7 @@ public class TalksController {
 
     @GetMapping("/talk/{talkId}")
     public ResponseEntity<TalkDto> getTalkById(@PathVariable Long talkId, HttpServletRequest request) {
-        User user = userService.findUserByEmail(request.getRemoteUser());
+        User user = userService.getByEmail(request.getRemoteUser());
         if (user == null || !user.isOrganizerForTalk(talkId)) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -130,7 +130,7 @@ public class TalksController {
         if (bindingResult.hasFieldErrors()) {
             return badRequest().body(new MessageDto("fields_error"));
         }
-        User user = userService.findUserByEmail(request.getRemoteUser());
+        User user = userService.getByEmail(request.getRemoteUser());
         if (user == null || !user.isOrganizerForTalk(dto.getId())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

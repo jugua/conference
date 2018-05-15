@@ -48,7 +48,7 @@ public class UsersController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/contacts")
     public ResponseEntity<List<Contact>> getUserContacts(@PathVariable("id") long id) {
-        List<Contact> contacts = userService.find(id).getUserInfo().getContacts();
+        List<Contact> contacts = userService.getById(id).getUserInfo().getContacts();
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
@@ -104,7 +104,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageDto("unauthorized"));
         }
 
-        UserInfoDto userInfoDto = ofNullable(userService.getUserDtoById(userId))
+        UserInfoDto userInfoDto = ofNullable(userService.getUserInfoDtoById(userId))
                 .orElseThrow(() -> new NoSuchUserException("No User with such id."));
 
         return ok(userInfoDto);

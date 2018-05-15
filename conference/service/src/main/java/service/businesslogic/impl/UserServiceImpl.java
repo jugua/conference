@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public User find(Long id) {
+    public User getById(Long id) {
         return userRepository.findOne(id);
     }
 
@@ -69,26 +69,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> getAll() {
         return userRepository.findAll();
     }
 
     @Override
     public List<String> getUserNames() {
-        return findAll().stream().map(User::getFirstName).collect(Collectors.toList());
+        return getAll().stream().map(User::getFirstName).collect(Collectors.toList());
     }
 
     @Override
     public void updateContacts(long id, List<Contact> contacts) {
-        User user = find(id);
+        User user = getById(id);
         UserInfo userInfo = user.getUserInfo();
         userInfo.setContacts(contacts);
         userInfoRepository.save(userInfo);
     }
 
     @Override
-    public List<User> getByFirstName(String name) {
-        return userRepository.findAllByFirstName(name);
+    public List<User> getByFirstName(String firstName) {
+        return userRepository.findAllByFirstName(firstName);
     }
 
     @Override
@@ -131,14 +131,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findOtherUsersWithSameRole(User currentUser, String roleName) {
+    public List<User> getOtherUsersWithSameRole(User currentUser, String roleName) {
         Role role = roleRepository.findByName(roleName);
         return userRepository.findAllByRolesIsIn(role).stream().filter(user -> user != currentUser)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<User> findOtherUsersByRoles(User currentUser, String... roleNames) {
+    public List<User> getOtherUsersByRoles(User currentUser, String... roleNames) {
         List<Role> roles = new ArrayList<>();
         for (String roleName : roleNames) {
             Role role = roleRepository.findByName(roleName);
@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDto getUserDtoByEmail(String email) {
+    public UserInfoDto getUserInfoDtoByEmail(String email) {
         User user = getByEmail(email);
 
         if (user == null) {
@@ -186,14 +186,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDto getUserDtoById(Long userId) {
-        User user = find(userId);
+    public UserInfoDto getUserInfoDtoById(Long userId) {
+        User user = getById(userId);
         return userToDto(user);
     }
 
     @Override
     public List<UserBasicDto> getUserBasicDtoByRolesExceptCurrent(User currentUser, String... roles) {
-        List<User> users = findOtherUsersByRoles(currentUser, roles);
+        List<User> users = getOtherUsersByRoles(currentUser, roles);
         List<UserBasicDto> userDtoList = new ArrayList<>();
         if (users != null) {
             for (User user : users) {
@@ -210,11 +210,6 @@ public class UserServiceImpl implements UserService {
         user.setEmail(invite.getEmail());
         String conferenceName = invite.getConferenceName();
         mailService.sendEmail(user, new InvitePreparator(conferenceName, mailService.getUrl()));
-    }
-
-    @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 
     private User mapRegistrationDtoToUser(RegistrationDto dto) {

@@ -68,7 +68,7 @@ public class MyInfoPageController {
         }
 
         try {
-            UserInfoDto userInfoDto = userService.getUserDtoByEmail(principal.getName());
+            UserInfoDto userInfoDto = userService.getUserInfoDtoByEmail(principal.getName());
             return new ResponseEntity<>(userInfoDto, HttpStatus.ACCEPTED);
         } catch (NoSuchUserException ex) {
             log.error("Request for [myinfo] is failed: User entity for current principal is not found");
@@ -93,7 +93,7 @@ public class MyInfoPageController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/photo/{id}")
     public ResponseEntity<InputStreamResource> getPhoto(@PathVariable("id") Long userId) {
-        User user = userService.find(userId);
+        User user = userService.getById(userId);
         File file = fileStorageService.getFile(user.getPhoto());
 
         String mimeType = fileStorageService.getPhotoTypeIfSupported(file);

@@ -128,7 +128,7 @@ public class TalksControllerTest {
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testSuccessfulGetTalkByIdAsOrganiser() throws Exception {
         correctTalkDto.setAssignee(organizer.getFullName());
-        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organizer);
+        when(userService.getByEmail(ORGANISER_EMAIL)).thenReturn(organizer);
         when(talkService.findById((TEST_TALK_ID))).thenReturn(correctTalkDto);
 
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID))
@@ -169,7 +169,7 @@ public class TalksControllerTest {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void testTalkNotFoundExceptionGetTalkById() throws Exception {
-        when(userService.findUserByEmail(ORGANISER_EMAIL)).thenReturn(organizer);
+        when(userService.getByEmail(ORGANISER_EMAIL)).thenReturn(organizer);
         when(talkService.findById(TEST_TALK_ID)).thenThrow(new TalkNotFoundException());
         mockMvc.perform(prepareGetRequest(MY_TALKS_PAGE_URL + "/" + TEST_TALK_ID)).
                 andExpect(status().isNotFound())
