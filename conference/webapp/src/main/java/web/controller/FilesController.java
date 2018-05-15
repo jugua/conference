@@ -45,8 +45,7 @@ public class FilesController {
     private final FileStorageService storageService;
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/talk/{talk_id}/takeFileName",
-            produces = "application/json")
+    @GetMapping(value = "/talk/{talk_id}/takeFileName", produces = "application/json")
     public ResponseEntity<Map<String, String>> getFileName(@PathVariable("talk_id") Long talkId) {
         Talk talk = talkService.findTalkById(talkId);
 
