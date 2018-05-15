@@ -41,7 +41,7 @@ public class VerificationTokenServiceTest {
     }
 
     @Test
-    public void testGetTokenForUnExistingToken() {
+    public void getTokenForUnexistingTokenReturnsNull() {
         when(tokenRepository.findFirstByToken(anyString())).thenReturn(null);
         assertNull(testing.findTokenBy("TOKEN"));
     }
