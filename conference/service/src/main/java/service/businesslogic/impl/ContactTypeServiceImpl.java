@@ -21,7 +21,7 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     private ContactTypeRepository contactTypeRepository;
 
     @Override
-    public ContactType find(Long id) {
+    public ContactType getById(Long id) {
         ContactType contactType = contactTypeRepository.findById(id);
         if (contactType == null) {
             throw new ResourceNotFoundException(CONTACT_TYPE_NOT_FOUND);
@@ -30,7 +30,7 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     }
 
     @Override
-    public ContactType findByName(String name) {
+    public ContactType getByName(String name) {
         return contactTypeRepository.findFirstByName(name);
     }
 
@@ -47,7 +47,7 @@ public class ContactTypeServiceImpl implements ContactTypeService {
     }
 
     @Override
-    public List<ContactType> findAll() {
+    public List<ContactType> getAll() {
         return contactTypeRepository.findAll();
     }
 }
