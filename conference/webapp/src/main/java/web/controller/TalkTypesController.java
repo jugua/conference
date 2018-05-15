@@ -29,7 +29,7 @@ public class TalkTypesController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<MessageDto> createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
+    public ResponseEntity<MessageDto> create(@Valid @RequestBody CreateTypeDto typeDto) {
         Long id = typeService.save(typeDto);
         return ok(new MessageDto(id));
     }
