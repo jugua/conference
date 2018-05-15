@@ -1,12 +1,16 @@
 package web.util;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import domain.model.Conference;
 import domain.model.Contact;
 import domain.model.ContactType;
 import domain.model.Role;
+import domain.model.Talk;
+import domain.model.TalkStatus;
 import domain.model.User;
 import domain.model.UserInfo;
 
@@ -21,6 +25,21 @@ public class TestData {
 
     public static User organizer() {
         return user("Artem", "Trybel", ORGANISER_EMAIL, organizerRole(), userInfo());
+    }
+
+    public static Conference conference() {
+        Conference conference = new Conference();
+        conference.setTitle("JUG UA");
+        conference.setLocation("Location");
+        conference.setDescription("Description");
+        conference.setCallForPaperEndDate(LocalDate.MIN);
+
+        conference.setTalks(Arrays.asList(
+                talk(TalkStatus.ACCEPTED),
+                talk(TalkStatus.ACCEPTED),
+                talk(TalkStatus.PENDING)));
+
+        return conference;
     }
 
     private static User user(String firstname, String lastname, String email, Role role, UserInfo userInfo) {
@@ -57,6 +76,12 @@ public class TestData {
         return userInfo;
     }
 
+    public static Talk talk(TalkStatus status) {
+        Talk talk1 = new Talk();
+        talk1.setStatus(status);
+        return talk1;
+    }
+
     private static List<Contact> contacts() {
         ContactType contactType = new ContactType(1L, "LinkedIn");
         ContactType contactType2 = new ContactType(2L, "Twitter");
@@ -70,5 +95,4 @@ public class TestData {
                 Contact.builder().id(4L).value("url4").contactType(contactType4).build()
         );
     }
-
 }

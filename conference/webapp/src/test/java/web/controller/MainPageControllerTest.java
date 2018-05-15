@@ -30,13 +30,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import domain.model.Conference;
 import domain.model.Role;
-import domain.model.Talk;
-import domain.model.TalkStatus;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import web.config.TestConfig;
 import web.config.WebMvcConfig;
+import web.util.TestData;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
@@ -95,7 +94,7 @@ public class MainPageControllerTest {
     @Test
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void getUpcomingConferencesWithTalks() throws Exception {
-        conference = createConference();
+        conference = TestData.conference();
         conference.setCallForPaperEndDate(LocalDate.MAX);
         conferences.add(conference);
 
@@ -122,7 +121,7 @@ public class MainPageControllerTest {
     @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void getPastConferences() throws Exception {
         conferences = new ArrayList<>();
-        conferences.add(createConference());
+        conferences.add(TestData.conference());
 
         when(conferenceService.findPast()).thenReturn(conferencesDto);
 
@@ -135,23 +134,4 @@ public class MainPageControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
 
-    private Conference createConference() {
-        Conference conference = new Conference();
-        conference.setTitle("JUG UA");
-        conference.setLocation("Location");
-        conference.setDescription("Description");
-        conference.setCallForPaperEndDate(LocalDate.MIN);
-        List<Talk> talks = new ArrayList<>();
-        Talk talk1 = new Talk();
-        talk1.setStatus(TalkStatus.ACCEPTED);
-        talks.add(talk1);
-        talk1 = new Talk();
-        talk1.setStatus(TalkStatus.ACCEPTED);
-        talks.add(talk1);
-        talk1 = new Talk();
-        talk1.setStatus(TalkStatus.PENDING);
-        talks.add(talk1);
-        conference.setTalks(talks);
-        return conference;
-    }
 }
