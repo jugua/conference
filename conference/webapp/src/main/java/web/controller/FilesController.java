@@ -91,15 +91,6 @@ public class FilesController {
         return ok().build();
     }
 
-    private String uploadFile(MultipartFile file) {
-        try {
-            return storageService.saveFile(file, FileStorageServiceImpl.FileType.FILE);
-        } catch (IOException e) {
-            log.warn(e);
-            return null;
-        }
-    }
-
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/talk/{talk_id}/deleteFile")
     public ResponseEntity delete(@PathVariable("talk_id") Long talkId) {
@@ -110,6 +101,15 @@ public class FilesController {
         talkService.deleteFile(talkDto, true);
 
         return ok().build();
+    }
+
+    private String uploadFile(MultipartFile file) {
+        try {
+            return storageService.saveFile(file, FileStorageServiceImpl.FileType.FILE);
+        } catch (IOException e) {
+            log.warn(e);
+            return null;
+        }
     }
 
 }
