@@ -73,9 +73,9 @@ public class VerificationTokenTest {
 
     @Test
     public void testCheckExpiredDateSettingCreateToken() {
-        testing = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
-
         LocalDateTime expected = VerificationToken.generateDefaultExpiryDate();
+
+        testing = VerificationToken.of(user, VerificationToken.TokenType.FORGOT_PASS);
         LocalDateTime actual = testing.getExpiryDate();
 
         assertEquals(expected.getYear(), actual.getYear());
