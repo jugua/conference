@@ -86,7 +86,7 @@ public class SettingsController {
     @PostMapping("/email")
     public ResponseEntity<MessageDto> changeEmail(@RequestBody String mail, Principal principal) {
         if (principal == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         User user = userService.getByEmail(principal.getName());
@@ -107,15 +107,15 @@ public class SettingsController {
     @GetMapping("/email")
     public ResponseEntity<MessageDto> getEmailVerificationState(Principal principal) {
         if (principal == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         User user = userService.getByEmail(principal.getName());
 
         VerificationToken token = tokenService.getValidTokenByUserIdAndType(
                 user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);
-        MessageDto messageDto = new MessageDto();
 
+        MessageDto messageDto = new MessageDto();
         if (token == null) {
             messageDto.setResult("no_pending_email_changes");
             return ok(messageDto);
