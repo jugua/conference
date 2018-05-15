@@ -40,7 +40,7 @@ import web.util.TestData;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
-public class MainPageControllerTest {
+public class ConferencesControllerTest {
 
     private static final String API_CONFERENCE = "/conference";
     public static final String API_LEVEL = "/level";
