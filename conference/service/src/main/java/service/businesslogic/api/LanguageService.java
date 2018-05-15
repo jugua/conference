@@ -9,6 +9,6 @@ import domain.model.Language;
  */
 public interface LanguageService {
 
-    List<Language> findAll();
+    List<Language> getAll();
 
 }

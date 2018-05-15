@@ -23,7 +23,7 @@ public class LanguagesController {
 
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Language>> getLanguages() {
-        return new ResponseEntity<>(languageService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(languageService.getAll(), HttpStatus.OK);
     }
 
 }
