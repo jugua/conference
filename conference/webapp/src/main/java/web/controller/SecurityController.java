@@ -22,7 +22,7 @@ public class SecurityController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginDto> signIn(@RequestHeader(value = "authorization") String authorizationData) {
-        String email = getMail(decodeBase64(authorizationData));
+        String email = extractEmailFrom(decodeBase64(authorizationData));
         LoginDto loginDto = signInService.login(email, null);
         return new ResponseEntity<>(loginDto, HttpStatus.OK);
     }
@@ -34,10 +34,8 @@ public class SecurityController {
         return decodedString;
     }
 
-    private String getMail(String message) {
-        String mail = message.split(":")[0];
-        return mail;
+    private String extractEmailFrom(String message) {
+        return message.split(":")[0];
     }
-
 
 }
