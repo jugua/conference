@@ -47,10 +47,10 @@ public class ConferencesController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/conferencesNames")
-    public ResponseEntity<List<String>> getUsersNames() {
+    public ResponseEntity<List<String>> getConferenceNames() {
         List<String> conferencesNames = conferenceService.findAll()
                 .stream()
-                .map(m -> m.getTitle())
+                .map(Conference::getTitle)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(conferencesNames, HttpStatus.OK);
     }
