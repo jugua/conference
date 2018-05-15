@@ -35,7 +35,6 @@ import web.config.WebMvcConfig;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
-
 public class TopicsControllerTest {
 
     private static final String API_TOPIC = "/topic";

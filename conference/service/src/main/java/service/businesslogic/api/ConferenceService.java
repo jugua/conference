@@ -10,7 +10,6 @@ import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
 import service.businesslogic.dto.TalkDto;
 
-
 public interface ConferenceService {
 
     Conference findById(Long id);

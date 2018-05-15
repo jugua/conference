@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import domain.model.User;
 import service.businesslogic.api.UserService;
 
-
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired

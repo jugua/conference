@@ -66,7 +66,6 @@ public class ForgotPasswordController {
         MessageDto responseMessage = new MessageDto();
         responseMessage.setResult("success");
         return ok().body(responseMessage);
-
     }
 
     @GetMapping("/changePassword/{token}")
