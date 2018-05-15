@@ -77,9 +77,9 @@ public class TestData {
     }
 
     private static Talk talk(TalkStatus status) {
-        Talk talk1 = new Talk();
-        talk1.setStatus(status);
-        return talk1;
+        Talk talk = new Talk();
+        talk.setStatus(status);
+        return talk;
     }
 
     private static List<Contact> contacts() {
