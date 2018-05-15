@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto findById(Long id) {
+    public CommentDto getById(Long id) {
         Comment comment = commentRepository.findOne(id);
         CommentDto commentDto = toDto(comment);
         return commentDto;
@@ -50,7 +50,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDto> getAllByTalkId(Long id) {
+    public List<CommentDto> getByTalkId(Long id) {
         List<Comment> comments = commentRepository.findAllByTalkId(id);
         return toDto(comments);
     }

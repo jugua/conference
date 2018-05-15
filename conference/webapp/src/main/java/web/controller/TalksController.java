@@ -49,7 +49,7 @@ public class TalksController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/talks/{talkId}/comments")
     public ResponseEntity<List<CommentDto>> getComments(@PathVariable("talkId") long talkId) {
-        List<CommentDto> comments = commentService.getAllByTalkId(talkId);
+        List<CommentDto> comments = commentService.getByTalkId(talkId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
@@ -74,7 +74,7 @@ public class TalksController {
         if (binding.hasFieldErrors()) {
             return badRequest().body(new MessageDto("fields_error"));
         }
-        if (commentService.findById(commentId) == null) {
+        if (commentService.getById(commentId) == null) {
             return badRequest().body(new MessageDto("fields_error"));
         }
         commentDto.setId(commentId);
