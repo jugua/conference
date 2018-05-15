@@ -322,10 +322,7 @@ public class TalkServiceImpl implements TalkService {
     }
 
     private boolean isCorrectStatus(String status) {
-        if (TalkStatus.getStatusByName(status) == null) {
-            return false;
-        }
-        return true;
+        return TalkStatus.getStatusByName(status) != null;
     }
 
 }
