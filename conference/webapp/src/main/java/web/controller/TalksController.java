@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
 import domain.model.Talk;
@@ -39,7 +39,7 @@ import service.businesslogic.dto.TalkStatusDto;
 
 @Log4j
 @RestController
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalksController {
 
     private final UserService userService;
