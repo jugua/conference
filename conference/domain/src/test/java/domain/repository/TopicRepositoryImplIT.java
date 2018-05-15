@@ -37,7 +37,7 @@ public class TopicRepositoryImplIT {
     private Topic newTopic;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         newTopic = new Topic(1L, "name");
     }
 
