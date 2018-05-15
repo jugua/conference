@@ -41,9 +41,6 @@ public interface UserService {
 
     void checkUserRegistrationByAdmin(RegistrationDto dto);
 
-    @Deprecated //TODO: this method is part of representation. Move it on upper level.
-    List<String> getUserNames();
-
     @Deprecated //TODO: this method should be part of SecurityService or similar.
     boolean isAuthenticated(User user, String password);
 

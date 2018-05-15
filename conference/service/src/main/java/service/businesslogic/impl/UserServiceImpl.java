@@ -74,11 +74,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getUserNames() {
-        return getAll().stream().map(User::getFirstName).collect(Collectors.toList());
-    }
-
-    @Override
     public void updateContacts(long id, List<Contact> contacts) {
         User user = getById(id);
         UserInfo userInfo = user.getUserInfo();
