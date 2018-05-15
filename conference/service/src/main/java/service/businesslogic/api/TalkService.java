@@ -1,5 +1,6 @@
 package service.businesslogic.api;
 
+import java.util.Collection;
 import java.util.List;
 
 import domain.model.Talk;
@@ -33,5 +34,7 @@ public interface TalkService {
     List<Submission> getSubmissions(String userEmail);
 
     String getFilePath(TalkDto talkDto);
+
+    Collection<TalkDto> findTalksByConferenceId(long id);
 
 }

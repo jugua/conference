@@ -8,6 +8,8 @@ import static service.businesslogic.exception.TalkValidationException.STATUS_IS_
 import static service.businesslogic.exception.TalkValidationException.STATUS_IS_WRONG;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +17,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 import domain.model.Conference;
 import domain.model.Role;
@@ -29,12 +34,11 @@ import domain.repository.TalkRepository;
 import domain.repository.TopicRepository;
 import domain.repository.TypeRepository;
 import domain.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.dto.Submission;
 import service.businesslogic.dto.TalkDto;
 import service.businesslogic.dto.TalkStatusDto;
+import service.businesslogic.dto.converter.TalksConverter;
 import service.businesslogic.exception.TalkNotFoundException;
 import service.businesslogic.exception.TalkValidationException;
 import service.infrastructure.mail.MailService;
@@ -46,7 +50,7 @@ import service.infrastructure.mail.preparator.SubmitNewTalkSpeakerPreparator;
 
 @Log4j
 @Service
-@AllArgsConstructor(onConstructor = @__({ @Autowired }))
+@AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class TalkServiceImpl implements TalkService {
 
     private static final int MAX_ORG_COMMENT_LENGTH = 1000;
@@ -60,7 +64,16 @@ public class TalkServiceImpl implements TalkService {
     private ConferenceRepository conferenceRepository;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private final TalksConverter talksConverter;
     private MailService mailService;
+
+    @Override
+    public Collection<TalkDto> findTalksByConferenceId(long id) {
+        Conference conference = conferenceRepository.findById(id);
+        Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
+
+        return talksConverter.toDto(talks);
+    }
 
     @Override
     @Transactional
@@ -100,7 +113,6 @@ public class TalkServiceImpl implements TalkService {
         return talk;
     }
 
-
     @Override
     public void addFile(TalkDto talkDto, String multipartFilePath) {
         Talk talk = findTalkById(talkDto.getId());
@@ -122,18 +134,18 @@ public class TalkServiceImpl implements TalkService {
         Talk talk = findTalkById(talkDto.getId());
         return talk.getPathToAttachedFile();
     }
-    
-	@Override
-	@Transactional
-	public void updateStatus(TalkStatusDto talkStatusDto) {
-		Talk talk = talkRepository.findById(talkStatusDto.getId());
-		String status = talkStatusDto.getStatus();
-		if (talk != null && isCorrectStatus(status)) {
-			talk.setStatus(TalkStatus.getStatusByName(status));
-			talkRepository.save(talk);
-		}
-	}
-    
+
+    @Override
+    @Transactional
+    public void updateStatus(TalkStatusDto talkStatusDto) {
+        Talk talk = talkRepository.findById(talkStatusDto.getId());
+        String status = talkStatusDto.getStatus();
+        if (talk != null && isCorrectStatus(status)) {
+            talk.setStatus(TalkStatus.getStatusByName(status));
+            talkRepository.save(talk);
+        }
+    }
+
     @Override
     @Transactional
     public void updateAsOrganiser(TalkDto talkDto, User user) {
@@ -208,41 +220,41 @@ public class TalkServiceImpl implements TalkService {
     }
 
     @Override
-	public List<Submission> getSubmissions(String userEmail) {
-		User currentUser = userRepository.findByEmail(userEmail);
-		return findByUserId(currentUser.getId()).stream().map(this::entityToExDto).collect(Collectors.toList());
-	}
+    public List<Submission> getSubmissions(String userEmail) {
+        User currentUser = userRepository.findByEmail(userEmail);
+        return findByUserId(currentUser.getId()).stream().map(this::entityToExDto).collect(Collectors.toList());
+    }
 
-	private Submission entityToExDto(Talk talk) {
-		Conference conference = talk.getConference();
-		String startDate = conference.getStartDate().toString();
-		String endDate = conference.getEndDate().toString();
-		String cfpStartDate = conference.getCallForPaperStartDate().toString();
-		String cfpEndDate = conference.getCallForPaperEndDate().toString();
-		String notificationDue = conference.getNotificationDue().toString();
-		Submission submission = Submission.builder()
-				.id(talk.getId()).title(talk.getTitle())
-				.speakerId(talk.getUser().getId())
-				.conferenceId(conference.getId())
-				.conferenceName(conference.getTitle())
-				.name(talk.getUser().getFullName())
-				.description(talk.getDescription())
-				.topic(talk.getTopic().getName())
-				.type(talk.getType().getName())
-				.lang(talk.getLanguage().getName())
-				.level(talk.getLevel().getName())
-				.addon(talk.getAdditionalInfo())
-				.status(talk.getStatus().getName())
-				.date(talk.getTime().toString())
-				.comment(talk.getOrganiserComment())
-				.startDate(startDate)
-				.endDate(endDate)
-				.cfpStartDate(cfpStartDate)
-				.cfpEndDate(cfpEndDate)
-				.notificationDue(notificationDue)
-				.build();
-		return submission;
-	}
+    private Submission entityToExDto(Talk talk) {
+        Conference conference = talk.getConference();
+        String startDate = conference.getStartDate().toString();
+        String endDate = conference.getEndDate().toString();
+        String cfpStartDate = conference.getCallForPaperStartDate().toString();
+        String cfpEndDate = conference.getCallForPaperEndDate().toString();
+        String notificationDue = conference.getNotificationDue().toString();
+        Submission submission = Submission.builder()
+                .id(talk.getId()).title(talk.getTitle())
+                .speakerId(talk.getUser().getId())
+                .conferenceId(conference.getId())
+                .conferenceName(conference.getTitle())
+                .name(talk.getUser().getFullName())
+                .description(talk.getDescription())
+                .topic(talk.getTopic().getName())
+                .type(talk.getType().getName())
+                .lang(talk.getLanguage().getName())
+                .level(talk.getLevel().getName())
+                .addon(talk.getAdditionalInfo())
+                .status(talk.getStatus().getName())
+                .date(talk.getTime().toString())
+                .comment(talk.getOrganiserComment())
+                .startDate(startDate)
+                .endDate(endDate)
+                .cfpStartDate(cfpStartDate)
+                .cfpEndDate(cfpEndDate)
+                .notificationDue(notificationDue)
+                .build();
+        return submission;
+    }
 
 
     /**
@@ -308,12 +320,12 @@ public class TalkServiceImpl implements TalkService {
         boolean isUsersTalk = talk.getUser().getId() != user.getId();
         return isUsersTalk || talk.getStatus() == TalkStatus.NOT_ACCEPTED || talk.getStatus() == TalkStatus.ACCEPTED;
     }
-    
+
     private boolean isCorrectStatus(String status) {
-		if(TalkStatus.getStatusByName(status) == null) {
-			return false;
-		}
-		return true;
-	}
+        if (TalkStatus.getStatusByName(status) == null) {
+            return false;
+        }
+        return true;
+    }
 
 }

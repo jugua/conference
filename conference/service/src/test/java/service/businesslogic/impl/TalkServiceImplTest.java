@@ -34,9 +34,6 @@ import domain.model.Topic;
 import domain.model.Type;
 import domain.model.User;
 import domain.model.UserInfo;
-import service.businesslogic.dto.TalkDto;
-import service.infrastructure.mail.MailService;
-import service.infrastructure.mail.preparator.ChangeTalkBySpeakerPreparator;
 import domain.repository.ConferenceRepository;
 import domain.repository.LanguageRepository;
 import domain.repository.LevelRepository;
@@ -46,7 +43,11 @@ import domain.repository.TopicRepository;
 import domain.repository.TypeRepository;
 import domain.repository.UserRepository;
 import service.businesslogic.api.TalkService;
+import service.businesslogic.dto.TalkDto;
+import service.businesslogic.dto.converter.TalksConverter;
 import service.businesslogic.exception.TalkValidationException;
+import service.infrastructure.mail.MailService;
+import service.infrastructure.mail.preparator.ChangeTalkBySpeakerPreparator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TalkServiceImplTest {
@@ -69,6 +70,8 @@ public class TalkServiceImplTest {
     @Mock
     private UserRepository userRepository;
     @Mock
+    private TalksConverter talksConverter;
+    @Mock
     private MailService mailService;
     @Mock
     private RoleRepository roleRepository;
@@ -89,7 +92,8 @@ public class TalkServiceImplTest {
         ModelMapper modelMapper = new ModelMapper();
 
         talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository,
-                topicRepository, typeRepository, conferenceRepository, userRepository, roleRepository, mailService);
+                topicRepository, typeRepository, conferenceRepository, userRepository, roleRepository,
+                talksConverter, mailService);
         UserInfo userInfo = new UserInfo();
         userInfo.setId(ID);
         userInfo.setShortBio("bio");

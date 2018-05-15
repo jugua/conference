@@ -29,6 +29,7 @@ import lombok.extern.log4j.Log4j;
 import domain.model.Conference;
 import domain.model.User;
 import service.businesslogic.api.ConferenceService;
+import service.businesslogic.api.TalkService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
@@ -42,8 +43,9 @@ import service.businesslogic.dto.TalkDto;
 @RequestMapping("/conference")
 public class ConferencesController {
 
-    private final ConferenceService conferenceService;
     private final UserService userService;
+    private final ConferenceService conferenceService;
+    private final TalkService talkService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/conferencesNames")
@@ -84,7 +86,7 @@ public class ConferencesController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{id}/talks")
     public ResponseEntity<Collection<TalkDto>> talksByConferenceId(@PathVariable long id) {
-        Collection<TalkDto> talkDtos = conferenceService.findTalksByConferenceId(id);
+        Collection<TalkDto> talkDtos = talkService.findTalksByConferenceId(id);
         return ok(talkDtos);
     }
 

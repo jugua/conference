@@ -2,8 +2,6 @@ package service.businesslogic.impl;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,14 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 
 import domain.model.Conference;
-import domain.model.Talk;
 import domain.repository.ConferenceRepository;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
-import service.businesslogic.dto.TalkDto;
-import service.businesslogic.dto.converter.TalksConverter;
 import service.businesslogic.exception.ConferenceNotFoundException;
 
 @Service
@@ -33,7 +28,6 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     private final ModelMapper modelMapper;
     private final ConferenceRepository conferenceRepository;
-    private final TalksConverter talksConverter;
 
     @Override
     @Transactional(readOnly = true)
@@ -94,14 +88,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
         startCallForPapers(conferences);
         return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public Collection<TalkDto> findTalksByConferenceId(long id) {
-        Conference conference = getById(id);
-        Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
-
-        return talksConverter.toDto(talks);
     }
 
     public ConferenceDto conferenceToDto(Conference conference) {

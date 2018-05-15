@@ -1,6 +1,5 @@
 package service.businesslogic.api;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -8,7 +7,6 @@ import domain.model.Conference;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
-import service.businesslogic.dto.TalkDto;
 
 public interface ConferenceService {
 
@@ -32,8 +30,5 @@ public interface ConferenceService {
 
     @Deprecated //TODO: this method is part of representation. It should not be present in this interface.
     List<ConferenceDto> conferenceToDto(Set<Conference> conferences);
-
-    //TODO: move this method to TalkService
-    Collection<TalkDto> findTalksByConferenceId(long id);
 
 }
