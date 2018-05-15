@@ -267,7 +267,7 @@ public class SubmitNewTalkControllerTest {
         List<TopicDto> topics = new ArrayList<TopicDto>() {{
             add(topicDto);
         }};
-        when(topicService.findAll()).thenReturn(topics);
+        when(topicService.getAll()).thenReturn(topics);
         mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }
@@ -275,7 +275,7 @@ public class SubmitNewTalkControllerTest {
     @Test
     @WithMockUser(roles = ORGANISER)
     public void getTopicsShouldWorkForOrganiser() throws Exception {
-        when(topicService.findAll()).thenReturn(new ArrayList<>());
+        when(topicService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }
@@ -283,7 +283,7 @@ public class SubmitNewTalkControllerTest {
     @Test
     @WithMockUser(roles = ADMIN)
     public void getTopicsShouldWorkForAdmin() throws Exception {
-        when(topicService.findAll()).thenReturn(new ArrayList<>());
+        when(topicService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }

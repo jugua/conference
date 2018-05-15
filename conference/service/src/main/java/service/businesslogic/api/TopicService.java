@@ -11,11 +11,11 @@ import service.businesslogic.dto.TopicDto;
  */
 public interface TopicService {
 
-    Topic find(Long id);
+    List<TopicDto> getAll();
 
-    Long save(CreateTopicDto topic);
-
-    List<TopicDto> findAll();
+    Topic getById(Long id);
 
     Topic getByName(String name);
+
+    Long save(CreateTopicDto topic);
 }

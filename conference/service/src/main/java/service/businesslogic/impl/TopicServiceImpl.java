@@ -25,7 +25,7 @@ public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
 
     @Override
-    public Topic find(Long id) {
+    public Topic getById(Long id) {
         Topic topic = topicRepository.findOne(id);
         if (topic == null) {
             throw new TopicNotFoundException();
@@ -46,7 +46,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<TopicDto> findAll() {
+    public List<TopicDto> getAll() {
         return StreamSupport.stream(topicRepository.findAll().spliterator(), false)/*topicRepository.findAll().stream()*/
                 .map(e -> modelMapper.map(e, TopicDto.class))
                 .collect(Collectors.toList());

@@ -33,7 +33,7 @@ public class TopicsController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("topics")
     public ResponseEntity<List<TopicDto>> getTopics() {
-        return new ResponseEntity<>(topicService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(topicService.getAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
