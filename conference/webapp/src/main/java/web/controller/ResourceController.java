@@ -15,24 +15,15 @@ import lombok.AllArgsConstructor;
 import domain.model.Language;
 import service.businesslogic.api.LanguageService;
 import service.businesslogic.api.LevelService;
-import service.businesslogic.api.TopicService;
 import service.businesslogic.dto.LevelDto;
-import service.businesslogic.dto.TopicDto;
 
 @RestController
 @RequestMapping("/")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class ResourceController {
 
-    private final TopicService topics;
     private final LevelService levels;
     private final LanguageService languages;
-
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("topics")
-    public ResponseEntity<List<TopicDto>> getTopics() {
-        return new ResponseEntity<>(topics.findAll(), HttpStatus.OK);
-    }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("levels")
