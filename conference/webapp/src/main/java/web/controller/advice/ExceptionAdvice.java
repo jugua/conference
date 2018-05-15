@@ -21,6 +21,7 @@ import service.infrastructure.fileStorage.exception.FileValidationException;
 @Log4j
 @RestControllerAdvice
 public class ExceptionAdvice {
+
     public static final String UNAUTHORIZED_MSG = "unauthorized";
 
     @ExceptionHandler(TalkValidationException.class)
