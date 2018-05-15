@@ -30,7 +30,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private ContactTypeRepository contactTypeRepository;
 
     @Override
-    public UserInfo find(Long id) {
+    public UserInfo getById(Long id) {
         UserInfo usersInfo = userInfoRepository.findById(id);
         if (usersInfo == null) {
             throw new ResourceNotFoundException(USER_INFO_NOT_FOUND);

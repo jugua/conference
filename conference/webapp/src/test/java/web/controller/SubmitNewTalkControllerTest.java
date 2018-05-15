@@ -140,7 +140,7 @@ public class SubmitNewTalkControllerTest {
                 .apply(springSecurity())
                 .build();
         when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speakerUser);
-        when(userInfoService.find(anyLong())).thenReturn(userInfo);
+        when(userInfoService.getById(anyLong())).thenReturn(userInfo);
     }
 
     @After

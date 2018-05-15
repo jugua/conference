@@ -99,7 +99,7 @@ public class TalksControllerTest {
                 .build();
         when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speaker);
         when(userService.getByEmail(eq(ORGANISER_EMAIL))).thenReturn(organizer);
-        when(userInfoService.find(anyLong())).thenReturn(userInfo);
+        when(userInfoService.getById(anyLong())).thenReturn(userInfo);
     }
 
     @After

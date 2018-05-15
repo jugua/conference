@@ -64,7 +64,7 @@ public class SimpleUserInfoServiceTest {
         userInfo.setAdditionalInfo("info");
 
         when(userInfoRepository.findById(anyLong())).thenReturn(userInfo);
-        UserInfo userInfoT = testing.find(1L);
+        UserInfo userInfoT = testing.getById(1L);
         assertEquals(userInfoT.getId(), userInfo.getId());
         assertEquals(userInfoT, userInfo);
     }
