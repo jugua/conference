@@ -42,17 +42,14 @@ import web.util.TestData;
 @WebAppConfiguration
 public class ConferencesControllerTest {
 
-    private static final String API_CONFERENCE = "/conference";
-    public static final String API_LEVEL = "/level";
+    private static final String BASE_URL = "/conference";
 
     private MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext context;
-
     @Autowired
     private ConferenceService conferenceService;
-
     @Autowired
     private Filter springSecurityFilterChain;
 
@@ -87,7 +84,7 @@ public class ConferencesControllerTest {
 
     @Test
     public void getUpcomingConferencesUnauthorized() throws Exception {
-        mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
+        mockMvc.perform(getRequest(BASE_URL + "/upcoming")).
                 andExpect(status().isOk());
     }
 
@@ -100,21 +97,21 @@ public class ConferencesControllerTest {
 
         when(conferenceService.findUpcoming()).thenReturn(conferencesDto);
 
-        mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/upcoming")).
-                andExpect(status().isOk());
+        mockMvc.perform(getRequest(BASE_URL + "/upcoming"))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void getPastConferencesTestUnauthorized() throws Exception {
-        mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
-                andExpect(status().isOk());
+        mockMvc.perform(getRequest(BASE_URL + "/past"))
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = Role.SPEAKER)
     public void getConferenceById() throws Exception {
-        mockMvc.perform(prepareGetRequest("/conference/" + anyInt())).
-                andExpect(status().isOk());
+        mockMvc.perform(getRequest(BASE_URL + "/" + anyInt()))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -125,11 +122,11 @@ public class ConferencesControllerTest {
 
         when(conferenceService.findPast()).thenReturn(conferencesDto);
 
-        mockMvc.perform(prepareGetRequest(API_CONFERENCE + "/past")).
+        mockMvc.perform(getRequest(BASE_URL + "/past")).
                 andExpect(status().isOk());
     }
 
-    private MockHttpServletRequestBuilder prepareGetRequest(String uri) {
+    private MockHttpServletRequestBuilder getRequest(String uri) {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
