@@ -9,6 +9,7 @@ import SignInForm from '../../components/SignInForm/SignInForm';
 import UserMenu from '../../components/UserMenu/UserMenu';
 import logout from '../../actions/logout';
 import load from '../../actions/load';
+import forgotPasswordActions from '../../actions/forgot-password';
 
 class Header extends PureComponent {
   constructor() {
@@ -33,12 +34,16 @@ class Header extends PureComponent {
     }));
   };
 
+  setForgotPasswordVisibility = visibility => (
+    this.props.dispatch(
+      forgotPasswordActions.setForgotPasswordVisibility(visibility),
+    )
+  );
+
   closeSignIn = (event) => {
     const formContainer = document.querySelector('.menu-container__content');
     if (!this.isDescendant(formContainer, event.target)) {
-      this.setState({
-        dropdown: false,
-      });
+      this.closeDropDown();
       document.removeEventListener('click', this.closeSignIn);
     }
   };
@@ -99,6 +104,9 @@ class Header extends PureComponent {
                   <SignInForm
                     load={this.load}
                     close={this.closeDropDown}
+                    setForgotPasswordVisibility={
+                      this.setForgotPasswordVisibility
+                    }
                   />
               }
             </div>
@@ -119,6 +127,6 @@ Header.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = user => user;
-
-export default connect(mapStateToProps)(Header);
+export default connect(
+  ({ user }) => ({ user }),
+)(Header);

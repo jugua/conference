@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { forgotPassword, signUp, root } from '../../constants/route-url';
+import { signUp, root } from '../../constants/route-url';
 import login from '../../actions/login';
 import loginValidation from '../../actions/loginVlidation';
 import actionTypes from '../../constants/actions-types';
@@ -24,6 +24,11 @@ class SignInForm extends PureComponent {
     history.push(root);
     close();
   };
+
+  onForgotPassword = () => {
+    this.props.close();
+    this.props.setForgotPasswordVisibility(true);
+  }
 
   onLoginFail = () => {
     this.setState({
@@ -80,15 +85,15 @@ class SignInForm extends PureComponent {
             <label htmlFor="sign-in-password" className="form-label">
               password:
             </label>
-            <Link
+            <a
               id="lnk-forgot-password"
-              to={forgotPassword}
-              onClick={close}
+              role="button"
+              onClick={this.onForgotPassword}
               className="sign-in__forgot"
               tabIndex="-1"
             >
               forgot password?
-            </Link >
+            </a>
           </div>
           <input
             type="password"
@@ -133,6 +138,7 @@ SignInForm.propTypes = {
   load: PropTypes.func.isRequired,
   close: PropTypes.func.isRequired,
   history: PropTypes.shape({}).isRequired,
+  setForgotPasswordVisibility: PropTypes.func.isRequired,
 };
 
 export default withRouter(SignInForm);
