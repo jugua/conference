@@ -162,6 +162,7 @@
                 <artifactId>domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>ua.rd.cm</groupId>
                 <artifactId>service</artifactId>
