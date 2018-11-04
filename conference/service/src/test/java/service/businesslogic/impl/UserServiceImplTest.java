@@ -28,23 +28,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import domain.model.Role;
 import domain.model.User;
 import domain.model.UserInfo;
-import service.businesslogic.dto.RegistrationDto;
-import service.infrastructure.mail.MailService;
 import domain.repository.RoleRepository;
+import domain.repository.UserInfoRepository;
 import domain.repository.UserRepository;
-import service.businesslogic.api.UserService;
+import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
 import service.businesslogic.exception.NoSuchUserException;
 import service.businesslogic.exception.PasswordMismatchException;
 import service.businesslogic.exception.WrongRoleException;
+import service.infrastructure.mail.MailService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserServiceTest {
+public class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
     @Mock
     private RoleRepository roleRepository;
+    @Mock
+    private UserInfoRepository userInfoRepository;
     @Mock
     private MailService mailService;
     @Mock
@@ -54,16 +56,18 @@ public class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    private UserService testing;
+    private UserServiceImpl testing;
 
     @Before
     public void initialize() {
-        testing = new UserServiceImpl(userRepository, roleRepository, mailService,
-                mapper, tokenService, passwordEncoder);
+        testing = new UserServiceImpl(
+                userRepository, roleRepository,
+                userInfoRepository, mailService, mapper,
+                tokenService, passwordEncoder);
     }
 
     @Test
-    public void testGetByRoleExceptCurrent() throws Exception {
+    public void testGetByRoleExceptCurrent() {
         User user1 = createDefaultUser();
         user1.setFirstName("Test1");
 
@@ -74,12 +78,12 @@ public class UserServiceTest {
         user3.setFirstName("Test3");
 
         List<User> users = Arrays.asList(user1, user2, user3);
-        Role role = new Role(Role.ORGANISER);
+        Role role = new Role(Role.ROLE_ORGANISER);
 
-        when(roleRepository.findByName(Role.ORGANISER)).thenReturn(role);
+        when(roleRepository.findByName(Role.ROLE_ORGANISER)).thenReturn(role);
         when(userRepository.findAllByRolesIsIn(role)).thenReturn(users);
 
-        List<User> resultUsersList = testing.getByRoleExceptCurrent(user1, Role.ORGANISER);
+        List<User> resultUsersList = testing.getOtherUsersWithSameRole(user1, Role.ROLE_ORGANISER);
         assertTrue(resultUsersList.contains(user2));
         assertTrue(resultUsersList.contains(user3));
         assertFalse(resultUsersList.contains(user1));
@@ -87,7 +91,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetByRoleExceptCurrentWithRoleList() throws Exception {
+    public void testGetByRoleExceptCurrentWithRoleList() {
         User user1 = createDefaultUser();
         user1.setFirstName("Test1");
 
@@ -99,16 +103,16 @@ public class UserServiceTest {
 
         List<User> users = Arrays.asList(user1, user2, user3);
 
-        Role roleOrganiser = new Role(Role.ORGANISER);
-        Role roleSpeaker = new Role(Role.SPEAKER);
+        Role roleOrganiser = new Role(Role.ROLE_ORGANISER);
+        Role roleSpeaker = new Role(Role.ROLE_SPEAKER);
 
-        when(roleRepository.findByName(Role.ORGANISER)).thenReturn(roleOrganiser);
-        when(roleRepository.findByName(Role.SPEAKER)).thenReturn(roleSpeaker);
+        when(roleRepository.findByName(Role.ROLE_ORGANISER)).thenReturn(roleOrganiser);
+        when(roleRepository.findByName(Role.ROLE_SPEAKER)).thenReturn(roleSpeaker);
 
         when(userRepository.findAllByRolesIsIn(Arrays.asList(roleOrganiser, roleSpeaker)))
                 .thenReturn(users);
 
-        List<User> resultUsersList = testing.getByRolesExceptCurrent(user1, Role.ORGANISER, Role.SPEAKER);
+        List<User> resultUsersList = testing.getOtherUsersByRoles(user1, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
         assertTrue(resultUsersList.contains(user2));
         assertTrue(resultUsersList.contains(user3));
         assertFalse(resultUsersList.contains(user1));
@@ -117,15 +121,15 @@ public class UserServiceTest {
     @Test
     public void testSave() {
         User user = mock(User.class);
-        when(roleRepository.findByName("SPEAKER")).thenReturn(new Role("SPEAKER"));
-        testing.save(user);
+        when(roleRepository.findByName("ROLE_SPEAKER")).thenReturn(new Role("ROLE_SPEAKER"));
+        testing.createSpeaker(user);
         verify(userRepository, times(1)).save(user);
     }
 
     @Test
-    public void testUpdateUserProfile() {
+    public void testUpdateUser() {
         User user = mock(User.class);
-        testing.updateUserProfile(user);
+        testing.updateUser(user);
         verify(userRepository, times(1)).save(user);
     }
 
@@ -135,7 +139,7 @@ public class UserServiceTest {
 
         when(userRepository.findOne(anyLong())).thenReturn(expected);
 
-        User user = testing.find(30L);
+        User user = testing.getById(30L);
         assertThat(user.getId(), is(30L));
         assertEquals("test", user.getFirstName());
     }
@@ -146,7 +150,7 @@ public class UserServiceTest {
         when(list.size()).thenReturn(5);
         when(userRepository.findAll()).thenReturn(list);
 
-        assertEquals(5, testing.findAll().size());
+        assertEquals(5, testing.getAll().size());
         verify(userRepository, times(1)).findAll();
     }
 
@@ -213,7 +217,7 @@ public class UserServiceTest {
     @Test(expected = WrongRoleException.class)
     public void testCheckUserRegistrationByAdmin() {
         RegistrationDto testDto = setupCorrectRegistrationDto();
-        testDto.setRoleName(Role.ADMIN);
+        testDto.setRoleName(Role.ROLE_ADMIN);
 
         testing.checkUserRegistrationByAdmin(testDto);
     }
@@ -223,7 +227,7 @@ public class UserServiceTest {
         String testEmail = "123@mail";
         when(userRepository.findByEmail(testEmail)).thenReturn(null);
 
-        testing.getUserDtoByEmail(testEmail);
+        testing.getUserInfoDtoByEmail(testEmail);
     }
 
 

@@ -5,12 +5,11 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
-import java.util.List;
+import static web.util.TestData.ORGANISER_EMAIL;
+import static web.util.TestData.speaker;
 
 import javax.servlet.Filter;
 
@@ -19,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,151 +31,136 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import domain.model.Contact;
-import domain.model.ContactType;
+import lombok.extern.log4j.Log4j;
+
 import domain.model.Role;
 import domain.model.User;
-import domain.model.UserInfo;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.ContactTypeService;
-import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.dto.UserInfoDto;
 import service.businesslogic.exception.ResourceNotFoundException;
 import service.businesslogic.exception.WrongRoleException;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 @Log4j
-public class UserControllerTest extends TestUtil {
+public class UsersControllerTest {
+
     public static final String USER_URL = "/user";
     public static final String USER_CREATE_URL = "/user/registerByAdmin";
+
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
 
     @Autowired
     private WebApplicationContext context;
-
     @Autowired
     private Filter springSecurityFilterChain;
-
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserInfoService userInfoService;
-
     @Autowired
     private ContactTypeService contactTypeService;
-
     @Autowired
-    private UserController userController;
-
+    private UsersController usersController;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(usersController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
-        createSpeakerAndOrganiser(userService);
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
 
-        when(passwordEncoder.encode(anyString())).then(new Answer<String>() {
-            @Override
-            public String answer(InvocationOnMock invocation) throws Throwable {
-                Object[] args = invocation.getArguments();
-                return (String) args[0];
-            }
-        });
+        when(passwordEncoder.encode(anyString())).then(
+                (Answer<String>) invocation -> {
+                    Object[] args = invocation.getArguments();
+                    return (String) args[0];
+                });
     }
 
     @After
     public void after() {
-        Mockito.reset(userService, userInfoService, contactTypeService);
+        Mockito.reset(userService, contactTypeService);
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void correctRegistrationNewOrganiserByAdmin() throws Exception {
-        correctRegistrationDto.setRoleName(Role.ORGANISER);
+        correctRegistrationDto.setRoleName(Role.ROLE_ORGANISER);
         performRegistration(USER_CREATE_URL, HttpStatus.ACCEPTED.value());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void correctRegistrationNewSpeakerByAdmin() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.ACCEPTED.value());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = Role.ADMIN)
     public void registrationNewAdminByAdmin() throws Exception {
-        correctRegistrationDto.setRoleName(Role.ADMIN);
+        correctRegistrationDto.setRoleName(Role.ROLE_ADMIN);
         doThrow(new WrongRoleException("wrong_role_name")).
                 when(userService).checkUserRegistrationByAdmin(correctRegistrationDto);
         performRegistration(USER_CREATE_URL, HttpStatus.FORBIDDEN.value());
     }
 
     @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
+    @WithMockUser(roles = Role.ORGANISER)
     public void registrationNewUserByAdminAsOrganiser() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = Role.SPEAKER)
     public void registrationNewUserByAdminAsSpeaker() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
     public void registrationNewUserByAdminWithoutRole() throws Exception {
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         performRegistration(USER_CREATE_URL, HttpStatus.UNAUTHORIZED.value());
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void getUserById() throws Exception {
         UserInfoDto user = new UserInfoDto();
-        when(userService.getUserDtoById(anyLong())).thenReturn(user);
+        when(userService.getUserInfoDtoById(anyLong())).thenReturn(user);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)
         ).andExpect(status().isOk());
     }
 
     @Test
     public void incorrectGetUserById() throws Exception {
-        User user = createUser();
-        when(userService.find(1L)).thenReturn(user);
+        User user = speaker();
+        when(userService.getById(1L)).thenReturn(user);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)).
                 andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(username = ORGANISER_EMAIL, roles = ORGANISER_ROLE)
+    @WithMockUser(username = ORGANISER_EMAIL, roles = Role.ORGANISER)
     public void notFoundUserById() throws Exception {
 
-        when(userService.getUserDtoById(1L)).thenThrow(ResourceNotFoundException.class);
+        when(userService.getUserInfoDtoById(1L)).thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(prepareGetRequest(USER_URL + "/" + 1)).
                 andExpect(status().isNotFound());
     }
@@ -192,24 +175,6 @@ public class UserControllerTest extends TestUtil {
     private MockHttpServletRequestBuilder prepareGetRequest(String uri) {
         return MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
-    }
-
-    private void checkForBadRequest(String uri, RequestMethod method, Object dto) {
-        try {
-            if (method == RequestMethod.GET) {
-                mockMvc.perform(get(uri)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(dto))
-                ).andExpect(status().isBadRequest());
-            } else if (method == RequestMethod.POST) {
-                mockMvc.perform(post(uri)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(convertObjectToJsonBytes(dto))
-                ).andExpect(status().isBadRequest());
-            }
-        } catch (Exception e) {
-            log.info(e);
-        }
     }
 
     private RegistrationDto setupCorrectRegistrationDto() {
@@ -229,41 +194,4 @@ public class UserControllerTest extends TestUtil {
         return mapper.writeValueAsBytes(object);
     }
 
-    private String createStringWithLength(int length) {
-        StringBuilder builder = new StringBuilder();
-        for (int index = 0; index < length; index++) {
-            builder.append("a");
-        }
-        return builder.toString();
-    }
-
-    @Override
-    protected UserInfo createUserInfo() {
-        ContactType contactType = new ContactType(1L, "LinkedIn");
-        ContactType contactType2 = new ContactType(2L, "Twitter");
-        ContactType contactType3 = new ContactType(3L, "Facebook");
-        ContactType contactType4 = new ContactType(4L, "Blog");
-
-        when(contactTypeService.findByName(anyString()))
-                .thenReturn(contactType)
-                .thenReturn(contactType2)
-                .thenReturn(contactType3)
-                .thenReturn(contactType4);
-
-        List<Contact> contacts = Arrays.asList(
-                new Contact(1L, "url1", contactType),
-                new Contact(2L, "url2", contactType2),
-                new Contact(3L, "url3", contactType3),
-                new Contact(4L, "url4", contactType4));
-
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId(1L);
-        userInfo.setShortBio("bio");
-        userInfo.setJobTitle("job");
-        userInfo.setPastConference("pastConference");
-        userInfo.setCompany("EPAM");
-        userInfo.setContacts(contacts);
-        userInfo.setAdditionalInfo("addInfo");
-        return userInfo;
-    }
 }

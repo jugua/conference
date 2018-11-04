@@ -7,7 +7,8 @@ import service.businesslogic.dto.UserInfoDto;
  * @author Olha_Melnyk
  */
 public interface UserInfoService {
-    UserInfo find(Long id);
+
+    UserInfo getById(Long id);
 
     void save(UserInfo userInfo);
 

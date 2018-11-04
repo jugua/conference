@@ -1,7 +1,5 @@
 package service.businesslogic.api;
 
-import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -9,37 +7,28 @@ import domain.model.Conference;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
-import service.businesslogic.dto.TalkDto;
-
 
 public interface ConferenceService {
 
-    Conference findById(Long id);
+    List<Conference> getAll();
+
+    Conference getById(Long id);
+
+    List<ConferenceDto> getUpcoming();
+
+    List<ConferenceDto> getPast();
 
     Long save(CreateConferenceDto conference);
 
     void update(ConferenceDto conference);
 
-    void remove(Conference conference);
+    @Deprecated //TODO: this method is part of representation. Move it on upper level.
+    List<ConferenceDtoBasic> getPastBasic();
 
-    List<Conference> findAll();
+    @Deprecated //TODO: this method is part of representation. Move it on upper level.
+    List<ConferenceDtoBasic> getUpcomingBasic();
 
-    List<ConferenceDto> findPast();
-
-    List<ConferenceDto> findUpcoming();
-
-    List<ConferenceDtoBasic> findPastBasic();
-
-    List<ConferenceDtoBasic> findUpcomingBasic();
-
-    Conference conferenceDtoToConference(ConferenceDto conferenceDto);
-
-    String convertDateToString(LocalDate localDate);
-
-    ConferenceDto conferenceToDto(Conference conference);
-    
+    @Deprecated //TODO: this method is part of representation. It should not be present in this interface.
     List<ConferenceDto> conferenceToDto(Set<Conference> conferences);
-
-    Collection<TalkDto> findTalksByConferenceId(long id);
 
 }

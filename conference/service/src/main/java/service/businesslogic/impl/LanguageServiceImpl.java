@@ -17,7 +17,7 @@ public class LanguageServiceImpl implements LanguageService {
     private LanguageRepository languageRepository;
 
     @Override
-    public List<Language> findAll() {
+    public List<Language> getAll() {
         return languageRepository.findAll();
     }
 }

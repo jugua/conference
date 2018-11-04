@@ -1,5 +1,7 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import domain.model.Role;
-import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.Role;
+import domain.model.User;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.UserBasicDto;
@@ -30,19 +33,17 @@ public class ManageUsersController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/getAllUsersForAdmin")
     public ResponseEntity getAllUsersForAdmin(HttpServletRequest request) {
-        MessageDto message = new MessageDto();
         User currentUser = getAuthorizedUser(request);
         if (currentUser == null) {
-            message.setError("unauthorized");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
+            return new ResponseEntity<>(new MessageDto("unauthorized"), HttpStatus.UNAUTHORIZED);
         }
-        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRoleExpectCurrent(
-                currentUser, Role.ORGANISER, Role.SPEAKER);
-        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
+        List<UserBasicDto> userDtoList = userService.getUserBasicDtoByRolesExceptCurrent(
+                currentUser, Role.ROLE_ORGANISER, Role.ROLE_SPEAKER);
+        return ok(userDtoList);
     }
 
     private User getAuthorizedUser(HttpServletRequest request) {
-        boolean inRole = request.isUserInRole(Role.ADMIN);
+        boolean inRole = request.isUserInRole(Role.ROLE_ADMIN);
         if (inRole) {
             String userEmail = request.getUserPrincipal().getName();
             User user = userService.getByEmail(userEmail);

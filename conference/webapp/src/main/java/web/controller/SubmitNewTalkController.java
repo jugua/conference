@@ -1,5 +1,7 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import domain.model.Talk;
-import domain.model.User;
-import domain.model.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.Talk;
+import domain.model.User;
 import service.businesslogic.api.TalkService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
@@ -32,37 +34,46 @@ import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
 @RequestMapping("/submitTalk")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class SubmitNewTalkController {
+
     private final UserService userService;
     private final TalkService talkService;
     private final FileStorageService storageService;
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping
-    public ResponseEntity<MessageDto> submitTalk(
-            @Valid SubmitTalkDto submitTalkDto,
-            HttpServletRequest request) {
+    public ResponseEntity<MessageDto> submitTalk(@Valid SubmitTalkDto submitTalkDto, HttpServletRequest request) {
 
-        TalkDto dto = new TalkDto(null, submitTalkDto.getTitle(), null, submitTalkDto.getConferenceId(), null, null, submitTalkDto.getDescription(), submitTalkDto.getTopic(),
-                submitTalkDto.getType(), submitTalkDto.getLang(), submitTalkDto.getLevel(), submitTalkDto.getAddon(),
-                submitTalkDto.getStatus(), null, null, null, submitTalkDto.getFile());
-
-        MessageDto messageDto = new MessageDto();
         User currentUser = userService.getByEmail(request.getRemoteUser());
 
-        if (userInfoNotFilled(currentUser)) {
-            return new ResponseEntity<>(messageDto, HttpStatus.FORBIDDEN);
+        if (currentUser.getUserInfo().isNotFilled()) {
+            return new ResponseEntity<>(new MessageDto(), HttpStatus.FORBIDDEN);
         }
 
+        TalkDto dto = talkDto(submitTalkDto);
         Talk talk = talkService.save(dto, currentUser, uploadFile(dto.getMultipartFile()));
-        messageDto.setId(talk.getId());
-        return new ResponseEntity<>(messageDto, HttpStatus.OK);
+        return ok(new MessageDto(talk.getId()));
     }
 
-    private boolean userInfoNotFilled(User currentUser) {
-        UserInfo currentUserInfo = currentUser.getUserInfo();
-        return currentUserInfo.getShortBio().isEmpty() ||
-                currentUserInfo.getJobTitle().isEmpty() ||
-                currentUserInfo.getCompany().isEmpty();
+    private TalkDto talkDto(@Valid SubmitTalkDto submitTalkDto) {
+        return TalkDto.builder()
+                .id(null)
+                .title(submitTalkDto.getTitle())
+                .userId(null)
+                .conferenceId(submitTalkDto.getConferenceId())
+                .conferenceName(null)
+                .speakerFullName(null)
+                .description(submitTalkDto.getDescription())
+                .topicName(submitTalkDto.getTopic())
+                .typeName(submitTalkDto.getType())
+                .languageName(submitTalkDto.getLang())
+                .levelName(submitTalkDto.getLevel())
+                .additionalInfo(submitTalkDto.getAddon())
+                .statusName(submitTalkDto.getStatus())
+                .date(null)
+                .organiserComment(null)
+                .assignee(null)
+                .multipartFile(submitTalkDto.getFile())
+                .build();
     }
 
     private String uploadFile(MultipartFile file) {

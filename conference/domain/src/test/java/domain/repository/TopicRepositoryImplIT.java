@@ -25,9 +25,11 @@ import domain.model.Topic;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {InMemoryRepositoryConfig.class})
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+@TestExecutionListeners({
+        DependencyInjectionTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class})
+        DbUnitTestExecutionListener.class
+})
 public class TopicRepositoryImplIT {
 
     @Autowired
@@ -35,7 +37,7 @@ public class TopicRepositoryImplIT {
     private Topic newTopic;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         newTopic = new Topic(1L, "name");
     }
 

@@ -2,6 +2,7 @@ package service.businesslogic.api;
 
 import java.util.List;
 
+import domain.model.Contact;
 import domain.model.User;
 import service.businesslogic.dto.InviteDto;
 import service.businesslogic.dto.RegistrationDto;
@@ -10,42 +11,46 @@ import service.businesslogic.dto.UserInfoDto;
 
 public interface UserService {
 
-    User find(Long id);
+    List<User> getAll();
 
-    void save(User user);
-
-    void updateUserProfile(User user);
-
-    List<User> findAll();
-
-    List<User> getByFirstName(String name);
+    User getById(Long id);
 
     User getByEmail(String email);
 
+    List<User> getByFirstName(String firstName);
+
     List<User> getByLastName(String lastName);
+
+    List<User> getOtherUsersWithSameRole(User currentUser, String roleName);
+
+    List<User> getOtherUsersByRoles(User currentUser, String... rolesNames);
+
+    void createSpeaker(User user);
+
+    void confirm(User user);
+
+    void updateUser(User user);
+
+    void updateContacts(long id, List<Contact> contacts);
 
     boolean isEmailExist(String email);
 
-    void registerNewUser(RegistrationDto dto);
+    void inviteUser(InviteDto invite);
 
-    List<User> getByRoleExceptCurrent(User currentUser, String roleName);
-
-    List<User> getByRolesExceptCurrent(User currentUser, String... rolesNames);
-
-    boolean isAuthenticated(User user, String password);
-
-    void checkUserRegistration(RegistrationDto dto);
+    void registerSpeaker(RegistrationDto dto);
 
     void checkUserRegistrationByAdmin(RegistrationDto dto);
 
-    UserInfoDto getUserDtoByEmail(String email);
+    @Deprecated //TODO: this method should be part of SecurityService or similar.
+    boolean isAuthenticated(User user, String password);
 
-    UserInfoDto getUserDtoById(Long userId);
+    @Deprecated //TODO: this method should be moved to UserInfoService or must not exposed like this.
+    UserInfoDto getUserInfoDtoByEmail(String email);
 
-    List<UserBasicDto> getUserBasicDtoByRoleExpectCurrent(User currentUser, String... roles);
-    
-    void inviteUser(InviteDto invite);
+    @Deprecated //TODO: this method should be moved to UserInfoService or must not exposed like this.
+    UserInfoDto getUserInfoDtoById(Long userId);
 
-	boolean isTalkOrganiser(String userMail, Long talkId);
+    @Deprecated //TODO: this method is part of representation. Move it on upper level.
+    List<UserBasicDto> getUserBasicDtoByRolesExceptCurrent(User currentUser, String... roles);
 
 }

@@ -1,5 +1,8 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
@@ -22,10 +25,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import domain.model.User;
-import domain.model.VerificationToken;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.User;
+import domain.model.VerificationToken;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.SettingsDto;
@@ -48,86 +52,78 @@ public class SettingsController {
 
     @PostMapping("/password")
     public ResponseEntity<MessageDto> changePassword(@Valid @RequestBody SettingsDto dto, Principal principal,
-                                         BindingResult bindingResult, HttpServletRequest request) {
-        MessageDto messageDto = new MessageDto();
+                                                     BindingResult bindingResult, HttpServletRequest request) {
         if (principal == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         User user = userService.getByEmail(principal.getName());
 
         if (!userService.isAuthenticated(user, dto.getCurrentPassword())) {
             log.error("Changing password failed: current password doesn't match user's password. [HttpServletRequest:" +
                     " " + request.toString() + "]");
-            messageDto.setError("wrong_password");
+            MessageDto messageDto = new MessageDto("wrong_password");
             messageDto.setFields(Arrays.asList("currentPassword"));
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
+            return badRequest().body(messageDto);
         }
         if (!checkPasswordConfirmed(dto)) {
             log.error("Changing password failed: confirmed password doesn't match new password. [HttpServletRequest: " +
                     "" + request.toString() + "]");
+            MessageDto messageDto = new MessageDto();
             messageDto.setResult("password_math");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageDto);
         }
         if (bindingResult.hasFieldErrors()) {
             log.error("Request for [settings/password] is failed: validation is failed. [HttpServletRequest: " +
                     request.toString() + "]");
-            messageDto.setError("fields_error");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(messageDto);
+            return badRequest().body(new MessageDto("fields_error"));
         }
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
-        userService.updateUserProfile(user);
+        userService.updateUser(user);
         mailService.sendEmail(user, new ChangePasswordPreparator());
-        return new ResponseEntity(HttpStatus.OK);
+        return ok().build();
     }
 
     @PostMapping("/email")
     public ResponseEntity<MessageDto> changeEmail(@RequestBody String mail, Principal principal) {
         if (principal == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         User user = userService.getByEmail(principal.getName());
 
         String email = parseMail(mail);
         if (email == null || !email.matches("(?i)^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$")) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return badRequest().build();
         }
         if (userService.getByEmail(email) != null) {
-            MessageDto messageDto = new MessageDto();
-            messageDto.setError("email_already_exists");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(messageDto);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageDto("email_already_exists"));
         }
-        VerificationToken token = tokenService.createNewEmailToken(
-                user,
-                VerificationToken.TokenType.CHANGING_EMAIL,
-                email
-        );
-        tokenService.setPreviousTokensExpired(token);
-        tokenService.saveToken(token);
+        VerificationToken token = tokenService.generateNewChangeEmailToken(
+                user, VerificationToken.TokenType.CHANGING_EMAIL, email);
         mailService.sendEmail(user, new NewEmailMessagePreparator(token, mailService.getUrl()));
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 
     @GetMapping("/email")
     public ResponseEntity<MessageDto> getEmailVerificationState(Principal principal) {
         if (principal == null) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
         User user = userService.getByEmail(principal.getName());
 
-        VerificationToken token = tokenService.getValidTokenByUserIdAndType
-                (user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);
-        MessageDto messageDto = new MessageDto();
+        VerificationToken token = tokenService.getValidTokenByUserIdAndType(
+                user.getId(), VerificationToken.TokenType.CHANGING_EMAIL);
 
+        MessageDto messageDto = new MessageDto();
         if (token == null) {
             messageDto.setResult("no_pending_email_changes");
-            return ResponseEntity.ok(messageDto);
+            return ok(messageDto);
         }
 
         messageDto.setResult("pending_email_change_found");
-        messageDto.setSecondsToExpiry(String.valueOf(token.calculateSecondsToExpiry()));
-        return ResponseEntity.ok(messageDto);
+        messageDto.setSecondsToExpiry(String.valueOf(token.secondsToExpiry()));
+        return ok(messageDto);
     }
 
     private String parseMail(String mail) {

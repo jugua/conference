@@ -9,10 +9,12 @@ import javax.persistence.ManyToOne;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Entity
 public class Comment extends AbstractEntity {
@@ -30,7 +32,6 @@ public class Comment extends AbstractEntity {
     @NonNull
     private User user;
 
-    @NonNull
     private long talkId;
 
     @Builder

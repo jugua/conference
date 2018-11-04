@@ -9,6 +9,6 @@ import service.businesslogic.dto.LevelDto;
  */
 public interface LevelService {
 
-    List<LevelDto> findAll();
+    List<LevelDto> getAll();
 
 }

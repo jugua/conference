@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,10 +18,8 @@ import service.businesslogic.dto.converter.CreateConferenceToConference;
 
 @Configuration
 @ComponentScan(basePackages = {"service.businesslogic", "service.infrastructure."})
-@PropertySources({
-        @PropertySource("classpath:default/app.properties"),
-        @PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
-})
+@PropertySource("classpath:default/app.properties")
+@PropertySource(value = "file:${catalina.home}/conference/app.properties", ignoreResourceNotFound = true)
 @Import({RepositoryConfig.class, MailConfig.class, FileStorageConfig.class})
 public class ServiceConfig {
 

@@ -11,11 +11,11 @@ import service.businesslogic.dto.TypeDto;
  */
 public interface TypeService {
 
-    Type find(Long id);
+    List<TypeDto> getAll();
 
-    Long save(CreateTypeDto type);
-
-    List<TypeDto> findAll();
+    Type getById(Long id);
 
     Type getByName(String name);
+
+    Long save(CreateTypeDto type);
 }

@@ -34,9 +34,6 @@ import domain.model.Topic;
 import domain.model.Type;
 import domain.model.User;
 import domain.model.UserInfo;
-import service.businesslogic.dto.TalkDto;
-import service.infrastructure.mail.MailService;
-import service.infrastructure.mail.preparator.ChangeTalkBySpeakerPreparator;
 import domain.repository.ConferenceRepository;
 import domain.repository.LanguageRepository;
 import domain.repository.LevelRepository;
@@ -46,7 +43,11 @@ import domain.repository.TopicRepository;
 import domain.repository.TypeRepository;
 import domain.repository.UserRepository;
 import service.businesslogic.api.TalkService;
+import service.businesslogic.dto.TalkDto;
+import service.businesslogic.dto.converter.TalksConverter;
 import service.businesslogic.exception.TalkValidationException;
+import service.infrastructure.mail.MailService;
+import service.infrastructure.mail.preparator.ChangeTalkBySpeakerPreparator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TalkServiceImplTest {
@@ -69,6 +70,8 @@ public class TalkServiceImplTest {
     @Mock
     private UserRepository userRepository;
     @Mock
+    private TalksConverter talksConverter;
+    @Mock
     private MailService mailService;
     @Mock
     private RoleRepository roleRepository;
@@ -85,11 +88,12 @@ public class TalkServiceImplTest {
     private List<Talk> talks = new ArrayList<>();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ModelMapper modelMapper = new ModelMapper();
 
         talkService = new TalkServiceImpl(talkRepository, modelMapper, levelRepository, languageRepository,
-                topicRepository, typeRepository, conferenceRepository, userRepository, roleRepository, mailService);
+                topicRepository, typeRepository, conferenceRepository, userRepository, roleRepository,
+                talksConverter, mailService);
         UserInfo userInfo = new UserInfo();
         userInfo.setId(ID);
         userInfo.setShortBio("bio");
@@ -106,7 +110,7 @@ public class TalkServiceImplTest {
         speakerUser.setPassword("123456");
         speakerUser.setStatus(User.UserStatus.CONFIRMED);
         speakerUser.setUserInfo(userInfo);
-        speakerUser.setRoles(Collections.singleton(new Role(Role.SPEAKER)));
+        speakerUser.setRoles(Collections.singleton(new Role(Role.ROLE_SPEAKER)));
 
         organiserUser = new User();
         organiserUser.setId(ID);
@@ -116,7 +120,7 @@ public class TalkServiceImplTest {
         organiserUser.setPassword("123456");
         organiserUser.setStatus(User.UserStatus.CONFIRMED);
         organiserUser.setUserInfo(userInfo);
-        organiserUser.setRoles(Collections.singleton(new Role(Role.ORGANISER)));
+        organiserUser.setRoles(Collections.singleton(new Role(Role.ROLE_ORGANISER)));
 
         language = new Language("English");
         level = new Level("Beginner");
@@ -131,7 +135,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testSuccessSaveAsDto() throws Exception {
+    public void testSuccessSaveAsDto() {
         when(languageRepository.findByName("English")).thenReturn(language);
         when(levelRepository.findByName("Beginner")).thenReturn(level);
         when(topicRepository.findTopicByName(anyString())).thenReturn(topic);
@@ -144,7 +148,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testAddFileSuccessful() throws Exception {
+    public void testAddFileSuccessful() {
         String pathFile = "Path";
         talk.setPathToAttachedFile(pathFile);
         when(talkRepository.findById(anyLong())).thenReturn(talk);
@@ -153,7 +157,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testAddFileSuccessfulNullArg() throws Exception {
+    public void testAddFileSuccessfulNullArg() {
         talk.setPathToAttachedFile(null);
         when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.addFile(talkDto, null);
@@ -161,7 +165,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testDeleteFile() throws Exception {
+    public void testDeleteFile() {
         talk.setPathToAttachedFile("Path");
         when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.deleteFile(talkDto, true);
@@ -170,7 +174,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testGetFilePath() throws Exception {
+    public void testGetFilePath() {
         String pathFile = "Path";
         talk.setPathToAttachedFile(pathFile);
         when(talkRepository.findById(anyLong())).thenReturn(talk);
@@ -178,7 +182,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testUpdateAsOrganiserSuccessful() throws Exception {
+    public void testUpdateAsOrganiserSuccessful() {
         when(talkRepository.findById(anyLong())).thenReturn(talk);
         talkService.updateAsOrganiser(talkDto, organiserUser);
 
@@ -187,7 +191,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testUpdateAsOrganiserOrgCommentTooLong() throws Exception {
+    public void testUpdateAsOrganiserOrgCommentTooLong() {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("comment_too_long");
 
@@ -199,7 +203,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testUpdateAsOrganiserStatusIsEmpty() throws Exception {
+    public void testUpdateAsOrganiserStatusIsEmpty() {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("status_is_null");
 
@@ -211,7 +215,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testUpdateAsOrganiserOrgCommentIsEmpty() throws Exception {
+    public void testUpdateAsOrganiserOrgCommentIsEmpty() {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("empty_comment");
 
@@ -224,7 +228,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testUpdateAsOrganiserWrongStatusChange() throws Exception {
+    public void testUpdateAsOrganiserWrongStatusChange() {
         expectedException.expect(TalkValidationException.class);
         expectedException.expectMessage("wrong_status");
         talk.setStatus(TalkStatus.NOT_ACCEPTED);
@@ -237,7 +241,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testUpdateAsSpeakerWithNotifySuccessful() throws Exception {
+    public void testUpdateAsSpeakerWithNotifySuccessful() {
         when(talkRepository.findById(anyLong())).thenReturn(talk);
         when(languageRepository.findByName("English")).thenReturn(language);
         when(levelRepository.findByName("Beginner")).thenReturn(level);
@@ -250,7 +254,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testUpdateAsSpeakerWithOutNotifySuccessful() throws Exception {
+    public void testUpdateAsSpeakerWithOutNotifySuccessful() {
         talk.setOrganiser(null);
         when(talkRepository.findById(anyLong())).thenReturn(talk);
         when(languageRepository.findByName("English")).thenReturn(language);
@@ -264,7 +268,7 @@ public class TalkServiceImplTest {
     }
 
     @Test
-    public void testFindById() throws Exception {
+    public void testFindById() {
         when(talkRepository.findById(anyLong())).thenReturn(talk);
 
         TalkDto talkDtoResult = talkService.findById(ID);

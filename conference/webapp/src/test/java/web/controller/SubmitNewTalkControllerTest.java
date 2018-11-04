@@ -1,8 +1,5 @@
 package web.controller;
 
-import static web.controller.TestUtil.ADMIN_ROLE;
-import static web.controller.TestUtil.ORGANISER_ROLE;
-
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
@@ -15,9 +12,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static domain.model.Role.ADMIN;
+import static domain.model.Role.ORGANISER;
+import static domain.model.Role.SPEAKER;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -61,12 +61,12 @@ import service.businesslogic.dto.TopicDto;
 import service.businesslogic.dto.TypeDto;
 import service.infrastructure.fileStorage.FileStorageService;
 import service.infrastructure.fileStorage.impl.FileStorageServiceImpl;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
+import web.controller.advice.ExceptionAdvice;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 public class SubmitNewTalkControllerTest {
     private static final String SUBMIT_TALK_PAGE_URL = "/submitTalk";
@@ -75,9 +75,7 @@ public class SubmitNewTalkControllerTest {
     private static final String GET_LEVELS_URL = "/levels";
     private static final String GET_LANGUAGES_URL = "/languages";
 
-    public static final String SPEAKER_ROLE = "SPEAKER";
     private static final String SPEAKER_EMAIL = "ivanova@gmail.com";
-    private static final String ORGANISER_EMAIL = "trybel@gmail.com";
 
     @Autowired
     private WebApplicationContext context;
@@ -125,7 +123,7 @@ public class SubmitNewTalkControllerTest {
         userInfo.setAdditionalInfo("addInfo");
 
         Set<Role> speakerRole = new HashSet<>();
-        speakerRole.add(new Role(2L, Role.SPEAKER));
+        speakerRole.add(new Role(2L, Role.ROLE_SPEAKER));
         speakerUser = new User();
         speakerUser.setId(1L);
         speakerUser.setFirstName("Olya");
@@ -142,7 +140,7 @@ public class SubmitNewTalkControllerTest {
                 .apply(springSecurity())
                 .build();
         when(userService.getByEmail(eq(SPEAKER_EMAIL))).thenReturn(speakerUser);
-        when(userInfoService.find(anyLong())).thenReturn(userInfo);
+        when(userInfoService.getById(anyLong())).thenReturn(userInfo);
     }
 
     @After
@@ -150,15 +148,14 @@ public class SubmitNewTalkControllerTest {
         Mockito.reset(talkService);
     }
 
-    /**
-     * Test submitTalk() for successful result
-     *
-     * @throws Exception
-     */
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testSuccessfulSubmitTalkAsSpeaker() throws Exception {
-        TalkDto talkDto = new TalkDto(null, "title name", null, null, null, null, "desc", "topic", "type", "English", "Beginner", null, null, null, null, null, null);
+        TalkDto talkDto = new TalkDto(
+                null, "title name", null, null, null,
+                null, "desc", "topic", "type", "English",
+                "Beginner", null, null, null, null,
+                null, null);
         Talk talk = new Talk();
         talk.setId(1L);
 
@@ -170,13 +167,8 @@ public class SubmitNewTalkControllerTest {
 
     }
 
-    /**
-     * Test submitTalk() for successful result
-     *
-     * @throws Exception
-     */
     @Test
-    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER_ROLE)
+    @WithMockUser(username = SPEAKER_EMAIL, roles = SPEAKER)
     public void testSuccessfulSubmitTalkAsSpeakerWithFile() throws Exception {
         MockMultipartFile file = createMultipartFile();
         TalkDto talkDto = new TalkDto(null, "title name", null, null, null, null,
@@ -203,52 +195,49 @@ public class SubmitNewTalkControllerTest {
         verify(fileStorageService, times(1)).saveFile(file, FileStorageServiceImpl.FileType.FILE);
     }
 
-    /**
-     * @throws Exception
-     */
     @Test
     public void testUnauthorizedErrorWhenSubmitTalk() throws Exception {
         mockMvc.perform(requestBuilder).andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("error", is(ApplicationControllerAdvice.UNAUTHORIZED_MSG)));
+                .andExpect(jsonPath("error", is(ExceptionAdvice.UNAUTHORIZED_MSG)));
     }
 
     @Test
     public void getTypesShouldNotWorkForUnauthorized() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isUnauthorized());
     }
 
     @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
+    @WithMockUser(roles = ORGANISER)
     public void getTypesShouldWorkForOrganiser() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = SPEAKER)
     public void getTypesShouldWorkForSpeaker() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = ADMIN)
     public void getTypesShouldWorkForAdmin() throws Exception {
         List<TypeDto> types = new ArrayList<>();
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = ADMIN)
     public void getTypesShouldHaveRightValues() throws Exception {
         TypeDto typeDto = new TypeDto();
         typeDto.setId(1L);
@@ -257,7 +246,7 @@ public class SubmitNewTalkControllerTest {
             add(typeDto);
         }};
 
-        when(typeService.findAll()).thenReturn(types);
+        when(typeService.getAll()).thenReturn(types);
         mockMvc.perform(prepareGetRequest(GET_TYPES_URL)).
                 andExpect(status().isOk()).
                 andExpect(jsonPath("[0].id", CoreMatchers.is(typeDto.getId().intValue()))).
@@ -271,30 +260,30 @@ public class SubmitNewTalkControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = SPEAKER)
     public void getTopicsShouldWorkForSpeaker() throws Exception {
         TopicDto topicDto = new TopicDto();
         topicDto.setName("SomeName");
         List<TopicDto> topics = new ArrayList<TopicDto>() {{
             add(topicDto);
         }};
-        when(topicService.findAll()).thenReturn(topics);
+        when(topicService.getAll()).thenReturn(topics);
         mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
+    @WithMockUser(roles = ORGANISER)
     public void getTopicsShouldWorkForOrganiser() throws Exception {
-        when(topicService.findAll()).thenReturn(new ArrayList<>());
+        when(topicService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = ADMIN)
     public void getTopicsShouldWorkForAdmin() throws Exception {
-        when(topicService.findAll()).thenReturn(new ArrayList<>());
+        when(topicService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_TOPICS_URL))
                 .andExpect(status().isOk());
     }
@@ -306,7 +295,7 @@ public class SubmitNewTalkControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = SPEAKER_ROLE)
+    @WithMockUser(roles = SPEAKER)
     public void getLevelsShouldWorkForSpeaker() throws Exception {
         LevelDto levelDto = new LevelDto();
         levelDto.setId(1L);
@@ -314,7 +303,7 @@ public class SubmitNewTalkControllerTest {
         List<LevelDto> levels = new ArrayList<LevelDto>() {{
             add(levelDto);
         }};
-        when(levelService.findAll()).thenReturn(levels);
+        when(levelService.getAll()).thenReturn(levels);
         mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0].id", CoreMatchers.is(levelDto.getId().intValue())))
@@ -322,17 +311,17 @@ public class SubmitNewTalkControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = ORGANISER_ROLE)
+    @WithMockUser(roles = ORGANISER)
     public void getLevelsShouldWorkForOrganiser() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
+        when(levelService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = ADMIN_ROLE)
+    @WithMockUser(roles = ADMIN)
     public void getLevelsShouldWorkForAdmin() throws Exception {
-        when(levelService.findAll()).thenReturn(new ArrayList<>());
+        when(levelService.getAll()).thenReturn(new ArrayList<>());
         mockMvc.perform(get(GET_LEVELS_URL))
                 .andExpect(status().isOk());
     }
@@ -342,17 +331,9 @@ public class SubmitNewTalkControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8);
     }
 
-
-    private MockMultipartFile createMultipartFile() {
-        try {
-            File file = new File("src/test/resources/trybel_master.JPG");
-            FileInputStream fileInputStream = new FileInputStream(file);
-            return new MockMultipartFile("file", fileInputStream);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private MockMultipartFile createMultipartFile() throws IOException {
+        File file = new File("src/test/resources/trybel_master.JPG");
+        FileInputStream fileInputStream = new FileInputStream(file);
+        return new MockMultipartFile("file", fileInputStream);
     }
 }

@@ -117,7 +117,6 @@
         <dependency>
             <groupId>ua.rd.cm</groupId>
             <artifactId>react-js</artifactId>
-            <version>1.0</version>
             <type>war</type>
         </dependency>
         <dependency>
@@ -217,6 +216,16 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <scope>test</scope>
         </dependency>
         <!-- testing end -->
     </dependencies>

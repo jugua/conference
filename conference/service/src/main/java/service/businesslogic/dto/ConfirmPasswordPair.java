@@ -6,10 +6,14 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
-public class NewPasswordDto {
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class ConfirmPasswordPair {
 
     @JsonProperty("newPassword")
     @NonNull
@@ -20,4 +24,9 @@ public class NewPasswordDto {
     @NotNull
     @Size(min = 1, max = 30)
     private String confirm;
+
+    public boolean isNotEqual() {
+        return password == null || !password.equals(confirm);
+    }
+
 }

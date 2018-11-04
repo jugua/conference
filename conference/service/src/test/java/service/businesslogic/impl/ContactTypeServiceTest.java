@@ -57,14 +57,14 @@ public class ContactTypeServiceTest {
     public void testFindByIdContactType() {
         List<ContactType> list = Collections.singletonList(contactType);
         when(contactTypeRepository.findById(anyLong())).thenReturn(list.get(0));
-        ContactType contactType = testing.find(1L);
+        ContactType contactType = testing.getById(1L);
         assertThat(contactType.getId(), is(1L));
     }
 
     @Test
     public void testFindByNameContactType() {
         when(contactTypeRepository.findFirstByName(anyString())).thenReturn(contactType);
-        ContactType actual = testing.findByName("VK");
+        ContactType actual = testing.getByName("VK");
         assertEquals(contactType, actual);
     }
 
@@ -72,7 +72,7 @@ public class ContactTypeServiceTest {
     public void testFindAll() {
         List<ContactType> list = Arrays.asList(contactType, new ContactType("Twitter"));
         when(contactTypeRepository.findAll()).thenReturn(list);
-        List<ContactType> contactTypes = testing.findAll();
+        List<ContactType> contactTypes = testing.getAll();
         assertEquals(contactTypes, list);
     }
 }

@@ -1,6 +1,7 @@
 package domain.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class Conference extends AbstractEntity {
 
     @Column
     private LocalDate notificationDue;
-    
+
     @Column
     private LocalDate callForPaperStartDate;
 
@@ -67,52 +68,52 @@ public class Conference extends AbstractEntity {
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "topic_id")
     )
-    private Collection<Topic> topics;
+    private Collection<Topic> topics = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "type_id")
     )
-    private Collection<Type> types;
+    private Collection<Type> types = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
-    private Collection<Language> languages;
+    private Collection<Language> languages = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "level_id")
     )
-    private Collection<Level> levels;
+    private Collection<Level> levels = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "conference")
-    private Collection<Talk> talks;
+    private Collection<Talk> talks = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "conference_organiser",
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "organiser_id")
     )
-    private List<User> organisers;
+    private List<User> organisers = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "conference_speaker",
             joinColumns = @JoinColumn(name = "conference_id"),
             inverseJoinColumns = @JoinColumn(name = "speaker_id")
     )
-    private List<User> speakers;
+    private List<User> speakers = new ArrayList<>();
 
     @Builder
-    public Conference(Long id, String title, String description, String location, LocalDate startDate,
-                      LocalDate endDate,LocalDate notificationDue, LocalDate callForPaperStartDate, LocalDate callForPaperEndDate,
-                      String pathToLogo, Boolean callForPaperActive, Collection<Topic> topics,
-                      Collection<Type> types, Collection<Language> languages, Collection<Level> levels,
-                      Collection<Talk> talks, List<User> organisers, List<User> speakers) {
+    private Conference(Long id, String title, String description, String location, LocalDate startDate,
+                       LocalDate endDate, LocalDate notificationDue, LocalDate callForPaperStartDate,
+                       LocalDate callForPaperEndDate, String pathToLogo, Boolean callForPaperActive,
+                       Collection<Topic> topics, Collection<Type> types, Collection<Language> languages,
+                       Collection<Level> levels, Collection<Talk> talks, List<User> organisers, List<User> speakers) {
         super(id);
         this.title = title;
         this.description = description;
@@ -132,4 +133,43 @@ public class Conference extends AbstractEntity {
         this.organisers = organisers;
         this.speakers = speakers;
     }
+
+    public int draftCount() {
+        return Math.toIntExact(talks.stream()
+                .filter(Talk::isDraft)
+                .count());
+    }
+
+    public int pendingCount() {
+        return Math.toIntExact(talks.stream()
+                .filter(Talk::isPending)
+                .count());
+    }
+
+    public int acceptedCount() {
+        return Math.toIntExact(talks.stream()
+                .filter(Talk::isAccepted)
+                .count());
+    }
+
+    public int notAcceptedCount() {
+        return Math.toIntExact(talks.stream()
+                .filter(Talk::isNotAccepted)
+                .count());
+    }
+
+    public boolean callForPapersShouldBeStarted() {
+        return callForPaperStartDate == null || callForPaperEndDate == null
+                || isBetween(LocalDate.now(), callForPaperStartDate, callForPaperEndDate);
+    }
+
+    public void startCallForPaper() {
+        callForPaperActive = true;
+    }
+
+    private static boolean isBetween(LocalDate date, LocalDate start, LocalDate end) {
+        return (start.isBefore(date) || start.isEqual(date))
+                && (end.isAfter(date) || end.isEqual(date));
+    }
+
 }

@@ -65,10 +65,10 @@ public class User extends AbstractEntity {
     private Set<Role> roles = new HashSet<>();
 
     @ManyToMany(mappedBy = "organisers")
-    private Set<Conference> organizerConferences;
+    private Set<Conference> organizerConferences = new HashSet<>();
 
     @ManyToMany(mappedBy = "speakers")
-    private Set<Conference> speakerConferences;
+    private Set<Conference> speakerConferences = new HashSet<>();
 
     @Builder
     public User(Long id, String firstName, String lastName, String email, String password,
@@ -97,6 +97,13 @@ public class User extends AbstractEntity {
 
     public List<String> getRoleNames() {
         return roles.stream().map(Role::getName).collect(Collectors.toList());
+    }
+
+    public boolean isOrganizerForTalk(Long talkId) {
+        return getOrganizerConferences().stream()
+                .flatMap(m -> m.getTalks().stream())
+                .mapToLong(AbstractEntity::getId)
+                .anyMatch(m -> m == talkId);
     }
 
     public enum UserStatus {

@@ -42,7 +42,7 @@ public class UserInfoDto extends UserBasicDto {
     @Size(max = 1000)
     private String userInfoAdditionalInfo;
 
-    private List<Contact> contacts;
+    private List<Contact> contacts = new ArrayList<>();
 
     public void setContact(Contact contact) {
     	

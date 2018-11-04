@@ -14,13 +14,17 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class Role extends AbstractEntity implements GrantedAuthority {
 
-    public static final String ORGANISER = "ROLE_ORGANISER";
-    public static final String SPEAKER = "ROLE_SPEAKER";
-    public static final String ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_ORGANISER = "ROLE_ORGANISER";
+    public static final String ROLE_SPEAKER = "ROLE_SPEAKER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+    public static final String SPEAKER = "SPEAKER";
+    public static final String ORGANISER = "ORGANISER";
+    public static final String ADMIN = "ADMIN";
 
     @NonNull
     @Column(nullable = false, unique = true)

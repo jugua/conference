@@ -29,16 +29,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.model.User;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.SettingsDto;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class,})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 public class SettingsControllerTest {
 
-    public static final String API_USER_CURRENT_PASSWORD = "/settings/password";
-    public static final String API_USER_CURRENT_EMAIL = "/settings/email";
+    private static final String API_USER_CURRENT_PASSWORD = "/settings/password";
+    private static final String API_USER_CURRENT_EMAIL = "/settings/email";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -53,7 +53,7 @@ public class SettingsControllerTest {
     private Principal principal;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(settingsController).build();
         user = new User();
         user.setId(1L);
@@ -207,6 +207,5 @@ public class SettingsControllerTest {
                 .content(convertObjectToJsonBytes(settingsDto))
         ).andExpect(status().isBadRequest());
     }
-
 
 }

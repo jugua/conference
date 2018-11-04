@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class Contact extends AbstractEntity {
     @JoinColumn(name = "contact_type_id", nullable = false)
     private ContactType contactType;
 
+    @Builder
     public Contact(Long id, String value, ContactType contactType) {
         super(id);
         this.value = value;

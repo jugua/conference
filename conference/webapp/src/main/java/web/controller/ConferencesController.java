@@ -1,7 +1,10 @@
 package web.controller;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -20,115 +23,90 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import domain.model.Conference;
-import domain.model.Role;
-import domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+
+import domain.model.Conference;
+import domain.model.User;
 import service.businesslogic.api.ConferenceService;
-import service.businesslogic.api.TopicService;
-import service.businesslogic.api.TypeService;
+import service.businesslogic.api.TalkService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
-import service.businesslogic.dto.CreateTopicDto;
-import service.businesslogic.dto.CreateTypeDto;
 import service.businesslogic.dto.MessageDto;
 import service.businesslogic.dto.TalkDto;
 
 @Log4j
-@RestController
-@RequestMapping("/")
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
-public class MainPageController {
+@RestController
+@RequestMapping("/conference")
+public class ConferencesController {
 
-    private final TypeService typeService;
-    private final TopicService topicService;
+    private final UserService userService;
     private final ConferenceService conferenceService;
-    private UserService userService;
+    private final TalkService talkService;
 
-    @GetMapping("conference/upcoming")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/conferencesNames")
+    public ResponseEntity<List<String>> getConferenceNames() {
+        List<String> conferencesNames = conferenceService.getAll()
+                .stream()
+                .map(Conference::getTitle)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(conferencesNames, HttpStatus.OK);
+    }
+
+    @GetMapping("/upcoming")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ConferenceDtoBasic>> upcomingConferences(HttpServletRequest request) {
-        return ok(conferenceService.findUpcomingBasic());
+        return ok(conferenceService.getUpcomingBasic());
     }
 
-    @GetMapping("conference/past")
+    @GetMapping("/past")
     public ResponseEntity<List<ConferenceDtoBasic>> pastConferences(HttpServletRequest request) {
-        return ok(conferenceService.findPastBasic());
+        return ok(conferenceService.getPastBasic());
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("conference/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Conference> conferenceById(@PathVariable long id) {
-        Conference conference = conferenceService.findById(id);
+        Conference conference = conferenceService.getById(id);
         return ok(conference);
     }
-    
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("conference")
-    public ResponseEntity<List<ConferenceDto>> conferenceById(HttpServletRequest request) {
-    	User user = userService.getByEmail(request.getRemoteUser());
-       	List<ConferenceDto> conferences = conferenceService.conferenceToDto(user.getOrganizerConferences());
-       	return new ResponseEntity<>(conferences,HttpStatus.OK);
-    	
-    
-    }
-    
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("conference/{id}/talks")
+    @GetMapping
+    public ResponseEntity<List<ConferenceDto>> conferenceById(HttpServletRequest request) {
+        User user = userService.getByEmail(request.getRemoteUser());
+        List<ConferenceDto> conferences = conferenceService.conferenceToDto(user.getOrganizerConferences());
+        return ok(conferences);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}/talks")
     public ResponseEntity<Collection<TalkDto>> talksByConferenceId(@PathVariable long id) {
-        Collection<TalkDto> talkDtos = conferenceService.findTalksByConferenceId(id);
+        Collection<TalkDto> talkDtos = talkService.getByConferenceId(id);
         return ok(talkDtos);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("conference")
+    @PostMapping
     public ResponseEntity<MessageDto> newConference(@Valid @RequestBody CreateConferenceDto dto) {
         Long id = conferenceService.save(dto);
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(id);
-        return ok(messageDto);
+        return ok(new MessageDto(id));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("conference/update")
+    @PatchMapping("/update")
     public ResponseEntity<MessageDto> updateConference(@Valid @RequestBody ConferenceDto dto, BindingResult bindingResult) {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(dto.getId());
 
         if (bindingResult.hasErrors()) {
-            messageDto.setError("field_error");
-            return ok(messageDto);
+            return ok(new MessageDto(dto.getId(), "field_error"));
         } else {
-            messageDto.setError("successfully_updated");
             conferenceService.update(dto);
-            return ok(messageDto);
+            return ok(new MessageDto(dto.getId(), "successfully_updated"));
         }
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("type")
-    public ResponseEntity<MessageDto> createNewType(@Valid @RequestBody CreateTypeDto typeDto) {
-        Long id = typeService.save(typeDto);
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(id);
-        return ok(messageDto);
-    }
-
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("topic")
-    public ResponseEntity<MessageDto> createNewTopic(@Valid @RequestBody CreateTopicDto topicDto) {
-        Long id = topicService.save(topicDto);
-        MessageDto messageDto = new MessageDto();
-        messageDto.setId(id);
-        return ok(messageDto);
-    }
-
-    private <T> ResponseEntity<T> ok(T body) {
-        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
 }

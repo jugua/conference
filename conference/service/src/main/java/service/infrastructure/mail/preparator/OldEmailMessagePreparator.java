@@ -5,8 +5,10 @@ import java.util.HashMap;
 
 import domain.model.User;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 @AllArgsConstructor
+@EqualsAndHashCode
 public class OldEmailMessagePreparator extends CustomMimeMessagePreparator {
     private String oldEmail;
 

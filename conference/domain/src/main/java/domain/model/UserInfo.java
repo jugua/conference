@@ -43,7 +43,7 @@ public class UserInfo extends AbstractEntity {
 
     @Column(length = 1000)
     private String additionalInfo;
-    
+
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private User user;
@@ -64,4 +64,9 @@ public class UserInfo extends AbstractEntity {
     public void addContact(Contact contact) {
         contacts.add(contact);
     }
+
+    public boolean isNotFilled() {
+        return shortBio.isEmpty() || jobTitle.isEmpty() || company.isEmpty();
+    }
+
 }

@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto findById(Long id) {
+    public CommentDto getById(Long id) {
         Comment comment = commentRepository.findOne(id);
         CommentDto commentDto = toDto(comment);
         return commentDto;
@@ -50,16 +50,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDto> getAllByTalkId(Long id) {
+    public List<CommentDto> getByTalkId(Long id) {
         List<Comment> comments = commentRepository.findAllByTalkId(id);
         return toDto(comments);
     }
 
     private Comment toEntity(CommentDto commentDto) {
+        User one = userRepository.findOne(commentDto.getUserId());
         return Comment.builder()
                 .id(commentDto.getId())
                 .message(commentDto.getMessage())
-                .user(userRepository.findOne(commentDto.getUserId()))
+                .user(one)
                 .talkId(commentDto.getTalkId())
                 .time(commentDto.getTime())
                 .build();

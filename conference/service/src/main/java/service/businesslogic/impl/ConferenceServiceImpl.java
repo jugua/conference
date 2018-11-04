@@ -2,11 +2,7 @@ package service.businesslogic.impl;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,19 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.model.Conference;
-import domain.model.Talk;
-import domain.model.TalkStatus;
-import domain.repository.ConferenceRepository;
 import lombok.AllArgsConstructor;
+
+import domain.model.Conference;
+import domain.repository.ConferenceRepository;
 import service.businesslogic.api.ConferenceService;
 import service.businesslogic.dto.ConferenceDto;
 import service.businesslogic.dto.ConferenceDtoBasic;
 import service.businesslogic.dto.CreateConferenceDto;
-import service.businesslogic.dto.TalkDto;
-import service.businesslogic.dto.converter.TalksConverter;
 import service.businesslogic.exception.ConferenceNotFoundException;
-
 
 @Service
 @Transactional
@@ -36,11 +28,10 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     private final ModelMapper modelMapper;
     private final ConferenceRepository conferenceRepository;
-    private final TalksConverter talksConverter;
 
     @Override
     @Transactional(readOnly = true)
-    public Conference findById(Long id) {
+    public Conference getById(Long id) {
         Conference conference = conferenceRepository.findById(id);
         if (conference == null) {
             throw new ConferenceNotFoundException();
@@ -61,89 +52,80 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public void remove(Conference conference) {
-        conferenceRepository.delete(conference);
-    }
-
-    @Override
     @Transactional(readOnly = true)
-    public List<Conference> findAll() {
+    public List<Conference> getAll() {
         return conferenceRepository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ConferenceDto> findPast() {
+    public List<ConferenceDto> getPast() {
         return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now())
                 .stream().map(this::conferenceToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ConferenceDtoBasic> findPastBasic() {
+    public List<ConferenceDtoBasic> getPastBasic() {
         return conferenceRepository.findAllByEndDateIsLessThan(LocalDate.now())
                 .stream().map(this::conferenceToDtoBasic)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ConferenceDtoBasic> findUpcomingBasic() {
-        List<Conference> conferences = conferenceRepository
-                .findAllByStartDateIsGreaterThanEqual(LocalDate.now());
-        fillCallForPaperDatesActive(conferences);
+    public List<ConferenceDtoBasic> getUpcomingBasic() {
+        List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
+
+        startCallForPapers(conferences);
+
         return conferences.stream().map(this::conferenceToDtoBasic)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ConferenceDto> findUpcoming() {
-        List<Conference> conferences = conferenceRepository
-                .findAllByStartDateIsGreaterThanEqual(LocalDate.now());
-        fillCallForPaperDatesActive(conferences);
-        return conferences.stream().map(this::conferenceToDto)
-                .collect(Collectors.toList());
+    public List<ConferenceDto> getUpcoming() {
+        List<Conference> conferences = conferenceRepository.findAllByStartDateIsGreaterThanEqual(LocalDate.now());
+        startCallForPapers(conferences);
+        return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
+    }
+
+    public ConferenceDto conferenceToDto(Conference conference) {
+        ConferenceDto conferenceDto = modelMapper.map(conference, ConferenceDto.class);
+        conferenceDto.setCallForPaperStartDate(stringOf(conference.getCallForPaperStartDate()));
+        conferenceDto.setCallForPaperEndDate(stringOf(conference.getCallForPaperEndDate()));
+        conferenceDto.setStartDate(stringOf(conference.getStartDate()));
+        conferenceDto.setEndDate(stringOf(conference.getEndDate()));
+        conferenceDto.setNotificationDue(stringOf(conference.getNotificationDue()));
+
+        conferenceDto.setNewTalkCount(conference.draftCount());
+        conferenceDto.setInProgressTalkCount(conference.pendingCount());
+        conferenceDto.setApprovedTalkCount(conference.acceptedCount());
+        conferenceDto.setRejectedTalkCount(conference.notAcceptedCount());
+
+        return conferenceDto;
+    }
+
+    public Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
+        return modelMapper.map(conferenceDto, Conference.class);
     }
 
     @Override
-    public Collection<TalkDto> findTalksByConferenceId(long id) {
-        Conference conference = findById(id);
-        Collection<Talk> talks = conference == null ? Collections.emptyList() : conference.getTalks();
+    public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
+        return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
+    }
 
-        return talksConverter.toDto(talks);
+    private void startCallForPapers(List<Conference> conferences) {
+        conferences.stream()
+                .filter(Conference::callForPapersShouldBeStarted)
+                .forEach(Conference::startCallForPaper);
     }
 
     private ConferenceDtoBasic conferenceToDtoBasic(Conference conference) {
         return modelMapper.map(conference, ConferenceDtoBasic.class);
     }
 
-    public ConferenceDto conferenceToDto(Conference conference) {
-        ConferenceDto conferenceDto = modelMapper.map(conference, ConferenceDto.class);
-        conferenceDto.setCallForPaperStartDate(convertDateToString(conference.getCallForPaperStartDate()));
-        conferenceDto.setCallForPaperEndDate(convertDateToString(conference.getCallForPaperEndDate()));
-        conferenceDto.setStartDate(convertDateToString(conference.getStartDate()));
-        conferenceDto.setEndDate(convertDateToString(conference.getEndDate()));
-        conferenceDto.setNotificationDue(convertDateToString(conference.getNotificationDue()));
-        if (conference.getTalks() != null) {
-            Map<String, Integer> talks = new HashMap<>();
-            for (Talk talk : conference.getTalks()) {
-                String status = talk.getStatus().getName();
-                Integer count = 0;
-                if (talks.get(status) != null) {
-                    count = talks.get(status);
-                }
-                talks.put(status, ++count);
-            }
-
-            conferenceDto.setNewTalkCount(talks.get(TalkStatus.DRAFT.getName()));
-            conferenceDto.setApprovedTalkCount(talks.get(TalkStatus.ACCEPTED.getName()));
-            conferenceDto.setRejectedTalkCount(talks.get(TalkStatus.NOT_ACCEPTED.getName()));
-            conferenceDto.setInProgressTalkCount(talks.get(TalkStatus.PENDING.getName()));
-        }
-        return conferenceDto;
-    }
-
-    public String convertDateToString(LocalDate localDate) {
+    private String stringOf(LocalDate localDate) {
         if (localDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             return localDate.format(formatter);
@@ -151,32 +133,4 @@ public class ConferenceServiceImpl implements ConferenceService {
         return null;
     }
 
-    public Conference conferenceDtoToConference(ConferenceDto conferenceDto) {
-        return modelMapper.map(conferenceDto, Conference.class);
-    }
-
-    private void fillCallForPaperDatesActive(List<Conference> conferences) {
-        if (conferences != null) {
-            for (Conference conference : conferences) {
-                LocalDate now = LocalDate.now();
-                LocalDate callForPaperEndDate = conference.getCallForPaperEndDate();
-
-                boolean isActive;
-                if (callForPaperEndDate != null && conference.getCallForPaperStartDate() != null) {
-                    isActive = (callForPaperEndDate.isAfter(now) || callForPaperEndDate.isEqual(now))
-                            && (conference.getCallForPaperStartDate().isBefore(now)
-                            || conference.getCallForPaperStartDate().isEqual(now));
-                } else {
-                    isActive = true;
-                }
-
-                conference.setCallForPaperActive(isActive);
-            }
-        }
-    }
-
-	@Override
-	public List<ConferenceDto> conferenceToDto(Set<Conference> conferences) {
-		return conferences.stream().map(this::conferenceToDto).collect(Collectors.toList());
-	}
 }

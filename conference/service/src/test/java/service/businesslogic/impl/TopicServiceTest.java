@@ -69,14 +69,14 @@ public class TopicServiceTest {
     public void testFindByCorrectId() {
         long correctId = 1;
         when(topicRepository.findOne(correctId)).thenReturn(topic);
-        assertEquals(topicService.find(correctId), topic);
+        assertEquals(topicService.getById(correctId), topic);
     }
 
     @Test(expected = TopicNotFoundException.class)
     public void testFindByWrongId() {
         long wrongId = 100500;
         when(topicRepository.findOne(wrongId)).thenReturn(null);
-        topicService.find(wrongId);
+        topicService.getById(wrongId);
     }
 
     @Test

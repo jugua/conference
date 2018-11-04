@@ -2,16 +2,16 @@ package service.businesslogic.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.AllArgsConstructor;
+
 import domain.model.Topic;
 import domain.repository.TopicRepository;
-import lombok.AllArgsConstructor;
 import service.businesslogic.api.TopicService;
 import service.businesslogic.dto.CreateTopicDto;
 import service.businesslogic.dto.TopicDto;
@@ -25,7 +25,7 @@ public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
 
     @Override
-    public Topic find(Long id) {
+    public Topic getById(Long id) {
         Topic topic = topicRepository.findOne(id);
         if (topic == null) {
             throw new TopicNotFoundException();
@@ -46,9 +46,9 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public List<TopicDto> findAll() {
-        return StreamSupport.stream(topicRepository.findAll().spliterator(), false)/*topicRepository.findAll().stream()*/
-                .map(e -> modelMapper.map(e, TopicDto.class))
+    public List<TopicDto> getAll() {
+        return topicRepository.findAll().stream()
+                .map(topic -> modelMapper.map(topic, TopicDto.class))
                 .collect(Collectors.toList());
     }
 

@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,25 +31,26 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.log4j.Log4j;
+
 import domain.model.Role;
 import domain.model.User;
-import lombok.extern.log4j.Log4j;
 import service.businesslogic.api.ContactTypeService;
 import service.businesslogic.api.UserInfoService;
 import service.businesslogic.api.UserService;
 import service.businesslogic.dto.RegistrationDto;
 import service.businesslogic.exception.EmailAlreadyExistsException;
 import service.businesslogic.exception.PasswordMismatchException;
-import web.config.TestSecurityConfig;
+import web.config.TestConfig;
 import web.config.WebMvcConfig;
-import web.config.WebTestConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {WebTestConfig.class, WebMvcConfig.class, TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebMvcConfig.class})
 @WebAppConfiguration
 @Log4j
-public class RegistrationControllerTest extends TestUtil{
-    public static final String REGISTER_USER_URL = "/registration";
+public class RegistrationControllerTest {
+
+    private static final String REGISTER_USER_URL = "/registration";
     private MockMvc mockMvc;
     private RegistrationDto correctRegistrationDto;
 
@@ -70,29 +70,26 @@ public class RegistrationControllerTest extends TestUtil{
     private ContactTypeService contactTypeService;
 
     @Autowired
-    private UserController userController;
+    private UsersController usersController;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(usersController).build();
         correctRegistrationDto = setupCorrectRegistrationDto();
-        createSpeakerAndOrganiser(userService);
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .addFilter(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
 
-        when(passwordEncoder.encode(anyString())).then(new Answer<String>() {
-            @Override
-            public String answer(InvocationOnMock invocation) throws Throwable {
-                Object[] args = invocation.getArguments();
-                return (String) args[0];
-            }
-        });
+        when(passwordEncoder.encode(anyString()))
+                .then((Answer<String>) invocation -> {
+                    Object[] args = invocation.getArguments();
+                    return (String) args[0];
+                });
     }
 
     @After
@@ -206,9 +203,9 @@ public class RegistrationControllerTest extends TestUtil{
         String alreadyRegisteredEmail = "registered@gmail.com";
         correctRegistrationDto.setEmail(alreadyRegisteredEmail);
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         doThrow(new EmailAlreadyExistsException("email_already_exists")).
-                when(userService).checkUserRegistration(correctRegistrationDto);
+                when(userService).registerSpeaker(correctRegistrationDto);
         performRegistration(REGISTER_USER_URL, HttpStatus.CONFLICT.value());
     }
 
@@ -216,9 +213,9 @@ public class RegistrationControllerTest extends TestUtil{
     public void unconfirmedPasswordTest() {
         correctRegistrationDto.setConfirm("777777");
         correctRegistrationDto.setUserStatus(User.UserStatus.UNCONFIRMED);
-        correctRegistrationDto.setRoleName(Role.SPEAKER);
+        correctRegistrationDto.setRoleName(Role.ROLE_SPEAKER);
         doThrow(new PasswordMismatchException("email_already_exists")).
-                when(userService).checkUserRegistration(correctRegistrationDto);
+                when(userService).registerSpeaker(correctRegistrationDto);
         checkForBadRequest(REGISTER_USER_URL, RequestMethod.POST, correctRegistrationDto);
     }
 

@@ -1,5 +1,7 @@
 package service.businesslogic.dto;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -7,9 +9,10 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import domain.model.User;
 import lombok.Data;
 import lombok.ToString;
+
+import domain.model.User;
 
 @Data
 @ToString(exclude = {"password", "confirm"})
@@ -42,4 +45,9 @@ public class RegistrationDto {
 
     @JsonIgnore
     private User.UserStatus userStatus;
+
+    public boolean passwordsDoNotMatch() {
+        return !Objects.equals(password, confirm);
+    }
+
 }

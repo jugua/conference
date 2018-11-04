@@ -2,6 +2,7 @@ package domain.model;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 public class VerificationToken extends AbstractEntity {
 
-    public static final int EXPIRATION_IN_MINUTES = 60;
+    public static final int DEFAULT_EXPIRATION_TIME_IN_MINUTES = 60;
 
     @NonNull
     @Column(nullable = false)
@@ -61,8 +62,45 @@ public class VerificationToken extends AbstractEntity {
         this.status = status;
     }
 
-    public long calculateSecondsToExpiry() {
+    public static VerificationToken of(User user, VerificationToken.TokenType tokenType) {
+        return VerificationToken.builder()
+                .user(user)
+                .expiryDate(generateDefaultExpiryDate())
+                .token(UUID.randomUUID().toString())
+                .type(tokenType)
+                .status(VerificationToken.TokenStatus.VALID)
+                .build();
+    }
+
+    public static VerificationToken createChangeEmailToken(
+            User user, VerificationToken.TokenType tokenType, String newEmail) {
+        VerificationToken token = VerificationToken.of(user, tokenType);
+        token.setToken(token.getToken() + "|" + newEmail);
+        return token;
+    }
+
+    public boolean isInvalid(TokenType tokenType) {
+        return !(type.equals(tokenType) && TokenStatus.VALID.equals(status));
+    }
+
+    public boolean isExpired() {
+        return TokenStatus.EXPIRED.equals(status) || isExpiredByTime();
+    }
+
+    public boolean isExpiredByTime() {
+        return secondsToExpiry() <= 0;
+    }
+
+    public long secondsToExpiry() {
         return ChronoUnit.SECONDS.between(LocalDateTime.now(), expiryDate);
+    }
+
+    public static LocalDateTime generateDefaultExpiryDate() {
+        return LocalDateTime.now().plusMinutes(VerificationToken.DEFAULT_EXPIRATION_TIME_IN_MINUTES);
+    }
+
+    public void expire() {
+        setStatus(TokenStatus.EXPIRED);
     }
 
     public enum TokenType {

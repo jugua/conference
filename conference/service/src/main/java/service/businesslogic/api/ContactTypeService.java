@@ -4,16 +4,15 @@ import java.util.List;
 
 import domain.model.ContactType;
 
-
 public interface ContactTypeService {
 
-    ContactType find(Long id);
+    List<ContactType> getAll();
+
+    ContactType getById(Long id);
+
+    ContactType getByName(String name);
 
     void save(ContactType contactType);
 
     void update(ContactType contactType);
-
-    List<ContactType> findAll();
-
-    ContactType findByName(String name);
 }
